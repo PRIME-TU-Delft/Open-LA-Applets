@@ -13,7 +13,8 @@
 	"devDependencies": {
 		"@mdi/js": "^7.0.96",
 		"@playwright/test": "^1.25.0",
-		"@sveltejs/adapter-auto": "^1.0.0-next.71",
+		"@sveltejs/adapter-auto": "^1.0.0-next.81",
+		"@sveltejs/adapter-static": "^1.0.0-next.44",
 		"@sveltejs/kit": "next",
 		"@sveltejs/package": "next",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -37,6 +38,8 @@
 		"fuse.js": "^6.6.2"
 	},
 	"type": "module",
+	"module": "index.ts",
+	"svelte": "index.ts",
 	"keywords": [
 		"svelte",
 		"typescript",

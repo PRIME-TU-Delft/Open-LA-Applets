@@ -12,6 +12,6 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*",
-    "svelte": "^3.9.2"
+    "svelte": "^3.44.0"
   }
 }

@@ -32,7 +32,7 @@
 </script>
 
 {#if message}
-	<div class="notification" on:click={hideMessage} transition:fade>
+	<div class="notification" on:click={hideMessage} on:keydown={hideMessage} transition:fade>
 		{message}
 	</div>
 {/if}

@@ -88,6 +88,12 @@
 						writeToClipboard(item.item.name);
 						writeMessage(`Copied ${item.item.name} to clipboard!`);
 					}}
+					on:keyup={(e) => {
+						if (e.key === 'Enter') {
+							writeToClipboard(item.item.name);
+							writeMessage(`Copied ${item.item.name} to clipboard!`);
+						}
+					}}
 				>
 					<Icon path={item.item.path} size={2.5} />
 					<p>{index}: {item.item.name}</p>

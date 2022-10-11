@@ -88,6 +88,11 @@
 						writeToClipboard(item.item.name);
 						writeMessage(`Copied ${item.item.name} to clipboard!`);
 					}}
+					on:keydown={(e) => {
+						if (e.key != "Enter") return;
+						writeToClipboard(item.item.name);
+						writeMessage(`Copied ${item.item.name} to clipboard!`);
+					}}
 				>
 					<Icon path={item.item.path} size={2.5} />
 					<p class="w-full py-2 text-center">{index}: {item.item.name}</p>
