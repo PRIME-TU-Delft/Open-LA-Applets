@@ -161,55 +161,60 @@
   });
 </script>
 
-<!-- TODO: try innerWidth on label or scene itself -->
-<svelte:window bind:innerWidth="{width}" bind:innerHeight="{height}" on:resize="{resize}" />
+<div
+  class="wrapper"
+  bind:clientWidth="{width}"
+  bind:clientHeight="{height}"
+  on:resize="{resize}"
+  style="height: var(--height, 100vh); width: 100%; position: relative; border: 1px solid #000000;"
+>
+  <div class="labelEl" bind:this="{labelEl}"></div>
 
-<div class="labelEl" bind:this="{labelEl}"></div>
-
-<div bind:this="{sceneEl}">
-  {#if !isPlaying}
-    <div
-      class="fixed w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
-      on:click="{playScene}"
-      on:keydown="{playScene}"
-    ></div>
-  {/if}
-
-  <canvas bind:this="{canvasEl}"></canvas>
-
-  <!-- Explain panel -->
-  {#if title || !isPlaying}
-    <div
-      class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
-    >
-      {#if !isPlaying}
-        Click to start playing scene {title ? ' - ' + title : ''}
-      {:else}
-        {title}
-      {/if}
-    </div>
-  {/if}
-
-  <slot scene="{scene}" camera="{camera}" sliderValues="{sliderValues}" />
-
-  <!-- Slider Panel -->
-  {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
-    <div class="fixed right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
-      {#each sliders as slider}
-        <SvelteSlider bind:slider />
-      {/each}
-    </div>
-  {/if}
-
-  <!-- Options panel -->
-  <div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
-    {#if isPlaying}
-      <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
+  <div bind:this="{sceneEl}">
+    {#if !isPlaying}
+      <div
+        class="fixed w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
+        on:click="{playScene}"
+        on:keydown="{playScene}"
+      ></div>
     {/if}
 
-    <RoundButton icon="{mdiCog}" on:click="{togglePerspective}" />
-    <RoundButton icon="{mdiRestart}" on:click="{reset}" />
+    <canvas bind:this="{canvasEl}"></canvas>
 
-    <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" />
+    <!-- Explain panel -->
+    {#if title || !isPlaying}
+      <div
+        class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
+      >
+        {#if !isPlaying}
+          Click to start playing scene {title ? ' - ' + title : ''}
+        {:else}
+          {title}
+        {/if}
+      </div>
+    {/if}
+
+    <slot scene="{scene}" camera="{camera}" sliderValues="{sliderValues}" />
+
+    <!-- Slider Panel -->
+    {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
+      <div class="fixed right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
+        {#each sliders as slider}
+          <SvelteSlider bind:slider />
+        {/each}
+      </div>
+    {/if}
+
+    <!-- Options panel -->
+    <div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
+      {#if isPlaying}
+        <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
+      {/if}
+
+      <RoundButton icon="{mdiCog}" on:click="{togglePerspective}" />
+      <RoundButton icon="{mdiRestart}" on:click="{reset}" />
+
+      <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" />
+    </div>
   </div>
 </div>
