@@ -12,7 +12,8 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "ui": "*"
+    "ui": "*",
+    "visuals-3d": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
