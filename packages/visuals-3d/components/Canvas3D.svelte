@@ -11,10 +11,10 @@
     WebGLRenderer
   } from 'three';
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-  import { sceneKey } from './utils/sceneKey';
-  import { CSS2DRenderer } from './utils/CSS2DRenderer';
+  import { sceneKey } from '../utils/sceneKey';
+  import { CSS2DRenderer } from '../utils/CSS2DRenderer';
 
-  import type Slider from 'ui/components/utils/slider';
+  import type Slider from 'ui/utils/slider';
 
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider } from 'ui';
 
@@ -53,6 +53,7 @@
    * Resize canvas if window size changes.
    */
   function resize() {
+    console.log('resize');
     if (!camera || !renderer || !labelRenderer) return;
 
     if (camera.type == 'PerspectiveCamera') {
@@ -65,6 +66,7 @@
       camera.bottom = -FRUSTRUM_SIZE / 2;
     }
 
+    console.log('accutal resize');
     camera.updateProjectionMatrix();
 
     renderer.setSize(width, height);
@@ -92,6 +94,7 @@
     sliders = sliders.map((slider) => slider.reset());
     camera.position.set(3.5, 2.8, 3.5);
     controls.update();
+    resize();
   }
 
   function setupPerspectiveCamera() {
@@ -130,8 +133,8 @@
     controls.minZoom = 1;
 
     reset();
-    resize();
     animate();
+    resize();
   }
 
   // Switch between perspective and orthographic camera
@@ -165,7 +168,7 @@
   class="wrapper"
   bind:clientWidth="{width}"
   bind:clientHeight="{height}"
-  on:resize="{resize}"
+  on:resize="{() => console.log('div resize')}"
   style="height: var(--height, 100vh); width: 100%; position: relative; border: 1px solid #000000;"
 >
   <div class="labelEl" bind:this="{labelEl}"></div>
@@ -173,7 +176,7 @@
   <div bind:this="{sceneEl}">
     {#if !isPlaying}
       <div
-        class="fixed w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
+        class="absolute w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
         on:click="{playScene}"
         on:keydown="{playScene}"
       ></div>
@@ -184,7 +187,7 @@
     <!-- Explain panel -->
     {#if title || !isPlaying}
       <div
-        class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
+        class="absolute px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
       >
         {#if !isPlaying}
           Click to start playing scene {title ? ' - ' + title : ''}
@@ -198,7 +201,7 @@
 
     <!-- Slider Panel -->
     {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
-      <div class="fixed right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
+      <div class="absolute right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
         {#each sliders as slider}
           <SvelteSlider bind:slider />
         {/each}
@@ -206,7 +209,7 @@
     {/if}
 
     <!-- Options panel -->
-    <div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
+    <div class="absolute right-4 bottom-4 w-12 flex flex-col gap-2">
       {#if isPlaying}
         <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
       {/if}

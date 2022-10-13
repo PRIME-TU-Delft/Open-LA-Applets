@@ -2,8 +2,8 @@
   import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
   import { Vector3 } from 'three';
 
-  import { sceneKey, type SceneContext } from './utils/sceneKey';
-  import { CSS2DObject } from './utils/CSS2DRenderer';
+  import { sceneKey, type SceneContext } from '../utils/sceneKey';
+  import { CSS2DObject } from '../utils/CSS2DRenderer';
 
   export let size: number = 1;
   export let color = '#000';

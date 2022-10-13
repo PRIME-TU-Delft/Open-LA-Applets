@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type Slider from './utils/slider';
+  import type Slider from '../utils/slider';
 
   export let slider: Slider; // Enfore with typescript 0 - 3 sliders
 </script>
