@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "ui": "*",
-    "mdi-svelte-ts": "*"
+    "mdi-svelte-ts": "*",
+    "visuals-3d": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
