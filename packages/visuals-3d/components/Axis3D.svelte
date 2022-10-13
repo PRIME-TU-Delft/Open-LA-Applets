@@ -20,7 +20,7 @@
 
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
 
-  function getPoints(indecator: number, size: number, axis: number = 0): [Vector3, Vector3] {
+  function getPoints(indecator: number, size: number, axis = 0): [Vector3, Vector3] {
     let from = new Vector3(indecator, 0, size);
     let to = new Vector3(indecator, 0, -size);
 

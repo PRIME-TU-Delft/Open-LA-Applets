@@ -22,10 +22,10 @@
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
-  export let length: number = 1; // length of the vector + cone
-  export let radius: number = 0.05; // radius of the cone
+  export let length = 1; // length of the vector + cone
+  export let radius = 0.05; // radius of the cone
   export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
-  export let showDeconstruction: boolean = false; // show deconstruction of vector
+  export let showDeconstruction = false; // show deconstruction of vector
   export let label: Label = Label.default(); // label of vector
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.

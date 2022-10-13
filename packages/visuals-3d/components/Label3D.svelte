@@ -5,12 +5,12 @@
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
   import { CSS2DObject } from '../utils/CSS2DRenderer';
 
-  export let size: number = 1;
+  export let size = 1;
   export let color = '#000';
   export let position: Vector3 = new Vector3(0, 0, 0);
-  export const strokeColor: string = ''; // TODO
-  export const strokeWidth: number = 0; // TODO
-  export let opacity: number = 1;
+  export const strokeColor = ''; // TODO
+  export const strokeWidth = 0; // TODO
+  export let opacity = 1;
   export let layer: number | undefined = undefined;
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.

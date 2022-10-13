@@ -6,7 +6,7 @@
   import getRandomColor from 'ui/utils/primeColors';
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
 
-  export let color: string = '';
+  export let color = '';
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
