@@ -35,8 +35,7 @@
 		"vite": "^3.1.0"
 	},
 	"dependencies": {
-		"fuse.js": "^6.6.2",
-		"postcss": "^8.4.17"
+		"fuse.js": "^6.6.2"
 	},
 	"type": "module",
 	"module": "index.ts",
