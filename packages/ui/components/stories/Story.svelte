@@ -4,9 +4,9 @@
   export let title = '';
   export let defaultSize: [string, string] = ['50rem', '30rem'];
 
-  let presets: string[] = []; // TODO: iphone y, desktop
+  // let presets: string[] = []; // TODO: iphone y, desktop
 
-  let sceneOffset: number = -300;
+  let sceneOffset = -300;
 </script>
 
 {#if $$slots.default}
