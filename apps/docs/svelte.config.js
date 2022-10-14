@@ -12,12 +12,12 @@ const config = {
       postcss: true
     }),
     mdsvex({
-      extensions: ['.md']
+      extensions: ['.md', '.svx']
       // layout: 'src/routes/stories/layout.svelte'
     })
   ],
 
-  extensions: ['.svelte', '.md'],
+  extensions: ['.svelte', '.md', '.svx'],
 
   kit: {
     adapter: adapter()

@@ -1,20 +1,21 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-	import { goto } from "$app/navigation";
-	import type { Route } from "$lib/types/Routes";
+  import type { Route } from '$lib/types/Routes';
 
-	const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
   export let route: Route;
-  export let url = ""
-  export let home = ""
+  export let url = '';
+  export let home = '';
+
+  $: href = home ? '/' + home + '/' + url : '/' + url;
 
   function gotoRoute() {
-    goto("/" + home + "/" + url)
-
-    dispatch('close')
+    dispatch('close');
   }
 </script>
 
-<div class="cursor-pointer capitalize select-none" on:click={gotoRoute}>{route.url}</div>
+<a href="{href}" class="cursor-pointer capitalize select-none" on:click="{gotoRoute}">
+  {route.url}
+</a>

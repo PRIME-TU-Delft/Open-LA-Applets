@@ -169,7 +169,7 @@
   bind:clientWidth="{width}"
   bind:clientHeight="{height}"
   on:resize="{() => console.log('div resize')}"
-  style="height: var(--height, 100vh); width: 100%; position: relative; border: 1px solid #000000;"
+  style="height: var(--height, 100vh); width: 100%; position: relative;"
 >
   <div class="labelEl" bind:this="{labelEl}"></div>
 

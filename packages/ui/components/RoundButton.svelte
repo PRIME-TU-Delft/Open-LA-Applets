@@ -24,6 +24,7 @@
 
   .roundedButton:hover {
     scale: 1.1;
+    @apply bg-slate-800;
   }
 
   .disabled {

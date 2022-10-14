@@ -14,7 +14,9 @@
 </script>
 
 <nav class="fixed z-10 left-4 top-1/2 -translate-y-1/2 py-6 h-[40rem] max-h-full text-slate-100 ">
-  <div class="bg-slate-900 h-full rounded-lg flex flex-col items-center overflow-auto pb-2">
+  <div
+    class="bg-slate-900 h-full rounded-lg flex flex-col items-center overflow-x-hidden overflow-y-auto pb-2"
+  >
     <Button icon="{mdiBookOpen}" size="{1.75}" on:click="{() => goto('/' + home)}" />
     <Button
       icon="{mdiFileSettingsOutline}"

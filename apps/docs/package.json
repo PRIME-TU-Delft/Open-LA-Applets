@@ -14,7 +14,8 @@
   "dependencies": {
     "ui": "*",
     "mdi-svelte-ts": "*",
-    "visuals-3d": "*"
+    "visuals-3d": "*",
+    "util": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",

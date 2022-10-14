@@ -1,16 +1,30 @@
 <script lang="ts">
   import { StoryLayout } from 'ui';
-  import type { Route } from 'ui/components/stories/Routes'; // TODO: create util package
+  import type { Route } from 'util/Routes';
 
   import '../app.css';
 
   export let routes: Route[] = [
     { url: 'introduction' },
-    { url: 'examples', children: [{ url: 'canvas' }] },
-    { url: 'button' }
+    { url: 'getting-started' },
+    {
+      url: '3d-components',
+      children: [
+        { url: 'canvas' },
+        { url: 'axis' },
+        { url: 'label' },
+        { url: 'vector' },
+        { url: 'line' },
+        { url: 'plane' },
+        { url: 'point' }
+      ]
+    },
+    { url: '2d-components', children: [] },
+    { url: 'UI', children: [] },
+    { url: 'examples', children: [] }
   ];
 </script>
 
-<StoryLayout routes="{routes}" home="stories">
+<StoryLayout routes="{routes}">
   <slot />
 </StoryLayout>
