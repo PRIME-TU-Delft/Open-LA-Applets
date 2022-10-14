@@ -1,18 +1,22 @@
 <script lang="ts">
   import { Icon } from 'mdi-svelte-ts';
 
-  export let icon: string;
+  export let icon = '';
+  export let size = 1;
+  export let color = 'currentColor';
+  export let disabled = false;
 </script>
 
 <div
   class="roundedButton rounded bg-slate-900 h-12 w-12 text-slate-200 grid items-center justify-center cursor-pointer"
+  class:disabled
   on:click
   on:keypress
 >
-  <Icon path="{icon}" size="{1.5}" />
+  <Icon path="{icon}" color="{color}" size="{size}" />
 </div>
 
-<style>
+<style lang="postcss">
   .roundedButton {
     scale: 1;
     transition: scale 0.3s;
@@ -20,5 +24,9 @@
 
   .roundedButton:hover {
     scale: 1.1;
+  }
+
+  .disabled {
+    @apply cursor-not-allowed text-slate-100/50;
   }
 </style>

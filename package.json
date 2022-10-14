@@ -11,9 +11,11 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.12",
     "eslint": "^8.0.0",
     "eslint-config-custom": "*",
+    "mdsvex": "^0.10.6",
     "postcss": "^8.4.17",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",

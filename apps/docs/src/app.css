@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* CODE */
+pre code {
+  @apply box-border block bg-gray-800 text-gray-100 p-2 font-mono rounded;
+}
+
+pre .tag {
+  @apply text-emerald-500/80;
+}
+
+pre .namespace {
+  @apply text-pink-600/80;
+}
+
+pre .punctuation,
+pre .function {
+  @apply text-yellow-500/80;
+}
+
+pre .string {
+  @apply text-orange-400/80;
+}
+
+pre .operator,
+pre .attr-name {
+  @apply text-blue-500/80;
+}
