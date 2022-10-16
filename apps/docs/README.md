@@ -4,16 +4,16 @@
 
 - introduction
 - getting-started
-- 3d components [TODO]
-  - Canvas [TODO]
-  - Axis [TODO]
-  - Label [TODO]
-  - Vector [TODO]
-  - Line [TODO]
-  - Plane [TODO]
-  - Point [TODO]
+- 3d components
+  - Canvas
+  - Axis
+  - Label
+  - Vector
+  - Line
+  - Plane
+  - Point
 - 2d components [TODO]
-- ui components
+- ui components [TODO]
 - examples [TODO]
   - Two planes [TODO]
 
