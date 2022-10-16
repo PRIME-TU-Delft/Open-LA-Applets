@@ -13,9 +13,18 @@
   let isRoutesVisible = false;
 </script>
 
-<nav class="fixed z-10 left-4 top-1/2 -translate-y-1/2 py-6 h-[40rem] max-h-full text-slate-100 ">
+<nav
+  class="
+  fixed z-10 left-4 py-6 max-h-full text-slate-100 
+  top-inherit bottom-0 w-full
+  md:top-1/2 md:-translate-y-1/2 md:h-[40rem] md:w-[inherit]
+  "
+>
   <div
-    class="bg-slate-900 h-full rounded-lg flex flex-col items-center overflow-x-hidden overflow-y-auto pb-2"
+    class="
+      bg-slate-900 h-full rounded-lg flex items-center overflow-x-hidden overflow-y-auto pb-2
+      md:flex-col
+      "
   >
     <Button icon="{mdiBookOpen}" size="{1.75}" on:click="{() => goto('/' + home)}" />
     <Button
@@ -29,8 +38,19 @@
     <!-- TODO: <Button icon={mdiCog} disabled />   -->
   </div>
 
+  <!-- bottom: 4rem;
+top: inherit;
+height: fit-content;
+left: 0; -->
+
   {#if isRoutesVisible}
-    <div class="absolute z-10 top-0 left-16 p-4 my-6 rounded-xl bg-slate-900 h-full overflow-auto">
+    <div
+      class="
+      absolute z-10  p-4 my-6 rounded-xl bg-slate-900 overflow-auto
+      top-inherit h-fit bottom-16 left-0
+      md:top-0 md:left-16 md:h-full
+      "
+    >
       <div class="mb-2 w-60 flex justify-between items-center">
         <span class="text-xl">Routes</span>
         <Button icon="{mdiClose}" on:click="{() => (isRoutesVisible = false)}" />

@@ -13,7 +13,7 @@
   <div
     bind:offsetHeight="{sceneOffset}"
     style="--w: {defaultSize[0]}; --h: {defaultSize[1]}"
-    class="container min-w-[20rem] absolute top-1/2 -translate-y-1/2 left-20 m-0 p-0 resize overflow-auto"
+    class="container min-w-[20rem] absolute top-1/2 -translate-y-1/2 m-0 p-0 resize overflow-auto md:left-20 max md:max-w-[calc(100vw - 10rem)]"
   >
     <div class="bg-white rounded h-full w-full m-0 p-0 overflow-hidden">
       <slot />
@@ -52,5 +52,7 @@
     width: var(--w);
     height: var(--h);
     min-height: 10rem;
+    max-width: calc(100vw - 2rem);
+    margin: 0 1rem;
   }
 </style>
