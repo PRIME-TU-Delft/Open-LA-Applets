@@ -4,7 +4,7 @@
 
 /* CODE */
 pre code {
-  @apply box-border block bg-gray-800 text-gray-100 p-2 font-mono rounded;
+  @apply box-border block rounded bg-gray-800 p-2 font-mono text-gray-100;
 }
 
 pre .tag,

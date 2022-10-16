@@ -17,14 +17,14 @@
 
 <nav
   class="
-  fixed z-10 left-4 py-6 max-h-full text-slate-100 
-  top-inherit bottom-0 w-full
-  md:top-1/2 md:-translate-y-1/2 md:h-[40rem] md:w-[inherit]
+  top-inherit fixed left-4 bottom-0 z-10 max-h-full 
+  w-full py-6 text-slate-100
+  md:top-1/2 md:h-[40rem] md:w-[inherit] md:-translate-y-1/2
   "
 >
   <div
     class="
-      bg-slate-900 h-full rounded-lg flex items-center overflow-x-hidden overflow-y-auto pb-2
+      flex h-full items-center overflow-y-auto overflow-x-hidden rounded-lg bg-slate-900 pb-2
     md:flex-col
       "
   >
@@ -42,12 +42,12 @@
   {#if isRoutesVisible}
     <div
       class="
-      absolute z-10  p-4 my-6 rounded-xl bg-slate-900 overflow-auto
-      top-inherit h-fit bottom-16 left-0
+      top-inherit absolute  bottom-16 left-0 z-10 my-6 h-fit
+      overflow-auto rounded-xl bg-slate-900 p-4
       md:top-0 md:left-16 md:h-full
       "
     >
-      <div class="mb-2 w-60 flex justify-between items-center">
+      <div class="mb-2 flex w-60 items-center justify-between">
         <span class="text-xl">Routes</span>
         <Button icon="{mdiClose}" on:click="{() => (isRoutesVisible = false)}" />
       </div>

@@ -8,7 +8,7 @@
 </script>
 
 <div
-  class="roundedButton rounded bg-slate-900 h-12 w-12 text-slate-200 grid items-center justify-center cursor-pointer"
+  class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center rounded bg-slate-900 text-slate-200"
   class:disabled
   on:click
   on:keypress

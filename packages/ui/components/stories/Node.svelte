@@ -32,13 +32,13 @@
   }
 </script>
 
-<div class="font-mono bold cursor-pointer capitalize select-none">
-  <span class="flex gap-2 items-center" on:keydown="{toggleFolder}" on:click="{toggleFolder}"
+<div class="bold cursor-pointer select-none font-mono capitalize">
+  <span class="flex items-center gap-2" on:keydown="{toggleFolder}" on:click="{toggleFolder}"
     ><Icon path="{mdiFolder}" />{route.url}</span
   >
 
   {#if route.isExpanded && route.children}
-    <div class="p-2 pb-0 flex flex-col gap-2">
+    <div class="flex flex-col gap-2 p-2 pb-0">
       {#each route.children as r}
         {#if r.children}
           <svelte:self home="{home}" route="{r}" url="{url + '/' + r.url}" on:close />

@@ -81,20 +81,20 @@
 </script>
 
 <div
-  class="fixed z-10 bg-slate-500/10 h-full w-full cursor-pointer backdrop-filter backdrop-blur-sm px-6 md:px-20"
+  class="fixed z-10 h-full w-full cursor-pointer bg-slate-500/10 px-6 backdrop-blur-sm backdrop-filter md:px-20"
   on:click="{closeSearch}"
   on:keydown
 >
   <div
-    class="mt-[15vmin] mx-auto left-0 h-16 w-full max-w-full md:max-w-2xl flex flex-col gap-2"
+    class="left-0 mx-auto mt-[15vmin] flex h-16 w-full max-w-full flex-col gap-2 md:max-w-2xl"
     on:click|stopPropagation
     on:keydown|stopPropagation
   >
     <!-- SEARCH BAR -->
-    <div class="searchbar bg-white rounded">
+    <div class="searchbar rounded bg-white">
       <input
         type="text"
-        class="w-full h-full outline-none p-3 rounded"
+        class="h-full w-full rounded p-3 outline-none"
         placeholder="Search for an article"
         bind:this="{searchEl}"
         bind:value="{searchQuery}"
@@ -108,12 +108,12 @@
     {#each filteredRoutes as route}
       <a
         href="/{route.url}"
-        class="p-3 flex justify-between items-center rounded transition bg-white hover:bg-slate-100 first-of-type:bg-slate-400"
+        class="flex items-center justify-between rounded bg-white p-3 transition first-of-type:bg-slate-400 hover:bg-slate-100"
       >
         <span class="text-slate-900">{route.name || route.url}</span>
 
         {#if route.name}
-          <span class="text-slate-300 text-sm">/{route.url}</span>
+          <span class="text-sm text-slate-300">/{route.url}</span>
         {/if}
       </a>
     {/each}

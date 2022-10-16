@@ -16,6 +16,6 @@
   }
 </script>
 
-<a href="{href}" class="cursor-pointer capitalize select-none" on:click="{gotoRoute}">
+<a href="{href}" class="cursor-pointer select-none capitalize" on:click="{gotoRoute}">
   {route.url}
 </a>
