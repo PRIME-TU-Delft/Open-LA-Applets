@@ -21,7 +21,7 @@
     },
     { url: '2d-components', children: [] },
     { url: 'UI', children: [] },
-    { url: 'examples', children: [] }
+    { url: 'examples', children: [{ url: 'colliding-planes' }] }
   ];
 </script>
 

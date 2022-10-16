@@ -7,7 +7,8 @@ pre code {
   @apply box-border block bg-gray-800 text-gray-100 p-2 font-mono rounded;
 }
 
-pre .tag {
+pre .tag,
+pre .class-name {
   @apply text-emerald-500/80;
 }
 
@@ -25,6 +26,19 @@ pre .string {
 }
 
 pre .operator,
-pre .attr-name {
+pre .attr-name,
+pre .keyword,
+pre .parameter,
+pre .number {
   @apply text-blue-500/80;
+}
+
+pre .comment {
+  @apply text-gray-500/80;
+}
+
+.prose table {
+  width: 100%;
+  display: block;
+  overflow: auto;
 }
