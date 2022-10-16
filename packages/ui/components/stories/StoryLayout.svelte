@@ -6,11 +6,13 @@
   import Node from './Node.svelte';
   import Leaf from './Leaf.svelte';
   import Button from '../RoundButton.svelte';
+  import SearchBar from './SearchBar.svelte';
 
   export let home = '';
   export let routes: Route[] = [];
 
   let isRoutesVisible = false;
+  let isSearchVisible = false;
 </script>
 
 <nav
@@ -23,7 +25,7 @@
   <div
     class="
       bg-slate-900 h-full rounded-lg flex items-center overflow-x-hidden overflow-y-auto pb-2
-      md:flex-col
+    md:flex-col
       "
   >
     <Button icon="{mdiBookOpen}" size="{1.75}" on:click="{() => goto('/' + home)}" />
@@ -33,15 +35,9 @@
       on:click="{() => (isRoutesVisible = !isRoutesVisible)}"
     />
 
-    <!-- TODO: fuzzy search routes -->
-    <Button icon="{mdiMagnify}" disabled />
+    <Button icon="{mdiMagnify}" on:click="{() => (isSearchVisible = !isSearchVisible)}" />
     <!-- TODO: <Button icon={mdiCog} disabled />   -->
   </div>
-
-  <!-- bottom: 4rem;
-top: inherit;
-height: fit-content;
-left: 0; -->
 
   {#if isRoutesVisible}
     <div
@@ -82,6 +78,10 @@ left: 0; -->
     </div>
   {/if}
 </nav>
+
+{#if isSearchVisible}
+  <SearchBar routes="{routes}" on:close="{() => (isSearchVisible = false)}" />
+{/if}
 
 <main>
   <slot />
