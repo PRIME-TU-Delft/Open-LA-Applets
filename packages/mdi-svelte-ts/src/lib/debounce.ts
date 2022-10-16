@@ -6,12 +6,12 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function debounce<T extends any[], S>(cb: (...args: T[]) => S, delay = 250) {
-	let timeout: NodeJS.Timeout;
+  let timeout: NodeJS.Timeout;
 
-	return (...args: T[]) => {
-		clearTimeout(timeout);
-		timeout = setTimeout(() => {
-			cb(...args);
-		}, delay);
-	};
+  return (...args: T[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
 }
