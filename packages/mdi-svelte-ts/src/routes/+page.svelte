@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Icon from '$lib/Icon.svelte';
-	import Preview from '$lib/Preview.svelte';
+  import Icon from '$lib/Icon.svelte';
+  import Preview from '$lib/Preview.svelte';
 
-	import { mdiHeart } from '@mdi/js';
+  import { mdiHeart } from '@mdi/js';
 </script>
 
 <Preview />
 
-<Icon path={mdiHeart} />
+<Icon path="{mdiHeart}" />

@@ -2,8 +2,8 @@
 	"name": "mdi-svelte-ts",
 	"version": "1.0.0",
 	"scripts": {
-		"dev": "vite dev --port 3003",
-		"package": "svelte-kit sync && svelte-package",
+		"dev": "vite dev",
+		"build": "svelte-kit sync && svelte-package",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -23,6 +23,7 @@
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"postcss": "^8.4.16",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.44.0",
@@ -34,8 +35,7 @@
 		"vite": "^3.1.0"
 	},
 	"dependencies": {
-		"fuse.js": "^6.6.2",
-		"postcss": "^8.4.17"
+		"fuse.js": "^6.6.2"
 	},
 	"type": "module",
 	"module": "index.ts",

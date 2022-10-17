@@ -169,14 +169,14 @@
   bind:clientWidth="{width}"
   bind:clientHeight="{height}"
   on:resize="{() => console.log('div resize')}"
-  style="height: var(--height, 100vh); width: 100%; position: relative; border: 1px solid #000000;"
+  style="height: var(--height, 100vh); width: 100%; position: relative;"
 >
   <div class="labelEl" bind:this="{labelEl}"></div>
 
   <div bind:this="{sceneEl}">
     {#if !isPlaying}
       <div
-        class="absolute w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
+        class="absolute h-full w-full cursor-pointer bg-slate-900/50 backdrop-grayscale"
         on:click="{playScene}"
         on:keydown="{playScene}"
       ></div>
@@ -187,7 +187,7 @@
     <!-- Explain panel -->
     {#if title || !isPlaying}
       <div
-        class="absolute px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
+        class="absolute top-2 m-4 flex h-12 items-center justify-center gap-2 rounded bg-slate-900 px-4 text-slate-100"
       >
         {#if !isPlaying}
           Click to start playing scene {title ? ' - ' + title : ''}
@@ -201,7 +201,7 @@
 
     <!-- Slider Panel -->
     {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
-      <div class="absolute right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
+      <div class="absolute right-20 bottom-4 flex h-12 justify-end rounded bg-slate-900 px-4">
         {#each sliders as slider}
           <SvelteSlider bind:slider />
         {/each}
@@ -209,7 +209,7 @@
     {/if}
 
     <!-- Options panel -->
-    <div class="absolute right-4 bottom-4 w-12 flex flex-col gap-2">
+    <div class="absolute right-4 bottom-4 flex w-12 flex-col gap-2">
       {#if isPlaying}
         <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
       {/if}

@@ -2,7 +2,7 @@
   "name": "docs",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite dev --port 3001 --open",
+    "dev": "vite dev --host --port 3001 --open",
     "build": "vite build",
     "package": "vite package",
     "preview": "vite preview",
@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "ui": "*",
-    "mdi-svelte-ts": "*"
+    "mdi-svelte-ts": "*",
+    "visuals-3d": "*",
+    "util": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
