@@ -6,7 +6,7 @@
   import getRandomColor from 'ui/utils/primeColors';
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
 
-  export let color = '';
+  export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
@@ -21,9 +21,6 @@
    * Init the vector
    */
   onMount(() => {
-    // Set a randomColor if no color is set
-    color = color ?? getRandomColor();
-
     material.color.set(color);
 
     vector = new Line(geometry, material);

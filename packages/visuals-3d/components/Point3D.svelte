@@ -13,10 +13,10 @@
 
   import Label3D from './Label3D.svelte';
 
-  export let label = Label.default(); // label text
-  export let color: string = getRandomColor(); // color of point and label
   export let position: Vector3 = new Vector3(0, 0, 0); // position of the point and label
+  export let color: string = getRandomColor(); // color of point and label
   export let size = 0.125; // Size of dot and label
+  export let label = Label.default(); // label text
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -49,7 +49,7 @@
 </script>
 
 {#if label.title}
-  <Label3D size="{label.size}" strokeColor="{label.strokeColor}" position="{position.clone()}">
+  <Label3D size="{label.size}" position="{position.clone()}">
     {label.title}
   </Label3D>
 {/if}

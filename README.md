@@ -12,6 +12,7 @@ This Turborepo includes the following packages/apps:
 - `web`: a [svelte-kit](https://kit.svelte.dev/) app hosts the pages of the 3d & 2d visuals
 
 ### Packages
+
 - `stories`: Components to help with documentation
 - `mdi-svelte-ts`: Components easy access to mdi icons
 - `2d-components`: Components for 2d visuals

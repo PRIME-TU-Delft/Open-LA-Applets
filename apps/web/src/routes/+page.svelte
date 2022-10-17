@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { MyCounterButton } from 'ui';
-
   import { Canvas3D, Axis3D, Vector3D } from 'visuals-3d';
 
   import { Vector3 } from 'three';
@@ -9,7 +7,6 @@
 </script>
 
 <h1 class="text-3xl font-bold underline">Web</h1>
-<MyCounterButton />
 
 <Canvas3D --height="80vh">
   <Vector3D direction="{new Vector3(1, 1, 0)}" label="{new Label('x')}" />
