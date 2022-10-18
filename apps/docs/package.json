@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
+    "@sveltejs/adapter-node": "latest",
     "@sveltejs/kit": "latest",
     "eslint-config-custom": "*",
     "svelte": "^3.44.0",
