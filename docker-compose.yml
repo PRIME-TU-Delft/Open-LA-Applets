@@ -1,0 +1,12 @@
+version: 3.8
+
+services:
+  web:
+    image: ghcr.io/prime-tu-delft/interactive-visuals-web
+    ports:
+      - 3001:3000
+
+  docs:
+    image: ghcr.io/prime-tu-delft/interactive-visuals-docs
+    ports:
+      - 3002:3000
