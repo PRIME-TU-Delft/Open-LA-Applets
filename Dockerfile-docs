@@ -32,4 +32,5 @@ USER node
 COPY --from=installer --chown=node:node /app/apps/docs/package.json .
 COPY --from=installer --chown=node:node /app/apps/docs/build/ .
 
+EXPOSE 3000
 CMD ["node", "index.js"]
