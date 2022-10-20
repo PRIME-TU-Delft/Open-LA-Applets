@@ -1,12 +1,16 @@
-version: 3.8
+version: '3.8'
 
 services:
   web:
-    image: ghcr.io/prime-tu-delft/interactive-visuals-web
+    build:
+      context: .
+      dockerfile: Dockerfile-web
     ports:
       - 3001:3000
 
   docs:
-    image: ghcr.io/prime-tu-delft/interactive-visuals-docs
+    build:
+      context: .
+      dockerfile: Dockerfile-docs
     ports:
       - 3002:3000
