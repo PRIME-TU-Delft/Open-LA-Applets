@@ -53,7 +53,6 @@
    * Resize canvas if window size changes.
    */
   function resize() {
-    console.log('resize');
     if (!camera || !renderer || !labelRenderer) return;
 
     if (camera.type == 'PerspectiveCamera') {
@@ -66,7 +65,6 @@
       camera.bottom = -FRUSTRUM_SIZE / 2;
     }
 
-    console.log('accutal resize');
     camera.updateProjectionMatrix();
 
     renderer.setSize(width, height);
@@ -158,9 +156,20 @@
   }
 
   onMount(() => {
-    setupPerspectiveCamera();
+    const resizeObserver = new ResizeObserver(() => {
+      // TODO: add throttle to make sure is it nog called to often
+      resize();
+    });
+
+    resizeObserver.observe(sceneEl);
+
+    // This callback cleans up the observer
+
+    setupOrthographicCamera();
 
     createScene();
+
+    return () => resizeObserver.unobserve(sceneEl);
   });
 </script>
 
@@ -168,7 +177,6 @@
   class="wrapper"
   bind:clientWidth="{width}"
   bind:clientHeight="{height}"
-  on:resize="{() => console.log('div resize')}"
   style="height: var(--height, 100vh); width: 100%; position: relative;"
 >
   <div class="labelEl" bind:this="{labelEl}"></div>
@@ -214,7 +222,7 @@
         <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
       {/if}
 
-      <RoundButton icon="{mdiCog}" on:click="{togglePerspective}" />
+      <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
       <RoundButton icon="{mdiRestart}" on:click="{reset}" />
 
       <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" />
