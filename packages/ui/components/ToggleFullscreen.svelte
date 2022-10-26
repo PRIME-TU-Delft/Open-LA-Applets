@@ -8,7 +8,7 @@
   export let sceneEl: HTMLElement | null = null;
   export let resize: () => void;
 
-  let isFullscreen = false; // If window is fullscreen
+  export let isFullscreen = false; // If window is fullscreen
 
   let fullscreenSupport = false;
 

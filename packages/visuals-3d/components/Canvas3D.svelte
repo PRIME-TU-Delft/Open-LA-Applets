@@ -20,9 +20,10 @@
 
   export let enablePan = false;
   export let disableUI = false;
-  export let sliders: readonly Slider[] = []; // Enfore with typescript 0 - 3 sliders
+  export let sliders: readonly Slider[] = []; // TODO: Enforce with typescript 0 - 3 sliders
   export let title = '';
   export let autoPlay = false;
+  export let isPerspectiveCamera = true;
 
   let sceneEl: HTMLDivElement;
   let canvasEl: HTMLCanvasElement;
@@ -30,6 +31,7 @@
   let width: number; // Width of scene
   let height: number; // Height of scene
   let isPlaying = autoPlay;
+  let isFullscreen = false;
 
   const scene = new Scene(); // Global THREE scene
   let camera: PerspectiveCamera | OrthographicCamera; // Camera as perspective camera
@@ -144,17 +146,6 @@
     resize();
   }
 
-  // Switch between perspective and orthographic camera
-  function togglePerspective() {
-    if (camera.type == 'PerspectiveCamera') {
-      setupOrthographicCamera();
-    } else {
-      setupPerspectiveCamera();
-    }
-
-    createScene();
-  }
-
   function playScene() {
     isPlaying = true;
     animate();
@@ -166,7 +157,7 @@
 
   onMount(() => {
     const resizeObserver = new ResizeObserver(() => {
-      // TODO: add throttle to make sure is it nog called to often
+      // TODO: add throttle to make sure is it not called to often
       resize();
     });
 
@@ -174,10 +165,15 @@
 
     // This callback cleans up the observer
 
-    setupOrthographicCamera();
+    if (isPerspectiveCamera) {
+      setupPerspectiveCamera();
+    } else {
+      setupOrthographicCamera();
+    }
 
     createScene();
 
+    // Remove observer onDestroy
     return () => resizeObserver.unobserve(sceneEl);
   });
 </script>
@@ -186,11 +182,12 @@
   class="wrapper"
   bind:clientWidth="{width}"
   bind:clientHeight="{height}"
+  bind:this="{sceneEl}"
   style="height: var(--height, 100vh); width: 100%; position: relative;"
 >
   <div class="labelEl" bind:this="{labelEl}"></div>
 
-  <div bind:this="{sceneEl}">
+  <div>
     {#if !isPlaying}
       <div
         class="absolute h-full w-full cursor-pointer bg-slate-900/50"
@@ -202,13 +199,13 @@
     <canvas bind:this="{canvasEl}"></canvas>
 
     <!-- Explain panel -->
-    {#if title || !isPlaying}
+    {#if (title && isFullscreen) || !isPlaying}
       <div
         class="absolute top-2 m-4 flex h-12 items-center justify-center gap-2 rounded bg-slate-900 px-4 text-slate-100"
       >
         {#if !isPlaying}
           Click to start playing scene {title ? ' - ' + title : ''}
-        {:else}
+        {:else if isFullscreen}
           {title}
         {/if}
       </div>
@@ -236,7 +233,8 @@
       <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
       <RoundButton icon="{mdiRestart}" on:click="{reset}" />
 
-      <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" />
+      <!-- TODO: labels are broken  -->
+      <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" bind:isFullscreen />
     </div>
   </div>
 </div>
