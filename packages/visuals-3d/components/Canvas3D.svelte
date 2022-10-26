@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, setContext } from 'svelte';
-  import { mdiCog, mdiPause, mdiRestart } from '@mdi/js';
+  import { mdiPause, mdiRestart } from '@mdi/js';
 
   import {
     Color,
@@ -69,20 +69,29 @@
 
     renderer.setSize(width, height);
     labelRenderer.setSize(width, height);
+
+    update();
   }
 
   /**
-   * Update canvas with new information
+   * Update canvas once with new information
    */
-  function animate() {
-    if (isPlaying) requestAnimationFrame(animate);
-
+  function update() {
     renderer.render(scene, camera);
     labelRenderer.render(scene, camera);
 
     if (camera && camera.position.x != camPos.x) {
       camPos.copy(camera.position);
     }
+  }
+
+  /**
+   * Update the canvas each frame if playing is true
+   */
+  function animate() {
+    if (isPlaying) requestAnimationFrame(animate);
+
+    update();
   }
 
   /**
@@ -184,7 +193,7 @@
   <div bind:this="{sceneEl}">
     {#if !isPlaying}
       <div
-        class="absolute h-full w-full cursor-pointer bg-slate-900/50 backdrop-grayscale"
+        class="absolute h-full w-full cursor-pointer bg-slate-900/50"
         on:click="{playScene}"
         on:keydown="{playScene}"
       ></div>
@@ -208,10 +217,12 @@
     <slot scene="{scene}" camera="{camera}" sliderValues="{sliderValues}" />
 
     <!-- Slider Panel -->
+    <!-- If scene is not paused and UI is shown and, -->
+    <!-- slider length is between [1, 3] -->
     {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
       <div class="absolute right-20 bottom-4 flex h-12 justify-end rounded bg-slate-900 px-4">
         {#each sliders as slider}
-          <SvelteSlider bind:slider />
+          <SvelteSlider bind:slider on:change="{playScene}" />
         {/each}
       </div>
     {/if}

@@ -35,7 +35,7 @@
     let geometry: PlaneGeometry = new PlaneGeometry(size, size, planeSegment.segments, 1);
 
     if (planeSegment.direction == 'vertical') {
-      new PlaneGeometry(size, size, 1, planeSegment.segments);
+      geometry = new PlaneGeometry(size, size, 1, planeSegment.segments);
     }
 
     const materials = [
@@ -56,12 +56,9 @@
     scene.add(planeMesh);
   }
 
-  onMount(() => setup());
+  onMount(() => {
+    if (!plane) return;
 
-  beforeUpdate(() => {
-    if (!planeMesh) return; // check if a plane exists
-
-    scene.remove(planeMesh);
     setup();
   });
 

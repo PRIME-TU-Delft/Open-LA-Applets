@@ -12,9 +12,7 @@
   let sliders = [new Slider(0, -5, 5, 1).red(), new Slider(0, -5, 5, 1).yellow()] as const;
 </script>
 
-<Canvas3D sliders="{sliders}" let:sliderValues="{[x, y]}">
-  <div>Two planes that coincide.</div>
-
+<Canvas3D sliders="{sliders}" let:sliderValues="{[x, y]}" title="Two planes that coincide.">
   {#if y !== x}
     <!-- Planes are not striped -->
     <PlaneFromNormal point="{new Vector3(0, x, 0)}" normal="{normal}" color="{PrimeColor.red}" />

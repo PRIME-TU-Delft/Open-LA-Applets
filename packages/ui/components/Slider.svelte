@@ -1,7 +1,7 @@
 <script lang="ts">
   import type Slider from '../utils/slider';
 
-  export let slider: Slider; // Enfore with typescript 0 - 3 sliders
+  export let slider: Slider;
 </script>
 
 <input
@@ -10,6 +10,7 @@
   max="{slider.max}"
   step="{slider.step}"
   bind:value="{slider.value}"
+  on:change
   style="--color: {slider.color}"
 />
 

@@ -10,9 +10,11 @@
   let sliders = [new Slider(0, -1, 1, 0.2).red(), new Slider(1, -1, 1, 0.2).yellow()] as const;
 </script>
 
-<Canvas3D sliders="{sliders}" let:sliderValues="{[x, y]}">
-  <div>Two planes with a line of intersection.</div>
-
+<Canvas3D
+  sliders="{sliders}"
+  let:sliderValues="{[x, y]}"
+  title="Two planes with a line of intersection."
+>
   <Vector3D
     color="{PrimeColor.ultramarine}"
     length="{10}"

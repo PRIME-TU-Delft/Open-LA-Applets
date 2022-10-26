@@ -21,7 +21,6 @@
   let plane: Plane;
 
   onMount(() => {
-    // TODO: Check if planes are distinct
     plane = new Plane().setFromCoplanarPoints(points[0], points[1], points[2]);
   });
 

@@ -11,9 +11,11 @@
   const sliders = [new Slider(0, -5, 5, 1).red(), new Slider(1, -5, 5, 1).yellow()];
 </script>
 
-<Canvas3D sliders="{sliders}" let:sliderValues="{[x, y]}">
-  <div>Two planes without a common point in common.</div>
-
+<Canvas3D
+  sliders="{sliders}"
+  let:sliderValues="{[x, y]}"
+  title="Two planes without a common point in common."
+>
   <!-- TODO: make colliding planes auto detected -->
   {#if y !== x}
     <!-- Planes are not striped -->
