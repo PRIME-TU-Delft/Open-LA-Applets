@@ -8,7 +8,9 @@
   export let size = 1;
   export let color = '#000';
   export let position: Vector3 = new Vector3(0, 0, 0);
-  export let opacity = 0;
+  export let opacity = 1;
+
+  let _opacity = 0;
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -23,7 +25,7 @@
 
     scene.add(label);
 
-    opacity = 1;
+    _opacity = opacity;
   });
 
   beforeUpdate(() => {
@@ -32,12 +34,14 @@
     if (!label.position.equals(position)) {
       label.position.set(position.x, position.y, position.z);
     }
+
+    _opacity = opacity;
   });
 </script>
 
 <div
   bind:this={labelElement}
-  style="font-size: {size}rem; --color: {color}; opacity: {opacity}"
+  style="font-size: {size}rem; --color: {color}; opacity: {_opacity}"
   class="label"
 >
   <slot />

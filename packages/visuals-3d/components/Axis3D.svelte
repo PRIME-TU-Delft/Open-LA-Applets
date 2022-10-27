@@ -18,6 +18,9 @@
   $: largeIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 0 && x !== 0); // Even minus 0 indecators
   $: smallIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 1 && x !== 0); // Odd indecators
 
+  $: indecatorMin = indecators[0];
+  $: indecatorMax = indecators[indecators.length - 1];
+
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
 
   function getPoints(indecator: number, size: number, axis = 0): [Vector3, Vector3] {
@@ -70,8 +73,17 @@
 <!-- Number indecators -->
 {#if !hideNumbers}
   {#each smallIndecators as indecator}
-    <Label3D position={new Vector3(indecator, -0.1, 0)}>{indecator}</Label3D>
-    <Label3D position={new Vector3(-0.1, indecator, 0)}>{indecator}</Label3D>
-    <Label3D position={new Vector3(0, -0.1, indecator)}>{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(indecator, -0.1, 0)}>{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(-0.1, indecator, 0)}>{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(0, -0.1, indecator)}>{indecator}</Label3D>
   {/each}
+
+  <Label3D position={new Vector3(indecatorMin, 0.1, 0)}>x</Label3D>
+  <Label3D position={new Vector3(indecatorMax, 0.1, 0)}>x</Label3D>
+
+  <Label3D position={new Vector3(-0.1, indecatorMin, 0)}>z</Label3D>
+  <Label3D position={new Vector3(-0.1, indecatorMax, 0)}>z</Label3D>
+
+  <Label3D position={new Vector3(0, 0.1, indecatorMin)}>y</Label3D>
+  <Label3D position={new Vector3(0, 0.1, indecatorMax)}>y</Label3D>
 {/if}
