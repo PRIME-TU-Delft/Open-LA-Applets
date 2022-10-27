@@ -23,12 +23,14 @@ export class PlaneSegments {
     this.direction = direction;
   }
 
+  static Default = new PlaneSegments(32, 0, 1, 'horizontal');
+
   /**
    * PlaneSegments with 1 segments and 2 intervals are equivalent to a filled rectangle.
    * @returns new PlaneSegments(1, 2, 0);
    */
   static default(): PlaneSegments {
-    return new PlaneSegments(2, 0, 1, 'horizontal');
+    return new PlaneSegments(32, 0, 1, 'horizontal');
   }
 
   clone(): PlaneSegments {

@@ -3,20 +3,19 @@
 
   import { Vector3 } from 'three';
 
-  import { Axis3D, Canvas3D, Vector3D, PlaneFromNormal } from 'visuals-3d';
+  import { Axis3D, Canvas3D, Vector3D, AutoPlane } from 'visuals-3d';
 
   import { PrimeColor } from 'ui/utils/primeColors';
   import Slider from 'ui/utils/slider';
-  import { PlaneSegments } from 'visuals-3d/utils/Segments';
 
-  let sliders = [new Slider(0, -1, 1, 0.2).red(), new Slider(1, -1, 1, 0.2).yellow()] as const;
+  let sliders = [Slider.set(0).red(), Slider.set(0.5).yellow(), Slider.set(1).green()] as const;
 </script>
 
 <Story title="Work in Progress">
   <Canvas3D
     --height="100%"
     sliders="{sliders}"
-    let:sliderValues="{[x, y]}"
+    let:sliderValues="{[x, y, z]}"
     title="Two planes with a line of intersection."
   >
     <Vector3D
@@ -27,24 +26,7 @@
       coneHeight="{0}"
     />
 
-    {#if y !== x}
-      <!-- Planes are not striped -->
-      <PlaneFromNormal normal="{new Vector3(x, 1, 1)}" color="{PrimeColor.red}" />
-      <PlaneFromNormal normal="{new Vector3(y, 1, 1)}" color="{PrimeColor.yellow}" />
-    {:else}
-      <!-- Planes are striped to show collision -->
-      <PlaneFromNormal
-        planeSegment="{new PlaneSegments(32, 0, 2)}"
-        normal="{new Vector3(x, 1, 1)}"
-        color="{PrimeColor.red}"
-      />
-
-      <PlaneFromNormal
-        planeSegment="{new PlaneSegments(32, 1, 2)}"
-        normal="{new Vector3(y, 1, 1)}"
-        color="{PrimeColor.yellow}"
-      />
-    {/if}
+    <AutoPlane normals="{[new Vector3(x, 1, 1), new Vector3(y, 1, 1), new Vector3(z, 1, 1)]}" />
 
     <Axis3D />
   </Canvas3D>

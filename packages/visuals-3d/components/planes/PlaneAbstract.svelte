@@ -4,7 +4,7 @@
   import { sceneKey, type SceneContext } from '../../utils/sceneKey';
   import { PlaneSegments } from '../../utils/Segments';
 
-  import { onDestroy, onMount, beforeUpdate, getContext } from 'svelte';
+  import { onDestroy, onMount, getContext } from 'svelte';
 
   import { type Plane, Mesh, PlaneGeometry, MeshBasicMaterial, Vector3, DoubleSide } from 'three';
 
@@ -32,6 +32,8 @@
   }
 
   function setup() {
+    scene.remove(planeMesh);
+
     let geometry: PlaneGeometry = new PlaneGeometry(size, size, planeSegment.segments, 1);
 
     if (planeSegment.direction == 'vertical') {
@@ -60,9 +62,9 @@
     if (!plane) return;
 
     setup();
-  });
 
-  onDestroy(() => {
-    scene.remove(planeMesh);
+    return () => {
+      scene.remove(planeMesh);
+    };
   });
 </script>

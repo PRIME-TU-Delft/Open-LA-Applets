@@ -1,10 +1,11 @@
 import { PrimeColor } from './primeColors';
 
+// TODO: add jsdoc & docs website
 export default class Slider {
   defaultValue = 0;
   min = -1;
   max = 1;
-  step = 0.1;
+  stepSize = 0.1;
   value = 0;
   color: string = PrimeColor.ultramarine;
 
@@ -18,12 +19,34 @@ export default class Slider {
     this.defaultValue = defaultValue;
     this.min = min;
     this.max = max;
-    this.step = step;
+    this.stepSize = step;
     this.value = defaultValue;
     this.color = color;
   }
 
   static Default = new Slider(0);
+
+  static set(dft = 0) {
+    return new Slider(dft);
+  }
+
+  from(min: number) {
+    this.min = min;
+
+    return this;
+  }
+
+  to(max: number) {
+    this.max = max;
+
+    return this;
+  }
+
+  step(stp: number) {
+    this.stepSize = stp;
+
+    return this;
+  }
 
   grey() {
     this.color = PrimeColor.grey;

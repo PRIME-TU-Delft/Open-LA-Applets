@@ -217,7 +217,7 @@
     <!-- If scene is not paused and UI is shown and, -->
     <!-- slider length is between [1, 3] -->
     {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
-      <div class="absolute right-20 bottom-4 flex h-12 justify-end rounded bg-slate-900 px-4">
+      <div class="absolute right-20 bottom-4 z-50 flex h-12 justify-end rounded bg-slate-900 px-4">
         {#each sliders as slider}
           <SvelteSlider bind:slider on:change="{playScene}" />
         {/each}
@@ -225,7 +225,7 @@
     {/if}
 
     <!-- Options panel -->
-    <div class="absolute right-4 bottom-4 flex w-12 flex-col gap-2">
+    <div class="absolute right-4 bottom-4 z-50 flex w-12 flex-col gap-2">
       {#if isPlaying}
         <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
       {/if}
