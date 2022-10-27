@@ -18,7 +18,7 @@
   <ul class="flex flex-col gap-4 py-5">
     {#each chapters as chapter}
       <li class="cursor-pointer rounded bg-gray-100 p-2 transition-colors hover:bg-gray-300">
-        <a href="{chapter.url}">
+        <a href={chapter.url}>
           {chapter.name}
         </a>
       </li>

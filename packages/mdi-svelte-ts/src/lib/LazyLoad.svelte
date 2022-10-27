@@ -25,7 +25,7 @@
 </script>
 
 {#each pageItems as item, index}
-  <slot item="{item}" index="{index}" />
+  <slot {item} {index} />
 {:else}
   <slot name="not-found">
     <p>Nothing found</p>
@@ -33,5 +33,5 @@
 {/each}
 
 {#if pageItems.length < items.length}
-  <button use:intersectObserver on:click="{() => page++}">Load more</button>
+  <button use:intersectObserver on:click={() => page++}>Load more</button>
 {/if}

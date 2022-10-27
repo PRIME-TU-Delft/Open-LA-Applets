@@ -9,7 +9,7 @@
   <input type="text" placeholder="Search icon" bind:value on:keyup />
   <span class="tail">
     <slot>
-      <Icon path="{mdiMagnify}" size="{1.5}" />
+      <Icon path={mdiMagnify} size={1.5} />
     </slot>
   </span>
 </div>

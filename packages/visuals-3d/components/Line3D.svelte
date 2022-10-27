@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, afterUpdate, onDestroy, getContext } from 'svelte';
+  import { onMount, afterUpdate, getContext } from 'svelte';
 
   import { BufferGeometry, Color, Line, LineBasicMaterial, Vector3 } from 'three';
 

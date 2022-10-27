@@ -180,23 +180,23 @@
 
 <div
   class="wrapper"
-  bind:clientWidth="{width}"
-  bind:clientHeight="{height}"
-  bind:this="{sceneEl}"
+  bind:clientWidth={width}
+  bind:clientHeight={height}
+  bind:this={sceneEl}
   style="height: var(--height, 100vh); width: 100%; position: relative;"
 >
-  <div class="labelEl" bind:this="{labelEl}"></div>
+  <div class="labelEl" bind:this={labelEl} />
 
   <div>
     {#if !isPlaying}
       <div
         class="absolute h-full w-full cursor-pointer bg-slate-900/50"
-        on:click="{playScene}"
-        on:keydown="{playScene}"
-      ></div>
+        on:click={playScene}
+        on:keydown={playScene}
+      />
     {/if}
 
-    <canvas bind:this="{canvasEl}"></canvas>
+    <canvas bind:this={canvasEl} />
 
     <!-- Explain panel -->
     {#if (title && isFullscreen) || !isPlaying}
@@ -211,7 +211,7 @@
       </div>
     {/if}
 
-    <slot scene="{scene}" camera="{camera}" sliderValues="{sliderValues}" />
+    <slot {scene} {camera} {sliderValues} />
 
     <!-- Slider Panel -->
     <!-- If scene is not paused and UI is shown and, -->
@@ -219,7 +219,7 @@
     {#if !disableUI && sliders.sliders}
       <div class="absolute right-20 bottom-4 z-50 flex h-12 justify-end rounded bg-slate-900 px-4">
         {#each sliders.sliders as slider}
-          <SvelteSlider bind:slider on:change="{playScene}" />
+          <SvelteSlider bind:slider on:change={playScene} />
         {/each}
       </div>
     {/if}
@@ -227,14 +227,14 @@
     <!-- Options panel -->
     <div class="absolute right-4 bottom-4 z-50 flex w-12 flex-col gap-2">
       {#if isPlaying}
-        <RoundButton icon="{mdiPause}" on:click="{pauseScene}" />
+        <RoundButton icon={mdiPause} on:click={pauseScene} />
       {/if}
 
       <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
-      <RoundButton icon="{mdiRestart}" on:click="{reset}" />
+      <RoundButton icon={mdiRestart} on:click={reset} />
 
       <!-- TODO: labels are broken  -->
-      <ToggleFullscreen resize="{resize}" sceneEl="{sceneEl}" bind:isFullscreen />
+      <ToggleFullscreen {resize} {sceneEl} bind:isFullscreen />
     </div>
   </div>
 </div>

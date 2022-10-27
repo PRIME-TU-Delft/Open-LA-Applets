@@ -9,7 +9,7 @@
 <h1 class="text-3xl font-bold underline">Web</h1>
 
 <Canvas3D --height="80vh">
-  <Vector3D direction="{new Vector3(1, 1, 0)}" label="{new Label('x')}" />
+  <Vector3D direction={new Vector3(1, 1, 0)} label={new Label('x')} />
 
   <Axis3D />
 </Canvas3D>

@@ -6,10 +6,10 @@
 
 <input
   type="range"
-  min="{slider.min}"
-  max="{slider.max}"
-  step="{slider.stepSize}"
-  bind:value="{slider.value}"
+  min={slider.min}
+  max={slider.max}
+  step={slider.stepSize}
+  bind:value={slider.value}
   on:change
   style="--color: {slider.color}"
 />

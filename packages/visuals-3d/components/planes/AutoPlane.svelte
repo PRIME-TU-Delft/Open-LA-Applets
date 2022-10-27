@@ -61,19 +61,19 @@
 {#if normals.length}
   {#each normals as normal, i}
     <PlaneFromNormal
-      planeSegment="{planeSegments[i]}"
-      normal="{normal}"
-      color="{colors[i % colors.length]}"
-      opacity="{opacity}"
+      planeSegment={planeSegments[i]}
+      {normal}
+      color={colors[i % colors.length]}
+      {opacity}
     />
   {/each}
 {:else if points.length}
   {#each points as point, i}
     <PlaneFromNormal
-      planeSegment="{new PlaneSegments(segments, 0, 1)}"
-      point="{point}"
-      color="{colors[i % colors.length]}"
-      opacity="{opacity}"
+      planeSegment={new PlaneSegments(segments, 0, 1)}
+      {point}
+      color={colors[i % colors.length]}
+      {opacity}
     />
   {/each}
 {/if}

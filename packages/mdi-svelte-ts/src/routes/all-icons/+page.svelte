@@ -71,30 +71,30 @@
 
 <Notification let:writeMessage>
   <div class="container mx-auto my-12 max-w-6xl p-4">
-    <Input bind:value="{searchQuery}" on:keyup="{handleKeyup}">
+    <Input bind:value={searchQuery} on:keyup={handleKeyup}>
       <span class="flex items-center gap-2">
         <span>{searchedIcons.length} icons</span>
-        <Icon path="{mdiMagnify}" size="{1.5}" />
+        <Icon path={mdiMagnify} size={1.5} />
       </span>
     </Input>
 
     <div class="mt-1 text-sm text-gray-400">Click on an icon to copy to clipboard</div>
 
     <div class="icons my-4 grid gap-4">
-      <LazyLoad items="{searchedIcons}" bind:page let:item let:index>
+      <LazyLoad items={searchedIcons} bind:page let:item let:index>
         <div
           class="flex cursor-pointer flex-col items-center gap-2 truncate rounded bg-slate-100 px-2 py-4 text-sm transition-colors hover:bg-slate-50"
-          on:click="{() => {
+          on:click={() => {
             writeToClipboard(item.item.name);
             writeMessage(`Copied ${item.item.name} to clipboard!`);
-          }}"
-          on:keydown="{(e) => {
+          }}
+          on:keydown={(e) => {
             if (e.key != 'Enter') return;
             writeToClipboard(item.item.name);
             writeMessage(`Copied ${item.item.name} to clipboard!`);
-          }}"
+          }}
         >
-          <Icon path="{item.item.path}" size="{2.5}" />
+          <Icon path={item.item.path} size={2.5} />
           <p class="w-full py-2 text-center">{index}: {item.item.name}</p>
         </div>
       </LazyLoad>

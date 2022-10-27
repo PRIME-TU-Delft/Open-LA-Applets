@@ -42,7 +42,8 @@
         <path
           fill-rule="evenodd"
           d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-          clip-rule="evenodd"></path></svg
+          clip-rule="evenodd"
+        /></svg
       >
     </button>
 
@@ -53,8 +54,8 @@
         {#each navLinks as navLink}
           <li>
             <a
-              href="{navLink.href}"
-              class:selected="{$page.url.pathname == navLink.href}"
+              href={navLink.href}
+              class:selected={$page.url.pathname == navLink.href}
               class="block rounded py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white"
               aria-current="page">{navLink.label}</a
             >

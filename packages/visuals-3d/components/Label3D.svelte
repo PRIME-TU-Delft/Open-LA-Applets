@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
+  import { onMount, beforeUpdate, getContext } from 'svelte';
   import { Vector3 } from 'three';
 
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
@@ -36,7 +36,7 @@
 </script>
 
 <div
-  bind:this="{labelElement}"
+  bind:this={labelElement}
   style="font-size: {size}rem; --color: {color}; opacity: {opacity}"
   class="label"
 >

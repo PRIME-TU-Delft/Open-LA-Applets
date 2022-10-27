@@ -13,7 +13,7 @@
   on:click
   on:keypress
 >
-  <Icon path="{icon}" color="{color}" size="{size}" />
+  <Icon path={icon} {color} {size} />
 </div>
 
 <style lang="postcss">

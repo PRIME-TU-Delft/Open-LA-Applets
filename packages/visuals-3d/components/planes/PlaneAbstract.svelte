@@ -4,7 +4,7 @@
   import { sceneKey, type SceneContext } from '../../utils/sceneKey';
   import { PlaneSegments } from '../../utils/Segments';
 
-  import { onDestroy, onMount, getContext } from 'svelte';
+  import { onMount, getContext } from 'svelte';
 
   import { type Plane, Mesh, PlaneGeometry, MeshBasicMaterial, Vector3, DoubleSide } from 'three';
 

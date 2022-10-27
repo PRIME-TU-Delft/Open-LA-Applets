@@ -112,22 +112,22 @@
 
 {#if showDeconstruction}
   {#key endPosition}
-    <Deconstruction end="{endPosition}" />
+    <Deconstruction end={endPosition} />
   {/key}
 {/if}
 
 {#if label.title}
   <Label3D
-    size="{label.size * 15}"
-    position="{origin.clone().add(
+    size={label.size * 15}
+    position={origin.clone().add(
       direction
         .clone()
         .normalize()
         .multiplyScalar(length + 0.07)
-    )}"
+    )}
   >
     {label.title}
   </Label3D>
 {/if}
 
-<slot endPosition="{endPosition}" />
+<slot {endPosition} />

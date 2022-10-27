@@ -52,8 +52,8 @@
 
 {#if fullscreenSupport}
   {#if isFullscreen}
-    <RoundButton icon="{mdiFullscreenExit}" on:click="{toggleFullscreen}" />
+    <RoundButton icon={mdiFullscreenExit} on:click={toggleFullscreen} />
   {:else}
-    <RoundButton icon="{mdiFullscreen}" on:click="{toggleFullscreen}" />
+    <RoundButton icon={mdiFullscreen} on:click={toggleFullscreen} />
   {/if}
 {/if}

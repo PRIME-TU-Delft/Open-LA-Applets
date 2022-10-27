@@ -82,7 +82,7 @@
 
 <div
   class="fixed z-10 h-full w-full cursor-pointer bg-slate-500/10 px-6 backdrop-blur-sm backdrop-filter md:px-20"
-  on:click="{closeSearch}"
+  on:click={closeSearch}
   on:keydown
 >
   <div
@@ -96,12 +96,12 @@
         type="text"
         class="h-full w-full rounded p-3 outline-none"
         placeholder="Search for an article"
-        bind:this="{searchEl}"
-        bind:value="{searchQuery}"
+        bind:this={searchEl}
+        bind:value={searchQuery}
       />
 
       <div class="searchIcon">
-        <RoundButton icon="{mdiMagnify}" on:click="{gotoFirst}" />
+        <RoundButton icon={mdiMagnify} on:click={gotoFirst} />
       </div>
     </div>
 

@@ -8,8 +8,8 @@
 </script>
 
 <Story>
-  <Canvas3D --height="100%" autoPlay="{true}">
-    <Label3D position="{new Vector3(2, 2, 2)}" size="{1}" opacity="{1}" layer="{undefined}">
+  <Canvas3D --height="100%" autoPlay={true}>
+    <Label3D position={new Vector3(2, 2, 2)} size={1} opacity={1} layer={undefined}>
       Super cool label
     </Label3D>
 

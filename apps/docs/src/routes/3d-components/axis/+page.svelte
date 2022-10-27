@@ -7,8 +7,8 @@
 </script>
 
 <Story>
-  <Canvas3D --height="100%" autoPlay="{true}">
-    <Axis3D hideNumbers="{false}" hideTicks="{false}" axisLength="{10}" />
+  <Canvas3D --height="100%" autoPlay={true}>
+    <Axis3D hideNumbers={false} hideTicks={false} axisLength={10} />
   </Canvas3D>
 
   <div slot="docs">
