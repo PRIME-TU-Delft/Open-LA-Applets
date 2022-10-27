@@ -51,18 +51,19 @@
     const pointSegments = calculateSegmentsVector(points);
 
     // TODO: check if normals are same but points are different
-    return normalSegments.concat(pointSegments);
+    return pointSegments.concat(normalSegments);
   }
 
   $: planeSegments = calculateSegments(normals, points);
 </script>
 
 <!-- TODO: if points and normals are both defined -->
-{#if normals.length}
+{#if normals.length >= points.length}
   {#each normals as normal, i}
     <PlaneFromNormal
-      planeSegment={planeSegments[i]}
       {normal}
+      point={points[i % points.length]}
+      planeSegment={planeSegments[i]}
       color={colors[i % colors.length]}
       {opacity}
     />
@@ -70,9 +71,10 @@
 {:else if points.length}
   {#each points as point, i}
     <PlaneFromNormal
-      planeSegment={new PlaneSegments(segments, 0, 1)}
       {point}
+      normal={new Vector3(1, 3, 1)}
       color={colors[i % colors.length]}
+      planeSegment={planeSegments[i]}
       {opacity}
     />
   {/each}

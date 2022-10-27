@@ -10,11 +10,7 @@
 </script>
 
 <Story title="Work in Progress">
-  <Canvas3D
-    --height="100%"
-    bind:sliders
-    title="Two planes with a line of intersection. {sliders.x} {sliders.y} {sliders.z}"
-  >
+  <Canvas3D --height="100%" bind:sliders title="Two planes with a line of intersection.">
     {#if !sliders.allEqual}
       <Vector3D
         color={PrimeColor.ultramarine}

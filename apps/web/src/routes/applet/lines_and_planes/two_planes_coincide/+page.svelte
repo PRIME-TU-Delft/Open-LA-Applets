@@ -1,39 +1,19 @@
 <script lang="ts">
   import { Vector3 } from 'three';
 
-  import { Axis3D, Canvas3D, PlaneFromNormal } from 'visuals-3d';
+  import { Axis3D, Canvas3D, AutoPlane } from 'visuals-3d';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
-  import Slider from 'ui/utils/slider';
-  import { PlaneSegments } from 'visuals-3d/utils/Segments';
+  import { Sliders } from 'ui/utils/slider';
 
   const normal = new Vector3(1, 3, 1).normalize();
-
-  let sliders = [new Slider(0, -5, 5, 1).red(), new Slider(0, -5, 5, 1).yellow()] as const;
+  let sliders = new Sliders().addSlider(0, -5, 5, 1).addSlider(0, -5, 5, 1);
 </script>
 
-<Canvas3D {sliders} let:sliderValues={[x, y]} title="Two planes that coincide.">
-  {#if y !== x}
-    <!-- Planes are not striped -->
-    <PlaneFromNormal point={new Vector3(0, x, 0)} {normal} color={PrimeColor.red} />
-
-    <PlaneFromNormal point={new Vector3(0, y, 0)} {normal} color={PrimeColor.yellow} />
-  {:else}
-    <!-- Planes are striped to show collision -->
-    <PlaneFromNormal
-      planeSegment={new PlaneSegments(32, 0, 2)}
-      point={new Vector3(0, x, 0)}
-      {normal}
-      color={PrimeColor.red}
-    />
-
-    <PlaneFromNormal
-      planeSegment={new PlaneSegments(32, 1, 2)}
-      point={new Vector3(0, y, 0)}
-      {normal}
-      color={PrimeColor.yellow}
-    />
-  {/if}
+<Canvas3D bind:sliders title="Two planes with a point in common.">
+  <AutoPlane
+    normals={[normal]}
+    points={[new Vector3(0, sliders.x, 0), new Vector3(0, sliders.y, 0)]}
+  />
 
   <Axis3D />
 </Canvas3D>
