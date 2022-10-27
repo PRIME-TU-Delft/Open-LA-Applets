@@ -1,7 +1,64 @@
 import { PrimeColor } from './primeColors';
 
 // TODO: add jsdoc & docs website
-export default class Slider {
+export class Sliders {
+  private _sliders: Slider[];
+
+  constructor() {
+    this._sliders = [];
+  }
+
+  add(slider: Slider) {
+    this._sliders.push(slider);
+
+    return this;
+  }
+
+  addSlider(dft: number, from?: number, to?: number, step?: number) {
+    if (this._sliders.length >= 3) return this; // Do not exceed 3 sliders
+
+    this._sliders.push(
+      Slider.set(dft).from(from).to(to).step(step).colorIndex(this._sliders.length)
+    );
+
+    return this;
+  }
+
+  reset() {
+    this._sliders = this._sliders.map((s) => s.reset());
+
+    return this;
+  }
+
+  get allEqual() {
+    return this._sliders.every((s) => s.value == this._sliders[0].value);
+  }
+
+  get sliders() {
+    return this._sliders;
+  }
+
+  private getSlider(index: number) {
+    if (this._sliders.length < index) return 0;
+
+    return this._sliders[index].value;
+  }
+
+  get x() {
+    return this.getSlider(0);
+  }
+
+  get y() {
+    return this.getSlider(1);
+  }
+
+  get z() {
+    return this.getSlider(2);
+  }
+}
+
+// TODO: add jsdoc & docs website
+export class Slider {
   defaultValue = 0;
   min = -1;
   max = 1;
@@ -30,20 +87,28 @@ export default class Slider {
     return new Slider(dft);
   }
 
-  from(min: number) {
+  from(min = -1) {
     this.min = min;
 
     return this;
   }
 
-  to(max: number) {
+  to(max = 1) {
     this.max = max;
 
     return this;
   }
 
-  step(stp: number) {
+  step(stp = 0.1) {
     this.stepSize = stp;
+
+    return this;
+  }
+
+  colorIndex(num: number) {
+    const colors = Object.values(PrimeColor);
+
+    this.color = colors[num];
 
     return this;
   }

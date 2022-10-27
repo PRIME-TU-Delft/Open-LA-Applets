@@ -14,13 +14,13 @@
   import { sceneKey } from '../utils/sceneKey';
   import { CSS2DRenderer } from '../utils/CSS2DRenderer';
 
-  import type Slider from 'ui/utils/slider';
+  import { Sliders } from 'ui/utils/slider';
 
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider } from 'ui';
 
   export let enablePan = false;
   export let disableUI = false;
-  export let sliders: readonly Slider[] = []; // TODO: Enforce with typescript 0 - 3 sliders
+  export let sliders = new Sliders();
   export let title = '';
   export let autoPlay = false;
   export let isPerspectiveCamera = true;
@@ -43,7 +43,7 @@
   const FRUSTRUM_SIZE = 10; // Size of the frustum
 
   $: aspect = height > 0 ? width / height : 1; // Aspect ratio of the scene
-  $: sliderValues = sliders.map((s) => s.value);
+  $: sliderValues = sliders.sliders.map((s) => s.value);
 
   // Set context for all children to use the same scene
   setContext(sceneKey, {
@@ -100,7 +100,7 @@
    * Reset camera position, rotation and sliders.
    */
   function reset() {
-    sliders = sliders.map((slider) => slider.reset());
+    sliders = sliders.reset(); // could be faulty
     camera.position.set(3.5, 2.8, 3.5);
     controls.update();
     resize();
@@ -201,7 +201,7 @@
     <!-- Explain panel -->
     {#if (title && isFullscreen) || !isPlaying}
       <div
-        class="absolute top-2 m-4 flex h-12 items-center justify-center gap-2 rounded bg-slate-900 px-4 text-slate-100"
+        class="absolute top-2 z-50 m-4 flex h-12 items-center justify-center gap-2 rounded bg-slate-900 px-4 text-slate-100"
       >
         {#if !isPlaying}
           Click to start playing scene {title ? ' - ' + title : ''}
@@ -216,9 +216,9 @@
     <!-- Slider Panel -->
     <!-- If scene is not paused and UI is shown and, -->
     <!-- slider length is between [1, 3] -->
-    {#if !disableUI && sliders.length > 0 && sliders.length <= 3}
+    {#if !disableUI && sliders.sliders}
       <div class="absolute right-20 bottom-4 z-50 flex h-12 justify-end rounded bg-slate-900 px-4">
-        {#each sliders as slider}
+        {#each sliders.sliders as slider}
           <SvelteSlider bind:slider on:change="{playScene}" />
         {/each}
       </div>

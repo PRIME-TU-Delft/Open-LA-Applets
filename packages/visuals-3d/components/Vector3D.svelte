@@ -119,8 +119,6 @@
 {#if label.title}
   <Label3D
     size="{label.size * 15}"
-    strokeColor="{label.strokeColor}"
-    strokeWidth="{label.strokeWidth}"
     position="{origin.clone().add(
       direction
         .clone()

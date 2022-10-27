@@ -7,12 +7,12 @@ export enum BackgroundColors {
 }
 
 export enum PrimeColor {
-  grey = '#CFC7C0',
+  red = '#E15F55',
   yellow = '#FFCE2E',
+  green = '#308167',
   ultramarine = '#7AB1E8',
   pink = '#F87089',
-  green = '#308167',
-  red = '#E15F55'
+  grey = '#CFC7C0'
 }
 
 export default function getRandomColor(): ColorString {

@@ -8,7 +8,7 @@
 
   export let normals: Vector3[] = [];
   export let points: Vector3[] = [];
-  export let colors = [PrimeColor.red, PrimeColor.yellow, PrimeColor.green];
+  export let colors = Object.values(PrimeColor);
   export let opacity = 0.8;
   export let segments = 32;
 
@@ -63,7 +63,7 @@
     <PlaneFromNormal
       planeSegment="{planeSegments[i]}"
       normal="{normal}"
-      color="{colors[i]}"
+      color="{colors[i % colors.length]}"
       opacity="{opacity}"
     />
   {/each}
@@ -72,7 +72,7 @@
     <PlaneFromNormal
       planeSegment="{new PlaneSegments(segments, 0, 1)}"
       point="{point}"
-      color="{colors[i]}"
+      color="{colors[i % colors.length]}"
       opacity="{opacity}"
     />
   {/each}
