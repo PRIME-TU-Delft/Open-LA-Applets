@@ -7,4 +7,4 @@
 
 <Preview />
 
-<Icon path="{mdiHeart}" />
+<Icon path={mdiHeart} />

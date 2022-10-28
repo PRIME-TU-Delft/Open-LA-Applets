@@ -28,14 +28,14 @@
     md:flex-col
       "
   >
-    <Button icon="{mdiBookOpen}" size="{1.75}" on:click="{() => goto('/' + home)}" />
+    <Button icon={mdiBookOpen} size={1.75} on:click={() => goto('/' + home)} />
     <Button
-      icon="{mdiFileSettingsOutline}"
-      disabled="{!routes.length}"
-      on:click="{() => (isRoutesVisible = !isRoutesVisible)}"
+      icon={mdiFileSettingsOutline}
+      disabled={!routes.length}
+      on:click={() => (isRoutesVisible = !isRoutesVisible)}
     />
 
-    <Button icon="{mdiMagnify}" on:click="{() => (isSearchVisible = !isSearchVisible)}" />
+    <Button icon={mdiMagnify} on:click={() => (isSearchVisible = !isSearchVisible)} />
     <!-- TODO: <Button icon={mdiCog} disabled />   -->
   </div>
 
@@ -49,28 +49,28 @@
     >
       <div class="mb-2 flex w-60 items-center justify-between">
         <span class="text-xl">Routes</span>
-        <Button icon="{mdiClose}" on:click="{() => (isRoutesVisible = false)}" />
+        <Button icon={mdiClose} on:click={() => (isRoutesVisible = false)} />
       </div>
 
       <div class="flex flex-col gap-2">
         {#each routes as route}
           {#if route.children}
             <Node
-              route="{route}"
-              url="{route.url}"
-              home="{home}"
-              on:close="{() => {
+              {route}
+              url={route.url}
+              {home}
+              on:close={() => {
                 isRoutesVisible = false;
-              }}"
+              }}
             />
           {:else}
             <Leaf
-              route="{route}"
-              url="{route.url}"
-              home="{home}"
-              on:close="{() => {
+              {route}
+              url={route.url}
+              {home}
+              on:close={() => {
                 isRoutesVisible = false;
-              }}"
+              }}
             />
           {/if}
         {/each}
@@ -80,7 +80,7 @@
 </nav>
 
 {#if isSearchVisible}
-  <SearchBar routes="{routes}" on:close="{() => (isSearchVisible = false)}" />
+  <SearchBar {routes} on:close={() => (isSearchVisible = false)} />
 {/if}
 
 <main>

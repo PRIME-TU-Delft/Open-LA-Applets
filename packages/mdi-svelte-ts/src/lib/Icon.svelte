@@ -19,8 +19,8 @@
 >
   {#if title}<title>{title}</title>{/if}
 
-  <g class:spin="{spin > 0}" class:spinReverse="{spin < 0}">
-    <path d="{path}"></path>
+  <g class:spin={spin > 0} class:spinReverse={spin < 0}>
+    <path d={path} />
   </g>
 </svg>
 

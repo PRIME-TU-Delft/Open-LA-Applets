@@ -11,7 +11,7 @@
 
 {#if $$slots.default}
   <div
-    bind:offsetHeight="{sceneOffset}"
+    bind:offsetHeight={sceneOffset}
     style="--w: {defaultSize[0]}; --h: {defaultSize[1]}"
     class="max md:max-w-[calc(100vw - 10rem)] container absolute top-1/2 m-0 min-w-[20rem] -translate-y-1/2 resize overflow-auto p-0 md:left-20"
   >
@@ -25,21 +25,21 @@
   <!-- Helper content -->
   <div class="flex flex-col gap-4 pb-10">
     <!-- Make sure the rest of the relative positioned content is positioned below the scene -->
-    <div style="margin-top: calc(50vh + {sceneOffset / 2}px );"></div>
+    <div style="margin-top: calc(50vh + {sceneOffset / 2}px );" />
 
-    <Container visible="{!!title}">
+    <Container visible={!!title}>
       <h1 class="text-3xl">{title}</h1>
     </Container>
 
     <!-- DOCUMENTATION -->
-    <Container visible="{!!$$slots.docs}">
+    <Container visible={!!$$slots.docs}>
       <div class="prose">
         <slot name="docs" />
       </div>
     </Container>
 
     <!-- CODE -->
-    <Container visible="{!!$$slots.code}">
+    <Container visible={!!$$slots.code}>
       <div class="prose">
         <slot name="code" />
       </div>

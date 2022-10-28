@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, afterUpdate, onDestroy, getContext } from 'svelte';
+  import { onMount, afterUpdate, getContext } from 'svelte';
 
   import { BufferGeometry, Color, Line, LineBasicMaterial, Vector3 } from 'three';
 
@@ -26,6 +26,10 @@
     vector = new Line(geometry, material);
     vector.geometry.attributes.position.needsUpdate = true;
     scene.add(vector);
+
+    return () => {
+      scene.remove(vector);
+    };
   });
 
   /**
@@ -44,9 +48,5 @@
     if (!newColor.equals(material.color)) {
       material.color.set(newColor);
     }
-  });
-
-  onDestroy(() => {
-    scene.remove(vector);
   });
 </script>

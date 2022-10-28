@@ -8,8 +8,8 @@
 </script>
 
 <Story>
-  <Canvas3D --height="100%" autoPlay="{true}">
-    <Vector3D direction="{new Vector3(1, 1, -1)}" length="{2}" />
+  <Canvas3D --height="100%" autoPlay={true}>
+    <Vector3D direction={new Vector3(1, 1, -1)} length={2} />
 
     <Axis3D />
   </Canvas3D>

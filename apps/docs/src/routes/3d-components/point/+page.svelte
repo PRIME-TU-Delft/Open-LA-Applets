@@ -20,15 +20,15 @@
 </script>
 
 <Story>
-  <Canvas3D --height="100%" autoPlay="{true}">
+  <Canvas3D --height="100%" autoPlay={true}>
     {#each points as point}
       <Point3D
-        position="{point}"
-        label="{new Label(
+        position={point}
+        label={new Label(
           point.x.toFixed(2) + ' ' + point.y.toFixed(2) + ' ' + point.z.toFixed(2),
           '#000',
           1
-        )}"
+        )}
       />
     {/each}
     <Axis3D />

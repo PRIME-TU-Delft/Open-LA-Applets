@@ -71,31 +71,31 @@
 
 <Notification let:writeMessage>
   <div class="container">
-    <Input bind:value="{searchQuery}" on:keyup="{handleKeyup}">
+    <Input bind:value={searchQuery} on:keyup={handleKeyup}>
       <span class="searchBar">
         <span>{searchedIcons.length} icons</span>
-        <Icon path="{mdiMagnify}" size="{1.5}" />
+        <Icon path={mdiMagnify} size={1.5} />
       </span>
     </Input>
 
     <div class="help">Click on an icon to copy to clipboard</div>
 
     <div class="icons">
-      <LazyLoad items="{searchedIcons}" bind:page let:item let:index>
+      <LazyLoad items={searchedIcons} bind:page let:item let:index>
         <div
           class="icon"
-          on:click="{() => {
+          on:click={() => {
             writeToClipboard(item.item.name);
             writeMessage(`Copied ${item.item.name} to clipboard!`);
-          }}"
-          on:keyup="{(e) => {
+          }}
+          on:keyup={(e) => {
             if (e.key === 'Enter') {
               writeToClipboard(item.item.name);
               writeMessage(`Copied ${item.item.name} to clipboard!`);
             }
-          }}"
+          }}
         >
-          <Icon path="{item.item.path}" size="{2.5}" />
+          <Icon path={item.item.path} size={2.5} />
           <p>{index}: {item.item.name}</p>
         </div>
       </LazyLoad>

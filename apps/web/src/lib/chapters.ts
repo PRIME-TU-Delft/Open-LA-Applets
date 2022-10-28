@@ -28,8 +28,8 @@ const chapters: Chapter[] = [
         state: 'done'
       },
       {
-        name: 'Two plane coincide',
-        url: 'lines_and_planes/two_plane_coincide',
+        name: 'Two planes coincide',
+        url: 'lines_and_planes/two_planes_coincide',
         state: 'done'
       }
     ]

@@ -4,5 +4,5 @@
 </script>
 
 <div class="inline-block">
-  <Icon path="{mdiFileSettingsOutline}" />
+  <Icon path={mdiFileSettingsOutline} />
 </div>

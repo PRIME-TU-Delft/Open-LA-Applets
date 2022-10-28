@@ -43,9 +43,9 @@ A segemented plane is mustly used to show 1 or more planes are colliding. This i
 ### Example code of two planes colliding
 
 ```svelte
-<PlaneFromNormal planeSegment="{new PlaneSegments(32, 0, 2)}" color="{PrimeColor.red}" />
+<PlaneFromNormal planeSegment={new PlaneSegments(32, 0, 2)} color={PrimeColor.red} />
 
-<PlaneFromNormal planeSegment="{new PlaneSegments(32, 1, 2)}" color="{PrimeColor.yellow}" />
+<PlaneFromNormal planeSegment={new PlaneSegments(32, 1, 2)} color={PrimeColor.yellow} />
 ```
 
 These planes have 32 segments each, alternating between red and yellow. The first plane has an offset of 0, meaning the first segment is red. The offset of the yellow plane means it will shift all segeents by 1,

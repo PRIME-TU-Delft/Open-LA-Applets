@@ -8,7 +8,7 @@
   export let sceneEl: HTMLElement | null = null;
   export let resize: () => void;
 
-  let isFullscreen = false; // If window is fullscreen
+  export let isFullscreen = false; // If window is fullscreen
 
   let fullscreenSupport = false;
 
@@ -52,8 +52,8 @@
 
 {#if fullscreenSupport}
   {#if isFullscreen}
-    <RoundButton icon="{mdiFullscreenExit}" on:click="{toggleFullscreen}" />
+    <RoundButton icon={mdiFullscreenExit} on:click={toggleFullscreen} />
   {:else}
-    <RoundButton icon="{mdiFullscreen}" on:click="{toggleFullscreen}" />
+    <RoundButton icon={mdiFullscreen} on:click={toggleFullscreen} />
   {/if}
 {/if}

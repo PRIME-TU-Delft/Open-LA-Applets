@@ -26,6 +26,6 @@
   ];
 </script>
 
-<StoryLayout routes="{routes}">
+<StoryLayout {routes}>
   <slot />
 </StoryLayout>

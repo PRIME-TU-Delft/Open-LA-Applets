@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
+  import { onMount, beforeUpdate, getContext } from 'svelte';
   import { Vector3 } from 'three';
 
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
@@ -8,10 +8,9 @@
   export let size = 1;
   export let color = '#000';
   export let position: Vector3 = new Vector3(0, 0, 0);
-  export const strokeColor = ''; // TODO
-  export const strokeWidth = 0; // TODO
   export let opacity = 1;
-  export let layer: number | undefined = undefined;
+
+  let _opacity = 0;
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -24,31 +23,25 @@
     label = new CSS2DObject(labelElement);
     label.position.set(position.x, position.y, position.z);
 
-    if (layer) {
-      label.layers.set(layer);
-    }
-
     scene.add(label);
+
+    _opacity = opacity;
   });
 
   beforeUpdate(() => {
     if (!label) return;
-    // TODO: update rest of properties
 
     if (!label.position.equals(position)) {
       label.position.set(position.x, position.y, position.z);
     }
-  });
 
-  onDestroy(() => {
-    // TODO: remove label from scene
-    // scene.remove(label);
+    _opacity = opacity;
   });
 </script>
 
 <div
-  bind:this="{labelElement}"
-  style="font-size: {size}rem; --color: {color}; opacity: {opacity}"
+  bind:this={labelElement}
+  style="font-size: {size}rem; --color: {color}; opacity: {_opacity}"
   class="label"
 >
   <slot />

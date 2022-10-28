@@ -43,12 +43,6 @@
 
 {#if plane}
   {#key point || normal}
-    <AbstractPlane
-      plane="{plane}"
-      color="{color}"
-      size="{size}"
-      opacity="{opacity}"
-      planeSegment="{planeSegment}"
-    />
+    <AbstractPlane {plane} {color} {size} {opacity} {planeSegment} />
   {/key}
 {/if}

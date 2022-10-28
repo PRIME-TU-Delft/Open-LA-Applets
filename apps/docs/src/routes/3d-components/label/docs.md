@@ -10,4 +10,3 @@ Labels are one of the most important component with a educational purpose. They 
 | color    | string          | #000000              | The color of the label in hexadecimal format                                                              |
 | position | threejs Vector3 | new Vector3(0, 0, 0) | The position of the label in the scene                                                                    |
 | opacity  | number          | 1                    | The opacity of the label                                                                                  |
-| label    | number          | undefined            | Layer of the label                                                                                        |

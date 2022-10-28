@@ -19,12 +19,12 @@ const points = new Array(20).fill(0).map(() => new Vector3(randomNum(), randomNu
 <Canvas3D>
   {#each points as point}
     <Point3D
-      position="{point}"
-      label="{new Label(
+      position={point}
+      label={new Label(
         point.x.toFixed(2) + ' ' + point.y.toFixed(2) + ' ' + point.z.toFixed(2),
         '#000',
         1
-      )}"
+      )}
     />
   {/each}
 </Canvas3D>

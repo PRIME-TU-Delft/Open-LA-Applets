@@ -18,7 +18,7 @@
   <ul class="flex flex-col gap-4 py-5">
     {#each getParagraphs('Lines and Planes') as paragraph}
       <li class="cursor-pointer rounded bg-gray-100 p-2 transition-colors hover:bg-gray-300">
-        <a href="{paragraph.url}">
+        <a href={paragraph.url}>
           {paragraph.name}
         </a>
       </li>

@@ -9,8 +9,8 @@
 </script>
 
 <Story>
-  <Canvas3D --height="100%" autoPlay="{true}">
-    <Line3D points="{[new Vector3(0, -2, -2), new Vector3(0, 2, 2)]}" color="{PrimeColor.red}" />
+  <Canvas3D --height="100%" autoPlay={true}>
+    <Line3D points={[new Vector3(0, -2, -2), new Vector3(0, 2, 2)]} color={PrimeColor.red} />
 
     <Axis3D hideNumbers />
   </Canvas3D>

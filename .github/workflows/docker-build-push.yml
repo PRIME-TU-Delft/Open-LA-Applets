@@ -2,9 +2,8 @@ name: Docker build & push image
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
-
 
 jobs:
   docker:
@@ -31,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           # context: "{{defaultContext}}:app"
-          file: "Dockerfile-web"
+          file: 'Dockerfile-web'
           push: true
           tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-web:latest
 
@@ -40,6 +39,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           # context: "{{defaultContext}}:app"
-          file: "Dockerfile-docs"
+          file: 'Dockerfile-docs'
           push: true
           tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-docs:latest

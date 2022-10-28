@@ -32,12 +32,12 @@
 </script>
 
 {#if message}
-  <div class="notification" on:click="{hideMessage}" on:keydown="{hideMessage}" transition:fade>
+  <div class="notification" on:click={hideMessage} on:keydown={hideMessage} transition:fade>
     {message}
   </div>
 {/if}
 
-<slot writeMessage="{writeMessage}" />
+<slot {writeMessage} />
 
 <style>
   .notification {

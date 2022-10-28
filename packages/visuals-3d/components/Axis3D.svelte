@@ -18,6 +18,9 @@
   $: largeIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 0 && x !== 0); // Even minus 0 indecators
   $: smallIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 1 && x !== 0); // Odd indecators
 
+  $: indecatorMin = indecators[0];
+  $: indecatorMax = indecators[indecators.length - 1];
+
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
 
   function getPoints(indecator: number, size: number, axis = 0): [Vector3, Vector3] {
@@ -40,38 +43,47 @@
 
 <!-- Main axis lines -->
 <Line3D
-  color="{PrimeColor.red}"
-  points="{[new Vector3(-1 * axisLength, 0, 0), new Vector3(axisLength, 0, 0)]}"
+  color={PrimeColor.red}
+  points={[new Vector3(-1 * axisLength, 0, 0), new Vector3(axisLength, 0, 0)]}
 />
 <Line3D
-  color="{PrimeColor.green}"
-  points="{[new Vector3(0, -1 * axisLength, 0), new Vector3(0, axisLength, 0)]}"
+  color={PrimeColor.green}
+  points={[new Vector3(0, -1 * axisLength, 0), new Vector3(0, axisLength, 0)]}
 />
 <Line3D
-  color="{PrimeColor.ultramarine}"
-  points="{[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}"
+  color={PrimeColor.ultramarine}
+  points={[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}
 />
 
 <!-- Tick indecators -->
 {#if !hideTicks}
   {#each largeIndecators as indecator}
-    <Line3D color="{PrimeColor.red}" points="{getPoints(indecator, tickSizes[0])}" />
-    <Line3D color="{PrimeColor.green}" points="{getPoints(indecator, tickSizes[0], 1)}" />
-    <Line3D color="{PrimeColor.ultramarine}" points="{getPoints(indecator, tickSizes[0], 2)}" />
+    <Line3D color={PrimeColor.red} points={getPoints(indecator, tickSizes[0])} />
+    <Line3D color={PrimeColor.green} points={getPoints(indecator, tickSizes[0], 1)} />
+    <Line3D color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[0], 2)} />
   {/each}
 
   {#each smallIndecators as indecator}
-    <Line3D color="{PrimeColor.red}" points="{getPoints(indecator, tickSizes[1])}" />
-    <Line3D color="{PrimeColor.green}" points="{getPoints(indecator, tickSizes[1], 1)}" />
-    <Line3D color="{PrimeColor.ultramarine}" points="{getPoints(indecator, tickSizes[1], 2)}" />
+    <Line3D color={PrimeColor.red} points={getPoints(indecator, tickSizes[1])} />
+    <Line3D color={PrimeColor.green} points={getPoints(indecator, tickSizes[1], 1)} />
+    <Line3D color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[1], 2)} />
   {/each}
 {/if}
 
 <!-- Number indecators -->
 {#if !hideNumbers}
   {#each smallIndecators as indecator}
-    <Label3D position="{new Vector3(indecator, -0.1, 0)}">{indecator}</Label3D>
-    <Label3D position="{new Vector3(-0.1, indecator, 0)}">{indecator}</Label3D>
-    <Label3D position="{new Vector3(0, -0.1, indecator)}">{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(indecator, -0.1, 0)}>{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(-0.1, indecator, 0)}>{indecator}</Label3D>
+    <Label3D opacity={0.5} position={new Vector3(0, -0.1, indecator)}>{indecator}</Label3D>
   {/each}
+
+  <Label3D position={new Vector3(indecatorMin, 0.1, 0)}>x</Label3D>
+  <Label3D position={new Vector3(indecatorMax, 0.1, 0)}>x</Label3D>
+
+  <Label3D position={new Vector3(-0.1, indecatorMin, 0)}>z</Label3D>
+  <Label3D position={new Vector3(-0.1, indecatorMax, 0)}>z</Label3D>
+
+  <Label3D position={new Vector3(0, 0.1, indecatorMin)}>y</Label3D>
+  <Label3D position={new Vector3(0, 0.1, indecatorMax)}>y</Label3D>
 {/if}

@@ -49,7 +49,7 @@
 </script>
 
 {#if label.title}
-  <Label3D size="{label.size}" position="{position.clone()}">
+  <Label3D size={label.size} position={position.clone()}>
     {label.title}
   </Label3D>
 {/if}
