@@ -78,12 +78,12 @@
     <Label3D opacity={0.5} position={new Vector3(0, -0.1, indecator)}>{indecator}</Label3D>
   {/each}
 
-  <Label3D position={new Vector3(indecatorMin, 0.1, 0)}>x</Label3D>
-  <Label3D position={new Vector3(indecatorMax, 0.1, 0)}>x</Label3D>
+  <Label3D size={1.5} position={new Vector3(indecatorMin, 0.1, 0)}>X</Label3D>
+  <Label3D size={1.5} position={new Vector3(indecatorMax, 0.1, 0)}>X</Label3D>
 
-  <Label3D position={new Vector3(-0.1, indecatorMin, 0)}>z</Label3D>
-  <Label3D position={new Vector3(-0.1, indecatorMax, 0)}>z</Label3D>
+  <Label3D size={1.5} position={new Vector3(-0.1, indecatorMin, 0)}>Z</Label3D>
+  <Label3D size={1.5} position={new Vector3(-0.1, indecatorMax, 0)}>Z</Label3D>
 
-  <Label3D position={new Vector3(0, 0.1, indecatorMin)}>y</Label3D>
-  <Label3D position={new Vector3(0, 0.1, indecatorMax)}>y</Label3D>
+  <Label3D size={1.5} position={new Vector3(0, 0.1, indecatorMin)}>Y</Label3D>
+  <Label3D size={1.5} position={new Vector3(0, 0.1, indecatorMax)}>Y</Label3D>
 {/if}
