@@ -3,9 +3,9 @@
 
   import { PrimeColor } from 'ui/utils/primeColors';
   import Line from './Line.svelte';
-  import { Text } from '@threlte/extras';
+  import { Text, HTML } from '@threlte/extras';
 
-  export let hideNumbers = false;
+  export let showNumbers = false;
   export let hideTicks = false;
   export let axisLength = 10;
   export let axisSpacing = 1;
@@ -71,7 +71,7 @@
 {/if}
 
 <!-- Number indecators -->
-{#if !hideNumbers}
+{#if showNumbers}
   {#each smallIndecators as indecator}
     <Text
       color="black"

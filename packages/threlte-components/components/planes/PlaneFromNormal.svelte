@@ -14,7 +14,7 @@
   export let normal: Vector3 = new Vector3(1, 1, 1);
   export let color = getRandomColor();
   export let size = 10;
-  export let opacity = 1;
+  export let opacity = 0.8;
   export let planeSegment = PlaneSegments.default();
 
   let geometry = new PlaneGeometry(size, size, planeSegment.segments, 1);
