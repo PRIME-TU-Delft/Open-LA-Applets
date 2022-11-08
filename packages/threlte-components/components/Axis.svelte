@@ -4,8 +4,6 @@
   import { PrimeColor } from 'ui/utils/primeColors';
   import Line from './Line.svelte';
   import { Text } from '@threlte/extras';
-  import { onMount } from 'svelte';
-  import { useThrelte } from '@threlte/core';
 
   export let hideNumbers = false;
   export let hideTicks = false;
@@ -21,7 +19,7 @@
 
   $: indecatorMin = indecators[0];
   $: indecatorMax = indecators[indecators.length - 1];
-  const axisFontSize = 0.4;
+  const axisFontSize = 0.2;
 
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
 
@@ -41,15 +39,6 @@
 
     return [from, to];
   }
-
-  function drawFrame() {
-    useThrelte().advance();
-    requestAnimationFrame(drawFrame);
-  }
-
-  setTimeout(() => {
-    drawFrame();
-  }, 3000);
 </script>
 
 <!-- Main axis lines -->
@@ -89,55 +78,58 @@
       fillOpacity={0.8}
       position={new Vector3(indecator, -0.1, 0)}
       text={indecator.toString()}
+      fontSize={axisFontSize}
     />
     <Text
       color="black"
       fillOpacity={0.8}
       position={new Vector3(-0.1, indecator, 0)}
       text={indecator.toString()}
+      fontSize={axisFontSize}
     />
     <Text
       color="black"
       fillOpacity={0.8}
       position={new Vector3(0, -0.1, indecator)}
       text={indecator.toString()}
+      fontSize={axisFontSize}
     />
   {/each}
 
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(indecatorMin, 0.1, 0)}
     text="x"
   />
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(0.1, indecatorMin, 0)}
     text="z"
   />
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(0.1, 0, indecatorMin)}
     text="y"
   />
 
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(indecatorMax, 0.1, 0)}
     text="x"
   />
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(0.1, indecatorMax, 0)}
     text="z"
   />
   <Text
     color="black"
-    fontSize={axisFontSize}
+    fontSize={axisFontSize * 1.2}
     position={new Vector3(0.1, 0, indecatorMax)}
     text="y"
   />

@@ -6,7 +6,7 @@
   import { onMount } from 'svelte';
 
   export let sceneEl: HTMLElement | null = null;
-  export let resize: () => void;
+  export let resize: () => void = () => {};
 
   export let isFullscreen = false; // If window is fullscreen
 
