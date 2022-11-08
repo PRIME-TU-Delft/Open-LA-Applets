@@ -22,7 +22,7 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "svelte-preprocess": "^4.10.7",
     "tailwindcss": "^3.1.8",
-    "turbo": "latest"
+    "turbo": "^1.6.3"
   },
   "license": "MIT"
 }

@@ -17,6 +17,10 @@ const config = {
     })
   ],
 
+  ssr: {
+    noExternal: ['three', 'troika-three-text']
+  },
+
   extensions: ['.svelte', '.md', '.svx'],
 
   kit: {

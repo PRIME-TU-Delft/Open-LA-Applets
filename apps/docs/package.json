@@ -12,10 +12,13 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "ui": "*",
+    "@threlte/core": "^4.3.2",
+    "@threlte/extras": "^4.5.0",
     "mdi-svelte-ts": "*",
-    "visuals-3d": "*",
-    "util": "*"
+    "three": "^0.146.0",
+    "ui": "*",
+    "util": "*",
+    "visuals-3d": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
