@@ -1,10 +1,10 @@
 <script lang="ts">
   import { StoryLayout } from 'ui';
-  import type { Route } from 'util/Routes';
+  import type { DocsRoute } from 'utils';
 
   import '../app.css';
 
-  export let routes: Route[] = [
+  export let routes: DocsRoute[] = [
     { url: 'introduction', name: 'Introduction' },
     { url: 'getting-started', name: 'Getting started' },
     {
@@ -22,7 +22,11 @@
     },
     { url: '2d-components', name: '2D Components', children: [] },
     { url: 'ui', name: 'User interface', children: [] },
-    { url: 'examples', name: 'Examples', children: [{ url: 'colliding-planes' }] }
+    {
+      url: 'examples',
+      name: 'Examples',
+      children: [{ name: 'Colliding planes', url: 'colliding-planes' }]
+    }
   ];
 </script>
 

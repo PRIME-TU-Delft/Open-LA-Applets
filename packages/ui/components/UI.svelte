@@ -4,10 +4,10 @@
   export let styled = true;
   export let opacity = false;
 
-  export let top: boolean = false;
-  export let bottom: boolean = false;
-  export let right: boolean = false;
-  export let left: boolean = false;
+  export let top = false;
+  export let bottom = false;
+  export let right = false;
+  export let left = false;
 
   function calculateStyle(sides: [boolean, boolean, boolean, boolean]) {
     const [t, b, r, l] = sides;

@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "mdi-svelte-ts": "*",
-    "ui": "*"
+    "ui": "*",
+    "utils": "*"
   },
   "devDependencies": {
     "@mdi/js": "^7.0.96",

@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { Route } from '$lib/types/Routes';
+  import type { DocsRoute } from 'utils';
   import { mdiFolder } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import Leaf from './Leaf.svelte';
 
-  export let route: Route;
+  export let route: DocsRoute;
   export let url = '';
   export let home = '';
 
-  function closeChildren(r: Route) {
+  function closeChildren(r: DocsRoute) {
     r.isExpanded = false;
 
     if (r.children) {

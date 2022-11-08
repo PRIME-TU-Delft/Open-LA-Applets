@@ -6,4 +6,4 @@ export { default as Line3D } from './components/Line3D.svelte';
 export { default as Point3D } from './components/Point3D.svelte';
 export { default as Vector3D } from './components/Vector3D.svelte';
 
-export { AutoPlane, PlaneFromNormal, PlaneFromPoints } from './components/planes/index.ts';
+export { AutoPlane, PlaneFromNormal, PlaneFromPoints } from './components/planes/index';

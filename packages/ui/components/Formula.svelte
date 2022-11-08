@@ -8,7 +8,7 @@
   import { PrimeColor } from '../utils/primeColors';
 
   export let color: PrimeColor = PrimeColor.yellow;
-  export let param: any;
+  export let param: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   export let formula = '';
   export let subsitution = '_';
 

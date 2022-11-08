@@ -8,8 +8,7 @@
     Mesh,
     OrbitControls,
     OrthographicCamera,
-    PerspectiveCamera,
-    useThrelte
+    PerspectiveCamera
   } from '@threlte/core';
 
   import { Sliders } from 'ui/utils/slider';
@@ -20,7 +19,7 @@
   export let disableUI = false;
   export let sliders = new Sliders();
   export let title = '';
-  export let autoPlay = false;
+  export let autoPlay = true;
   export let isPerspectiveCamera = false;
   export let autoRotate = false;
   export let floor = false;
@@ -34,9 +33,9 @@
 
   let position = camPos;
   let target = camTarget;
-  let zoom = 100;
-  let height: number = 0;
-  let width: number = 0;
+  let zoom = 80;
+  let height = 0;
+  let width = 0;
 
   let sceneEl: HTMLDivElement;
 
@@ -48,7 +47,7 @@
 
     position = new Vector3(3.5, 2.8, 3.5);
     target = new Vector3(0, 0, 0);
-    zoom = 100;
+    zoom = 80; // TODO: this does not reset zoom :()
 
     playScene();
   }
@@ -102,6 +101,7 @@
     {/if}
 
     <slot name="lights">
+      <!-- TODO: lights are weird -->
       <AmbientLight intensity={1} />
     </slot>
 

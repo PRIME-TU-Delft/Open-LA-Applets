@@ -1,27 +1,30 @@
 <script lang="ts">
-  import { CircleGeometry, MeshStandardMaterial, BoxGeometry, DoubleSide } from 'three';
-  import { Group, Mesh } from '@threlte/core';
-  import { spring } from 'svelte/motion';
-  import { Story } from 'ui';
-  import { Axis3D, Canvas3D } from 'threlte-components';
+  import { MeshStandardMaterial, BoxGeometry, Vector3 } from 'three';
+  import { Mesh } from '@threlte/core';
 
-  const scale = spring(1);
+  import { Story } from 'ui';
+  import { Axis3D, Canvas3D, PlaneFromNormal } from 'threlte-components';
+  import { PrimeColor } from 'ui/utils/primeColors';
+
+  let color: string = PrimeColor.red;
 </script>
 
 <Story>
-  <Canvas3D floor>
+  <Canvas3D>
     <!-- Cube -->
-    <Group scale={$scale}>
-      <Mesh
-        interactive
-        on:pointerenter={() => ($scale = 2)}
-        on:pointerleave={() => ($scale = 1)}
-        position={{ y: 0.51 }}
-        castShadow
-        geometry={new BoxGeometry(1, 1, 1)}
-        material={new MeshStandardMaterial({ color: '#333333' })}
-      />
-    </Group>
+    <Mesh
+      interactive
+      on:pointerenter={() => (color = '#00ff00')}
+      on:pointerleave={() => (color = PrimeColor.red)}
+      position={{ y: 0.51 }}
+      castShadow
+      geometry={new BoxGeometry(1, 1, 1)}
+      material={new MeshStandardMaterial({ color })}
+    />
+
+    <PlaneFromNormal normal={new Vector3(1, 1, 1)} color={PrimeColor.red} />
+
+    <PlaneFromNormal normal={new Vector3(0, 1, 1)} color={PrimeColor.yellow} />
 
     <Axis3D />
   </Canvas3D>
