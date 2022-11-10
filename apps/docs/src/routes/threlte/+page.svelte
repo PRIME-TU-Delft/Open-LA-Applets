@@ -3,9 +3,9 @@
 
   import { Story, Formula } from 'ui';
   import { Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from 'threlte-components';
-  import { PrimeColor } from 'ui/utils/primeColors';
-  import { Sliders } from 'ui/utils/slider';
-  import { Label } from 'visuals-3d/utils/label';
+  import { PrimeColor } from 'utils/PrimeColors';
+  import { Sliders } from 'utils/slider';
+  import { Label } from 'utils/Label';
 
   let sliders = new Sliders().addSlider(0, 0, 2).addSlider(0.5, 0, 2).addSlider(1, 0, 2);
 </script>

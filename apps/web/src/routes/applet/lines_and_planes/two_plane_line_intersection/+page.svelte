@@ -2,8 +2,8 @@
   import { Vector3 } from 'three';
   import { Axis3D, Canvas3D, Vector3D, AutoPlane } from 'visuals-3d';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
-  import { Sliders } from 'ui/utils/slider';
+  import { PrimeColor } from 'utils/PrimeColors';
+  import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
 </script>

@@ -13,8 +13,8 @@
     Quaternion
   } from 'three';
 
-  import getRandomColor from 'ui/utils/primeColors';
-  import { Label } from '../utils/label';
+  import getRandomColor from 'utils/PrimeColors';
+  import { Label } from 'utils/Label';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector

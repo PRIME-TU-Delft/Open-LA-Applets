@@ -7,8 +7,8 @@
 
   import { Vector3, Plane } from 'three';
 
-  import getRandomColor from 'ui/utils/primeColors';
-  import { PlaneSegments } from '../../utils/Segments';
+  import getRandomColor from 'utils/PrimeColors';
+  import PlaneSegments from 'utils/Segments';
 
   import AbstractPlane from './PlaneAbstract.svelte';
 

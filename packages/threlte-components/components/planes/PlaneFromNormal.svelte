@@ -5,7 +5,7 @@
 
   import { Mesh } from '@threlte/core';
 
-  import getRandomColor from 'ui/utils/primeColors';
+  import getRandomColor from 'utils/PrimeColors';
   import PlaneSegments from './PlaneSegments';
 
   import { PlaneGeometry, MeshBasicMaterial, DoubleSide, Vector3 } from 'three';

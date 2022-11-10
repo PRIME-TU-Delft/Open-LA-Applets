@@ -4,7 +4,7 @@
   import Line3D from './Line3D.svelte';
   import Label3D from './Label3D.svelte';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
 
   export let hideNumbers = false;
   export let hideTicks = false;

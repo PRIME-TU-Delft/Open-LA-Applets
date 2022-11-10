@@ -2,7 +2,7 @@
   import { Canvas3D, Axis3D, Vector3D } from 'visuals-3d';
 
   import { Vector3 } from 'three';
-  import { Label } from 'visuals-3d/utils/label';
+  import { Label } from 'utils/Label';
   // import { Preview } from 'mdi-svelte-ts';
 </script>
 

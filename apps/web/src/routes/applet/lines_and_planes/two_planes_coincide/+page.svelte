@@ -3,7 +3,7 @@
 
   import { Axis3D, Canvas3D, AutoPlane } from 'visuals-3d';
 
-  import { Sliders } from 'ui/utils/slider';
+  import { Sliders } from 'utils/Slider';
 
   const normal = new Vector3(1, 3, 1).normalize();
   let sliders = new Sliders().addSlider(0, -5, 5, 1).addSlider(0, -5, 5, 1);

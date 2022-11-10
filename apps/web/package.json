@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "ui": "*",
+    "utils": "*",
     "visuals-3d": "*"
   },
   "devDependencies": {

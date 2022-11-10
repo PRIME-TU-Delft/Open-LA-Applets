@@ -2,7 +2,7 @@
   import { Story } from 'ui';
   import { Axis3D, Canvas3D, Point3D } from 'visuals-3d';
   import { Vector3 } from 'three';
-  import { Label } from 'visuals-3d/utils/label';
+  import { Label } from 'utils/Label';
 
   import Docs from './docs.md';
   import Code from './code.md';
