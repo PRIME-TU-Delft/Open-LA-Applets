@@ -1,37 +1,24 @@
 <script lang="ts">
-  import { MeshStandardMaterial, BoxGeometry, Vector3 } from 'three';
-  import { Mesh } from '@threlte/core';
+  import { Vector3 } from 'three';
 
   import { Story, Formula } from 'ui';
-  import { Axis3D, Canvas3D, AutoPlane } from 'threlte-components';
+  import { Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from 'threlte-components';
   import { PrimeColor } from 'ui/utils/primeColors';
   import { Sliders } from 'ui/utils/slider';
+  import { Label } from 'visuals-3d/utils/label';
 
-  let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
-
-  let color: string = PrimeColor.red;
+  let sliders = new Sliders().addSlider(0, 0, 2).addSlider(0.5, 0, 2).addSlider(1, 0, 2);
 </script>
 
 <Story>
   <Canvas3D bind:sliders>
-    <!-- Cube -->
-    <Mesh
-      interactive
-      on:pointerenter={() => (color = '#00ff00')}
-      on:pointerleave={() => (color = PrimeColor.red)}
-      position={{ y: 0.51 }}
-      castShadow
-      geometry={new BoxGeometry(1, 1, 1)}
-      material={new MeshStandardMaterial({ color })}
+    <Vector3D
+      color={PrimeColor.green}
+      direction={new Vector3(sliders.x, sliders.y, sliders.z)}
+      length={3}
+      label={new Label('hello', 'black')}
     />
-
-    <AutoPlane
-      normals={[
-        new Vector3(sliders.x, 1, 1),
-        new Vector3(sliders.y, 1, 1),
-        new Vector3(sliders.z, 1, 1)
-      ]}
-    />
+    <PlaneFromNormal color={PrimeColor.red} normal={new Vector3(sliders.x, 1, 1)} />
 
     <Axis3D />
 
