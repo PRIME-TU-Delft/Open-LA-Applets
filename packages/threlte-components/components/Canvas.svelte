@@ -11,7 +11,7 @@
     PerspectiveCamera
   } from '@threlte/core';
 
-  import { Sliders } from 'utils/slider';
+  import { Sliders } from 'utils/Slider';
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
   import { CircleGeometry, DoubleSide, MeshStandardMaterial, Vector3 } from 'three';
 

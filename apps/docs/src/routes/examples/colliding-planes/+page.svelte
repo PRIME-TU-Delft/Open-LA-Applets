@@ -4,7 +4,7 @@
 
   import { Story, Formula } from 'ui';
   import { PrimeColor } from 'utils/PrimeColors';
-  import { Sliders } from 'utils/slider';
+  import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
 </script>

@@ -14,7 +14,7 @@
   import { sceneKey } from 'utils/SceneKey';
   import { CSS2DRenderer } from 'utils/CSS2DRenderer';
 
-  import { Sliders } from 'utils/slider';
+  import { Sliders } from 'utils/Slider';
 
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
 
