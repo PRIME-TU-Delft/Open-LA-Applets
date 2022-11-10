@@ -11,10 +11,10 @@
     WebGLRenderer
   } from 'three';
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-  import { sceneKey } from '../utils/sceneKey';
-  import { CSS2DRenderer } from '../utils/CSS2DRenderer';
+  import { sceneKey } from 'utils/SceneKey';
+  import { CSS2DRenderer } from 'utils/CSS2DRenderer';
 
-  import { Sliders } from 'ui/utils/slider';
+  import { Sliders } from 'utils/slider';
 
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
 

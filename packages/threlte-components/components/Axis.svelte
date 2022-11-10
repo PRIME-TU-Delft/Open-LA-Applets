@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Vector3 } from 'three';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
   import Line from './Line.svelte';
   import { Text, HTML } from '@threlte/extras';
 

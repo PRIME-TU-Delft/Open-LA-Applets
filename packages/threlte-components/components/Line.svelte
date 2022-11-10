@@ -4,7 +4,7 @@
   import { Line } from '@threlte/core';
   import { Color, LineBasicMaterial, Vector3 } from 'three';
 
-  import getRandomColor from 'ui/utils/primeColors';
+  import getRandomColor from 'utils/PrimeColors';
 
   export let color = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];

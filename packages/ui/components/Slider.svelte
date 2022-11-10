@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Slider } from '../utils/slider';
+  import { type Slider } from 'utils/Slider';
 
   export let slider: Slider;
 </script>

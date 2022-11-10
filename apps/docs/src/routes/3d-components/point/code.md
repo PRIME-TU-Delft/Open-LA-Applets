@@ -3,7 +3,7 @@
 ```js
 import { Canvas3D, Point3D } from 'visuals-3d';
 import { Vector3 } from 'three';
-import { Label } from 'visuals-3d/utils/label';
+import { Label } from 'utils/Label';
 
 function randomNum(from = -5, to = 5) {
   const range = to - from;

@@ -5,7 +5,7 @@
    */
 
   import { beforeUpdate } from 'svelte';
-  import { PrimeColor } from '../utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
 
   export let color: PrimeColor = PrimeColor.yellow;
   export let param: any; // eslint-disable-line @typescript-eslint/no-explicit-any

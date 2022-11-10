@@ -3,7 +3,7 @@
 
   import PlaneFromNormal from './PlaneFromNormal.svelte';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
   import PlaneSegments from './PlaneSegments';
 
   export let normals: Vector3[] = [];
