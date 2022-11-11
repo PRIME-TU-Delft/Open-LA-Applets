@@ -1,4 +1,5 @@
 <script lang="ts">
+  // TODO: optimise this component
   import { Vector3 } from 'three';
 
   import PlaneFromNormal from './PlaneFromNormal.svelte';

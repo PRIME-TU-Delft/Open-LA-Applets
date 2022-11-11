@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  import type { DocsRoute } from 'utils';
+  import type DocsRoute from 'utils/DocsRoute';
 
   const dispatch = createEventDispatcher();
 

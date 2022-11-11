@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DocsRoute } from 'utils';
+  import type DocsRoute from 'utils/DocsRoute';
   import { mdiFolder } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import Leaf from './Leaf.svelte';

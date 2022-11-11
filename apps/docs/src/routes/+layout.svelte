@@ -1,6 +1,6 @@
 <script lang="ts">
   import { StoryLayout } from 'ui';
-  import type { DocsRoute } from 'utils';
+  import type DocsRoute from 'utils/DocsRoute';
 
   import '../app.css';
 

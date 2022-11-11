@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mdiBookOpen, mdiClose, mdiFileSettingsOutline, mdiMagnify } from '@mdi/js';
   import { goto } from '$app/navigation';
-  import type { DocsRoute } from 'utils';
+  import type DocsRoute from 'utils/DocsRoute';
 
   import Node from './Node.svelte';
   import Leaf from './Leaf.svelte';
