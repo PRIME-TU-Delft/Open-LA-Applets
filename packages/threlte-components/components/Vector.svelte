@@ -19,25 +19,28 @@
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
+  export let striped = false; // whether the line is striped
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
   // export let showDeconstruction = false; // show deconstruction of vector
   export let label: Label = Label.default(); // label of vector
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
+  const CONE_HEIGHT = 0.5;
 
   let coneMesh: Mesh;
   let material: LineMaterial;
 
   $: direction = direction.normalize();
 
-  $: coneHeight = Math.min(0.5, length / 10); // height of the cone
   $: {
     // Line
     const threeColor = new Color(color);
     material = new LineMaterial({
       worldUnits: true,
-      linewidth: radius
+      linewidth: radius,
+      dashScale: 10,
+      dashed: striped
     });
     material.color = threeColor;
   }
@@ -45,14 +48,14 @@
   $: {
     // Cone
     const coneMaterial = new MeshBasicMaterial({ color: new Color(color), side: DoubleSide });
-    const coneGeometry = new ConeGeometry(radius * 2, coneHeight, RADIUS_SEGMENTS);
+    const coneGeometry = new ConeGeometry(radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS);
     coneMesh = new Mesh(coneGeometry, coneMaterial);
 
     const endPoint = origin.clone().add(
       direction
         .clone()
         .normalize()
-        .multiplyScalar(length - coneHeight / 2)
+        .multiplyScalar(length - CONE_HEIGHT / 2)
     );
 
     // 😃 hipedihopedie quaternions fix all the things
@@ -67,7 +70,7 @@
 
 <!-- Line is length minus cone height -->
 <Line2
-  points={[origin, origin.clone().add(direction.clone().multiplyScalar(length - coneHeight))]}
+  points={[origin, origin.clone().add(direction.clone().multiplyScalar(length - CONE_HEIGHT))]}
   {material}
 />
 
@@ -78,7 +81,7 @@
     direction
       .clone()
       .normalize()
-      .multiplyScalar(length - coneHeight / 2)
+      .multiplyScalar(length - CONE_HEIGHT / 2)
   )}
 />
 

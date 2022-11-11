@@ -2,7 +2,7 @@
   "name": "web",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite dev --port 3000 --open",
+    "dev": "vite dev --port 3000",
     "build": "vite build",
     "package": "vite package",
     "preview": "vite preview",
@@ -14,7 +14,8 @@
   "dependencies": {
     "ui": "*",
     "utils": "*",
-    "visuals-3d": "*"
+    "visuals-3d": "*",
+    "threlte-components": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",

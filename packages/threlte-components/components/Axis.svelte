@@ -3,7 +3,7 @@
 
   import { PrimeColor } from 'utils/PrimeColors';
   import Line from './Line.svelte';
-  import { Text, HTML } from '@threlte/extras';
+  import { Text } from '@threlte/extras';
 
   export let showNumbers = false;
   export let hideTicks = false;

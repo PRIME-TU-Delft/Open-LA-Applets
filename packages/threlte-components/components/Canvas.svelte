@@ -3,12 +3,13 @@
 
   import { DEG2RAD } from 'three/src/math/MathUtils';
   import {
-    AmbientLight,
     Canvas,
     Mesh,
     OrbitControls,
     OrthographicCamera,
-    PerspectiveCamera
+    PerspectiveCamera,
+    DirectionalLight,
+    AmbientLight
   } from '@threlte/core';
 
   import { Sliders } from 'utils/Slider';
@@ -73,7 +74,7 @@
   bind:clientHeight={height}
   bind:clientWidth={width}
   bind:this={sceneEl}
-  style="height:100%; background: {background}"
+  style="height: var(--height, 100%); background: {background}"
 >
   <Canvas size={{ width, height }}>
     {#if isPerspectiveCamera}
@@ -102,7 +103,9 @@
 
     <slot name="lights">
       <!-- TODO: lights are weird -->
-      <AmbientLight intensity={1} />
+      <DirectionalLight shadow position={{ x: 3, y: 10, z: 10 }} />
+      <DirectionalLight position={{ x: -3, y: 10, z: -10 }} intensity={0.2} />
+      <AmbientLight intensity={0.2} />
     </slot>
 
     <slot />

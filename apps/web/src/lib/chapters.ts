@@ -13,6 +13,18 @@ interface Chapter {
 
 const chapters: Chapter[] = [
   {
+    name: 'Dot product',
+    url: 'applet/dot_product',
+    state: 'in-progress',
+    paragraphs: [
+      {
+        name: 'Inner product',
+        url: 'dot_product/inner_product_length',
+        state: 'done'
+      }
+    ]
+  },
+  {
     name: 'Lines and Planes',
     url: 'applet/lines_and_planes',
     state: 'in-progress',
@@ -40,5 +52,5 @@ const chapters: Chapter[] = [
 export default chapters;
 
 export const getParagraphs = (chapter: string) => {
-  return chapters.find((c) => c.name === chapter)?.paragraphs;
+  return chapters.find((c) => c.name === chapter)?.paragraphs || [];
 };

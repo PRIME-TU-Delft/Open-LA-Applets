@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Vector3 } from 'three';
-
   import { Story, Formula } from 'ui';
   import { Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from 'threlte-components';
+
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/slider';
   import { Label } from 'utils/Label';
@@ -11,14 +11,15 @@
 </script>
 
 <Story>
-  <Canvas3D bind:sliders>
+  <Canvas3D floor bind:sliders>
     <Vector3D
       color={PrimeColor.green}
       direction={new Vector3(sliders.x, sliders.y, sliders.z)}
       length={3}
       label={new Label('hello', 'black')}
     />
-    <PlaneFromNormal color={PrimeColor.red} normal={new Vector3(sliders.x, 1, 1)} />
+    <PlaneFromNormal color={PrimeColor.green} normal={new Vector3(sliders.x, 1, 1)} />
+    <PlaneFromNormal color={PrimeColor.red} normal={new Vector3(sliders.y, 1, 1)} />
 
     <Axis3D />
 
@@ -30,4 +31,9 @@
       <Formula color={PrimeColor.green} param={sliders.z} formula="_x + 1y + 1z = 0" />
     </div>
   </Canvas3D>
+
+  <div slot="docs">
+    <div style="height: 10rem; width: 10rem; background: #308167" />
+    <div style="height: 10rem; width: 10rem; background: red" />
+  </div>
 </Story>
