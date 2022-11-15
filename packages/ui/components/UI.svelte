@@ -38,7 +38,7 @@
 {#if visible}
   <!-- UI -->
   <div
-    class="UI absolute z-50 m-4 flex select-none items-center gap-2 transition-opacity duration-300"
+    class="UI absolute z-50 m-4 flex select-none items-center gap-2 transition-colors duration-300"
     class:styled
     class:column
     class:opacity
@@ -50,15 +50,24 @@
 
 <style lang="postcss">
   .opacity {
-    @apply opacity-50;
+    @apply bg-slate-700/10;
   }
 
-  .opacity:hover {
+  .opacity.styled:hover,
+  .styled:not(.opacity) {
+    @apply bg-slate-700/90;
+  }
+
+  :global(.opacity > *) {
+    @apply opacity-50 backdrop-blur-md transition-opacity;
+  }
+
+  :global(.opacity:hover > *) {
     @apply opacity-100;
   }
 
   .styled {
-    @apply rounded bg-slate-900 px-4 py-2 text-white;
+    @apply rounded border-2 border-slate-900 px-4 py-2 text-slate-200;
     min-height: 3rem;
   }
 

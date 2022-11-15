@@ -47,8 +47,9 @@
   <slot />
 </div>
 
-<style>
+<style lang="postcss">
   .label {
-    color: var(--color);
+    @apply text-slate-700;
+    /* color: var(--color); */
   }
 </style>

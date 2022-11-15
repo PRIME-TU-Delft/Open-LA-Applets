@@ -207,7 +207,7 @@
         {title}
       </UI>
 
-      <UI top left visible={!isPlaying && !isFullscreen}>Click to start playing scene</UI>
+      <UI top left styled visible={!isPlaying && !isFullscreen}>Click to start playing scene</UI>
 
       <!-- SLIDER PANEL -->
       <UI visible={!!sliders.sliders.length} bottom opacity>
@@ -227,7 +227,7 @@
       </UI>
 
       <!--  -->
-      <UI column bottom right opacity styled={false}>
+      <UI column bottom right styled={false}>
         {#if isPlaying}
           <RoundButton icon={mdiPause} on:click={pauseScene} />
         {/if}

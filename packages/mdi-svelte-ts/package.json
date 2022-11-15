@@ -2,7 +2,7 @@
   "name": "mdi-svelte-ts",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite dev --port 3006",
     "package": "svelte-package",
     "test": "playwright test",
     "check": "svelte-check --tsconfig ./tsconfig.json",

@@ -8,7 +8,6 @@
     OrbitControls,
     OrthographicCamera,
     PerspectiveCamera,
-    DirectionalLight,
     AmbientLight
   } from '@threlte/core';
 
@@ -49,25 +48,9 @@
     position = new Vector3(3.5, 2.8, 3.5);
     target = new Vector3(0, 0, 0);
     zoom = 80; // TODO: this does not reset zoom :()
-
-    playScene();
   }
 
-  function animate() {
-    if (isPlaying) requestAnimationFrame(animate);
-
-    // TODO: update scene
-  }
-
-  function playScene() {
-    isPlaying = true;
-    animate();
-  }
-
-  function pauseScene() {
-    isPlaying = false;
-    // TODO: pause scene
-  }
+  // TODO: implement play pause
 </script>
 
 <div
@@ -76,7 +59,7 @@
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
 >
-  <Canvas size={{ width, height }}>
+  <Canvas flat linear size={{ width, height }}>
     {#if isPerspectiveCamera}
       <PerspectiveCamera {position}>
         <OrbitControls
@@ -103,9 +86,8 @@
 
     <slot name="lights">
       <!-- TODO: lights are weird -->
-      <DirectionalLight shadow position={{ x: 3, y: 10, z: 10 }} />
-      <DirectionalLight position={{ x: -3, y: 10, z: -10 }} intensity={0.2} />
-      <AmbientLight intensity={0.2} />
+
+      <AmbientLight intensity={1} />
     </slot>
 
     <slot />
@@ -117,7 +99,7 @@
         geometry={new CircleGeometry(5, 72)}
         material={new MeshStandardMaterial({
           side: DoubleSide,
-          color: 'white',
+          color: '#ccc',
           opacity: 0.5,
           transparent: true
         })}
@@ -136,7 +118,7 @@
     <!-- SLIDER PANEL -->
     <UI visible={!!sliders.sliders.length} bottom opacity>
       {#each sliders.sliders as slider}
-        <SvelteSlider bind:slider on:change={playScene} />
+        <SvelteSlider bind:slider />
       {/each}
     </UI>
 
@@ -153,7 +135,7 @@
     <!--  -->
     <UI column bottom right opacity styled={false}>
       {#if isPlaying}
-        <RoundButton icon={mdiPause} on:click={pauseScene} />
+        <RoundButton icon={mdiPause} />
       {/if}
 
       <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
