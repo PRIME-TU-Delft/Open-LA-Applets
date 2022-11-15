@@ -1,27 +1,7 @@
 <script lang="ts">
-  import { Container } from 'ui';
+  const modules = import.meta.glob('./**/*.svelte');
 
-  import chapters from '$lib/chapters';
+  import ParagraphIndex from '$lib/ParagraphIndex.svelte';
 </script>
 
-<div class="pt-20 pb-10">
-  <Container>
-    <h1 class="m-10 text-3xl">Applet chapters</h1>
-  </Container>
-</div>
-
-<Container>
-  <input class="rounded p-2" placeholder="search" />
-
-  <!-- {chapters} -->
-
-  <ul class="flex flex-col gap-4 py-5">
-    {#each chapters as chapter}
-      <li class="cursor-pointer rounded bg-gray-100 p-2 transition-colors hover:bg-gray-300">
-        <a href={chapter.url}>
-          {chapter.name}
-        </a>
-      </li>
-    {/each}
-  </ul>
-</Container>
+<ParagraphIndex chapter="applet" {modules} />
