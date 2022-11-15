@@ -15,7 +15,8 @@
     "ui": "*",
     "utils": "*",
     "visuals-3d": "*",
-    "threlte-components": "*"
+    "threlte-components": "*",
+    "p5-components": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
