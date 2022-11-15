@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Line2, MeshInstance } from '@threlte/core';
-  import { Text } from '@threlte/extras';
   import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
 
   import {
@@ -14,7 +13,9 @@
   } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
-  import { Label } from 'utils/Label';
+  import ThrelteLabel from 'utils/ThrelteLabel';
+
+  import Label from './Label.svelte';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
@@ -23,13 +24,14 @@
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
   // export let showDeconstruction = false; // show deconstruction of vector
-  export let label: Label = Label.default(); // label of vector
+  export let label: ThrelteLabel = ThrelteLabel.default(); // label of vector
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
   const CONE_HEIGHT = 0.5;
 
   let coneMesh: Mesh;
   let material: LineMaterial;
+  let endPoint: Vector3;
 
   $: direction = direction.normalize();
 
@@ -51,7 +53,7 @@
     const coneGeometry = new ConeGeometry(radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS);
     coneMesh = new Mesh(coneGeometry, coneMaterial);
 
-    const endPoint = origin.clone().add(
+    endPoint = origin.clone().add(
       direction
         .clone()
         .normalize()
@@ -85,15 +87,4 @@
   )}
 />
 
-{#if label.title}
-  <Text
-    color={label.color}
-    position={origin.clone().add(
-      direction
-        .clone()
-        .normalize()
-        .multiplyScalar(length + 0.07)
-    )}
-    text={label.title}
-  />
-{/if}
+<Label {color} {label} start={origin} end={endPoint} />

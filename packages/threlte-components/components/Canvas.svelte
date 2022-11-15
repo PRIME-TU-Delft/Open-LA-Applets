@@ -96,12 +96,13 @@
     {#if floor}
       <Mesh
         receiveShadow
+        position={{ y: -0.1 }}
         rotation={{ x: -90 * (Math.PI / 180) }}
         geometry={new CircleGeometry(5, 72)}
         material={new MeshStandardMaterial({
           side: DoubleSide,
-          color: '#ccc',
-          opacity: 0.5,
+          color: 'black',
+          opacity: 0.1,
           transparent: true
         })}
       />

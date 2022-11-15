@@ -5,6 +5,7 @@
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
+  import ThrelteLabel from 'utils/ThrelteLabel';
 
   let sliders = new Sliders().addSlider(3, 1, 4).addSlider(4, 1, 4);
 
@@ -15,8 +16,13 @@
   $: v3Length = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 </script>
 
-<Canvas3D floor bind:sliders>
-  <Vector3D direction={v1Dir} color={PrimeColor.red} length={sliders.x} />
+<Canvas3D isPerspectiveCamera floor bind:sliders>
+  <Vector3D
+    direction={v1Dir}
+    color={PrimeColor.red}
+    length={sliders.x}
+    label={new ThrelteLabel('Q').setVector().to('end')}
+  />
   <Vector3D
     origin={v2Pos}
     direction={new Vector3(0, 1, 0)}
@@ -24,7 +30,12 @@
     length={sliders.y}
   />
 
-  <Vector3D direction={v3Dir} color={PrimeColor.ultramarine} length={v3Length} />
+  <Vector3D
+    direction={v3Dir}
+    color={PrimeColor.ultramarine}
+    label={new ThrelteLabel('l').setVector()}
+    length={v3Length}
+  />
 
   <!-- Helper vectors -->
   <Vector3D color={PrimeColor.green} length={v2Pos.x} />
@@ -40,6 +51,7 @@
     color={'black'}
     striped
     length={sliders.x}
+    label={new ThrelteLabel('A').setVector().to('end')}
   />
   <Vector3D striped origin={new Vector3(0, 0, v2Pos.z)} color="black" length={v2Pos.x} />
 
