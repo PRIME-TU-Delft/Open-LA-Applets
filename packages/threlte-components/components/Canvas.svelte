@@ -28,6 +28,7 @@
   export let background = '#ffffff';
 
   let isPlaying = autoPlay;
+  let isChangeing = false; // Are any of the sliders being changed?
   let isFullscreen = false;
   let showFormulas = false;
 
@@ -118,7 +119,11 @@
     <!-- SLIDER PANEL -->
     <UI visible={!!sliders.sliders.length} bottom opacity>
       {#each sliders.sliders as slider}
-        <SvelteSlider bind:slider />
+        <SvelteSlider
+          bind:slider
+          on:mousedown={() => (isChangeing = true)}
+          on:mouseup={() => (isChangeing = false)}
+        />
       {/each}
     </UI>
 
@@ -127,7 +132,7 @@
       <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
     </UI>
 
-    <UI visible={!!$$slots.formulas && showFormulas} top column>
+    <UI visible={!!$$slots.formulas && (showFormulas || isChangeing)} top column>
       <h2 class="w-full border-b-2 border-slate-700 pb-1 font-bold">Prime visuals</h2>
       <slot name="formulas" />
     </UI>

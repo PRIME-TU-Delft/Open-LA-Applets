@@ -11,6 +11,8 @@
   step={slider.stepSize}
   bind:value={slider.value}
   on:change
+  on:mouseup
+  on:mousedown
   style="--color: {slider.color}"
 />
 

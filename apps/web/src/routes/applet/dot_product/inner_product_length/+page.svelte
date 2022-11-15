@@ -4,7 +4,6 @@
   import { Axis3D, Canvas3D, Vector3D } from 'threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';
-  import { Label } from 'utils/Label';
   import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(3, 1, 4).addSlider(4, 1, 4);
@@ -44,7 +43,7 @@
   />
   <Vector3D striped origin={new Vector3(0, 0, v2Pos.z)} color="black" length={v2Pos.x} />
 
-  <Axis3D />
+  <Axis3D showNumbers />
 
   <div slot="formulas">
     <Formula color={PrimeColor.red} param={sliders.x} formula="length: _" />
