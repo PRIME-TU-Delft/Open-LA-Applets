@@ -33,7 +33,20 @@ const chapters: Chapter[] = [
         state: 'done'
       }
     ]
+  },
+  { //Vectors-3Daddition
+    name: 'Vectors',
+    url: 'applet/vectors',
+    state: 'in-progress',
+    paragraphs: [
+      {
+        name: 'Addition of 3D vectors',
+        url: 'vectors/3Daddition',
+        state: 'in-progress'
+      }
+    ]
   }
+
 ];
 
 // All chapters in the interactive book

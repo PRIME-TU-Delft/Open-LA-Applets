@@ -15,7 +15,7 @@
   import Deconstruction from './Deconstruction3D.svelte';
   import Label3D from './Label3D.svelte';
 
-  import getRandomColor from 'ui/utils/primeColors';
+  import getRandomColor, { PrimeColor } from 'ui/utils/primeColors';
   import { Label } from '../utils/label';
   import { sceneKey, type SceneContext } from '../utils/sceneKey';
 
@@ -27,6 +27,7 @@
   export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
   export let showDeconstruction = false; // show deconstruction of vector
   export let label: Label = Label.default(); // label of vector
+  export let deconstructionColor = '0xffffff' //color to be used for deconstruction
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -112,7 +113,7 @@
 
 {#if showDeconstruction}
   {#key endPosition}
-    <Deconstruction end={endPosition} />
+    <Deconstruction end={endPosition} color={deconstructionColor}/>
   {/key}
 {/if}
 
