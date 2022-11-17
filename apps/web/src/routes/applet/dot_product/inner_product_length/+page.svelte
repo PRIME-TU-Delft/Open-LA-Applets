@@ -16,7 +16,7 @@
   $: v3Length = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 </script>
 
-<Canvas3D isPerspectiveCamera floor bind:sliders>
+<Canvas3D floor bind:sliders>
   <Vector3D
     direction={v1Dir}
     color={PrimeColor.red}

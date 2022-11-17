@@ -1,19 +1,12 @@
 <script lang="ts">
   import { mdiInformation, mdiPause, mdiRestart } from '@mdi/js';
 
-  import { DEG2RAD } from 'three/src/math/MathUtils';
-  import {
-    Canvas,
-    Mesh,
-    OrbitControls,
-    OrthographicCamera,
-    PerspectiveCamera,
-    AmbientLight
-  } from '@threlte/core';
+  import { Canvas, T } from '@threlte/core';
 
   import { Sliders } from 'utils/Slider';
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
-  import { CircleGeometry, DoubleSide, MeshStandardMaterial, Vector3 } from 'three';
+  import { DoubleSide } from 'three';
+  import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;
   export let disableUI = false;
@@ -21,10 +14,7 @@
   export let title = '';
   export let autoPlay = true;
   export let isPerspectiveCamera = false;
-  export let autoRotate = false;
   export let floor = false;
-  export let camPos = new Vector3(3.5, 2.8, 3.5);
-  export let camTarget = new Vector3(0, 0, 0);
   export let background = '#ffffff';
 
   let isPlaying = autoPlay;
@@ -32,9 +22,7 @@
   let isFullscreen = false;
   let showFormulas = false;
 
-  let position = camPos;
-  let target = camTarget;
-  let zoom = 80;
+  let resetCamera = Math.random();
   let height = 0;
   let width = 0;
 
@@ -44,11 +32,9 @@
    * Reset camera position, rotation and sliders.
    */
   function reset() {
-    sliders = sliders.reset();
+    sliders = sliders.reset(); // Reset sliders to default values
 
-    position = new Vector3(3.5, 2.8, 3.5);
-    target = new Vector3(0, 0, 0);
-    zoom = 80; // TODO: this does not reset zoom :()
+    resetCamera = Math.random(); // Update the key to reset the set camera component
   }
 
   // TODO: implement play pause
@@ -61,51 +47,21 @@
   style="height: var(--height, 100%); background: {background}"
 >
   <Canvas flat linear size={{ width, height }}>
-    {#if isPerspectiveCamera}
-      <PerspectiveCamera {position}>
-        <OrbitControls
-          minDistance={1}
-          maxDistance={15}
-          maxPolarAngle={DEG2RAD * 120}
-          {autoRotate}
-          {enablePan}
-          {target}
-        />
-      </PerspectiveCamera>
-    {:else}
-      <!-- TODO: set zoom parameters -->
-      <OrthographicCamera {position} {zoom} near={-10}>
-        <OrbitControls
-          enableDamping
-          maxPolarAngle={DEG2RAD * 120}
-          {autoRotate}
-          {enablePan}
-          {target}
-        />
-      </OrthographicCamera>
-    {/if}
+    {#key resetCamera}
+      <SetCamera {isPerspectiveCamera} {enablePan} />
+    {/key}
 
     <slot name="lights">
-      <!-- TODO: lights are weird -->
-
-      <AmbientLight intensity={1} />
+      <T.AmbientLight intensity={1} />
     </slot>
 
     <slot />
 
     {#if floor}
-      <Mesh
-        receiveShadow
-        position={{ y: -0.1 }}
-        rotation={{ x: -90 * (Math.PI / 180) }}
-        geometry={new CircleGeometry(5, 72)}
-        material={new MeshStandardMaterial({
-          side: DoubleSide,
-          color: 'black',
-          opacity: 0.1,
-          transparent: true
-        })}
-      />
+      <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
+        <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
+        <T.CircleGeometry args={[10, 64]} />
+      </T.Mesh>
     {/if}
   </Canvas>
 
