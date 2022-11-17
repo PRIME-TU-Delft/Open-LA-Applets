@@ -19,8 +19,8 @@
   <Axis3D showNumbers />
 
   <div slot="formulas">
-    <Formula color={PrimeColor.red} param={sliders.x} formula="_x + 1y + 1z = 0" />
+    <Formula color={PrimeColor.red} param={sliders.x} formula="1x + 1y + (3 + _)z = 0" />
 
-    <Formula color={PrimeColor.yellow} param={sliders.y} formula="_x + 1y + 1z = 0" />
+    <Formula color={PrimeColor.yellow} param={sliders.y} formula="1x + 1y + (3 + _)z = 0" />
   </div>
 </Canvas3D>

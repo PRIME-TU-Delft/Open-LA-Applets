@@ -49,7 +49,7 @@
     mesh.position.z = position.z;
 
     mesh.setRotationFromQuaternion(
-      new Quaternion().setFromUnitVectors(new Vector3(0, 0, -1), normal)
+      new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
     );
   }
 
