@@ -28,7 +28,7 @@
 
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
 
-  function approxEqual(a: Quaternion, b: Quaternion, eps: number = 0.01) {
+  function approxEqual(a: Quaternion, b: Quaternion, eps = 0.01) {
     return (
       Math.abs(a.x - b.x) < eps &&
       Math.abs(a.y - b.y) < eps &&

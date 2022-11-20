@@ -19,9 +19,13 @@
     };
 
     // If the user presses/releases their mouse, signal this to all Draggable points
-    p5.mousePressed = () => {};
+    p5.mousePressed = () => {
+      console.log('todo');
+    };
 
-    p5.mouseReleased = () => {};
+    p5.mouseReleased = () => {
+      console.log('todo');
+    };
   };
 </script>
 
