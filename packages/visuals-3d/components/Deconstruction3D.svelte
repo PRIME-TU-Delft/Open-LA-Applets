@@ -2,7 +2,7 @@
   import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
   import { BoxGeometry, EdgesGeometry, LineDashedMaterial, LineSegments, Vector3 } from 'three';
 
-  import { sceneKey, type SceneContext } from '../utils/sceneKey';
+  import { sceneKey, type SceneContext } from 'utils/SceneKey';
 
   export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
 

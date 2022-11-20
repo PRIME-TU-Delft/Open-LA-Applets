@@ -8,7 +8,7 @@
 </script>
 
 <div
-  class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center rounded bg-slate-900 text-slate-200"
+  class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center "
   class:disabled
   on:click
   on:keypress
@@ -19,12 +19,14 @@
 <style lang="postcss">
   .roundedButton {
     scale: 1;
-    transition: scale 0.3s;
+    transition-duration: 0.3s;
+    transition-property: scale, background-color, opacity, color;
+    @apply rounded border-2 border-slate-900 bg-slate-700/40 px-4 py-2 text-slate-50;
   }
 
   .roundedButton:hover {
     scale: 1.1;
-    @apply bg-slate-800;
+    @apply bg-slate-900 text-slate-100 opacity-100;
   }
 
   .disabled {

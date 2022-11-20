@@ -5,7 +5,7 @@
 
   import Docs from './docs.md';
   import Code from './code.md';
-  import { PrimeColor } from 'ui/utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
 </script>
 
 <Story>

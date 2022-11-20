@@ -6,13 +6,16 @@
   import { onMount } from 'svelte';
 
   export let sceneEl: HTMLElement | null = null;
-  export let resize: () => void;
+  export let resize: () => void = () => console.warn('Deprecated');
 
   export let isFullscreen = false; // If window is fullscreen
 
   let fullscreenSupport = false;
 
   function toggleFullscreen() {
+    // Re-resize after 3 seconds to make sure everything is resized correctly
+    setTimeout(resize, 3000);
+
     if (!fullscreenSupport || !sceneEl) return;
 
     if (isFullscreen) {

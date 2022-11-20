@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Story } from 'ui';
   import { Axis3D, Canvas3D, PlaneFromNormal, PlaneFromPoints } from 'visuals-3d';
-  import { PrimeColor } from 'ui/utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
   import { Vector3 } from 'three';
 
   import Docs from './docs.md';

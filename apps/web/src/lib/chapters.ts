@@ -1,44 +1,29 @@
-interface Paragraph {
+class Chapter {
   name: string;
   url: string;
-  state: 'done' | 'todo' | 'in-progress';
-}
 
-interface Chapter {
-  name: string;
-  url: string;
-  state: 'done' | 'todo' | 'in-progress';
-  paragraphs: Paragraph[];
-}
-
-const chapters: Chapter[] = [
-  {
-    name: 'Lines and Planes',
-    url: 'applet/lines_and_planes',
-    state: 'in-progress',
-    paragraphs: [
-      {
-        name: 'Two disjoint planes',
-        url: 'lines_and_planes/two_disjoint_planes',
-        state: 'done'
-      },
-      {
-        name: 'Two plane line intersection',
-        url: 'lines_and_planes/two_plane_line_intersection',
-        state: 'done'
-      },
-      {
-        name: 'Two planes coincide',
-        url: 'lines_and_planes/two_planes_coincide',
-        state: 'done'
-      }
-    ]
+  constructor(name: string, url: string) {
+    this.name = name;
+    this.url = url;
   }
-];
 
-// All chapters in the interactive book
-export default chapters;
+  get formatName() {
+    return this.name.replace(/_/g, ' ');
+  }
+}
 
-export const getParagraphs = (chapter: string) => {
-  return chapters.find((c) => c.name === chapter)?.paragraphs;
-};
+export function getChapterList(
+  module: Record<string, () => Promise<unknown>>,
+  chapter: string
+): Chapter[] {
+  const modules = Object.keys(module);
+
+  const modulesNames = modules.map((mdl) => mdl.split('/')[1]);
+
+  return [...new Set(modulesNames)].map((mdl) => new Chapter(mdl, './' + chapter + '/' + mdl));
+}
+
+export function formatName(name: string) {
+  const spaces = name.replace(/_/g, ' ');
+  return spaces.charAt(0).toUpperCase() + spaces.slice(1);
+}

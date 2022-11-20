@@ -3,8 +3,8 @@
 
   import { PlaneFromNormal } from 'visuals-3d';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
-  import { PlaneSegments } from 'visuals-3d/utils/Segments';
+  import { PrimeColor } from 'utils/PrimeColors';
+  import PlaneSegments from 'utils/Segments';
 
   export let normals: Vector3[] = [];
   export let points: Vector3[] = [];

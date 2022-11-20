@@ -1,0 +1,27 @@
+{
+  "name": "threlte-components",
+  "version": "0.0.0",
+  "description": "Components for 3d content",
+  "type": "module",
+  "module": "index.ts",
+  "svelte": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
+    "format": "prettier --write --ignore-path=../../.prettierignore ."
+  },
+  "dependencies": {
+    "@threlte/core": "^5.0.0",
+    "@threlte/extras": "^4.6.0",
+    "mdi-svelte-ts": "*",
+    "ui": "*",
+    "utils": "*"
+  },
+  "devDependencies": {
+    "@mdi/js": "^7.0.96",
+    "@types/three": "^0.144.0",
+    "eslint-config-custom": "*",
+    "svelte": "^3.9.2",
+    "three": "^0.146.0"
+  }
+}

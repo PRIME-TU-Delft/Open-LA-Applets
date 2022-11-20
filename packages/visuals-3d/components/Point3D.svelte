@@ -6,10 +6,10 @@
   import { getContext, onMount, beforeUpdate, onDestroy } from 'svelte';
   import { Mesh, MeshBasicMaterial, SphereGeometry, Vector3 } from 'three';
 
-  import getRandomColor from 'ui/utils/primeColors';
-  import { changeColor } from '../utils/changeAttributes';
-  import { Label } from '../utils/label';
-  import { sceneKey, type SceneContext } from '../utils/sceneKey';
+  import getRandomColor from 'utils/PrimeColors';
+  import { changeColor } from 'utils/ChangeAttributes';
+  import { Label } from 'utils/Label';
+  import { sceneKey, type SceneContext } from 'utils/SceneKey';
 
   import Label3D from './Label3D.svelte';
 

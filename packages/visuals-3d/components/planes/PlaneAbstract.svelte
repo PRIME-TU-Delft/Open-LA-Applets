@@ -1,8 +1,8 @@
 <script lang="ts">
-  import getRandomColor from 'ui/utils/primeColors';
+  import getRandomColor from 'utils/PrimeColors';
 
-  import { sceneKey, type SceneContext } from '../../utils/sceneKey';
-  import { PlaneSegments } from '../../utils/Segments';
+  import { sceneKey, type SceneContext } from 'utils/SceneKey';
+  import PlaneSegments from 'utils/Segments';
 
   import { onMount, getContext } from 'svelte';
 

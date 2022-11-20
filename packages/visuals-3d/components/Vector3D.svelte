@@ -15,9 +15,9 @@
   import Deconstruction from './Deconstruction3D.svelte';
   import Label3D from './Label3D.svelte';
 
-  import getRandomColor from 'ui/utils/primeColors';
-  import { Label } from '../utils/label';
-  import { sceneKey, type SceneContext } from '../utils/sceneKey';
+  import getRandomColor from 'utils/PrimeColors';
+  import { Label } from 'utils/Label';
+  import { sceneKey, type SceneContext } from 'utils/SceneKey';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
