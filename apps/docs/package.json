@@ -2,7 +2,7 @@
   "name": "docs",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite dev --host --port 3001",
+    "dev": "vite dev --port 3001",
     "build": "vite build",
     "package": "vite package",
     "preview": "vite preview",
@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "mdi-svelte-ts": "*",
+    "p5-components": "*",
     "three": "^0.146.0",
+    "threlte-components": "*",
     "ui": "*",
     "utils": "*",
     "visuals-3d": "*"
@@ -22,6 +24,7 @@
     "@sveltejs/adapter-auto": "latest",
     "@sveltejs/adapter-node": "latest",
     "@sveltejs/kit": "latest",
+    "@tailwindcss/typography": "^0.5.8",
     "@threlte/preprocess": "^0.0.2",
     "eslint-config-custom": "*",
     "svelte": "^3.44.0",
