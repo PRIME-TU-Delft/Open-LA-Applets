@@ -22,3 +22,9 @@ export default function getRandomColor(): ColorString {
 
   return colors[randomIndex];
 }
+
+export function getColor(index: number): ColorString {
+  const colors = Object.values(PrimeColor);
+
+  return colors[index % colors.length];
+}

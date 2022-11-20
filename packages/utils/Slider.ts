@@ -38,6 +38,10 @@ export class Sliders {
     return this._sliders;
   }
 
+  get values() {
+    return this._sliders.map((s) => s.value);
+  }
+
   private getSlider(index: number) {
     if (this._sliders.length < index) return 0;
 

@@ -1,82 +1,40 @@
 <script lang="ts">
-  // TODO: optimise this component
-  import { Vector3 } from 'three';
+  import { PrimeColor } from 'utils/primeColors';
+  import PlaneSegments from 'utils/Segments';
 
-  import PlaneFromNormal from './PlaneFromNormal.svelte';
+  export let values: number[];
 
-  import { PrimeColor } from 'utils/PrimeColors';
-  import PlaneSegments from './PlaneSegments';
+  function getPlaneSegments(vs: number[]): PlaneSegments[] {
+    if (!vs) return [];
 
-  export let normals: Vector3[] = [];
-  export let points: Vector3[] = [];
-  export let colors = Object.values(PrimeColor);
-  export let opacity = 0.8;
-  export let segments = 32;
-
-  function calculateSegmentsVector3(vs: Vector3[]) {
-    let diff = vs.map(() => false);
-
-    for (let i = 0; i < vs.length; i++) {
-      const thsPlusOne = (i + 1) % vs.length;
-      if (vs[i].equals(vs[thsPlusOne])) {
-        diff[i] = true;
-        diff[thsPlusOne] = true;
+    // group values in array of indeces [1, 1, 2, 3, 1, 3] => { 1: [0,1,4], 2: [2], 3: [3,5] }
+    const groups = vs.reduce((a, value, index, _) => {
+      if (value in a) {
+        a[value].push(index);
+      } else {
+        a[value] = [index];
       }
-    }
 
-    let diffSize = diff.filter((d) => d).length;
+      return a;
+    }, {} as { [key: number]: number[] });
 
-    if (diffSize == 0) {
-      return vs.map(() => PlaneSegments.Default);
-    }
-
-    let j = 0;
-    return diff.map((d) => {
-      if (!d) return PlaneSegments.Default;
-      else return new PlaneSegments(segments, j++, diffSize);
+    return vs.map((v, index) => {
+      const offset = groups[v].findIndex((i) => i === index);
+      const interval = groups[v].length;
+      return new PlaneSegments(32, offset, interval);
     });
   }
 
-  function calculateSegmentsVector(vs: Vector3[]) {
-    if (vs.length == 2 && vs[0].equals(vs[1])) {
-      return [new PlaneSegments(segments, 0, 2), new PlaneSegments(segments, 1, 2)];
-    }
+  function getColor(index: number) {
+    const colors = Object.values(PrimeColor);
 
-    if (vs.length == 3) return calculateSegmentsVector3(vs);
-
-    return vs.map(() => PlaneSegments.Default);
+    return colors[index % colors.length];
   }
 
-  function calculateSegments(normals: Vector3[], points: Vector3[]) {
-    const normalSegments = calculateSegmentsVector(normals);
-    const pointSegments = calculateSegmentsVector(points);
-
-    // TODO: check if normals are same but points are different
-    return pointSegments.concat(normalSegments);
-  }
-
-  $: planeSegments = calculateSegments(normals, points);
+  $: planeSegments = getPlaneSegments(values);
+  $: zipValueSegments = values.map((v, i) => [v, planeSegments[i]] as [number, PlaneSegments]);
 </script>
 
-<!-- TODO: if points and normals are both defined -->
-{#if normals.length >= points.length}
-  {#each normals as normal, i}
-    <PlaneFromNormal
-      {normal}
-      position={points[i % points.length]}
-      planeSegment={planeSegments[i]}
-      color={colors[i % colors.length]}
-      {opacity}
-    />
-  {/each}
-{:else if points.length}
-  {#each points as position, i}
-    <PlaneFromNormal
-      {position}
-      normal={new Vector3(1, 3, 1)}
-      color={colors[i % colors.length]}
-      planeSegment={planeSegments[i]}
-      {opacity}
-    />
-  {/each}
-{/if}
+{#each zipValueSegments as [value, planeSegment], index}
+  <slot {value} {index} {planeSegment} color={getColor(index)} />
+{/each}

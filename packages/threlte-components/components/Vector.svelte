@@ -24,6 +24,7 @@
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
   // export let showDeconstruction = false; // show deconstruction of vector
+  export let hideHead = false; // hide the cone
   export let label: ThrelteLabel = ThrelteLabel.default(); // label of vector
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
@@ -32,6 +33,8 @@
   let coneMesh: Mesh;
   let material: LineMaterial;
   let endPoint: Vector3;
+
+  $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
 
   $: direction = direction.normalize();
 
@@ -57,7 +60,7 @@
       direction
         .clone()
         .normalize()
-        .multiplyScalar(length - CONE_HEIGHT / 2)
+        .multiplyScalar(length - coneHeight / 2)
     );
 
     // 😃 hipedihopedie quaternions fix all the things
@@ -72,19 +75,21 @@
 
 <!-- Line is length minus cone height -->
 <Line2
-  points={[origin, origin.clone().add(direction.clone().multiplyScalar(length - CONE_HEIGHT))]}
+  points={[origin, origin.clone().add(direction.clone().multiplyScalar(length - coneHeight))]}
   {material}
 />
 
 <!-- Cone on top of line -->
-<MeshInstance
-  mesh={coneMesh}
-  position={origin.clone().add(
-    direction
-      .clone()
-      .normalize()
-      .multiplyScalar(length - CONE_HEIGHT / 2)
-  )}
-/>
+{#if !hideHead}
+  <MeshInstance
+    mesh={coneMesh}
+    position={origin.clone().add(
+      direction
+        .clone()
+        .normalize()
+        .multiplyScalar(length - CONE_HEIGHT / 2)
+    )}
+  />
+{/if}
 
 <Label {color} {label} start={origin} end={endPoint} />
