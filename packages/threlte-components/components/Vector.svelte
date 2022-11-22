@@ -1,21 +1,15 @@
 <script lang="ts">
-  import { Line2, MeshInstance } from '@threlte/core';
+  import { T } from '@threlte/core';
   import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
+  import { Line2 } from 'three/examples/jsm/lines/Line2';
 
-  import {
-    Color,
-    ConeGeometry,
-    DoubleSide,
-    MeshBasicMaterial,
-    Vector3,
-    Mesh,
-    Quaternion
-  } from 'three';
+  import { Color, DoubleSide, Vector3, Mesh, Quaternion } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
   import ThrelteLabel from 'utils/ThrelteLabel';
 
   import Label from './Label.svelte';
+  import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
@@ -31,7 +25,7 @@
   const CONE_HEIGHT = 0.5;
 
   let coneMesh: Mesh;
-  let material: LineMaterial;
+  let line: Line2;
   let endPoint: Vector3;
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
@@ -39,23 +33,16 @@
   $: direction = direction.normalize();
 
   $: {
-    // Line
-    const threeColor = new Color(color);
-    material = new LineMaterial({
-      worldUnits: true,
-      linewidth: radius,
-      dashScale: 10,
-      dashed: striped
-    });
-    material.color = threeColor;
+    const geometry = new LineGeometry();
+    geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
+    if (line) {
+      line.geometry = geometry;
+
+      line.material.dashed = true;
+    }
   }
 
   $: {
-    // Cone
-    const coneMaterial = new MeshBasicMaterial({ color: new Color(color), side: DoubleSide });
-    const coneGeometry = new ConeGeometry(radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS);
-    coneMesh = new Mesh(coneGeometry, coneMaterial);
-
     endPoint = origin.clone().add(
       direction
         .clone()
@@ -69,27 +56,28 @@
       endPoint.clone().sub(origin).normalize()
     );
 
-    coneMesh.setRotationFromQuaternion(quatRotation);
+    if (coneMesh) coneMesh.setRotationFromQuaternion(quatRotation);
   }
+
+  $: conePosition = origin.clone().add(
+    direction
+      .clone()
+      .normalize()
+      .multiplyScalar(length - coneHeight / 2)
+  );
 </script>
 
 <!-- Line is length minus cone height -->
-<Line2
-  points={[origin, origin.clone().add(direction.clone().multiplyScalar(length - coneHeight))]}
-  {material}
-/>
+<T.Line2 bind:ref={line}>
+  <T.LineMaterial worldUnits linewidth={radius} dashScale={10} {color} />
+</T.Line2>
 
 <!-- Cone on top of line -->
 {#if !hideHead}
-  <MeshInstance
-    mesh={coneMesh}
-    position={origin.clone().add(
-      direction
-        .clone()
-        .normalize()
-        .multiplyScalar(length - CONE_HEIGHT / 2)
-    )}
-  />
+  <T.Mesh position={conePosition.toArray()} bind:ref={coneMesh}>
+    <T.MeshBasicMaterial {color} side={DoubleSide} />
+    <T.ConeGeometry args={[radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS]} />
+  </T.Mesh>
 {/if}
 
 <Label {color} {label} start={origin} end={endPoint} />

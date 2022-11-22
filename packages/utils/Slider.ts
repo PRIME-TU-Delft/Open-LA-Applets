@@ -1,4 +1,4 @@
-import { PrimeColor } from './primeColors';
+import { PrimeColor } from './PrimeColors';
 
 // TODO: add jsdoc & docs website
 export class Sliders {

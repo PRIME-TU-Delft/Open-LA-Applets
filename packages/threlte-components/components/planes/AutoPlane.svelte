@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PrimeColor } from 'utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
   import PlaneSegments from 'utils/Segments';
 
   export let values: number[];
