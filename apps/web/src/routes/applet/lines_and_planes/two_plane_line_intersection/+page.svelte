@@ -4,7 +4,7 @@
   import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Vector3D } from 'threlte-components';
   import { Formula } from 'ui';
 
-  import { PrimeColor } from 'utils/primeColors';
+  import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
