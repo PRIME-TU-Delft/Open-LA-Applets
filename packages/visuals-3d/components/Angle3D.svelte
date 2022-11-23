@@ -3,13 +3,14 @@ import { Vector3 } from "three";
 import Label3D from './Label3D.svelte';
 import Line3D from "./Line3D.svelte";
 import Arc3D from "./Arc3D.svelte";
+    import { Label } from "../utils/label";
 
 
 export let vs: [Vector3, Vector3]; //vectors to draw angle between
 export let origin: Vector3 = new Vector3(0,0,0); //common orgin of vectors
 export let size = 0.3; //size of drawn angle
 export let color : string = 'black'; //color of used lines
-export let label: Label3D ; // label of the angle
+export let label: Label = Label.default(); //label of the angle
 export let forceRightAngle = false; //if true draws a sharp angle, even if not 90 degrees
 export let forceRoundAngle = false; //if true draws a round angle, even if 90 degrees
 

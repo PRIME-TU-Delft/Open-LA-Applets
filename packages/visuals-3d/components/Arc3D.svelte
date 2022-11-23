@@ -7,10 +7,10 @@
 	import { sceneKey, type SceneContext } from '../utils/sceneKey';
 
 	export let color: string = 'Black';
-	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
+	export let points: [Vector3, Vector3];
 	export let origin: Vector3 = new Vector3(0,0,0);
 	export let pointsOnArc: number = 15;
-
+	
 	export let u = new Vector3(0, 1, 0);
 	
 	// Import scene from root Canvas.svelte. Context is used because store is too global.
@@ -18,8 +18,9 @@
 	const { scene } = getContext<SceneContext>(sceneKey);
 
 
-	//explanation of math can be found in  Open LA book Teams -> developers interactivity -> files -> cirkelboog.pdf
+	//a detailed explanation of used math can be found in  Open LA book Teams -> developers interactivity -> files -> cirkelboog.pdf
 
+	//calculates a point on the arc between points with a given t
 	function rTemp( t: number, is180: boolean ){
 		const a = points[0].clone();
 		const b = is180 ? u.clone() : points[1].clone();
@@ -27,7 +28,7 @@
 		return a.multiplyScalar(Math.cos(t)).add(b.multiplyScalar(Math.sin(t)));
 	}
 
-	
+	//calulates all points on the arc by increasing t in increments and using rtemp
 	function calculatePoints() {
 
 		let arcPoints : Vector3[] = [];
@@ -46,7 +47,6 @@
 			if(!is180 ){
 				u = newPoint.clone();
 			}
-
 			counter++;
 		}
 		
