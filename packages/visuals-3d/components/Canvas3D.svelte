@@ -24,6 +24,7 @@
   export let title = '';
   export let autoPlay = false;
   export let isPerspectiveCamera = true;
+  export let cameraPos = [3.5, 2.8, 3.5];
 
   let sceneEl: HTMLDivElement;
   let canvasEl: HTMLCanvasElement;
@@ -101,7 +102,7 @@
    */
   function reset() {
     sliders = sliders.reset(); // could be faulty
-    camera.position.set(3.5, 2.8, 3.5);
+    camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2]);
     controls.update();
     resize();
   }
