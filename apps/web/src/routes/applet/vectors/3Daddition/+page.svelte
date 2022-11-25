@@ -1,9 +1,8 @@
 <script lang="ts">
-	import Equation from './../../../../../../../packages/visuals-3d/components/Equation.svelte';
-	  import PartialDeconstruction3D from './../../../../../../../packages/visuals-3d/components/PartialDeconstruction3D.svelte';
+
     import { Vector3 } from 'three';
   
-    import { Axis3D, Canvas3D, Label3D, Vector3D } from 'visuals-3d';
+    import { Axis3D, Canvas3D, Label3D, Vector3D, Equation, PartialDeconstruction3D } from 'visuals-3d';
 
     import { PrimeColor } from 'ui/utils/primeColors';
     import { Label } from 'visuals-3d/utils/label';
@@ -17,7 +16,7 @@
 
     let labelShift= new Vector3(0.6, 0 , 0.6);
     let label=  Label.default(); 
-    
+
   </script>
 
   
@@ -47,15 +46,6 @@
         color={PrimeColor.green}
         length={v1.length()}
       />
-
-      <Label3D
-        size={label.size * 15}
-        position={ v1.clone().add(v2).multiplyScalar(1.1).add(labelShift)}
-        color={PrimeColor.green} 
-        > 
-        
-        <Equation   s={"\\begin{bmatrix} " + v1.x + " \\\\ " + v1.z  + " \\\\ " +  v1.y  + " \\end{bmatrix}"} />
-      </Label3D>
       
       <PartialDeconstruction3D p={v1.clone().add(v2)} color={PrimeColor.green}/>
 
