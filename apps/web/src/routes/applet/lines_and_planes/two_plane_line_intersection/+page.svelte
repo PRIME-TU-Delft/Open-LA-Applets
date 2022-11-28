@@ -1,31 +1,37 @@
 <script lang="ts">
   import { Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Vector3D, AutoPlane } from 'visuals-3d';
 
-  import { PrimeColor } from 'ui/utils/primeColors';
-  import { Sliders } from 'ui/utils/slider';
+  import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Vector3D } from 'threlte-components';
+  import { Formula } from 'ui';
+
+  import { PrimeColor } from 'utils/PrimeColors';
+  import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
 </script>
 
 <Canvas3D bind:sliders title="Two planes with a line of intersection.">
+  <AutoPlane values={sliders.values} let:value let:planeSegment let:color>
+    <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
+  </AutoPlane>
+
   {#if !sliders.allEqual}
     <Vector3D
       color={PrimeColor.ultramarine}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}
-      coneHeight={0.01}
+      hideHead
     />
   {/if}
 
-  <AutoPlane
-    normals={[
-      new Vector3(sliders.x, 1, 1),
-      new Vector3(sliders.y, 1, 1),
-      new Vector3(sliders.z, 1, 1)
-    ]}
-  />
+  <Axis3D showNumbers />
 
-  <Axis3D />
+  <div slot="formulas">
+    <Formula color={PrimeColor.red} param={sliders.x} formula="_x + 1y + 1z = 0" />
+
+    <Formula color={PrimeColor.yellow} param={sliders.y} formula="_x + 1y + 1z = 0" />
+
+    <Formula color={PrimeColor.green} param={sliders.z} formula="_x + 1y + 1z = 0" />
+  </div>
 </Canvas3D>

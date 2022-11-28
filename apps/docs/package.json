@@ -2,7 +2,7 @@
   "name": "docs",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite dev --host --port 3001 --open",
+    "dev": "vite dev --port 3001",
     "build": "vite build",
     "package": "vite package",
     "preview": "vite preview",
@@ -12,19 +12,25 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "ui": "*",
     "mdi-svelte-ts": "*",
-    "visuals-3d": "*",
-    "util": "*"
+    "p5-components": "*",
+    "three": "^0.146.0",
+    "threlte-components": "*",
+    "ui": "*",
+    "utils": "*",
+    "visuals-3d": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
     "@sveltejs/adapter-node": "latest",
     "@sveltejs/kit": "latest",
+    "@tailwindcss/typography": "^0.5.8",
+    "@threlte/preprocess": "^0.0.2",
     "eslint-config-custom": "*",
     "svelte": "^3.44.0",
     "svelte-check": "^2.7.1",
     "svelte-preprocess": "^4.10.6",
+    "svelte-sequential-preprocessor": "^0.0.7",
     "tslib": "^2.3.1",
     "typescript": "^4.7.2",
     "vite": "^3.1.6"

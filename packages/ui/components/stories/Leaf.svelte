@@ -1,11 +1,11 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-  import type { Route } from '$lib/types/Routes';
+  import type DocsRoute from 'utils/DocsRoute';
 
   const dispatch = createEventDispatcher();
 
-  export let route: Route;
+  export let route: DocsRoute;
   export let url = '';
   export let home = '';
 

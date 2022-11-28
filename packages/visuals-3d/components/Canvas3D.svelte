@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, setContext } from 'svelte';
-  import { mdiPause, mdiRestart } from '@mdi/js';
+  import { mdiInformation, mdiPause, mdiRestart } from '@mdi/js';
 
   import {
     Color,
@@ -11,12 +11,12 @@
     WebGLRenderer
   } from 'three';
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-  import { sceneKey } from '../utils/sceneKey';
-  import { CSS2DRenderer } from '../utils/CSS2DRenderer';
+  import { sceneKey } from 'utils/SceneKey';
+  import { CSS2DRenderer } from 'utils/CSS2DRenderer';
 
-  import { Sliders } from 'ui/utils/slider';
+  import { Sliders } from 'utils/Slider';
 
-  import { RoundButton, ToggleFullscreen, Slider as SvelteSlider } from 'ui';
+  import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
 
   export let enablePan = false;
   export let disableUI = false;
@@ -33,6 +33,7 @@
   let height: number; // Height of scene
   let isPlaying = autoPlay;
   let isFullscreen = false;
+  let showFormulas = false;
 
   const scene = new Scene(); // Global THREE scene
   let camera: PerspectiveCamera | OrthographicCamera; // Camera as perspective camera
@@ -199,43 +200,44 @@
 
     <canvas bind:this={canvasEl} />
 
-    <!-- Explain panel -->
-    {#if (title && isFullscreen) || !isPlaying}
-      <div
-        class="absolute top-2 z-50 m-4 flex h-12 items-center justify-center gap-2 rounded bg-slate-900 px-4 text-slate-100"
-      >
-        {#if !isPlaying}
-          Click to start playing scene {title ? ' - ' + title : ''}
-        {:else if isFullscreen}
-          {title}
-        {/if}
-      </div>
-    {/if}
-
     <slot {scene} {camera} {sliderValues} />
 
-    <!-- Slider Panel -->
-    <!-- If scene is not paused and UI is shown and, -->
-    <!-- slider length is between [1, 3] -->
-    {#if !disableUI && sliders.sliders}
-      <div class="absolute right-20 bottom-4 z-50 flex h-12 justify-end rounded bg-slate-900 px-4">
+    {#if !disableUI}
+      <!-- EXPLAIN PANEL -->
+      <UI top left visible={title && isFullscreen && isPlaying}>
+        {title}
+      </UI>
+
+      <UI top left styled visible={!isPlaying && !isFullscreen}>Click to start playing scene</UI>
+
+      <!-- SLIDER PANEL -->
+      <UI visible={!!sliders.sliders.length} bottom opacity>
         {#each sliders.sliders as slider}
           <SvelteSlider bind:slider on:change={playScene} />
         {/each}
-      </div>
+      </UI>
+
+      <!-- INFORMATION UI -->
+      <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
+        <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
+      </UI>
+
+      <UI visible={!!$$slots.formulas && showFormulas} top column>
+        <h2 class="w-full border-b-2 border-slate-700 pb-1 font-bold">Prime visuals</h2>
+        <slot name="formulas" />
+      </UI>
+
+      <!--  -->
+      <UI column bottom right styled={false}>
+        {#if isPlaying}
+          <RoundButton icon={mdiPause} on:click={pauseScene} />
+        {/if}
+
+        <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
+        <RoundButton icon={mdiRestart} on:click={reset} />
+
+        <ToggleFullscreen {resize} {sceneEl} bind:isFullscreen />
+      </UI>
     {/if}
-
-    <!-- Options panel -->
-    <div class="absolute right-4 bottom-4 z-50 flex w-12 flex-col gap-2">
-      {#if isPlaying}
-        <RoundButton icon={mdiPause} on:click={pauseScene} />
-      {/if}
-
-      <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
-      <RoundButton icon={mdiRestart} on:click={reset} />
-
-      <!-- TODO: labels are broken  -->
-      <ToggleFullscreen {resize} {sceneEl} bind:isFullscreen />
-    </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mdiBookOpen, mdiClose, mdiFileSettingsOutline, mdiMagnify } from '@mdi/js';
   import { goto } from '$app/navigation';
-  import type { Route } from './Routes';
+  import type DocsRoute from 'utils/DocsRoute';
 
   import Node from './Node.svelte';
   import Leaf from './Leaf.svelte';
@@ -9,7 +9,7 @@
   import SearchBar from './SearchBar.svelte';
 
   export let home = '';
-  export let routes: Route[] = [];
+  export let routes: DocsRoute[] = [];
 
   let isRoutesVisible = false;
   let isSearchVisible = false;

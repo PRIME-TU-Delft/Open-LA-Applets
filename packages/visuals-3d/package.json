@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "mdi-svelte-ts": "*",
+    "utils": "*",
     "ui": "*"
   },
   "devDependencies": {
