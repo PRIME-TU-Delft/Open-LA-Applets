@@ -4,8 +4,8 @@
   
     import { Axis3D, Canvas3D, Label3D, Vector3D, Equation, PartialDeconstruction3D } from 'visuals-3d';
 
-    import { PrimeColor } from 'ui/utils/primeColors';
-    import { Label } from 'visuals-3d/utils/label';
+    import { PrimeColor } from 'utils/PrimeColors';
+    import { Label } from 'utils/label';
   
     //green
     const v1 = new Vector3(-1, 2, 2);

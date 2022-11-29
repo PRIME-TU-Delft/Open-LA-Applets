@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { SceneContext, sceneKey } from 'utils/SceneKey.js';
   import { onMount, afterUpdate, getContext } from 'svelte';
 
-  import { BufferGeometry, Color, Line, LineBasicMaterial, LineDashedMaterial, LineSegments, Vector3 } from 'three';
+  import { BufferGeometry, Color, LineDashedMaterial, LineSegments, Vector3 } from 'three';
 
-  import getRandomColor from 'ui/utils/primeColors';
-  import { sceneKey, type SceneContext } from '../utils/sceneKey';
+  import getRandomColor from 'utils/primeColors';
+ 
 
   export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];

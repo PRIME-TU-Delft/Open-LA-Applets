@@ -9,4 +9,3 @@ export { default as Equation } from './components/Equation.svelte';
 export { default as PartialDeconstruction3D } from './components/PartialDeconstruction3D.svelte';
 export { AutoPlane, PlaneFromNormal, PlaneFromPoints } from './components/planes/index.ts';
 
-export { AutoPlane, PlaneFromNormal, PlaneFromPoints } from './components/planes/index';
