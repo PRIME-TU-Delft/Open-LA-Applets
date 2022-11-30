@@ -20,7 +20,7 @@ RUN yarn install
 
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-RUN echo -e "$(date)" > /app/apps/web/static/version.txt
+RUN echo "$(date)" > /app/apps/web/static/version.txt
 RUN yarn turbo run build --filter=web...
 
 
