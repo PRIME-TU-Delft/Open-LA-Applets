@@ -65,6 +65,8 @@
       .normalize()
       .multiplyScalar(length - coneHeight / 2)
   );
+
+  console.warn('Implement striped', striped);
 </script>
 
 <!-- Line is length minus cone height -->
