@@ -1,8 +1,6 @@
 <script lang="ts">
-	import Point3D from 'visuals-3d/components/Point3D.svelte';
 
     import { Vector3 } from 'three';
-  
     import { Axis3D, Canvas3D, Label3D, Vector3D, Equation, PartialDeconstruction3D } from 'visuals-3d';
 
     import { PrimeColor } from 'utils/PrimeColors';
@@ -30,23 +28,7 @@
         color={PrimeColor.green} 
         length={v1.length()}
       />
-        <!-- points on axis -->
-        <Point3D
-            position={new Vector3(v1.x, 0, 0)}
-            color={PrimeColor.green} 
-            size={pointSize}
-        />
-        <Point3D
-            position={new Vector3(0, v1.y, 0)}
-            color={PrimeColor.green} 
-            size={pointSize}
-        />
-        <Point3D
-            position={new Vector3(0, 0, v1.z)}
-            color={PrimeColor.green} 
-            size={pointSize}
-        />
-       
+
       <Label3D
         size={label.size * 15}
         position={ v1.clone().add(v1.clone().normalize().multiplyScalar(labelPosScalar))}
@@ -56,7 +38,7 @@
 
       </Label3D>
 
-      <PartialDeconstruction3D p={v1} color={PrimeColor.green}/>
+      <PartialDeconstruction3D p={v1} color={PrimeColor.green} showAxisPoints={true}/>
 
    <!-- upper green vector -->
       <Vector3D 
@@ -65,8 +47,7 @@
         color={PrimeColor.green}
         length={v1.length()}
       />
-      
-      <PartialDeconstruction3D p={v1.clone().add(v2)} color={PrimeColor.green}/>
+  
 
   <!-- blue vector -->
       <Vector3D 
@@ -74,23 +55,6 @@
         color={PrimeColor.ultramarine} 
         length={v2.length()}
       />
-
-          <!-- points on axis -->
-          <Point3D
-          position={new Vector3(v2.x, 0, 0)}
-          color={PrimeColor.ultramarine} 
-          size={pointSize}
-          />
-          <Point3D
-              position={new Vector3(0, v2.y, 0)}
-              color={PrimeColor.ultramarine} 
-              size={pointSize}
-          />
-          <Point3D
-              position={new Vector3(0, 0, v2.z)}
-              color={PrimeColor.ultramarine} 
-              size={pointSize}
-          />
 
       <Label3D
         size={label.size * 15}
@@ -101,7 +65,7 @@
         <Equation   s={"\\begin{bmatrix} " + v2.x + " \\\\ " + v2.z  + " \\\\ " +  v2.y  + " \\end{bmatrix}"} />
       </Label3D>
 
-      <PartialDeconstruction3D p={v2} color={PrimeColor.ultramarine} />
+      <PartialDeconstruction3D p={v2} color={PrimeColor.ultramarine} showAxisPoints={true}/>
 
    <!-- red vector -->
       <Vector3D 
@@ -115,28 +79,11 @@
         position={ v3.clone().add(v3.clone().normalize().multiplyScalar(labelPosScalar))}
         color={PrimeColor.red} 
         > 
-
-        <!-- points on axis -->
-        <Point3D
-            position={new Vector3(v3.x, 0, 0)}
-            color={PrimeColor.red} 
-            size={pointSize}
-        />
-        <Point3D
-            position={new Vector3(0, v3.y, 0)}
-            color={PrimeColor.red} 
-            size={pointSize}
-        />
-        <Point3D
-            position={new Vector3(0, 0, v3.z)}
-            color={PrimeColor.red} 
-            size={pointSize}
-        />
         
         <Equation   s={"\\begin{bmatrix} " + v3.x + " \\\\ " + v3.z  + " \\\\ " +  v3.y  + " \\end{bmatrix}"} />
         </Label3D>
 
-        <PartialDeconstruction3D p={v3} color={PrimeColor.red}/>
+        <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints={true}/>
   
 
   <Axis3D axisLength={7} />
