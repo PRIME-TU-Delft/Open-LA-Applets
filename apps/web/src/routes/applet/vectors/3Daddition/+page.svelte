@@ -14,7 +14,7 @@
     //red
     const v3 = v1.clone().add(v2);
 
-    let labelShift= new Vector3(0.6, 0 , 0.6);
+    const labelPosScalar = 0.8;
     let label=  Label.default(); 
 
   </script>
@@ -31,7 +31,7 @@
        
       <Label3D
         size={label.size * 15}
-        position={ v1.clone().multiplyScalar(1.2)}
+        position={ v1.clone().add(v1.clone().normalize().multiplyScalar(labelPosScalar))}
         color={PrimeColor.green} 
         > 
         <Equation   s={"\\begin{bmatrix} " + v1.x + " \\\\ " + v1.z  + " \\\\ " +  v1.y  + " \\end{bmatrix}"} />
@@ -58,7 +58,7 @@
 
       <Label3D
         size={label.size * 15}
-        position={ v2.clone().multiplyScalar(1.1)}
+        position={ v2.clone().add(v2.clone().normalize().multiplyScalar(labelPosScalar))}
         color={PrimeColor.ultramarine} 
         > 
         
@@ -76,7 +76,7 @@
 
         <Label3D
         size={label.size * 15}
-        position={ v3.clone().multiplyScalar(1.1)}
+        position={ v3.clone().add(v3.clone().normalize().multiplyScalar(labelPosScalar))}
         color={PrimeColor.red} 
         > 
         
