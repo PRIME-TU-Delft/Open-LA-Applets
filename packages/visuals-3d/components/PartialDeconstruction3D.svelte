@@ -16,23 +16,17 @@
     let zAx = new Vector3(0, 0, p.z);
 
     //points on each plane
-    let xP = new Vector3(0, p.y, p.z);
     let yP = new Vector3(p.x, 0, p.z);
-    let zP = new Vector3(p.x, p.y, 0);
     
-    
-    
-
 </script>
 
-    <!-- <DashedLine3D points={[p, xAx]} color={color} />
-    <DashedLine3D points={[p, yAx]} color={color} />
-    <DashedLine3D points={[p, zAx]} color={color} /> -->
 
+<!-- three lines to x,z axis -->
 <DashedLine3D points={[p, yP]} color={color} />
 <DashedLine3D points={[yP, xAx]} color={color} />
 <DashedLine3D points={[yP, zAx]} color={color} />
 
+<!-- line to z axis -->
 <DashedLine3D points={[p, yAx]} color={color}/>
 
 

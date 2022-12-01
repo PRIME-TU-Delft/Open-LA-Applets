@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Point3D from 'visuals-3d/components/Point3D.svelte';
 
     import { Vector3 } from 'three';
   
@@ -16,11 +17,12 @@
 
     const labelPosScalar = 0.8;
     let label=  Label.default(); 
+    const pointSize = 0.05;
 
   </script>
 
   
-  <Canvas3D title={'Geometrical interpretation of addition for three-dimensional vectors.'} isPerspectiveCamera={false} cameraPos={[3, 1, 3]}>
+  <Canvas3D title={'Geometrical interpretation of addition for three-dimensional vectors.'} isPerspectiveCamera={false}>
   
     <!-- lower green vector -->
       <Vector3D 
@@ -28,6 +30,22 @@
         color={PrimeColor.green} 
         length={v1.length()}
       />
+        <!-- points on axis -->
+        <Point3D
+            position={new Vector3(v1.x, 0, 0)}
+            color={PrimeColor.green} 
+            size={pointSize}
+        />
+        <Point3D
+            position={new Vector3(0, v1.y, 0)}
+            color={PrimeColor.green} 
+            size={pointSize}
+        />
+        <Point3D
+            position={new Vector3(0, 0, v1.z)}
+            color={PrimeColor.green} 
+            size={pointSize}
+        />
        
       <Label3D
         size={label.size * 15}
@@ -37,6 +55,7 @@
         <Equation   s={"\\begin{bmatrix} " + v1.x + " \\\\ " + v1.z  + " \\\\ " +  v1.y  + " \\end{bmatrix}"} />
 
       </Label3D>
+
       <PartialDeconstruction3D p={v1} color={PrimeColor.green}/>
 
    <!-- upper green vector -->
@@ -55,6 +74,23 @@
         color={PrimeColor.ultramarine} 
         length={v2.length()}
       />
+
+          <!-- points on axis -->
+          <Point3D
+          position={new Vector3(v2.x, 0, 0)}
+          color={PrimeColor.ultramarine} 
+          size={pointSize}
+          />
+          <Point3D
+              position={new Vector3(0, v2.y, 0)}
+              color={PrimeColor.ultramarine} 
+              size={pointSize}
+          />
+          <Point3D
+              position={new Vector3(0, 0, v2.z)}
+              color={PrimeColor.ultramarine} 
+              size={pointSize}
+          />
 
       <Label3D
         size={label.size * 15}
@@ -79,6 +115,23 @@
         position={ v3.clone().add(v3.clone().normalize().multiplyScalar(labelPosScalar))}
         color={PrimeColor.red} 
         > 
+
+        <!-- points on axis -->
+        <Point3D
+            position={new Vector3(v3.x, 0, 0)}
+            color={PrimeColor.red} 
+            size={pointSize}
+        />
+        <Point3D
+            position={new Vector3(0, v3.y, 0)}
+            color={PrimeColor.red} 
+            size={pointSize}
+        />
+        <Point3D
+            position={new Vector3(0, 0, v3.z)}
+            color={PrimeColor.red} 
+            size={pointSize}
+        />
         
         <Equation   s={"\\begin{bmatrix} " + v3.x + " \\\\ " + v3.z  + " \\\\ " +  v3.y  + " \\end{bmatrix}"} />
         </Label3D>
@@ -87,4 +140,5 @@
   
 
   <Axis3D axisLength={7} />
+  
   </Canvas3D>

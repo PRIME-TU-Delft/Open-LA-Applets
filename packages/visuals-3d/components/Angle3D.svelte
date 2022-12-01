@@ -3,7 +3,7 @@ import { Vector3 } from "three";
 import Label3D from './Label3D.svelte';
 import Line3D from "./Line3D.svelte";
 import Arc3D from "./Arc3D.svelte";
-    import { Label } from "../utils/label";
+import { Label } from "utils/label";
 
 
 export let vs: [Vector3, Vector3]; //vectors to draw angle between
