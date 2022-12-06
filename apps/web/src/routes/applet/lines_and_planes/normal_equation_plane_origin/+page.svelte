@@ -11,11 +11,11 @@
   
 	const n = new Vector3(1, 2, 1);
 	const nColor = PrimeColor.ultramarine;
-	const nLabelPos = n.clone().add(n.clone().normalize().multiplyScalar(0.2)).add(p);
+	const nLabelPos = n.clone().add(n.clone().normalize().multiplyScalar(0.2));
 	
 	const q = new Vector3(1,  1, -((n.x+n.y)/n.z ));
 	const qColor = PrimeColor.green;
-	const qLabelPos =  q.clone().add(q.clone().normalize().multiplyScalar(0.3)).add(p);
+	const qLabelPos =  q.clone().add(q.clone().normalize().multiplyScalar(0.3));
 	
 	let label=  Label.default(); 
 	
@@ -40,7 +40,7 @@
 	<Point3D position={q} color={qColor}/>
 	<Label3D
         size={label.size * 15}
-        position={nLabelPos}
+        position={qLabelPos}
         color={qColor} 
         > 
 		<Equation s={`\\[ Q \\]`} />
