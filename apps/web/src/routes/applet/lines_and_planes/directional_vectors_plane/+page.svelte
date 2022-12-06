@@ -11,7 +11,7 @@
 
 	const p = new Vector3(2, 1, 0.5);
 	const pColor = PrimeColor.pink;
-	const pLabelPos = p.clone().add(p.clone().normalize().multiplyScalar(-0.3));
+	const pLabelPos = p.clone().add(new Vector3(0, -0.3, 0));
   
 	const n = new Vector3(1, 2, 1);
 	const nColor = PrimeColor.ultramarine;
@@ -23,7 +23,7 @@
 	
   </script>
   
-  <Canvas3D  title="A plane through the point  P." isPerspectiveCamera={false}>
+  <Canvas3D  title="A plane through the point  P." isPerspectiveCamera={false} cameraPos={[2, 0.5, 2]}>
 
 	<PlaneFromNormal normal={n} point={p} color={PrimeColor.yellow}/>	
 
