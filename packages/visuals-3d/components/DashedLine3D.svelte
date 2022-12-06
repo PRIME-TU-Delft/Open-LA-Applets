@@ -4,7 +4,7 @@
 
   import { BufferGeometry, Color, LineDashedMaterial, LineSegments, Vector3 } from 'three';
 
-  import getRandomColor from 'utils/primeColors';
+  import getRandomColor from 'utils/PrimeColors';
  
 
   export let color: string = getRandomColor();

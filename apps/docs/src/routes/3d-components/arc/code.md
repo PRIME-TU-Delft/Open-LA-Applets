@@ -8,7 +8,7 @@
   
 	import Docs from './docs.md';
 	import Code from './code.md';
-	import { PrimeColor } from 'ui/utils/primeColors';
+	import { PrimeColor } from 'ui/utils/PrimeColors';
 	import { Vector3 } from 'three';
     import Arc3D from 'visuals-3d/components/Arc3D.svelte';
 
