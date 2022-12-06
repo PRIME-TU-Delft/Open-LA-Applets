@@ -5,6 +5,7 @@
   import { sceneKey, type SceneContext } from 'utils/SceneKey';
 
   export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
+  export let color =  '0xffffff';
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -13,7 +14,7 @@
   let line: LineSegments;
   const geometry = new BoxGeometry(end.x, end.y, end.z);
   const material = new LineDashedMaterial({
-    color: 0xffffff,
+    color: color,
     dashSize: 0.1,
     gapSize: 0.1,
     opacity: 0.5,
