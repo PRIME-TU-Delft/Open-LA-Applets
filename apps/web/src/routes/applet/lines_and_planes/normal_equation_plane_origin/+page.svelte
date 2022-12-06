@@ -7,8 +7,6 @@
     import Angle3D from 'visuals-3d/components/Angle3D.svelte';
     import Point3D from 'visuals-3d/components/Point3D.svelte';
 
-
-  
 	const n = new Vector3(1, 2, 1);
 	const nColor = PrimeColor.ultramarine;
 	const nLabelPos = n.clone().add(n.clone().normalize().multiplyScalar(0.2));
@@ -21,7 +19,7 @@
 	
   </script>
   
-  <Canvas3D  title="A plane through the origin." isPerspectiveCamera={false} cameraPos={[1, 0.5, 2]}>
+  <Canvas3D  title="A plane through the origin." isPerspectiveCamera={false} cameraPos={[2, 0.5, 1]}>
 
 	<PlaneFromNormal normal={n} color={PrimeColor.yellow}/>	
 
