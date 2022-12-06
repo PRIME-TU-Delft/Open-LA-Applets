@@ -1,23 +1,21 @@
 <script lang="ts">
 	
 	import { Vector3 } from 'three';
-	import { Formula } from 'ui';
     import { Label } from 'utils/Label';
-  
 	import { PrimeColor } from 'utils/PrimeColors';
-	import { Sliders } from 'utils/Slider';
-    import { Equation , Vector3D, Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Label3D} from 'visuals-3d';
+    import { Equation , Vector3D, Canvas3D, Axis3D, PlaneFromNormal, Label3D} from 'visuals-3d';
     import Angle3D from 'visuals-3d/components/Angle3D.svelte';
     import Point3D from 'visuals-3d/components/Point3D.svelte';
 
 
   
 	const n = new Vector3(1, 2, 1);
-
+	const nColor = PrimeColor.ultramarine;
+	
 	let label=  Label.default(); 
 	
-	$: b1 = new Vector3(1,  1, -((n.x+n.y)/n.z ));
-
+	$: q = new Vector3(1,  1, -((n.x+n.y)/n.z ));
+	const qColor = PrimeColor.green;
 	
   </script>
   
@@ -26,29 +24,29 @@
 	<PlaneFromNormal normal={n} color={PrimeColor.yellow}/>	
 
 	<!-- n -->
-	<Vector3D direction={n} color={PrimeColor.ultramarine} length={n.length()}/>
+	<Vector3D direction={n} color={nColor} length={n.length()}/>
 	<Label3D
         size={label.size * 15}
         position={n.clone().multiplyScalar(1.1)}
-        color={PrimeColor.ultramarine} 
+        color={nColor} 
         > 
-       n
+		<Equation s={`\\[ \\vec{n} \\]`} />
     </Label3D>
 	
 	<!-- Q -->
-	<Vector3D direction={b1} color={PrimeColor.red} length={b1.length()}/>
-	<Point3D position={b1} color={PrimeColor.green}/>
+	<Vector3D direction={q} color={PrimeColor.red} length={q.length()}/>
+	<Point3D position={q} color={qColor}/>
 	<Label3D
         size={label.size * 15}
-        position={b1.clone().multiplyScalar(1.1)}
-        color={PrimeColor.green} 
+        position={q.clone().multiplyScalar(1.1)}
+        color={qColor} 
         > 
-       Q
+		<Equation s={`\\[ Q \\]`} />
     </Label3D>
 
 	
 
-	<Angle3D vs={[n, b1]}/>
+	<Angle3D vs={[n, q]}/>
 	
 	<Axis3D />
 
