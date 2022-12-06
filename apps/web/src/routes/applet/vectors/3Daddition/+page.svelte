@@ -15,7 +15,6 @@
 
     const labelPosScalar = 0.8;
     let label=  Label.default(); 
-    const pointSize = 0.05;
 
   </script>
 

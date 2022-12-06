@@ -7,7 +7,11 @@
     import Angle3D from 'visuals-3d/components/Angle3D.svelte';
     import Point3D from 'visuals-3d/components/Point3D.svelte';
 
+	let label=  Label.default(); 
 
+	const p = new Vector3(2, 1, 0.5);
+	const pColor = PrimeColor.pink;
+	const pLabelPos = p.clone().add(p.clone().normalize().multiplyScalar(-0.3));
   
 	const n = new Vector3(1, 2, 1);
 	const nColor = PrimeColor.ultramarine;
@@ -17,16 +21,14 @@
 	const qColor = PrimeColor.green;
 	const qLabelPos =  q.clone().add(q.clone().normalize().multiplyScalar(0.3)).add(p);
 	
-	let label=  Label.default(); 
-	
   </script>
   
-  <Canvas3D  title="A plane through the origin." isPerspectiveCamera={false}>
+  <Canvas3D  title="A plane through the point  P." isPerspectiveCamera={false}>
 
-	<PlaneFromNormal normal={n} color={PrimeColor.yellow}/>	
+	<PlaneFromNormal normal={n} point={p} color={PrimeColor.yellow}/>	
 
 	<!-- n -->
-	<Vector3D direction={n} color={nColor} length={n.length()}/>
+	<Vector3D direction={n} origin={p} color={nColor} length={n.length()}/>
 	<Label3D
         size={label.size * 15}
         position={nLabelPos}
@@ -36,19 +38,28 @@
     </Label3D>
 	
 	<!-- Q -->
-	<Vector3D direction={q} color={PrimeColor.red} length={q.length()}/>
-	<Point3D position={q} color={qColor}/>
+	<Vector3D direction={q} origin={p} color={PrimeColor.red} length={q.length()}/>
+	<Point3D position={q.clone().add(p)} color={qColor}/>
 	<Label3D
         size={label.size * 15}
-        position={nLabelPos}
+        position={qLabelPos}
         color={qColor} 
         > 
 		<Equation s={`\\[ Q \\]`} />
     </Label3D>
 
+	<!-- P -->
+	<Point3D position={p} color={pColor}/>
+	<Label3D
+        size={label.size * 15}
+        position={pLabelPos}
+        color={pColor} 
+        > 
+		<Equation s={`\\[ P \\]`} />
+    </Label3D>
 	
 
-	<Angle3D vs={[n, q]}/>
+	<Angle3D vs={[n, q]} origin={p}/>
 	
 	<Axis3D />
 
