@@ -19,7 +19,7 @@
 	
   </script>
   
-  <Canvas3D  title="A plane through the origin." isPerspectiveCamera={false} cameraPos={[2, 0.5, 1]}>
+  <Canvas3D  title="A plane through the origin." isPerspectiveCamera={false} cameraPos={[1, 0.5, 2]}>
 
 	<PlaneFromNormal normal={n} color={PrimeColor.yellow}/>	
 
