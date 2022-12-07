@@ -30,7 +30,7 @@
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
 
-  $: direction = direction.normalize();
+  $: direction = direction.clone().normalize();
 
   $: {
     const geometry = new LineGeometry();
