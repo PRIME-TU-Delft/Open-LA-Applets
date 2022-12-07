@@ -17,12 +17,12 @@
 </script>
 
 <!-- three lines to x,z axis -->
-<Line3D points={[p, yP]} {color} />
-<Line3D points={[yP, xAx]} {color} />
-<Line3D points={[yP, zAx]} {color} />
+<Line3D points={[p, yP]} {color} isDashed />
+<Line3D points={[yP, xAx]} {color} isDashed />
+<Line3D points={[yP, zAx]} {color} isDashed />
 
 <!-- line to z axis -->
-<Line3D points={[p, yAx]} {color} />
+<Line3D points={[p, yAx]} {color} isDashed />
 
 <!-- points on axis -->
 {#if showAxisPoints}
