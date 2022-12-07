@@ -1,6 +1,6 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { BufferGeometry, LineDashedMaterial, Vector3 } from 'three';
+  import { BufferGeometry, Vector3 } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
 
