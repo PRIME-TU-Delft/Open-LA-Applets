@@ -47,5 +47,6 @@
     top: 0;
     left: 0;
     transform: translate(-50%, -50%);
+    user-select: none;
   }
 </style>
