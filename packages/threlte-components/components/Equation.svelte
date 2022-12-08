@@ -18,18 +18,22 @@
       : position.clone().add(position.clone().normalize().multiplyScalar(offset));
 
   $: {
-    // For reference: https://katex.org/docs/options.html
-    str = katex.renderToString(latex, {
-      displayMode: true,
-      leqno: false,
-      fleqn: false,
-      throwOnError: true,
-      errorColor: '#cc0000',
-      strict: 'warn',
-      output: 'mathml',
-      trust: false,
-      macros: { '\\f': '#1f(#2)' }
-    });
+    try {
+      // For reference: https://katex.org/docs/options.html
+      str = katex.renderToString(latex, {
+        displayMode: true,
+        leqno: false,
+        fleqn: false,
+        throwOnError: true,
+        errorColor: '#cc0000',
+        strict: 'warn',
+        output: 'mathml',
+        trust: false,
+        macros: { '\\f': '#1f(#2)' }
+      });
+    } catch (e: any) {
+      str = e.message;
+    }
   }
 </script>
 

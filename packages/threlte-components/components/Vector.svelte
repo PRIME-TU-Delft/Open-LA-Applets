@@ -5,9 +5,7 @@
   import { DoubleSide, Vector3, Mesh, Quaternion } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
-  import ThrelteLabel from 'utils/ThrelteLabel';
 
-  import Label from './Label.svelte';
   import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
@@ -16,9 +14,7 @@
   export let striped = false; // whether the line is striped
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
-  // export let showDeconstruction = false; // show deconstruction of vector
   export let hideHead = false; // hide the cone
-  export let label: ThrelteLabel = ThrelteLabel.default(); // label of vector
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
   const CONE_HEIGHT = 0.5;
@@ -80,5 +76,3 @@
     <T.ConeGeometry args={[radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS]} />
   </T.Mesh>
 {/if}
-
-<Label {color} {label} start={origin} end={endPoint} />

@@ -2,10 +2,12 @@
   import { get } from 'svelte/store';
   import { Euler, Quaternion, Vector3 } from 'three';
   import { useFrame } from '@threlte/core';
-  import { Text } from '@threlte/extras';
+  import { HTML, Text } from '@threlte/extras';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import Line from './Line.svelte';
+  import Label from './Label.svelte';
+  import Equation from './Equation.svelte';
 
   export let showNumbers = false;
   export let hideTicks = false;
@@ -96,73 +98,16 @@
 <!-- Number indecators -->
 {#if showNumbers}
   {#each smallIndecators as indecator}
-    <Text
-      color="black"
-      fillOpacity={0.8}
-      position={new Vector3(indecator, 0.1, 0)}
-      text={indecator.toString()}
-      fontSize={axisFontSize}
-      rotation={euler}
-    />
-    <Text
-      color="black"
-      fillOpacity={0.8}
-      position={new Vector3(-0.1, indecator, 0)}
-      text={indecator.toString()}
-      fontSize={axisFontSize}
-      rotation={euler}
-    />
-    <Text
-      color="black"
-      fillOpacity={0.8}
-      position={new Vector3(0, 0.1, indecator)}
-      text={indecator.toString()}
-      fontSize={axisFontSize}
-      rotation={euler}
-    />
+    <Label position={new Vector3(indecator, 0, 0)} opacity={0.8}>{indecator}</Label>
+    <Label position={new Vector3(0, indecator, 0)} opacity={0.8}>{indecator}</Label>
+    <Label position={new Vector3(0, 0, indecator)} opacity={0.8}>{indecator}</Label>
   {/each}
 
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(indecatorMin, 0.1, 0)}
-    rotation={euler}
-    text="x"
-  />
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(0.1, indecatorMin, 0)}
-    rotation={euler}
-    text="z"
-  />
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(0.1, 0, indecatorMin)}
-    rotation={euler}
-    text="y"
-  />
+  <Equation position={new Vector3(0, 0, indecatorMin)} latex="-x" />
+  <Equation position={new Vector3(indecatorMin, 0, 0)} latex="-y" />
+  <Equation position={new Vector3(0, indecatorMin, 0)} latex="-z" />
 
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(indecatorMax, 0.1, 0)}
-    rotation={euler}
-    text="x"
-  />
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(0.1, indecatorMax, 0)}
-    rotation={euler}
-    text="z"
-  />
-  <Text
-    color="black"
-    fontSize={axisFontSize * 1.5}
-    position={new Vector3(0.1, 0, indecatorMax)}
-    rotation={euler}
-    text="y"
-  />
+  <Equation position={new Vector3(0, 0, indecatorMax)} latex="x" />
+  <Equation position={new Vector3(indecatorMax, 0, 0)} latex="y" />
+  <Equation position={new Vector3(0, indecatorMax, 0)} latex="z" />
 {/if}

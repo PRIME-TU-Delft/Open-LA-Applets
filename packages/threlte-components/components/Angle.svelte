@@ -2,14 +2,13 @@
   import { Vector3 } from 'three';
   import Line3D from './Line.svelte';
   import Arc3D from './Arc.svelte';
-  import ThrelteLabel from 'utils/ThrelteLabel';
   import Label from './Label.svelte';
 
   export let vs: [Vector3, Vector3]; //vectors to draw angle between
   export let origin: Vector3 = new Vector3(0, 0, 0); //common orgin of vectors
   export let size = 0.3; //size of drawn angle
   export let color: string = 'black'; //color of used lines
-  export let label: ThrelteLabel = ThrelteLabel.default(); //label of the angle
+  export let title = '';
   export let forceRightAngle = false; //if true draws a sharp angle, even if not 90 degrees
   export let forceRoundAngle = false; //if true draws a round angle, even if 90 degrees
 
@@ -30,4 +29,8 @@
   <Arc3D points={[u1, u2]} color={'black'} {origin} pointsOnArc={25} />
 {/if}
 
-<Label {color} {label} position={labelPosition} />
+{#if title}
+  <Label {color} position={labelPosition}>
+    {title}
+  </Label>
+{/if}
