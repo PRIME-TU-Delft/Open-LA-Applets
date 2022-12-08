@@ -2,8 +2,11 @@
   import { onMount } from 'svelte';
   import katex from 'katex';
   import { HTML } from '@threlte/extras';
+  import { Vector3 } from 'three';
+
   export let s: string = `no equation`;
   export let color: string = 'green';
+  export let position: Vector3 = new Vector3(0, 0, 0);
 
   let str = '';
 
@@ -23,6 +26,15 @@
   });
 </script>
 
-<HTML>
-  <div style="color: {color}">{@html str}</div>
+<HTML {position}>
+  <div class="equation" style="color: {color}">{@html str}</div>
 </HTML>
+
+<style>
+  .equation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+</style>

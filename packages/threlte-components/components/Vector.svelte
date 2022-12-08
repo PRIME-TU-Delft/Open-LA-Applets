@@ -1,9 +1,8 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
   import { Line2 } from 'three/examples/jsm/lines/Line2';
 
-  import { Color, DoubleSide, Vector3, Mesh, Quaternion } from 'three';
+  import { DoubleSide, Vector3, Mesh, Quaternion } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
   import ThrelteLabel from 'utils/ThrelteLabel';

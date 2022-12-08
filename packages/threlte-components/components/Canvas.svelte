@@ -41,6 +41,7 @@
 </script>
 
 <div
+  class="canvasWrapper"
   bind:clientHeight={height}
   bind:clientWidth={width}
   bind:this={sceneEl}
@@ -107,3 +108,15 @@
     </UI>
   {/if}
 </div>
+
+<style>
+  .canvasWrapper {
+    position: relative;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  :global(.canvasWrapper canvas) {
+    position: absolute;
+  }
+</style>

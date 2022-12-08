@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@mdi/js": "^7.0.96",
-    "@types/three": "^0.144.0",
+    "@types/three": "^0.146.0",
     "eslint-config-custom": "*",
     "svelte": "^3.9.2",
-    "three": "^0.146.0"
+    "three": "^0.147.0"
   }
 }
