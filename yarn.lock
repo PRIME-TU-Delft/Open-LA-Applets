@@ -143,7 +143,7 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
-"@sveltejs/adapter-auto@latest", "@sveltejs/adapter-auto@next":
+"@sveltejs/adapter-auto@latest":
   version "1.0.0-next.90"
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-auto/-/adapter-auto-1.0.0-next.90.tgz#39d19de660b65ddce7c73ef6159bd13ba6249673"
   integrity sha512-qxH46Oqqn40998wTmnbffONI0HcW/kiZ3OIjZoysjONne+LU4uEsG425MZ2RHDxmR04zxhsdjCAsn6B4du8D7w==
@@ -243,17 +243,12 @@
     lodash.merge "^4.6.2"
     postcss-selector-parser "6.0.10"
 
-"@threlte/core@^5.0.0":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@threlte/core/-/core-5.0.2.tgz#d3752049dfd576219d133647739c44d609dc0d89"
-  integrity sha512-nkokyiLG/0Cze75MU7HZ9PW3y7/Yz7dRSqPY+aOQK1ybmT82y1vk3+to4U3zFGeTCsStaTstL+fk6Ir0+yIBig==
-
 "@threlte/core@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@threlte/core/-/core-5.0.5.tgz#4a86eeece99cbf29ba46eadc232b4c9d05de4f7d"
   integrity sha512-1yX6DDXdD9+v9UyOILOMrZqyQxVrrRWRhKtC3IdIY8P4t8aQCyfTTSzLSZZA3cSXhClNGwTcwBh5sJju++XgIg==
 
-"@threlte/extras@^4.6.0", "@threlte/extras@^4.8.0":
+"@threlte/extras@^4.8.0":
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/@threlte/extras/-/extras-4.8.0.tgz#a02043a564b2e7e97be5525b0baf06c5d05abf1f"
   integrity sha512-3vg9GJEob1DgX2I7aWksbXYw6zMH8bc9m3i6wzBvmoyXPx3Qp5P9+LMoJ0GB7hLOEcKeOwyLPJ/EBymSouH01w==
