@@ -4,7 +4,7 @@
   import { Vector3 } from 'three';
 
   export let p: Vector3;
-  export let color: string = 'black'; //color of used lines
+  export let color = 'black'; //color of used lines
   export let showAxisPoints = false;
   export let pointSize = 0.05;
 

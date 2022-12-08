@@ -6,7 +6,7 @@
 
   export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
-  export let isDashed: boolean = false;
+  export let isDashed = false;
 
   $: geometry = new BufferGeometry().setFromPoints(points);
 

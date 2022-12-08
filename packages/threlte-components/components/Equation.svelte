@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import katex from 'katex';
   import { HTML } from '@threlte/extras';
   import { Vector3 } from 'three';
 
-  export let latex: string = `no equation`;
-  export let color: string = 'black';
-  export let position: Vector3 = new Vector3(0, 0, 0);
-  export let size: number = 1;
-  export let offset: number = 0.25;
+  export let latex = '';
+  export let color = 'black';
+  export let position = new Vector3(0, 0, 0);
+  export let size = 1;
+  export let offset = 0.25;
 
   let str = '';
 

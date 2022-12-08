@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  export let s: String = `no equation`;
+  export let s = `no equation`;
 
   onMount(() => {
     let script = document.createElement('script');
@@ -17,6 +17,8 @@
         },
         svg: { fontCache: 'global' }
       };
+
+      console.log(MathJax);
     };
   });
 </script>

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { BufferGeometry, Color, Line, LineBasicMaterial, Vector3 } from 'three';
+  import { BufferGeometry, Vector3 } from 'three';
 
-  export let color: string = 'Black';
+  export let color = 'Black';
   export let points: [Vector3, Vector3];
-  export let origin: Vector3 = new Vector3(0, 0, 0);
-  export let pointsOnArc: number = 15;
+  export let origin = new Vector3(0, 0, 0);
+  export let pointsOnArc = 15;
 
   export let u = new Vector3(0, 1, 0);
 
