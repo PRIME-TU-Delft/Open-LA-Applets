@@ -1,5 +1,6 @@
 <script lang="ts">
   import Line3D from './Line.svelte';
+  import Point3D from './Point.svelte';
   import { Vector3 } from 'three';
 
   export let p: Vector3;
@@ -26,8 +27,7 @@
 
 <!-- points on axis -->
 {#if showAxisPoints}
-  <!-- TODO: add points -->
-  <!-- <Point3D position={xAx} {color} size={pointSize} />
+  <Point3D position={xAx} {color} size={pointSize} />
   <Point3D position={yAx} {color} size={pointSize} />
-  <Point3D position={zAx} {color} size={pointSize} /> -->
+  <Point3D position={zAx} {color} size={pointSize} />
 {/if}

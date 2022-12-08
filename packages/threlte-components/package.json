@@ -13,6 +13,7 @@
   "dependencies": {
     "@threlte/core": "^5.0.0",
     "@threlte/extras": "^4.6.0",
+    "katex": "^0.16.3",
     "mdi-svelte-ts": "*",
     "ui": "*",
     "utils": "*"

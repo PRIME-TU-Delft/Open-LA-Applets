@@ -14,7 +14,6 @@
 
   $: {
     if (line && isDashed) {
-      console.log('compute line distances');
       line.computeLineDistances();
     }
   }
