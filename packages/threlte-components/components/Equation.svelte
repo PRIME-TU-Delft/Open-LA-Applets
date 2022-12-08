@@ -4,15 +4,23 @@
   import { HTML } from '@threlte/extras';
   import { Vector3 } from 'three';
 
-  export let s: string = `no equation`;
-  export let color: string = 'green';
+  export let latex: string = `no equation`;
+  export let color: string = 'black';
   export let position: Vector3 = new Vector3(0, 0, 0);
+  export let size: number = 1;
+  export let offset: number = 0.25;
 
   let str = '';
 
-  onMount(() => {
+  // Add offset in the direction of the vector
+  $: pos =
+    offset == 0
+      ? position
+      : position.clone().add(position.clone().normalize().multiplyScalar(offset));
+
+  $: {
     // For reference: https://katex.org/docs/options.html
-    str = katex.renderToString(s, {
+    str = katex.renderToString(latex, {
       displayMode: true,
       leqno: false,
       fleqn: false,
@@ -23,11 +31,11 @@
       trust: false,
       macros: { '\\f': '#1f(#2)' }
     });
-  });
+  }
 </script>
 
-<HTML {position}>
-  <div class="equation" style="color: {color}">{@html str}</div>
+<HTML position={pos}>
+  <div class="equation" style="color: {color}; font-size: {size}rem">{@html str}</div>
 </HTML>
 
 <style>
