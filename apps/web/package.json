@@ -16,7 +16,6 @@
     "@threlte/extras": "^4.8.0",
     "ui": "*",
     "utils": "*",
-    "visuals-3d": "*",
     "@types/three": "^0.146.0",
     "three": "^0.147.0"
   },
