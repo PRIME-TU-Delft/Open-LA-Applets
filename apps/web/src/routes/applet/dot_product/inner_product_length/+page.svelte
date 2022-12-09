@@ -60,7 +60,7 @@
     <LatexUI
       params={[latexSolution, sliders.x, sliders.y]}
       colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
-      latex={'\\begin{aligned} f(\\$1,\\$2) = \\sqrt{\\$1^2, \\$2^2} \\\\ = \\$0  \\end{aligned}'}
+      latex={'\\begin{aligned} f(\\$1,\\$2) = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
     />
   </div>
 </Canvas3D>

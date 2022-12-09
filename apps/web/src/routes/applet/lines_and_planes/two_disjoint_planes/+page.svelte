@@ -2,7 +2,7 @@
   import { Vector3 } from 'three';
 
   import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal } from 'threlte-components';
-  import { Formula } from 'ui';
+  import { LatexUI } from 'ui';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
@@ -19,8 +19,16 @@
   <Axis3D showNumbers />
 
   <div slot="formulas">
-    <Formula color={PrimeColor.red} param={sliders.x} formula="1x + 1y + (3 + _)z = 0" />
+    <LatexUI
+      params={[sliders.x]}
+      colors={[PrimeColor.red]}
+      latex={`1x + 1y + (3 ${sliders.x < 0 ? '' : '+'}\\$0)z = 0`}
+    />
 
-    <Formula color={PrimeColor.yellow} param={sliders.y} formula="1x + 1y + (3 + _)z = 0" />
+    <LatexUI
+      params={[sliders.y]}
+      colors={[PrimeColor.yellow]}
+      latex={`1x + 1y + (3 ${sliders.y < 0 ? '' : '+'}\\$0)z = 0`}
+    />
   </div>
 </Canvas3D>

@@ -32,8 +32,7 @@
     geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
     if (line) {
       line.geometry = geometry;
-
-      line.material.dashed = true;
+      line.computeLineDistances();
     }
   }
 
@@ -60,13 +59,11 @@
       .normalize()
       .multiplyScalar(length - coneHeight / 2)
   );
-
-  console.warn('Implement striped', striped);
 </script>
 
 <!-- Line is length minus cone height -->
 <T.Line2 bind:ref={line}>
-  <T.LineMaterial worldUnits linewidth={radius} dashScale={10} {color} />
+  <T.LineMaterial dashed={striped} worldUnits linewidth={radius} dashScale={10} {color} />
 </T.Line2>
 
 <!-- Cone on top of line -->
@@ -76,3 +73,5 @@
     <T.ConeGeometry args={[radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS]} />
   </T.Mesh>
 {/if}
+
+<slot {endPoint} />

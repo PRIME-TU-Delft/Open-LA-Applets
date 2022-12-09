@@ -2,12 +2,12 @@
   import { Vector3 } from 'three';
 
   import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Vector3D } from 'threlte-components';
-  import { Formula } from 'ui';
+  import { LatexUI } from 'ui';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
 
-  let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
+  let sliders = new Sliders().addSlider(0).addSlider(1);
 </script>
 
 <Canvas3D bind:sliders title="Two planes with a line of intersection.">
@@ -28,10 +28,8 @@
   <Axis3D showNumbers />
 
   <div slot="formulas">
-    <Formula color={PrimeColor.red} param={sliders.x} formula="_x + 1y + 1z = 0" />
+    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'\\$0x + 1y + 1z = 0'} />
 
-    <Formula color={PrimeColor.yellow} param={sliders.y} formula="_x + 1y + 1z = 0" />
-
-    <Formula color={PrimeColor.green} param={sliders.z} formula="_x + 1y + 1z = 0" />
+    <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={'\\$0x + 1y + 1z = 0'} />
   </div>
 </Canvas3D>
