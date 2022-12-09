@@ -19,6 +19,10 @@
 </label>
 
 <style>
+  label {
+    display: grid;
+  }
+
   input {
     accent-color: var(--color);
   }

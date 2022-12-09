@@ -1,6 +1,6 @@
 <script>
   import { Vector3 } from 'three';
-  import { Formula } from 'ui';
+  import { Formula, LatexUI } from 'ui';
   import { Axis3D, Canvas3D, Vector3D } from 'threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';
@@ -13,6 +13,8 @@
   $: v2Pos = v1Dir.clone().multiplyScalar(sliders.x);
   $: v3Dir = v2Pos.clone().add(new Vector3(0, 1, 0).multiplyScalar(sliders.y));
   $: v3Length = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
+
+  $: latexSolution = parseFloat(v3Length.toFixed(2));
 </script>
 
 <Canvas3D bind:sliders>
@@ -46,14 +48,14 @@
   <Axis3D floor showNumbers />
 
   <div slot="formulas">
-    <Formula color={PrimeColor.red} param={sliders.x} formula="length: _" />
+    <Formula color={PrimeColor.red} param={sliders.x} formula="A: _" />
 
-    <Formula color={PrimeColor.yellow} param={sliders.y} formula="length: _" />
+    <Formula color={PrimeColor.yellow} param={sliders.y} formula="B: _" />
 
-    <Formula
-      color={PrimeColor.ultramarine}
-      param={parseFloat(v3Length.toFixed(2))}
-      formula="sqrt({sliders.x}^2 + {sliders.y}^2) = _"
+    <LatexUI
+      latex={'\\begin{aligned} f(\\$1,\\$2) = \\sqrt{\\$1^2, \\$2^2} \\\\ = \\$0  \\end{aligned}'}
+      params={[latexSolution, sliders.x, sliders.y]}
+      colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
     />
   </div>
 </Canvas3D>

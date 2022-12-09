@@ -21,6 +21,7 @@
   "devDependencies": {
     "@mdi/js": "^7.0.96",
     "@types/three": "^0.146.0",
+    "@types/katex": "^0.14.0",
     "eslint-config-custom": "*",
     "svelte": "^3.9.2",
     "three": "^0.147.0"
