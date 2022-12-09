@@ -1,27 +1,28 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { BufferGeometry, Vector3 } from 'three';
+  import { BufferGeometry, Vector3, Line } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
 
-  export let color : string = getRandomColor();
+  export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
-  export let isDashed: boolean = false;
+  export let isDashed = false;
 
   $: geometry = new BufferGeometry().setFromPoints(points);
 
+  let line: Line;
+
+  $: {
+    if (line && isDashed) {
+      line.computeLineDistances();
+    }
+  }
 </script>
 
-<T.Line {geometry}>
-  {#if !isDashed}
-    <T.LineBasicMaterial {color} />
+<T.Line bind:ref={line} {geometry}>
+  {#if isDashed}
+    <T.LineDashedMaterial {color} dashSize={0.1} gapSize={0.05} />
   {:else}
-    <T.LineDashedMaterial 
-      {color} 
-      dashSize={ 0.1}
-      gapSize= {0.1}
-      opacity={ 0.5}
-      transparent={ true}
-    />
+    <T.LineBasicMaterial {color} />
   {/if}
 </T.Line>

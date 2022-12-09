@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { SceneContext, sceneKey } from 'utils/SceneKey.js';
+  import { SceneContext, sceneKey } from 'utils/SceneKey.js';
   import { onMount, afterUpdate, getContext } from 'svelte';
 
   import { BufferGeometry, Color, LineDashedMaterial, LineSegments, Vector3 } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
- 
 
   export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
@@ -17,14 +16,13 @@
   let line: LineSegments;
 
   const geometry = new BufferGeometry().setFromPoints(points);
-  const material =
-      new LineDashedMaterial({
-                  color: color,
-                  dashSize: 0.1,
-                  gapSize: 0.1,
-                  opacity: 0.5,
-                  transparent: true
-          });
+  const material = new LineDashedMaterial({
+    color: color,
+    dashSize: 0.1,
+    gapSize: 0.1,
+    opacity: 0.5,
+    transparent: true
+  });
 
   /**
    * Init the vector
@@ -32,10 +30,10 @@
   onMount(() => {
     material.color.set(color);
 
-    line = new LineSegments(geometry ,  material);
+    line = new LineSegments(geometry, material);
     line.computeLineDistances();
     scene.add(line);
-    
+
     return () => {
       scene.remove(line);
     };
