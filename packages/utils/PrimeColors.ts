@@ -15,6 +15,8 @@ export enum PrimeColor {
   grey = '#CFC7C0'
 }
 
+export const primeColorArray = Object.values(PrimeColor);
+
 export default function getRandomColor(): ColorString {
   const colors = Object.values(PrimeColor);
 

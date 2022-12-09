@@ -1,10 +1,10 @@
 <script lang="ts">
-  import DashedLine3D from './DashedLine3D.svelte';
+  import Line3D from './Line.svelte';
+  import Point3D from './Point.svelte';
   import { Vector3 } from 'three';
-  import Point3D from './Point3D.svelte';
 
   export let p: Vector3;
-  export let color: string = 'black'; //color of used lines
+  export let color = 'black'; //color of used lines
   export let showAxisPoints = false;
   export let pointSize = 0.05;
 
@@ -18,12 +18,12 @@
 </script>
 
 <!-- three lines to x,z axis -->
-<DashedLine3D points={[p, yP]} {color} />
-<DashedLine3D points={[yP, xAx]} {color} />
-<DashedLine3D points={[yP, zAx]} {color} />
+<Line3D points={[p, yP]} {color} isDashed />
+<Line3D points={[yP, xAx]} {color} isDashed />
+<Line3D points={[yP, zAx]} {color} isDashed />
 
 <!-- line to z axis -->
-<DashedLine3D points={[p, yAx]} {color} />
+<Line3D points={[p, yAx]} {color} isDashed />
 
 <!-- points on axis -->
 {#if showAxisPoints}

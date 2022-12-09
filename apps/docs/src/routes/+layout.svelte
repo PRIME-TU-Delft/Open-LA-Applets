@@ -18,7 +18,7 @@
         { url: 'line', name: 'Line 3D' },
         { url: 'plane', name: 'Plane 3D' },
         { url: 'point', name: 'Point 3D' },
-        { url: 'arc', name: 'Arc 3D'},
+        { url: 'arc', name: 'Arc 3D' }
       ]
     },
     { url: '2d-components', name: '2D Components', children: [] },

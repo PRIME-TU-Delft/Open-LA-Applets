@@ -50,6 +50,6 @@
 <style lang="postcss">
   .label {
     @apply text-slate-700;
-    color: var(--color); 
+    color: var(--color);
   }
 </style>
