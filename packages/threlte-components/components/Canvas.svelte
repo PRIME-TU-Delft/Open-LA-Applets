@@ -14,7 +14,6 @@
   export let title = '';
   export let autoPlay = true;
   export let isPerspectiveCamera = false;
-  export let floor = false;
   export let background = '#ffffff';
 
   let isPlaying = autoPlay;
@@ -57,13 +56,6 @@
     </slot>
 
     <slot />
-
-    {#if floor}
-      <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
-        <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
-        <T.CircleGeometry args={[10, 64]} />
-      </T.Mesh>
-    {/if}
   </Canvas>
 
   {#if !disableUI}
@@ -94,13 +86,12 @@
       <slot name="formulas" />
     </UI>
 
-    <!--  -->
+    <!-- TODO -->
     <UI column bottom right opacity styled={false}>
       {#if isPlaying}
         <RoundButton icon={mdiPause} />
       {/if}
 
-      <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
       <RoundButton icon={mdiRestart} on:click={reset} />
 
       <ToggleFullscreen {sceneEl} bind:isFullscreen />

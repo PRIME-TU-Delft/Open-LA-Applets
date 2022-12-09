@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
+  import { DoubleSide, Vector3 } from 'three';
+  import { T } from '@threlte/core';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import Line from './Line.svelte';
@@ -10,6 +11,7 @@
   export let hideTicks = false;
   export let axisLength = 10;
   export let axisSpacing = 1;
+  export let floor = false;
 
   $: axisInterval = Math.floor(axisLength / axisSpacing);
   $: indecators = new Array(axisInterval * 2 + 1)
@@ -92,4 +94,11 @@
   <Equation position={new Vector3(0, 0, indecatorMax)} latex="x" />
   <Equation position={new Vector3(indecatorMax, 0, 0)} latex="y" />
   <Equation position={new Vector3(0, indecatorMax, 0)} latex="z" />
+{/if}
+
+{#if floor}
+  <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
+    <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
+    <T.CircleGeometry args={[axisLength, 64]} />
+  </T.Mesh>
 {/if}

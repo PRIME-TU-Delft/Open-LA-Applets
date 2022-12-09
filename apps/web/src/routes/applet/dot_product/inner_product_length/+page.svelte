@@ -15,7 +15,7 @@
   $: v3Length = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 </script>
 
-<Canvas3D floor bind:sliders>
+<Canvas3D bind:sliders>
   <Vector3D direction={v1Dir} color={PrimeColor.red} length={sliders.x} />
   <Vector3D
     origin={v2Pos}
@@ -43,7 +43,7 @@
   />
   <Vector3D striped origin={new Vector3(0, 0, v2Pos.z)} color="black" length={v2Pos.x} />
 
-  <Axis3D showNumbers />
+  <Axis3D floor showNumbers />
 
   <div slot="formulas">
     <Formula color={PrimeColor.red} param={sliders.x} formula="length: _" />

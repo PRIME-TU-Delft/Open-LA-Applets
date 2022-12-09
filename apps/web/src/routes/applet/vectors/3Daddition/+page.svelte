@@ -52,5 +52,5 @@
   />
   <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints />
 
-  <Axis3D showNumbers axisLength={7} />
+  <Axis3D showNumbers axisLength={7} floor />
 </Canvas3D>
