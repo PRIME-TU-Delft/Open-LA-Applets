@@ -18,6 +18,11 @@
       : position.clone().add(position.clone().normalize().multiplyScalar(offset));
 
   $: {
+    // Render the LaTeX string given by the user to a MathML string
+    // using KaTeX. If KaTeX throws an error, return the error message instead.
+    // The code is wrapped in a try-catch block to ensure that no errors
+    // are thrown.
+
     try {
       // For reference: https://katex.org/docs/options.html
       str = katex.renderToString(latex, {
@@ -27,7 +32,7 @@
         throwOnError: true,
         errorColor: '#cc0000',
         strict: 'warn',
-        output: 'mathml',
+        output: 'html',
         trust: false,
         macros: { '\\f': '#1f(#2)' }
       });
@@ -38,7 +43,10 @@
 </script>
 
 <HTML position={pos}>
-  <div class="equation" style="color: {color}; font-size: {size}rem">{@html str}</div>
+  <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
+  <div on:mousedown|preventDefault class="equation" style="color: {color}; font-size: {size}rem">
+    {@html str}
+  </div>
 </HTML>
 
 <style>
@@ -48,5 +56,6 @@
     left: 0;
     transform: translate(-50%, -50%);
     user-select: none;
+    pointer-events: none;
   }
 </style>

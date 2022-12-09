@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
+      integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
+      crossorigin="anonymous"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PRIME applets</title>
     <meta name="theme-color" content="#7AB1E8" />
@@ -13,6 +19,6 @@
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
-    <div style="display: contents; height: 100%">%sveltekit.body%</div>
+    <div style="display: contents; height: 100%; user-select: none">%sveltekit.body%</div>
   </body>
 </html>

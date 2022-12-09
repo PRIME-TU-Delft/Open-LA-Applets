@@ -91,7 +91,6 @@
     </UI>
 
     <UI visible={!!$$slots.formulas && (showFormulas || isChangeing)} top column>
-      <h2 class="w-full border-b-2 border-slate-700 pb-1 font-bold">Prime visuals</h2>
       <slot name="formulas" />
     </UI>
 

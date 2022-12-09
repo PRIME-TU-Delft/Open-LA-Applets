@@ -9,7 +9,12 @@
 </script>
 
 <HTML {position}>
-  <div class="label" style="color: {color}; font-size: {size}rem; opacity: {opacity}">
+  <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
+  <div
+    on:mousedown|preventDefault
+    class="label"
+    style="color: {color}; font-size: {size}rem; opacity: {opacity}"
+  >
     <slot />
   </div>
 </HTML>
@@ -21,5 +26,6 @@
     left: 0;
     transform: translate(-50%, -50%);
     user-select: none;
+    pointer-events: none;
   }
 </style>
