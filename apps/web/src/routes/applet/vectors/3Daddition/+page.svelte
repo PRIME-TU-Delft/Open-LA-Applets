@@ -1,12 +1,6 @@
 <script lang="ts">
   import { Vector3 } from 'three';
-  import {
-    Axis3D,
-    Canvas3D,
-    Equation3D,
-    PartialDeconstruction3D,
-    Vector3D
-  } from 'threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, PartialDeconstruction3D, Vector3D } from 'threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';
 
@@ -21,7 +15,7 @@
 <Canvas3D title="Geometrical interpretation of addition for three-dimensional vectors.">
   <!-- lower green vector -->
   <Vector3D direction={v1} color={PrimeColor.green} length={v1.length()} />
-  <Equation3D
+  <Latex3D
     position={v1}
     offset={labelOffset}
     color={PrimeColor.green}
@@ -34,7 +28,7 @@
 
   <!-- blue vector -->
   <Vector3D direction={v2} color={PrimeColor.ultramarine} length={v2.length()} />
-  <Equation3D
+  <Latex3D
     position={v2}
     offset={labelOffset}
     color={PrimeColor.ultramarine}
@@ -44,7 +38,7 @@
 
   <!-- red vector -->
   <Vector3D direction={v3} color={PrimeColor.red} length={v3.length()} />
-  <Equation3D
+  <Latex3D
     position={v3}
     offset={labelOffset}
     color={PrimeColor.red}
