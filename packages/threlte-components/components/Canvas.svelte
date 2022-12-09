@@ -5,7 +5,6 @@
 
   import { Sliders } from 'utils/Slider';
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
-  import { DoubleSide } from 'three';
   import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;

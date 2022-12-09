@@ -1,7 +1,7 @@
 <script>
   import { Vector3 } from 'three';
   import { Formula, LatexUI } from 'ui';
-  import { Axis3D, Canvas3D, Vector3D } from 'threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, Vector3D } from 'threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
@@ -19,12 +19,15 @@
 
 <Canvas3D bind:sliders>
   <Vector3D direction={v1Dir} color={PrimeColor.red} length={sliders.x} />
+  <Latex3D latex="A" color={PrimeColor.red} position={v2Pos} />
+
   <Vector3D
     origin={v2Pos}
     direction={new Vector3(0, 1, 0)}
     color={PrimeColor.yellow}
     length={sliders.y}
   />
+  <Latex3D latex="B" color={PrimeColor.yellow} position={v3Dir} />
 
   <Vector3D direction={v3Dir} color={PrimeColor.ultramarine} length={v3Length} />
 
@@ -48,14 +51,16 @@
   <Axis3D floor showNumbers />
 
   <div slot="formulas">
-    <Formula color={PrimeColor.red} param={sliders.x} formula="A: _" />
-
-    <Formula color={PrimeColor.yellow} param={sliders.y} formula="B: _" />
+    <LatexUI
+      params={[sliders.x, sliders.y]}
+      colors={[PrimeColor.red, PrimeColor.yellow]}
+      latex={'\\begin{aligned} A = \\$0 \\\\ B = \\$1  \\end{aligned}'}
+    />
 
     <LatexUI
-      latex={'\\begin{aligned} f(\\$1,\\$2) = \\sqrt{\\$1^2, \\$2^2} \\\\ = \\$0  \\end{aligned}'}
       params={[latexSolution, sliders.x, sliders.y]}
       colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
+      latex={'\\begin{aligned} f(\\$1,\\$2) = \\sqrt{\\$1^2, \\$2^2} \\\\ = \\$0  \\end{aligned}'}
     />
   </div>
 </Canvas3D>

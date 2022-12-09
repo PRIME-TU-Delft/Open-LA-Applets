@@ -26,11 +26,9 @@
         leqno: false,
         fleqn: false,
         throwOnError: true,
-        errorColor: '#cc0000',
         output: 'html',
         trust: true,
-        strict: false,
-        macros: { '\\f': '#1f(#2)' }
+        strict: false
       });
     } catch (e: any) {
       str = e.message;
@@ -41,3 +39,9 @@
 </script>
 
 {@html str}
+
+<style>
+  :global(.UI .katex-display) {
+    margin: 0;
+  }
+</style>
