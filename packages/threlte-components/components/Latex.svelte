@@ -44,13 +44,13 @@
 
 <HTML position={pos}>
   <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
-  <div on:mousedown|preventDefault class="equation" style="color: {color}; font-size: {size}rem">
+  <div on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
     {@html str}
   </div>
 </HTML>
 
 <style>
-  .equation {
+  .latex {
     position: absolute;
     top: 0;
     left: 0;

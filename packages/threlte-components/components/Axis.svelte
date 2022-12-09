@@ -5,7 +5,7 @@
   import { PrimeColor } from 'utils/PrimeColors';
   import Line from './Line.svelte';
   import Label from './Label.svelte';
-  import Equation from './Equation.svelte';
+  import Latex3D from './Latex.svelte';
 
   export let showNumbers = false;
   export let hideTicks = false;
@@ -87,13 +87,13 @@
     </Label>
   {/each}
 
-  <Equation position={new Vector3(0, 0, indecatorMin)} latex="-x" />
-  <Equation position={new Vector3(indecatorMin, 0, 0)} latex="-y" />
-  <Equation position={new Vector3(0, indecatorMin, 0)} latex="-z" />
+  <Latex3D position={new Vector3(0, 0, indecatorMin)} latex="-x" />
+  <Latex3D position={new Vector3(indecatorMin, 0, 0)} latex="-y" />
+  <Latex3D position={new Vector3(0, indecatorMin, 0)} latex="-z" />
 
-  <Equation position={new Vector3(0, 0, indecatorMax)} latex="x" />
-  <Equation position={new Vector3(indecatorMax, 0, 0)} latex="y" />
-  <Equation position={new Vector3(0, indecatorMax, 0)} latex="z" />
+  <Latex3D position={new Vector3(0, 0, indecatorMax)} latex="x" />
+  <Latex3D position={new Vector3(indecatorMax, 0, 0)} latex="y" />
+  <Latex3D position={new Vector3(0, indecatorMax, 0)} latex="z" />
 {/if}
 
 {#if floor}
