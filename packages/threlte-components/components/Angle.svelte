@@ -17,11 +17,10 @@
   $: u2 = vs[1].clone().multiplyScalar(size / vs[1].length());
 
   //labelPosition
-  $: labelPosition = u1.clone().add(u2).multiplyScalar(1.3).add(origin);
+  $: labelPosition = origin.clone().add(u1.clone()).add(u2.clone());
 </script>
 
 <!-- draw two lines to represent right angle if perpendicular, else draw an arc -->
-
 {#if (Math.abs(u1.dot(u2)) <= 0.005 && !u1.equals(u2) && !forceRoundAngle) || forceRightAngle}
   <Line3D {color} points={[u1.clone().add(origin), u1.clone().add(u2).add(origin)]} />
   <Line3D {color} points={[u2.clone().add(origin), u1.clone().add(u2).add(origin)]} />
