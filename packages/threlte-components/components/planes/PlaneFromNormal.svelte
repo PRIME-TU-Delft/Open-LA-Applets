@@ -8,8 +8,6 @@
   import getRandomColor from 'utils/PrimeColors';
   import PlaneSegments from 'utils/Segments';
 
-  import Vector from '../Vector.svelte';
-
   import {
     PlaneGeometry,
     MeshBasicMaterial,
@@ -55,8 +53,6 @@
 
   $: normal = normal.normalize();
 </script>
-
-<Vector origin={position} direction={normal} color="black" striped length={2} />
 
 <!-- TODO: replace MeshInstance with T.Mesh -->
 <MeshInstance {mesh} />

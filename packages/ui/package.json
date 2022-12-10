@@ -13,6 +13,10 @@
   "devDependencies": {
     "eslint-config-custom": "*",
     "utils": "*",
-    "svelte": "^3.44.0"
+    "svelte": "^3.44.0",
+    "@types/katex": "^0.14.0"
+  },
+  "dependencies": {
+    "katex": "^0.16.4"
   }
 }

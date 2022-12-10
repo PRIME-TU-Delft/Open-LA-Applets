@@ -5,7 +5,6 @@
 
   import { Sliders } from 'utils/Slider';
   import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
-  import { DoubleSide } from 'three';
   import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;
@@ -14,7 +13,6 @@
   export let title = '';
   export let autoPlay = true;
   export let isPerspectiveCamera = false;
-  export let floor = false;
   export let background = '#ffffff';
 
   let isPlaying = autoPlay;
@@ -41,6 +39,7 @@
 </script>
 
 <div
+  class="canvasWrapper"
   bind:clientHeight={height}
   bind:clientWidth={width}
   bind:this={sceneEl}
@@ -56,13 +55,6 @@
     </slot>
 
     <slot />
-
-    {#if floor}
-      <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
-        <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
-        <T.CircleGeometry args={[10, 64]} />
-      </T.Mesh>
-    {/if}
   </Canvas>
 
   {#if !disableUI}
@@ -90,20 +82,30 @@
     </UI>
 
     <UI visible={!!$$slots.formulas && (showFormulas || isChangeing)} top column>
-      <h2 class="w-full border-b-2 border-slate-700 pb-1 font-bold">Prime visuals</h2>
       <slot name="formulas" />
     </UI>
 
-    <!--  -->
+    <!-- TODO -->
     <UI column bottom right opacity styled={false}>
       {#if isPlaying}
         <RoundButton icon={mdiPause} />
       {/if}
 
-      <!-- TODO: give this button function <RoundButton icon="{mdiCog}" on:click="{resize}" /> -->
       <RoundButton icon={mdiRestart} on:click={reset} />
 
       <ToggleFullscreen {sceneEl} bind:isFullscreen />
     </UI>
   {/if}
 </div>
+
+<style>
+  .canvasWrapper {
+    position: relative;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  :global(.canvasWrapper canvas) {
+    position: absolute;
+  }
+</style>

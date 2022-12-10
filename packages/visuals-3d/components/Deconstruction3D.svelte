@@ -5,7 +5,7 @@
   import { sceneKey, type SceneContext } from 'utils/SceneKey';
 
   export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
-  export let color =  '0xffffff';
+  export let color = '0xffffff';
 
   // Import scene from root Canvas.svelte. Context is used because store is too global.
   // More info: https://svelte.dev/docs#run-time-svelte-setcontext

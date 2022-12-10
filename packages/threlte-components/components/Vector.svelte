@@ -1,14 +1,11 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
   import { Line2 } from 'three/examples/jsm/lines/Line2';
 
-  import { Color, DoubleSide, Vector3, Mesh, Quaternion } from 'three';
+  import { DoubleSide, Vector3, Mesh, Quaternion } from 'three';
 
   import getRandomColor from 'utils/PrimeColors';
-  import ThrelteLabel from 'utils/ThrelteLabel';
 
-  import Label from './Label.svelte';
   import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
@@ -17,9 +14,7 @@
   export let striped = false; // whether the line is striped
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
-  // export let showDeconstruction = false; // show deconstruction of vector
   export let hideHead = false; // hide the cone
-  export let label: ThrelteLabel = ThrelteLabel.default(); // label of vector
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
   const CONE_HEIGHT = 0.5;
@@ -30,15 +25,14 @@
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
 
-  $: direction = direction.normalize();
+  $: direction = direction.clone().normalize();
 
   $: {
     const geometry = new LineGeometry();
     geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
     if (line) {
       line.geometry = geometry;
-
-      line.material.dashed = true;
+      line.computeLineDistances();
     }
   }
 
@@ -65,13 +59,11 @@
       .normalize()
       .multiplyScalar(length - coneHeight / 2)
   );
-
-  console.warn('Implement striped', striped);
 </script>
 
 <!-- Line is length minus cone height -->
 <T.Line2 bind:ref={line}>
-  <T.LineMaterial worldUnits linewidth={radius} dashScale={10} {color} />
+  <T.LineMaterial dashed={striped} worldUnits linewidth={radius} dashScale={10} {color} />
 </T.Line2>
 
 <!-- Cone on top of line -->
@@ -82,4 +74,4 @@
   </T.Mesh>
 {/if}
 
-<Label {color} {label} start={origin} end={endPoint} />
+<slot {endPoint} />
