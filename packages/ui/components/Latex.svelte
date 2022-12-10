@@ -14,9 +14,11 @@
     try {
       // Replace the parameters in the string with the values given by the user
       for (let i = 0; i < params.length; i++) {
+        const value = parseFloat('' + params[i]).toFixed(2) || params[i];
+
         input = input.replaceAll(
           '\\$' + i,
-          `\\htmlStyle{color: ${colors[i % colors.length]};}{${params[i]}}`
+          `\\htmlStyle{color: ${colors[i % colors.length]};}{${value}}`
         );
       }
 
