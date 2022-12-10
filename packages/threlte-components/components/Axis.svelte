@@ -86,15 +86,15 @@
       {indecator}
     </Label>
   {/each}
-
-  <Latex3D position={new Vector3(0, 0, indecatorMin)} latex="-x" />
-  <Latex3D position={new Vector3(indecatorMin, 0, 0)} latex="-y" />
-  <Latex3D position={new Vector3(0, indecatorMin, 0)} latex="-z" />
-
-  <Latex3D position={new Vector3(0, 0, indecatorMax)} latex="x" />
-  <Latex3D position={new Vector3(indecatorMax, 0, 0)} latex="y" />
-  <Latex3D position={new Vector3(0, indecatorMax, 0)} latex="z" />
 {/if}
+
+<Latex3D position={new Vector3(0, 0, indecatorMin)} latex="-x" />
+<Latex3D position={new Vector3(indecatorMin, 0, 0)} latex="-y" />
+<Latex3D position={new Vector3(0, indecatorMin, 0)} latex="-z" />
+
+<Latex3D position={new Vector3(0, 0, indecatorMax)} latex="x" />
+<Latex3D position={new Vector3(indecatorMax, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indecatorMax, 0)} latex="z" />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
