@@ -33,7 +33,7 @@
         errorColor: '#cc0000',
         strict: 'warn',
         output: 'html',
-        trust: false,
+        trust: true,
         macros: { '\\f': '#1f(#2)' }
       });
     } catch (e: any) {

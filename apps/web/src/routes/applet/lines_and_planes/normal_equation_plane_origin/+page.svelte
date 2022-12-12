@@ -11,8 +11,9 @@
   } from 'threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
-  const n = new Vector3(1, 2, 1);
-  const q = new Vector3(1, 1, -((n.x + n.y) / n.z));
+  const n = new Vector3(1, 3, 2);
+  const _q = new Vector3(1, 1, -((n.x + n.y) / n.z));
+  const q = _q.cross(n).normalize().multiplyScalar(n.length());
 </script>
 
 <!-- TODO: cameraPos={[1, 0.5, 2]} -->

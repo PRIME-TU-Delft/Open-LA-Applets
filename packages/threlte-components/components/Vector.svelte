@@ -18,6 +18,7 @@
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
   const CONE_HEIGHT = 0.5;
+  const CONE_DIAMETER = 0.1;
 
   let coneMesh: Mesh;
   let line: Line2;
@@ -70,7 +71,7 @@
 {#if !hideHead}
   <T.Mesh position={conePosition.toArray()} bind:ref={coneMesh}>
     <T.MeshBasicMaterial {color} side={DoubleSide} />
-    <T.ConeGeometry args={[radius * 2, CONE_HEIGHT, RADIUS_SEGMENTS]} />
+    <T.ConeGeometry args={[CONE_DIAMETER, CONE_HEIGHT, RADIUS_SEGMENTS]} />
   </T.Mesh>
 {/if}
 

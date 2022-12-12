@@ -21,6 +21,7 @@
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}
+      radius={0.2}
       hideHead
     />
   {/if}
