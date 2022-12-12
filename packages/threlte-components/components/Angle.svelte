@@ -33,3 +33,5 @@
     {title}
   </Label>
 {/if}
+
+<slot {labelPosition} />

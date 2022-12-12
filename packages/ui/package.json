@@ -11,10 +11,10 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "devDependencies": {
+    "@types/katex": "^0.14.0",
     "eslint-config-custom": "*",
-    "utils": "*",
     "svelte": "^3.44.0",
-    "@types/katex": "^0.14.0"
+    "utils": "*"
   },
   "dependencies": {
     "katex": "^0.16.4"
