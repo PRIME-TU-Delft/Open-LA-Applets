@@ -15,7 +15,6 @@
   import { Sliders } from 'utils/Slider';
 
   let sliders = new Sliders().addSlider(0.5).addSlider(1);
-  let xRotated = new Vector3(1, 1, 1);
 </script>
 
 <Canvas3D bind:sliders title="Two planes with a line of intersection.">
@@ -24,7 +23,7 @@
   </AutoPlane>
 
   <!-- Plane x Rotated by 90 deg -->
-  <PlaneFromNormal normal={new Vector3(sliders.x, -1, 1)} color={PrimeColor.green} />
+  <PlaneFromNormal normal={new Vector3(0.5, -1, 1)} color={PrimeColor.green} />
 
   {#if !sliders.allEqual}
     <Vector3D
@@ -45,6 +44,6 @@
 
     <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={'\\$0x + 1y + 1z = 0'} />
 
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.green]} latex={'\\$0x + -1y + 1z = 0'} />
+    <LatexUI params={[0.5]} colors={[PrimeColor.green]} latex={'\\$0x + -1y + 1z = 0'} />
   </div>
 </Canvas3D>

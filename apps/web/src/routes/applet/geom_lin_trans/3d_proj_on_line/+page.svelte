@@ -11,7 +11,7 @@
   } from 'threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
-  const u = new Vector3(3, 4, 2); // Vector U - detached from the line
+  const u = new Vector3(3, 4, -3); // Vector U - detached from the line
 
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
@@ -33,11 +33,10 @@
     color={PrimeColor.red}
     striped
   />
+  <Latex3D latex={'proj_L(\\vec{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
 
   <!-- Angle between proj and line l -->
-  <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} let:labelPosition>
-    <Latex3D latex={'proj_L(\\vec{u})'} position={labelPosition} />
-  </Angle3D>
+  <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
   <Latex3D latex={'Line(L)'} position={lineDir} offset={-2} />
