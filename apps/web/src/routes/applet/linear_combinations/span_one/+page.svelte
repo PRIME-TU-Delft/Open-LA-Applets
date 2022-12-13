@@ -3,8 +3,8 @@
   import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from 'threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
-  $: vDir = new Vector3(3, 2, -3);
-  $: lineDir = vDir.clone().normalize().multiplyScalar(10);
+  $: vDir = new Vector3(3, 2, -3); // Direction of vector v
+  $: lineDir = vDir.clone().normalize().multiplyScalar(10); // Line L (v scaled)
 </script>
 
 <Canvas3D>

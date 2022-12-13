@@ -12,10 +12,10 @@
   import { PrimeColor } from 'utils/PrimeColors';
   import { bVector } from 'utils/LatexFormat';
 
-  const u = new Vector3(3, 4, 2);
-  const v = u.clone().multiply(new Vector3(1, 0, 1));
+  const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
+  const v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
 
-  const u_proj = u.clone().projectOnVector(v);
+  const u_proj = u.clone().projectOnVector(v); // Projection point of vector u on plane p
 </script>
 
 <Canvas3D>
@@ -28,7 +28,7 @@
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
 
-  <!-- Projection -->
+  <!-- Projection vector u and plane p -->
   <Point3D position={u_proj} color={PrimeColor.red} />
   <Vector3D
     origin={u}
@@ -38,7 +38,7 @@
     striped
   />
 
-  <!-- Angle between proj and horizontal axis -->
+  <!-- Angle between projection and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
   <Latex3D latex={'Proj_p(\\vec{u})'} position={u_proj} />

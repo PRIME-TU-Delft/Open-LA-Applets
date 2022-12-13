@@ -11,10 +11,10 @@
   import { PrimeColor } from 'utils/PrimeColors';
   import { bVector } from 'utils/LatexFormat';
 
-  const u = new Vector3(3, 4, 2);
-  const u_refl = u.clone().multiply(new Vector3(1, -1, 1));
+  const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
+  const u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
 
-  const u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1)));
+  const u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1))); // Projection point of vector u on plane p
 </script>
 
 <Canvas3D>
