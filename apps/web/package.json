@@ -14,6 +14,7 @@
   "dependencies": {
     "@threlte/core": "^5.0.5",
     "@threlte/extras": "^4.8.0",
+    "threlte-components": "*",
     "@types/three": "^0.146.0",
     "three": "^0.147.0",
     "ui": "*",

@@ -5,6 +5,9 @@ const config = {
   plugins: [sveltekit()],
   ssr: {
     noExternal: ['three', 'troika-three-text']
+  },
+  server: {
+    port: 3000
   }
 };
 
