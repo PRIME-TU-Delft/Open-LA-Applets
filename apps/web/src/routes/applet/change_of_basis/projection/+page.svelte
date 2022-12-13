@@ -15,10 +15,10 @@
   const b2 = new Vector3(2, -1, 2);
   const b3 = b2.clone().cross(b1.clone()).normalize().multiplyScalar(b1.length()); // perpendicular to b1 and b2
 
-  $: b4 = b1.clone().add(b2).normalize();
-  $: b5 = b1.clone().sub(b2).normalize();
-  $: b1_proj = b1.clone().projectOnVector(b4);
-  $: b2_proj = b2.clone().projectOnVector(b5);
+  $: b4 = b1.clone().add(b2).normalize(); // Span of b1 and b2 in the x direction
+  $: b5 = b1.clone().sub(b2).normalize(); // Span of b1 and b2 in the y direction
+  $: b1_proj = b1.clone().projectOnVector(b4); // Projection of b1 onto b4
+  $: b2_proj = b2.clone().projectOnVector(b5); // Projection of b2 onto b5
 </script>
 
 <Canvas3D>
@@ -30,7 +30,7 @@
   <Vector3D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} />
   <Latex3D latex={'\\vec{b2}'} position={b2} />
 
-  <!-- Vector w -->
+  <!-- Vector w = b1 + b2 -->
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.red} />
   <Latex3D latex={'\\vec{b3}'} position={b3} />
 
@@ -60,7 +60,7 @@
     striped
   />
 
-  <!-- Angles -->
+  <!-- Angles - 90 deg angles between b1 and b3 | between b2 and b3 -->
   <Angle3D vs={[b1, b3]} />
   <Angle3D vs={[b2, b3]} />
 
