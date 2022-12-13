@@ -12,5 +12,9 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*"
+  },
+  "dependencies": {
+    "@types/three": "^0.146.0",
+    "three": "^0.147.0"
   }
 }

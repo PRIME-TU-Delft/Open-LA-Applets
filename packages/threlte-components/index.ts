@@ -8,4 +8,4 @@ export { default as Point3D } from './components/Point.svelte';
 export { default as Vector3D } from './components/Vector.svelte';
 export { default as PartialDeconstruction3D } from './components/PartialDeconstruction.svelte';
 
-export { PlaneFromNormal, AutoPlane } from './components/planes/index';
+export { PlaneFromNormal, PlaneFromPoints, AutoPlane } from './components/planes/index';

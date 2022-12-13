@@ -1,24 +1,22 @@
 <script lang="ts">
-  /**
-   * This component is defined by a normal vector and a center position.
-   */
-
   import { MeshInstance } from '@threlte/core';
-
-  import getRandomColor from 'utils/PrimeColors';
-  import PlaneSegments from 'utils/Segments';
-
   import {
     PlaneGeometry,
     MeshBasicMaterial,
     DoubleSide,
     Vector3,
     Mesh as ThreeMesh,
-    Quaternion
+    Plane
   } from 'three';
 
-  export let position: Vector3 = new Vector3(0, 0, 0);
-  export let normal: Vector3 = new Vector3(1, 1, 1);
+  import getRandomColor from 'utils/PrimeColors';
+  import PlaneSegments from 'utils/Segments';
+
+  export let points: [Vector3, Vector3, Vector3] = [
+    new Vector3(1, 0, 0),
+    new Vector3(0, 1, 0),
+    new Vector3(0, 0, 1)
+  ];
   export let color = getRandomColor();
   export let size = 10;
   export let opacity = 0.8;
@@ -39,18 +37,14 @@
   }
 
   $: mesh = new ThreeMesh(geometry, matrials);
-  $: normal = normal.clone().normalize();
 
   $: {
     if (planeSegment.segments > 1) setStripes();
     mesh = new ThreeMesh(geometry, matrials);
-    mesh.position.x = position.x;
-    mesh.position.y = position.y;
-    mesh.position.z = position.z;
 
-    mesh.setRotationFromQuaternion(
-      new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
-    );
+    const plane = new Plane().setFromCoplanarPoints(points[0], points[1], points[2]);
+    plane.coplanarPoint(mesh.position);
+    mesh.quaternion.setFromUnitVectors(new Vector3(0, 0, 1), plane.normal);
   }
 </script>
 
