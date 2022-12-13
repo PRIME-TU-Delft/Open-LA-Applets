@@ -25,12 +25,7 @@ const config = {
   ]),
 
   kit: {
-    adapter: multiAdapter([
-      netlifyAdapter(),
-      nodeAdapter({
-        precompress: true
-      })
-    ])
+    adapter: netlifyAdapter()
   }
 };
 
