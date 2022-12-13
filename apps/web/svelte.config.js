@@ -1,9 +1,4 @@
-// Adapters
-import nodeAdapter from '@sveltejs/adapter-node';
-import netlifyAdapter from '@sveltejs/adapter-netlify';
-import multiAdapter from '@macfja/svelte-multi-adapter';
-
-// Preprocessors
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import seqPreprocessor from 'svelte-sequential-preprocessor';
 import { preprocessThrelte } from '@threlte/preprocess';
@@ -25,7 +20,9 @@ const config = {
   ]),
 
   kit: {
-    adapter: netlifyAdapter()
+    adapter: adapter({
+      precompress: true
+    })
   }
 };
 
