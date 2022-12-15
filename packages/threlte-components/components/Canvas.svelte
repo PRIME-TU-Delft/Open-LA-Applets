@@ -105,7 +105,7 @@
     overflow: hidden;
   }
 
-  :global(.canvasWrapper canvas) {
+  :global(.canvasWrapper > canvas) {
     position: absolute;
   }
 </style>
