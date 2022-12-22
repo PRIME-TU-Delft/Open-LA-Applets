@@ -1,4 +1,10 @@
-import adapter from '@sveltejs/adapter-node';
+// Adapters
+import nodeAdapter from '@sveltejs/adapter-node';
+import netlifyAdapter from '@sveltejs/adapter-netlify';
+
+console.log('Building for: ' + process.env.BUILD_ENV === 'netlify' ? 'Netlify' : 'NodeJS');
+
+// Preprocessors
 import preprocess from 'svelte-preprocess';
 import seqPreprocessor from 'svelte-sequential-preprocessor';
 import { preprocessThrelte } from '@threlte/preprocess';
@@ -20,9 +26,7 @@ const config = {
   ]),
 
   kit: {
-    adapter: adapter({
-      precompress: true
-    })
+    adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter()
   }
 };
 
