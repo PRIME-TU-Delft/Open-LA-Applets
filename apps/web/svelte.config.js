@@ -1,7 +1,8 @@
 // Adapters
 import nodeAdapter from '@sveltejs/adapter-node';
 import netlifyAdapter from '@sveltejs/adapter-netlify';
-import multiAdapter from '@macfja/svelte-multi-adapter';
+
+console.log('Building for: ' + process.env.BUILD_ENV === 'netlify' ? 'Netlify' : 'NodeJS');
 
 // Preprocessors
 import preprocess from 'svelte-preprocess';
@@ -25,7 +26,7 @@ const config = {
   ]),
 
   kit: {
-    adapter: multiAdapter([netlifyAdapter(), nodeAdapter()])
+    adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter()
   }
 };
 
