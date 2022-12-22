@@ -14,13 +14,14 @@
   "dependencies": {
     "@threlte/core": "^5.0.5",
     "@threlte/extras": "^4.8.0",
-    "ui": "*",
-    "utils": "*",
-    "threlte-components": "*",
     "@types/three": "^0.146.0",
-    "three": "^0.147.0"
+    "three": "^0.147.0",
+    "threlte-components": "*",
+    "ui": "*",
+    "utils": "*"
   },
   "devDependencies": {
+    "@sveltejs/adapter-netlify": "^1.0.0-next.86",
     "@sveltejs/adapter-node": "^1.0.0-next.102",
     "@sveltejs/kit": "next",
     "@threlte/preprocess": "^0.0.2",
