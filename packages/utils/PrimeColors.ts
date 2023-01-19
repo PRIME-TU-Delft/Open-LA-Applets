@@ -13,7 +13,7 @@ export enum PrimeColor {
   ultramarine = '#7AB1E8',
   pink = '#F87089',
   grey = '#CFC7C0',
-  black = '#000000'
+  black = '#565656'
 }
 
 export const primeColorArray = Object.values(PrimeColor);

@@ -21,9 +21,11 @@
 <style>
   label {
     display: grid;
+    width: 100%;
   }
 
   input {
     accent-color: var(--color);
+    width: inherit;
   }
 </style>

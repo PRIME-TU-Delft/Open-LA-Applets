@@ -49,6 +49,10 @@
 {/if}
 
 <style lang="postcss">
+  .UI {
+    touch-action: none;
+  }
+
   .opacity {
     @apply bg-slate-700/10;
   }

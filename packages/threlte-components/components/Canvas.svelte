@@ -78,15 +78,17 @@
     <UI top left visible={!isPlaying && !isFullscreen}>Click to start playing scene</UI>
 
     <!-- SLIDER PANEL -->
-    <UI visible={!!sliders.sliders.length} bottom opacity>
-      {#each sliders.sliders as slider}
-        <SvelteSlider
-          bind:slider
-          on:mousedown={() => (isChangeing = true)}
-          on:mouseup={() => (isChangeing = false)}
-        />
-      {/each}
-    </UI>
+    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
+      <UI visible={!!sliders.sliders.length} bottom opacity>
+        {#each sliders.sliders as slider}
+          <SvelteSlider
+            bind:slider
+            on:mousedown={() => (isChangeing = true)}
+            on:mouseup={() => (isChangeing = false)}
+          />
+        {/each}
+      </UI>
+    </div>
 
     <!-- INFORMATION UI -->
     <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>

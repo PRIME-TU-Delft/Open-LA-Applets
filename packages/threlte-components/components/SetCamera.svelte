@@ -16,7 +16,7 @@
   // Camera distances and zoom levels
   // Distance is linear and zoom is logarithmic
   let distance = 10; // Distance from the origin - For perspective camera
-  let zoom = 30; // Zoom level - For orthographic camera
+  let zoom = 29; // Zoom level - For orthographic camera
 
   $: {
     const cameraSettings = parseCameraSettings($page.url.searchParams);
