@@ -1,49 +1,72 @@
 <script lang="ts">
-  import { T, useThrelte } from '@threlte/core';
+  import { page } from '$app/stores';
 
-  const { renderer, invalidate } = useThrelte();
+  import { T, useThrelte } from '@threlte/core';
+  import { Vector3 } from 'three';
+
+  import { parseCameraSettings } from 'utils/parseURL';
+
+  const { renderer } = useThrelte();
 
   export let isPerspectiveCamera = false;
   export let enablePan = false;
 
-  const position: [number, number, number] = [10, 10, 10];
+  let position = new Vector3(10, 10, 10);
+
+  // Camera distances and zoom levels
+  // Distance is linear and zoom is logarithmic
+  let distance = 10; // Distance from the origin - For perspective camera
+  let zoom = 30; // Zoom level - For orthographic camera
+
+  $: {
+    const cameraSettings = parseCameraSettings($page.url.searchParams);
+
+    position = cameraSettings.position || position;
+
+    isPerspectiveCamera = cameraSettings.isPerspectiveCamera || isPerspectiveCamera;
+    enablePan = cameraSettings.enablePan || enablePan;
+    distance = cameraSettings.distance || distance;
+    zoom = cameraSettings.zoom || zoom;
+  }
+
+  $: {
+    // Set the length of the position vector
+    isPerspectiveCamera ? position.setLength(distance) : position.setLength(zoom);
+  }
 </script>
 
 {#if isPerspectiveCamera}
   <T.PerspectiveCamera
+    position.x={position.x}
+    position.y={position.y}
+    position.z={position.z}
     makeDefault
-    position.z={position[0]}
-    position.y={position[1]}
-    position.x={position[2]}
     maxPolarAngle={Math.PI * 0.6}
     let:ref={camera}
-    on:update={invalidate}
   >
     <T.OrbitControls
-      maxDistance={25}
-      minDistance={2}
+      maxDistance={distance * 1.5}
+      minDistance={distance / 20}
       {enablePan}
       args={[camera, renderer?.domElement]}
-      on:change={invalidate}
     />
   </T.PerspectiveCamera>
 {:else}
   <T.OrthographicCamera
-    args={[-1, 1, 1, -1, 0.1, 100]}
+    position.x={position.x}
+    position.y={position.y}
+    position.z={position.z}
+    args={[-1, 1, 1, -1, 0.1, Math.min(300, zoom * 10)]}
     makeDefault
-    zoom={30}
-    position.x={position[0]}
-    position.y={position[1]}
-    position.z={position[2]}
+    {zoom}
     let:ref={camera}
-    on:change={invalidate}
   >
     <T.OrbitControls
       args={[camera, renderer?.domElement]}
       maxPolarAngle={Math.PI * 0.6}
       {enablePan}
-      maxZoom={300}
-      minZoom={20}
+      maxZoom={zoom * 10}
+      minZoom={Math.max(zoom - 10, 1)}
     />
   </T.OrthographicCamera>
 {/if}

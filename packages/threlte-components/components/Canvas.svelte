@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { page } from '$app/stores';
+
   import { mdiInformation, mdiPause, mdiRestart } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
+  import { onMount } from 'svelte';
+  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
+  import { parseIsTrue } from 'utils/parseURL';
   import { Sliders } from 'utils/Slider';
-  import { RoundButton, ToggleFullscreen, Slider as SvelteSlider, UI } from 'ui';
   import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;
@@ -36,6 +40,14 @@
   }
 
   // TODO: implement play pause
+
+  $: {
+    // Parse url to see if autoPlay is enabled.
+    const params = $page.url.searchParams;
+
+    isPlaying = parseIsTrue(params.get('autoPlay')) || autoPlay;
+    title = params.get('title') || title;
+  }
 </script>
 
 <div
