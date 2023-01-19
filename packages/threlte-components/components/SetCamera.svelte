@@ -31,7 +31,7 @@
   <T.OrthographicCamera
     args={[-1, 1, 1, -1, 0.1, 100]}
     makeDefault
-    zoom={50}
+    zoom={30}
     position.x={position[0]}
     position.y={position[1]}
     position.z={position[2]}
@@ -42,8 +42,8 @@
       args={[camera, renderer?.domElement]}
       maxPolarAngle={Math.PI * 0.6}
       {enablePan}
-      maxZoom={200}
-      minZoom={40}
+      maxZoom={300}
+      minZoom={20}
     />
   </T.OrthographicCamera>
 {/if}
