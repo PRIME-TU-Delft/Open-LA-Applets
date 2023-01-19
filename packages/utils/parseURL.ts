@@ -1,7 +1,7 @@
 import { Vector3 } from 'three';
 
 /**
- * // Parse a string like "1,2,3" into a Vector3
+ * Parse a string like "1,2,3" into a Vector3
  * @param arr a string that conforms to '%d,%d,%d'
  * @returns ThreeJS Vector3
  */
@@ -12,6 +12,8 @@ function parseVector(arr: string) {
     return new Vector3(x, y, z);
   }
 
+  console.warn('Vector3 could not be parsed from', arr, 'using default value of (1,1,1)');
+
   return undefined;
 }
 
@@ -20,9 +22,19 @@ function parseVector(arr: string) {
  * @returns true if and only if `str` is 'yes'
  */
 export function parseIsTrue(str: string | null) {
-  if (!str) return false;
+  if (!str) return undefined;
 
   return str.toLowerCase() === 'true';
+}
+
+/**
+ * @param str a string that is a number or not
+ * @returns undefined if `str` is null or undefined, otherwise returns parseFloat(str)
+ */
+export function parseFloatOrUndefined(str: string | null) {
+  if (!str) return undefined;
+
+  return parseFloat(str);
 }
 
 export interface CameraSettings {
@@ -30,7 +42,7 @@ export interface CameraSettings {
   isPerspectiveCamera?: boolean;
   enablePan?: boolean;
   distance?: number;
-  zoom: number;
+  zoom?: number;
 }
 
 /**
@@ -43,7 +55,7 @@ export function parseCameraSettings(params: URLSearchParams): CameraSettings {
     position: parseVector(params.get('position') || ''),
     isPerspectiveCamera: parseIsTrue(params.get('isPerspectiveCamera')),
     enablePan: parseIsTrue(params.get('enablePan')),
-    distance: parseFloat(params.get('distance') || ''),
-    zoom: parseFloat(params.get('zoom') || '')
+    distance: parseFloatOrUndefined(params.get('distance')),
+    zoom: parseFloatOrUndefined(params.get('zoom'))
   };
 }
