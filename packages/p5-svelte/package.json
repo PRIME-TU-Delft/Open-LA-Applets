@@ -1,5 +1,5 @@
 {
-  "name": "p5-components",
+  "name": "p5-svelte",
   "version": "0.0.0",
   "description": "Components for 2d content",
   "type": "module",
@@ -11,9 +11,7 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
-    "ui": "*",
-    "utils": "*",
-    "p5-svelte": "*"
+    "utils": "*"
   },
   "devDependencies": {
     "@types/p5": "^1.4.3",

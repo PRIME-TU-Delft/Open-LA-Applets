@@ -1,1 +1,1 @@
-export { default as Axis2D } from './components/Axis.svelte';
+export { default as Canvas2D } from './components/Canvas.svelte';

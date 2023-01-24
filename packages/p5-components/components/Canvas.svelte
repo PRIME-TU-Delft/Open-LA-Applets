@@ -2,7 +2,7 @@
   /**
    * Dragging marker over an image to transform it.
    */
-  import P5 from './P5.svelte';
+  import { P5 } from 'p5-svelte';
   import type p5 from 'p5';
 
   let clientHeight;
@@ -30,5 +30,5 @@
 </script>
 
 <div bind:clientHeight bind:clientWidth style="height: 100%">
-  <P5 {sketch} />
+  <P5 {sketch} debug />
 </div>

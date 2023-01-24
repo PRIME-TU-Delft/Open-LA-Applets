@@ -17,6 +17,7 @@
     "@types/three": "^0.146.0",
     "three": "^0.147.0",
     "threlte-components": "*",
+    "p5-components": "*",
     "ui": "*",
     "utils": "*"
   },
