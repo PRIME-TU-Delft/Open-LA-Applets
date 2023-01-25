@@ -30,5 +30,7 @@
 </script>
 
 <div bind:clientHeight bind:clientWidth style="height: 100%">
-  <P5 {sketch} debug />
+  <P5 {sketch}>
+    <slot />
+  </P5>
 </div>
