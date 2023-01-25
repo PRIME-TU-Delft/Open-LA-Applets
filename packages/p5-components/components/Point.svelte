@@ -1,6 +1,8 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { getContext, onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
+
+  import { getCanvasContext } from './CanvasContext';
 
   type Point = [number, number];
 
@@ -9,8 +11,7 @@
   export let color: string = 'black';
   export let pulse = false;
 
-  // TODO: improve type safety: https://www.reddit.com/r/sveltejs/comments/szc481/sveltes_context_and_type_safety_with_typescript/
-  let canvasContext = getContext<any>('canvas');
+  let canvasContext = getCanvasContext();
 
   onMount(() => {
     canvasContext.addDrawFn(draw);

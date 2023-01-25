@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { setContext } from 'svelte';
+  import { setCanvasContext } from './CanvasContext';
   import type p5 from 'p5';
 
   import { P5 } from 'p5-svelte';
+
+  export let zoom = 1;
 
   let clientHeight;
   let clientWidth;
@@ -13,7 +15,7 @@
   let fnsToDraw: DrawFn[] = [];
 
   // Set context for all children of this component: https://svelte.dev/tutorial/context-api
-  setContext('canvas', {
+  setCanvasContext({
     addDrawFn: (fn: DrawFn) => {
       fnsToDraw.push(fn);
     },
@@ -32,6 +34,7 @@
 
     p5.draw = () => {
       p5.resizeCanvas(clientWidth, clientHeight); // todo: try to optimise this
+      p5.scale(zoom);
 
       fnsToDraw.forEach((draw) => draw(p5)); // Draw each step of the scene
     };
@@ -49,5 +52,6 @@
     height: 100%;
     user-select: none;
     touch-action: none;
+    border: 1px solid red;
   }
 </style>
