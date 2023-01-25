@@ -1,12 +1,29 @@
 <script lang="ts">
-  /**
-   * Dragging marker over an image to transform it.
-   */
-  import { P5 } from 'p5-svelte';
+  import { setContext } from 'svelte';
   import type p5 from 'p5';
+
+  import { P5 } from 'p5-svelte';
 
   let clientHeight;
   let clientWidth;
+
+  type DrawFn = (p5: p5) => void;
+
+  // Array with steps to draw scene
+  let fnsToDraw: DrawFn[] = [];
+
+  // Set context for all children of this component: https://svelte.dev/tutorial/context-api
+  setContext('canvas', {
+    addDrawFn: (fn: DrawFn) => {
+      fnsToDraw.push(fn);
+    },
+    removeDrawFn: (fn: DrawFn) => {
+      let index = fnsToDraw.indexOf(fn);
+      if (index > -1) {
+        fnsToDraw.splice(index, 1);
+      }
+    }
+  });
 
   const sketch = (p5: p5) => {
     p5.setup = () => {
@@ -14,23 +31,23 @@
     };
 
     p5.draw = () => {
-      p5.resizeCanvas(clientWidth, clientHeight);
-      p5.line(100, 100, 200, 200);
-    };
+      p5.resizeCanvas(clientWidth, clientHeight); // todo: try to optimise this
 
-    // If the user presses/releases their mouse, signal this to all Draggable points
-    p5.mousePressed = () => {
-      console.log('todo');
-    };
-
-    p5.mouseReleased = () => {
-      console.log('todo');
+      fnsToDraw.forEach((draw) => draw(p5)); // Draw each step of the scene
     };
   };
 </script>
 
-<div bind:clientHeight bind:clientWidth style="height: 100%">
+<div class="sketch" bind:clientHeight bind:clientWidth>
   <P5 {sketch}>
     <slot />
   </P5>
 </div>
+
+<style>
+  .sketch {
+    height: 100%;
+    user-select: none;
+    touch-action: none;
+  }
+</style>
