@@ -1,8 +1,6 @@
 <script lang="ts">
   import { AbsoluteGrid, Axis2D, Canvas2D, Line2D, Point2D, RelativeGrid } from 'p5-components';
 
-  let m = { x: 200, y: 200 };
-
   let zoom = 1;
 </script>
 
@@ -10,7 +8,6 @@
   <div style="position: fixed; z-index: 1000">
     {zoom.toFixed(2)}
     <br />
-    <p>{m.x.toFixed(2)} : {m.y.toFixed(2)}</p>
     <button on:click={() => (zoom /= 1.1)}>zoom out</button>
     <button on:click={() => (zoom *= 1.1)}>zoom in</button>
   </div>
