@@ -1,35 +1,31 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Point2D } from 'p5-components';
+  import { Axis2D, Canvas2D, Line2D, Point2D, RelativeGrid } from 'p5-components';
 
   let m = { x: 200, y: 200 };
 
-  let mouseIsDown = false;
   let zoom = 1;
-
-  function handleMousemove(event: MouseEvent) {
-    if (!mouseIsDown) return;
-    m.x = event.clientX;
-    m.y = event.clientY;
-  }
-  function handleTouchmove(event: TouchEvent) {
-    m.x = event.touches[0].clientX;
-    m.y = event.touches[0].clientY;
-  }
 </script>
 
-<div
-  style="height:100%;"
-  on:mousedown={() => (mouseIsDown = true)}
-  on:mouseup={() => (mouseIsDown = false)}
-  on:mousemove={handleMousemove}
-  on:touchmove={handleTouchmove}
->
-  {zoom.toFixed(2)}
-  <button on:click={() => (zoom /= 1.1)}>zoom out</button>
-  <button on:click={() => (zoom *= 1.1)}>zoom in</button>
+<div style="height:100%;">
+  <div style="position: fixed; z-index: 1000">
+    {zoom.toFixed(2)}
+    <br />
+    <p>{m.x.toFixed(2)} : {m.y.toFixed(2)}</p>
+    <button on:click={() => (zoom /= 1.1)}>zoom out</button>
+    <button on:click={() => (zoom *= 1.1)}>zoom in</button>
+  </div>
 
-  <Canvas2D {zoom}>
-    <Line2D start={[100, 100]} end={[m.x, m.y]} />
-    <Point2D position={[m.x, m.y]} radius={10} pulse />
+  <Canvas2D {zoom} let:mouseX let:mouseY>
+    <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="red" width={3} />
+
+    <RelativeGrid let:mouseX let:mouseY>
+      <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="green" width={2} />
+
+      <Line2D start={[0, 0]} end={[100, 100]} />
+
+      <Point2D position={[mouseX, mouseY]} radius={5} pulse />
+    </RelativeGrid>
+
+    <Axis2D />
   </Canvas2D>
 </div>

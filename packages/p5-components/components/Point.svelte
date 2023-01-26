@@ -1,6 +1,6 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { onDestroy, onMount } from 'svelte';
+  import { getContext, onDestroy, onMount } from 'svelte';
 
   import { getCanvasContext } from './CanvasContext';
 
@@ -12,13 +12,15 @@
   export let pulse = false;
 
   let canvasContext = getCanvasContext();
+  let isRelative = getContext<boolean>('relative');
 
   onMount(() => {
-    canvasContext.addDrawFn(draw);
+    canvasContext.addDrawFn(draw, isRelative);
   });
 
   onDestroy(() => {
-    canvasContext.removeDrawFn(draw);
+    canvasContext.removeDrawFn(draw, isRelative);
+    console.log('remove 123');
   });
 
   function draw(p5: p5) {
@@ -30,14 +32,5 @@
     }
 
     p5.point(position[0], position[1]);
-
-    // console.log('dt', p5.deltaTime);
-
-    reset(p5);
-  }
-
-  function reset(p5: p5) {
-    p5.stroke('black');
-    p5.strokeWeight(1);
   }
 </script>
