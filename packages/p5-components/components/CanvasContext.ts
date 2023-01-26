@@ -4,8 +4,8 @@ import { Writable } from 'svelte/store';
 
 export type DrawFn = (p5: p5) => void;
 
-// TODO: set key with symbol
 interface CanvasContext {
+  // TODO: set key with symbol
   addDrawFn: (fn: DrawFn, isRelative: boolean) => void;
   removeDrawFn: (fn: DrawFn, isRelative: boolean) => void;
   mouseX: Writable<number>;
@@ -17,3 +17,4 @@ interface CanvasContext {
 
 // Expose the canvas context service
 export const [getCanvasContext, setCanvasContext] = defineService<CanvasContext>('canvas');
+export const [getRelativeContext, setRelativeContext] = defineService<boolean>('relative');

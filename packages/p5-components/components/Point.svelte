@@ -1,8 +1,8 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { getContext, onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
-  import { getCanvasContext } from './CanvasContext';
+  import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
   type Point = [number, number];
 
@@ -11,16 +11,13 @@
   export let color: string = 'black';
   export let pulse = false;
 
-  let canvasContext = getCanvasContext();
-  let isRelative = getContext<boolean>('relative');
+  const canvasContext = getCanvasContext();
+  const isRelative = getRelativeContext();
 
   onMount(() => {
     canvasContext.addDrawFn(draw, isRelative);
-  });
 
-  onDestroy(() => {
-    canvasContext.removeDrawFn(draw, isRelative);
-    console.log('remove 123');
+    return canvasContext.removeDrawFn(draw, isRelative);
   });
 
   function draw(p5: p5) {

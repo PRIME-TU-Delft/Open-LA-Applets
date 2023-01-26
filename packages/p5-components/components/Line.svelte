@@ -1,8 +1,8 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { getContext, onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
-  import { getCanvasContext } from './CanvasContext';
+  import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
   type Point = [number, number];
 
@@ -12,7 +12,7 @@
   export let width: number = 1;
 
   let canvasContext = getCanvasContext();
-  let isRelative = getContext<boolean>('relative');
+  let isRelative = getRelativeContext();
 
   onMount(() => {
     canvasContext.addDrawFn(draw, isRelative);

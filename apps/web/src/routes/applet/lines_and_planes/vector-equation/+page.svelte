@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Line2D, Point2D, RelativeGrid } from 'p5-components';
+  import { AbsoluteGrid, Axis2D, Canvas2D, Line2D, Point2D, RelativeGrid } from 'p5-components';
 
   let m = { x: 200, y: 200 };
 
@@ -16,6 +16,7 @@
   </div>
 
   <Canvas2D {zoom} let:mouseX let:mouseY>
+    <Axis2D />
     <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="red" width={3} />
 
     <RelativeGrid let:mouseX let:mouseY>
@@ -23,9 +24,11 @@
 
       <Line2D start={[0, 0]} end={[100, 100]} />
 
+      <AbsoluteGrid>
+        <Line2D start={[0, 0]} end={[100, 100]} />
+      </AbsoluteGrid>
+
       <Point2D position={[mouseX, mouseY]} radius={5} pulse />
     </RelativeGrid>
-
-    <Axis2D />
   </Canvas2D>
 </div>

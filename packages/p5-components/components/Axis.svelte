@@ -1,6 +1,6 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { PrimeColor } from 'utils/PrimeColors';
 
   import { getCanvasContext } from './CanvasContext';
@@ -9,10 +9,8 @@
 
   onMount(() => {
     canvasContext.addDrawFn(draw, false);
-  });
 
-  onDestroy(() => {
-    canvasContext.removeDrawFn(draw, false);
+    return canvasContext.removeDrawFn(draw, false);
   });
 
   function draw(p5: p5) {
