@@ -13,6 +13,7 @@
 
   let canvasContext = getCanvasContext();
   let isRelative = getRelativeContext();
+  let scale = canvasContext.scale;
 
   onMount(() => {
     canvasContext.addDrawFn(draw, isRelative);
@@ -22,7 +23,7 @@
 
   function draw(p5: p5) {
     p5.stroke(color);
-    p5.strokeWeight(width);
+    p5.strokeWeight(width / $scale);
     p5.line(start[0], start[1], end[0], end[1]);
   }
 </script>

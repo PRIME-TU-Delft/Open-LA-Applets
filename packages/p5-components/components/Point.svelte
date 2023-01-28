@@ -13,6 +13,7 @@
 
   const canvasContext = getCanvasContext();
   const isRelative = getRelativeContext();
+  let scale = canvasContext.scale;
 
   onMount(() => {
     canvasContext.addDrawFn(draw, isRelative);
@@ -22,10 +23,10 @@
 
   function draw(p5: p5) {
     p5.stroke(color);
-    p5.strokeWeight(radius);
+    p5.strokeWeight(radius / $scale);
 
     if (pulse) {
-      p5.strokeWeight(radius * 1.5 + 0.5 * radius * Math.sin(p5.millis() / 500));
+      p5.strokeWeight((radius * 1.5 + 0.5 * radius * Math.sin(p5.millis() / 500)) / $scale);
     }
 
     p5.point(position[0], position[1]);
