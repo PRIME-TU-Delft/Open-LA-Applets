@@ -13,18 +13,16 @@
   </div>
 
   <Canvas2D bind:zoom>
-    <Axis2D />
-
     <RelativeGrid let:mouseX let:mouseY>
+      <Axis2D />
       <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="green" width={2} />
-
-      <Line2D start={[0, 0]} end={[200, 100]} />
+      <Point2D position={[mouseX, mouseY]} radius={5} pulse />
 
       <AbsoluteGrid>
         <Line2D start={[0, 0]} end={[200, 100]} />
       </AbsoluteGrid>
 
-      <Point2D position={[mouseX, mouseY]} radius={5} pulse />
+      <Line2D start={[0, 0]} end={[200, 100]} />
     </RelativeGrid>
   </Canvas2D>
 </div>

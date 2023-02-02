@@ -2,15 +2,18 @@
   import p5 from 'p5';
   import { onMount } from 'svelte';
   import { PrimeColor } from 'utils/PrimeColors';
+  import { GridType, Grid } from './Grids';
 
   import { getCanvasContext } from './CanvasContext';
+
+  export let gridType = GridType.simpleGrid;
 
   let canvasContext = getCanvasContext();
 
   onMount(() => {
-    canvasContext.addDrawFn(draw, false);
+    canvasContext.addDrawFn(draw, true);
 
-    return canvasContext.removeDrawFn(draw, false);
+    return canvasContext.removeDrawFn(draw, true);
   });
 
   function draw(p5: p5) {
@@ -19,8 +22,16 @@
 
     const w = p5.width;
     const h = p5.height;
+    const size = Math.max(w, h);
 
-    p5.line(w / 2, 0, w / 2, h);
-    p5.line(0, h / 2, w, h / 2);
+    switch (gridType) {
+      case GridType.squareGrid:
+        Grid.drawSquareGrid(p5, size);
+        break;
+      case GridType.none:
+        break;
+      default:
+        Grid.drawSimpleGrid(p5, size);
+    }
   }
 </script>
