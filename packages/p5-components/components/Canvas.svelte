@@ -7,6 +7,8 @@
   import { writable } from 'svelte/store';
 
   export let zoom = 1;
+  export let maxZoom = 3;
+  export let minZoom = 1 / 3;
 
   let clientHeight: number;
   let clientWidth: number;
@@ -27,9 +29,9 @@
   function setRelative(draw: DrawFn): DrawFn {
     return (p5: p5) => {
       p5.push();
+
       p5.translate(p5.width / 2, p5.height / 2);
-      p5.scale(2);
-      p5.rotate(-p5.HALF_PI);
+      p5.scale(1, -1);
 
       draw(p5);
 
@@ -53,7 +55,7 @@
 
   // Set context for all children of this component: https://svelte.dev/tutorial/context-api
   setCanvasContext({
-    addDrawFn: (fn: DrawFn, isRelative) => {
+    addDrawFn: (fn: DrawFn, isRelative: boolean) => {
       fn = isolate(fn);
 
       if (isRelative) {
@@ -62,7 +64,7 @@
 
       fnsToDraw.push(fn);
     },
-    removeDrawFn: (fn: DrawFn, isRelative) => {
+    removeDrawFn: (fn: DrawFn, isRelative: boolean) => {
       fn = isolate(fn);
 
       if (isRelative) {
@@ -103,6 +105,13 @@
 
       params.mouseX.set(mouseX);
       params.mouseY.set(mouseY);
+    };
+
+    p5.mouseWheel = (event: WheelEvent) => {
+      if (zoom < minZoom && event.deltaY < 0) return;
+      if (zoom > maxZoom && event.deltaY > 0) return;
+
+      zoom += event.deltaY / 1000;
     };
   };
 

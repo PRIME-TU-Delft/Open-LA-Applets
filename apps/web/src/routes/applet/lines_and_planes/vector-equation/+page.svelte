@@ -12,17 +12,16 @@
     <button on:click={() => (zoom *= 1.1)}>zoom in</button>
   </div>
 
-  <Canvas2D {zoom} let:mouseX let:mouseY>
+  <Canvas2D bind:zoom>
     <Axis2D />
-    <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="red" width={3} />
 
     <RelativeGrid let:mouseX let:mouseY>
       <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="green" width={2} />
 
-      <Line2D start={[0, 0]} end={[100, 100]} />
+      <Line2D start={[0, 0]} end={[200, 100]} />
 
       <AbsoluteGrid>
-        <Line2D start={[0, 0]} end={[100, 100]} />
+        <Line2D start={[0, 0]} end={[200, 100]} />
       </AbsoluteGrid>
 
       <Point2D position={[mouseX, mouseY]} radius={5} pulse />
