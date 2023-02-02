@@ -5,6 +5,7 @@
   import { P5 } from 'p5-svelte';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
+  import RelativeGrid from './RelativeGrid.svelte';
 
   export let zoom = 1;
   export let maxZoom = 3;
@@ -122,7 +123,9 @@
 
 <div class="sketch" bind:clientHeight bind:clientWidth>
   <P5 {sketch}>
-    <slot {mouseX} {mouseY} />
+    <RelativeGrid let:mouseX let:mouseY>
+      <slot {mouseX} {mouseY} />
+    </RelativeGrid>
   </P5>
 </div>
 

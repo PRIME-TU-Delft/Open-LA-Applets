@@ -6,7 +6,7 @@
 
   import { getCanvasContext } from './CanvasContext';
 
-  export let gridType = GridType.simpleGrid;
+  export let gridType: GridType = GridType.simpleGrid;
 
   let canvasContext = getCanvasContext();
 
