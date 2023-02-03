@@ -9,6 +9,7 @@
   export let gridType: GridType = GridType.simpleGrid;
 
   let canvasContext = getCanvasContext();
+  const { scale } = canvasContext;
 
   onMount(() => {
     canvasContext.addDrawFn(draw, true);
@@ -24,14 +25,16 @@
     const h = p5.height;
     const size = Math.max(w, h);
 
+    // console.log($scale);
+
     switch (gridType) {
       case GridType.squareGrid:
-        Grid.drawSquareGrid(p5, size);
+        Grid.drawSquareGrid(p5, size, $scale);
         break;
       case GridType.none:
         break;
       default:
-        Grid.drawSimpleGrid(p5, size);
+        Grid.drawSimpleGrid(p5, size, $scale);
     }
   }
 </script>

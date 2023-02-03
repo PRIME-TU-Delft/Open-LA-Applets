@@ -18,10 +18,6 @@
     <Line2D start={[0, 0]} end={[mouseX, mouseY]} color="green" width={2} />
     <Point2D position={[mouseX, mouseY]} radius={5} pulse />
 
-    <AbsoluteGrid>
-      <Line2D start={[0, 0]} end={[200, 100]} />
-    </AbsoluteGrid>
-
     <Line2D start={[0, 0]} end={[200, 100]} />
   </Canvas2D>
 </div>
