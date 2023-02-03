@@ -31,8 +31,8 @@
     return (p5: p5) => {
       p5.push();
 
-      p5.translate(p5.width / 2, p5.height / 2);
       p5.scale(1, -1);
+      p5.translate(p5.width / 2, -p5.height / 2);
 
       draw(p5);
 
