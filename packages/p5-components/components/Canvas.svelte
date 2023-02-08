@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { setCanvasContext, DrawFn } from './CanvasContext';
   import type p5 from 'p5';
-
   import { P5 } from 'p5-svelte';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
+  import { RoundButton, ToggleFullscreen, UI } from 'ui';
+  import { DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
+  import { mdiRestart } from '@mdi/js';
 
   export let zoom = 1;
   export let maxZoom = 3;
@@ -13,6 +14,8 @@
 
   let clientHeight: number;
   let clientWidth: number;
+  let isFullscreen = false;
+  let sceneEl: HTMLDivElement;
 
   // Array with steps to draw scene
   let fnsToDraw: DrawFn[] = [];
@@ -38,6 +41,10 @@
 
       p5.pop();
     };
+  }
+
+  function reset() {
+    zoom = 1;
   }
 
   const params = {
@@ -121,12 +128,18 @@
   });
 </script>
 
-<div class="sketch" bind:clientHeight bind:clientWidth>
+<div bind:this={sceneEl} class="sketch" bind:clientHeight bind:clientWidth>
   <P5 {sketch}>
     <RelativeGrid let:mouseX let:mouseY>
       <slot {mouseX} {mouseY} />
     </RelativeGrid>
   </P5>
+
+  <UI column bottom right opacity styled={false}>
+    <RoundButton icon={mdiRestart} on:click={reset} />
+
+    <ToggleFullscreen {sceneEl} bind:isFullscreen />
+  </UI>
 </div>
 
 <style>
@@ -134,6 +147,6 @@
     height: 100%;
     user-select: none;
     touch-action: none;
-    border: 1px solid red;
+    background: white;
   }
 </style>

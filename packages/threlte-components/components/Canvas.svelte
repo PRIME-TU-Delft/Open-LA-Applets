@@ -5,7 +5,6 @@
 
   import { Canvas, T } from '@threlte/core';
 
-  import { onMount } from 'svelte';
   import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
   import { parseIsTrue } from 'utils/parseURL';
   import { Sliders } from 'utils/Slider';
