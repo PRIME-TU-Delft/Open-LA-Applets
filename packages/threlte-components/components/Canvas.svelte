@@ -17,6 +17,7 @@
   export let autoPlay = true;
   export let isPerspectiveCamera = false;
   export let background = '#ffffff';
+  export let zoom = 29;
 
   let isPlaying = autoPlay;
   let isChangeing = false; // Are any of the sliders being changed?
@@ -59,7 +60,7 @@
 >
   <Canvas flat linear size={{ width, height }}>
     {#key resetCamera}
-      <SetCamera {isPerspectiveCamera} {enablePan} />
+      <SetCamera {isPerspectiveCamera} {enablePan} {zoom} />
     {/key}
 
     <slot name="lights">
@@ -118,7 +119,7 @@
 <style>
   .canvasWrapper {
     position: relative;
-    width: 100vw;
+    width: var(--width, 100vw);
     overflow: hidden;
   }
 

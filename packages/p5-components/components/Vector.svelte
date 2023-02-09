@@ -11,7 +11,7 @@
   export let direction: Vector2 = new Vector2(1, 0); // direction of vector
   export const striped = false; // TODO: whether the line is striped
   export let length = 1; // length of the vector + cone
-  export let radius = 2; // radius of the cone
+  export let radius = 3; // radius of the stem
   export let hideHead = false; // hide the cone
 
   const CONE_HEIGHT = 0.5;
