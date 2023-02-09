@@ -1,6 +1,6 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
 
   import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
@@ -15,10 +15,14 @@
   const isRelative = getRelativeContext();
   let scale = canvasContext.scale;
 
-  onMount(() => {
-    canvasContext.addDrawFn(draw, isRelative);
+  const key = Symbol('point');
 
-    return canvasContext.removeDrawFn(draw, isRelative);
+  onMount(() => {
+    canvasContext.addDrawFn(draw, key, isRelative);
+  });
+
+  onDestroy(() => {
+    canvasContext.removeDrawFn(key);
   });
 
   function draw(p5: p5) {

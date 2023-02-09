@@ -5,9 +5,8 @@ import { Writable } from 'svelte/store';
 export type DrawFn = (p5: p5) => void;
 
 interface CanvasContext {
-  // TODO: set key with symbol
-  addDrawFn: (fn: DrawFn, isRelative: boolean) => void;
-  removeDrawFn: (fn: DrawFn, isRelative: boolean) => void;
+  addDrawFn: (fn: DrawFn, key: symbol, isRelative: boolean) => void;
+  removeDrawFn: (key: symbol) => void;
   mouseX: Writable<number>;
   mouseY: Writable<number>;
   width: Writable<number>;

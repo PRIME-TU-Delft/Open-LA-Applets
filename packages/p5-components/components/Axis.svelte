@@ -1,6 +1,6 @@
 <script lang="ts">
   import p5 from 'p5';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { PrimeColor } from 'utils/PrimeColors';
   import { GridType, Grid } from './Grids';
 
@@ -11,10 +11,14 @@
   let canvasContext = getCanvasContext();
   const { scale } = canvasContext;
 
-  onMount(() => {
-    canvasContext.addDrawFn(draw, true);
+  const key = Symbol('axis');
 
-    return canvasContext.removeDrawFn(draw, true);
+  onMount(() => {
+    canvasContext.addDrawFn(draw, key, true);
+  });
+
+  onDestroy(() => {
+    canvasContext.removeDrawFn(key);
   });
 
   function draw(p5: p5) {
