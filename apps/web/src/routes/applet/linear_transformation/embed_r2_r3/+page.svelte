@@ -24,6 +24,9 @@
     e1.setLength(sliders.x);
     e2.setLength(sliders.y);
 
+    te1.setLength(sliders.x);
+    te2.setLength(sliders.y);
+
     v = e2.clone().multiplyScalar(2).add(e1);
     tv = te2.clone().multiplyScalar(2).add(te1);
   }
@@ -59,13 +62,14 @@
     <Canvas3D bind:sliders --width="100%" zoom={100}>
       <Axis3D showNumbers />
 
-      <!-- e1 -->
+      <!-- e1 & e2 -->
       <Vector3D direction={te1} length={sliders.x} color={PrimeColor.red} />
-      <Latex3D latex={'T(\\vec{e1})'} position={te1} />
-
-      <!-- e0 -->
       <Vector3D direction={te2} length={sliders.y} color={PrimeColor.yellow} />
-      <Latex3D latex={'T(\\vec{e2})'} position={te2} />
+
+      {#key sliders.x + sliders.y}
+        <Latex3D latex={'T(\\vec{e1})'} position={te1} />
+        <Latex3D latex={'T(\\vec{e2})'} position={te2} />
+      {/key}
 
       <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} />
       <Latex3D latex={'T(\\vec{v})'} position={tv} color={PrimeColor.ultramarine} />
