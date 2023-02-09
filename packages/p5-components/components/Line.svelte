@@ -9,6 +9,7 @@
   export let end: Vector2 = new Vector2(0, 0);
   export let color: string = 'black';
   export let width: number = 1;
+  export let isDashed = false;
 
   let canvasContext = getCanvasContext();
   let isRelative = getRelativeContext();
@@ -27,6 +28,10 @@
   function draw(p5: p5) {
     p5.stroke(color);
     p5.strokeWeight(width / $scale);
+
+    if (isDashed) {
+      p5.drawingContext.setLineDash([5, 5]);
+    }
 
     p5.line(start.x * 100, start.y * 100, end.x * 100, end.y * 100);
   }

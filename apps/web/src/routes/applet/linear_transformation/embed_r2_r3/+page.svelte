@@ -3,7 +3,7 @@
 
   import { GridType } from 'p5-components/components/Grids';
   import { Vector2, Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, Vector3D } from 'threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from 'threlte-components';
   import { LatexUI } from 'ui';
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
@@ -55,6 +55,10 @@
       <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine}>
         <Latex2D latex={'\\vec{v}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.ultramarine} />
       </Vector2D>
+
+      <!-- Helper lines -->
+      <Line2D start={e1} end={v} width={2} isDashed />
+      <Line2D start={e2.clone().multiplyScalar(2)} width={2} end={v} isDashed />
     </Canvas2D>
   </div>
 
@@ -67,12 +71,16 @@
       <Vector3D direction={te2} length={sliders.y} color={PrimeColor.yellow} />
 
       {#key sliders.x + sliders.y}
-        <Latex3D latex={'T(\\vec{e1})'} position={te1} />
-        <Latex3D latex={'T(\\vec{e2})'} position={te2} />
+        <Latex3D latex={'T(\\vec{e_1})'} position={te1} />
+        <Latex3D latex={'T(\\vec{e_2})'} position={te2} />
       {/key}
 
       <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} />
       <Latex3D latex={'T(\\vec{v})'} position={tv} color={PrimeColor.ultramarine} />
+
+      <!-- Helper lines -->
+      <Line3D points={[te1, tv]} color="black" isDashed />
+      <Line3D points={[te2.clone().multiplyScalar(2), tv]} color="black" isDashed />
     </Canvas3D>
   </div>
 </div>
