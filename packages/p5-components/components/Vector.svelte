@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { writable } from 'svelte/store';
   import { Vector2 } from 'three';
   import getRandomColor from 'utils/PrimeColors';
+  import { setLabelPosition } from './CanvasContext';
   import Line from './Line.svelte';
   import Triangle from './Triangle.svelte';
 
@@ -15,13 +17,15 @@
   const CONE_HEIGHT = 0.5;
   const CONE_DIAMETER = 0.1;
 
-  let endPoint: Vector2; // tip of the vector
+  let endPoint = writable(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
   $: direction = direction.clone().normalize();
 
+  setLabelPosition(endPoint);
+
   $: {
-    endPoint = origin.clone().add(direction.clone().multiplyScalar(length));
+    endPoint.set(origin.clone().add(direction.clone().multiplyScalar(length)));
   }
 
   $: coneStart = origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2));
@@ -38,7 +42,7 @@
 <Line start={origin} end={coneStart} {color} width={radius} />
 
 {#if !hideHead}
-  <Triangle points={[leftConePoint, endPoint, rightConePoint]} {color} />
+  <Triangle points={[leftConePoint, $endPoint, rightConePoint]} {color} />
 {/if}
 
 <slot {endPoint} />

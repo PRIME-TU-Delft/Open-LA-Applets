@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Line2D, Vector2D } from 'p5-components';
+  import { Axis2D, Canvas2D, Label2D, Line2D, Vector2D } from 'p5-components';
 
   import { GridType } from 'p5-components/components/Grids';
   import { Vector2 } from 'three';
@@ -23,32 +23,38 @@
   }
 </script>
 
-<div style="height:100%;">
-  <div style="position: fixed; z-index: 1000">
-    {zoom.toFixed(2)}
-    {v1.length().toFixed(2)}
-  </div>
+<Canvas2D bind:sliders bind:zoom>
+  <Axis2D gridType={GridType.squareGrid} />
 
-  <Canvas2D bind:sliders bind:zoom>
-    <Axis2D gridType={GridType.squareGrid} />
+  <Line2D
+    start={v0.clone().sub(u.clone().multiplyScalar(4))}
+    end={v1.clone().add(u.clone().multiplyScalar(5))}
+    color={PrimeColor.ultramarine}
+    width={2}
+  />
 
-    <Line2D
-      start={v0.clone().sub(u.clone().multiplyScalar(4))}
-      end={v1.clone().add(u.clone().multiplyScalar(5))}
-      color={PrimeColor.ultramarine}
-      width={2}
+  <!-- V0 -->
+  <Vector2D direction={v0} length={sliders.x} color={PrimeColor.red}>
+    <Label2D text="V_0" offset={new Vector2(0.1, 0.1)} color={PrimeColor.red} />
+    <Label2D
+      text="L"
+      offset={u.clone().multiplyScalar(-0.2).add(new Vector2(-0.2, -0.2))}
+      color={PrimeColor.red}
     />
+  </Vector2D>
 
-    <!-- V0 -->
-    <Vector2D direction={v0} length={sliders.x} color={PrimeColor.red} />
+  <!-- V1 -->
+  <Vector2D direction={v1} length={sliders.y} color={PrimeColor.yellow}>
+    <Label2D text="V_1" offset={new Vector2(-0.3, -0.35)} color={PrimeColor.yellow} />
+  </Vector2D>
 
-    <!-- V1 -->
-    <Vector2D direction={v1} length={sliders.y} color={PrimeColor.yellow} />
-
-    <!-- U -->
-    {#key sliders.x + sliders.y}
-      <Vector2D direction={u} length={u.length()} color={PrimeColor.green} />
-      <Vector2D origin={v0} direction={u} length={u.length()} color={PrimeColor.green} />
-    {/key}
-  </Canvas2D>
-</div>
+  <!-- U -->
+  {#key sliders.x + sliders.y}
+    <Vector2D direction={u} length={u.length()} color={PrimeColor.green}>
+      <Label2D text="U" offset={new Vector2(0.1, 0.1)} color={PrimeColor.green} />
+    </Vector2D>
+    <Vector2D origin={v0} direction={u} length={u.length()} color={PrimeColor.green}>
+      <Label2D text="U" offset={new Vector2(0.1, 0.1)} color={PrimeColor.green} />
+    </Vector2D>
+  {/key}
+</Canvas2D>
