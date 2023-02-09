@@ -1,19 +1,15 @@
 <script lang="ts">
   import p5 from 'p5';
   import { onMount } from 'svelte';
+  import { Vector2 } from 'three';
 
   import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
-  type Point = [number, number];
-
-  export let start: Point;
-  export let end: Point;
+  export let points: [Vector2, Vector2, Vector2] = [new Vector2(), new Vector2(), new Vector2()];
   export let color: string = 'black';
-  export let width: number = 1;
 
   let canvasContext = getCanvasContext();
   let isRelative = getRelativeContext();
-  let scale = canvasContext.scale;
 
   onMount(() => {
     canvasContext.addDrawFn(draw, isRelative);
@@ -22,8 +18,12 @@
   });
 
   function draw(p5: p5) {
-    p5.stroke(color);
-    p5.strokeWeight(width / $scale);
-    p5.line(start[0] * 100, start[1] * 100, end[0] * 100, end[1] * 100);
+    p5.fill(color);
+    p5.strokeWeight(0);
+
+    // Multiply by 100 to scale up to canvas size
+    const pts = points.map((p) => p.clone().multiplyScalar(100));
+
+    p5.triangle(pts[0].x, pts[0].y, pts[1].x, pts[1].y, pts[2].x, pts[2].y);
   }
 </script>

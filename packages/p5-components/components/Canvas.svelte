@@ -10,7 +10,7 @@
 
   export let zoom = 1;
   export let maxZoom = 3;
-  export let minZoom = 1 / 3;
+  export let minZoom = 1 / 2;
 
   let clientHeight: number;
   let clientWidth: number;
@@ -131,7 +131,7 @@
 <div bind:this={sceneEl} class="sketch" bind:clientHeight bind:clientWidth>
   <P5 {sketch}>
     <RelativeGrid let:mouseX let:mouseY>
-      <slot {mouseX} {mouseY} />
+      <slot mouseX={mouseX / 100} mouseY={mouseY / 100} />
     </RelativeGrid>
   </P5>
 
