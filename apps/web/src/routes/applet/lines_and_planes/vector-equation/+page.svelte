@@ -32,7 +32,12 @@
   <Canvas2D bind:sliders bind:zoom>
     <Axis2D gridType={GridType.squareGrid} />
 
-    <Line2D start={[-10, 7.5]} end={[10, -2.5]} color={PrimeColor.ultramarine} width={2} />
+    <Line2D
+      start={v0.clone().sub(u.clone().multiplyScalar(4))}
+      end={v1.clone().add(u.clone().multiplyScalar(5))}
+      color={PrimeColor.ultramarine}
+      width={2}
+    />
 
     <!-- V0 -->
     <Vector2D direction={v0} length={sliders.x} color={PrimeColor.red} />

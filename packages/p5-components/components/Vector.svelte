@@ -35,7 +35,7 @@
 </script>
 
 <!-- Line is length minus cone height -->
-<Line start={[origin.x, origin.y]} end={[coneStart.x, coneStart.y]} {color} width={radius} />
+<Line start={origin} end={coneStart} {color} width={radius} />
 
 {#if !hideHead}
   <Triangle points={[leftConePoint, endPoint, rightConePoint]} {color} />
