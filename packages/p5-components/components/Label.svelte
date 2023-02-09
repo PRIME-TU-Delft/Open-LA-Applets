@@ -29,9 +29,10 @@
   function draw(p5: p5) {
     p5.textSize(textSize / $scale);
     p5.fill(color);
+
     p5.translate(
-      (position.x + offset.x + $labelPosition.x) * 100,
-      (position.y + offset.y + $labelPosition.y) * 100
+      (offset.x + ($labelPosition.x || position.x)) * 100,
+      (offset.y + ($labelPosition.y || position.y)) * 100
     );
     p5.scale(1, -1);
 

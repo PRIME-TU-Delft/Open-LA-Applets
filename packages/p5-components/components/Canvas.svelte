@@ -177,6 +177,8 @@
 <style>
   .sketch {
     height: 100%;
+    max-width: 100vw;
+    overflow: hidden;
     user-select: none;
     touch-action: none;
     background: white;
