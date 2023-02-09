@@ -8,7 +8,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.7",
@@ -22,7 +23,8 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "svelte-preprocess": "^4.10.7",
     "tailwindcss": "^3.1.8",
-    "turbo": "^1.6.3"
+    "turbo": "^1.6.3",
+    "vitest": "^0.28.4"
   },
   "license": "MIT"
 }

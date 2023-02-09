@@ -8,10 +8,12 @@
   "license": "MIT",
   "scripts": {
     "lint": "prettier --check --ignore-path=../../.prettierignore . && eslint \".\"",
-    "format": "prettier --write --ignore-path=../../.prettierignore ."
+    "format": "prettier --write --ignore-path=../../.prettierignore .",
+    "test": "vitest"
   },
   "devDependencies": {
-    "eslint-config-custom": "*"
+    "eslint-config-custom": "*",
+    "vitest": "^0.28.4"
   },
   "dependencies": {
     "@types/three": "^0.146.0",
