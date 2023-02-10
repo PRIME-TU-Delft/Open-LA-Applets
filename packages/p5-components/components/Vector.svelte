@@ -13,6 +13,7 @@
   export let length = 1; // length of the vector + cone
   export let radius = 3; // radius of the stem
   export let hideHead = false; // hide the cone
+  export let isDashed = false;
 
   const CONE_HEIGHT = 0.5;
   const CONE_DIAMETER = 0.1;
@@ -39,7 +40,7 @@
 </script>
 
 <!-- Line is length minus cone height -->
-<Line start={origin} end={coneStart} {color} width={radius} />
+<Line start={origin} end={coneStart} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
   <Triangle points={[leftConePoint, $endPoint, rightConePoint]} {color} />
