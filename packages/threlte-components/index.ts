@@ -6,6 +6,7 @@ export { default as Latex3D } from './components/Latex.svelte';
 export { default as Line3D } from './components/Line.svelte';
 export { default as Point3D } from './components/Point.svelte';
 export { default as Vector3D } from './components/Vector.svelte';
+export { default as Parallellepipedum3D } from './components/Parallellepipedum.svelte';
 export { default as PartialDeconstruction3D } from './components/PartialDeconstruction.svelte';
 
 export { PlaneFromNormal, PlaneFromPoints, AutoPlane } from './components/planes/index';

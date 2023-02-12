@@ -20,7 +20,8 @@ const config = {
         'three/examples/jsm/controls/OrbitControls': ['OrbitControls'],
         'three/examples/jsm/lines/LineGeometry': ['LineGeometry'],
         'three/examples/jsm/lines/LineMaterial': ['LineMaterial'],
-        'three/examples/jsm/lines/Line2': ['Line2']
+        'three/examples/jsm/lines/Line2': ['Line2'],
+        'three/examples/jsm/geometries/ConvexGeometry': ['ConvexGeometry'] // https://threejs.org/examples/#webgl_geometry_convex
       }
     })
   ]),
