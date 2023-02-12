@@ -1,3 +1,4 @@
+export { default as Arc2D } from './components/Arc.svelte';
 export { default as Axis2D } from './components/Axis.svelte';
 export { default as Canvas2D } from './components/Canvas.svelte';
 export { default as Label2D } from './components/Label.svelte';

@@ -3,6 +3,7 @@ import p5 from 'p5';
 export enum GridType {
   simpleGrid = 'SIMPLE_GRID',
   squareGrid = 'SQUARE_GRID',
+  triangularGrid = 'TRIANGULAR_GRID',
   none = 'NONE'
 }
 
@@ -58,15 +59,36 @@ export class Grid {
       else p5.strokeWeight(0.5);
 
       p5.line(-indecatorSteps * stepSize, stepSize * i, indecatorSteps * stepSize, stepSize * i);
+      p5.line(stepSize * i, -indecatorSteps * stepSize, stepSize * i, indecatorSteps * stepSize);
     }
+
+    p5.pop();
+  }
+
+  static drawTriangularGrid(p5: p5, size: number, scale = 1, stepSize: number = 100) {
+    const indecatorSteps = Grid.drawSimpleGrid(p5, size, scale, stepSize);
+
+    p5.push();
+    p5.strokeWeight(0.5);
+
+    // Horizontal lines
     for (let i = -indecatorSteps; i < indecatorSteps + 1; i++) {
       p5.stroke(150, ((indecatorSteps - Math.abs(i)) / indecatorSteps) * 150);
 
-      if (i % 10 === 0) p5.strokeWeight(2);
-      else if (i % 5 === 0) p5.strokeWeight(1);
-      else p5.strokeWeight(0.5);
+      p5.strokeWeight(0.5);
 
+      const turnRadius = Math.PI / 6;
+
+      p5.line(-indecatorSteps * stepSize, stepSize * i, indecatorSteps * stepSize, stepSize * i);
+      p5.push();
+      p5.rotate(turnRadius);
       p5.line(stepSize * i, -indecatorSteps * stepSize, stepSize * i, indecatorSteps * stepSize);
+      p5.pop();
+
+      p5.push();
+      p5.rotate(-turnRadius);
+      p5.line(stepSize * i, -indecatorSteps * stepSize, stepSize * i, indecatorSteps * stepSize);
+      p5.pop();
     }
 
     p5.pop();

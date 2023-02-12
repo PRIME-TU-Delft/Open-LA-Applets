@@ -35,6 +35,9 @@
       case GridType.squareGrid:
         Grid.drawSquareGrid(p5, size, $scale);
         break;
+      case GridType.triangularGrid:
+        Grid.drawTriangularGrid(p5, size, $scale);
+        break;
       case GridType.none:
         break;
       default:
