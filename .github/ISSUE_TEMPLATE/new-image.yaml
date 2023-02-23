@@ -28,8 +28,8 @@ body:
   - type: dropdown
     id: state
     attributes:
-      label: What state is the static image
-      description: Has dennis created a static image 
+      label: What state is the static image?
+      description: Has Dennis created a static image?
       options:
         - Yes, Dennis has created a static image
         - No, Dennis has not created a static image yet
