@@ -47,7 +47,7 @@ body:
     id: linked-issues
     attributes:
       label: Does this issue relate or depend on other issues?
-      description: "Add a list of issues that this issue depends on. Tip you can type # and then the issue number to get a list of issues."
+      description: "Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues."
       placeholder: "Depends on #1, #2. Relates to #3, #4."
     validations:
       required: false
