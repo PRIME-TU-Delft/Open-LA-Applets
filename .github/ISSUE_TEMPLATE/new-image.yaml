@@ -55,7 +55,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: What elements are interactive
+      label: What elements are interactive?
       description: Please provide a what variables need to change within the applet.
       placeholder: "The length of vector `r` needs to change."
     validations:
