@@ -11,7 +11,7 @@ body:
     id: link-to-paragraph
     attributes:
       label: Link to paragraph
-      description: "Provide a url to the paragraph that the image is in. Tip the sections have a # sign where you can get the exact url of the section"
+      description: "Provide a url to the paragraph that the image is in. Tip: the sections have a # sign where you can get the exact url of the section"
       placeholder: "https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter1/Inner_Product.html#inner-product"
     validations:
       required: false
