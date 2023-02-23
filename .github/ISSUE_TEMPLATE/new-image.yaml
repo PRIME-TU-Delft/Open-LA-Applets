@@ -1,0 +1,70 @@
+name: New image
+description: Submit a new image
+title: "[New image]: "
+labels: ["new image"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report!
+  - type: input
+    id: link-to-paragraph
+    attributes:
+      label: Link to paragraph
+      description: "Provide a url to the paragraph that the image is in. Tip the sections have a # sign where you can get the exact url of the section"
+      placeholder: "https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter1/Inner_Product.html"
+    validations:
+      required: true
+  - type: dropdown
+    id: applet-type
+    attributes:
+      label: What type of applet is this?
+      description: Is this a static image, or an interactive applet?
+      options:
+        - Static image
+        - Interactive applet 2D
+        - Interactive applet 3D
+        - Interactive slide show
+  - type: dropdown
+    id: state
+    attributes:
+      label: What state is the static image
+      description: Has dennis created a static image 
+      options:
+        - Yes, Dennis has created a static image
+        - No, Dennis has not created a static image yet
+        - No, Dennis does not have to create a static image for this applet
+    validations:
+      required: true
+  - type: textarea
+    id: image
+    attributes:
+      label: Static image
+      description: Please provide a link to the static image, or upload it directly. If there is no static image, please provide a simple (hand-drawn) sketch of the image.
+      placeholder: "https://..."
+    validations:
+      required: false
+  - type: input
+    id: requirements
+    attributes:
+      label: Requirements
+      description: Please provide some mathematical equations from the book that the applet needs to follow. If there are no requirements, please write "None".
+      placeholder: "The plane must follow the equation x^2 + y^2 = 1"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What elements are interactive
+      description: Please provide a what variables need to change within the applet.
+      placeholder: "The length of vector `r` needs to change."
+    validations:
+      required: false
+  - type: textarea
+    id: linked-issues
+    attributes:
+      label: Does this issue relate or depend on other issues?
+      description: "Add a list of issues that this issue depends on. Tip you can type # and then the issue number to get a list of issues."
+      placeholder: "Depends on #1, #2. Relates to #3, #4."
+    validations:
+      required: false
