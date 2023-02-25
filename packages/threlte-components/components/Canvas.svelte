@@ -20,6 +20,7 @@
   export let background = '#ffffff';
 
   let isPlaying = autoPlay;
+  let iframe = false;
   let isChangeing = false; // Are any of the sliders being changed?
   let isFullscreen = false;
   let showFormulas = false;
@@ -46,6 +47,7 @@
     const params = $page.url.searchParams;
 
     isPlaying = parseIsTrue(params.get('autoPlay')) || autoPlay;
+    iframe = parseIsTrue(params.get('iframe'));
     title = params.get('title') || title;
   }
 </script>
@@ -57,7 +59,7 @@
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
 >
-  <IdleOverlay />
+  <IdleOverlay {iframe} />
 
   <Canvas flat linear size={{ width, height }}>
     {#key resetCamera}
