@@ -6,7 +6,7 @@
   import { Canvas, T } from '@threlte/core';
 
   import { onMount } from 'svelte';
-  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
+  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI, IdleOverlay } from 'ui';
   import { parseIsTrue } from 'utils/parseURL';
   import { Sliders } from 'utils/Slider';
   import SetCamera from './SetCamera.svelte';
@@ -57,6 +57,8 @@
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
 >
+  <IdleOverlay />
+
   <Canvas flat linear size={{ width, height }}>
     {#key resetCamera}
       <SetCamera {isPerspectiveCamera} {enablePan} />
