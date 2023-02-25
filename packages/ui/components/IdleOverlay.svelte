@@ -4,14 +4,28 @@
 
   const TIMEOUT = 60_000;
 
-  function hideOverlay() {
-    idle = false;
-    setTimeout(() => {
+  let timeoutId: NodeJS.Timeout;
+
+  function setTimer() {
+    timeoutId = setTimeout(() => {
       idle = true;
     }, TIMEOUT);
   }
+
+  function hideOverlay() {
+    idle = false;
+    setTimer();
+  }
+
+  function extendTimer() {
+    if (!idle) {
+      clearTimeout(timeoutId);
+      setTimer();
+    }
+  }
 </script>
 
+<svelte:window on:click={extendTimer} />
 {#if iframe && idle}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="overlay" on:click={hideOverlay}>Inactive (click to interact)</div>
