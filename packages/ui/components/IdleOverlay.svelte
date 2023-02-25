@@ -2,11 +2,13 @@
   export let iframe = false;
   export let idle = true;
 
+  const TIMEOUT = 60_000;
+
   function hideOverlay() {
     idle = false;
     setTimeout(() => {
       idle = true;
-    }, 3000);
+    }, TIMEOUT);
   }
 </script>
 
