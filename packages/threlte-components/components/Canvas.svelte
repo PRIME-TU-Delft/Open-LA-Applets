@@ -23,6 +23,7 @@
   let isChangeing = false; // Are any of the sliders being changed?
   let isFullscreen = false;
   let showFormulas = false;
+  let sliderSelected: number = null;
 
   let resetCamera = Math.random();
   let height = 0;
@@ -80,11 +81,15 @@
     <!-- SLIDER PANEL -->
     <div style="max-width: calc(100vw - 6rem); touch-action:none;">
       <UI visible={!!sliders.sliders.length} bottom opacity>
-        {#each sliders.sliders as slider}
+        {#if sliderSelected == null}<p class="text-black">click us</p>{/if}
+        {#each sliders.sliders as slider, index}
           <SvelteSlider
             bind:slider
+            isSelected={sliderSelected == index}
             on:mousedown={() => (isChangeing = true)}
             on:mouseup={() => (isChangeing = false)}
+            on:indexSelected={() => (sliderSelected = index)}
+            on:closeSelected={() => (sliderSelected = null)}
           />
         {/each}
       </UI>
