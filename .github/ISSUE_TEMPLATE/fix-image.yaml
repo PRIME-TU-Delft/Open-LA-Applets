@@ -39,7 +39,7 @@ body:
     id: what-is-wrong
     attributes:
       label: What needs to change?
-      description: Please provide a clear description with screenshots or sketches of what needs to change. Tip: you can drag and drop images into this box.
+      description: "Please provide a clear description with screenshots or sketches of what needs to change. Tip: you can drag and drop images into this box."
       placeholder: The current image follows the equation x^2 + y^2 = 1, but it should follow x^2 + y^2 = 2
     validations:
       required: false
