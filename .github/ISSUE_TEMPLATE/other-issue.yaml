@@ -10,7 +10,7 @@ body:
     id: what-is-wrong
     attributes:
       label: What needs to change?
-      description: Please provide a clear description with screenshots or sketches what need to change. Tip: you can drag and drop images into this box.
+      description: "Please provide a clear description with screenshots or sketches what need to change. Tip: you can drag and drop images into this box."
       placeholder: We need to add the fuctionality of ...
     validations:
       required: true
