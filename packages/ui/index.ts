@@ -5,4 +5,4 @@ export { default as ToggleFullscreen } from './components/ToggleFullscreen.svelt
 export { default as UI } from './components/UI.svelte';
 export { default as LatexUI } from './components/Latex.svelte';
 export { default as Formula } from './components/Formula.svelte';
-export { default as IdleOverlay } from './components/IdleOverlay.svelte';
+export { default as IdleTimer } from './components/IdleTimer.svelte';

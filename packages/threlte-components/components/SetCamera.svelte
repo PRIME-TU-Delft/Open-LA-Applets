@@ -9,6 +9,7 @@
   const { renderer } = useThrelte();
 
   export let isPerspectiveCamera = false;
+  export let enableZoom = true;
   export let enablePan = false;
 
   let position = new Vector3(10, 10, 10);
@@ -47,6 +48,7 @@
     <T.OrbitControls
       maxDistance={distance * 1.5}
       minDistance={distance / 20}
+      {enableZoom}
       {enablePan}
       args={[camera, renderer?.domElement]}
     />
@@ -65,6 +67,7 @@
       args={[camera, renderer?.domElement]}
       maxPolarAngle={Math.PI * 0.6}
       {enablePan}
+      {enableZoom}
       maxZoom={zoom * 10}
       minZoom={Math.max(zoom - 10, 1)}
     />

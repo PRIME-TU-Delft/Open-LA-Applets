@@ -6,12 +6,13 @@
   import { Canvas, T } from '@threlte/core';
 
   import { onMount } from 'svelte';
-  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI, IdleOverlay } from 'ui';
+  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI, IdleTimer } from 'ui';
   import { parseIsTrue } from 'utils/parseURL';
   import { Sliders } from 'utils/Slider';
   import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;
+  export let enableZoom = true;
   export let disableUI = false;
   export let sliders = new Sliders();
   export let title = '';
@@ -42,15 +43,15 @@
 
   // TODO: implement play pause
 
-  $: {
-    // Parse url to see if autoPlay is enabled.
-    const params = $page.url.searchParams;
-
-    isPlaying = parseIsTrue(params.get('autoPlay')) || autoPlay;
-    iframe = parseIsTrue(params.get('iframe'));
-    title = params.get('title') || title;
-  }
+  // Parse url to see if autoPlay is enabled.
+  const params = $page.url.searchParams;
+  isPlaying = parseIsTrue(params.get('autoPlay')) || autoPlay;
+  iframe = parseIsTrue(params.get('iframe'));
+  enableZoom = !iframe;
+  title = params.get('title') || title;
 </script>
+
+<h1>enableZoom={enableZoom}</h1>
 
 <div
   class="canvasWrapper"
@@ -59,11 +60,11 @@
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
 >
-  <IdleOverlay {iframe} />
-
   <Canvas flat linear size={{ width, height }}>
+    <IdleTimer {iframe} bind:enableZoom={enableZoom} />
+
     {#key resetCamera}
-      <SetCamera {isPerspectiveCamera} {enablePan} />
+      <SetCamera {isPerspectiveCamera} {enablePan} {enableZoom} />
     {/key}
 
     <slot name="lights">
