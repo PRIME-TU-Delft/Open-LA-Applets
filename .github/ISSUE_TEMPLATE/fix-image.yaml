@@ -43,6 +43,14 @@ body:
       placeholder: The current image follows the equation x^2 + y^2 = 1, but it should follow x^2 + y^2 = 2
     validations:
       required: false
+  - type: textarea
+    id: linked-issues
+    attributes:
+      label: Does this issue relate or depend on other issues?
+      description: "Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues."
+      placeholder: "Depends on #1, #2. Relates to #3, #4."
+    validations:
+      required: false  
   - type: checkboxes
     id: checkboxes
     attributes:
