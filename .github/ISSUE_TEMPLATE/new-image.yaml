@@ -74,7 +74,8 @@ body:
       label: Steps to completion:
       description: "These checkboxes are for the developers: ensure these steps are completed before resolving this issue."
       options: 
-        - label: implement changes/new applet described above
+        - label: assign yourself & check labels
+        - label: implement new applet described above
         - label: embed the image in the book (with review status)
         - label: get feedback from the math teachers
     validations:
