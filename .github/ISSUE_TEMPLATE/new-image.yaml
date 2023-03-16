@@ -78,5 +78,7 @@ body:
         - label: implement new applet described above
         - label: embed the image in the book (with review status)
         - label: get feedback from the math teachers
+        - label: get feedback from writers 
+        - label: remove review status in book
     validations:
       required: false
