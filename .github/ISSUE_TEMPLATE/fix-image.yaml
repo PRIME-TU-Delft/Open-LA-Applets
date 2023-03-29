@@ -50,4 +50,18 @@ body:
       description: "Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues."
       placeholder: "Depends on #1, #2. Relates to #3, #4."
     validations:
+      required: false  
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Steps to completion:
+      description: "These checkboxes are for the developers: ensure these steps are completed before resolving this issue."
+      options: 
+        - label: assign yourself & check labels
+        - label: implement changes described above
+        - label: embed the image in the book (with review status)
+        - label: get feedback from the math teachers
+        - label: get feedback from writers 
+        - label: remove review status in book
+    validations:
       required: false
