@@ -54,7 +54,7 @@ body:
   - type: checkboxes
     id: checkboxes
     attributes:
-      label: Steps to completion:
+      label: "Steps to completion:"
       description: "These checkboxes are for the developers: ensure these steps are completed before resolving this issue."
       options: 
         - label: assign yourself & check labels
@@ -63,5 +63,3 @@ body:
         - label: get feedback from the math teachers
         - label: get feedback from writers 
         - label: remove review status in book
-    validations:
-      required: false
