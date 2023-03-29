@@ -8,6 +8,6 @@ export function color(param: number | string, color: string) {
   return `\\htmlStyle{color: ${color};}{${param}}`;
 }
 
-export function matrix(m: number[][]) {
+export function matrix(m: (string | number | undefined)[][]) {
   return `\\begin{bmatrix} ${m.map((row) => row.join(' & ')).join(' \\\\ ')} \\end{bmatrix}`;
 }

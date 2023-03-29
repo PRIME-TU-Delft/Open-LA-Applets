@@ -46,6 +46,10 @@ export class Sliders {
     return this._sliders.every((s) => s.value == this._sliders[0].value);
   }
 
+  get atDefault() {
+    return this._sliders.every((s) => s.value == s.defaultValue);
+  }
+
   get sliders() {
     return this._sliders;
   }
