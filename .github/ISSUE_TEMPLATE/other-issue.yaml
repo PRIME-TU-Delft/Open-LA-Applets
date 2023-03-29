@@ -1,0 +1,24 @@
+name: Other issue
+description: Report an issue that is not a new image or a fix to an existing image
+title: "[Issue]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report!
+  - type: textarea
+    id: what-is-wrong
+    attributes:
+      label: What needs to change?
+      description: "Please provide a clear description with screenshots or sketches what need to change. Tip: you can drag and drop images into this box."
+      placeholder: We need to add the fuctionality of ...
+    validations:
+      required: true
+  - type: textarea
+    id: linked-issues
+    attributes:
+      label: Does this issue relate or depend on other issues?
+      description: "Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues."
+      placeholder: "Depends on #1, #2. Relates to #3, #4."
+    validations:
+      required: false
