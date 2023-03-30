@@ -11,14 +11,15 @@
     "format": "prettier --write --ignore-path=../../.prettierignore ."
   },
   "dependencies": {
+    "p5-svelte": "*",
+    "three": "^0.149.0",
     "ui": "*",
     "utils": "*"
   },
   "devDependencies": {
     "@types/p5": "^1.4.3",
-    "p5": "^1.5.0",
-    "p5-svelte": "^3.1.2",
     "eslint-config-custom": "*",
+    "p5": "^1.5.0",
     "svelte": "^3.9.2"
   }
 }

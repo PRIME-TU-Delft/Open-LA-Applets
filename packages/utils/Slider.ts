@@ -13,7 +13,14 @@ export class Sliders {
     return this;
   }
 
-  // Add a new slider to the Sliders object
+  /**
+   * add a new slider to the sliders array
+   * @param dft - default value for the slider default is 0
+   * @param from - from value, default is -1
+   * @param to - to value, default is 1
+   * @param step - step size, default is 0.1
+   * @returns this
+   */
   addSlider(dft: number, from?: number, to?: number, step?: number) {
     // If we already have 3 sliders, do not add another one
     if (this._sliders.length >= 3) return this;

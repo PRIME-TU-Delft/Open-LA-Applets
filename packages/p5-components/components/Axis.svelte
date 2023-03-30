@@ -1,34 +1,47 @@
 <script lang="ts">
-  /**
-   * Dragging marker over an image to transform it.
-   */
-  import P5 from './P5.svelte';
-  import type p5 from 'p5';
+  import p5 from 'p5';
+  import { onDestroy, onMount } from 'svelte';
+  import { PrimeColor } from 'utils/PrimeColors';
+  import { GridType, Grid } from './Grids';
 
-  let clientHeight;
-  let clientWidth;
+  import { getCanvasContext } from './CanvasContext';
 
-  const sketch = (p5: p5) => {
-    p5.setup = () => {
-      p5.createCanvas(clientWidth, clientHeight);
-    };
+  export let gridType: GridType = GridType.simpleGrid;
 
-    p5.draw = () => {
-      p5.resizeCanvas(clientWidth, clientHeight);
-      p5.line(100, 100, 200, 200);
-    };
+  let canvasContext = getCanvasContext();
+  const { scale } = canvasContext;
 
-    // If the user presses/releases their mouse, signal this to all Draggable points
-    p5.mousePressed = () => {
-      console.log('todo');
-    };
+  const key = Symbol('axis');
 
-    p5.mouseReleased = () => {
-      console.log('todo');
-    };
-  };
+  onMount(() => {
+    canvasContext.addDrawFn(draw, key, true);
+  });
+
+  onDestroy(() => {
+    canvasContext.removeDrawFn(key);
+  });
+
+  function draw(p5: p5) {
+    p5.stroke(PrimeColor.black);
+    p5.strokeWeight(2);
+
+    const w = p5.width;
+    const h = p5.height;
+    const size = Math.max(w, h);
+
+    // console.log($scale);
+
+    switch (gridType) {
+      case GridType.squareGrid:
+        Grid.drawSquareGrid(p5, size, $scale);
+        break;
+      case GridType.triangularGrid:
+        Grid.drawTriangularGrid(p5, size, $scale);
+        break;
+      case GridType.none:
+        break;
+      default:
+        Grid.drawSimpleGrid(p5, size, $scale);
+    }
+  }
 </script>
-
-<div bind:clientHeight bind:clientWidth style="height: 100%">
-  <P5 {sketch} />
-</div>
