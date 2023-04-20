@@ -156,7 +156,7 @@
       {#each sliders.sliders as slider, index}
         <SvelteSlider
           bind:slider
-          isSelected={sliderSelected == index}
+          isExpanded={sliderSelected == index}
           on:mousedown={() => (isChangeing = true)}
           on:mouseup={() => (isChangeing = false)}
           on:indexSelected={() => (sliderSelected = index)}
