@@ -5,14 +5,13 @@
 
   import { Canvas, T } from '@threlte/core';
 
-  import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
+  import { RoundButton, ShareWindow, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
   import SetCamera from './SetCamera.svelte';
 
   export let enablePan = false;
   export let sliders = new Sliders();
   export let title = '';
-  export let isPerspectiveCamera = false;
   export let background = '#ffffff';
   export let zoom = 29;
 
@@ -20,7 +19,6 @@
   let isFullscreen = false; // Is the scene fullscreen?
 
   let showFormulas = false; // Show the formulas panel (if it exists)
-  let showShareWindow = false; // Show the share window
 
   let resetCamera = Math.random();
   let height = 0;
@@ -51,7 +49,7 @@
 >
   <Canvas flat linear size={{ width, height }}>
     {#key resetCamera}
-      <SetCamera {isPerspectiveCamera} {enablePan} {zoom} />
+      <SetCamera {enablePan} {zoom} />
     {/key}
 
     <slot name="lights">
@@ -94,9 +92,7 @@
   </UI>
 
   <!-- SHARE BUTTON -->
-  <UI column bottom left opacity styled={false}>
-    <RoundButton icon={mdiShare} on:click={() => (showShareWindow = true)} />
-  </UI>
+  <ShareWindow />
 </div>
 
 <style>
