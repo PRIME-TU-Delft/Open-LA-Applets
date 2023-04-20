@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { mdiInformation, mdiRestart } from '@mdi/js';
+  import { mdiInformation, mdiRestart, mdiShare } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
@@ -16,9 +16,11 @@
   export let background = '#ffffff';
   export let zoom = 29;
 
-  let isChangeing = false; // Are any of the sliders being changed?
-  let isFullscreen = false;
-  let showFormulas = false;
+  let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
+  let isFullscreen = false; // Is the scene fullscreen?
+
+  let showFormulas = false; // Show the formulas panel (if it exists)
+  let showShareWindow = false; // Show the share window
 
   let resetCamera = Math.random();
   let height = 0;
@@ -67,7 +69,12 @@
   <!-- SLIDER PANEL -->
   <div style="max-width: calc(100vw - 6rem); touch-action:none;">
     <UI visible={!!sliders.sliders.length} bottom opacity>
-      <ToggleSliders bind:sliders bind:isPlaying={isChangeing} />
+      <ToggleSliders
+        bind:sliders
+        bind:isPlaying={isPlayingSliders}
+        on:startChanging={() => (showFormulas = true)}
+        on:stopChanging={() => (showFormulas = false)}
+      />
     </UI>
   </div>
 
@@ -76,7 +83,7 @@
     <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
   </UI>
 
-  <UI visible={!!$$slots.formulas && (showFormulas || isChangeing)} top column>
+  <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
     <slot name="formulas" />
   </UI>
 
@@ -84,6 +91,11 @@
   <UI column bottom right opacity styled={false}>
     <RoundButton icon={mdiRestart} on:click={reset} />
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
+  </UI>
+
+  <!-- SHARE BUTTON -->
+  <UI column bottom left opacity styled={false}>
+    <RoundButton icon={mdiShare} on:click={() => (showShareWindow = true)} />
   </UI>
 </div>
 

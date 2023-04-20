@@ -27,6 +27,7 @@
 
     clearInterval(playInterval);
     round();
+    dispatch('stopChanging');
   }
 
   function startPlaying() {
@@ -48,6 +49,12 @@
   function togglePlay() {
     if (isPlaying) stopPlaying();
     else startPlaying();
+  }
+
+  function startChanging() {
+    stopPlaying();
+
+    dispatch('startChanging');
   }
 
   $: {
@@ -81,8 +88,8 @@
       step={slider.stepSize}
       bind:value={slider.value}
       on:change={stopPlaying}
-      on:mousedown={stopPlaying}
-      on:touchstart={stopPlaying}
+      on:mousedown={startChanging}
+      on:touchstart={startChanging}
       style="accent-color: {slider.color}"
       class="w-inherit"
     />

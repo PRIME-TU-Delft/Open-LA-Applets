@@ -22,5 +22,7 @@
     bind:isPlaying
     isExpanded={sliderExpanded == index}
     on:expand={() => expandIndex(index)}
+    on:startChanging
+    on:stopChanging
   />
 {/each}
