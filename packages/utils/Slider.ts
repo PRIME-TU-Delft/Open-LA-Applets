@@ -95,6 +95,8 @@ export class Sliders {
    * @returns this
    */
   fromURL(url: string) {
+    if (!url) return this;
+
     const values = url.split(',').map((v) => parseFloat(v));
 
     this._sliders = this._sliders.map((slider, i) => {

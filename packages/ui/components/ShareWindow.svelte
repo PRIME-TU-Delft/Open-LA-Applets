@@ -37,7 +37,6 @@
 
     const slidersUrl = sliders.getURL();
     if (slidersUrl) {
-      console.log(slidersUrl);
       states.push(slidersUrl);
     }
 
@@ -104,6 +103,13 @@
       <label class="flex items-center gap-2">
         <input class="h-4 w-4" type="checkbox" bind:checked={includeState} />
         <span>Include current state</span>
+      </label>
+
+      <label>
+        <span>Reference URL</span>
+        <div class="relative">
+          <input type="text" readonly value="linear_combinations/span_two_line " />
+        </div>
       </label>
 
       <p>CREDITS</p>
