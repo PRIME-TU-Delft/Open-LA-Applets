@@ -18,6 +18,7 @@
 
   $: state = sliders.sliders && getState($cameraStore);
   $: url = $page.url.origin + $page.url.pathname;
+  $: refUrl = $page.url.pathname.replace('/applet/', '');
 
   /**
    * Returns a string with the current state of the camera
@@ -36,7 +37,7 @@
     states.push(`zoom=${zoom.toFixed(2)}`);
 
     const slidersUrl = sliders.getURL();
-    if (slidersUrl) {
+    if (slidersUrl && sliders.hasSliders()) {
       states.push(slidersUrl);
     }
 
@@ -108,9 +109,20 @@
       <label>
         <span>Reference URL</span>
         <div class="relative">
-          <input type="text" readonly value="linear_combinations/span_two_line " />
+          <input class="w-full" type="text" readonly value={refUrl} />
         </div>
       </label>
+
+      <p>
+        Or go to this github page <a
+          rel="noopener noreferrer"
+          target="_blank"
+          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+is%3Aopen+{refUrl.replace(
+            '/',
+            '%2F'
+          )}">here</a
+        >
+      </p>
 
       <p>CREDITS</p>
     </div>

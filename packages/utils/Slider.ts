@@ -76,6 +76,10 @@ export class Sliders {
     return this.getSlider(2);
   }
 
+  hasSliders() {
+    return this._sliders.length > 0;
+  }
+
   /**
    * @returns a string of the slider values separated by commas
    */
