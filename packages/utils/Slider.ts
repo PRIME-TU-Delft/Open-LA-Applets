@@ -75,6 +75,40 @@ export class Sliders {
   get z() {
     return this.getSlider(2);
   }
+
+  /**
+   * @returns a string of the slider values separated by commas
+   */
+  getURL() {
+    return (
+      'sliders=' +
+      this._sliders
+        .map((s) => s.value)
+        .map((v) => v.toFixed(2))
+        .join(',')
+    );
+  }
+
+  /**
+   * Convert a URL string to a set of sliders
+   * @param url string to convert
+   * @returns this
+   */
+  fromURL(url: string) {
+    const values = url.split(',').map((v) => parseFloat(v));
+
+    this._sliders = this._sliders.map((slider, i) => {
+      if (i >= values.length) return slider;
+
+      const v = values[i];
+      slider.value = v;
+      slider.defaultValue = v;
+
+      return slider;
+    });
+
+    return this;
+  }
 }
 
 /**

@@ -6,30 +6,42 @@
   import type { OrthographicCamera } from 'three';
   import { cameraStore } from 'threlte-components';
   import { RoundButton } from '../index';
+  import { Sliders } from 'utils/Slider';
+
+  export let sliders: Sliders;
 
   let showShareWindow = false;
   let showCopyToClipboard = false;
-  let includeState = false; // If true, the url will include the current state of the applet  (camera position, etc...)
+  let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
 
   let urlInput: HTMLTextAreaElement;
 
-  $: state = getState($cameraStore);
+  $: state = sliders.sliders && getState($cameraStore);
   $: url = $page.url.origin + $page.url.pathname;
 
   /**
    * Returns a string with the current state of the camera
    * @param camera
    */
-  function getState(camera: OrthographicCamera) {
+  function getState(camera: OrthographicCamera): string {
     if (!camera) return '';
+
+    let states: string[] = [];
 
     const { position, zoom } = camera;
 
-    const pos = `position=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(
-      2
-    )}`;
-    const zm = `zoom=${zoom.toFixed(2)}`;
-    return `?${pos}&${zm}`;
+    states.push(
+      `position=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
+    );
+    states.push(`zoom=${zoom.toFixed(2)}`);
+
+    const slidersUrl = sliders.getURL();
+    if (slidersUrl) {
+      console.log(slidersUrl);
+      states.push(slidersUrl);
+    }
+
+    return '?' + states.join('&');
   }
 
   /**
@@ -59,17 +71,18 @@
         <h1>PRIME</h1>
         <RoundButton on:click={() => (showShareWindow = false)} icon={mdiClose} />
       </div>
-      <p>WHAT IS PRIME?</p>
-      <p>WHAT ARE THESE APPLETS FOR?</p>
-      <p>Licence CC-By etc...</p>
+      <p>WHAT IS PRIME? [TODO]</p>
+      <p>WHAT ARE THESE APPLETS FOR? [TODO]</p>
+      <p>Licence CC-By etc... [TODO]</p>
 
       <label>
         <span>Url to this applet</span>
         <div class="relative">
-          {#key includeState}
+          {#key includeState && sliders.sliders}
             <textarea
               bind:this={urlInput}
-              class="h-24 w-full resize-none rounded p-2 pr-10"
+              style="overflow-wrap: normal;"
+              class="overflow-wrap h-24 w-full resize-none rounded p-2 pr-10"
               readonly
               value={url + (includeState ? state : '')}
             />

@@ -1,13 +1,14 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { mdiInformation, mdiRestart, mdiShare } from '@mdi/js';
+  import { mdiInformation, mdiRestart } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
   import { RoundButton, ShareWindow, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
   import SetCamera from './SetCamera.svelte';
+  import { onMount } from 'svelte';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -38,6 +39,12 @@
     const params = $page.url.searchParams;
     title = params.get('title') || title;
   }
+
+  onMount(() => {
+    const params = $page.url.searchParams;
+
+    sliders = sliders.fromURL(params.get('sliders')) || sliders;
+  });
 </script>
 
 <div
@@ -92,7 +99,7 @@
   </UI>
 
   <!-- SHARE BUTTON -->
-  <ShareWindow />
+  <ShareWindow {sliders} />
 </div>
 
 <style>
