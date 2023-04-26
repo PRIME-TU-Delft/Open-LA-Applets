@@ -8,6 +8,7 @@
   import { Sliders } from 'utils/Slider';
   import { DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
+  import ShareWindow from 'ui/components/ShareWindow.svelte';
 
   export let sliders = new Sliders();
   export let zoom = 1;
@@ -172,6 +173,8 @@
 
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
   </UI>
+
+  <ShareWindow {sliders} />
 </div>
 
 <style>

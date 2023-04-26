@@ -65,7 +65,7 @@
 </script>
 
 {#if showShareWindow}
-  <div class="absolute z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
+  <div class="absolute top-0 left-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
     <div class="prose h-full w-[30rem] rounded bg-slate-300 p-4 opacity-90">
       <div class="flex justify-between">
         <h1>PRIME</h1>
@@ -117,10 +117,9 @@
         Or go to this github page <a
           rel="noopener noreferrer"
           target="_blank"
-          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+is%3Aopen+{refUrl.replace(
-            '/',
-            '%2F'
-          )}">here</a
+          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+is%3Aopen+{refUrl
+            .split('/')
+            .slice(-1)}">here</a
         >
       </p>
 
