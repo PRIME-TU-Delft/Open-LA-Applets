@@ -11,7 +11,7 @@ body:
     id: link-to-paragraph
     attributes:
       label: Link to paragraph
-      description: "Provide a url to the paragraph that the image is in. Tip: the sections have a # sign where you can get the exact url of the section"
+      description: "Provide a url to the paragraph that the image is in. If there is no interactive applet yet, link to the static image that will be replaced once the applet has been implemented. Tip: the sections have a # sign where you can get the exact url of the section"
       placeholder: "https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter1/Inner_Product.html"
     validations:
       required: true
@@ -25,6 +25,12 @@ body:
         - Interactive applet 2D
         - Interactive applet 3D
         - Interactive slide show
+  - type: input
+    id: link-to-applet
+    attributes:
+      label: Link to applet
+      description: "Provide a url to the applet itself"
+      placeholder: "https://openla.ewi.tudelft.nl/applet/lines_and_planes/plane_line_intersection"
   - type: dropdown
     id: state
     attributes:
