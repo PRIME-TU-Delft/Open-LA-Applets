@@ -12,8 +12,8 @@
   } from 'threlte-components';
 
   const p = new Vector3(0, 1, 2);
-  const q = new Vector3(2, 0, 1);
-  const r = new Vector3(0, 0, 5);
+  const q = new Vector3(0, 0, 5);
+  const r = new Vector3(2, 0, 1);
 
   const pr = r.clone().sub(p.clone());
   const pq = q.clone().sub(p.clone());
