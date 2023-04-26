@@ -80,7 +80,6 @@
   </button>
 
   <label class="flex w-full">
-    <p class="w-8 text-center text-black">{slider.value.toFixed(1)}</p>
     <input
       type="range"
       min={slider.min}
