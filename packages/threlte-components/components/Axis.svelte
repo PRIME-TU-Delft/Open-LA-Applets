@@ -17,6 +17,7 @@
   $: indicators = new Array(axisInterval * 2 + 1)
     .fill(0)
     .map((_, i) => (i - axisInterval) * axisSpacing); // range -axisLength to including axisLength
+  $: labeledIndicators = indicators.filter(x => x != 0);
 
   $: indicatorMin = indicators[0];
   $: indicatorMax = indicators[indicators.length - 1];
@@ -67,7 +68,7 @@
 
 <!-- Number indicators -->
 {#if showNumbers}
-  {#each indicators as indicator}
+  {#each labeledIndicators as indicator}
     <Label position={new Vector3(indicator, 0.1, -0.15)} opacity={axisLabelOpacity}>
       {indicator}
     </Label>
