@@ -14,30 +14,28 @@
   export let floor = false;
 
   $: axisInterval = Math.floor(axisLength / axisSpacing);
-  $: indecators = new Array(axisInterval * 2 + 1)
+  $: indicators = new Array(axisInterval * 2 + 1)
     .fill(0)
     .map((_, i) => (i - axisInterval) * axisSpacing); // range -axisLength to including axisLength
-  $: largeIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 0 && x !== 0); // Even minus 0 indecators
-  $: smallIndecators = indecators.filter((x, i) => i % (axisSpacing * 2) === 1 && x !== 0); // Odd indecators
 
-  $: indecatorMin = indecators[0];
-  $: indecatorMax = indecators[indecators.length - 1];
+  $: indicatorMin = indicators[0];
+  $: indicatorMax = indicators[indicators.length - 1];
 
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
   const axisLabelOpacity = 0.4;
 
-  function getPoints(indecator: number, size: number, axis = 0): [Vector3, Vector3] {
-    let from = new Vector3(indecator, 0, size);
-    let to = new Vector3(indecator, 0, -size);
+  function getPoints(indicator: number, size: number, axis = 0): [Vector3, Vector3] {
+    let from = new Vector3(indicator, 0, size);
+    let to = new Vector3(indicator, 0, -size);
 
     if (axis == 1) {
-      from.set(0, indecator, size);
-      to.set(0, indecator, -size);
+      from.set(0, indicator, size);
+      to.set(0, indicator, -size);
     }
 
     if (axis == 2) {
-      from.set(size, 0, indecator);
-      to.set(-size, 0, indecator);
+      from.set(size, 0, indicator);
+      to.set(-size, 0, indicator);
     }
 
     return [from, to];
@@ -58,43 +56,37 @@
   points={[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}
 />
 
-<!-- Tick indecators -->
+<!-- Tick indicators -->
 {#if !hideTicks}
-  {#each largeIndecators as indecator}
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[0])} />
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[0], 1)} />
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[0], 2)} />
-  {/each}
-
-  {#each smallIndecators as indecator}
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[1])} />
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[1], 1)} />
-    <Line color={PrimeColor.black} points={getPoints(indecator, tickSizes[1], 2)} />
+  {#each indicators as indicator}
+    <Line color={PrimeColor.black} points={getPoints(indicator, tickSizes[1])} />
+    <Line color={PrimeColor.black} points={getPoints(indicator, tickSizes[1], 1)} />
+    <Line color={PrimeColor.black} points={getPoints(indicator, tickSizes[1], 2)} />
   {/each}
 {/if}
 
-<!-- Number indecators -->
+<!-- Number indicators -->
 {#if showNumbers}
-  {#each smallIndecators as indecator}
-    <Label position={new Vector3(indecator, 0.1, -0.15)} opacity={axisLabelOpacity}>
-      {indecator}
+  {#each indicators as indicator}
+    <Label position={new Vector3(indicator, 0.1, -0.15)} opacity={axisLabelOpacity}>
+      {indicator}
     </Label>
-    <Label position={new Vector3(0, indecator, -0.15)} opacity={axisLabelOpacity}>
-      {indecator}
+    <Label position={new Vector3(0, indicator, -0.15)} opacity={axisLabelOpacity}>
+      {indicator}
     </Label>
-    <Label position={new Vector3(-0.15, 0.1, indecator)} opacity={axisLabelOpacity}>
-      {indecator}
+    <Label position={new Vector3(-0.15, 0.1, indicator)} opacity={axisLabelOpacity}>
+      {indicator}
     </Label>
   {/each}
 {/if}
 
-<Latex3D position={new Vector3(0, 0, indecatorMin)} latex="x" />
-<Latex3D position={new Vector3(indecatorMin, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indecatorMin, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMin)} latex="x" />
+<Latex3D position={new Vector3(indicatorMin, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMin, 0)} latex="z" />
 
-<Latex3D position={new Vector3(0, 0, indecatorMax)} latex="x" />
-<Latex3D position={new Vector3(indecatorMax, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indecatorMax, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMax)} latex="x" />
+<Latex3D position={new Vector3(indicatorMax, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMax, 0)} latex="z" />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
