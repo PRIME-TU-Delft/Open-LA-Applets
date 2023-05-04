@@ -10,7 +10,7 @@
 
   export let sliders: Sliders;
 
-  let showShareWindow = false;
+  let showShareWindow = true;
   let showCopyToClipboard = false;
   let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
 
@@ -66,7 +66,9 @@
 
 {#if showShareWindow}
   <div class="absolute top-0 left-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
-    <div class="prose h-full w-[30rem] overflow-hidden rounded bg-slate-300 p-4 opacity-90">
+    <div
+      class="prose prose-sm h-full w-full w-[30rem] overflow-hidden rounded bg-slate-300 p-4 opacity-90"
+    >
       <div class="flex justify-between">
         <h1>Share and Embed</h1>
         <RoundButton on:click={() => (showShareWindow = false)} icon={mdiClose} />
@@ -102,15 +104,15 @@
               class="absolute top-1 right-1 h-8 w-8 rounded bg-slate-800/90 p-2 text-slate-100 transition-all hover:scale-105 hover:bg-slate-900"
               on:click={copyToClipboard}><Icon path={mdiContentCopy} /></button
             >
+
+            <div
+              class="absolute -bottom-4 right-0 text-green-900 opacity-0 transition-opacity duration-300"
+              class:opacity-100={showCopyToClipboard}
+            >
+              Copied url to clipboard
+            </div>
           </div>
         </label>
-
-        <div
-          class="w-full text-right text-green-900 opacity-0 transition-opacity duration-300"
-          class:opacity-100={showCopyToClipboard}
-        >
-          Copied url to clipboard
-        </div>
 
         <label>
           <h3>Applet Id</h3>
