@@ -1,29 +1,25 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { mdiInformation, mdiPause, mdiRestart } from '@mdi/js';
+  import { mdiInformation, mdiRestart } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
-  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
-  import { parseIsTrue } from 'utils/parseURL';
+  import { RoundButton, ShareWindow, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
   import SetCamera from './SetCamera.svelte';
+  import { onMount } from 'svelte';
 
   export let enablePan = false;
-  export let disableUI = false;
   export let sliders = new Sliders();
   export let title = '';
-  export let autoPlay = true;
-  export let isPerspectiveCamera = false;
   export let background = '#ffffff';
   export let zoom = 29;
 
-  let isPlaying = autoPlay;
-  let isChangeing = false; // Are any of the sliders being changed?
-  let isFullscreen = false;
-  let showFormulas = false;
-  let sliderSelected: number = null;
+  let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
+  let isFullscreen = false; // Is the scene fullscreen?
+
+  let showFormulas = false; // Show the formulas panel (if it exists)
 
   let resetCamera = Math.random();
   let height = 0;
@@ -36,19 +32,19 @@
    */
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
-
     resetCamera = Math.random(); // Update the key to reset the set camera component
   }
 
-  // TODO: implement play pause
-
   $: {
-    // Parse url to see if autoPlay is enabled.
     const params = $page.url.searchParams;
-
-    isPlaying = parseIsTrue(params.get('autoPlay')) || autoPlay;
     title = params.get('title') || title;
   }
+
+  onMount(() => {
+    const params = $page.url.searchParams;
+
+    sliders = sliders.fromURL(params.get('sliders')) || sliders;
+  });
 </script>
 
 <div
@@ -60,7 +56,7 @@
 >
   <Canvas flat linear size={{ width, height }}>
     {#key resetCamera}
-      <SetCamera {isPerspectiveCamera} {enablePan} {zoom} />
+      <SetCamera {enablePan} {zoom} />
     {/key}
 
     <slot name="lights">
@@ -70,50 +66,40 @@
     <slot />
   </Canvas>
 
-  {#if !disableUI}
-    <!-- EXPLAIN PANEL -->
-    <UI top left visible={title && isFullscreen && isPlaying}>
-      {title}
+  <!-- TITLE PANEL -->
+  <UI top left visible={title && isFullscreen}>
+    {title}
+  </UI>
+
+  <!-- SLIDER PANEL -->
+  <div style="max-width: calc(100vw - 6rem); touch-action:none;">
+    <UI visible={!!sliders.sliders.length} bottom opacity>
+      <ToggleSliders
+        bind:sliders
+        bind:isPlaying={isPlayingSliders}
+        on:startChanging={() => (showFormulas = true)}
+        on:stopChanging={() => (showFormulas = false)}
+      />
     </UI>
+  </div>
 
-    <UI top left visible={!isPlaying && !isFullscreen}>Click to start playing scene</UI>
+  <!-- INFORMATION UI -->
+  <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
+    <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
+  </UI>
 
-    <!-- SLIDER PANEL -->
-    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-      <UI visible={!!sliders.sliders.length} bottom opacity>
-        {#if sliderSelected == null}<p class="text-black">click us</p>{/if}
-        {#each sliders.sliders as slider, index}
-          <SvelteSlider
-            bind:slider
-            isSelected={sliderSelected == index}
-            on:mousedown={() => (isChangeing = true)}
-            on:mouseup={() => (isChangeing = false)}
-            on:indexSelected={() => (sliderSelected = index)}
-            on:closeSelected={() => (sliderSelected = null)}
-          />
-        {/each}
-      </UI>
-    </div>
+  <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
+    <slot name="formulas" />
+  </UI>
 
-    <!-- INFORMATION UI -->
-    <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
-      <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
-    </UI>
+  <!-- ACTION BUTTONS -->
+  <UI column bottom right opacity styled={false}>
+    <RoundButton icon={mdiRestart} on:click={reset} />
+    <ToggleFullscreen {sceneEl} bind:isFullscreen />
+  </UI>
 
-    <UI visible={!!$$slots.formulas && (showFormulas || isChangeing)} top column>
-      <slot name="formulas" />
-    </UI>
-
-    <UI column bottom right opacity styled={false}>
-      {#if isPlaying}
-        <RoundButton icon={mdiPause} />
-      {/if}
-
-      <RoundButton icon={mdiRestart} on:click={reset} />
-
-      <ToggleFullscreen {sceneEl} bind:isFullscreen />
-    </UI>
-  {/if}
+  <!-- SHARE BUTTON -->
+  <ShareWindow {sliders} />
 </div>
 
 <style>

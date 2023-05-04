@@ -9,3 +9,5 @@ export { default as Vector3D } from './components/Vector.svelte';
 export { default as PartialDeconstruction3D } from './components/PartialDeconstruction.svelte';
 
 export { PlaneFromNormal, PlaneFromPoints, AutoPlane } from './components/planes/index';
+
+export { default as cameraStore } from './stores/cameraStore';

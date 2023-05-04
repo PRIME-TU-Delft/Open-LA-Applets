@@ -5,10 +5,11 @@
   export let size = 1;
   export let color = 'currentColor';
   export let disabled = false;
+  export let twClass = '';
 </script>
 
 <div
-  class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center "
+  class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center {twClass}"
   class:disabled
   on:click
   on:keypress

@@ -8,6 +8,7 @@
   import { Sliders } from 'utils/Slider';
   import { DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
+  import ShareWindow from 'ui/components/ShareWindow.svelte';
 
   export let sliders = new Sliders();
   export let zoom = 1;
@@ -156,7 +157,7 @@
       {#each sliders.sliders as slider, index}
         <SvelteSlider
           bind:slider
-          isSelected={sliderSelected == index}
+          isExpanded={sliderSelected == index}
           on:mousedown={() => (isChangeing = true)}
           on:mouseup={() => (isChangeing = false)}
           on:indexSelected={() => (sliderSelected = index)}
@@ -172,6 +173,8 @@
 
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
   </UI>
+
+  <ShareWindow {sliders} />
 </div>
 
 <style>

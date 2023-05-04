@@ -15,9 +15,9 @@
     "@threlte/core": "^5.0.5",
     "@threlte/extras": "^4.8.0",
     "@types/three": "^0.146.0",
+    "p5-components": "*",
     "three": "^0.147.0",
     "threlte-components": "*",
-    "p5-components": "*",
     "ui": "*",
     "utils": "*"
   },
@@ -25,6 +25,7 @@
     "@sveltejs/adapter-netlify": "^1.0.0-next.86",
     "@sveltejs/adapter-node": "^1.0.0-next.102",
     "@sveltejs/kit": "next",
+    "@tailwindcss/typography": "^0.5.9",
     "@threlte/preprocess": "^0.0.2",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",

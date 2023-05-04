@@ -8,7 +8,7 @@
   import Input from './Input.svelte';
   import Notification from './Notification.svelte';
 
-  import debounce from './debounce';
+  import debounce from 'utils/debounce';
 
   interface NamePath {
     name: string;
