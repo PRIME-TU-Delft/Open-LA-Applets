@@ -9,6 +9,7 @@
   import { DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
   import ShareWindow from 'ui/components/ShareWindow.svelte';
+  import { Vector2 } from 'three';
 
   export let sliders = new Sliders();
   export let zoom = 1;
@@ -39,6 +40,10 @@
   let fnsToDraw: FnToDraw[] = [];
   let [mouseX, mouseY] = [0, 0];
 
+  // Array of draggable objects
+  let draggables = writable(new Map<symbol, Vector2>());
+  let draggableSelected: symbol;
+
   // Isolate draw function to prevent it from applying transformations and styles to other draw functions
   function isolate(draw: DrawFn): DrawFn {
     return (p5: p5) => {
@@ -63,7 +68,6 @@
 
   function reset() {
     sliders = sliders.reset();
-
     zoom = 1;
   }
 
@@ -103,7 +107,8 @@
     mouseY: params.mouseY,
     width: params.width,
     height: params.height,
-    scale: params.scale
+    scale: params.scale,
+    draggables: draggables
   });
 
   const sketch = (p5: p5) => {
@@ -122,12 +127,32 @@
       fnsToDraw.forEach((draw) => draw.fn(p5)); // Draw each step of the scene
     };
 
+    p5.mousePressed = () => {
+      // Find nearest draggable object
+      let x = (mouseX - p5.width/2) / 100;
+      let y = (p5.height/2 - mouseY) / 100;
+      let mouse = new Vector2(x, y);
+      let nearestDraggables = [...$draggables.entries()].sort((a, b) => {
+        let aDist = (a[1].clone().sub(mouse)).length();
+        let bDist = (b[1].clone().sub(mouse)).length();
+        return aDist - bDist;
+      });
+      draggableSelected = nearestDraggables[0][0];
+    }
+
     p5.mouseDragged = () => {
       mouseX = p5.mouseX;
       mouseY = p5.mouseY;
 
       params.mouseX.set(mouseX);
       params.mouseY.set(mouseY);
+
+      if ($draggables.size > 0 && draggableSelected) {
+        let x = (mouseX - p5.width/2) / 100;
+        let y = (p5.height/2 - mouseY) / 100;
+        $draggables.set(draggableSelected, new Vector2(x, y));
+        $draggables = $draggables;  // Trigger reactivity
+      }
     };
 
     p5.mouseWheel = (event: WheelEvent) => {
