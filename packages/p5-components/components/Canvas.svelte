@@ -131,10 +131,10 @@
     };
 
     p5.mouseWheel = (event: WheelEvent) => {
-      if (zoom < minZoom && event.deltaY < 0) return;
-      if (zoom > maxZoom && event.deltaY > 0) return;
+      if (zoom < minZoom && event.deltaY > 0) return;
+      if (zoom > maxZoom && event.deltaY < 0) return;
 
-      zoom += event.deltaY / 1000;
+      zoom -= event.deltaY / 1000;
     };
   };
 
