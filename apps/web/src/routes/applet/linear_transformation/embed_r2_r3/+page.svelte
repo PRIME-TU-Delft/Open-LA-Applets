@@ -50,7 +50,7 @@
       </Vector2D>
 
       <!-- v -->
-      <Vector2D direction={v} length={vLength} color={PrimeColor.ultramarine}>
+      <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine}>
         <Latex2D latex={'\\vec{v}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.ultramarine} />
       </Vector2D>
 
