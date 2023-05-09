@@ -13,27 +13,20 @@
 
   let e1Length = 1;
   let e2Length = 1;
-  let vLength = Math.sqrt(2);
 
-  let v = e1.clone().multiplyScalar(e1Length).add(e2.clone());
+  let v = e1.clone().multiplyScalar(e1Length).add(e2.clone().multiplyScalar(e2Length));
+  let vLength = Math.sqrt(2);
 
   let te1 = new Vector3(0, 0, 1);
   let te2 = new Vector3(1, 0, 0);
   let tv = te1.clone().multiplyScalar(2).add(te2);
 
   $: {
-    // te1.setLength(sliders.x);
-    // te2.setLength(sliders.y);
-    // v = e2.clone().multiplyScalar(2).add(e1);
-    // tv = te2.clone().multiplyScalar(2).add(te1);
-  }
-
-  $: {
     te1 = new Vector3(e1.y, 0, e1.x);
-
     te2 = new Vector3(e2.y, 0, e2.x);
-    v = e1.clone().multiplyScalar(e1Length).add(e2);
-    tv = te1.clone().multiplyScalar(e1Length).add(te2);
+    v = e1.clone().multiplyScalar(e1Length).add(e2.clone().multiplyScalar(e2Length));
+    tv = te1.clone().multiplyScalar(e1Length).add(te2.clone().multiplyScalar(e2Length));
+    vLength = Math.sqrt(Math.pow(e1Length, 2) + Math.pow(e2Length, 2));
   }
 </script>
 
@@ -47,12 +40,12 @@
       <Axis2D />
 
       <!-- e1 -->
-      <Vector2D bind:direction={e1} length={e2Length} color={PrimeColor.red} draggable>
+      <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.red} draggable>
         <Latex2D latex={'\\vec{e_1}'} offset={new Vector2(0, -0.2)} />
       </Vector2D>
 
       <!-- e2 -->
-      <Vector2D bind:direction={e2} length={e2Length} color={PrimeColor.yellow} draggable>
+      <Vector2D bind:direction={e2} bind:length={e2Length} color={PrimeColor.yellow} draggable>
         <Latex2D latex={'\\vec{e_2}'} offset={new Vector2(-0.2, 0)} />
       </Vector2D>
 
@@ -76,14 +69,14 @@
       <Vector3D direction={te2} length={e2Length} color={PrimeColor.yellow} />
 
       <Latex3D latex={'T(\\vec{e_1})'} position={te1} />
-      <!-- <Latex3D latex={'T(\\vec{e_2})'} position={te2} /> -->
+      <Latex3D latex={'T(\\vec{e_2})'} position={te2} />
 
-      <!-- <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} /> -->
-      <!-- <Latex3D latex={'T(\\vec{v})'} position={tv} color={PrimeColor.ultramarine} /> -->
+      <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} />
+      <Latex3D latex={'T(\\vec{v})'} position={tv} color={PrimeColor.ultramarine} />
 
       <!-- Helper lines -->
-      <!-- <Line3D points={[te1, tv]} color="black" isDashed /> -->
-      <!-- <Line3D points={[te2.clone().multiplyScalar(2), tv]} color="black" isDashed /> -->
+      <Line3D points={[te1.clone().multiplyScalar(e1Length), tv.clone()]} color="black" isDashed />
+      <Line3D points={[te2.clone().multiplyScalar(e2Length), tv.clone()]} color="black" isDashed />
     </Canvas3D>
   </div>
 </div>
