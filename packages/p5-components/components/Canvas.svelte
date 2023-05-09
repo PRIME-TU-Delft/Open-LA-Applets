@@ -103,6 +103,7 @@
         fnsToDraw.splice(index, 1);
       }
     },
+    // Warning: because mouseX and mouseY are not reactive, they are not always equal to the actual mouse position! Only when the mouse is being dragged.
     mouseX: params.mouseX,
     mouseY: params.mouseY,
     width: params.width,
@@ -129,10 +130,10 @@
 
     p5.mousePressed = () => {
       // Find nearest draggable object
-      let x = (mouseX - p5.width/2) / 100;
-      let y = (p5.height/2 - mouseY) / 100;
+      let x = (p5.mouseX - p5.width/2) / 100;
+      let y = (p5.height/2 - p5.mouseY) / 100;
       let mouse = new Vector2(x, y);
-      let nearestDraggables = [...$draggables.entries()].sort((a, b) => {
+      let nearestDraggables = [...$draggables].sort((a, b) => {  // Sort draggables by distance to mouse, ascendingly
         let aDist = (a[1].clone().sub(mouse)).length();
         let bDist = (b[1].clone().sub(mouse)).length();
         return aDist - bDist;

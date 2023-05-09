@@ -37,11 +37,13 @@
     if (draggable) {
       let pos = origin.clone().add(direction.clone().multiplyScalar(length));
       $draggables.set(key, pos);
+      $draggables = $draggables;  // Trigger reactivity
     }
   });
 
   onDestroy(() => {
     $draggables.delete(key);
+    $draggables = $draggables;  // Trigger reactivity
   });
 
   let endPoint = writable(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector

@@ -21,7 +21,7 @@
   let sliders = new Sliders().addSlider(1, 1, 2).addSlider(1, 1, 2);
 
   $: {
-    // e1.setLength(sliders.x);
+    e1.setLength(sliders.x);
     e2.setLength(sliders.y);
 
     te1.setLength(sliders.x);
@@ -38,16 +38,16 @@
   </div>
 
   <div class="panel">
-    <Canvas2D bind:sliders bind:zoom>
+    <Canvas2D bind:zoom>
       <Axis2D />
 
       <!-- e1 -->
-      <Vector2D direction={e1} length={1} color={PrimeColor.red} draggable={true}>
+      <Vector2D direction={e1} length={sliders.x} color={PrimeColor.red} draggable>
         <Latex2D latex={'\\vec{e_1}'} offset={new Vector2(0, -0.2)} />
       </Vector2D>
 
       <!-- e2 -->
-      <Vector2D direction={e2} length={1} color={PrimeColor.yellow} draggable={true}>
+      <Vector2D direction={e2} length={sliders.y} color={PrimeColor.yellow} draggable>
         <Latex2D latex={'\\vec{e_2}'} offset={new Vector2(-0.2, 0)} />
       </Vector2D>
 
