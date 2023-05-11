@@ -6,6 +6,7 @@
   import Line from './Line.svelte';
   import Triangle from './Triangle.svelte';
   import { onDestroy, onMount } from 'svelte';
+  import Point from './Point.svelte';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector2 = new Vector2(0, 0); // origin of vector
@@ -26,7 +27,8 @@
   // NOTE: draggables won't get updated if the Vector is moved by some other means, e.g. sliders (because I don't see an elegant way of doing that without causing a cyclical dependency in reactivity)
   $: {
     if (draggable) {
-      let draggablePos = $draggables.get(key) || origin.clone().add(direction.clone().multiplyScalar(length));  // TODO: fix undefined thingy here
+      let draggablePos =
+        $draggables.get(key) || origin.clone().add(direction.clone().multiplyScalar(length)); // TODO: fix undefined thingy here
       let v = draggablePos.clone().sub(origin);
       direction = v.clone().normalize();
       length = v.length();
@@ -37,13 +39,13 @@
     if (draggable) {
       let pos = origin.clone().add(direction.clone().multiplyScalar(length));
       $draggables.set(key, pos);
-      $draggables = $draggables;  // Trigger reactivity
+      $draggables = $draggables; // Trigger reactivity
     }
   });
 
   onDestroy(() => {
     $draggables.delete(key);
-    $draggables = $draggables;  // Trigger reactivity
+    $draggables = $draggables; // Trigger reactivity
   });
 
   let endPoint = writable(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
@@ -72,6 +74,11 @@
 
 {#if !hideHead}
   <Triangle points={[leftConePoint, $endPoint, rightConePoint]} {color} />
+{/if}
+
+{#if draggable}
+  <Point radius={15} position={$endPoint} {color} opacity={0.5} pulse />
+  <Point radius={100} position={$endPoint} {color} opacity={0.1} />
 {/if}
 
 <slot {endPoint} />
