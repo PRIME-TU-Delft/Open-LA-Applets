@@ -130,8 +130,8 @@
 
     p5.mousePressed = () => {
       // Find nearest draggable object
-      let x = (p5.mouseX - p5.width / 2) / 100;
-      let y = (p5.height / 2 - p5.mouseY) / 100;
+      let x = (p5.mouseX - p5.width / 2) / (100 * zoom);
+      let y = (p5.height / 2 - p5.mouseY) / (100 * zoom);
       let mouse = new Vector2(x, y);
       // Sort draggables by distance to mouse, ascendingly
       let nearestDraggables = [...$draggables].sort((a, b) => {
@@ -144,6 +144,10 @@
         nearestDraggables[0][1].distanceTo(mouse) < 0.5 ? nearestDraggables[0][0] : undefined;
     };
 
+    p5.mouseReleased = () => {
+      draggableSelected = undefined;
+    };
+
     p5.mouseDragged = () => {
       mouseX = p5.mouseX;
       mouseY = p5.mouseY;
@@ -152,8 +156,8 @@
       params.mouseY.set(mouseY);
 
       if ($draggables.size > 0 && draggableSelected) {
-        let x = (mouseX - p5.width / 2) / 100;
-        let y = (p5.height / 2 - mouseY) / 100;
+        let x = (mouseX - p5.width / 2) / (100 * zoom);
+        let y = (p5.height / 2 - mouseY) / (100 * zoom);
         $draggables.set(draggableSelected, new Vector2(x, y));
         $draggables = $draggables; // Trigger reactivity
       }
