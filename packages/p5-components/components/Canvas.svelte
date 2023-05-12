@@ -134,11 +134,11 @@
       let y = (p5.height/2 - p5.mouseY) / 100;
       let mouse = new Vector2(x, y);
       let nearestDraggables = [...$draggables].sort((a, b) => {  // Sort draggables by distance to mouse, ascendingly
-        let aDist = (a[1].clone().sub(mouse)).length();
-        let bDist = (b[1].clone().sub(mouse)).length();
+        let aDist = a[1].distanceTo(mouse);
+        let bDist = b[1].distanceTo(mouse);
         return aDist - bDist;
       });
-      draggableSelected = nearestDraggables[0][0];
+      draggableSelected = nearestDraggables[0][1].distanceTo(mouse) < 0.5 ? nearestDraggables[0][0] : undefined; // Select nearest draggable if it is close enough
     }
 
     p5.mouseDragged = () => {
