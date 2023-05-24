@@ -10,7 +10,7 @@
 
   export let sliders: Sliders;
 
-  let showShareWindow = true;
+  let showShareWindow = false;
   let showCopyToClipboard = false;
   let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
 
