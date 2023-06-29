@@ -8,14 +8,14 @@
   export let twClass = '';
 </script>
 
-<div
+<button
   class="roundedButton grid h-12 w-12 cursor-pointer items-center justify-center {twClass}"
   class:disabled
   on:click
   on:keypress
 >
   <Icon path={icon} {color} {size} />
-</div>
+</button>
 
 <style lang="postcss">
   .roundedButton {

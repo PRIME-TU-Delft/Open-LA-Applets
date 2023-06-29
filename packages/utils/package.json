@@ -16,7 +16,7 @@
     "vitest": "^0.28.4"
   },
   "dependencies": {
-    "@types/three": "^0.146.0",
-    "three": "^0.147.0"
+    "@types/three": "^0.152.1",
+    "three": "^0.153.0"
   }
 }

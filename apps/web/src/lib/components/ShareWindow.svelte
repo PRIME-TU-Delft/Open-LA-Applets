@@ -4,8 +4,8 @@
   import { Icon } from 'mdi-svelte-ts';
   import { fly } from 'svelte/transition';
   import type { OrthographicCamera } from 'three';
-  import { cameraStore } from 'threlte-components';
-  import { RoundButton } from '../index';
+  import cameraStore from '../threlte-components/stores/cameraStore';
+  import { RoundButton } from 'ui';
   import { Sliders } from 'utils/Slider';
 
   export let sliders: Sliders;
@@ -65,9 +65,9 @@
 </script>
 
 {#if showShareWindow}
-  <div class="absolute top-0 left-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
+  <div class="absolute left-0 top-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
     <div
-      class="prose prose-sm h-full w-full w-[30rem] overflow-hidden overflow-y-auto rounded bg-slate-300 p-4 pt-0 opacity-90"
+      class="prose prose-sm h-full w-[30rem] w-full overflow-hidden overflow-y-auto rounded bg-slate-300 p-4 pt-0 opacity-90"
     >
       <div class="sticky top-0 z-20 flex w-full justify-between bg-slate-300/90 pt-4">
         <h1>Share and Embed</h1>
@@ -100,7 +100,7 @@
             />
           {/key}
           <button
-            class="absolute top-1 right-1 h-8 w-8 rounded bg-slate-800/90 p-2 text-slate-100 transition-all hover:scale-105 hover:bg-slate-900"
+            class="absolute right-1 top-1 h-8 w-8 rounded bg-slate-800/90 p-2 text-slate-100 transition-all hover:scale-105 hover:bg-slate-900"
             on:click={copyToClipboard}><Icon path={mdiContentCopy} /></button
           >
 

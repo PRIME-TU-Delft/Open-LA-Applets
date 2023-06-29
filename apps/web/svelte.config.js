@@ -4,30 +4,17 @@ import netlifyAdapter from '@sveltejs/adapter-netlify';
 
 console.log('Building for: ' + process.env.BUILD_ENV === 'netlify' ? 'Netlify' : 'NodeJS');
 
-// Preprocessors
-import preprocess from 'svelte-preprocess';
-import seqPreprocessor from 'svelte-sequential-preprocessor';
-import { preprocessThrelte } from '@threlte/preprocess';
+import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: seqPreprocessor([
-    preprocess(),
-    preprocessThrelte({
-      extensions: {
-        'three/examples/jsm/controls/OrbitControls': ['OrbitControls'],
-        'three/examples/jsm/lines/LineGeometry': ['LineGeometry'],
-        'three/examples/jsm/lines/LineMaterial': ['LineMaterial'],
-        'three/examples/jsm/lines/Line2': ['Line2']
-      }
-    })
-  ]),
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// for more information about preprocessors
+	preprocess: vitePreprocess(),
 
-  kit: {
-    adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter()
-  }
+	kit: {
+		adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter()
+	}
 };
 
 export default config;
