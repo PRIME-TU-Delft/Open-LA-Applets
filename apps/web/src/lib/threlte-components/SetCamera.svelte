@@ -12,6 +12,7 @@
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
+  export let resetKey = 0;
 
   let position = new Vector3(10, 10, 10);
 
@@ -28,27 +29,29 @@
   }
 </script>
 
-<T.OrthographicCamera
-  makeDefault
-  position={[position.x, position.y, position.z]}
-  fov={15}
-  {zoom}
-  let:ref={camera}
-  on:create={({ ref }) => {
-    cameraStore.set(ref);
-    ref.lookAt(new Vector3(0, 0, 0));
-  }}
->
-  {#if $activityStore}
-    <OrbitControls
-      enableZoom
-      enablePan={false}
-      maxZoom={zoom * 10}
-      minZoom={Math.max(zoom - 10, 1)}
-      maxPolarAngle={Math.PI * 0.6}
-      on:change={() => {
-        debounceSetCameraStore(camera)();
-      }}
-    />
-  {/if}
-</T.OrthographicCamera>
+{#key resetKey && $activityStore}
+  <T.OrthographicCamera
+    makeDefault
+    position={[position.x, position.y, position.z]}
+    fov={15}
+    {zoom}
+    let:ref={camera}
+    on:create={({ ref }) => {
+      cameraStore.set(ref);
+      ref.lookAt(new Vector3(0, 0, 0));
+    }}
+  >
+    {#if $activityStore}
+      <OrbitControls
+        enableZoom
+        {enablePan}
+        maxZoom={zoom * 10}
+        minZoom={Math.max(zoom - 10, 1)}
+        maxPolarAngle={Math.PI * 0.6}
+        on:change={() => {
+          debounceSetCameraStore(camera)();
+        }}
+      />
+    {/if}
+  </T.OrthographicCamera>
+{/key}

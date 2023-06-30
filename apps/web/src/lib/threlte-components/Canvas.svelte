@@ -23,7 +23,7 @@
 
   let showFormulas = false; // Show the formulas panel (if it exists)
 
-  let resetCamera = Math.random();
+  let resetKey = Math.random();
   let height = 0;
   let width = 0;
 
@@ -34,7 +34,7 @@
    */
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
-    resetCamera = Math.random(); // Update the key to reset the set camera component
+    resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
   $: {
@@ -61,19 +61,19 @@
   on:click={activityStore.enable}
   on:keydown={activityStore.enable}
   on:mouseenter={activityStore.removeTimeOut}
-  on:mouseleave={() => activityStore.disableAfter(60000)}
+  on:mouseleave={() => activityStore.disableAfterAnd(60000, reset)}
 >
-  <Canvas size={{ width, height }}>
-    {#key resetCamera}
-      <SetCamera {enablePan} {zoom} />
-    {/key}
+  {#key resetKey}
+    <Canvas size={{ width, height }}>
+      <SetCamera {resetKey} {enablePan} {zoom} />
 
-    <slot name="lights">
-      <T.AmbientLight intensity={1} />
-    </slot>
+      <slot name="lights">
+        <T.AmbientLight intensity={1} />
+      </slot>
 
-    <slot />
-  </Canvas>
+      <slot />
+    </Canvas>
+  {/key}
 
   <div class="absolute left-0 top-0 z-50 select-none">
     {#if !isFullscreen && $activityStore}
@@ -91,7 +91,7 @@
   <!-- SLIDER PANEL -->
   <div style="max-width: calc(100vw - 6rem); touch-action:none;">
     <UI visible={!!sliders.sliders.length} bottom opacity>
-      {#key resetCamera}
+      {#key resetKey}
         <ToggleSliders
           bind:sliders
           bind:isPlaying={isPlayingSliders}
@@ -114,7 +114,13 @@
   <!-- ACTION BUTTONS -->
   <UI column bottom right opacity styled={false}>
     {#if $activityStore}
-      <RoundButton icon={mdiPause} on:click={() => setTimeout(activityStore.reset, 500)} />
+      <RoundButton
+        icon={mdiPause}
+        on:click={() => {
+          reset();
+          activityStore.reset();
+        }}
+      />
     {/if}
     <RoundButton icon={mdiRestart} on:click={reset} />
     <ToggleFullscreen {sceneEl} bind:isFullscreen />

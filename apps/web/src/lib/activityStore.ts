@@ -55,7 +55,11 @@ function createActivityStore() {
      * Reset orbitcontoller to false
      * @returns true if activity is true
      */
-    reset: () => set(false) // Reset activity to false
+    reset: () => {
+      requestAnimationFrame(() => {
+        set(false) // Reset activity to false
+      })
+    }
   };
 }
 
