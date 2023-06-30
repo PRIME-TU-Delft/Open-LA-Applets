@@ -67,7 +67,8 @@
 {#if showShareWindow}
   <div class="absolute left-0 top-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
     <div
-      class="prose prose-sm h-full w-[30rem] w-full overflow-hidden overflow-y-auto rounded bg-slate-300 p-4 pt-0 opacity-90"
+      class="prose prose-sm h-full w-full overflow-hidden overflow-y-auto rounded bg-slate-300 p-4 pt-0 opacity-90"
+      style="max-width: 30rem;"
     >
       <div class="sticky top-0 z-20 flex w-full justify-between bg-slate-300/90 pt-4">
         <h1>Share and Embed</h1>

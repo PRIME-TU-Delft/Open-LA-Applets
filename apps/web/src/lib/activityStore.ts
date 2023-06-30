@@ -34,6 +34,14 @@ function createActivityStore() {
     },
 
     /**
+     * Same as disableAfterAnd but without a function
+     * @param ms milliseconds to wait before disabling
+     */
+    disableAfter: (ms: number) => {
+      activityStore.disableAfterAnd(ms, () => { }); // Disable and do nothing
+    },
+
+    /**
      * Remove all timeouts
      */
     removeTimeOut: () => {

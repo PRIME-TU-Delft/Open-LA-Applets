@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { mdiInformation, mdiRestart } from '@mdi/js';
+  import { mdiInformation, mdiRestart, mdiPause } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
@@ -58,13 +58,10 @@
   bind:clientWidth={width}
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
-  on:click={() => {
-    console.log('click');
-    activityStore.enable();
-  }}
+  on:click={activityStore.enable}
   on:keydown={activityStore.enable}
   on:mouseenter={activityStore.removeTimeOut}
-  on:mouseleave={() => activityStore.disableAfterAnd(500, reset)}
+  on:mouseleave={() => activityStore.disableAfter(60000)}
 >
   <Canvas size={{ width, height }}>
     {#key resetCamera}
@@ -94,12 +91,14 @@
   <!-- SLIDER PANEL -->
   <div style="max-width: calc(100vw - 6rem); touch-action:none;">
     <UI visible={!!sliders.sliders.length} bottom opacity>
-      <ToggleSliders
-        bind:sliders
-        bind:isPlaying={isPlayingSliders}
-        on:startChanging={() => (showFormulas = true)}
-        on:stopChanging={() => (showFormulas = false)}
-      />
+      {#key resetCamera}
+        <ToggleSliders
+          bind:sliders
+          bind:isPlaying={isPlayingSliders}
+          on:startChanging={() => (showFormulas = true)}
+          on:stopChanging={() => (showFormulas = false)}
+        />
+      {/key}
     </UI>
   </div>
 
@@ -114,6 +113,9 @@
 
   <!-- ACTION BUTTONS -->
   <UI column bottom right opacity styled={false}>
+    {#if $activityStore}
+      <RoundButton icon={mdiPause} on:click={() => setTimeout(activityStore.reset, 500)} />
+    {/if}
     <RoundButton icon={mdiRestart} on:click={reset} />
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
   </UI>
