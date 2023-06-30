@@ -10,6 +10,7 @@
   import { onMount } from 'svelte';
   import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
+  import { activityStore } from '$lib/activityStore';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -49,11 +50,21 @@
 </script>
 
 <div
-  class="canvasWrapper"
+  role="button"
+  tabindex="0"
+  class="canvasWrapper rounded-xl outline-4 outline-gray-400 -outline-offset-4 outline"
+  class:active={$activityStore}
   bind:clientHeight={height}
   bind:clientWidth={width}
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
+  on:click={() => {
+    console.log('click');
+    activityStore.enable();
+  }}
+  on:keydown={activityStore.enable}
+  on:mouseenter={activityStore.removeTimeOut}
+  on:mouseleave={() => activityStore.disableAfterAnd(500, reset)}
 >
   <Canvas size={{ width, height }}>
     {#key resetCamera}
@@ -66,6 +77,14 @@
 
     <slot />
   </Canvas>
+
+  <div class="absolute left-0 top-0 z-50 select-none">
+    {#if !isFullscreen && $activityStore}
+      <p class="p-2 bg-blue-500 rounded w-fit text-white">Interactive mode</p>
+    {:else if !isFullscreen}
+      <p class="p-2 bg-gray-400 rounded w-fit text-white">Click to once to enable interactivity</p>
+    {/if}
+  </div>
 
   <!-- TITLE PANEL -->
   <UI top left visible={!!title && isFullscreen}>
@@ -103,11 +122,15 @@
   <ShareWindow {sliders} />
 </div>
 
-<style>
+<style lang="postcss">
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);
     overflow: hidden;
+  }
+
+  .active {
+    @apply outline-blue-500;
   }
 
   :global(.canvasWrapper > canvas) {
