@@ -25,7 +25,7 @@
     />
   {/if}
 
-  <Axis3D showNumbers />
+  <Axis3D />
 
   <div slot="formulas">
     <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'\\$0x + 1y + 1z = 0'} />

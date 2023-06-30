@@ -16,7 +16,7 @@
     <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />
   </AutoPlane>
 
-  <Axis3D showNumbers />
+  <Axis3D />
 
   <div slot="formulas">
     <LatexUI

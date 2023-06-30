@@ -11,12 +11,16 @@
   let sliders = new Sliders().addSlider(0, -5, 5, 0.5).addSlider(1, -5, 5, 0.5);
 </script>
 
-<Canvas3D bind:sliders title="Two planes without a point in common.">
+<Canvas3D
+  cameraPosition={new Vector3(11.63, 3.66, 12.3)}
+  bind:sliders
+  title="Two planes without a point in common."
+>
   <AutoPlane values={sliders.values} let:value let:planeSegment let:color>
     <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />
   </AutoPlane>
 
-  <Axis3D showNumbers />
+  <Axis3D />
 
   <div slot="formulas">
     <LatexUI

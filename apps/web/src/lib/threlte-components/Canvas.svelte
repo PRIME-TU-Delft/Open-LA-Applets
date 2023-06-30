@@ -11,12 +11,14 @@
   import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
   import { activityStore } from '$lib/activityStore';
+  import { Vector3 } from 'three/src/Three';
 
   export let enablePan = false;
   export let sliders = new Sliders();
   export let title = '';
   export let background = '#ffffff';
   export let zoom = 29;
+  export let cameraPosition = new Vector3(10, 10, 10);
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isFullscreen = false; // Is the scene fullscreen?
@@ -60,13 +62,14 @@
     bind:this={sceneEl}
     style="height: var(--height, 100%); background: {background}"
     on:click={activityStore.enable}
+    on:mousedown={activityStore.enable}
     on:keydown={activityStore.enable}
     on:mouseenter={activityStore.removeTimeOut}
     on:mouseleave={() => activityStore.disableAfterAnd(60000, reset)}
   >
     {#key resetKey}
       <Canvas size={{ width, height }}>
-        <SetCamera {resetKey} {enablePan} {zoom} />
+        <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
 
         <slot name="lights">
           <T.AmbientLight intensity={1} />

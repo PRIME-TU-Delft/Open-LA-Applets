@@ -18,7 +18,7 @@
 
   <PlaneFromNormal position={new Vector3(0, sliders.x, 0)} normal={n1} color={PrimeColor.green} />
 
-  <Axis3D showNumbers />
+  <Axis3D />
 
   <div slot="formulas">
     <LatexUI params={[1]} colors={[PrimeColor.yellow]} latex={`1x + 1y + \\$0z = 0`} />

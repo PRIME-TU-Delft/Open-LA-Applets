@@ -13,8 +13,7 @@
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
   export let resetKey = 0;
-
-  let position = new Vector3(10, 10, 10);
+  export let position = new Vector3(10, 10, 10);
 
   function debounceSetCameraStore(camera: OrthographicCamera) {
     return debounce(() => cameraStore.set(camera));
