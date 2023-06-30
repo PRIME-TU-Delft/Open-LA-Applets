@@ -49,85 +49,87 @@
   });
 </script>
 
-<div
-  role="button"
-  tabindex="0"
-  class="canvasWrapper rounded-xl outline-4 outline-gray-400 -outline-offset-4 outline"
-  class:active={$activityStore}
-  bind:clientHeight={height}
-  bind:clientWidth={width}
-  bind:this={sceneEl}
-  style="height: var(--height, 100%); background: {background}"
-  on:click={activityStore.enable}
-  on:keydown={activityStore.enable}
-  on:mouseenter={activityStore.removeTimeOut}
-  on:mouseleave={() => activityStore.disableAfterAnd(60000, reset)}
->
-  {#key resetKey}
-    <Canvas size={{ width, height }}>
-      <SetCamera {resetKey} {enablePan} {zoom} />
+<div class="rounded overflow-hidden h-full">
+  <div
+    role="button"
+    tabindex="0"
+    class="canvasWrapper border-l-4 border-gray-400"
+    class:active={$activityStore}
+    bind:clientHeight={height}
+    bind:clientWidth={width}
+    bind:this={sceneEl}
+    style="height: var(--height, 100%); background: {background}"
+    on:click={activityStore.enable}
+    on:keydown={activityStore.enable}
+    on:mouseenter={activityStore.removeTimeOut}
+    on:mouseleave={() => activityStore.disableAfterAnd(60000, reset)}
+  >
+    {#key resetKey}
+      <Canvas size={{ width, height }}>
+        <SetCamera {resetKey} {enablePan} {zoom} />
 
-      <slot name="lights">
-        <T.AmbientLight intensity={1} />
-      </slot>
+        <slot name="lights">
+          <T.AmbientLight intensity={1} />
+        </slot>
 
-      <slot />
-    </Canvas>
-  {/key}
+        <slot />
+      </Canvas>
+    {/key}
 
-  <div class="absolute left-0 top-0 z-50 select-none">
-    {#if !isFullscreen && $activityStore}
-      <p class="p-2 bg-blue-500 rounded w-fit text-white">Interactive mode</p>
-    {:else if !isFullscreen}
-      <p class="p-2 bg-gray-400 rounded w-fit text-white">Click to once to enable interactivity</p>
-    {/if}
-  </div>
+    <div class="absolute top-0 z-50 select-none w-full">
+      {#if !isFullscreen && $activityStore}
+        <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
+      {:else if !isFullscreen}
+        <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
+      {/if}
+    </div>
 
-  <!-- TITLE PANEL -->
-  <UI top left visible={!!title && isFullscreen}>
-    {title}
-  </UI>
-
-  <!-- SLIDER PANEL -->
-  <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-    <UI visible={!!sliders.sliders.length} bottom opacity>
-      {#key resetKey}
-        <ToggleSliders
-          bind:sliders
-          bind:isPlaying={isPlayingSliders}
-          on:startChanging={() => (showFormulas = true)}
-          on:stopChanging={() => (showFormulas = false)}
-        />
-      {/key}
+    <!-- TITLE PANEL -->
+    <UI top left visible={!!title && isFullscreen}>
+      {title}
     </UI>
+
+    <!-- SLIDER PANEL -->
+    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
+      <UI visible={!!sliders.sliders.length} bottom opacity>
+        {#key resetKey}
+          <ToggleSliders
+            bind:sliders
+            bind:isPlaying={isPlayingSliders}
+            on:startChanging={() => (showFormulas = true)}
+            on:stopChanging={() => (showFormulas = false)}
+          />
+        {/key}
+      </UI>
+    </div>
+
+    <!-- INFORMATION UI -->
+    <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
+      <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
+    </UI>
+
+    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
+      <slot name="formulas" />
+    </UI>
+
+    <!-- ACTION BUTTONS -->
+    <UI column bottom right opacity styled={false}>
+      {#if $activityStore}
+        <RoundButton
+          icon={mdiPause}
+          on:click={() => {
+            reset();
+            activityStore.reset();
+          }}
+        />
+      {/if}
+      <RoundButton icon={mdiRestart} on:click={reset} />
+      <ToggleFullscreen {sceneEl} bind:isFullscreen />
+    </UI>
+
+    <!-- SHARE BUTTON -->
+    <ShareWindow {sliders} />
   </div>
-
-  <!-- INFORMATION UI -->
-  <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
-    <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
-  </UI>
-
-  <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
-    <slot name="formulas" />
-  </UI>
-
-  <!-- ACTION BUTTONS -->
-  <UI column bottom right opacity styled={false}>
-    {#if $activityStore}
-      <RoundButton
-        icon={mdiPause}
-        on:click={() => {
-          reset();
-          activityStore.reset();
-        }}
-      />
-    {/if}
-    <RoundButton icon={mdiRestart} on:click={reset} />
-    <ToggleFullscreen {sceneEl} bind:isFullscreen />
-  </UI>
-
-  <!-- SHARE BUTTON -->
-  <ShareWindow {sliders} />
 </div>
 
 <style lang="postcss">
@@ -138,7 +140,7 @@
   }
 
   .active {
-    @apply outline-blue-500;
+    @apply border-blue-500;
   }
 
   :global(.canvasWrapper > canvas) {
