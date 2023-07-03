@@ -25,20 +25,11 @@ jobs:
           username: ${{ env.OWNER_LOWERCASE }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push (web)
+      - name: Build and push
         # id: docker_build
         uses: docker/build-push-action@v3
         with:
           # context: "{{defaultContext}}:app"
-          file: 'Dockerfile-web'
+          file: 'Dockerfile'
           push: true
           tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-web:latest
-
-      - name: Build and push (docs)
-        # id: docker_build
-        uses: docker/build-push-action@v3
-        with:
-          # context: "{{defaultContext}}:app"
-          file: 'Dockerfile-docs'
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-docs:latest
