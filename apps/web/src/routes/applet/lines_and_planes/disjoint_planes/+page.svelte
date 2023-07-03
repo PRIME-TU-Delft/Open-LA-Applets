@@ -21,8 +21,8 @@
   <Axis3D />
 
   <div slot="formulas">
-    <LatexUI params={[1]} colors={[PrimeColor.yellow]} latex={`1x + 1y + \\$0z = 0`} />
-    <LatexUI params={[0]} colors={[PrimeColor.red]} latex={`1x + 1y + \\$0z = 0`} />
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.green]} latex={`1x + 3y + \\$0z = 0`} />
+    <LatexUI params={[sliders.x]} colors={[PrimeColor.green]} latex={`P_1 = 1x + 3y + \\$0z = 0`} />
+    <LatexUI params={[1]} colors={[PrimeColor.yellow]} latex={`P_2 = 1x + 1y + \\$0z = 0`} />
+    <LatexUI params={[0]} colors={[PrimeColor.red]} latex={`P_3 = 1x + 1y + \\$0z = 0`} />
   </div>
 </Canvas3D>

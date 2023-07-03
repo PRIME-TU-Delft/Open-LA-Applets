@@ -46,10 +46,14 @@
   <Axis3D axisLength={7} />
 
   <div slot="formulas">
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'\\$0x + 1y + 1z = 0'} />
+    <LatexUI params={[0.5]} colors={[PrimeColor.green]} latex={'P_1 = \\$0x + -1y + 1z = 0'} />
 
-    <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={'\\$0x + 1y + 1z = 0'} />
+    <LatexUI
+      params={[sliders.y]}
+      colors={[PrimeColor.yellow]}
+      latex={'P_2 = \\$0x + 1y + 1z = 0'}
+    />
 
-    <LatexUI params={[0.5]} colors={[PrimeColor.green]} latex={'\\$0x + -1y + 1z = 0'} />
+    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'P_3 = \\$0x + 1y + 1z = 0'} />
   </div>
 </Canvas3D>
