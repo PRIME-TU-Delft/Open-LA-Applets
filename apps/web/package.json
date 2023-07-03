@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@mdi/js": "^7.2.96",
-    "p5-components": "*"
+    "p5-components": "*",
+    "mdi-svelte-ts": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
