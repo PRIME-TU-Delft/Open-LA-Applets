@@ -5,4 +5,4 @@ services:
     build:
       context: .
     ports:
-      - 3001:3000
+      - 3001:5173
