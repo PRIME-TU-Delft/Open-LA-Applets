@@ -1,21 +1,20 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { T, useThrelte } from '@threlte/core';
+  import { T } from '@threlte/core';
   import { OrthographicCamera, Vector3 } from 'three';
-  import { cameraStore } from '../index';
+  import cameraStore from './stores/cameraStore';
 
-  import { parseCameraSettings } from 'utils/parseURL';
+  import { OrbitControls } from '@threlte/extras';
   import debounce from 'utils/debounce';
-
-  const { renderer } = useThrelte();
+  import { parseCameraSettings } from 'utils/parseURL';
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
 
   let position = new Vector3(10, 10, 10);
 
-  function debounceSetCameraStore(camera) {
+  function debounceSetCameraStore(camera: OrthographicCamera) {
     return debounce(() => cameraStore.set(camera));
   }
 
@@ -29,21 +28,19 @@
 </script>
 
 <T.OrthographicCamera
-  position.x={position.x}
-  position.y={position.y}
-  position.z={position.z}
-  args={[-1, 1, 1, -1, 0.1, Math.min(300, zoom * 10)]}
   makeDefault
+  position={[position.x, position.y, position.z]}
+  rotation={[-position.x, -position.y, -position.z]}
+  fov={15}
   {zoom}
   let:ref={camera}
 >
   {@const _ = cameraStore.set(camera)}
-  <T.OrbitControls
-    args={[camera, renderer?.domElement]}
-    maxPolarAngle={Math.PI * 0.6}
-    {enablePan}
+  <OrbitControls
+    enableZoom
     maxZoom={zoom * 10}
     minZoom={Math.max(zoom - 10, 1)}
+    maxPolarAngle={Math.PI * 0.6}
     on:change={() => {
       debounceSetCameraStore(camera)();
     }}

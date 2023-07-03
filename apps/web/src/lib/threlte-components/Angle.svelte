@@ -7,7 +7,7 @@
   export let vs: [Vector3, Vector3]; //vectors to draw angle between
   export let origin: Vector3 = new Vector3(0, 0, 0); //common orgin of vectors
   export let size = 0.3; //size of drawn angle
-  export let color: string = 'black'; //color of used lines
+  export let color = 'black'; //color of used lines
   export let title = '';
   export let forceRightAngle = false; //if true draws a sharp angle, even if not 90 degrees
   export let forceRoundAngle = false; //if true draws a round angle, even if 90 degrees

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Vector3 } from 'three';
 
-  import { Canvas3D, Axis3D, PlaneFromNormal, Vector3D } from 'threlte-components';
+  import { Canvas3D, Axis3D, PlaneFromNormal } from '$lib/threlte-components';
   import { LatexUI } from 'ui';
 
   import { PrimeColor } from 'utils/PrimeColors';

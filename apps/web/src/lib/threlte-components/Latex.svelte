@@ -42,11 +42,12 @@
   }
 </script>
 
-<HTML position={pos}>
+<HTML position={[pos.x, pos.y, pos.z]}>
   <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
-  <div on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
+  <button on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
+    <!-- @eslint-disable svelte/no-at-html-tags -->
     {@html str}
-  </div>
+  </button>
 </HTML>
 
 <style>

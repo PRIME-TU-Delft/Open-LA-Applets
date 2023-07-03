@@ -1,6 +1,6 @@
 <script>
   import { Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from 'threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from '$lib/threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
   $: v = new Vector3(3, 2, -3).normalize().multiplyScalar(3); // Vector v;

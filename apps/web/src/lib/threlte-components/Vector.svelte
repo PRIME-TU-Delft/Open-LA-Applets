@@ -1,12 +1,8 @@
 <script lang="ts">
   import { T } from '@threlte/core';
-  import { Line2 } from 'three/examples/jsm/lines/Line2';
-
-  import { DoubleSide, Vector3, Mesh, Quaternion } from 'three';
-
+  import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
   import getRandomColor from 'utils/PrimeColors';
-
-  import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
+  import Line2 from './Line2.svelte';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
@@ -21,21 +17,11 @@
   const CONE_DIAMETER = 0.1;
 
   let coneMesh: Mesh;
-  let line: Line2;
   let endPoint: Vector3;
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
 
   $: direction = direction.clone().normalize();
-
-  $: {
-    const geometry = new LineGeometry();
-    geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
-    if (line) {
-      line.geometry = geometry;
-      line.computeLineDistances();
-    }
-  }
 
   $: {
     endPoint = origin.clone().add(
@@ -62,10 +48,12 @@
   );
 </script>
 
+<Line2 {origin} {endPoint} {color} {radius} {striped} />
+
 <!-- Line is length minus cone height -->
-<T.Line2 bind:ref={line}>
+<!-- <T.Line2 bind:ref={line}>
   <T.LineMaterial dashed={striped} worldUnits linewidth={radius} dashScale={10} {color} />
-</T.Line2>
+</T.Line2> -->
 
 <!-- Cone on top of line -->
 {#if !hideHead}

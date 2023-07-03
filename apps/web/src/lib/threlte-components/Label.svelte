@@ -8,15 +8,15 @@
   export let opacity = 1;
 </script>
 
-<HTML {position}>
+<HTML position={[position.x, position.y, position.z]}>
   <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
-  <div
+  <button
     on:mousedown|preventDefault
     class="label"
     style="color: {color}; font-size: {size}rem; opacity: {opacity}"
   >
     <slot />
-  </div>
+  </button>
 </HTML>
 
 <style>

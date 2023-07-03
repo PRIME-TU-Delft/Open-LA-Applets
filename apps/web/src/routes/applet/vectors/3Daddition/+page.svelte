@@ -1,6 +1,12 @@
 <script lang="ts">
   import { Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, PartialDeconstruction3D, Vector3D } from 'threlte-components';
+  import {
+    Axis3D,
+    Canvas3D,
+    Latex3D,
+    PartialDeconstruction3D,
+    Vector3D
+  } from '$lib/threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';
 

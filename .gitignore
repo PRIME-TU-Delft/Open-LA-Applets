@@ -30,3 +30,7 @@ yarn-error.log*
 .turbo
 apps/**/vite.config.*.timestamp-*.mjs
 packages/**/vite.config.*.timestamp-*.mjs
+
+# Deploy
+apps/web/.netlify/**
+apps/web/build-*

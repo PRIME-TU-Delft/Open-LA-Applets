@@ -82,7 +82,7 @@
 
     <div class="icons">
       <LazyLoad items={searchedIcons} bind:page let:item let:index>
-        <div
+        <button
           class="icon"
           on:click={() => {
             writeToClipboard(item.item.name);
@@ -97,7 +97,7 @@
         >
           <Icon path={item.item.path} size={2.5} />
           <p>{index}: {item.item.name}</p>
-        </div>
+        </button>
       </LazyLoad>
     </div>
   </div>

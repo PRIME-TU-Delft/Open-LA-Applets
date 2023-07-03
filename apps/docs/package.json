@@ -15,7 +15,6 @@
     "mdi-svelte-ts": "*",
     "p5-components": "*",
     "three": "^0.146.0",
-    "threlte-components": "*",
     "ui": "*",
     "utils": "*"
   },

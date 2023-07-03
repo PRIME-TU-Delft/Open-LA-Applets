@@ -2,7 +2,7 @@
   import { Axis2D, Canvas2D, Line2D, Vector2D, Latex2D } from 'p5-components';
 
   import { Vector2, Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from 'threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from '$lib/threlte-components';
   import { LatexUI } from 'ui';
   import { PrimeColor } from 'utils/PrimeColors';
 

@@ -12,7 +12,7 @@ function parseVector(arr: string) {
     return new Vector3(x, y, z);
   }
 
-  console.warn('Vector3 could not be parsed from', arr, 'using default value of (1,1,1)');
+  // console.warn('Vector3 could not be parsed from', arr, 'using default value of (1,1,1)');
 
   return undefined;
 }

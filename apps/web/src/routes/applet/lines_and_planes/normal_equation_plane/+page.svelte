@@ -9,7 +9,7 @@
     PlaneFromNormal,
     Point3D,
     Vector3D
-  } from 'threlte-components';
+  } from '$lib/threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
   const normal = new Vector3(1, 2, 0.5);

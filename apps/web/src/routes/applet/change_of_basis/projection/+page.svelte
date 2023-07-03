@@ -8,7 +8,7 @@
     PlaneFromPoints,
     Angle3D,
     Point3D
-  } from 'threlte-components';
+  } from '$lib/threlte-components';
   import { PrimeColor } from 'utils/PrimeColors';
 
   const b1 = new Vector3(2, -1, -2);

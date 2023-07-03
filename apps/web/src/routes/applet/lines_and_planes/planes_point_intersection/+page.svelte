@@ -8,7 +8,7 @@
     PlaneFromNormal,
     Vector3D,
     Point3D
-  } from 'threlte-components';
+  } from '$lib/threlte-components';
   import { LatexUI } from 'ui';
 
   import { PrimeColor } from 'utils/PrimeColors';

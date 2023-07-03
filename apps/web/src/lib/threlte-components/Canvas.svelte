@@ -5,10 +5,11 @@
 
   import { Canvas, T } from '@threlte/core';
 
-  import { RoundButton, ShareWindow, ToggleFullscreen, ToggleSliders, UI } from 'ui';
-  import { Sliders } from 'utils/Slider';
-  import SetCamera from './SetCamera.svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
+  import SetCamera from '$lib/threlte-components/SetCamera.svelte';
   import { onMount } from 'svelte';
+  import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
+  import { Sliders } from 'utils/Slider';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -43,7 +44,7 @@
   onMount(() => {
     const params = $page.url.searchParams;
 
-    sliders = sliders.fromURL(params.get('sliders')) || sliders;
+    sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
   });
 </script>
 
@@ -54,7 +55,7 @@
   bind:this={sceneEl}
   style="height: var(--height, 100%); background: {background}"
 >
-  <Canvas flat linear size={{ width, height }}>
+  <Canvas size={{ width, height }}>
     {#key resetCamera}
       <SetCamera {enablePan} {zoom} />
     {/key}
@@ -67,7 +68,7 @@
   </Canvas>
 
   <!-- TITLE PANEL -->
-  <UI top left visible={title && isFullscreen}>
+  <UI top left visible={!!title && isFullscreen}>
     {title}
   </UI>
 

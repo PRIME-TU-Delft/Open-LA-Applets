@@ -1,7 +1,7 @@
 name: New image
 description: Submit a new image
-title: "[New image]: "
-labels: ["new image"]
+title: '[New image]: '
+labels: ['new image']
 body:
   - type: markdown
     attributes:
@@ -11,8 +11,8 @@ body:
     id: link-to-paragraph
     attributes:
       label: Link to paragraph
-      description: "Provide a url to the paragraph that the image is in. If there is no interactive applet yet, link to the static image that will be replaced once the applet has been implemented. Tip: the sections have a # sign where you can get the exact url of the section"
-      placeholder: "https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter1/Inner_Product.html"
+      description: 'Provide a url to the paragraph that the image is in. If there is no interactive applet yet, link to the static image that will be replaced once the applet has been implemented. Tip: the sections have a # sign where you can get the exact url of the section'
+      placeholder: 'https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter1/Inner_Product.html'
     validations:
       required: true
   - type: dropdown
@@ -29,8 +29,8 @@ body:
     id: link-to-applet
     attributes:
       label: Link to applet
-      description: "Provide a url to the applet itself"
-      placeholder: "https://openla.ewi.tudelft.nl/applet/lines_and_planes/plane_line_intersection"
+      description: 'Provide a url to the applet itself'
+      placeholder: 'https://openla.ewi.tudelft.nl/applet/lines_and_planes/plane_line_intersection'
   - type: dropdown
     id: state
     attributes:
@@ -47,7 +47,7 @@ body:
     attributes:
       label: Static image
       description: Please provide a link to the static image, or upload it directly. If there is no static image, please provide a simple (hand-drawn) sketch of the image.
-      placeholder: "https://..."
+      placeholder: 'https://...'
     validations:
       required: false
   - type: input
@@ -55,7 +55,7 @@ body:
     attributes:
       label: Requirements
       description: Please provide some mathematical equations from the book that the applet needs to follow. If there are no requirements, please write "None".
-      placeholder: "The plane must follow the equation x^2 + y^2 = 1"
+      placeholder: 'The plane must follow the equation x^2 + y^2 = 1'
     validations:
       required: true
   - type: textarea
@@ -63,26 +63,26 @@ body:
     attributes:
       label: What elements are interactive?
       description: Please provide a what variables need to change within the applet.
-      placeholder: "The length of vector `r` needs to change."
+      placeholder: 'The length of vector `r` needs to change.'
     validations:
       required: false
   - type: textarea
     id: linked-issues
     attributes:
       label: Does this issue relate or depend on other issues?
-      description: "Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues."
-      placeholder: "Depends on #1, #2. Relates to #3, #4."
+      description: 'Add a list of issues that this issue depends on. Tip: you can type # and then the issue number to get a list of issues.'
+      placeholder: 'Depends on #1, #2. Relates to #3, #4.'
     validations:
       required: false
   - type: checkboxes
     id: checkboxes
     attributes:
-      label: "Steps to completion:"
-      description: "These checkboxes are for the developers: ensure these steps are completed before resolving this issue."
-      options: 
+      label: 'Steps to completion:'
+      description: 'These checkboxes are for the developers: ensure these steps are completed before resolving this issue.'
+      options:
         - label: assign yourself & check labels
         - label: implement new applet described above
         - label: embed the image in the book (with review status)
         - label: get feedback from the math teachers
-        - label: get feedback from writers 
+        - label: get feedback from writers
         - label: remove review status in book

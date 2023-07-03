@@ -9,7 +9,7 @@
     PlaneFromPoints,
     Point3D,
     Vector3D
-  } from 'threlte-components';
+  } from '$lib/threlte-components';
 
   const p = new Vector3(0, 1, 2);
   const q = new Vector3(0, 0, 5);

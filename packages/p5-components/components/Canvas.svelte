@@ -6,9 +6,9 @@
   import { writable } from 'svelte/store';
   import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
-  import { DrawFn, setCanvasContext } from './CanvasContext';
+  import { type DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
-  import ShareWindow from 'ui/components/ShareWindow.svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
   import { Vector2 } from 'three';
 
   export let sliders = new Sliders();
@@ -186,7 +186,7 @@
   <!-- SLIDER PANEL -->
   <div style="max-width: calc(100vw - 6rem); touch-action:none;">
     <UI visible={!!sliders.sliders.length} bottom opacity>
-      {#if sliderSelected == null}<p class="text-black">click us</p>{/if}
+      {#if sliderSelected == null}<p class="text-slate-900">click us</p>{/if}
       {#each sliders.sliders as slider, index}
         <SvelteSlider
           bind:slider
