@@ -13,6 +13,7 @@ interface CanvasContext {
   width: Writable<number>;
   height: Writable<number>;
   scale: Writable<number>;
+  draggables: Writable<Map<symbol, Vector2>>;
 }
 
 // Expose the canvas context service
