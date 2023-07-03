@@ -21,7 +21,7 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(9.63, 4.43, 13.69)}
+  cameraPosition={new Vector3(-11, 5.4, 12.4)}
   zoom={46}
   title="A plane through the point P."
 >

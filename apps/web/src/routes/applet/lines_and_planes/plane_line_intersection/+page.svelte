@@ -10,7 +10,12 @@
   let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
 </script>
 
-<Canvas3D zoom={37} bind:sliders title="Two planes with a line of intersection.">
+<Canvas3D
+  cameraPosition={new Vector3(12.81, 8.24, 8.24)}
+  zoom={37}
+  bind:sliders
+  title="Two planes with a line of intersection."
+>
   <AutoPlane values={sliders.values} let:value let:planeSegment let:color>
     <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
   </AutoPlane>

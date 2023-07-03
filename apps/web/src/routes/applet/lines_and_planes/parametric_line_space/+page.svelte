@@ -8,7 +8,7 @@
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);
 
-  let sliders = new Sliders().add(new Slider(2, 1.5, 3, 0.1, PrimeColor.green));
+  let sliders = new Sliders().add(new Slider(2, -1.5, 3, 0.1, PrimeColor.green));
 
   $: ru_len = sliders.x * u.length();
 </script>
@@ -20,7 +20,7 @@
 
   <!-- Vector r * v -->
   <Vector3D direction={u} color={PrimeColor.green} origin={v_0} length={ru_len} let:endPoint>
-    <Latex3D position={endPoint} latex={`\\space r\\cdot\\vec{u}`} />
+    <Latex3D position={endPoint} latex={`\\space r\\vec{u}`} />
 
     <!-- Vector v -->
     <Vector3D direction={endPoint} color={PrimeColor.yellow} length={endPoint.length()} />
