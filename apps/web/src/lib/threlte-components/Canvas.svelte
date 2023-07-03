@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import { mdiInformation, mdiRestart } from '@mdi/js';
+  import { mdiInformation, mdiRestart, mdiPause } from '@mdi/js';
 
   import { Canvas, T } from '@threlte/core';
 
@@ -10,6 +10,7 @@
   import { onMount } from 'svelte';
   import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
+  import { activityStore } from '$lib/activityStore';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -19,10 +20,11 @@
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isFullscreen = false; // Is the scene fullscreen?
+  let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = false; // Show the formulas panel (if it exists)
 
-  let resetCamera = Math.random();
+  let resetKey = Math.random();
   let height = 0;
   let width = 0;
 
@@ -33,7 +35,7 @@
    */
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
-    resetCamera = Math.random(); // Update the key to reset the set camera component
+    resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
   $: {
@@ -41,73 +43,118 @@
     title = params.get('title') || title;
   }
 
+  function waitThenReset() {
+    if (isIframe) {
+      activityStore.disableAfterAnd(60000, reset);
+    }
+  }
+
   onMount(() => {
     const params = $page.url.searchParams;
 
     sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
+    isIframe = JSON.parse(params.get('iframe') || 'false') || false;
+
+    if (!isIframe) {
+      activityStore.enable();
+    }
   });
 </script>
 
-<div
-  class="canvasWrapper"
-  bind:clientHeight={height}
-  bind:clientWidth={width}
-  bind:this={sceneEl}
-  style="height: var(--height, 100%); background: {background}"
->
-  <Canvas size={{ width, height }}>
-    {#key resetCamera}
-      <SetCamera {enablePan} {zoom} />
+<div class="rounded overflow-hidden h-full">
+  <div
+    role="button"
+    tabindex="0"
+    class="canvasWrapper border-l-4 border-gray-400"
+    class:active={$activityStore}
+    bind:clientHeight={height}
+    bind:clientWidth={width}
+    bind:this={sceneEl}
+    style="height: var(--height, 100%); background: {background}"
+    on:click={activityStore.enable}
+    on:keydown={activityStore.enable}
+    on:mouseenter={activityStore.removeTimeOut}
+    on:mouseleave={waitThenReset}
+  >
+    {#key resetKey}
+      <Canvas size={{ width, height }}>
+        <SetCamera {resetKey} {enablePan} {zoom} />
+
+        <slot name="lights">
+          <T.AmbientLight intensity={1} />
+        </slot>
+
+        <slot />
+      </Canvas>
     {/key}
 
-    <slot name="lights">
-      <T.AmbientLight intensity={1} />
-    </slot>
+    {#if isIframe}
+      <div class="absolute top-0 z-50 select-none w-full">
+        {#if !isFullscreen && $activityStore}
+          <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
+        {:else if !isFullscreen}
+          <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
+        {/if}
+      </div>
+    {/if}
 
-    <slot />
-  </Canvas>
-
-  <!-- TITLE PANEL -->
-  <UI top left visible={!!title && isFullscreen}>
-    {title}
-  </UI>
-
-  <!-- SLIDER PANEL -->
-  <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-    <UI visible={!!sliders.sliders.length} bottom opacity>
-      <ToggleSliders
-        bind:sliders
-        bind:isPlaying={isPlayingSliders}
-        on:startChanging={() => (showFormulas = true)}
-        on:stopChanging={() => (showFormulas = false)}
-      />
+    <!-- TITLE PANEL -->
+    <UI top left visible={!!title && isFullscreen}>
+      {title}
     </UI>
+
+    <!-- SLIDER PANEL -->
+    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
+      <UI visible={!!sliders.sliders.length} bottom opacity>
+        {#key resetKey}
+          <ToggleSliders
+            bind:sliders
+            bind:isPlaying={isPlayingSliders}
+            on:startChanging={() => (showFormulas = true)}
+            on:stopChanging={() => (showFormulas = false)}
+          />
+        {/key}
+      </UI>
+    </div>
+
+    <!-- INFORMATION UI -->
+    <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
+      <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
+    </UI>
+
+    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
+      <slot name="formulas" />
+    </UI>
+
+    <!-- ACTION BUTTONS -->
+    <UI column bottom right opacity styled={false}>
+      {#if $activityStore && isIframe}
+        <RoundButton
+          icon={mdiPause}
+          on:click={() => {
+            reset();
+            activityStore.reset();
+          }}
+        />
+      {/if}
+      <RoundButton icon={mdiRestart} on:click={reset} />
+      <ToggleFullscreen {sceneEl} bind:isFullscreen />
+    </UI>
+
+    <!-- SHARE BUTTON -->
+    <ShareWindow {sliders} />
   </div>
-
-  <!-- INFORMATION UI -->
-  <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
-    <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
-  </UI>
-
-  <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
-    <slot name="formulas" />
-  </UI>
-
-  <!-- ACTION BUTTONS -->
-  <UI column bottom right opacity styled={false}>
-    <RoundButton icon={mdiRestart} on:click={reset} />
-    <ToggleFullscreen {sceneEl} bind:isFullscreen />
-  </UI>
-
-  <!-- SHARE BUTTON -->
-  <ShareWindow {sliders} />
 </div>
 
-<style>
+<style lang="postcss">
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);
     overflow: hidden;
+  }
+
+  .active {
+    @apply border-blue-500;
   }
 
   :global(.canvasWrapper > canvas) {
