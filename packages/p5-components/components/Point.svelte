@@ -11,6 +11,7 @@
   export let radius: number = 5;
   export let color: string = 'black';
   export let pulse = false;
+  export let opacity = 1;
 
   const canvasContext = getCanvasContext();
   const isRelative = getRelativeContext();
@@ -31,8 +32,11 @@
   });
 
   function draw(p5: p5) {
-    p5.stroke(color);
-    p5.fill(color);
+    const pointColor = p5.color(color);
+    pointColor.setAlpha(Math.round(255 * opacity));
+    p5.stroke(pointColor);
+
+    p5.fill(pointColor);
     p5.strokeWeight(radius / $scale);
 
     if (pulse) {
