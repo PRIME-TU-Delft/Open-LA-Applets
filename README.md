@@ -8,7 +8,6 @@ This Turborepo includes the following packages/apps:
 
 ### Apps
 
-- `docs`: a [svelte-kit](https://kit.svelte.dev/) app that serves the documentation
 - `web`: a [svelte-kit](https://kit.svelte.dev/) app hosts the pages of the 3d & 2d visuals
 
 ### Packages
