@@ -90,7 +90,6 @@
 
     {#if isIframe}
       <div class="absolute top-0 z-50 select-none w-full">
-        {isIframe}
         {#if !isFullscreen && $activityStore}
           <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
         {:else if !isFullscreen}
