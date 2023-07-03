@@ -12,6 +12,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "dependencies": {
+    "@mdi/js": "^7.2.96",
     "p5-components": "*"
   },
   "devDependencies": {
