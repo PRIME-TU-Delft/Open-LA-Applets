@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { DoubleSide, Vector3 } from 'three';
   import { T } from '@threlte/core';
+  import { DoubleSide, Vector3 } from 'three';
 
   import { PrimeColor } from 'utils/PrimeColors';
-  import Line from './Line.svelte';
   import Label from './Label.svelte';
   import Latex3D from './Latex.svelte';
+  import Line from './Line.svelte';
 
   export let showNumbers = false;
   export let hideTicks = false;

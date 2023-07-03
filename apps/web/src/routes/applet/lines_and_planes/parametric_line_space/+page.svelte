@@ -1,11 +1,9 @@
 <script>
-  import { Vector3 } from 'three';
   import { Axis3D, Canvas3D, Latex3D, Vector3D } from '$lib/threlte-components';
+  import { Vector3 } from 'three';
   import { LatexUI } from 'ui';
-  import { color } from 'utils/LatexFormat';
   import { PrimeColor } from 'utils/PrimeColors';
-  import { Sliders, Slider } from 'utils/Slider';
-  import Line2 from '$lib/threlte-components/Line2.svelte';
+  import { Slider, Sliders } from 'utils/Slider';
 
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);

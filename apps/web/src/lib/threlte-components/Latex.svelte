@@ -12,10 +12,7 @@
   let str = '';
 
   // Add offset in the direction of the vector
-  $: pos =
-    offset == 0
-      ? position
-      : position.clone().add(position.clone().normalize().multiplyScalar(offset));
+  $: pos = position.clone().add(position.clone().normalize().multiplyScalar(offset));
 
   $: {
     // Render the LaTeX string given by the user to a MathML string
