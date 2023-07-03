@@ -20,6 +20,7 @@
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isFullscreen = false; // Is the scene fullscreen?
+  let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = false; // Show the formulas panel (if it exists)
 
@@ -46,6 +47,7 @@
     const params = $page.url.searchParams;
 
     sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
+    isIframe = JSON.parse(params.get('iframe') || 'false') || false;
   });
 </script>
 
