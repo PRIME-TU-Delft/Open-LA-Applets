@@ -42,7 +42,7 @@ export class Sliders {
   }
 
   // Are all sliders equal?
-  get allEqual() {
+  get allEqualValue() {
     return this._sliders.every((s) => s.value == this._sliders[0].value);
   }
 

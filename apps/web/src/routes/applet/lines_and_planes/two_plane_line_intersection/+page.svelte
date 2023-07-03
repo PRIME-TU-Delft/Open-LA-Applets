@@ -15,13 +15,15 @@
     <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
   </AutoPlane>
 
-  {#if !sliders.allEqual}
+  {#if !sliders.allEqualValue}
     <Vector3D
       color={PrimeColor.ultramarine}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}
+      radius={0.2}
       hideHead
+      alwaysOnTop
     />
   {/if}
 

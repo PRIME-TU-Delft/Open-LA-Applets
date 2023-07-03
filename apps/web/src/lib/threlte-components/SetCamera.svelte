@@ -5,10 +5,10 @@
   import { OrthographicCamera, Vector3 } from 'three';
   import cameraStore from './stores/cameraStore';
 
+  import { activityStore } from '$lib/activityStore';
   import { OrbitControls } from '@threlte/extras';
   import debounce from 'utils/debounce';
   import { parseCameraSettings } from 'utils/parseURL';
-  import { activityStore } from '$lib/activityStore';
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera

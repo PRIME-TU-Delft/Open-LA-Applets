@@ -15,7 +15,7 @@
     <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
   </AutoPlane>
 
-  {#if !sliders.allEqual}
+  {#if !sliders.allEqualValue}
     <Vector3D
       color={PrimeColor.ultramarine}
       length={11.5}

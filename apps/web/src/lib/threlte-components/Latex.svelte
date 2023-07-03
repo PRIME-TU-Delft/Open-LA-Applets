@@ -40,9 +40,9 @@
 </script>
 
 <HTML position={[pos.x, pos.y, pos.z]}>
-  <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
+  <!-- Mousedown|preventDefault is here to stop user from interacting with labels via the mouse (i.e. dragging) -->
   <button on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
-    <!-- @eslint-disable svelte/no-at-html-tags -->
+    <!-- @eslint-disable svelte/no-at-html-tags html insertion is allowed because data is never modified by end-user -->
     {@html str}
   </button>
 </HTML>

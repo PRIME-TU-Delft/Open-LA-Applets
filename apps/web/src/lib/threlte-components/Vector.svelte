@@ -11,6 +11,7 @@
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the cone
   export let hideHead = false; // hide the cone
+  export let alwaysOnTop = false; // whether the line is rendered on top of everything else
 
   const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
   const CONE_HEIGHT = 0.5;
@@ -48,7 +49,7 @@
   );
 </script>
 
-<Line2 {origin} {endPoint} {color} {radius} {striped} />
+<Line2 {origin} {endPoint} {color} {radius} {striped} {alwaysOnTop} />
 
 <!-- Line is length minus cone height -->
 <!-- <T.Line2 bind:ref={line}>
