@@ -17,7 +17,12 @@
   let sliders = new Sliders().addSlider(0.5).addSlider(1);
 </script>
 
-<Canvas3D bind:sliders title="Two planes with a line of intersection.">
+<Canvas3D
+  cameraPosition={new Vector3(16.14, 3.31, 5.35)}
+  zoom={41}
+  bind:sliders
+  title="Two planes with a line of intersection."
+>
   <AutoPlane values={sliders.values} let:value let:planeSegment let:color>
     <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
   </AutoPlane>
@@ -25,25 +30,30 @@
   <!-- Plane x Rotated by 90 deg -->
   <PlaneFromNormal normal={new Vector3(0.5, -1, 1)} color={PrimeColor.green} />
 
-  {#if !sliders.allEqual}
+  {#if !sliders.allEqualValue}
     <Vector3D
       color={PrimeColor.ultramarine}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}
+      radius={0.2}
       hideHead
     />
 
     <Point3D color={PrimeColor.ultramarine} />
   {/if}
 
-  <Axis3D showNumbers />
+  <Axis3D axisLength={7} />
 
   <div slot="formulas">
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'\\$0x + 1y + 1z = 0'} />
+    <LatexUI params={[0.5]} colors={[PrimeColor.green]} latex={'P_1 = \\$0x + -1y + 1z = 0'} />
 
-    <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={'\\$0x + 1y + 1z = 0'} />
+    <LatexUI
+      params={[sliders.y]}
+      colors={[PrimeColor.yellow]}
+      latex={'P_2 = \\$0x + 1y + 1z = 0'}
+    />
 
-    <LatexUI params={[0.5]} colors={[PrimeColor.green]} latex={'\\$0x + -1y + 1z = 0'} />
+    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'P_3 = \\$0x + 1y + 1z = 0'} />
   </div>
 </Canvas3D>

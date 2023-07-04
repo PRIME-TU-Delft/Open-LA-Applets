@@ -15,7 +15,11 @@
   const q = _q.cross(n).normalize().multiplyScalar(n.length());
 </script>
 
-<Canvas3D title="A plane through the origin.">
+<Canvas3D
+  cameraPosition={new Vector3(-10, 3.8, 13.6)}
+  zoom={46}
+  title="A plane through the origin."
+>
   <PlaneFromNormal normal={n} color={PrimeColor.yellow} />
 
   <!-- Normal -->
@@ -29,5 +33,5 @@
 
   <Angle3D vs={[n, q]} />
 
-  <Axis3D showNumbers />
+  <Axis3D axisLength={7} />
 </Canvas3D>

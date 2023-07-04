@@ -124,7 +124,7 @@
         Or go to this github page <a
           rel="noopener noreferrer"
           target="_blank"
-          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+is%3Aopen+{refUrl
+          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q={refUrl
             .split('/')
             .slice(-1)}">here</a
         >

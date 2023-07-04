@@ -16,19 +16,11 @@
     <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />
   </AutoPlane>
 
-  <Axis3D showNumbers />
+  <Axis3D />
 
   <div slot="formulas">
-    <LatexUI
-      params={[sliders.x]}
-      colors={[PrimeColor.red]}
-      latex={`1x + 1y + (3 ${sliders.x < 0 ? '' : '+'}\\$0)z = 0`}
-    />
+    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={`1x + 1y + 3z = \\$0`} />
 
-    <LatexUI
-      params={[sliders.y]}
-      colors={[PrimeColor.yellow]}
-      latex={`1x + 1y + (3 ${sliders.y < 0 ? '' : '+'}\\$0)z = 0`}
-    />
+    <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={`1x + 1y + 3z = \\$0`} />
   </div>
 </Canvas3D>

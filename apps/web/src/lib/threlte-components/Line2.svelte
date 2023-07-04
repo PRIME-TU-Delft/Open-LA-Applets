@@ -11,18 +11,32 @@
   export let color: string = getRandomColor(); // direction of vector
   export let radius = 0.05; // direction of vector
   export let striped = false; // whether the line is striped
+  export let alwaysOnTop = false; // whether the line is rendered on top of everything else
 
   const geometry = new LineGeometry();
-  const material = new LineMaterial({
+  let material = new LineMaterial({
     color: new Color(color).getHex(),
     linewidth: radius,
     dashed: striped,
     worldUnits: true,
     dashScale: 10
   });
+  $: geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
   $: {
-    geometry.setPositions([origin.x, origin.y, origin.z, endPoint.x, endPoint.y, endPoint.z]);
-    ref.computeLineDistances();
+    material.linewidth = radius;
+    material.color.setHex(new Color(color).getHex());
+    material.linewidth = radius;
+    material.dashed = striped;
+
+    if (alwaysOnTop) {
+      material.depthTest = false;
+      material.depthWrite = false;
+      material.transparent = true;
+    } else {
+      material.depthTest = true;
+      material.depthWrite = true;
+      material.transparent = false;
+    }
   }
 
   const { invalidate } = useThrelte();
@@ -38,7 +52,9 @@
   {...$$restProps}
   bind:this={$component}
   on:change={invalidate}
-  on:create={({ cleanup }) => {
+  on:create={({ ref, cleanup }) => {
+    ref.computeLineDistances();
+    ref.renderOrder = 305;
     cleanup(() => {
       material.dispose();
       geometry.dispose();

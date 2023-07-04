@@ -12,10 +12,7 @@
   let str = '';
 
   // Add offset in the direction of the vector
-  $: pos =
-    offset == 0
-      ? position
-      : position.clone().add(position.clone().normalize().multiplyScalar(offset));
+  $: pos = position.clone().add(position.clone().normalize().multiplyScalar(offset));
 
   $: {
     // Render the LaTeX string given by the user to a MathML string
@@ -43,9 +40,9 @@
 </script>
 
 <HTML position={[pos.x, pos.y, pos.z]}>
-  <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
+  <!-- Mousedown|preventDefault is here to stop user from interacting with labels via the mouse (i.e. dragging) -->
   <button on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
-    <!-- @eslint-disable svelte/no-at-html-tags -->
+    <!-- @eslint-disable svelte/no-at-html-tags html insertion is allowed because data is never modified by end-user -->
     {@html str}
   </button>
 </HTML>
