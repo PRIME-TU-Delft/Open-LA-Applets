@@ -9,6 +9,7 @@
   import { type DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
+  import { Vector2 } from 'three';
 
   export let sliders = new Sliders();
   export let zoom = 1;
@@ -39,6 +40,10 @@
   let fnsToDraw: FnToDraw[] = [];
   let [mouseX, mouseY] = [0, 0];
 
+  // Array of draggable objects
+  let draggables = writable(new Map<symbol, Vector2>());
+  let draggableSelected: symbol;
+
   // Isolate draw function to prevent it from applying transformations and styles to other draw functions
   function isolate(draw: DrawFn): DrawFn {
     return (p5: p5) => {
@@ -63,7 +68,6 @@
 
   function reset() {
     sliders = sliders.reset();
-
     zoom = 1;
   }
 
@@ -99,11 +103,13 @@
         fnsToDraw.splice(index, 1);
       }
     },
+    // Warning: because mouseX and mouseY are not reactive, they are not always equal to the actual mouse position! Only when the mouse is being dragged.
     mouseX: params.mouseX,
     mouseY: params.mouseY,
     width: params.width,
     height: params.height,
-    scale: params.scale
+    scale: params.scale,
+    draggables: draggables
   });
 
   const sketch = (p5: p5) => {
@@ -122,12 +128,39 @@
       fnsToDraw.forEach((draw) => draw.fn(p5)); // Draw each step of the scene
     };
 
+    p5.mousePressed = () => {
+      // Find nearest draggable object
+      let x = (p5.mouseX - p5.width / 2) / (100 * zoom);
+      let y = (p5.height / 2 - p5.mouseY) / (100 * zoom);
+      let mouse = new Vector2(x, y);
+      // Sort draggables by distance to mouse, ascendingly
+      let nearestDraggables = [...$draggables].sort((a, b) => {
+        let aDist = a[1].distanceTo(mouse);
+        let bDist = b[1].distanceTo(mouse);
+        return aDist - bDist;
+      });
+      // Select nearest draggable if it is close enough
+      draggableSelected =
+        nearestDraggables[0][1].distanceTo(mouse) < 0.5 ? nearestDraggables[0][0] : undefined;
+    };
+
+    p5.mouseReleased = () => {
+      draggableSelected = undefined;
+    };
+
     p5.mouseDragged = () => {
       mouseX = p5.mouseX;
       mouseY = p5.mouseY;
 
       params.mouseX.set(mouseX);
       params.mouseY.set(mouseY);
+
+      if ($draggables.size > 0 && draggableSelected) {
+        let x = (mouseX - p5.width / 2) / (100 * zoom);
+        let y = (p5.height / 2 - mouseY) / (100 * zoom);
+        $draggables.set(draggableSelected, new Vector2(x, y));
+        $draggables = $draggables; // Trigger reactivity
+      }
     };
 
     p5.mouseWheel = (event: WheelEvent) => {

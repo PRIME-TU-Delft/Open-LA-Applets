@@ -22,6 +22,7 @@
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isFullscreen = false; // Is the scene fullscreen?
+  let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = true; // Show the formulas panel (if it exists)
 
@@ -44,10 +45,21 @@
     title = params.get('title') || title;
   }
 
+  function waitThenReset() {
+    if (isIframe) {
+      activityStore.disableAfterAnd(60000, reset);
+    }
+  }
+
   onMount(() => {
     const params = $page.url.searchParams;
 
     sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
+    isIframe = JSON.parse(params.get('iframe') || 'false') || false;
+
+    if (!isIframe) {
+      activityStore.enable();
+    }
   });
 </script>
 
@@ -65,7 +77,7 @@
     on:mousedown={activityStore.enable}
     on:keydown={activityStore.enable}
     on:mouseenter={activityStore.removeTimeOut}
-    on:mouseleave={() => activityStore.disableAfterAnd(60000, reset)}
+    on:mouseleave={waitThenReset}
   >
     {#key resetKey}
       <Canvas size={{ width, height }}>
@@ -79,13 +91,15 @@
       </Canvas>
     {/key}
 
-    <div class="absolute top-0 z-40 select-none w-full">
-      {#if !isFullscreen && $activityStore}
-        <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
-      {:else if !isFullscreen}
-        <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
-      {/if}
-    </div>
+    {#if isIframe}
+      <div class="absolute top-0 z-50 select-none w-full">
+        {#if !isFullscreen && $activityStore}
+          <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
+        {:else if !isFullscreen}
+          <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
+        {/if}
+      </div>
+    {/if}
 
     <!-- TITLE PANEL -->
     <UI top left visible={!!title && isFullscreen}>
@@ -117,7 +131,7 @@
 
     <!-- ACTION BUTTONS -->
     <UI column bottom right opacity styled={false}>
-      {#if $activityStore}
+      {#if $activityStore && isIframe}
         <RoundButton
           icon={mdiPause}
           on:click={() => {
