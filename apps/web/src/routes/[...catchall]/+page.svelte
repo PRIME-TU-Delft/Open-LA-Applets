@@ -79,7 +79,7 @@
         {#each contributors as { name, title }}
           <div class="flex gap-2">
             <div class="w-24 rounded overflow-hidden not-prose">
-              <img src={'/developers/' + name + '.png'} alt={'Profile of ' + name} />
+              <img src={'/contributors/' + name + '.png'} alt={'Profile of ' + name} />
             </div>
             <div class="flex gap-1 flex-col">
               <span class="bold">{name}</span>
