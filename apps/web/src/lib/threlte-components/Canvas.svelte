@@ -67,8 +67,9 @@
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400"
+    class="canvasWrapper"
     class:active={$activityStore}
+    class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
     bind:this={sceneEl}
@@ -154,10 +155,14 @@
     position: relative;
     width: var(--width, 100vw);
     overflow: hidden;
-  }
 
-  .active {
-    @apply border-blue-500;
+    &.isIframe {
+      @apply border-l-4 border-gray-400;
+
+      &.active {
+        @apply border-blue-500;
+      }
+    }
   }
 
   :global(.canvasWrapper > canvas) {
