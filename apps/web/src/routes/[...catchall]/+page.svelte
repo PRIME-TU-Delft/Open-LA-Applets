@@ -10,7 +10,7 @@
   let searchInput: HTMLInputElement;
   let searchQuery = '';
 
-  let developerNames = ['Abel de Bruijn'];
+  let contributors = [{ name: 'Abel de Bruijn', title: 'developer' }];
 
   $: fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
@@ -76,14 +76,14 @@
 
       <h3>Contributors</h3>
       <div class="flex gap-2 w-full flex-wrap justify-between">
-        {#each developerNames as name}
+        {#each contributors as { name, title }}
           <div class="flex gap-2">
             <div class="w-24 rounded overflow-hidden not-prose">
               <img src={'/developers/' + name + '.png'} alt={'Profile of ' + name} />
             </div>
             <div class="flex gap-1 flex-col">
               <span class="bold">{name}</span>
-              <span class="text-xs">Developer</span>
+              <span class="text-xs">{title}</span>
             </div>
           </div>
         {/each}
