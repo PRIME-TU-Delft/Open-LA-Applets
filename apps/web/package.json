@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@mdi/js": "^7.2.96",
+    "daisyui": "^3.2.1",
+    "mdi-svelte-ts": "*",
     "p5-components": "*",
-    "mdi-svelte-ts": "*"
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",

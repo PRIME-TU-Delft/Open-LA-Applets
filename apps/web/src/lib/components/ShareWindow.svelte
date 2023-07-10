@@ -6,7 +6,7 @@
   import type { OrthographicCamera } from 'three';
   import cameraStore from '../threlte-components/stores/cameraStore';
   import { RoundButton } from 'ui';
-  import { Sliders } from 'utils/Slider';
+  import type { Sliders } from 'utils/Slider';
 
   export let sliders: Sliders;
 
@@ -19,6 +19,7 @@
   $: state = sliders.sliders && getState($cameraStore);
   $: url = $page.url.origin + $page.url.pathname;
   $: refUrl = $page.url.pathname.replace('/applet/', '');
+  $: lastUrl = refUrl.split('/').slice(-1)[0]; // Last part of the url
 
   /**
    * Returns a string with the current state of the camera
@@ -124,9 +125,10 @@
         Or go to this github page <a
           rel="noopener noreferrer"
           target="_blank"
-          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q={refUrl
-            .split('/')
-            .slice(-1)}">here</a
+          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl.replaceAll(
+            '_',
+            ''
+          )}%29">here</a
         >
       </p>
 
