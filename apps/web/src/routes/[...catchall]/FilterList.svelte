@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { formatString } from '$lib/utils/FormatString';
-  import { mdiArrowRight } from '@mdi/js';
+  import { mdiClose } from '@mdi/js';
   import Fuse from 'fuse.js';
   import { Icon } from 'mdi-svelte-ts';
+  import ListItem from './ListItem.svelte';
 
   export let fileUrls: string[];
   export let searchQuery: string;
@@ -22,8 +22,6 @@
     return { file, folder, url };
   });
 
-  console.log(fileUrls);
-
   const fuseOptions = {
     includeScore: true,
     keys: ['file', 'folder']
@@ -39,23 +37,19 @@
 </script>
 
 <div class="flex flex-col gap-1 container my-10 mx-auto">
-  {#each searchedFiles as { item: file }}
-    <a
-      class="link-hover bg-base-300 rounded p-4 flex justify-between items-center hover:bg-primary focus:bg-primary"
-      href={file.url}
+  {#each searchedFiles as { item: file } (file.url)}
+    <ListItem url={file.url} title={file.file} />
+  {:else}
+    <div
+      class="container my-10 mx-auto h-96 flex flex-col gap-2 items-center justify-center bg-base-200 border border-base-300 rounded-lg"
     >
-      <div class="flex gap-1">
-        <div class="no-underline text-neutral-500">{formatString(file.folder)}</div>
-        <div class="no-underline">/</div>
-        <div>{formatString(file.file)}</div>
+      <div class="text-2xl text-center">
+        No results found for <span class="font-bold">{searchQuery}</span>
       </div>
-      <Icon path={mdiArrowRight} />
-    </a>
+      <button class="btn btn-primary" on:click={() => (searchQuery = '')}>
+        <Icon path={mdiClose} />
+        Clear search
+      </button>
+    </div>
   {/each}
 </div>
-
-<style lang="postcss">
-  .isActive {
-    @apply bg-primary;
-  }
-</style>

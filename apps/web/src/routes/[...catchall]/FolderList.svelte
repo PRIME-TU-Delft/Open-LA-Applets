@@ -1,7 +1,6 @@
 <script lang="ts">
   import { formatString } from '$lib/utils/FormatString';
-  import { mdiArrowRight } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import ListItem from './ListItem.svelte';
 
   export let fileUrls: string[];
 
@@ -41,13 +40,7 @@
 
       <div class="flex flex-col collapse-content gap-1">
         {#each files as { title, url }}
-          <a
-            class="link-hover bg-base-200 rounded p-4 flex justify-between items-center"
-            href={url}
-          >
-            <div>{formatString(title)}</div>
-            <Icon path={mdiArrowRight} />
-          </a>
+          <ListItem {title} {url} />
         {/each}
       </div>
     </div>

@@ -8,7 +8,9 @@
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
   let searchInput: HTMLInputElement;
-  let searchQuery = 'line';
+  let searchQuery = '';
+
+  let developerNames = ['Abel de Bruijn'];
 
   $: fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
@@ -53,10 +55,72 @@
   </form>
 </div>
 
-{#if searchQuery}
-  <FilterList {fileUrls} {searchQuery} />
-{:else}
-  <FolderList {fileUrls} />
-{/if}
+<div class="p-10">
+  {#if searchQuery}
+    <FilterList {fileUrls} bind:searchQuery />
+  {:else}
+    <FolderList {fileUrls} />
+  {/if}
 
-<div class="container" />
+  <div
+    class="container bg-base-200 border border-base-300 rounded-lg p-4 box-border my-10 mx-auto flex flex-col gap-2"
+  >
+    <div class="prose">
+      <h2>Credits</h2>
+      <p>
+        These applets were created for the
+        <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
+          TU Delft Open Linear Algebra book
+        </a>
+      </p>
+
+      <h3>Contributors</h3>
+      <div class="flex gap-2 w-full flex-wrap justify-between">
+        {#each developerNames as name}
+          <div class="flex gap-2">
+            <div class="w-24 rounded overflow-hidden not-prose">
+              <img src={'/developers/' + name + '.png'} alt={'Profile of ' + name} />
+            </div>
+            <div class="flex gap-1 flex-col">
+              <span class="bold">{name}</span>
+              <span class="text-xs">Developer</span>
+            </div>
+          </div>
+        {/each}
+      </div>
+
+      <h3>License</h3>
+      <p>
+        <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+          ><img
+            alt="Creative Commons License"
+            style="border-width:0"
+            src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+          /></a
+        ><br /><span>PRIME Linear Algebra applets</span>
+        by
+        <a
+          href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
+          property="cc:attributionName"
+          rel="cc:attributionURL">PRIME, TU Delft</a
+        >
+        is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+          >Creative Commons Attribution 4.0 International License</a
+        >.<br />Based on a work at
+        <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
+          >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
+        >.<br />Permissions beyond the scope of this license may be available at
+        <a
+          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
+          rel="cc:morePermissions"
+          >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
+        >.
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-slate-300 rounded p-10">
+    <img class="h-20 w-full object-contain" alt="prime-tudelft" src="/logo-black.png" />
+  </div>
+</div>

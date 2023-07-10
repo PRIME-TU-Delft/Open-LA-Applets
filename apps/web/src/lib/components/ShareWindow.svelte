@@ -68,17 +68,17 @@
 {#if showShareWindow}
   <div class="absolute left-0 top-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
     <div
-      class="prose prose-sm h-full w-full overflow-hidden overflow-y-auto rounded bg-slate-300 p-4 pt-0 opacity-90"
+      class="prose prose-sm h-full w-full overflow-hidden overflow-y-auto rounded bg-base-300 p-4 pt-0 opacity-90"
       style="max-width: 30rem;"
     >
-      <div class="sticky top-0 z-20 flex w-full justify-between bg-slate-300/90 pt-4">
+      <div class="sticky top-0 z-20 flex w-full justify-between bg-base-300/90 pt-4">
         <h1>Share and Embed</h1>
         <RoundButton on:click={() => (showShareWindow = false)} icon={mdiClose} />
       </div>
 
       <h3>About</h3>
       <p>
-        This was created for the
+        This applet was created for the
         <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
           TU Delft Open Linear Algebra book
         </a>
@@ -132,7 +132,9 @@
         >
       </p>
 
-      <img class="h-20" alt="prime-tudelft" src="/logo-black.png" />
+      <div class="bg-slate-300/70 w-full rounded p-2">
+        <img class="h-20 w-full object-contain" alt="prime-tudelft" src="/logo-black.png" />
+      </div>
 
       <h3>License</h3>
       <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
@@ -170,6 +172,6 @@
 
 <style lang="postcss">
   h3 {
-    @apply sticky top-16 z-10 bg-slate-300 py-2;
+    @apply sticky top-16 z-10 bg-base-300 py-2;
   }
 </style>
