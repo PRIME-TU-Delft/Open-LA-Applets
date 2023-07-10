@@ -55,7 +55,7 @@
   </form>
 </div>
 
-<div class="p-10">
+<div class="p-10 max-w-2xl mx-auto">
   {#if searchQuery}
     <FilterList {fileUrls} bind:searchQuery />
   {:else}
