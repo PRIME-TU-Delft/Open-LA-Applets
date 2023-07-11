@@ -12,6 +12,8 @@
   import { Sliders } from 'utils/Slider';
   import { activityStore } from '$lib/activityStore';
   import { Vector3 } from 'three/src/Three';
+  import { Icon } from 'mdi-svelte-ts';
+  import ActionButtons from '$lib/components/ActionButtons.svelte';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -96,7 +98,7 @@
         {#if !isFullscreen && $activityStore}
           <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
         {:else if !isFullscreen}
-          <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
+          <p class="py-3 px-6 bg-base-100/70 rounded-r">Click once to enable interactivity</p>
         {/if}
       </div>
     {/if}
@@ -120,29 +122,23 @@
       </UI>
     </div>
 
-    <!-- INFORMATION UI -->
-    <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
-      <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
-    </UI>
-
-    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
+    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top right>
       <slot name="formulas" />
     </UI>
 
     <!-- ACTION BUTTONS -->
-    <UI column bottom right opacity styled={false}>
-      {#if $activityStore && isIframe}
-        <RoundButton
-          icon={mdiPause}
-          on:click={() => {
-            reset();
-            activityStore.reset();
-          }}
-        />
-      {/if}
-      <RoundButton icon={mdiRestart} on:click={reset} />
-      <ToggleFullscreen {sceneEl} bind:isFullscreen />
-    </UI>
+    <ActionButtons
+      {isIframe}
+      {sceneEl}
+      hasFormulas={$$slots.formulas}
+      bind:isFullscreen
+      on:pause={() => {
+        reset();
+        activityStore.reset();
+      }}
+      on:reset={reset}
+      on:toggle-formulas={() => (showFormulas = !showFormulas)}
+    />
 
     <!-- SHARE BUTTON -->
     <ShareWindow {sliders} />

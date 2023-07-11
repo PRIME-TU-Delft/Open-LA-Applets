@@ -16,7 +16,8 @@
     "daisyui": "^3.2.1",
     "mdi-svelte-ts": "*",
     "p5-components": "*",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "screenfull": "^6.0.2"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
