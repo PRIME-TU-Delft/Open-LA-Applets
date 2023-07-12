@@ -25,7 +25,6 @@
   let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = false; // Show the formulas panel (if it exists)
-  let showShareWindow = false; // Show the share window
 
   let resetKey = Math.random();
   let height = 0;
@@ -69,16 +68,18 @@
   });
 </script>
 
-<div class="rounded overflow-hidden h-full">
+<div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>
+  <!-- For screen readers / accesability acces to toggle the drawer  -->
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400"
+    class="canvasWrapper border-l-4 border-gray-400 drawer-content"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
-    bind:this={sceneEl}
     style="height: var(--height, 100%); background: {background}"
     on:click={activityStore.enable}
     on:mousedown={activityStore.enable}
@@ -86,6 +87,7 @@
     on:mouseenter={activityStore.removeTimeOut}
     on:mouseleave={waitThenReset}
   >
+    <!-- THRELTE SCENE -->
     {#key resetKey}
       <Canvas size={{ width, height }}>
         <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
@@ -99,7 +101,7 @@
     {/key}
 
     <!-- TITLE PANEL -->
-    {#if !showShareWindow && (!isIframe || isFullscreen)}
+    {#if !isIframe || isFullscreen}
       <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
@@ -117,8 +119,9 @@
       </SliderPanel>
     {/if}
 
+    <!-- FORMULAS AND ACTIVITY PANEL  -->
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
-    {#if !!$$slots.formulas && !showShareWindow}
+    {#if !!$$slots.formulas}
       <FormulasAndActivityPanel
         {isIframe}
         {isFullscreen}
@@ -138,12 +141,12 @@
       bind:isFullscreen
       bind:showFormulas
       on:reset={reset}
-      on:share={() => (showShareWindow = !showShareWindow)}
     />
-
-    <!-- SHARE BUTTON -->
-    <ShareWindow {sliders} bind:showShareWindow />
   </div>
+
+  <!-- SHARE WINDOW -->
+
+  <ShareWindow {sliders} />
 </div>
 
 <style lang="postcss">

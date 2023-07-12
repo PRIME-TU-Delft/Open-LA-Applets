@@ -1,15 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { mdiClose, mdiContentCopy, mdiShare } from '@mdi/js';
+  import { mdiClose, mdiContentCopy, mdiOpenInNew } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
-  import { fly } from 'svelte/transition';
   import type { OrthographicCamera } from 'three';
-  import cameraStore from '../threlte-components/stores/cameraStore';
-  import RoundButton from './RoundButton.svelte';
   import type { Sliders } from 'utils/Slider';
+  import cameraStore from '../threlte-components/stores/cameraStore';
 
   export let sliders: Sliders;
-  export let showShareWindow = false;
 
   let showCopyToClipboard = false;
   let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
@@ -65,76 +62,76 @@
   }
 </script>
 
-{#if showShareWindow}
-  <div class="absolute left-0 top-0 z-[100] h-full max-w-full p-4" transition:fly={{ x: -100 }}>
-    <div
-      class="prose prose-sm h-full w-full overflow-hidden overflow-y-auto rounded bg-base-300 p-4 pt-0 opacity-90"
-      style="max-width: 30rem;"
-    >
-      <div class="sticky top-0 z-20 flex w-full justify-between bg-base-300/90 pt-4">
-        <h1>Share and Embed</h1>
-        <RoundButton
-          twClass="btn-neutral"
-          on:click={() => (showShareWindow = false)}
-          icon={mdiClose}
-        />
+<div class="drawer-side z-50">
+  <label for="my-drawer" class="drawer-overlay" />
+  <ul class="menu max-w-xs sm:max-w-sm md:max-w-2xl bg-base-200 container h-full overflow-y-auto">
+    <div class="prose">
+      <!-- class="menu prose p-4 w-80 h-full bg-base-200 text-base-content relative overflow-hidden overflow-y-auto" -->
+      <div class="sticky top-0 z-20 bg-base-300/90 flex justify-between items-top">
+        <h1 class="mb-0">Share and Embed</h1>
+        <label for="my-drawer" class="btn btn-outline">
+          <Icon path={mdiClose} />
+        </label>
       </div>
 
       <h3>About</h3>
       <p>
         This applet was created for the
         <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
-          TU Delft Open Linear Algebra book
-        </a>
+          TU Delft Open Linear Algebra book</a
+        >.
       </p>
 
       <h3>Embed</h3>
-      <label class="flex items-center gap-2">
-        <input class="h-4 w-4" type="checkbox" bind:checked={includeState} />
-        <span>Include current state</span>
-      </label>
+      <div class="form-control">
+        <label class="cursor-pointer label">
+          <span class="label-text">Include current state</span>
+          <input type="checkbox" class="toggle toggle-accent" bind:checked={includeState} />
+        </label>
 
-      <label>
-        <div class="relative">
-          {#key includeState && sliders.sliders}
-            <textarea
-              bind:this={urlInput}
-              style="overflow-wrap: normal;"
-              class="h-24 w-full resize-none rounded p-2 pr-10"
-              readonly
-              value={url + (includeState ? state : '')}
-            />
-          {/key}
+        <label class="label" for="url-state">
+          <span class="label-text">Url to this applet</span>
+        </label>
+        <div class="relative w-full form-control">
+          <textarea
+            id="url-state"
+            class="textarea textarea-bordered h-24"
+            bind:this={urlInput}
+            style="overflow-wrap: normal;"
+            readonly
+            value={url + (includeState ? state : '')}
+          />
           <button
-            class="absolute right-1 top-1 h-8 w-8 rounded bg-slate-800/90 p-2 text-slate-100 transition-all hover:scale-105 hover:bg-slate-900"
-            on:click={copyToClipboard}><Icon path={mdiContentCopy} /></button
+            class="absolute btn btn-sm btn-square btn-primary right-1 top-1"
+            on:click={copyToClipboard}
           >
-
-          <div
-            class="absolute -bottom-4 right-0 text-green-900 opacity-0 transition-opacity duration-300"
-            class:opacity-100={showCopyToClipboard}
-          >
-            Copied url to clipboard
-          </div>
+            <Icon path={mdiContentCopy} />
+          </button>
         </div>
-      </label>
+        <label class="label" for="url-state">
+          <span
+            class="label-text-alt text-green-400 opacity-0"
+            class:opacity-100={showCopyToClipboard}>Copied url to clipboard</span
+          >
+        </label>
+      </div>
 
-      <label>
-        <h3>Applet Id</h3>
+      <h3>Applet Id</h3>
+      <input class="w-full rounded p-2" type="text" readonly value={refUrl} />
 
-        <input class="w-full rounded p-2" type="text" readonly value={refUrl} />
-      </label>
-
-      <p>
-        Or go to this github page <a
+      <li>
+        <a
+          class="w-full flex justify-between"
           rel="noopener noreferrer"
           target="_blank"
           href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl.replaceAll(
             '_',
             ''
-          )}%29">here</a
+          )}%29"
         >
-      </p>
+          <span>Go this applet's github page here</span> <Icon path={mdiOpenInNew} /></a
+        >
+      </li>
 
       <div class="bg-slate-300/70 w-full rounded p-2">
         <img class="h-20 w-full object-contain" alt="prime-tudelft" src="/logo-black.png" />
@@ -167,11 +164,11 @@
         >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
       >.
     </div>
-  </div>
-{/if}
+  </ul>
+</div>
 
 <style lang="postcss">
   h3 {
-    @apply sticky top-16 z-10 bg-base-300 py-2;
+    @apply sticky top-10 z-10 bg-base-300 py-2;
   }
 </style>
