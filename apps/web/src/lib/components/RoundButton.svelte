@@ -8,7 +8,7 @@
   export let color = 'currentColor';
   export let disabled = false;
 
-  $: classes = twMerge('btn flex flex-col justify-center', twClass);
+  $: classes = twMerge('btn flex flex-col justify-center btn-neutal', twClass);
 </script>
 
 <button class={classes} class:disabled on:click on:keypress>
@@ -16,14 +16,7 @@
 </button>
 
 <style lang="postcss">
-  button {
+  .btn {
     background: var(--bg);
-    scale: 1;
-    transition: scale 0.3s;
-  }
-
-  button:hover {
-    background: var(--bg);
-    scale: 1.1;
   }
 </style>

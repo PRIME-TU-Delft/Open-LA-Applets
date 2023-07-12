@@ -73,7 +73,11 @@
     >
       <div class="sticky top-0 z-20 flex w-full justify-between bg-base-300/90 pt-4">
         <h1>Share and Embed</h1>
-        <RoundButton on:click={() => (showShareWindow = false)} icon={mdiClose} />
+        <RoundButton
+          twClass="btn-neutral"
+          on:click={() => (showShareWindow = false)}
+          icon={mdiClose}
+        />
       </div>
 
       <h3>About</h3>

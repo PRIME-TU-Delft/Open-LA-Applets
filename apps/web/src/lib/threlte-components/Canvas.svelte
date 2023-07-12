@@ -2,8 +2,7 @@
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
-  import FormulasAndActivityPanel from '$lib/components/Formulas.svelte';
-  import ShareButton from '$lib/components/ShareButton.svelte';
+  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import SliderPanel from '$lib/components/SliderPanel.svelte';
   import ToggleSliders from '$lib/components/ToggleSliders.svelte';
@@ -25,7 +24,7 @@
   let isFullscreen = false; // Is the scene fullscreen?
   let isIframe = false; // Is the scene inside an iframe?
 
-  let showFormulas = true; // Show the formulas panel (if it exists)
+  let showFormulas = false; // Show the formulas panel (if it exists)
   let showShareWindow = false; // Show the share window
 
   let resetKey = Math.random();
@@ -40,7 +39,11 @@
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
     resetKey = Math.random(); // Update the key to reset the set camera component
-    showFormulas = true;
+  }
+
+  function pause() {
+    reset();
+    activityStore.reset();
   }
 
   $: {
@@ -96,14 +99,14 @@
     {/key}
 
     <!-- TITLE PANEL -->
-    {#if !isIframe || isFullscreen}
+    {#if !showShareWindow && (!isIframe || isFullscreen)}
       <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
     {/if}
 
     <!-- SLIDER PANEL -->
-    {#if sliders.sliders.length > 0 && !showShareWindow}
+    {#if sliders.sliders.length > 0}
       <SliderPanel isInset={!isIframe || isFullscreen}>
         <ToggleSliders
           bind:sliders
@@ -116,7 +119,13 @@
 
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
     {#if !!$$slots.formulas && !showShareWindow}
-      <FormulasAndActivityPanel {isIframe} {isFullscreen} {showFormulas} {isChangingSliders}>
+      <FormulasAndActivityPanel
+        {isIframe}
+        {isFullscreen}
+        {showFormulas}
+        {isChangingSliders}
+        on:pause={pause}
+      >
         <slot name="formulas" />
       </FormulasAndActivityPanel>
     {/if}
@@ -127,13 +136,9 @@
       {sceneEl}
       hasFormulas={$$slots.formulas}
       bind:isFullscreen
-      on:pause={() => {
-        reset();
-        activityStore.reset();
-      }}
+      bind:showFormulas
       on:reset={reset}
       on:share={() => (showShareWindow = !showShareWindow)}
-      on:toggle-formulas={() => (showFormulas = !showFormulas)}
     />
 
     <!-- SHARE BUTTON -->
