@@ -1,19 +1,17 @@
 <script lang="ts">
   import { page } from '$app/stores';
-
-  import { mdiInformation, mdiRestart, mdiPause } from '@mdi/js';
-
-  import { Canvas, T } from '@threlte/core';
-
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
-  import SetCamera from '$lib/threlte-components/SetCamera.svelte';
-  import { onMount } from 'svelte';
-  import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
-  import { Sliders } from 'utils/Slider';
   import { activityStore } from '$lib/activityStore';
-  import { Vector3 } from 'three/src/Three';
-  import { Icon } from 'mdi-svelte-ts';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
+  import Formulas from '$lib/components/Formulas.svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
+  import SliderPanel from '$lib/components/SliderPanel.svelte';
+  import ToggleSliders from '$lib/components/ToggleSliders.svelte';
+  import SetCamera from '$lib/threlte-components/SetCamera.svelte';
+  import { Canvas, T } from '@threlte/core';
+  import { onMount } from 'svelte';
+  import { Vector3 } from 'three/src/Three';
+  import { UI } from 'ui';
+  import { Sliders } from 'utils/Slider';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -40,6 +38,7 @@
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
     resetKey = Math.random(); // Update the key to reset the set camera component
+    showFormulas = true;
   }
 
   $: {
@@ -71,6 +70,7 @@
     tabindex="0"
     class="canvasWrapper border-l-4 border-gray-400"
     class:active={$activityStore}
+    class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
     bind:this={sceneEl}
@@ -109,22 +109,23 @@
     </UI>
 
     <!-- SLIDER PANEL -->
-    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-      <UI visible={!!sliders.sliders.length} bottom opacity>
-        {#key resetKey}
-          <ToggleSliders
-            bind:sliders
-            bind:isPlaying={isPlayingSliders}
-            on:startChanging={() => (showFormulas = true)}
-            on:stopChanging={() => (showFormulas = false)}
-          />
-        {/key}
-      </UI>
-    </div>
+    {#if sliders.sliders.length > 0}
+      <SliderPanel isInset={!isIframe || isFullscreen}>
+        <ToggleSliders
+          bind:sliders
+          bind:isPlaying={isPlayingSliders}
+          on:startChanging={() => (showFormulas = true)}
+          on:stopChanging={() => (showFormulas = false)}
+        />
+      </SliderPanel>
+    {/if}
 
-    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top right>
-      <slot name="formulas" />
-    </UI>
+    <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
+    {#if !!$$slots.formulas}
+      <Formulas {isIframe} {isFullscreen} {showFormulas}>
+        <slot name="formulas" />
+      </Formulas>
+    {/if}
 
     <!-- ACTION BUTTONS -->
     <ActionButtons
@@ -146,6 +147,10 @@
 </div>
 
 <style lang="postcss">
+  :global(html:has(.isIframe)) {
+    background: white;
+  }
+
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);

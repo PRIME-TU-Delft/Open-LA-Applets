@@ -22,7 +22,7 @@
       <RoundButton icon={mdiPause} on:click={() => dispatch('pause')} />
     </li>
   {/if}
-  {#if hasFormulas}
+  {#if hasFormulas && isIframe && !isFullscreen}
     <li class="tooltip tooltip-left" data-tip="Toggle formulae">
       <RoundButton icon={mdiFunctionVariant} on:click={() => dispatch('toggle-formulas')} />
     </li>

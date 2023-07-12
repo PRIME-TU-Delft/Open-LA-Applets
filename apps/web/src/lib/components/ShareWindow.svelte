@@ -5,7 +5,7 @@
   import { fly } from 'svelte/transition';
   import type { OrthographicCamera } from 'three';
   import cameraStore from '../threlte-components/stores/cameraStore';
-  import { RoundButton } from './RoundButton.svelte';
+  import RoundButton from './RoundButton.svelte';
   import type { Sliders } from 'utils/Slider';
 
   export let sliders: Sliders;
