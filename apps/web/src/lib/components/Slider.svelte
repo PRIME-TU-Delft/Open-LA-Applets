@@ -2,7 +2,7 @@
   import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import { createEventDispatcher, onDestroy } from 'svelte';
-  import { type Slider } from 'utils/Slider';
+  import type { Slider } from 'utils/Slider';
   import RoundButton from './RoundButton.svelte';
 
   export let slider: Slider;
@@ -81,7 +81,7 @@
     </button>
   </div>
 
-  <label class="flex w-full">
+  <label class="w-full">
     <input
       type="range"
       min={slider.min}
@@ -91,8 +91,8 @@
       on:change={stopPlaying}
       on:mousedown={startChanging}
       on:touchstart={startChanging}
-      style="accent-color: {slider.color}"
-      class="w-inherit"
+      style="accent-color: {slider.color}; --s: {slider.hsl.h} {slider.hsl.s}% {slider.hsl.l}%;"
+      class="w-inherit range range-xs range-secondary"
     />
   </label>
 {/if}
