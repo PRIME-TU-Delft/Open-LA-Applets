@@ -15,7 +15,7 @@
   $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 </script>
 
-<Canvas3D bind:sliders>
+<Canvas3D bind:sliders cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
   <Latex3D latex={'Q'} position={v_q} />
@@ -43,10 +43,20 @@
   />
 
   <!-- Angle green lines -->
-  <Angle3D vs={[new Vector3(0, 0, -1), v_p]} origin={v_p} />
+  <Angle3D
+    forceRightAngle
+    vs={[v_p.clone().multiplyScalar(-1), new Vector3(0, 0, -1)]}
+    origin={v_p}
+    size={0.5}
+  />
 
   <!-- Angle Red and Yellow -->
-  <Angle3D vs={[v_q, new Vector3(0, 1, 0)]} origin={v_q} />
+  <Angle3D
+    forceRightAngle
+    vs={[new Vector3(0, 1, 0), v_q.clone().multiplyScalar(-1)]}
+    size={1}
+    origin={v_q}
+  />
 
   <!-- Helper striped lines -->
   <Vector3D
@@ -58,15 +68,15 @@
   />
   <Vector3D striped origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
 
-  <!--  P, a_1 -->
-  <Latex3D latex={'P, a_1'} position={v_p} offset={0.5} />
-  <Point3D position={v_p} color={PrimeColor.green} />
+  <!--  a_1, O -->
+  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, -0.3)} />
+  <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
 
   <!-- a_2 -->
   <Latex3D latex={'a_2'} position={new Vector3(0, 0, v_a.z)} offset={0.5} />
   <Point3D position={new Vector3(0, 0, v_a.z)} color={PrimeColor.black} />
 
-  <Latex3D latex={'a_3'} position={new Vector3(0, sliders.y, 0)} offset={0.5} />
+  <Latex3D latex={'a_3'} position={new Vector3(-0.3, sliders.y, 0)} offset={0.5} />
   <Point3D position={new Vector3(0, sliders.y, 0)} color={PrimeColor.black} />
 
   <div slot="formulas">
@@ -83,5 +93,5 @@
     />
   </div>
 
-  <Axis3D showNumbers floor />
+  <Axis3D showNumbers floor axisLength={10} />
 </Canvas3D>
