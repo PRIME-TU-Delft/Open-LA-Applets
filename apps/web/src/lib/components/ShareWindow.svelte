@@ -5,7 +5,7 @@
   import { fly } from 'svelte/transition';
   import type { OrthographicCamera } from 'three';
   import cameraStore from '../threlte-components/stores/cameraStore';
-  import { RoundButton } from 'ui';
+  import { RoundButton } from './RoundButton.svelte';
   import type { Sliders } from 'utils/Slider';
 
   export let sliders: Sliders;
@@ -165,7 +165,7 @@
     </div>
   </div>
 {:else}
-  <div class="absolute -left-4 bottom-4 transition-all hover:left-0">
+  <div class="absolute -left-4 top-4 transition-all hover:left-0">
     <RoundButton twClass="!pl-10" on:click={() => (showShareWindow = true)} icon={mdiShare} />
   </div>
 {/if}

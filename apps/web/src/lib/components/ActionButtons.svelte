@@ -6,7 +6,7 @@
   import ToggleFullscreen from './ToggleFullscreen.svelte';
 
   export let isFullscreen = false; // Is the scene fullscreen?
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let isIframe = true; // Is the scene inside an iframe?
   export let hasFormulas = false; // Does the scene have a formulas panel?
   export let sceneEl: HTMLDivElement;
 
@@ -14,7 +14,7 @@
 </script>
 
 <ul
-  class="menu bg-base-200 rounded-xl absolute bottom-0 right-0 opacity-80 hover:opacity-100 transition-all"
+  class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 transition-all"
   class:inset={!isIframe || isFullscreen}
 >
   {#if $activityStore && isIframe}

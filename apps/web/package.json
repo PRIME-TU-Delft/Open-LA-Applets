@@ -17,7 +17,9 @@
     "mdi-svelte-ts": "*",
     "p5-components": "*",
     "path": "^0.12.7",
-    "screenfull": "^6.0.2"
+    "screenfull": "^6.0.2",
+    "tailwind-merge": "^1.13.2",
+    "utils": "*"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
