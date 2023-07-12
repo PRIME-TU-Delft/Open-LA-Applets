@@ -2,7 +2,8 @@
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
-  import Formulas from '$lib/components/Formulas.svelte';
+  import FormulasAndActivityPanel from '$lib/components/Formulas.svelte';
+  import ShareButton from '$lib/components/ShareButton.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import SliderPanel from '$lib/components/SliderPanel.svelte';
   import ToggleSliders from '$lib/components/ToggleSliders.svelte';
@@ -10,7 +11,6 @@
   import { Canvas, T } from '@threlte/core';
   import { onMount } from 'svelte';
   import { Vector3 } from 'three/src/Three';
-  import { UI } from 'ui';
   import { Sliders } from 'utils/Slider';
 
   export let enablePan = false;
@@ -21,10 +21,12 @@
   export let cameraPosition = new Vector3(10, 10, 10);
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
+  let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
   let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = true; // Show the formulas panel (if it exists)
+  let showShareWindow = false; // Show the share window
 
   let resetKey = Math.random();
   let height = 0;
@@ -93,38 +95,30 @@
       </Canvas>
     {/key}
 
-    {#if isIframe}
-      <div class="absolute top-0 z-50 select-none w-full">
-        {#if !isFullscreen && $activityStore}
-          <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
-        {:else if !isFullscreen}
-          <p class="py-3 px-6 bg-base-100/70 rounded-r">Click once to enable interactivity</p>
-        {/if}
+    <!-- TITLE PANEL -->
+    {#if !isIframe || isFullscreen}
+      <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
+        {title}
       </div>
     {/if}
 
-    <!-- TITLE PANEL -->
-    <UI top left visible={!!title && isFullscreen}>
-      {title}
-    </UI>
-
     <!-- SLIDER PANEL -->
-    {#if sliders.sliders.length > 0}
+    {#if sliders.sliders.length > 0 && !showShareWindow}
       <SliderPanel isInset={!isIframe || isFullscreen}>
         <ToggleSliders
           bind:sliders
           bind:isPlaying={isPlayingSliders}
-          on:startChanging={() => (showFormulas = true)}
-          on:stopChanging={() => (showFormulas = false)}
+          on:startChanging={() => (isChangingSliders = true)}
+          on:stopChanging={() => (isChangingSliders = false)}
         />
       </SliderPanel>
     {/if}
 
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
-    {#if !!$$slots.formulas}
-      <Formulas {isIframe} {isFullscreen} {showFormulas}>
+    {#if !!$$slots.formulas && !showShareWindow}
+      <FormulasAndActivityPanel {isIframe} {isFullscreen} {showFormulas} {isChangingSliders}>
         <slot name="formulas" />
-      </Formulas>
+      </FormulasAndActivityPanel>
     {/if}
 
     <!-- ACTION BUTTONS -->
@@ -138,11 +132,12 @@
         activityStore.reset();
       }}
       on:reset={reset}
+      on:share={() => (showShareWindow = !showShareWindow)}
       on:toggle-formulas={() => (showFormulas = !showFormulas)}
     />
 
     <!-- SHARE BUTTON -->
-    <ShareWindow {sliders} />
+    <ShareWindow {sliders} bind:showShareWindow />
   </div>
 </div>
 

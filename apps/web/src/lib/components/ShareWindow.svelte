@@ -9,8 +9,8 @@
   import type { Sliders } from 'utils/Slider';
 
   export let sliders: Sliders;
+  export let showShareWindow = false;
 
-  let showShareWindow = false;
   let showCopyToClipboard = false;
   let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
 
@@ -163,10 +163,6 @@
         >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
       >.
     </div>
-  </div>
-{:else}
-  <div class="absolute -left-4 top-4 transition-all hover:left-0">
-    <RoundButton twClass="!pl-10" on:click={() => (showShareWindow = true)} icon={mdiShare} />
   </div>
 {/if}
 

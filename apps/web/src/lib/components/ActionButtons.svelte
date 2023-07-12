@@ -1,6 +1,6 @@
 <script lang="ts">
   import { activityStore } from '$lib/activityStore';
-  import { mdiFunctionVariant, mdiPause, mdiRestart } from '@mdi/js';
+  import { mdiFunctionVariant, mdiPause, mdiRestart, mdiShare } from '@mdi/js';
   import { createEventDispatcher } from 'svelte';
   import RoundButton from './RoundButton.svelte';
   import ToggleFullscreen from './ToggleFullscreen.svelte';
@@ -14,7 +14,7 @@
 </script>
 
 <ul
-  class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 transition-all"
+  class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100"
   class:inset={!isIframe || isFullscreen}
 >
   {#if $activityStore && isIframe}
@@ -27,6 +27,9 @@
       <RoundButton icon={mdiFunctionVariant} on:click={() => dispatch('toggle-formulas')} />
     </li>
   {/if}
+  <li class="tooltip tooltip-left" data-tip="Share or embed applet">
+    <RoundButton icon={mdiShare} on:click={() => dispatch('share')} />
+  </li>
   <li class="tooltip tooltip-left" data-tip="Reset applet">
     <RoundButton icon={mdiRestart} on:click={() => dispatch('reset')} />
   </li>
@@ -37,6 +40,6 @@
 
 <style lang="postcss">
   .inset {
-    @apply bottom-2 right-2;
+    @apply m-2;
   }
 </style>
