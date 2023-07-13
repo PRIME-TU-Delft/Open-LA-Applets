@@ -18,13 +18,14 @@
   export let background = '#ffffff';
   export let zoom = 29;
   export let cameraPosition = new Vector3(10, 10, 10);
+  export let showFormulasDefault = false;
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
   let isIframe = false; // Is the scene inside an iframe?
 
-  let showFormulas = false; // Show the formulas panel (if it exists)
+  let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
   let resetKey = Math.random();
   let height = 0;
@@ -101,7 +102,7 @@
     {/key}
 
     <!-- TITLE PANEL -->
-    {#if !isIframe || isFullscreen}
+    {#if title && (!isIframe || isFullscreen)}
       <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
@@ -121,17 +122,16 @@
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
-    {#if !!$$slots.formulas}
-      <FormulasAndActivityPanel
-        {isIframe}
-        {isFullscreen}
-        {showFormulas}
-        {isChangingSliders}
-        on:pause={pause}
-      >
-        <slot name="formulas" />
-      </FormulasAndActivityPanel>
-    {/if}
+    <FormulasAndActivityPanel
+      {isIframe}
+      {isFullscreen}
+      {showFormulas}
+      {isChangingSliders}
+      hasFormulas={$$slots.formulas}
+      on:pause={pause}
+    >
+      <slot name="formulas" />
+    </FormulasAndActivityPanel>
 
     <!-- ACTION BUTTONS -->
     <ActionButtons

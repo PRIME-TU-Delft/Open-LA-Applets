@@ -8,6 +8,7 @@
   export let isChangingSliders = false;
   export let isIframe = false;
   export let isFullscreen = false;
+  export let hasFormulas = false;
 
   let dispatch = createEventDispatcher();
 </script>
@@ -16,6 +17,7 @@
   class="formulas flex gap-1 w-full absolute z-50 justify-between"
   class:!justify-end={!isIframe || isFullscreen}
 >
+  <!-- ACTIVITY PANEL -->
   {#if isIframe && !isFullscreen}
     <div class="select-none w-fit">
       {#if $activityStore}
@@ -36,7 +38,8 @@
   {/if}
 
   <!-- TODO: change this logic -->
-  {#if isChangingSliders || showFormulas || !isIframe || isFullscreen}
+  <!-- FORMULAS -->
+  {#if hasFormulas && (isChangingSliders || showFormulas || !isIframe || isFullscreen)}
     <div class="menu p-4 bg-base-200 rounded-lg" class:inset={!isIframe || isFullscreen}>
       <slot />
     </div>
