@@ -7,11 +7,11 @@
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';
 
-  let sliders = new Sliders().addSlider(0).addSlider(0.5).addSlider(1);
+  let sliders = new Sliders().addSlider(-0.6).addSlider(0.5).addSlider(1);
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(12.81, 8.24, 8.24)}
+  cameraPosition={new Vector3(7.29, -4.94, 14.91)}
   zoom={37}
   bind:sliders
   title="Two planes with a line of intersection."

@@ -8,15 +8,20 @@
   import { Sliders, Slider } from 'utils/Slider';
 
   const n0 = new Vector3(1, 1, 1).normalize();
-  const n1 = new Vector3(1, 3, 1).normalize();
   let sliders = new Sliders().add(new Slider(0, -2, 2, 0.5, PrimeColor.green));
+
+  $: n1 = new Vector3(sliders.x, 1, 1).normalize();
 </script>
 
-<Canvas3D bind:sliders title="Two planes without a point in common.">
+<Canvas3D
+  cameraPosition={new Vector3(11.77, 9.96, 7.89)}
+  bind:sliders
+  title="Three planes without a point in common."
+>
   <PlaneFromNormal position={new Vector3(0, 1, 0)} normal={n0} color={PrimeColor.yellow} />
   <PlaneFromNormal position={new Vector3(0, 0, 0)} normal={n0} color={PrimeColor.red} />
 
-  <PlaneFromNormal position={new Vector3(0, sliders.x, 0)} normal={n1} color={PrimeColor.green} />
+  <PlaneFromNormal position={new Vector3(0, 0, 0)} normal={n1} color={PrimeColor.green} />
 
   <Axis3D />
 
