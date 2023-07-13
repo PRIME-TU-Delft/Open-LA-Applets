@@ -19,11 +19,11 @@
   export let zoom = 29;
   export let cameraPosition = new Vector3(10, 10, 10);
   export let showFormulasDefault = false;
+  export let isIframe = false; // Is the scene inside an iframe?
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
-  let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
@@ -61,7 +61,7 @@
     const params = $page.url?.searchParams;
 
     sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
-    isIframe = JSON.parse(params?.get('iframe') || 'false') || false;
+    isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
 
     if (!isIframe) {
       activityStore.enable();
