@@ -5,13 +5,27 @@
  * @returns Generic S
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function debounce<T extends any[], S>(cb: (...args: T[]) => S, delay = 250) {
+export function debounce<T extends any[], S>(cb: (...args: T[]) => S, delay = 250) {
   let timeout: NodeJS.Timeout;
 
   return (...args: T[]) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       cb(...args);
+    }, delay);
+  };
+}
+
+export function throttle(callback, delay = 250) {
+  let shouldWait = false;
+
+  return (...args) => {
+    if (shouldWait) return;
+
+    callback(...args);
+    shouldWait = true;
+    setTimeout(() => {
+      shouldWait = false;
     }, delay);
   };
 }

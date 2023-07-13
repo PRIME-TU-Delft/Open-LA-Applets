@@ -1,14 +1,18 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { mdiClose } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import { fly } from 'svelte/transition';
   import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
+  import { goto } from '$app/navigation';
+  import { debounce, throttle } from 'utils/timeDelay';
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
+  const url = $page.url;
   let searchInput: HTMLInputElement;
-  let searchQuery = '';
+  let searchQuery = url.searchParams.get('q') || '';
 
   let contributors = [{ name: 'Abel de Bruijn', title: 'developer' }];
 
@@ -21,6 +25,16 @@
     // If cmd+k is pressed, focus search input
     if (e.key == 'k' && e.metaKey) searchInput.focus();
   }
+
+  let search = debounce(async () => {
+    searchInput.focus();
+    searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+
+    url.searchParams.set('q', searchQuery);
+    await goto(url, { replaceState: true });
+    searchInput.focus();
+    searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+  }, 2000);
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -37,6 +51,11 @@
         placeholder="Enter applet name"
         class="input input-bordered w-full max-w-xs"
         bind:value={searchQuery}
+        on:keyup={async () => {
+          await search();
+
+          searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+        }}
       />
       <div class="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
         <kbd class="kbd kbd-sm">⌘</kbd>
