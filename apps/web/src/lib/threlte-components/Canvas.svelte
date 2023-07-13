@@ -47,8 +47,8 @@
   }
 
   $: {
-    const params = $page.url.searchParams;
-    title = params.get('title') || title;
+    const params = $page.url?.searchParams;
+    title = params?.get('title') || title;
   }
 
   function waitThenReset() {
@@ -58,10 +58,10 @@
   }
 
   onMount(() => {
-    const params = $page.url.searchParams;
+    const params = $page.url?.searchParams;
 
     sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
-    isIframe = JSON.parse(params.get('iframe') || 'false') || false;
+    isIframe = JSON.parse(params?.get('iframe') || 'false') || false;
 
     if (!isIframe) {
       activityStore.enable();
@@ -157,6 +157,7 @@
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);
+    height: var(--height, auto);
     overflow: hidden;
 
     &.isIframe {

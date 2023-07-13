@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
-  import { T } from '@threlte/core';
+  import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
   import { parseCameraSettings } from 'utils/parseURL';
@@ -20,11 +20,13 @@
   const { renderer, frameloop } = useThrelte();
 
   $: {
-    const cameraSettings = parseCameraSettings($page.url.searchParams);
+    const cameraSettings = parseCameraSettings($page.url?.searchParams);
 
-    position = cameraSettings.position || position;
-    enablePan = cameraSettings.enablePan || enablePan;
-    zoom = cameraSettings.zoom || zoom;
+    if (cameraSettings) {
+      position = cameraSettings.position || position;
+      enablePan = cameraSettings.enablePan || enablePan;
+      zoom = cameraSettings.zoom || zoom;
+    }
   }
 
   $: if ($activityStore && renderer) {

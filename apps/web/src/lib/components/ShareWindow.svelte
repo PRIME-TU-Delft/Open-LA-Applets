@@ -14,9 +14,9 @@
   let urlInput: HTMLTextAreaElement;
 
   $: state = sliders.sliders && getState($cameraStore);
-  $: url = $page.url.origin + $page.url.pathname;
-  $: refUrl = $page.url.pathname.replace('/applet/', '');
-  $: lastUrl = refUrl.split('/').slice(-1)[0]; // Last part of the url
+  $: url = $page.url?.origin + $page.url?.pathname;
+  $: refUrl = $page.url?.pathname.replace('/applet/', '');
+  $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
   /**
    * Returns a string with the current state of the camera
@@ -128,7 +128,7 @@
             class="w-full flex justify-between"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl.replaceAll(
+            href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl?.replaceAll(
               '_',
               ''
             )}%29"
@@ -169,7 +169,7 @@
         <img
           class="h-24 w-full object-contain"
           alt="prime-tudelft"
-          src="{$page.url.origin}/logo-black.png"
+          src="{$page.url?.origin || ''}/logo-black.png"
         />
       </div>
     </div>
