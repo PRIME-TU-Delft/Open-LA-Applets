@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import { fade } from 'svelte/transition';
-
+  import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
-  import { type Slider } from 'utils/Slider';
-  import { mdiPlay, mdiPause, mdiPlus } from '@mdi/js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import type { Slider } from 'utils/Slider';
+  import RoundButton from './RoundButton.svelte';
 
   export let slider: Slider;
   export let isExpanded: boolean = false;
@@ -66,20 +65,23 @@
 
 {#if !isExpanded}
   <!-- If not selected display only the expand button -->
-  <button
-    style="background: {slider.color}"
-    class="rounded p-4"
-    on:click={() => dispatch('expand')}
-  >
-    <Icon path={mdiPlus} color="white" size={1} />
-  </button>
+  <div class="tooltip tooltip-top" data-tip="Extend slider">
+    <RoundButton
+      --bg={slider.color}
+      icon={mdiPlus}
+      color="white"
+      on:click={() => dispatch('expand')}
+    />
+  </div>
 {:else}
   <!-- If the slider is selected / expanded -->
-  <button style="background: {slider.color}" class="rounded-full p-4" on:click={togglePlay}>
-    <Icon path={icon} color="white" size={1} />
-  </button>
+  <div class="tooltip tooltip-top" data-tip="Toggle animation">
+    <button style="background: {slider.color}" class="rounded-full p-4" on:click={togglePlay}>
+      <Icon path={icon} color="white" size={1} />
+    </button>
+  </div>
 
-  <label class="flex w-full">
+  <label class="w-full">
     <input
       type="range"
       min={slider.min}
@@ -89,8 +91,8 @@
       on:change={stopPlaying}
       on:mousedown={startChanging}
       on:touchstart={startChanging}
-      style="accent-color: {slider.color}"
-      class="w-inherit"
+      style="accent-color: {slider.color}; --s: {slider.hsl.h} {slider.hsl.s}% {slider.hsl.l}%;"
+      class="w-inherit range range-xs range-secondary"
     />
   </label>
 {/if}
