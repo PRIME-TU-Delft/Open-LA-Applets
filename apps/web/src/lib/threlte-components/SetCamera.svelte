@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
-  import { T } from '@threlte/core';
+  import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
   import { parseCameraSettings } from 'utils/parseURL';
