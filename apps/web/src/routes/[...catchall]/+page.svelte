@@ -1,16 +1,27 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import { mdiClose } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import { fly } from 'svelte/transition';
+  import { debounce } from 'utils/timeDelay';
   import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
+  const url = $page.url;
   let searchInput: HTMLInputElement;
-  let searchQuery = '';
+  let searchQuery = url.searchParams.get('q') || '';
 
-  let contributors = [{ name: 'Abel de Bruijn', title: 'developer' }];
+  let contributors = [
+    { name: 'Abel de Bruijn', title: 'Developer' },
+    { name: 'Julia van der Kris', title: 'Developer' },
+    { name: 'Christophe Smet', title: 'Teacher' },
+    { name: 'Fokko van de Bult', title: 'Teacher' },
+    { name: 'Teun Janssen', title: 'Teacher' },
+    { name: 'Beryl van Gelderen', title: 'Cooridinator' }
+  ];
 
   $: fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
@@ -21,6 +32,16 @@
     // If cmd+k is pressed, focus search input
     if (e.key == 'k' && e.metaKey) searchInput.focus();
   }
+
+  let search = debounce(async () => {
+    searchInput.focus();
+    searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+
+    url.searchParams.set('q', searchQuery);
+    await goto(url, { replaceState: true });
+    searchInput.focus();
+    searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+  }, 2000);
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -37,6 +58,11 @@
         placeholder="Enter applet name"
         class="input input-bordered w-full max-w-xs"
         bind:value={searchQuery}
+        on:keyup={async () => {
+          await search();
+
+          searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
+        }}
       />
       <div class="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
         <kbd class="kbd kbd-sm">⌘</kbd>
@@ -79,7 +105,7 @@
         {#each contributors as { name, title }}
           <div class="flex gap-2">
             <div class="w-24 rounded overflow-hidden not-prose">
-              <img src={'/contributors/' + name + '.png'} alt={'Profile of ' + name} />
+              <img src={'/contributors/' + name + '.jpg'} alt={'Profile of ' + name} />
             </div>
             <div class="flex gap-1 flex-col">
               <span class="bold">{name}</span>
