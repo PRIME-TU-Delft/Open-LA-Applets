@@ -1,14 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
-
-  import { T, useThrelte } from '@threlte/core';
+  import { activityStore } from '$lib/activityStore';
+  import { T } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
-  import cameraStore from './stores/cameraStore';
-
-  import { activityStore } from '$lib/activityStore';
-  import debounce from 'utils/debounce';
   import { parseCameraSettings } from 'utils/parseURL';
+  import { debounce } from 'utils/timeDelay';
+  import cameraStore from './stores/cameraStore';
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
