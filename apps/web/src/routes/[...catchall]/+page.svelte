@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { mdiClose } from '@mdi/js';
   import { Icon } from 'mdi-svelte-ts';
   import { fly } from 'svelte/transition';
+  import { debounce } from 'utils/timeDelay';
   import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
-  import { goto } from '$app/navigation';
-  import { debounce, throttle } from 'utils/timeDelay';
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
@@ -17,7 +17,10 @@
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Developer' },
     { name: 'Julia van der Kris', title: 'Developer' },
-    { name: 'Fokko van de Bult', title: 'Writer'}
+    { name: 'Christophe Smet', title: 'Teacher' },
+    { name: 'Fokko van de Bult', title: 'Teacher' },
+    { name: 'Teun Janssen', title: 'Teacher' },
+    { name: 'Beryl van Gelderen', title: 'Cooridinator' }
   ];
 
   $: fileUrls = Object.keys(modules).map((rawUrl) =>
