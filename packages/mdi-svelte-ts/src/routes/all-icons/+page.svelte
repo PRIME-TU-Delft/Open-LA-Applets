@@ -8,7 +8,7 @@
   import Input from '$lib/Input.svelte';
   import Notification from '$lib/Notification.svelte';
 
-  import debounce from '$lib/debounce';
+  import { debounce } from 'utils/timeDelay';
 
   interface NamePath {
     name: string;

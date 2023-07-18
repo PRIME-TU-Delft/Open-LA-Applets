@@ -1,4 +1,5 @@
 import { PrimeColor } from './PrimeColors';
+import { hexToRGB, RGBToHSL } from './colorConvert';
 
 export class Sliders {
   private _sliders: Slider[];
@@ -185,7 +186,7 @@ export class Slider {
   }
 
   grey() {
-    this.color = PrimeColor.grey;
+    this.color = PrimeColor.black;
     return this;
   }
 
@@ -212,6 +213,11 @@ export class Slider {
   red() {
     this.color = PrimeColor.red;
     return this;
+  }
+
+  get hsl() {
+    const hsl = RGBToHSL(hexToRGB(this.color));
+    return hsl
   }
 
   reset() {

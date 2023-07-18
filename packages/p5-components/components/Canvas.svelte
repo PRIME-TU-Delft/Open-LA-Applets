@@ -4,11 +4,11 @@
   import { P5 } from 'p5-svelte';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
-  import { RoundButton, Slider as SvelteSlider, ToggleFullscreen, UI } from 'ui';
+  import { RoundButton, ToggleFullscreen, UI } from 'ui';
   import { Sliders } from 'utils/Slider';
   import { type DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
+  // import Slider from "$lib/components/Slider.svelte";
   import { Vector2 } from 'three';
 
   export let sliders = new Sliders();
@@ -184,7 +184,7 @@
   </P5>
 
   <!-- SLIDER PANEL -->
-  <div style="max-width: calc(100vw - 6rem); touch-action:none;">
+  <!-- <div style="max-width: calc(100vw - 6rem); touch-action:none;">
     <UI visible={!!sliders.sliders.length} bottom opacity>
       {#if sliderSelected == null}<p class="text-slate-900">click us</p>{/if}
       {#each sliders.sliders as slider, index}
@@ -198,7 +198,7 @@
         />
       {/each}
     </UI>
-  </div>
+  </div> -->
 
   <!-- UI -->
   <UI column bottom right opacity styled={false}>
@@ -207,7 +207,7 @@
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
   </UI>
 
-  <ShareWindow {sliders} />
+  <!-- <ShareWindow {sliders} /> -->
 </div>
 
 <style>

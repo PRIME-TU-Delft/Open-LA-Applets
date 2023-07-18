@@ -1,17 +1,16 @@
 <script lang="ts">
   import { page } from '$app/stores';
-
-  import { mdiInformation, mdiRestart, mdiPause } from '@mdi/js';
-
-  import { Canvas, T } from '@threlte/core';
-
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
-  import SetCamera from '$lib/threlte-components/SetCamera.svelte';
-  import { onMount } from 'svelte';
-  import { RoundButton, ToggleFullscreen, ToggleSliders, UI } from 'ui';
-  import { Sliders } from 'utils/Slider';
   import { activityStore } from '$lib/activityStore';
+  import ActionButtons from '$lib/components/ActionButtons.svelte';
+  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
+  import SliderPanel from '$lib/components/SliderPanel.svelte';
+  import ToggleSliders from '$lib/components/ToggleSliders.svelte';
+  import SetCamera from '$lib/threlte-components/SetCamera.svelte';
+  import { Canvas, T } from '@threlte/core';
+  import { onMount } from 'svelte';
   import { Vector3 } from 'three/src/Three';
+  import { Sliders } from 'utils/Slider';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -19,12 +18,14 @@
   export let background = '#ffffff';
   export let zoom = 29;
   export let cameraPosition = new Vector3(10, 10, 10);
+  export let showFormulasDefault = false;
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
+  let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
   let isIframe = false; // Is the scene inside an iframe?
 
-  let showFormulas = true; // Show the formulas panel (if it exists)
+  let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
   let resetKey = Math.random();
   let height = 0;
@@ -38,6 +39,11 @@
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
     resetKey = Math.random(); // Update the key to reset the set camera component
+  }
+
+  function pause() {
+    reset();
+    activityStore.reset();
   }
 
   $: {
@@ -63,15 +69,18 @@
   });
 </script>
 
-<div class="rounded overflow-hidden h-full">
+<div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>
+  <!-- For screen readers / accesability acces to toggle the drawer  -->
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400"
+    class="canvasWrapper border-l-4 border-gray-400 drawer-content"
     class:active={$activityStore}
+    class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
-    bind:this={sceneEl}
     style="height: var(--height, 100%); background: {background}"
     on:click={activityStore.enable}
     on:mousedown={activityStore.enable}
@@ -79,6 +88,7 @@
     on:mouseenter={activityStore.removeTimeOut}
     on:mouseleave={waitThenReset}
   >
+    <!-- THRELTE SCENE -->
     {#key resetKey}
       <Canvas size={{ width, height }}>
         <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
@@ -91,73 +101,71 @@
       </Canvas>
     {/key}
 
-    {#if isIframe}
-      <div class="absolute top-0 z-50 select-none w-full">
-        {#if !isFullscreen && $activityStore}
-          <p class="py-3 px-6 bg-blue-500/90 rounded-r w-fit text-white">Interactive mode</p>
-        {:else if !isFullscreen}
-          <p class="py-3 px-6 bg-gray-300/70 rounded-r">Click once to enable interactivity</p>
-        {/if}
+    <!-- TITLE PANEL -->
+    {#if title && (!isIframe || isFullscreen)}
+      <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
+        {title}
       </div>
     {/if}
 
-    <!-- TITLE PANEL -->
-    <UI top left visible={!!title && isFullscreen}>
-      {title}
-    </UI>
-
     <!-- SLIDER PANEL -->
-    <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-      <UI visible={!!sliders.sliders.length} bottom opacity>
-        {#key resetKey}
-          <ToggleSliders
-            bind:sliders
-            bind:isPlaying={isPlayingSliders}
-            on:startChanging={() => (showFormulas = true)}
-            on:stopChanging={() => (showFormulas = false)}
-          />
-        {/key}
-      </UI>
-    </div>
+    {#if sliders.sliders.length > 0}
+      <SliderPanel isInset={!isIframe || isFullscreen}>
+        <ToggleSliders
+          bind:sliders
+          bind:isPlaying={isPlayingSliders}
+          on:startChanging={() => (isChangingSliders = true)}
+          on:stopChanging={() => (isChangingSliders = false)}
+        />
+      </SliderPanel>
+    {/if}
 
-    <!-- INFORMATION UI -->
-    <UI visible={!!$$slots.formulas} top right styled={false} opacity={!showFormulas}>
-      <RoundButton icon={mdiInformation} on:click={() => (showFormulas = !showFormulas)} />
-    </UI>
-
-    <UI visible={!!$$slots.formulas && (showFormulas || isPlayingSliders)} top column>
+    <!-- FORMULAS AND ACTIVITY PANEL  -->
+    <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
+    <FormulasAndActivityPanel
+      {isIframe}
+      {isFullscreen}
+      {showFormulas}
+      {isChangingSliders}
+      hasFormulas={$$slots.formulas}
+      on:pause={pause}
+    >
       <slot name="formulas" />
-    </UI>
+    </FormulasAndActivityPanel>
 
     <!-- ACTION BUTTONS -->
-    <UI column bottom right opacity styled={false}>
-      {#if $activityStore && isIframe}
-        <RoundButton
-          icon={mdiPause}
-          on:click={() => {
-            reset();
-            activityStore.reset();
-          }}
-        />
-      {/if}
-      <RoundButton icon={mdiRestart} on:click={reset} />
-      <ToggleFullscreen {sceneEl} bind:isFullscreen />
-    </UI>
-
-    <!-- SHARE BUTTON -->
-    <ShareWindow {sliders} />
+    <ActionButtons
+      {isIframe}
+      {sceneEl}
+      hasFormulas={$$slots.formulas}
+      bind:isFullscreen
+      bind:showFormulas
+      on:reset={reset}
+    />
   </div>
+
+  <!-- SHARE WINDOW -->
+
+  <ShareWindow {sliders} />
 </div>
 
 <style lang="postcss">
+  :global(html:has(.isIframe)) {
+    background: white;
+  }
+
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);
     overflow: hidden;
-  }
 
-  .active {
-    @apply border-blue-500;
+    &.isIframe {
+      @apply border-l-4 border-gray-400;
+
+      &.active {
+        @apply border-blue-500;
+      }
+    }
   }
 
   :global(.canvasWrapper > canvas) {

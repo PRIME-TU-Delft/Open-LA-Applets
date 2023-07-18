@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import Fuse from 'fuse.js';
   import { mdiMagnify } from '@mdi/js';
-
+  import Fuse from 'fuse.js';
+  import { onMount } from 'svelte';
+  import { debounce } from 'utils/timeDelay';
   import Icon from './Icon.svelte';
-  import LazyLoad from './LazyLoad.svelte';
   import Input from './Input.svelte';
+  import LazyLoad from './LazyLoad.svelte';
   import Notification from './Notification.svelte';
-
-  import debounce from 'utils/debounce';
 
   interface NamePath {
     name: string;
