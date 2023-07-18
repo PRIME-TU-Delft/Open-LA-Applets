@@ -13,7 +13,7 @@
   export let axisSpacing = 1;
   export let floor = false;
 
-  $: axisInterval = Math.floor(axisLength / axisSpacing);
+  $: axisInterval = Math.floor(axisLength / (axisSpacing == 0 ? 1 : axisSpacing));
   $: indicators = new Array(axisInterval * 2 + 1)
     .fill(0)
     .map((_, i) => (i - axisInterval) * axisSpacing); // range -axisLength to including axisLength

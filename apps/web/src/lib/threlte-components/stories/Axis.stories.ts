@@ -11,11 +11,15 @@ const meta = {
     tags: ['autodocs'],
     argTypes: {
         showNumbers: { type: "boolean" },
-        hideTicks: { type: "boolean" },
-        axisLength: { type: "number" },
-        axisSpacing: { type: "number" },
-        floor: { type: "boolean" }
+        hideTicks: { type: "boolean", description: "Hide the small ticks that loosly indecate where an object is positioned on the axis." },
+        axisLength: { type: "number", description: "Radius of each axis" },
+        axisSpacing: { type: "number", description: "Default spacing between each tick and number on the axis." },
+        floor: { type: "boolean", description: "A circular floor at z=0 to indecate what is up and down. Is useful for applets with only vectors or other small elements in them." }
     },
+    args: {
+        hideTicks: false,
+        axisSpacing: 1,
+    }
 } satisfies Meta<Axis>;
 
 
