@@ -1,6 +1,6 @@
 # Turborepo visuals
 
-This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology.
+This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology. The applets are hosted here: https://openla.ewi.tudelft.nl.
 
 
 ## What's inside?
