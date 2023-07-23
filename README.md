@@ -1,6 +1,7 @@
 # Turborepo visuals
 
-This repo has multiple packages and apps for the PRIME visuals team.
+This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology.
+
 
 ## What's inside?
 
@@ -8,11 +9,12 @@ This Turborepo includes the following packages/apps:
 
 ### Apps
 
-- `web`: a [svelte-kit](https://kit.svelte.dev/) app hosts the pages of the 3d & 2d visuals
-
+- `web`: a [svelte-kit](https://kit.svelte.dev/) app hosts the pages of the 3d & 2d visuals (applets)
+  - `**/lib`: library with components for these applets
+    - `/threlte-components`: 3D components create with threlte 5
+  
 ### Packages
 
-- `stories`: Components to help with documentation
 - `mdi-svelte-ts`: Components easy access to mdi icons
 - `2d-components`: Components for 2d visuals
 - `3d-components`: Components for 3d visuals
