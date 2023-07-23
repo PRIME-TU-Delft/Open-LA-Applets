@@ -19,6 +19,8 @@ const meta = {
     args: {
         hideTicks: false,
         axisSpacing: 1,
+        axisLength: 10,
+        floor: false,
     }
 } satisfies Meta<Axis>;
 

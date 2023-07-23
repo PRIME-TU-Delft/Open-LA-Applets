@@ -80,3 +80,12 @@ export const MultipleSlider: Story = {
         sliders: new Sliders().addSlider(0).addSlider(1).addSlider(2),
     }
 };
+
+/** 
+ * > TODO: add a story with a slider that is not binded to the applet
+ * */
+export const CanvasWithFormulas: Story = {
+    args: {
+
+    }
+};
