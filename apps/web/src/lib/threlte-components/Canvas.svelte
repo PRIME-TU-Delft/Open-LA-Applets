@@ -12,6 +12,7 @@
   import { Vector3 } from 'three/src/Three';
   import { Sliders } from 'utils/Slider';
 
+  /** "The ability to enable move (translate) the applet. On devices with a mouse this can be controlled by right mouse button dragging. On touchscreen devices, this can be done by dragging with two finders on the screen."*/
   export let enablePan = false;
   export let sliders = new Sliders();
   export let title = '';
@@ -60,7 +61,9 @@
   onMount(() => {
     const params = $page.url?.searchParams;
 
-    sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
+    if (sliders.fromURL) {
+      sliders = sliders?.fromURL(params?.get('sliders') || '') || sliders;
+    }
     isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
 
     if (!isIframe) {
@@ -109,7 +112,7 @@
     {/if}
 
     <!-- SLIDER PANEL -->
-    {#if sliders.sliders.length > 0}
+    {#if sliders?.sliders?.length > 0}
       <SliderPanel isInset={!isIframe || isFullscreen}>
         <ToggleSliders
           bind:sliders
