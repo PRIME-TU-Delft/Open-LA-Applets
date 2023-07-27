@@ -6,17 +6,21 @@
   import Label from './Label.svelte';
   import Latex3D from './Latex.svelte';
   import Line from './Line.svelte';
+  import cameraStore from './stores/cameraStore';
 
   export let showNumbers = false;
   export let hideTicks = false;
   export let axisLength = 10;
-  export let axisSpacing = 1;
+  export let axisSpacing = 2;
+  export let responsiveSpacing = true;
   export let floor = false;
+
+  let spacing = axisSpacing;
 
   $: axisInterval = Math.floor(axisLength / (axisSpacing == 0 ? 1 : axisSpacing));
   $: indicators = new Array(axisInterval * 2 + 1)
     .fill(0)
-    .map((_, i) => (i - axisInterval) * axisSpacing); // range -axisLength to including axisLength
+    .map((_, i) => (i - axisInterval) * spacing); // range -axisLength to including axisLength
   $: labeledIndicators = indicators.filter((x) => x != 0);
 
   $: indicatorMin = indicators[0];
@@ -40,6 +44,12 @@
     }
 
     return [from, to];
+  }
+
+  $: if (responsiveSpacing && $cameraStore) {
+    spacing = 3 / (1 + Math.floor($cameraStore.zoom / 50));
+  } else {
+    spacing = axisSpacing;
   }
 </script>
 
@@ -69,14 +79,16 @@
 <!-- Number indicators -->
 {#if showNumbers}
   {#each labeledIndicators as indicator}
+    {@const indicatorFixed = indicator.toFixed(2).replace('.00', '')}
+
     <Label position={new Vector3(indicator, 0.1, -0.15)} opacity={axisLabelOpacity}>
-      {indicator}
+      {indicatorFixed}
     </Label>
     <Label position={new Vector3(0, indicator, -0.15)} opacity={axisLabelOpacity}>
-      {indicator}
+      {indicatorFixed}
     </Label>
     <Label position={new Vector3(-0.15, 0.1, indicator)} opacity={axisLabelOpacity}>
-      {indicator}
+      {indicatorFixed}
     </Label>
   {/each}
 {/if}

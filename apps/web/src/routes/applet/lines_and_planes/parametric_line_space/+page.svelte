@@ -53,5 +53,5 @@
     <LatexUI params={[sliders.x]} colors={[PrimeColor.green]} latex={'r = \\$0'} />
   </div>
 
-  <Axis3D axisLength={7} />
+  <Axis3D axisLength={6} />
 </Canvas3D>

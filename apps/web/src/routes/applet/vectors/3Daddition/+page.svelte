@@ -11,14 +11,18 @@
   import { PrimeColor } from 'utils/PrimeColors';
 
   // Vectors
-  const v1 = new Vector3(-1, 2, 2); //green vector
+  const v1 = new Vector3(-1, 1, 2); //green vector
   const v2 = new Vector3(3, 3, 1); //blue vector
   const v3 = v1.clone().add(v2); //red vector
 
-  const labelOffset = 0.25;
+  const labelOffset = 0.5;
 </script>
 
-<Canvas3D title="Geometrical interpretation of addition for three-dimensional vectors.">
+<Canvas3D
+  cameraPosition={new Vector3(3.59, 9.83, 13.8)}
+  zoom={69}
+  title="Geometrical interpretation of addition for three-dimensional vectors."
+>
   <!-- lower green vector -->
   <Vector3D direction={v1} color={PrimeColor.green} length={v1.length()} />
   <Latex3D
@@ -52,5 +56,5 @@
   />
   <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints />
 
-  <Axis3D showNumbers axisLength={7} floor />
+  <Axis3D showNumbers axisLength={5} floor />
 </Canvas3D>
