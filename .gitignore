@@ -1,5 +1,6 @@
 node_modules
 /build
+/storybook-static
 /.svelte-kit
 /package
 vite.config.js.timestamp-*
