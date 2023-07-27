@@ -17,7 +17,7 @@
 
   let spacing = axisSpacing;
 
-  $: axisInterval = Math.floor(axisLength / spacing);
+  $: axisInterval = Math.floor(axisLength / (axisSpacing == 0 ? 1 : axisSpacing));
   $: indicators = new Array(axisInterval * 2 + 1)
     .fill(0)
     .map((_, i) => (i - axisInterval) * spacing); // range -axisLength to including axisLength

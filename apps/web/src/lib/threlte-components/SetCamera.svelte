@@ -20,11 +20,13 @@
   const { renderer, frameloop } = useThrelte();
 
   $: {
-    const cameraSettings = parseCameraSettings($page.url.searchParams);
+    const cameraSettings = parseCameraSettings($page.url?.searchParams);
 
-    position = cameraSettings.position || position;
-    enablePan = cameraSettings.enablePan || enablePan;
-    zoom = cameraSettings.zoom || zoom;
+    if (cameraSettings) {
+      position = cameraSettings.position || position;
+      enablePan = cameraSettings.enablePan || enablePan;
+      zoom = cameraSettings.zoom || zoom;
+    }
   }
 
   $: if ($activityStore && renderer) {

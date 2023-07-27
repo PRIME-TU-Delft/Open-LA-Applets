@@ -12,6 +12,7 @@
   import { Vector3 } from 'three/src/Three';
   import { Sliders } from 'utils/Slider';
 
+  /** "The ability to enable move (translate) the applet. On devices with a mouse this can be controlled by right mouse button dragging. On touchscreen devices, this can be done by dragging with two finders on the screen."*/
   export let enablePan = false;
   export let sliders = new Sliders();
   export let title = '';
@@ -19,11 +20,11 @@
   export let zoom = 29;
   export let cameraPosition = new Vector3(10, 10, 10);
   export let showFormulasDefault = false;
+  export let isIframe = false; // Is the scene inside an iframe?
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
-  let isIframe = false; // Is the scene inside an iframe?
 
   let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
@@ -47,8 +48,8 @@
   }
 
   $: {
-    const params = $page.url.searchParams;
-    title = params.get('title') || title;
+    const params = $page.url?.searchParams;
+    title = params?.get('title') || title;
   }
 
   function waitThenReset() {
@@ -58,10 +59,12 @@
   }
 
   onMount(() => {
-    const params = $page.url.searchParams;
+    const params = $page.url?.searchParams;
 
-    sliders = sliders.fromURL(params?.get('sliders') || '') || sliders;
-    isIframe = JSON.parse(params.get('iframe') || 'false') || false;
+    if (sliders.fromURL) {
+      sliders = sliders?.fromURL(params?.get('sliders') || '') || sliders;
+    }
+    isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
 
     if (!isIframe) {
       activityStore.enable();
@@ -109,7 +112,7 @@
     {/if}
 
     <!-- SLIDER PANEL -->
-    {#if sliders.sliders.length > 0}
+    {#if sliders?.sliders?.length > 0}
       <SliderPanel isInset={!isIframe || isFullscreen}>
         <ToggleSliders
           bind:sliders
@@ -157,6 +160,7 @@
   .canvasWrapper {
     position: relative;
     width: var(--width, 100vw);
+    height: var(--height, auto);
     overflow: hidden;
 
     &.isIframe {

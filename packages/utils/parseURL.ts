@@ -50,7 +50,10 @@ export interface CameraSettings {
  * @param params URLSearchParams object
  * @returns CameraSettings
  */
-export function parseCameraSettings(params: URLSearchParams): CameraSettings {
+export function parseCameraSettings(params: URLSearchParams): CameraSettings | undefined {
+
+  if (!params) return undefined;
+
   return {
     position: parseVector(params.get('position') || ''),
     isPerspectiveCamera: parseIsTrue(params.get('isPerspectiveCamera')),

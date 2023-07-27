@@ -6,18 +6,21 @@
   export let color = 'black';
   export let size = 1;
   export let opacity = 1;
+  export let title = '';
 </script>
 
-<HTML position={[position.x, position.y, position.z]}>
-  <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
-  <button
-    on:mousedown|preventDefault
-    class="label"
-    style="color: {color}; font-size: {size}rem; opacity: {opacity}"
-  >
-    <slot />
-  </button>
-</HTML>
+{#key position.x + position.y + position.z}
+  <HTML position={[position.x, position.y, position.z]}>
+    <!-- Mousedown|preventDefault is here to stop user with interacting with labels via the mouse (i.e. dragging) -->
+    <button
+      on:mousedown|preventDefault
+      class="label"
+      style="color: {color}; font-size: {size}rem; opacity: {opacity}"
+    >
+      <slot>{title}</slot>
+    </button>
+  </HTML>
+{/key}
 
 <style>
   .label {
