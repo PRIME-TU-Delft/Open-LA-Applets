@@ -51,7 +51,6 @@ export interface CameraSettings {
  * @returns CameraSettings
  */
 export function parseCameraSettings(params: URLSearchParams): CameraSettings | undefined {
-
   if (!params) return undefined;
 
   return {

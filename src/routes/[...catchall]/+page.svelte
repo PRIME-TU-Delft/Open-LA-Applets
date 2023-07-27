@@ -46,7 +46,7 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
-<div class="top-0 w-full sticky p-4 bg-base-300/70 z-50 backdrop-blur flex justify-between">
+<div class="sticky top-0 z-50 flex w-full justify-between bg-base-300/70 p-4 backdrop-blur">
   <div class="prose">
     <h1>Applets</h1>
   </div>
@@ -64,7 +64,7 @@
           searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
         }}
       />
-      <div class="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
+      <div class="absolute right-1 top-1/2 flex -translate-y-1/2 gap-1">
         <kbd class="kbd kbd-sm">⌘</kbd>
         <kbd class="kbd kbd-sm">k</kbd>
       </div>
@@ -81,7 +81,7 @@
   </form>
 </div>
 
-<div class="p-10 max-w-2xl mx-auto">
+<div class="mx-auto max-w-2xl p-10">
   {#if searchQuery}
     <FilterList {fileUrls} bind:searchQuery />
   {:else}
@@ -89,7 +89,7 @@
   {/if}
 
   <div
-    class="container bg-base-200 border border-base-300 rounded-lg p-4 box-border my-10 mx-auto flex flex-col gap-2"
+    class="container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border border-base-300 bg-base-200 p-4"
   >
     <div class="prose">
       <h2>Credits</h2>
@@ -101,13 +101,17 @@
       </p>
 
       <h3>Contributors</h3>
-      <div class="flex gap-2 w-full flex-wrap justify-between">
+      <div class="flex w-full flex-wrap justify-between gap-2">
         {#each contributors as { name, title }}
           <div class="flex gap-2">
-            <div class="w-24 rounded overflow-hidden not-prose">
-              <img src={'/contributors/' + name + '.jpg'} alt={'Profile of ' + name} />
+            <div class="not-prose w-24 overflow-hidden rounded">
+              <img
+                class="aspect-square object-cover"
+                src={'/contributors/' + name + '.jpg'}
+                alt={'Profile of ' + name}
+              />
             </div>
-            <div class="flex gap-1 flex-col">
+            <div class="flex flex-col gap-1">
               <span class="bold">{name}</span>
               <span class="text-xs">{title}</span>
             </div>
@@ -146,7 +150,7 @@
     </div>
   </div>
 
-  <div class="bg-slate-300 rounded p-10">
+  <div class="rounded bg-slate-300 p-10">
     <img class="h-20 w-full object-contain" alt="prime-tudelft" src="/logo-black.png" />
   </div>
 </div>

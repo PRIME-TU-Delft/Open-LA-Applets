@@ -217,7 +217,7 @@ export class Slider {
 
   get hsl() {
     const hsl = RGBToHSL(hexToRGB(this.color));
-    return hsl
+    return hsl;
   }
 
   reset() {

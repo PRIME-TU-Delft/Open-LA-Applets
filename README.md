@@ -2,7 +2,6 @@
 
 This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology. The applets are hosted here: https://openla.ewi.tudelft.nl.
 
-
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
@@ -12,7 +11,7 @@ This Turborepo includes the following packages/apps:
 - `web`: a [svelte-kit](https://kit.svelte.dev/) app hosts the pages of the 3d & 2d visuals (applets)
   - `**/lib`: library with components for these applets
     - `/threlte-components`: 3D components create with threlte 5
-  
+
 ### Packages
 
 - `mdi-svelte-ts`: Components easy access to mdi icons
