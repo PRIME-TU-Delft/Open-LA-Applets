@@ -5,8 +5,8 @@
 
   import { T, useThrelte } from '@threlte/core';
 
-  import getRandomColor from 'utils/PrimeColors';
-  import PlaneSegments from 'utils/Segments';
+  import getRandomColor from '$lib/utils/PrimeColors';
+  import PlaneSegments from '$lib/utils/Segments';
 
   import { DoubleSide, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 

@@ -4,8 +4,8 @@
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
-  import { parseCameraSettings } from 'utils/parseURL';
-  import { debounce } from 'utils/timeDelay';
+  import { parseCameraSettings } from '$lib/utils/parseURL';
+  import { debounce } from '$lib/utils/timeDelay';
   import cameraStore from './stores/cameraStore';
 
   export let enablePan = false;

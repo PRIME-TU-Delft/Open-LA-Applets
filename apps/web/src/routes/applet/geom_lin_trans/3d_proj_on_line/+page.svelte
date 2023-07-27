@@ -9,7 +9,7 @@
     Point3D,
     Vector3D
   } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const u = new Vector3(3, 4, -3); // Vector U - detached from the line
 

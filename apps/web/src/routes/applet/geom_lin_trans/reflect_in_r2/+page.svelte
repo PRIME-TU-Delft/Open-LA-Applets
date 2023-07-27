@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from 'p5-components';
+  import { Axis2D, Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/p5-components';
 
-  import { GridType } from 'p5-components/components/Grids';
+  import { GridType } from '$lib/p5-components/components/Grids';
   import { Matrix3, Vector2 } from 'three';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const us = [
     new Vector2(2, 3.5),

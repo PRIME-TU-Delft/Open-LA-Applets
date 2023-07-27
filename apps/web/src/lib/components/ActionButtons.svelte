@@ -3,7 +3,7 @@
   import { createEventDispatcher } from 'svelte';
   import RoundButton from './RoundButton.svelte';
   import ToggleFullscreen from './ToggleFullscreen.svelte';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
 
   export let isFullscreen = false; // Is the scene fullscreen?
   export let isIframe = true; // Is the scene inside an iframe?

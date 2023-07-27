@@ -9,7 +9,7 @@
     Point3D,
     Vector3D
   } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   const n = new Vector3(1, 3, 2);
   const _q = new Vector3(1, 1, -((n.x + n.y) / n.z));
   const q = _q.cross(n).normalize().multiplyScalar(n.length());

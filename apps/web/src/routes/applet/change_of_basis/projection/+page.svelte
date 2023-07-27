@@ -9,7 +9,7 @@
     Angle3D,
     Point3D
   } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const b1 = new Vector3(2, -1, -2);
   const b2 = new Vector3(2, -1, 2);

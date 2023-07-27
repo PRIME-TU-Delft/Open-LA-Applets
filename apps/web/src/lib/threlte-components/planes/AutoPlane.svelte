@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { PrimeColor } from 'utils/PrimeColors';
-  import PlaneSegments from 'utils/Segments';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import PlaneSegments from '$lib/utils/Segments';
 
   export let values: number[];
 

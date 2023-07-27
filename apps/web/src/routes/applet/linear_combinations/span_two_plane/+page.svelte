@@ -1,7 +1,7 @@
 <script>
   import { Vector3 } from 'three';
   import { Axis3D, Canvas3D, Latex3D, Vector3D, PlaneFromPoints } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const u = new Vector3(1, 2, -2); // Vector u
   const v = new Vector3(3, 1, 0); // Vector v

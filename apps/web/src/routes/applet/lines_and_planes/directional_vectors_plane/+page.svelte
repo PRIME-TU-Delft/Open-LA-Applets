@@ -1,7 +1,7 @@
 <script lang="ts">
   import { MathVector3 } from '$lib/utils/MathVector';
   import { Vector3 } from 'three';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   import {
     Axis3D,

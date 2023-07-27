@@ -1,7 +1,7 @@
 <script>
   import { Vector3 } from 'three';
   import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   $: v = new Vector3(3, 2, -3).normalize().multiplyScalar(3); // Vector v;
   $: u = v.clone().multiplyScalar(2); // Vector u = 2 * v;

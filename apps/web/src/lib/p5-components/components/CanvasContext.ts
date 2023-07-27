@@ -1,7 +1,7 @@
-import { defineService } from 'utils/ContextService';
+import { defineService } from '$lib/utils/ContextService';
 import type p5 from 'p5';
-import { Writable } from 'svelte/store';
-import { Vector2 } from 'three';
+import type { Writable } from 'svelte/store';
+import type { Vector2 } from 'three';
 
 export type DrawFn = (p5: p5) => void;
 

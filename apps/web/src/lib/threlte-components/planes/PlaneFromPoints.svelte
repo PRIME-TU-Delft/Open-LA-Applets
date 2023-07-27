@@ -2,8 +2,8 @@
   import { T, useThrelte } from '@threlte/core';
   import { DoubleSide, Mesh, MeshBasicMaterial, Plane, PlaneGeometry, Vector3 } from 'three';
 
-  import getRandomColor from 'utils/PrimeColors';
-  import PlaneSegments from 'utils/Segments';
+  import getRandomColor from '$lib/utils/PrimeColors';
+  import PlaneSegments from '$lib/utils/Segments';
 
   export let points: [Vector3, Vector3, Vector3] = [
     new Vector3(1, 0, 0),

@@ -10,7 +10,7 @@
     Point3D,
     Vector3D
   } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const normal = new Vector3(2, 4, 1);
   const normalizedNormal = normal.clone().normalize();

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Line2D, Vector2D, Latex2D } from 'p5-components';
+  import { Axis2D, Canvas2D, Line2D, Vector2D, Latex2D } from '$lib/p5-components';
 
-  import { GridType } from 'p5-components/components/Grids';
+  import { GridType } from '$lib/p5-components/components/Grids';
   import { Vector2 } from 'three';
-  import { PrimeColor } from 'utils/PrimeColors';
-  import { Slider, Sliders } from 'utils/Slider';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Slider, Sliders } from '$lib/utils/Slider';
 
   let zoom = 1;
 

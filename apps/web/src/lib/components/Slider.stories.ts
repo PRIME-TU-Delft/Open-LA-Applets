@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
 
 import Slider from './Slider.svelte';
-import { Sliders } from 'utils/Slider';
+import { Sliders } from '$lib/utils/Slider';
 
 let sliders = new Sliders().addSlider(0);
 

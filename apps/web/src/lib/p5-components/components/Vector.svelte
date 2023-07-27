@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable } from 'svelte/store';
   import { Vector2 } from 'three';
-  import getRandomColor from 'utils/PrimeColors';
+  import getRandomColor from '$lib/utils/PrimeColors';
   import { getCanvasContext, setLabelPosition } from './CanvasContext';
   import Line from './Line.svelte';
   import Triangle from './Triangle.svelte';

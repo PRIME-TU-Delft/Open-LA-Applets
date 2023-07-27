@@ -2,7 +2,7 @@
   import p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
   import { Vector2 } from 'three';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
   export let color: PrimeColor = PrimeColor.black;

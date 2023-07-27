@@ -5,7 +5,7 @@
 
   import { T } from '@threlte/core';
   import { SphereGeometry, Vector3 } from 'three';
-  import getRandomColor from 'utils/PrimeColors';
+  import getRandomColor from '$lib/utils/PrimeColors';
 
   export let position: Vector3 = new Vector3(0, 0, 0); // position of the point and label
   export let color: string = getRandomColor(); // color of point and label

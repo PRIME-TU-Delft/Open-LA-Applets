@@ -1,7 +1,7 @@
 <script lang="ts">
   import p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { GridType, Grid } from './Grids';
 
   import { getCanvasContext } from './CanvasContext';

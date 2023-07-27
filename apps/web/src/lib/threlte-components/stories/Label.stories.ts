@@ -1,7 +1,7 @@
 import { Vector3 } from 'three';
 import Label from '../Label.svelte';
 import CanvasWithAxis from './CanvasWithAxis.svelte';
-import { PrimeColor } from 'utils/PrimeColors';
+import { PrimeColor } from '$lib/utils/PrimeColors';
 import type { Meta, StoryObj } from '@storybook/svelte';
 
 /**

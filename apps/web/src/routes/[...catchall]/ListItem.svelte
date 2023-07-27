@@ -1,7 +1,7 @@
 <script lang="ts">
   import { formatString } from '$lib/utils/FormatString';
   import { mdiArrowRight, mdiEye, mdiEyeOff } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import { fade } from 'svelte/transition';
 
   export let url = '';

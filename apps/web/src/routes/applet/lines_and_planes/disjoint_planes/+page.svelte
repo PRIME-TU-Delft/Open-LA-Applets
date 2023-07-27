@@ -4,8 +4,8 @@
   import { Canvas3D, Axis3D, PlaneFromNormal } from '$lib/threlte-components';
   import LatexUI from '$lib/components/Latex.svelte';
 
-  import { PrimeColor } from 'utils/PrimeColors';
-  import { Sliders, Slider } from 'utils/Slider';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Sliders, Slider } from '$lib/utils/Slider';
 
   const n0 = new Vector3(1, 1, 1).normalize();
   let sliders = new Sliders().add(new Slider(0, -2, 2, 0.5, PrimeColor.green));

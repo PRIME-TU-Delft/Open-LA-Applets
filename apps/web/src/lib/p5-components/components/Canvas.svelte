@@ -1,11 +1,10 @@
 <script lang="ts">
   import { mdiRestart } from '@mdi/js';
   import type p5 from 'p5';
-  import { P5 } from '$lib/p5-svelte';
+  import P5 from '$lib/components/P5.svelte';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
-  import { RoundButton, ToggleFullscreen, UI } from 'ui';
-  import { Sliders } from 'utils/Slider';
+  import { Sliders } from '$lib/utils/Slider';
   import { type DrawFn, setCanvasContext } from './CanvasContext';
   import RelativeGrid from './RelativeGrid.svelte';
   // import Slider from "$lib/components/Slider.svelte";
@@ -31,10 +30,6 @@
   let clientWidth: number;
   let isFullscreen = false;
   let sceneEl: HTMLDivElement;
-
-  // Slider panel
-  let sliderSelected: number = null;
-  let isChangeing = false; // Are any of the sliders being changed?
 
   // Array with steps to draw scene
   let fnsToDraw: FnToDraw[] = [];
@@ -201,11 +196,11 @@
   </div> -->
 
   <!-- UI -->
-  <UI column bottom right opacity styled={false}>
+  <!-- <UI column bottom right opacity styled={false}>
     <RoundButton icon={mdiRestart} on:click={reset} />
 
     <ToggleFullscreen {sceneEl} bind:isFullscreen />
-  </UI>
+  </UI> -->
 
   <!-- <ShareWindow {sliders} /> -->
 </div>

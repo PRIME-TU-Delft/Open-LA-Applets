@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { mdiClose, mdiContentCopy, mdiOpenInNew } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import type { OrthographicCamera } from 'three';
-  import type { Sliders } from 'utils/Slider';
+  import type { Sliders } from '$lib/utils/Slider';
   import cameraStore from '../threlte-components/stores/cameraStore';
 
   export let sliders: Sliders;

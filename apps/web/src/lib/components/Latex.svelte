@@ -1,6 +1,6 @@
 <script lang="ts">
   import katex from 'katex';
-  import { primeColorArray } from 'utils/PrimeColors';
+  import { primeColorArray } from '$lib/utils/PrimeColors';
 
   export let latex = '';
   export let params: (string | number)[] = [];

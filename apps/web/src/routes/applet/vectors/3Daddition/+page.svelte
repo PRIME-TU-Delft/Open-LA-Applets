@@ -8,7 +8,7 @@
     Vector3D
   } from '$lib/threlte-components';
 
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   // Vectors
   const v1 = new Vector3(-1, 1, 2); //green vector

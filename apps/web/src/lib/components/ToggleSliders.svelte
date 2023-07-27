@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Sliders } from 'utils/Slider';
+  import { Sliders } from '$lib/utils/Slider';
   import ToggleSlider from './Slider.svelte';
 
   export let sliders: Sliders;

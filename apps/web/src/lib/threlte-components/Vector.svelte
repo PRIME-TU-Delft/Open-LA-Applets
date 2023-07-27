@@ -1,7 +1,7 @@
 <script lang="ts">
   import { T } from '@threlte/core';
   import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
-  import getRandomColor from 'utils/PrimeColors';
+  import getRandomColor from '$lib/utils/PrimeColors';
   import Line2 from './Line2.svelte';
 
   export let color: string = getRandomColor(); //Color of both cone and stem

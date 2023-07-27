@@ -2,9 +2,9 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { mdiClose } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import { fly } from 'svelte/transition';
-  import { debounce } from 'utils/timeDelay';
+  import { debounce } from '$lib/utils/timeDelay';
   import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
 

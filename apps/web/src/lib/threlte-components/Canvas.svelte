@@ -10,7 +10,7 @@
   import { Canvas, T } from '@threlte/core';
   import { onMount } from 'svelte';
   import { Vector3 } from 'three/src/Three';
-  import { Sliders } from 'utils/Slider';
+  import { Sliders } from '$lib/utils/Slider';
 
   /** "The ability to enable move (translate) the applet. On devices with a mouse this can be controlled by right mouse button dragging. On touchscreen devices, this can be done by dragging with two finders on the screen."*/
   export let enablePan = false;

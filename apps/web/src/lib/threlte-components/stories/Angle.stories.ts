@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import Angle from '../Angle.svelte';
 import { Vector3 } from 'three';
 import CanvasWithAxis from './CanvasWithAxis.svelte';
-import { PrimeColor } from 'utils/PrimeColors';
+import { PrimeColor } from '$lib/utils/PrimeColors';
 
 /**
  * The angle component is used to display an angle in 3D space. When angles are close to 90 degrees, they are forced to be right angles.

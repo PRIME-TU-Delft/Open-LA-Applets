@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mdiClose } from '@mdi/js';
   import Fuse from 'fuse.js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import ListItem from './ListItem.svelte';
 
   export let fileUrls: string[];

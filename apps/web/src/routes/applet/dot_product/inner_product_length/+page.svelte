@@ -3,8 +3,8 @@
   import LatexUI from '$lib/components/Latex.svelte';
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
 
-  import { PrimeColor } from 'utils/PrimeColors';
-  import { Sliders } from 'utils/Slider';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Sliders } from '$lib/utils/Slider';
 
   let sliders = new Sliders().addSlider(4.5, 3, 6).addSlider(6, 4, 8);
 

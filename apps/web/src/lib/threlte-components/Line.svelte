@@ -2,7 +2,7 @@
   import { T } from '@threlte/core';
   import { BufferGeometry, Vector3, Line } from 'three';
 
-  import getRandomColor from 'utils/PrimeColors';
+  import getRandomColor from '$lib/utils/PrimeColors';
 
   export let color: string = getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];

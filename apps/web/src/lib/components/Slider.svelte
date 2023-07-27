@@ -1,8 +1,8 @@
 <script lang="ts">
   import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import { createEventDispatcher, onDestroy } from 'svelte';
-  import type { Slider } from 'utils/Slider';
+  import type { Slider } from '$lib/utils/Slider';
   import RoundButton from './RoundButton.svelte';
 
   export let slider: Slider;

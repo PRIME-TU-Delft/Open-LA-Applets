@@ -11,8 +11,8 @@
   } from '$lib/threlte-components';
   import LatexUI from '$lib/components/Latex.svelte';
 
-  import { PrimeColor } from 'utils/PrimeColors';
-  import { Sliders } from 'utils/Slider';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Sliders } from '$lib/utils/Slider';
 
   let sliders = new Sliders().addSlider(0.5).addSlider(1);
 </script>

@@ -2,7 +2,7 @@
   import { T } from '@threlte/core';
   import { DoubleSide, Vector3 } from 'three';
 
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import Label from './Label.svelte';
   import Latex3D from './Latex.svelte';
   import Line from './Line.svelte';

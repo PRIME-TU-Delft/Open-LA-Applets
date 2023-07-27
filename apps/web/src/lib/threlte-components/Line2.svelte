@@ -4,7 +4,7 @@
   import { Line2 as ThreeLine2 } from 'three/examples/jsm/lines/Line2';
   import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
   import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
-  import getRandomColor from 'utils/PrimeColors';
+  import getRandomColor from '$lib/utils/PrimeColors';
 
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let endPoint: Vector3 = new Vector3(1, 0, 0); // direction of vector

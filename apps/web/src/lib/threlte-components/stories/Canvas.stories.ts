@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
 
-import { Sliders } from 'utils/Slider';
+import { Sliders } from '$lib/utils/Slider';
 import CanvasWrapper from './CanvasWithBlock.svelte';
 
 /**

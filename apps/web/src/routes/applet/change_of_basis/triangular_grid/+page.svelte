@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Arc2D, Axis2D, Canvas2D, Latex2D, Vector2D } from 'p5-components';
+  import { Arc2D, Axis2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
 
-  import { GridType } from 'p5-components/components/Grids';
+  import { GridType } from '$lib/p5-components/components/Grids';
   import { Vector2 } from 'three';
-  import { PrimeColor } from 'utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const b1 = new Vector2(Math.sqrt(4 / 3) * 2, 0);
   const b2 = new Vector2(-Math.sqrt(4 / 3), 2);

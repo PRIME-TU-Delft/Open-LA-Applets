@@ -1,7 +1,7 @@
 <script>
   import { activityStore } from '$lib/activityStore';
   import { mdiPause } from '@mdi/js';
-  import { Icon } from 'mdi-svelte-ts';
+  import Icon from '$lib/components/Icon.svelte';
   import { createEventDispatcher } from 'svelte';
 
   export let showFormulas = true;

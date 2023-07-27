@@ -8,8 +8,8 @@
     Vector3D,
     PlaneFromNormal
   } from '$lib/threlte-components';
-  import { PrimeColor } from 'utils/PrimeColors';
-  import { bVector } from 'utils/LatexFormat';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { bVector } from '$lib/utils/LatexFormat';
 
   const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
   const u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
