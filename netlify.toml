@@ -1,3 +1,3 @@
 [build]
-  command = "yarn build"
-  publish = "build-netlify/"
+command = "pnpm build"
+publish = "build-netlify/"
