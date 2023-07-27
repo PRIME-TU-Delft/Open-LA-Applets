@@ -7,6 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "storybook": "turbo run storybook --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "test": "turbo run test"
