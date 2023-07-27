@@ -3,7 +3,7 @@
 
   import { Vector2, Vector3 } from 'three';
   import { Axis3D, Canvas3D, Latex3D, Line3D, Vector3D } from '$lib/threlte-components';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
   import { PrimeColor } from 'utils/PrimeColors';
 
   let zoom = 1;

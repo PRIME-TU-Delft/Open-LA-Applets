@@ -2,7 +2,7 @@
   import { Vector3 } from 'three';
 
   import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';

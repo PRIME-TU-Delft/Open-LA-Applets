@@ -9,7 +9,7 @@
     Vector3D,
     Point3D
   } from '$lib/threlte-components';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
 
   import { PrimeColor } from 'utils/PrimeColors';
   import { Sliders } from 'utils/Slider';

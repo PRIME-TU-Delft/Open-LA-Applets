@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
 
   import { getCanvasContext, getLabelPosition } from './CanvasContext';
 

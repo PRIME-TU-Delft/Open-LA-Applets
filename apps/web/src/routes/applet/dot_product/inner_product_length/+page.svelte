@@ -1,6 +1,6 @@
 <script>
   import { Vector3 } from 'three';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
 
   import { PrimeColor } from 'utils/PrimeColors';

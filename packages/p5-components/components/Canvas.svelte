@@ -1,7 +1,7 @@
 <script lang="ts">
   import { mdiRestart } from '@mdi/js';
   import type p5 from 'p5';
-  import { P5 } from 'p5-svelte';
+  import { P5 } from '$lib/p5-svelte';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
   import { RoundButton, ToggleFullscreen, UI } from 'ui';

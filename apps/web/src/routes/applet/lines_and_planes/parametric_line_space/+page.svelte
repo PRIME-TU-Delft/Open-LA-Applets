@@ -1,7 +1,7 @@
 <script>
   import { Axis3D, Canvas3D, Latex3D, Vector3D } from '$lib/threlte-components';
   import { Vector3 } from 'three';
-  import { LatexUI } from 'ui';
+  import LatexUI from '$lib/components/Latex.svelte';
   import { PrimeColor } from 'utils/PrimeColors';
   import { Slider, Sliders } from 'utils/Slider';
 
