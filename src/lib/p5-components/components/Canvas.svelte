@@ -1,217 +1,170 @@
 <script lang="ts">
-  import { mdiRestart } from '@mdi/js';
-  import type p5 from 'p5';
-  import P5 from '$lib/components/P5.svelte';
-  import { onDestroy } from 'svelte';
-  import { writable } from 'svelte/store';
+  import { page } from '$app/stores';
+  import { activityStore } from '$lib/activityStore';
+  import ActionButtons from '$lib/components/ActionButtons.svelte';
+  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
+  import SliderPanel from '$lib/components/SliderPanel.svelte';
+  import ToggleSliders from '$lib/components/ToggleSliders.svelte';
   import { Sliders } from '$lib/utils/Slider';
-  import { type DrawFn, setCanvasContext } from './CanvasContext';
-  import RelativeGrid from './RelativeGrid.svelte';
-  // import Slider from "$lib/components/Slider.svelte";
-  import { Vector2 } from 'three';
+  import { onMount } from 'svelte';
+  import { Vector2 } from 'three/src/Three';
+  import type { FnToDraw } from './CanvasUtils';
+  import P5Canvas from './P5Canvas.svelte';
 
+  export let enablePan = false;
   export let sliders = new Sliders();
-  export let zoom = 1;
-  export let maxZoom = 3;
-  export let minZoom = 1 / 2;
+  export let title = '';
+  export let background = '#ffffff';
+  export let zoom = 29;
+  export let cameraPosition = new Vector2(0, 0);
+  export let showFormulasDefault = false;
+  export let isIframe = false; // Is the scene inside an iframe?
 
-  class FnToDraw {
-    constructor(public key: symbol, public fn: DrawFn) {
-      this.key = key;
-      this.fn = fn;
-    }
+  let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
+  let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
+  let isFullscreen = false; // Is the scene fullscreen?
 
-    equals(other: FnToDraw) {
-      return this.key === other.key;
-    }
-  }
+  let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
-  let clientHeight: number;
-  let clientWidth: number;
-  let isFullscreen = false;
+  let resetKey = Math.random();
+  let height = 0;
+  let width = 0;
+
   let sceneEl: HTMLDivElement;
-
-  // Array with steps to draw scene
   let fnsToDraw: FnToDraw[] = [];
-  let [mouseX, mouseY] = [0, 0];
 
-  // Array of draggable objects
-  let draggables = writable(new Map<symbol, Vector2>());
-  let draggableSelected: symbol;
+  $: title = $page.url?.searchParams?.get('title') || title;
 
-  // Isolate draw function to prevent it from applying transformations and styles to other draw functions
-  function isolate(draw: DrawFn): DrawFn {
-    return (p5: p5) => {
-      p5.push();
-      draw(p5);
-      p5.pop();
-    };
-  }
-
-  function setRelative(draw: DrawFn): DrawFn {
-    return (p5: p5) => {
-      p5.push();
-
-      p5.scale(1, -1);
-      p5.translate(p5.width / 2, -p5.height / 2);
-
-      draw(p5);
-
-      p5.pop();
-    };
-  }
-
+  /**
+   * Reset camera position, rotation and sliders.
+   */
   function reset() {
-    sliders = sliders.reset();
-    zoom = 1;
-  }
-
-  const params = {
-    mouseX: writable(mouseX),
-    mouseY: writable(mouseY),
-    width: writable(clientWidth),
-    height: writable(clientHeight),
-    scale: writable(zoom)
-  };
-
-  $: {
-    params.scale.set(zoom);
-    params.height.set(clientHeight);
-    params.width.set(clientWidth);
-  }
-
-  // Set context for all children of this component: https://svelte.dev/tutorial/context-api
-  setCanvasContext({
-    addDrawFn: (fn: DrawFn, key: symbol, isRelative: boolean) => {
-      fn = isolate(fn);
-
-      if (isRelative) {
-        fn = setRelative(fn);
-      }
-
-      fnsToDraw.push(new FnToDraw(key, fn));
-    },
-    removeDrawFn: (key: symbol) => {
-      let index = fnsToDraw.findIndex((draw) => draw.key === key);
-
-      if (index > -1) {
-        fnsToDraw.splice(index, 1);
-      }
-    },
-    // Warning: because mouseX and mouseY are not reactive, they are not always equal to the actual mouse position! Only when the mouse is being dragged.
-    mouseX: params.mouseX,
-    mouseY: params.mouseY,
-    width: params.width,
-    height: params.height,
-    scale: params.scale,
-    draggables: draggables
-  });
-
-  const sketch = (p5: p5) => {
-    p5.setup = () => {
-      p5.createCanvas(clientWidth, clientHeight);
-    };
-
-    p5.draw = () => {
-      p5.resizeCanvas(clientWidth, clientHeight); // todo: try to optimise this
-
-      p5.translate(p5.width / 2, p5.height / 2);
-
-      p5.scale(zoom);
-      p5.translate(-p5.width / 2, -p5.height / 2);
-
-      fnsToDraw.forEach((draw) => draw.fn(p5)); // Draw each step of the scene
-    };
-
-    p5.mousePressed = () => {
-      // Find nearest draggable object
-      let x = (p5.mouseX - p5.width / 2) / (100 * zoom);
-      let y = (p5.height / 2 - p5.mouseY) / (100 * zoom);
-      let mouse = new Vector2(x, y);
-      // Sort draggables by distance to mouse, ascendingly
-      let nearestDraggables = [...$draggables].sort((a, b) => {
-        let aDist = a[1].distanceTo(mouse);
-        let bDist = b[1].distanceTo(mouse);
-        return aDist - bDist;
-      });
-      // Select nearest draggable if it is close enough
-      draggableSelected =
-        nearestDraggables[0][1].distanceTo(mouse) < 0.5 ? nearestDraggables[0][0] : undefined;
-    };
-
-    p5.mouseReleased = () => {
-      draggableSelected = undefined;
-    };
-
-    p5.mouseDragged = () => {
-      mouseX = p5.mouseX;
-      mouseY = p5.mouseY;
-
-      params.mouseX.set(mouseX);
-      params.mouseY.set(mouseY);
-
-      if ($draggables.size > 0 && draggableSelected) {
-        let x = (mouseX - p5.width / 2) / (100 * zoom);
-        let y = (p5.height / 2 - mouseY) / (100 * zoom);
-        $draggables.set(draggableSelected, new Vector2(x, y));
-        $draggables = $draggables; // Trigger reactivity
-      }
-    };
-
-    p5.mouseWheel = (event: WheelEvent) => {
-      if (zoom < minZoom && event.deltaY > 0) return;
-      if (zoom > maxZoom && event.deltaY < 0) return;
-
-      zoom -= event.deltaY / 1000;
-    };
-  };
-
-  onDestroy(() => {
+    sliders = sliders.reset(); // Reset sliders to default values
+    resetKey = Math.random(); // Update the key to reset the set camera component
     fnsToDraw = [];
+  }
+
+  function pause() {
+    reset();
+    activityStore.reset();
+  }
+
+  function waitThenReset() {
+    if (isIframe) {
+      activityStore.disableAfterAnd(60000, reset);
+    }
+  }
+
+  onMount(() => {
+    const params = $page.url?.searchParams;
+
+    if (sliders.fromURL) {
+      sliders = sliders?.fromURL(params?.get('sliders') || '') || sliders;
+    }
+    isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
+
+    if (!isIframe) {
+      activityStore.enable();
+    }
   });
 </script>
 
-<div bind:this={sceneEl} class="sketch" bind:clientHeight bind:clientWidth>
-  <P5 {sketch}>
-    <RelativeGrid let:mouseX let:mouseY>
-      <slot mouseX={mouseX / 100} mouseY={mouseY / 100} />
-    </RelativeGrid>
-  </P5>
+<div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>
+  <!-- For screen readers / accesability acces to toggle the drawer  -->
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
 
-  <!-- SLIDER PANEL -->
-  <!-- <div style="max-width: calc(100vw - 6rem); touch-action:none;">
-    <UI visible={!!sliders.sliders.length} bottom opacity>
-      {#if sliderSelected == null}<p class="text-slate-900">click us</p>{/if}
-      {#each sliders.sliders as slider, index}
-        <SvelteSlider
-          bind:slider
-          isExpanded={sliderSelected == index}
-          on:mousedown={() => (isChangeing = true)}
-          on:mouseup={() => (isChangeing = false)}
-          on:indexSelected={() => (sliderSelected = index)}
-          on:closeSelected={() => (sliderSelected = null)}
+  <div
+    role="button"
+    tabindex="0"
+    class="canvasWrapper border-l-4 border-gray-400 drawer-content"
+    class:active={$activityStore}
+    class:isIframe
+    bind:clientHeight={height}
+    bind:clientWidth={width}
+    style="height: var(--height, 100%); background: {background}"
+    on:click={activityStore.enable}
+    on:mousedown={activityStore.enable}
+    on:keydown={activityStore.enable}
+    on:mouseenter={activityStore.removeTimeOut}
+    on:mouseleave={waitThenReset}
+  >
+    <!-- P5 SCENE -->
+    {#key resetKey}
+      <P5Canvas size={{ width, height }} bind:fnsToDraw>
+        <slot />
+      </P5Canvas>
+    {/key}
+
+    <!-- TITLE PANEL -->
+    {#if title && (!isIframe || isFullscreen)}
+      <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
+        {title}
+      </div>
+    {/if}
+
+    <!-- SLIDER PANEL -->
+    {#if sliders?.sliders?.length > 0}
+      <SliderPanel isInset={!isIframe || isFullscreen}>
+        <ToggleSliders
+          bind:sliders
+          bind:isPlaying={isPlayingSliders}
+          on:startChanging={() => (isChangingSliders = true)}
+          on:stopChanging={() => (isChangingSliders = false)}
         />
-      {/each}
-    </UI>
-  </div> -->
+      </SliderPanel>
+    {/if}
 
-  <!-- UI -->
-  <!-- <UI column bottom right opacity styled={false}>
-    <RoundButton icon={mdiRestart} on:click={reset} />
+    <!-- FORMULAS AND ACTIVITY PANEL  -->
+    <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
+    <FormulasAndActivityPanel
+      {isIframe}
+      {isFullscreen}
+      {showFormulas}
+      {isChangingSliders}
+      hasFormulas={$$slots.formulas}
+      on:pause={pause}
+    >
+      <slot name="formulas" />
+    </FormulasAndActivityPanel>
 
-    <ToggleFullscreen {sceneEl} bind:isFullscreen />
-  </UI> -->
+    <!-- ACTION BUTTONS -->
+    <ActionButtons
+      {isIframe}
+      {sceneEl}
+      hasFormulas={$$slots.formulas}
+      bind:isFullscreen
+      bind:showFormulas
+      on:reset={reset}
+    />
+  </div>
 
-  <!-- <ShareWindow {sliders} /> -->
+  <!-- SHARE WINDOW -->
+
+  <ShareWindow {sliders} />
 </div>
 
-<style>
-  .sketch {
-    height: 100%;
-    max-width: 100vw;
-    overflow: hidden;
-    user-select: none;
-    touch-action: none;
+<style lang="postcss">
+  :global(html:has(.isIframe)) {
     background: white;
+  }
+
+  .canvasWrapper {
+    position: relative;
+    width: var(--width, 100vw);
+    height: var(--height, auto);
+    overflow: hidden;
+
+    &.isIframe {
+      @apply border-l-4 border-gray-400;
+
+      &.active {
+        @apply border-blue-500;
+      }
+    }
+  }
+
+  :global(.canvasWrapper > canvas) {
+    position: absolute;
   }
 </style>

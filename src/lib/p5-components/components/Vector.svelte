@@ -1,12 +1,12 @@
 <script lang="ts">
+  import getRandomColor from '$lib/utils/PrimeColors';
+  import { onDestroy, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import { Vector2 } from 'three';
-  import getRandomColor from '$lib/utils/PrimeColors';
-  import { getCanvasContext, setLabelPosition } from './CanvasContext';
+  import { setLabelPosition } from './CanvasContext';
   import Line from './Line.svelte';
-  import Triangle from './Triangle.svelte';
-  import { onDestroy, onMount } from 'svelte';
   import Point from './Point.svelte';
+  import Triangle from './Triangle.svelte';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector2 = new Vector2(0, 0); // origin of vector
@@ -21,31 +21,31 @@
   const CONE_HEIGHT = 0.5;
   const CONE_DIAMETER = 0.1;
 
-  let draggables = getCanvasContext().draggables;
+  // let draggables = getCanvasContext().draggables;
   const key = Symbol('vector');
 
   // NOTE: draggables won't get updated if the Vector is moved by some other means, e.g. sliders (because I don't see an elegant way of doing that without causing a cyclical dependency in reactivity)
-  $: {
-    if (draggable) {
-      let draggablePos =
-        $draggables.get(key) || origin.clone().add(direction.clone().multiplyScalar(length)); // TODO: fix undefined thingy here
-      let v = draggablePos.clone().sub(origin);
-      direction = v.clone().normalize();
-      length = v.length();
-    }
-  }
+  // $: {
+  //   if (draggable && false) {
+  //     let draggablePos =
+  //       $draggables.get(key) || origin.clone().add(direction.clone().multiplyScalar(length)); // TODO: fix undefined thingy here
+  //     let v = draggablePos.clone().sub(origin);
+  //     direction = v.clone().normalize();
+  //     length = v.length();
+  //   }
+  // }
 
   onMount(() => {
     if (draggable) {
       let pos = origin.clone().add(direction.clone().multiplyScalar(length));
-      $draggables.set(key, pos);
-      $draggables = $draggables; // Trigger reactivity
+      // $draggables.set(key, pos);
+      // $draggables = $draggables; // Trigger reactivity
     }
   });
 
   onDestroy(() => {
-    $draggables.delete(key);
-    $draggables = $draggables; // Trigger reactivity
+    // $draggables.delete(key);
+    // $draggables = $draggables; // Trigger reactivity
   });
 
   let endPoint = writable(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
