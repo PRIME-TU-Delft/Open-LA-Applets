@@ -3,7 +3,7 @@
   import type { Vector2 } from 'three';
   import Point from './Point.svelte';
   import { onDestroy, onMount } from 'svelte';
-  import { Draggable, draggables } from './draggableStore';
+  import { Draggable, draggables } from './CanvasUtils';
 
   export let position: Vector2;
   export let defaultPosition: Vector2;

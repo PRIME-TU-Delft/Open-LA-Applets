@@ -4,8 +4,10 @@
   import { GridType } from '$lib/p5-components/components/Grids';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Draggables from '$lib/p5-components/components/Draggables.svelte';
 
-  const b1 = new Vector2(Math.sqrt(4 / 3) * 2, 0);
+  let b1 = new Vector2(Math.sqrt(4 / 3) * 2, 0);
+  const b1Default = new Vector2(Math.sqrt(4 / 3) * 2, 0);
   const b2 = new Vector2(-Math.sqrt(4 / 3), 2);
 
   const b1tob2 = b1.clone().add(b2);
@@ -14,6 +16,8 @@
 
 <Canvas2D>
   <Axis2D gridType={GridType.triangularGrid} />
+
+  <Draggables bind:position={b1} defaultPosition={b1Default} color={PrimeColor.ultramarine} />
 
   <!-- Arcs -->
   <Arc2D points={[b1, b1tob2]} distance={0.75} color={PrimeColor.green} />

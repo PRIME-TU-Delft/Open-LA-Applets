@@ -3,11 +3,16 @@
 
   import P5 from '$lib/components/P5.svelte';
   import RelativeGrid from './RelativeGrid.svelte';
-  import { setDefaultContext, type ContextParams, type FnToDraw } from './CanvasUtils';
+  import {
+    setDefaultContext,
+    type ContextParams,
+    type FnToDraw,
+    type Draggable,
+    draggables
+  } from './CanvasUtils';
   import { get, writable } from 'svelte/store';
   import { Vector2 } from 'three';
   import { onDestroy } from 'svelte';
-  import { draggables, Draggable } from './draggableStore';
 
   export let size: { width: number; height: number } = { width: 500, height: 500 };
   export let fnsToDraw: FnToDraw[] = []; // Array with steps to draw scene
@@ -21,7 +26,8 @@
     mouseY: writable(0),
     width: writable(size.width),
     height: writable(size.height),
-    scale: writable(1)
+    scale: writable(1),
+    draggables
   };
 
   // Set context for all children of this component: https://svelte.dev/tutorial/context-api
@@ -56,6 +62,8 @@
       let y = (p5.height / 2 - p5.mouseY) / (100 * scale);
       let mouse = new Vector2(x, y);
 
+      const $draggables = get(params.draggables);
+
       if ($draggables.length === 0) return;
 
       let nearestDraggables = [...$draggables].sort((a, b) => {
@@ -78,6 +86,8 @@
       params.mouseY.set(p5.mouseY);
 
       const scale = get(params.scale);
+
+      const $draggables = get(params.draggables);
 
       if ($draggables.length > 0 && selectedDraggable) {
         let x = (p5.mouseX - p5.width / 2) / (100 * scale);

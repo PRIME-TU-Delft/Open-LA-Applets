@@ -11,7 +11,6 @@
   import { Vector2 } from 'three/src/Three';
   import type { FnToDraw } from './CanvasUtils';
   import P5Canvas from './P5Canvas.svelte';
-  import { draggables } from './draggableStore';
 
   export let enablePan = false;
   export let sliders = new Sliders();
@@ -43,7 +42,6 @@
   function reset() {
     sliders = sliders.reset(); // Reset sliders to default values
     resetKey = Math.random(); // Update the key to reset the set camera component
-    draggables.reset(); // Reset draggable elements
 
     fnsToDraw = [];
   }
