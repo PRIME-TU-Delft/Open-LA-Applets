@@ -1,7 +1,6 @@
+import type p5 from "p5";
 import type { Writable } from "svelte/store";
 import { setCanvasContext, type DrawFn } from "./CanvasContext";
-import type p5 from "p5";
-import type { Vector2 } from "three";
 
 // Protocall for drawing functions
 export class FnToDraw {
@@ -37,8 +36,6 @@ function setRelative(draw: DrawFn): DrawFn {
         p5.pop();
     };
 }
-
-type Dragables = Map<symbol, Vector2> // TODO: Replace for something better
 
 export type ContextParams = {
     mouseX: Writable<number>;

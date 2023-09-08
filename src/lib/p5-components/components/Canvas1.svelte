@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { mdiRestart } from '@mdi/js';
-  import type p5 from 'p5';
   import P5 from '$lib/components/P5.svelte';
+  import { Sliders } from '$lib/utils/Slider';
+  import type p5 from 'p5';
   import { onDestroy } from 'svelte';
   import { writable } from 'svelte/store';
-  import { Sliders } from '$lib/utils/Slider';
-  import { type DrawFn, setCanvasContext } from './CanvasContext';
-  import RelativeGrid from './RelativeGrid.svelte';
-  // import Slider from "$lib/components/Slider.svelte";
   import { Vector2 } from 'three';
+  import { setCanvasContext, type DrawFn } from './CanvasContext';
+  import RelativeGrid from './RelativeGrid.svelte';
 
   export let sliders = new Sliders();
   export let zoom = 1;
