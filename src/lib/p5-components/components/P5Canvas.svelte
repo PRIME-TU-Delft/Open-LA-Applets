@@ -116,6 +116,8 @@
 
   onDestroy(() => {
     draggables.reset();
+
+    fnsToDraw = [];
   });
 </script>
 
