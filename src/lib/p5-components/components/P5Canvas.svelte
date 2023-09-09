@@ -2,18 +2,20 @@
   import type p5 from 'p5';
 
   import P5 from '$lib/components/P5.svelte';
-  import RelativeGrid from './RelativeGrid.svelte';
-  import {
-    setDefaultContext,
-    type ContextParams,
-    type FnToDraw,
-    type Draggable,
-    draggables
-  } from './CanvasUtils';
+  import { onDestroy } from 'svelte';
   import { get, writable } from 'svelte/store';
   import { Vector2 } from 'three';
-  import { onDestroy } from 'svelte';
+  import {
+    draggables,
+    setDefaultContext,
+    type ContextParams,
+    type Draggable,
+    type FnToDraw
+  } from './CanvasUtils';
+  import { Grid, GridType } from './Grids';
+  import RelativeGrid from './RelativeGrid.svelte';
 
+  export let gridType: GridType = GridType.none;
   export let size: { width: number; height: number } = { width: 500, height: 500 };
   export let fnsToDraw: FnToDraw[] = []; // Array with steps to draw scene
 
@@ -27,7 +29,8 @@
     width: writable(size.width),
     height: writable(size.height),
     scale: writable(1),
-    draggables
+    draggables,
+    gridType: writable(gridType)
   };
 
   // Set context for all children of this component: https://svelte.dev/tutorial/context-api
@@ -78,6 +81,12 @@
     };
 
     p5.mouseReleased = () => {
+      if (!selectedDraggable) return;
+
+      if (selectedDraggable.snap) {
+        selectedDraggable.position.update((p) => Grid.snapFunction(p, gridType));
+      }
+
       selectedDraggable = undefined;
     };
 

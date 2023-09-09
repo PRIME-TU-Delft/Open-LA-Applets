@@ -6,9 +6,8 @@
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import SliderPanel from '$lib/components/SliderPanel.svelte';
   import ToggleSliders from '$lib/components/ToggleSliders.svelte';
-  import { onMount } from 'svelte';
-  import { Vector3 } from 'three/src/Three';
   import { Sliders } from '$lib/utils/Slider';
+  import { onDestroy, onMount } from 'svelte';
 
   /** "The ability to enable move (translate) the applet. On devices with a mouse this can be controlled by right mouse button dragging. On touchscreen devices, this can be done by dragging with two finders on the screen."*/
   export let sliders = new Sliders();
@@ -65,6 +64,8 @@
       activityStore.enable();
     }
   });
+
+  onDestroy(() => reset);
 </script>
 
 <div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>

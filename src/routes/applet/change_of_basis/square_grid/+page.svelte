@@ -1,19 +1,20 @@
 <script lang="ts">
-  import { Arc2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
-  import { GridType } from '$lib/p5-components/components/Grids';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
+  import { Arc2D, Axis2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
 
-  let b1 = new Vector2(Math.sqrt(4 / 3) * 2, 0);
-  const b1Default = new Vector2(Math.sqrt(4 / 3) * 2, 0);
-  const b2 = new Vector2(-Math.sqrt(4 / 3), 2);
+  import { GridType } from '$lib/p5-components/components/Grids';
+  import { Vector2 } from 'three';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Draggables from '$lib/p5-components/components/Draggables.svelte';
+
+  let b1 = new Vector2(2, 0);
+  const b1Default = new Vector2(2, 0);
+  const b2 = new Vector2(-1.5, 2);
 
   const b1tob2 = b1.clone().add(b2);
   const minusB1 = b1.clone().multiplyScalar(-1);
 </script>
 
-<Canvas2D gridType={GridType.triangularGrid}>
+<Canvas2D gridType={GridType.squareGrid}>
   <Draggables snap bind:position={b1} defaultPosition={b1Default} color={PrimeColor.ultramarine} />
 
   <!-- Arcs -->
