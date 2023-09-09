@@ -118,6 +118,8 @@
       if (scale < minZoom && event.deltaY > 0) return;
       if (scale > maxZoom && event.deltaY < 0) return;
 
+      event.preventDefault();
+
       scale -= event.deltaY / 1000;
       params.scale.set(scale);
     };
