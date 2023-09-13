@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="formulas flex gap-1 w-full absolute z-50 justify-between"
+  class="formulas flex gap-1 w-full top-4 absolute z-50 justify-between"
   class:!justify-end={!isIframe || isFullscreen}
 >
   <!-- ACTIVITY PANEL -->

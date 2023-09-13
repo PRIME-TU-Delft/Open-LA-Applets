@@ -20,4 +20,6 @@
 
     <slot />
   </Canvas>
+
+  <svelte:fragment slot="formulas"><slot name="formulas" /></svelte:fragment>
 </AbstractCanvas>
