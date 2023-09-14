@@ -48,7 +48,7 @@
     {@const snapPos = snap ? snapFunction(pos) : pos}
     <Point radius={15} position={snapPos} {color} opacity={0.5} pulse />
 
-    <Point radius={100} position={snapPos} {color} opacity={0.1} />
+    <Point radius={30} position={snapPos} {color} opacity={0.1} />
     <slot dragPosition={pos} />
   {/if}
 {/if}
