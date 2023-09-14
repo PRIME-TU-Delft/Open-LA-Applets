@@ -1,8 +1,8 @@
 <script lang="ts">
-  import p5 from 'p5';
+  import type p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
   import { writable } from 'svelte/store';
-  import { Vector2 } from 'three';
+  import type { Vector2 } from 'three';
 
   import { getCanvasContext, getRelativeContext, setLabelPosition } from './CanvasContext';
 

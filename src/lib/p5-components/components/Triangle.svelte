@@ -1,8 +1,7 @@
 <script lang="ts">
-  import p5 from 'p5';
+  import type p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
   import { Vector2 } from 'three';
-
   import { getCanvasContext, getRelativeContext } from './CanvasContext';
 
   export let points: [Vector2, Vector2, Vector2] = [new Vector2(), new Vector2(), new Vector2()];

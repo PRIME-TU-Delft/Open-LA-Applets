@@ -30,6 +30,7 @@
 <style>
   .latex {
     position: absolute;
+    user-select: none;
     top: 50%;
     left: 50%;
     color: var(--color, black);
