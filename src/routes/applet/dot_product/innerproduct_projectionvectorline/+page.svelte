@@ -4,6 +4,7 @@
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Draggables from '$lib/p5-components/components/Draggables.svelte';
+  import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
 
   let v = new Vector2(1, 0.5);
   let v_default = new Vector2(1, 0.4);
@@ -19,6 +20,8 @@
 
   $: proj_w = v.clone().multiplyScalar(w.clone().dot(v) / v.clone().dot(v));
   $: proj_w_length = proj_w.length();
+  //nesc for drawing right angle
+  $: proj_w_min_w = w.clone().sub(proj_w);
 </script>
 
 <Canvas2D>
@@ -32,7 +35,7 @@
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />
 
-  <!-- projection w -->
+  <!-- projection of w -->
   <Vector2D direction={proj_w} length={proj_w_length} color={PrimeColor.red}>
     <Latex2D latex={'\\^{w}'} offset={new Vector2(0, -0.2)} color={PrimeColor.red} />
   </Vector2D>
@@ -48,4 +51,7 @@
   <Vector2D direction={w} length={w_length} color={PrimeColor.green}>
     <Latex2D latex={'w'} offset={new Vector2(-0.2, 0.1)} color={PrimeColor.green} />
   </Vector2D>
+
+  <!-- right angle -->
+  <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w}/>
 </Canvas2D>
