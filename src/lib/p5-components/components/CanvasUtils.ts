@@ -2,8 +2,13 @@ import type p5 from 'p5';
 import { writable, type Writable } from 'svelte/store';
 import { setCanvasContext, type DrawFn } from './CanvasContext';
 import type { Vector2 } from 'three';
+import type { GridType } from './Grids';
 
-// Protocall for drawing functions
+/**
+ * This file contains utility functions for the canvas.
+ */
+
+// A wrapper for a draw function that allows it to be removed from the canvas
 export class FnToDraw {
   constructor(public key: symbol, public fn: DrawFn) {
     this.key = key;
@@ -24,27 +29,14 @@ export function isolate(draw: DrawFn): DrawFn {
   };
 }
 
-// Change the scale to be relative to the center of the canvas
-function setRelative(draw: DrawFn): DrawFn {
-  return (p5: p5) => {
-    p5.push();
-
-    p5.scale(1, -1);
-    p5.translate(p5.width / 2, -p5.height / 2);
-
-    draw(p5);
-
-    p5.pop();
-  };
-}
-
+// A draggable object
 export class Draggable {
   position: Writable<Vector2>;
   color: string;
   key: Symbol;
   defaultPosition: Vector2;
 
-  constructor(defaultPosition: Vector2, color: string) {
+  constructor(defaultPosition: Vector2, color: string, public snap: boolean = false) {
     this.position = writable(defaultPosition.clone());
     this.defaultPosition = defaultPosition.clone();
     this.color = color;
@@ -56,6 +48,7 @@ export class Draggable {
   }
 }
 
+// Store for draggable objects
 function createDragStore() {
   const { subscribe, set, update } = writable<Draggable[]>([]);
 
@@ -72,9 +65,9 @@ function createDragStore() {
     destroy: () => set([])
   };
 }
-
 export const draggables = createDragStore();
 
+// Set the default context for the canvas
 export type ContextParams = {
   mouseX: Writable<number>;
   mouseY: Writable<number>;
@@ -82,9 +75,24 @@ export type ContextParams = {
   height: Writable<number>;
   scale: Writable<number>;
   draggables: typeof draggables;
+  gridType: Writable<GridType>;
 };
 
 export function setDefaultContext(fnsToDraw: FnToDraw[], params: ContextParams) {
+  // Change the scale to be relative to the center of the canvas
+  function setRelative(draw: DrawFn): DrawFn {
+    return (p5: p5) => {
+      p5.push();
+
+      p5.scale(1, -1);
+      p5.translate(p5.width / 2, -p5.height / 2);
+
+      draw(p5);
+
+      p5.pop();
+    };
+  }
+
   setCanvasContext({
     addDrawFn: (fn: DrawFn, key: symbol, isRelative: boolean) => {
       fn = isolate(fn);
@@ -108,6 +116,7 @@ export function setDefaultContext(fnsToDraw: FnToDraw[], params: ContextParams) 
     width: params.width,
     height: params.height,
     scale: params.scale,
-    draggables: params.draggables
+    draggables: params.draggables,
+    gridType: params.gridType
   });
 }

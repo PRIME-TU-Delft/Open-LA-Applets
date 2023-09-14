@@ -21,42 +21,13 @@
   const CONE_HEIGHT = 0.5;
   const CONE_DIAMETER = 0.1;
 
-  // let draggables = getCanvasContext().draggables;
-  const key = Symbol('vector');
-
-  // NOTE: draggables won't get updated if the Vector is moved by some other means, e.g. sliders (because I don't see an elegant way of doing that without causing a cyclical dependency in reactivity)
-  // $: {
-  //   if (draggable && false) {
-  //     let draggablePos =
-  //       $draggables.get(key) || origin.clone().add(direction.clone().multiplyScalar(length)); // TODO: fix undefined thingy here
-  //     let v = draggablePos.clone().sub(origin);
-  //     direction = v.clone().normalize();
-  //     length = v.length();
-  //   }
-  // }
-
-  onMount(() => {
-    if (draggable) {
-      let pos = origin.clone().add(direction.clone().multiplyScalar(length));
-      // $draggables.set(key, pos);
-      // $draggables = $draggables; // Trigger reactivity
-    }
-  });
-
-  onDestroy(() => {
-    // $draggables.delete(key);
-    // $draggables = $draggables; // Trigger reactivity
-  });
-
-  let endPoint = writable(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
+  let endPoint = origin.clone().add(direction.clone().multiplyScalar(length)); // store with tip of the vector
 
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;
   $: direction = direction.clone().normalize();
 
-  setLabelPosition(endPoint);
-
   $: {
-    endPoint.set(origin.clone().add(direction.clone().multiplyScalar(length)));
+    endPoint = origin.clone().add(direction.clone().multiplyScalar(length));
   }
 
   $: coneStart = origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2));
@@ -73,12 +44,12 @@
 <Line start={origin} end={coneStart} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
-  <Triangle points={[leftConePoint, $endPoint, rightConePoint]} {color} />
+  <Triangle points={[leftConePoint, endPoint, rightConePoint]} {color} />
 {/if}
 
 {#if draggable}
-  <Point radius={15} position={$endPoint} {color} opacity={0.5} pulse />
-  <Point radius={100} position={$endPoint} {color} opacity={0.1} />
+  <Point radius={15} position={endPoint} {color} opacity={0.5} pulse />
+  <Point radius={100} position={endPoint} {color} opacity={0.1} />
 {/if}
 
 <slot {endPoint} />

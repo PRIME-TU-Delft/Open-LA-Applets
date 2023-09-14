@@ -1,5 +1,5 @@
 <script lang="ts">
-  import p5 from 'p5';
+  import type p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { GridType, Grid } from './Grids';
@@ -29,19 +29,6 @@
     const h = p5.height;
     const size = Math.max(w, h);
 
-    // console.log($scale);
-
-    switch (gridType) {
-      case GridType.squareGrid:
-        Grid.drawSquareGrid(p5, size, $scale);
-        break;
-      case GridType.triangularGrid:
-        Grid.drawTriangularGrid(p5, size, $scale);
-        break;
-      case GridType.none:
-        break;
-      default:
-        Grid.drawSimpleGrid(p5, size, $scale);
-    }
+    Grid.drawGrid(p5, size, gridType, $scale);
   }
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import p5 from 'p5';
+  import type p5 from 'p5';
   import { onDestroy, onMount } from 'svelte';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
