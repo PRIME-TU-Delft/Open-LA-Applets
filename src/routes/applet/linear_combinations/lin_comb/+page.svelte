@@ -26,7 +26,7 @@
     <Latex2D position={endPoint} latex={'\\vec{v_1}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
   <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{v_1}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\vec{v_2}'} offset={new Vector2(0.2, 0.2)} />
     <Latex2D latex={'\\vec{v_2}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
 
@@ -37,10 +37,12 @@
 
   <!-- Bases extended -->
   <Vector2D direction={v1} length={v1Extended} color={PrimeColor.green} isDashed let:endPoint>
-    <Latex2D
-      position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
-      latex={`${v1Extended.toFixed(2)} \\vec{v_1}`}
-    />
+    {#key alpha}
+      <Latex2D
+        position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
+        latex={`${alpha.toFixed(2)} \\vec{v_1}`}
+      />
+    {/key}
     <Vector2D
       origin={endPoint}
       direction={v2}
@@ -52,10 +54,12 @@
   </Vector2D>
 
   <Vector2D direction={v2} length={v2Extended} color={PrimeColor.red} isDashed let:endPoint>
-    <Latex2D
-      position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
-      latex={`${v1Extended.toFixed(2)} \\vec{v_1}`}
-    />
+    {#key beta}
+      <Latex2D
+        position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
+        latex={`${beta.toFixed(2)} \\vec{v_2}`}
+      />
+    {/key}
     <Vector2D
       origin={endPoint}
       direction={v1}
