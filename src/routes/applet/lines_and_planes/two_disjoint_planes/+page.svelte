@@ -8,7 +8,7 @@
   import { Sliders } from '$lib/utils/Slider';
 
   const normal = new Vector3(1, 3, 1).normalize();
-  let sliders = new Sliders().addSlider(0, -5, 5, 0.5).addSlider(1, -5, 5, 0.5);
+  let sliders = new Sliders().addSlider(1, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
 </script>
 
 <Canvas3D

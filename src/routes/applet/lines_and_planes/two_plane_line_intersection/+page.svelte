@@ -7,7 +7,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
 
-  let sliders = new Sliders().addSlider(0).addSlider(1);
+  let sliders = new Sliders().addSlider(0, -10, 0).addSlider(1, 1, 10);
 </script>
 
 <Canvas3D bind:sliders title="Two planes with a line of intersection.">
