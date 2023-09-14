@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="formulas flex gap-1 w-full absolute z-50 justify-between"
+  class="formulas flex gap-1 w-full top-0 absolute z-50 justify-between"
   class:!justify-end={!isIframe || isFullscreen}
 >
   <!-- ACTIVITY PANEL -->
@@ -40,7 +40,7 @@
   <!-- TODO: change this logic -->
   <!-- FORMULAS -->
   {#if hasFormulas && (isChangingSliders || showFormulas || !isIframe || isFullscreen)}
-    <div class="menu p-4 bg-base-200 rounded-lg" class:inset={!isIframe || isFullscreen}>
+    <div class="menu p-4 m-2 bg-base-200 rounded-lg" class:inset={!isIframe || isFullscreen}>
       <slot />
     </div>
   {/if}

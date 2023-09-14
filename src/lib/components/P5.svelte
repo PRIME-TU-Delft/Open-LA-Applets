@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import type p5 from 'p5';
 
   // Component props
@@ -8,7 +8,7 @@
 
   let p5El: HTMLDivElement;
 
-  function augmentClasses(instance: p5, classes): p5 {
+  function augmentClasses(instance: p5, classes: [string, Function][]): p5 {
     classes.forEach(([key, value]) => (instance[key] = value));
     return instance;
   }
@@ -29,6 +29,10 @@
 
       return sketch(instance);
     }, p5El);
+  });
+
+  onDestroy(() => {
+    p5El.remove(); // Destroy the p5 instance
   });
 </script>
 
