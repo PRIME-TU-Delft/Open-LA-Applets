@@ -41,7 +41,7 @@
   $: isOrthogonal = Math.abs(w.dot(v)) <= 0.00000000001 && !v.equals(w);
 </script>
 
-<Canvas2D gridType={GridType.hiddenGrid}>
+<Canvas2D gridType={GridType.squareGrid}>
   <!-- Interactive side -->
   <Draggables snap bind:position={w_plus_o} defaultPosition={wDefault} color={PrimeColor.green} />
   <Draggables
