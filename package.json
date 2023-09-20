@@ -17,6 +17,7 @@
   "dependencies": {
     "@mdi/js": "^7.2.96",
     "@tailwindcss/typography": "^0.5.9",
+    "d3": "^7.8.5",
     "daisyui": "^3.2.1",
     "fuse.js": "^6.6.2",
     "katex": "^0.16.8",
@@ -43,6 +44,7 @@
     "@sveltejs/kit": "^1.20.4",
     "@threlte/core": "next",
     "@threlte/extras": "next",
+    "@types/d3": "^7.4.0",
     "@types/p5": "^1.6.2",
     "@types/three": "^0.152.1",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
