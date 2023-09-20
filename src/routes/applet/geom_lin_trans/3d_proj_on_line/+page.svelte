@@ -22,7 +22,7 @@
 <Canvas3D>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={'\\vec{u}'} position={u} />
+  <Latex3D latex={'\\bold{u}'} position={u} />
 
   <!-- Projection vector from line L to u with a point at projection point -->
   <Point3D position={u_proj} color={PrimeColor.red} />
@@ -33,7 +33,7 @@
     color={PrimeColor.red}
     striped
   />
-  <Latex3D latex={'proj_L(\\vec{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
+  <Latex3D latex={'proj_L(\\bold{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
 
   <!-- Angle between proj and line l -->
   <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />

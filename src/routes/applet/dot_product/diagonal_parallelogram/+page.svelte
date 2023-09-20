@@ -24,15 +24,15 @@
 
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{v}'} offset={new Vector2(-0.2, 0.5)} />
+    <Latex2D position={endPoint} latex={'\\bold{v}'} offset={new Vector2(-0.2, 0.5)} />
   </Vector2D>
   <Vector2D direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{w}'} offset={new Vector2(-0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{w}'} offset={new Vector2(-0.2, 0.2)} />
   </Vector2D>
 
   <!-- v+w -->
   <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.red} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{v} + \\vec{w}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{v} + \\bold{w}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
 
   <!-- v-w -->
@@ -43,7 +43,7 @@
     color={PrimeColor.pink}
     let:endPoint
   >
-    <Latex2D position={endPoint} latex={'\\vec{v} - \\vec{w}'} offset={new Vector2(-0.2, -0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{v} - \\bold{w}'} offset={new Vector2(-0.2, -0.2)} />
   </Vector2D>
 
   <!-- Helper lins -->

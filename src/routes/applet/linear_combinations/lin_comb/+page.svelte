@@ -23,16 +23,16 @@
 
   <!-- Bases -->
   <Vector2D direction={v1} length={v1.length()} color={PrimeColor.green} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{v_1}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{v_1}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
   <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{v_2}'} offset={new Vector2(0.2, 0.2)} />
-    <Latex2D latex={'\\vec{v_2}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{v_2}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D latex={'\\bold{v_2}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
 
   <!-- u -->
   <Vector2D direction={u} length={u.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\vec{u}'} offset={new Vector2(0.2, 0.2)} />
+    <Latex2D position={endPoint} latex={'\\bold{u}'} offset={new Vector2(0.2, 0.2)} />
   </Vector2D>
 
   <!-- Bases extended -->
@@ -40,7 +40,7 @@
     {#key alpha}
       <Latex2D
         position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
-        latex={`${alpha.toFixed(2)} \\vec{v_1}`}
+        latex={`${alpha.toFixed(2)} \\bold{v_1}`}
       />
     {/key}
     <Vector2D
@@ -57,7 +57,7 @@
     {#key beta}
       <Latex2D
         position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
-        latex={`${beta.toFixed(2)} \\vec{v_2}`}
+        latex={`${beta.toFixed(2)} \\bold{v_2}`}
       />
     {/key}
     <Vector2D
