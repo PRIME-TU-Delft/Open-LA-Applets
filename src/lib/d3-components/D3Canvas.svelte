@@ -32,7 +32,7 @@
 
 <svelte:window on:resize={handleResize} />
 
-<svg bind:this={svg} {width} {height}>
+<svg bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
   <g>
     <Axis {width} {height} {zoomLevel} length={tickLength} />
 
