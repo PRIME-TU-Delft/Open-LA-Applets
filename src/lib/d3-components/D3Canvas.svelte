@@ -5,12 +5,15 @@
 
   export let width: number;
   export let height: number;
+  export let tickLength = 30;
 
   let svg: SVGSVGElement;
+  let zoomLevel = 1;
 
-  let data = ticks(-5, 5, 30).map((x, i) => i * Math.sin(x));
+  $: vmax = Math.max(width, height);
 
   function handleZoom(e: any) {
+    zoomLevel = e.transform.k;
     select('svg g').attr('transform', e.transform);
   }
 
@@ -30,17 +33,14 @@
 <svelte:window on:resize={handleResize} />
 
 <svg bind:this={svg} {width} {height}>
-  <Axis {width} {height} let:fnx let:fny>
-    <path
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      d={line((d, i) => fnx(i), fny)(data)}
-    />
-    <g fill="white" stroke="currentColor" stroke-width="1.5">
-      {#each data as d, i (i)}
-        <circle cx={fnx(i)} cy={fny(d)} r="2.5" fill="white" />
-      {/each}
+  <g>
+    <Axis {width} {height} {zoomLevel} length={tickLength} />
+
+    <g
+      transform="translate({width / 2}, {height / 2}) scale({(2 * vmax) / 30}, {(-1 * (2 * vmax)) /
+        30})"
+    >
+      <slot />
     </g>
-  </Axis>
+  </g>
 </svg>

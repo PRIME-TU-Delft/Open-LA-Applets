@@ -3,7 +3,7 @@
   import type { Sliders } from '$lib/utils/Slider';
   // import Axis2D from './Axis.svelte';
   // import { GridType } from './Grids';
-  import P5Canvas from './D3Canvas.svelte';
+  import D3Canvas from './D3Canvas.svelte';
 
   export let title = '';
   export let background = '#ffffff';
@@ -23,7 +23,7 @@
   let:height
   bind:sliders
 >
-  <P5Canvas {width} {height}>
+  <D3Canvas {width} {height}>
     <!-- TODO:  Grids -->
     <!-- <slot name="grids">
       {#if gridType}
@@ -32,7 +32,7 @@
     </slot> -->
 
     <slot />
-  </P5Canvas>
+  </D3Canvas>
 
   <svelte:fragment slot="formulas"><slot name="formulas" /></svelte:fragment>
 </AbstractCanvas>

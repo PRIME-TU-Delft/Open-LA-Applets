@@ -3,7 +3,6 @@
   // import Draggables from '$lib/p5-components/components/Draggables.svelte';
   // import { GridType } from '$lib/p5-components/components/Grids';
   import Canvas2D from '$lib/d3-components/Canvas.svelte';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
   let b1 = new Vector2(2, 0);
@@ -15,6 +14,8 @@
 </script>
 
 <Canvas2D>
+  <circle cx="2" cy="3" r=".1" fill="red" />
+
   <!-- <Draggables snap bind:position={b1} defaultPosition={b1Default} color={PrimeColor.ultramarine} /> -->
 
   <!-- Arcs -->
