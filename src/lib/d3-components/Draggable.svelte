@@ -30,8 +30,8 @@
     select(g).attr('cursor', 'grab');
 
     if (snap) {
-      offset.x = Math.round(offset.x);
-      offset.y = Math.round(offset.y);
+      offset.x = Math.round(position.x + offset.x) - position.x;
+      offset.y = Math.round(position.y + offset.y) - position.y;
     }
   }
 
