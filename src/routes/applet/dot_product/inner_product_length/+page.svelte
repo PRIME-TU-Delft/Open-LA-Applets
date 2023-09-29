@@ -31,7 +31,7 @@
 
   <!-- Vector v [Blue] -->
   <Vector3D direction={v_a} color={PrimeColor.ultramarine} length={v_len} />
-  <Latex3D latex={'\\vec{v}'} position={v_a.clone().multiplyScalar(0.5)} />
+  <Latex3D latex={'\\bold{v}'} position={v_a.clone().multiplyScalar(0.5)} />
 
   <!-- Helper green lines -->
   <Vector3D color={PrimeColor.green} direction={v_p} length={v_p.length()} />
@@ -89,7 +89,7 @@
     <LatexUI
       params={[v_len, sliders.x, sliders.y]}
       colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
-      latex={'\\begin{aligned} OA = || \\vec{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
+      latex={'\\begin{aligned} OA = || \\bold{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
     />
   </div>
 
