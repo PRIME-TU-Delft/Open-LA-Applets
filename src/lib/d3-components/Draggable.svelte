@@ -4,15 +4,12 @@
   import { onMount } from 'svelte';
   import { Vector2 } from 'three';
 
-  export let offset = new Vector2(0, 0);
+  export let id: string;
   export let position = new Vector2(0, 0);
   export let color = PrimeColor.ultramarine;
   export let snap = false;
 
   let g: SVGGElement;
-
-  $: dx = offset.x;
-  $: dy = offset.y;
 
   function dragstarted(event: DragEvent) {
     select(g).raise();
@@ -20,24 +17,32 @@
   }
 
   function dragged(event: DragEvent) {
-    offset.x = event.x - position.x;
-    offset.y = event.y - position.y;
-
-    // console.log({ event });
+    position.x = event.x;
+    position.y = event.y;
   }
 
   function dragended() {
     select(g).attr('cursor', 'grab');
 
     if (snap) {
-      offset.x = Math.round(position.x + offset.x) - position.x;
-      offset.y = Math.round(position.y + offset.y) - position.y;
+      position.x = Math.round(position.x);
+      position.y = Math.round(position.y);
     }
   }
 
   onMount(() => {
-    offset = new Vector2(0, 0);
+    const localPosition = localStorage.getItem(id);
+    console.log(id);
 
+    if (localPosition) {
+      const { x, y } = JSON.parse(localPosition);
+      position.x = x;
+      position.y = y;
+    } else {
+      localStorage.setItem(id, JSON.stringify(position));
+    }
+
+    // Setup the drag behavior
     select(g)
       .call(
         drag<SVGGElement, unknown>()
@@ -45,17 +50,17 @@
           .on('drag', dragged)
           .on('end', dragended)
       )
-      .raise();
+      .raise(); // Means the drag element is lifted to the highest z-index
   });
 </script>
 
-<circle class="pulse" cx={position.x + offset.x} cy={position.y + offset.y} r=".5" fill={color} />
-<circle cx={position.x + offset.x} cy={position.y + offset.y} r=".125" fill={color} />
+<circle class="pulse" cx={position.x} cy={position.y} r=".5" fill={color} />
+<circle cx={position.x} cy={position.y} r=".125" fill={color} />
 
-<slot {dx} {dy} />
+<slot />
 
 <g bind:this={g}>
-  <circle cx={position.x + dx} cy={position.y + dy} r=".5" opacity="0" />
+  <circle cx={position.x} cy={position.y} r=".5" opacity="0" />
 </g>
 
 <style>
