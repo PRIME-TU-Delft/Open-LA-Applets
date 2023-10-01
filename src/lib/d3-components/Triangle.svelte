@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type p5 from 'p5';
   import { Vector2 } from 'three';
 
   export let points: [Vector2, Vector2, Vector2] = [new Vector2(), new Vector2(), new Vector2()];

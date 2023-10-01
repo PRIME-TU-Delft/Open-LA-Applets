@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { line, select, ticks, zoom } from 'd3';
+  import type { GridType } from './grids/GridTypes';
+  import { select, zoom } from 'd3';
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
 
   export let width: number;
   export let height: number;
   export let tickLength = 30;
+  export let gridType: GridType;
 
   let svg: SVGSVGElement;
   let zoomLevel = 1;
@@ -34,7 +36,7 @@
 
 <svg bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
   <g>
-    <Axis {width} {height} {zoomLevel} length={tickLength} />
+    <Axis {width} {height} {zoomLevel} length={tickLength} {gridType} />
 
     <g
       transform="translate({width / 2}, {height / 2}) scale({(2 * vmax) / 30}, {(-1 * (2 * vmax)) /

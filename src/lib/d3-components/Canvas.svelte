@@ -4,14 +4,14 @@
   import { Vector2 } from 'three';
   import { Latex2D } from '.';
   import D3Canvas from './D3Canvas.svelte';
+  import { GridType } from './grids/GridTypes';
 
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
   export let isIframe = false; // Is the scene inside an iframe?
   export let sliders: Sliders | undefined = undefined;
-
-  // export let gridType: GridType = GridType.none;
+  export let gridType: GridType = GridType.Square;
 </script>
 
 <AbstractCanvas
@@ -23,14 +23,7 @@
   let:height
   bind:sliders
 >
-  <D3Canvas {width} {height}>
-    <!-- TODO:  Grids -->
-    <!-- <slot name="grids">
-      {#if gridType}
-        <Axis2D {gridType} />
-      {/if}
-    </slot> -->
-
+  <D3Canvas {width} {height} {gridType}>
     <!-- origin label-->
     <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
 
