@@ -31,7 +31,7 @@
       isDashed
     />
 
-    <Point2D position={ut.u} color={PrimeColor.red} pulse />
+    <Point2D position={ut.u} color={PrimeColor.red} />
     <Latex2D
       latex={`\\mathbf{u}_${index + 1}`}
       position={ut.u}
@@ -39,7 +39,7 @@
       color={PrimeColor.red}
     />
 
-    <Point2D position={ut.ut} color={PrimeColor.ultramarine} isSquare pulse />
+    <Point2D position={ut.ut} color={PrimeColor.ultramarine} isSquare />
     <Latex2D
       latex={`R(\\mathbf{u}_${index + 1})`}
       position={ut.ut}
