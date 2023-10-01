@@ -1,8 +1,8 @@
 <script lang="ts">
   import AbstractCanvas from '$lib/components/AbstractCanvas.svelte';
   import type { Sliders } from '$lib/utils/Slider';
-  // import Axis2D from './Axis.svelte';
-  // import { GridType } from './Grids';
+  import { Vector2 } from 'three';
+  import { Latex2D } from '.';
   import D3Canvas from './D3Canvas.svelte';
 
   export let title = '';
@@ -30,6 +30,9 @@
         <Axis2D {gridType} />
       {/if}
     </slot> -->
+
+    <!-- origin label-->
+    <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
 
     <slot />
   </D3Canvas>

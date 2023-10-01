@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { drag, select } from 'd3';
   import { onMount } from 'svelte';
@@ -6,7 +7,7 @@
 
   export let id: string;
   export let position = new Vector2(0, 0);
-  export let color = PrimeColor.ultramarine;
+  export let color: PrimeColor = PrimeColor.ultramarine;
   export let snap = false;
 
   let g: SVGGElement;
@@ -31,15 +32,17 @@
   }
 
   onMount(() => {
-    const localPosition = localStorage.getItem(id);
-    console.log(id);
+    const localUrl = $page.url.href.split('/').slice(-2).join('-');
+
+    const index = id + localUrl;
+    const localPosition = localStorage.getItem(index);
 
     if (localPosition) {
       const { x, y } = JSON.parse(localPosition);
       position.x = x;
       position.y = y;
     } else {
-      localStorage.setItem(id, JSON.stringify(position));
+      localStorage.setItem(index, JSON.stringify(position));
     }
 
     // Setup the drag behavior

@@ -4,7 +4,7 @@
   export let start: Vector2 = new Vector2(0, 0);
   export let end: Vector2 = new Vector2(0, 0);
   export let color: string = 'black';
-  export let width: number = 1;
+  export let width: number = 0.05;
   export let isDashed = false;
 </script>
 
