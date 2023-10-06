@@ -24,15 +24,15 @@
 <Canvas3D>
   <!-- Vector b1 -->
   <Vector3D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\vec{b1}'} position={b1} />
+  <Latex3D latex={'\\bold{b1}'} position={b1} />
 
   <!-- Vector v -->
   <Vector3D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\vec{b2}'} position={b2} />
+  <Latex3D latex={'\\bold{b2}'} position={b2} />
 
   <!-- Vector w = b1 + b2 -->
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\vec{b3}'} position={b3} />
+  <Latex3D latex={'\\bold{b3}'} position={b3} />
 
   <!-- Helper axis [black vectors] -->
   <Vector3D direction={b4} length={8.5} hideHead color={PrimeColor.pink} />

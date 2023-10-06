@@ -16,16 +16,16 @@
 <Canvas3D cameraPosition={new Vector3(3.31, 6.55, 15.68)} zoom={38} bind:sliders>
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.red} length={v_0.length()} />
-  <Latex3D position={v_0} latex={'\\vec{v_0}'} />
+  <Latex3D position={v_0} latex={'\\bold{v_0}'} />
 
   <!-- Vector r * v -->
   <Vector3D direction={u} color={PrimeColor.green} origin={v_0} length={ru_len} let:endPoint>
-    <Latex3D position={endPoint} latex={`\\space r\\vec{u}`} />
+    <Latex3D position={endPoint} latex={`\\space r\\bold{u}`} />
 
     <!-- Vector v -->
     <Vector3D direction={endPoint} color={PrimeColor.yellow} length={endPoint.length()} />
 
-    <Latex3D position={endPoint} latex={`\\vec{v}`} offset={-2} />
+    <Latex3D position={endPoint} latex={`\\bold{v}`} offset={-2} />
   </Vector3D>
 
   <!-- Vector u -->
@@ -37,7 +37,7 @@
     striped
     radius={0.07}
   />
-  <Latex3D position={v_0.clone().add(u)} latex={'\\vec{u}'} />
+  <Latex3D position={v_0.clone().add(u)} latex={'\\bold{u}'} />
 
   <!-- Line l -->
   <Vector3D origin={v_0} direction={u} length={10} hideHead color={PrimeColor.ultramarine} />

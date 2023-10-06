@@ -24,7 +24,7 @@
 
   <!-- Normal -->
   <Vector3D direction={n} color={PrimeColor.ultramarine} length={n.length()} />
-  <Latex3D latex={'\\vec{n}'} position={n} />
+  <Latex3D latex={'\\bold{n}'} position={n} />
 
   <!-- Q -->
   <Vector3D direction={q} color={PrimeColor.red} length={q.length()} />
