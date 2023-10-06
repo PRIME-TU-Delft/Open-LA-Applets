@@ -9,8 +9,8 @@
   const b1Default = new Vector2(Math.sqrt(4 / 3) * 2, 0);
   const b2 = new Vector2(-Math.sqrt(4 / 3), 2);
 
-  const b1tob2 = b1.clone().add(b2);
-  const minusB1 = b1.clone().multiplyScalar(-1);
+  $: b1tob2 = b1.clone().add(b2);
+  $: minusB1 = b1.clone().multiplyScalar(-1);
 </script>
 
 <Canvas2D gridType={GridType.triangularGrid}>
