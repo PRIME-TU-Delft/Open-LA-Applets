@@ -18,7 +18,7 @@
 <Canvas3D bind:sliders cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
-  <Latex3D latex={'Q'} position={v_q} />
+  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1}/>
 
   <!-- Vector a [Yellow] -->
   <Vector3D
@@ -27,11 +27,11 @@
     color={PrimeColor.yellow}
     length={sliders.y}
   />
-  <Latex3D latex={'A'} position={v_a} />
+  <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} size={1.3}/>
 
   <!-- Vector v [Blue] -->
   <Vector3D direction={v_a} color={PrimeColor.ultramarine} length={v_len} />
-  <Latex3D latex={'\\bold{v}'} position={v_a.clone().multiplyScalar(0.5)} />
+  <Latex3D latex={'\\bold{v}'} position={v_a.clone().multiplyScalar(0.5).add(new Vector3(-0.7, -0.7, 0))} color={PrimeColor.ultramarine}/>
 
   <!-- Helper green lines -->
   <Vector3D color={PrimeColor.green} direction={v_p} length={v_p.length()} />

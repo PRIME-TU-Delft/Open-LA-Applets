@@ -22,7 +22,7 @@
   <Arc2D points={[b2, minusB1]} distance={0.75} color={PrimeColor.green} />
 
   <!-- Bases -->
-  <Vector2D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} let:endPoint >
     <Latex2D position={endPoint} latex={'\\bold{b_1}'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.ultramarine}/>
   </Vector2D>
   <Vector2D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} let:endPoint>
@@ -30,7 +30,7 @@
   </Vector2D>
 
   <!-- B1 + B2 -->
-  <Vector2D direction={b1plusb2} length={b1.length()} color={PrimeColor.red} let:endPoint>
+  <Vector2D direction={b1plusb2} length={b1plusb2.length()} color={PrimeColor.red} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\bold{b_1} + \\bold{b_2}'}
