@@ -10,12 +10,12 @@
 
 <Canvas3D>
   <Vector3D direction={v} length={v.length()} striped radius={0.08} color={PrimeColor.red} />
-  <Latex3D latex={'\\bold{v}'} position={v} />
+  <Latex3D latex={'\\bold{v}'} position={v.clone().add(new Vector3(0, 0.5, 0))} color={PrimeColor.red}/>
 
   <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />
-  <Latex3D latex={'\\bold{u}'} position={u} />
+  <Latex3D latex={'\\bold{u}'} position={u.clone().add(new Vector3(0, 0.5, 0))} color={PrimeColor.yellow}/>
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'Span\\{\\bold{v}\\}'} position={lineDir} />
+  <Latex3D latex={'Span\\{\\bold{v}\\}'} position={lineDir} offset={0.8} color={PrimeColor.ultramarine}/>
   <Axis3D />
 </Canvas3D>

@@ -39,7 +39,7 @@
     origin={v}
     direction={w}
     length={w.length()}
-    color={PrimeColor.black}
+    color={PrimeColor.green}
     isDashed
     hideHead
   />
@@ -47,7 +47,7 @@
   <div slot="formulas">
     <LatexUI
       params={lengths}
-      colors={[PrimeColor.red, PrimeColor.yellow, PrimeColor.pink]}
+      colors={[PrimeColor.ultramarine, PrimeColor.green, PrimeColor.red]}
       latex={'\\begin{aligned} ||v|| = \\$0 \\\\ ||w|| = \\$1 \\\\ || v + w || = \\$2  \\end{aligned}'}
     />
   </div>

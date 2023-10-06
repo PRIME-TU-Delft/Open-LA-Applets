@@ -11,15 +11,15 @@
 <Canvas3D>
   <!-- Vector u -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\bold{u}'} position={u} />
+  <Latex3D latex={'\\bold{u}'} position={u} color={PrimeColor.red}/>
 
   <!-- Vector v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\bold{v}'} position={v} />
+  <Latex3D latex={'\\bold{v}'} position={v} color={PrimeColor.red}/>
 
   <!-- Vector w -->
-  <Vector3D direction={w} length={w.length()} color={PrimeColor.green} />
-  <Latex3D latex={'\\bold{w}'} position={w} />
+  <Vector3D direction={w} length={w.length()} color={PrimeColor.yellow} />
+  <Latex3D latex={'\\bold{w}'} position={w} color={PrimeColor.yellow}/>
 
   <!-- helper striped Vectors -->
   <Vector3D origin={v} direction={u} length={u.length()} striped color={PrimeColor.black} />
@@ -30,7 +30,8 @@
   <Latex3D
     latex={'Span\\{\\bold{u},\\bold{v},\\bold{w}\\}'}
     position={w.clone().normalize().multiplyScalar(8)}
-    offset={0}
+    offset={1.5}
+    color={PrimeColor.ultramarine}
   />
 
   <Axis3D />
