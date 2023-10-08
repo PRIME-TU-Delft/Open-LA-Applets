@@ -54,17 +54,20 @@
 </script>
 
 <!-- Main axis lines -->
+<!-- x -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(-1 * axisLength, 0, 0), new Vector3(axisLength, 0, 0)]}
+  points={[new Vector3(indicatorMin, 0, 0), new Vector3(indicatorMax, 0, 0)]}
 />
+<!-- z -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(0, -1 * axisLength, 0), new Vector3(0, axisLength, 0)]}
+  points={[new Vector3(0, indicatorMin, 0), new Vector3(0, indicatorMax, 0)]}
 />
+<!-- y -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}
+  points={[new Vector3(0, 0, indicatorMin), new Vector3(0, 0, indicatorMax)]}
 />
 
 <!-- Tick indicators -->
