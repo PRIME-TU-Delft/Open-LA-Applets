@@ -29,17 +29,17 @@
 
   <!-- P -->
   <Point3D position={p} color={PrimeColor.pink} />
-  <Latex3D latex={'P'} position={p} />
+  <Latex3D latex={'P'} position={p} offset={0.5} color={PrimeColor.pink}/>
 
   <!-- Q -->
   <Point3D position={q} color={PrimeColor.green} />
-  <Latex3D latex={'Q'} position={q} />
+  <Latex3D latex={'Q'} position={q} offset={0.5} color={PrimeColor.green}/>
   <Vector3D direction={pq} origin={p} color={PrimeColor.red} length={pq.length()} />
 
   <!-- R -->
   <Point3D position={r} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'R'} position={r} />
-  <Vector3D direction={pr} origin={p} color={PrimeColor.red} length={pr.length()} />
+  <Latex3D latex={'R'} position={r} offset={1} color={PrimeColor.ultramarine}/>
+  <Vector3D direction={pr} origin={p} color={PrimeColor.red} length={pr.length()}/>
 
   <Axis3D axisLength={7} showNumbers />
 </Canvas3D>
