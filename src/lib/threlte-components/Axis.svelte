@@ -14,6 +14,7 @@
   export let axisSpacing = 2;
   export let responsiveSpacing = true;
   export let floor = false;
+  export let hideOrigin = false;
 
   let spacing = axisSpacing;
 
@@ -109,4 +110,8 @@
     <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
     <T.CircleGeometry args={[axisLength, 64]} />
   </T.Mesh>
+{/if}
+
+{#if !hideOrigin}
+  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3,0)} />
 {/if}

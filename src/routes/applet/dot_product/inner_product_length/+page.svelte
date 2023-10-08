@@ -68,8 +68,8 @@
   />
   <Vector3D striped origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
 
-  <!--  a_1, O -->
-  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, -0.3)} />
+  <!--  a_1-->
+  
   <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
 
   <!-- a_2 -->
