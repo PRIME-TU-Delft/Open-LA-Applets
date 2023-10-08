@@ -96,13 +96,13 @@
   {/each}
 {/if}
 
-<Latex3D position={new Vector3(0, 0, indicatorMin)} latex="x" />
-<Latex3D position={new Vector3(indicatorMin, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMin, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMin-0.3)} latex="x" />
+<Latex3D position={new Vector3(indicatorMin-0.3, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMin-0.3, 0)} latex="z" />
 
-<Latex3D position={new Vector3(0, 0, indicatorMax)} latex="x" />
-<Latex3D position={new Vector3(indicatorMax, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMax, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMax+0.3)} latex="x" />
+<Latex3D position={new Vector3(indicatorMax+0.3, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMax+0.3, 0)} latex="z" />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
