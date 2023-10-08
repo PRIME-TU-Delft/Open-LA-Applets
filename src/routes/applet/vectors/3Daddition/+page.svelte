@@ -19,7 +19,7 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(3.59, 9.83, 13.8)}
+  cameraPosition={new Vector3(3.59, 1.83, 13.8)}
   zoom={69}
   title="Geometrical interpretation of addition for three-dimensional vectors."
 >
