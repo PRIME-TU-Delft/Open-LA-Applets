@@ -3,6 +3,7 @@
   import SquareGridX from './SquareGridX.svelte';
   import SquareGridY from './SquareGridY.svelte';
   import TriangleGridX from './TriangleGridX.svelte';
+  import TriangleGridY from './TriangleGridY.svelte';
   import { GridType } from './GridTypes';
 
   export let length = 30;
@@ -20,16 +21,12 @@
   $: vmax = Math.max(width, height);
 </script>
 
-{#if side == 'x'}
-  {#if type == GridType.Square}
-    <SquareGridX {linearScale} {width} {height} {zoomLevel} {length} />
-  {:else if type == GridType.Triangle}
-    <TriangleGridX {linearScale} {width} {height} {zoomLevel} {length} />
-  {/if}
-{/if}
-
-{#if side == 'y'}
-  {#if type == GridType.Square || type == GridType.Triangle}
-    <SquareGridY {linearScale} {width} {height} {zoomLevel} {length} />
-  {/if}
+{#if type == GridType.Square && side == 'x'}
+  <SquareGridX {linearScale} {width} {height} {zoomLevel} {length} />
+{:else if type == GridType.Square && side == 'y'}
+  <SquareGridY {linearScale} {width} {height} {zoomLevel} {length} />
+{:else if type == GridType.Triangle && side == 'x'}
+  <TriangleGridX {linearScale} {width} {height} {length} />
+{:else if type == GridType.Triangle && side == 'y'}
+  <TriangleGridY {linearScale} {width} {height} {zoomLevel} {length} />
 {/if}
