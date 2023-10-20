@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/p5-components';
-
-  import { GridType } from '$lib/p5-components/components/Grids';
-  import { Matrix3, Vector2 } from 'three';
+  import { Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Matrix3, Vector2 } from 'three';
 
   const us = [
     new Vector2(2, 3.5),
@@ -22,14 +20,7 @@
 </script>
 
 <Canvas2D>
-  <Axis2D gridType={GridType.squareGrid} />
-
-  <Line2D
-    start={new Vector2(-10, -10)}
-    end={new Vector2(10, 10)}
-    color={PrimeColor.ultramarine}
-    width={2}
-  />
+  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.ultramarine} />
 
   {#each u_ts as ut, index}
     <Vector2D
@@ -40,17 +31,17 @@
       isDashed
     />
 
-    <Point2D position={ut.u} color={PrimeColor.red} radius={10} />
+    <Point2D position={ut.u} color={PrimeColor.red} />
     <Latex2D
-      latex={`\\bold{u_${index + 1}}`}
+      latex={`\\mathbf{u}_${index + 1}`}
       position={ut.u}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
     />
 
-    <Point2D position={ut.ut} color={PrimeColor.ultramarine} radius={10} isSquare />
+    <Point2D position={ut.ut} color={PrimeColor.ultramarine} isSquare />
     <Latex2D
-      latex={`R(\\bold{u_${index + 1}})`}
+      latex={`R(\\mathbf{u}_${index + 1})`}
       position={ut.ut}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.ultramarine}
