@@ -24,7 +24,7 @@
 <Canvas3D>
   <!-- Vector b1 -->
   <Vector3D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\bold{b_1}'} position={b1} color={PrimeColor.ultramarine}/>
+  <Latex3D latex={'\\bold{b}_1'} position={b1} color={PrimeColor.ultramarine}/>
 
   <!-- Vector v -->
   <Vector3D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} />
