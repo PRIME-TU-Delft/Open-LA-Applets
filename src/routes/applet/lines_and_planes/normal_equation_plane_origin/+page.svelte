@@ -24,12 +24,12 @@
 
   <!-- Normal -->
   <Vector3D direction={n} color={PrimeColor.ultramarine} length={n.length()} />
-  <Latex3D latex={'\\bold{n}'} position={n} />
+  <Latex3D latex={'\\mathbf{n}'} position={n} offset={0.2} color={PrimeColor.ultramarine} />
 
   <!-- Q -->
   <Vector3D direction={q} color={PrimeColor.red} length={q.length()} />
   <Point3D position={q} color={PrimeColor.green} />
-  <Latex3D latex={'Q'} position={q} />
+  <Latex3D latex={'Q'} position={q} offset={0.6} color={PrimeColor.green} />
 
   <Angle3D vs={[n, q]} />
 

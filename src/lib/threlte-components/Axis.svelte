@@ -14,6 +14,7 @@
   export let axisSpacing = 2;
   export let responsiveSpacing = true;
   export let floor = false;
+  export let hideOrigin = false;
 
   let spacing = axisSpacing;
 
@@ -54,17 +55,20 @@
 </script>
 
 <!-- Main axis lines -->
+<!-- x -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(-1 * axisLength, 0, 0), new Vector3(axisLength, 0, 0)]}
+  points={[new Vector3(indicatorMin, 0, 0), new Vector3(indicatorMax, 0, 0)]}
 />
+<!-- z -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(0, -1 * axisLength, 0), new Vector3(0, axisLength, 0)]}
+  points={[new Vector3(0, indicatorMin, 0), new Vector3(0, indicatorMax, 0)]}
 />
+<!-- y -->
 <Line
   color={PrimeColor.black}
-  points={[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}
+  points={[new Vector3(0, 0, indicatorMin), new Vector3(0, 0, indicatorMax)]}
 />
 
 <!-- Tick indicators -->
@@ -93,17 +97,21 @@
   {/each}
 {/if}
 
-<Latex3D position={new Vector3(0, 0, indicatorMin)} latex="x" />
-<Latex3D position={new Vector3(indicatorMin, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMin, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex="x" />
+<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex="z" />
 
-<Latex3D position={new Vector3(0, 0, indicatorMax)} latex="x" />
-<Latex3D position={new Vector3(indicatorMax, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMax, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex="x" />
+<Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex="y" />
+<Latex3D position={new Vector3(0, indicatorMax + 0.3, 0)} latex="z" />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
     <T.MeshStandardMaterial side={DoubleSide} color="black" opacity={0.1} transparent />
     <T.CircleGeometry args={[axisLength, 64]} />
   </T.Mesh>
+{/if}
+
+{#if !hideOrigin}
+  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, 0)} />
 {/if}
