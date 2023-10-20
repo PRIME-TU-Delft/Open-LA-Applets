@@ -6,6 +6,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Draggables from '$lib/p5-components/components/Draggables.svelte';
   import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
+    import Vector from '$lib/p5-components/components/Vector.svelte';
 
   const pointSize= 15;
 
@@ -16,6 +17,7 @@
   let u1 = new Vector2(3, 3);
   let u1_default = new Vector2(3, 3);
   
+  let w1 = dir_L.clone().rotateAround(new Vector2(0, 0), 1/2*Math.PI).normalize();
 
   let u2 = new Vector2(2, -1);
   let u2_default = new Vector2(2, -2);
@@ -50,8 +52,6 @@
 
 <Canvas2D gridType={GridType.squareGrid}>
  
-
-
   <!-- L1 -->
   <Line2D
   start={start_L}
@@ -74,16 +74,21 @@
   <Draggables bind:position={u2} defaultPosition={u2_default} color={PrimeColor.red} />
   <Latex2D latex={`\\bold{u}_2`} position={u2} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
 
-  <!-- w  (direction of projection u2) -->
+  <!-- w1 -->
+  <Vector2D   direction={w1} color={PrimeColor.yellow} />
+  <RightAngle vs={[ w1 , dir_L]} origin={proj_u1} size={0.25}/>
+  <Latex2D latex={`\\bold{w}_1`} position={w1} offset={new Vector2(0, 0.2)} color={PrimeColor.yellow}/>
+
+  <!-- w2 -->
   <Vector2D  direction={w2} color={PrimeColor.yellow}  />
   <Draggables bind:position={w2} defaultPosition={w2_default} color={PrimeColor.yellow} />
-  <Latex2D latex={`\\bold{w}`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
+  <Latex2D latex={`\\bold{w}_2`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
 
   <!-- T1(u1) -->
   <RightAngle vs={[ v , dir_L]} origin={proj_u1} size={0.25}/>
   <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
   <Latex2D
-  latex={`T_1(\\bold{u} _1)`}
+  latex={`T_1(\\bold{u}_1)`}
   position={proj_u1}
   offset={new Vector2(0.2, -0.3)}
   color={PrimeColor.ultramarine} />
