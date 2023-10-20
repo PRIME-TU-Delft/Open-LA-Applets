@@ -2,12 +2,10 @@
   import { Axis2D, Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/p5-components';
 
   import { GridType } from '$lib/p5-components/components/Grids';
-  import { Matrix3, Vector2 } from 'three';
+  import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-    import Draggables from '$lib/p5-components/components/Draggables.svelte';
-    import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
-    import Latex from '$lib/components/Latex.svelte';
-    import Label from '$lib/p5-components/components/Label.svelte';
+  import Draggables from '$lib/p5-components/components/Draggables.svelte';
+  import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
 
   const pointSize= 15;
 
@@ -17,11 +15,10 @@
   
   let u1 = new Vector2(3, 3);
   let u1_default = new Vector2(3, 3);
+  
 
   let u2 = new Vector2(2, -1);
   let u2_default = new Vector2(2, -2);
-
-  
 
   let w2 = new Vector2(1, -0.5);
   let w2_default = new Vector2(1, -0.5);
@@ -33,8 +30,10 @@
   $: temp = u2.clone().addScaledVector(w2, -4);
   $: proj_u2 = lineLineIntersection(temp, u2 , start_L, end_L).clone();
 
-  //vector used to draw right angle
-  $: w1 = u1.clone().sub(proj_u1);
+  //vector used to draw right angle to u1
+  $: v = u1.clone().sub(proj_u1);
+   
+  $: w2.normalize();
 
   //todo move this to a utils file?
   function lineLineIntersection(A : Vector2,  B : Vector2 ,C : Vector2 , D : Vector2){
@@ -81,7 +80,7 @@
   <Latex2D latex={`\\bold{w}`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
 
   <!-- T1(u1) -->
-  <RightAngle vs={[ w1 , dir_L]} origin={proj_u1} size={0.25}/>
+  <RightAngle vs={[ v , dir_L]} origin={proj_u1} size={0.25}/>
   <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
   <Latex2D
   latex={`T_1(\\bold{u} _1)`}
