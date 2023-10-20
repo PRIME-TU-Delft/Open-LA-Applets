@@ -1,25 +1,20 @@
 <script lang="ts">
-  import { Arc2D, Axis2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
-  import { GridType } from '$lib/p5-components/components/Grids';
-  import { Vector2 } from 'three';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
   import LatexUI from '$lib/components/Latex.svelte';
+  import { Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
 
   let w = new Vector2(1, 3);
-  const wDefault = new Vector2(1, 3);
-
   let v = new Vector2(3, 0);
-  const vDefault = new Vector2(3, 0);
 
   $: vPlusW = w.clone().add(v);
-
   $: lengths = [Math.abs(v.length()), Math.abs(w.length()), Math.abs(vPlusW.length())];
 </script>
 
 <Canvas2D gridType={GridType.squareGrid}>
   <Draggables snap bind:position={w} defaultPosition={wDefault} color={PrimeColor.green} />
   <Draggables snap bind:position={v} defaultPosition={vDefault} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="w" bind:position={w} color={PrimeColor.ultramarine} />
 
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>

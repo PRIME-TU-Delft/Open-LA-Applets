@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { Arc2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
-  import { GridType } from '$lib/p5-components/components/Grids';
-    import { color } from '$lib/utils/LatexFormat';
+  import { Arc2D, Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -14,8 +11,9 @@
   $: minusB1 = b1.clone().multiplyScalar(-1);
 </script>
 
-<Canvas2D gridType={GridType.squareGrid}>
-  <Draggables snap bind:position={b1} defaultPosition={b1Default} color={PrimeColor.ultramarine} />
+<Canvas2D>
+  <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="b2" bind:position={b2} color={PrimeColor.ultramarine} />
 
   <!-- Arcs -->
   <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.green} />
@@ -33,7 +31,7 @@
   <Vector2D direction={b1plusb2} length={b1plusb2.length()} color={PrimeColor.red} let:endPoint>
     <Latex2D
       position={endPoint}
-      latex={'\\bold{b_1} + \\bold{b_2}'}
+      latex={'\\mathbf{b}_1 + \\mathbf{b}_2'}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
     />

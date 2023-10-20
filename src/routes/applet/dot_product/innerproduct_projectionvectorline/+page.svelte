@@ -1,33 +1,24 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Vector2D, Latex2D } from '$lib/p5-components';
+  import { Canvas2D, Line2D, Vector2D, Latex2D, Draggable2D, RightAngle } from '$lib/d3-components';
 
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
-  import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
 
   let v = new Vector2(1, 0.5);
-  let v_default = new Vector2(1, 0.4);
-  $: v_length = v.length();
 
   $: L_start = v.clone().multiplyScalar(-20);
   $: L_end = v.clone().multiplyScalar(20);
   $: L_label = v.clone().normalize().multiplyScalar(3.3).addScalar(0.3);
 
   let w = new Vector2(2.5, 2.5);
-  let w_default = new Vector2(2.5, 2.5);
-  $: w_length = w.length();
 
   $: proj_w = v.clone().multiplyScalar(w.clone().dot(v) / v.clone().dot(v));
-  $: proj_w_length = proj_w.length();
-  //nesc for drawing right angle
+
+  // nesc for drawing right angle
   $: proj_w_min_w = w.clone().sub(proj_w);
 </script>
 
 <Canvas2D>
-  <!-- origin label-->
-  <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
-
   <!-- L /-->
   <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
   <Latex2D latex={'\\mathcal{L}'} offset={L_label} color={PrimeColor.purple} />
@@ -52,5 +43,5 @@
 
 
   <!-- right angle -->
-  <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w}/>
+  <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />
 </Canvas2D>
