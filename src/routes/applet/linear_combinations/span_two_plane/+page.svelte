@@ -12,15 +12,15 @@
 <Canvas3D>
   <!-- Vector u -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />
-  <Latex3D latex={'\\bold{u}'} position={u} color={PrimeColor.yellow}/>
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.yellow}/>
 
   <!-- Vector v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\bold{v}'} position={v} color={PrimeColor.red}/>
+  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.red}/>
 
   <!-- Plane span -->
   <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.ultramarine} size={15} />
-  <Latex3D latex={'Span\\{\\bold{u},\\bold{v}\\}'} position={labelPosition} offset={1.5} color={PrimeColor.ultramarine}/>
+  <Latex3D latex={'Span\\{\\mathbf{u},\\mathbf{v}\\}'} position={labelPosition} offset={1.5} color={PrimeColor.ultramarine}/>
 
   <Axis3D />
 </Canvas3D>

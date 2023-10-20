@@ -11,8 +11,7 @@
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { bVector } from '$lib/utils/LatexFormat';
-    import Vector from '$lib/p5-components/components/Vector.svelte';
-
+  
   const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
   const v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
 
@@ -22,7 +21,7 @@
 <Canvas3D>
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\bold{u} = ${bVector(u)}`} position={u} color={PrimeColor.green}/>
+  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green}/>
 
   <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.ultramarine} />
 
@@ -42,7 +41,7 @@
   <!-- Angle between projection and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={'Proj_p(\\bold{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
+  <Latex3D latex={'Proj_p(\\mathbf{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
 
   <Axis3D />
 </Canvas3D>

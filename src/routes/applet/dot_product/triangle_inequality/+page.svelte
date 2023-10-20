@@ -11,22 +11,21 @@
   $: lengths = [Math.abs(v.length()), Math.abs(w.length()), Math.abs(vPlusW.length())];
 </script>
 
-<Canvas2D gridType={GridType.squareGrid}>
-  <Draggables snap bind:position={w} defaultPosition={wDefault} color={PrimeColor.green} />
-  <Draggables snap bind:position={v} defaultPosition={vDefault} color={PrimeColor.ultramarine} />
-  <Draggable2D snap id="w" bind:position={w} color={PrimeColor.ultramarine} />
+<Canvas2D >
+  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
+  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
 
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\bold{v}'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.ultramarine}/>
+    <Latex2D position={endPoint} latex={'\\mathbf{v}'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.ultramarine}/>
   </Vector2D>
   <Vector2D direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\bold{w}'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.green}/>
+    <Latex2D position={endPoint} latex={'\\mathbf{w}'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.green}/>
   </Vector2D>
 
   <!-- v+w -->
   <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.red} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\bold{v} + \\bold{w}'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.red}/>
+    <Latex2D position={endPoint} latex={'\\mathbf{v} + \\mathbf{w}'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.red}/>
   </Vector2D>
 
   <!-- Helper lins -->

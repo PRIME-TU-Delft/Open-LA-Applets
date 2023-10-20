@@ -20,7 +20,7 @@
 <Canvas3D>
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\bold{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
+  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
@@ -38,7 +38,7 @@
   <!-- Angle between proj and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={`Refl_p(\\bold{u}) = ${bVector(u_refl)}`} position={u_refl} color={PrimeColor.ultramarine}/>
+  <Latex3D latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`} position={u_refl} color={PrimeColor.ultramarine}/>
 
   <Axis3D />
 </Canvas3D>

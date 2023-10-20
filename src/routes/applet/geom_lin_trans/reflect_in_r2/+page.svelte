@@ -33,7 +33,7 @@
 
     <Point2D position={ut.u} color={PrimeColor.red} />
     <Latex2D
-      latex={`\\bold{u}_${index + 1}`}
+      latex={`\\mathbf{u}_${index + 1}`}
       position={ut.u}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
@@ -41,7 +41,7 @@
 
     <Point2D position={ut.ut} color={PrimeColor.ultramarine} isSquare />
     <Latex2D
-      latex={`R(\\bold{u}_${index + 1})`}
+      latex={`R(\\mathbf{u}_${index + 1})`}
       position={ut.ut}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.ultramarine}

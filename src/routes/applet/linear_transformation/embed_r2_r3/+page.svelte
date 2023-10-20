@@ -41,18 +41,18 @@
 
       <!-- e1 -->
       <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.red} draggable>
-        <Latex2D latex={'\\bold{e_1}'} offset={new Vector2(0, -0.2)} />
+        <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(0, -0.2)} />
       </Vector2D>
 
       <!-- e2 -->
       <Vector2D bind:direction={e2} bind:length={e2Length} color={PrimeColor.yellow} draggable>
-        <Latex2D latex={'\\bold{e_2}'} offset={new Vector2(-0.2, 0)} />
+        <Latex2D latex={'\\mathbf{e_2}'} offset={new Vector2(-0.2, 0)} />
       </Vector2D>
 
       <!-- v -->
       <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine}>
         <Latex2D
-          latex={'\\bold{v}'}
+          latex={'\\mathbf{v}'}
           offset={new Vector2(0.1, 0.1)}
           color={PrimeColor.ultramarine}
         />
@@ -72,11 +72,11 @@
       <Vector3D direction={te1} length={e1Length} color={PrimeColor.red} />
       <Vector3D direction={te2} length={e2Length} color={PrimeColor.yellow} />
 
-      <Latex3D latex={'T(\\bold{e_1})'} position={te1} />
-      <Latex3D latex={'T(\\bold{e_2})'} position={te2} />
+      <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
+      <Latex3D latex={'T(\\mathbf{e_2})'} position={te2} />
 
       <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} />
-      <Latex3D latex={'T(\\bold{v})'} position={tv} color={PrimeColor.ultramarine} />
+      <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.ultramarine} />
 
       <!-- Helper lines -->
       <Line3D points={[te1.clone().multiplyScalar(e1Length), tv.clone()]} color="black" isDashed />

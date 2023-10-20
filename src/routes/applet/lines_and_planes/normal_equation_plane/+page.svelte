@@ -29,7 +29,7 @@
 
   <!-- Normal -->
   <Vector3D origin={p} direction={normal} color={PrimeColor.ultramarine} length={normal.length()} />
-  <Latex3D latex={'\\bold{n}'} position={p.clone().add(normal.clone())} offset={0.2} color={PrimeColor.ultramarine}/>
+  <Latex3D latex={'\\mathbf{n}'} position={p.clone().add(normal.clone())} offset={0.2} color={PrimeColor.ultramarine}/>
 
   <!-- P -->
   <Point3D position={p} color={PrimeColor.pink} />
