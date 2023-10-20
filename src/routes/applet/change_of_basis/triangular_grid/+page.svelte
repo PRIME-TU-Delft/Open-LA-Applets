@@ -20,10 +20,20 @@
 
   <!-- Bases -->
   <Vector2D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\mathbf{b}_1'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.ultramarine}/>
+    <Latex2D
+      position={endPoint}
+      latex={'\\mathbf{b}_1'}
+      offset={new Vector2(0.2, 0.2)}
+      color={PrimeColor.ultramarine}
+    />
   </Vector2D>
   <Vector2D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\mathbf{b}_2'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.ultramarine}/>
+    <Latex2D
+      position={endPoint}
+      latex={'\\mathbf{b}_2'}
+      offset={new Vector2(-0.2, 0.2)}
+      color={PrimeColor.ultramarine}
+    />
   </Vector2D>
 
   <!-- B1 + B2 -->
@@ -38,6 +48,11 @@
 
   <!-- Minus B1 -->
   <Vector2D direction={minusB1} length={b1.length()} color={PrimeColor.red} let:endPoint>
-    <Latex2D position={endPoint} latex={'-\\mathbf{b}_1'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.red} />
+    <Latex2D
+      position={endPoint}
+      latex={'-\\mathbf{b}_1'}
+      offset={new Vector2(-0.2, 0.2)}
+      color={PrimeColor.red}
+    />
   </Vector2D>
 </Canvas2D>

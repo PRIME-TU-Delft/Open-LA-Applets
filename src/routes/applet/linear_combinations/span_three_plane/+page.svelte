@@ -11,15 +11,15 @@
 <Canvas3D>
   <!-- Vector u -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.yellow}/>
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.yellow} />
 
   <!-- Vector v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.red}/>
+  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.red} />
 
   <!-- Vector w -->
-  <Vector3D direction={w} length={w.length()} color={PrimeColor.pink }/>
-  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.pink}/>
+  <Vector3D direction={w} length={w.length()} color={PrimeColor.pink} />
+  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.pink} />
 
   <!-- helper striped Vectors -->
   <Vector3D origin={v} direction={u} length={u.length()} striped color={PrimeColor.black} />

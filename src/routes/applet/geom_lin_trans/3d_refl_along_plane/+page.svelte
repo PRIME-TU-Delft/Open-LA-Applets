@@ -38,7 +38,11 @@
   <!-- Angle between proj and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`} position={u_refl} color={PrimeColor.ultramarine}/>
+  <Latex3D
+    latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`}
+    position={u_refl}
+    color={PrimeColor.ultramarine}
+  />
 
   <Axis3D />
 </Canvas3D>
