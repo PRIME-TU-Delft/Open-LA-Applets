@@ -21,8 +21,7 @@
   let u2 = new Vector2(2, -1);
   let u2_default = new Vector2(2, -2);
 
-  //TODO very bad math
-  const w1 = dir_L.clone().rotateAround(new Vector2(0, 0) , -(1/2)*Math.PI);
+  
 
   let w2 = new Vector2(1, -0.5);
   let w2_default = new Vector2(1, -0.5);
@@ -33,6 +32,9 @@
   //projection of u2 onto line L in direction of w2 gives proj
   $: temp = u2.clone().addScaledVector(w2, -4);
   $: proj_u2 = lineLineIntersection(temp, u2 , start_L, end_L).clone();
+
+  //vector used to draw right angle
+  $: w1 = u1.clone().sub(proj_u1);
 
   //todo move this to a utils file?
   function lineLineIntersection(A : Vector2,  B : Vector2 ,C : Vector2 , D : Vector2){
@@ -58,7 +60,7 @@
   color={PrimeColor.ultramarine}
   width={2}
   />
-
+  
   <!-- guide lines -->
   <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} width={2}/>
   <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} width={2}/>
@@ -73,24 +75,26 @@
   <Draggables bind:position={u2} defaultPosition={u2_default} color={PrimeColor.red} />
   <Latex2D latex={`\\bold{u}_2`} position={u2} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
 
-  <!-- w1 -->
-  <!-- <Vector2D direction={w1} color={PrimeColor.yellow} origin ={dir_L} />
-  <RightAngle vs={[dir_L,w1]} origin={dir_L} size={0.2}/> -->
-
-  <!-- w2  (direction of projection u2) -->
+  <!-- w  (direction of projection u2) -->
   <Vector2D  direction={w2} color={PrimeColor.yellow}  />
   <Draggables bind:position={w2} defaultPosition={w2_default} color={PrimeColor.yellow} />
-  <RightAngle vs={[w1, dir_L]} origin={proj_u1} size={0.2}/>
-  <Latex2D latex={`\\bold{w}_2`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
-
+  <Latex2D latex={`\\bold{w}`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
 
   <!-- T1(u1) -->
+  <RightAngle vs={[ w1 , dir_L]} origin={proj_u1} size={0.25}/>
   <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
+  <Latex2D
+  latex={`T_1(\\bold{u} _1)`}
+  position={proj_u1}
+  offset={new Vector2(0.2, -0.3)}
+  color={PrimeColor.ultramarine} />
 
   <!-- T2(u2) -->
   <Point2D position={proj_u2} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
-
-
-
+  <Latex2D
+  latex={`T_2(\\bold{u}_2)`}
+  position={proj_u2}
+  offset={new Vector2(-0.2, 0.2)}
+  color={PrimeColor.ultramarine} />
   
 </Canvas2D>
