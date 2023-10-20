@@ -42,7 +42,7 @@
 
     <Point2D position={ut.u} color={PrimeColor.red} radius={10} />
     <Latex2D
-      latex={`\\bold{u_${index + 1}}`}
+      latex={`\\bold{u}_${index + 1}`}
       position={ut.u}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
@@ -50,7 +50,7 @@
 
     <Point2D position={ut.ut} color={PrimeColor.ultramarine} radius={10} isSquare />
     <Latex2D
-      latex={`R(\\bold{u_${index + 1}})`}
+      latex={`R(\\bold{u}_${index + 1})`}
       position={ut.ut}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.ultramarine}

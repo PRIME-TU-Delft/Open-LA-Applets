@@ -23,10 +23,10 @@
 
   <!-- Bases -->
   <Vector2D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} let:endPoint >
-    <Latex2D position={endPoint} latex={'\\bold{b_1}'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.ultramarine}/>
+    <Latex2D position={endPoint} latex={'\\bold{b}_1'} offset={new Vector2(0.2, 0.2)} color={PrimeColor.ultramarine}/>
   </Vector2D>
   <Vector2D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D position={endPoint} latex={'\\bold{b_2}'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.ultramarine}/>
+    <Latex2D position={endPoint} latex={'\\bold{b}_2'} offset={new Vector2(-0.2, 0.2)} color={PrimeColor.ultramarine}/>
   </Vector2D>
 
   <!-- B1 + B2 -->

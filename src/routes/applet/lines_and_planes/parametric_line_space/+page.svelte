@@ -17,7 +17,7 @@
 <Canvas3D cameraPosition={new Vector3(3.31, 6.55, 15.68)} zoom={38} bind:sliders>
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.red} length={v_0.length()} />
-  <Latex3D position={v_0} latex={'\\bold{v_0}'} offset={0.6} color={PrimeColor.red}/>
+  <Latex3D position={v_0} latex={'\\bold{v}_0'} offset={0.6} color={PrimeColor.red}/>
 
   <!-- Vector r * u -->
   <Vector3D direction={u} color={PrimeColor.green} origin={v_0} length={ru_len} let:endPoint>
