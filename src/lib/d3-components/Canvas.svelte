@@ -9,8 +9,13 @@
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let width = "100%"
+  export let height = "auto"
+
+  // Is the scene inside an iframe?
+  export let isIframe = false;
   export let sliders: Sliders | undefined = undefined;
+  // The grid type can be None, Square, Triangle
   export let gridType: GridType = GridType.Square;
 </script>
 
@@ -22,6 +27,8 @@
   let:width
   let:height
   bind:sliders
+  --height={height}
+  --width={width}
 >
   <D3Canvas {width} {height} {gridType}>
     <!-- origin label-->

@@ -147,7 +147,7 @@
 
   .canvasWrapper {
     position: relative;
-    width: var(--width, 100vw);
+    width: var(--width, 100%);
     height: var(--height, auto);
     overflow: hidden;
 

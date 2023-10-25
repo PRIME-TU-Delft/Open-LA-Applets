@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GridType } from './grids/GridTypes';
-  import { select, zoom } from 'd3';
+  import { select, zoom, selectAll } from 'd3';
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
 
@@ -9,6 +9,7 @@
   export let tickLength = 30;
   export let gridType: GridType;
 
+  const id = "canvas-" + Math.random().toString(36).substr(2, 9);
   let svg: SVGSVGElement;
   let zoomLevel = 1;
 
@@ -16,7 +17,7 @@
 
   function handleZoom(e: any) {
     zoomLevel = e.transform.k;
-    select('svg g').attr('transform', e.transform);
+    select(`#${id} g`).attr('transform', e.transform);
   }
 
   const zoomProtocol = zoom<SVGSVGElement, unknown>()
@@ -24,17 +25,17 @@
     .on('zoom', handleZoom);
 
   function handleResize() {
-    select(svg).call(zoomProtocol);
+    select(`#${id}`).call(zoomProtocol);
   }
 
   onMount(() => {
-    select(svg).call(zoomProtocol);
+    select(`#${id}`).call(zoomProtocol);
   });
 </script>
 
 <svelte:window on:resize={handleResize} />
 
-<svg bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
+<svg {id} bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
   <g>
     <Axis {width} {height} {zoomLevel} length={tickLength} {gridType} />
 

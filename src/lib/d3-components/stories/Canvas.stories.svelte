@@ -18,13 +18,12 @@
 </script>
 
 <Template let:args>
-  <!--👇 'on:click' allows to forward event to addon-actions  -->
-  <Canvas {...args} />
+  <Canvas height="20rem" {...args} />
 </Template>
 
 <!-- Dynamic snippet should be disabled for this story -->
 <Story name="Default" source>
-  <Canvas />
+  <Canvas height="20rem" />
 </Story>
 
 <!-- Dynamic snippet should be disabled for this story -->
