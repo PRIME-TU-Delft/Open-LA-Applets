@@ -47,7 +47,13 @@
   </Vector2D>
 
   <!-- Bases extended -->
-  <Vector2D direction={v1} length={v1Extended} color={PrimeColor.green} isDashed let:endPoint>
+  <Vector2D
+    direction={v1.clone().multiplyScalar(alpha)}
+    length={Math.abs(v1Extended)}
+    color={PrimeColor.green}
+    isDashed
+    let:endPoint
+  >
     {#key alpha}
       <Latex2D
         position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
@@ -64,7 +70,13 @@
     />
   </Vector2D>
 
-  <Vector2D direction={v2} length={v2Extended} color={PrimeColor.red} isDashed let:endPoint>
+  <Vector2D
+    direction={v2.clone().multiplyScalar(beta)}
+    length={Math.abs(v2Extended)}
+    color={PrimeColor.red}
+    isDashed
+    let:endPoint
+  >
     {#key beta}
       <Latex2D
         position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
