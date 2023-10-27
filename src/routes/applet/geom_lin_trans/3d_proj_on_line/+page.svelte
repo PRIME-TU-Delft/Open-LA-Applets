@@ -33,7 +33,11 @@
     color={PrimeColor.red}
     striped
   />
-  <Latex3D latex={'proj_L(\\mathbf{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
+  <Latex3D
+    latex={'proj_L(\\mathbf{u})'}
+    position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
+    color={PrimeColor.red}
+  />
 
   <!-- Angle between proj and line l -->
   <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />

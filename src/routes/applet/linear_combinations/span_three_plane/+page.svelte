@@ -22,8 +22,22 @@
   <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.pink} />
 
   <!-- helper striped Vectors -->
-  <Vector3D origin={v} direction={u} length={u.length()} striped color={PrimeColor.black} />
-  <Vector3D origin={u} direction={v} length={v.length()} striped color={PrimeColor.black} />
+  <Vector3D
+    origin={v}
+    direction={u}
+    length={u.length()}
+    striped
+    hideHead
+    color={PrimeColor.black}
+  />
+  <Vector3D
+    origin={u}
+    direction={v}
+    length={v.length()}
+    striped
+    hideHead
+    color={PrimeColor.black}
+  />
 
   <!-- Plane span -->
   <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.ultramarine} size={15} />

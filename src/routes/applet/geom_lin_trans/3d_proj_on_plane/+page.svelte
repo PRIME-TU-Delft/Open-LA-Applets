@@ -41,7 +41,11 @@
   <!-- Angle between projection and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={'Proj_p(\\mathbf{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
+  <Latex3D
+    latex={'Proj_p(\\mathbf{u})'}
+    position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
+    color={PrimeColor.red}
+  />
 
   <Axis3D />
 </Canvas3D>
