@@ -9,6 +9,14 @@
     argTypes: {
       title: { type: 'string' },
       background: { type: 'string' }
+    },
+    parameters: {
+      componentSubtitle: "The start of each 2d component",
+      docs: {
+        description: {
+          component: 'Canvas is a component that allows you to draw 2d components on a canvas'
+        }
+      }
     }
   } satisfies Meta<Canvas>;
 </script>
@@ -22,7 +30,7 @@
 </Template>
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="Default" source>
+<Story name="Default" source parameters={{ docs: { description: {story: "your story-specific description here"} } }}>
   <Canvas height="20rem" />
 </Story>
 
