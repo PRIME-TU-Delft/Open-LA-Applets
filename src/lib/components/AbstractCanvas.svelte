@@ -75,7 +75,7 @@
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400 drawer-content"
+    class="canvasWrapper border-l-4 border-gray-400 drawer-content flex"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
