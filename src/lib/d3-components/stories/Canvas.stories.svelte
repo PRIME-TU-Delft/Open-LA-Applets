@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
   import type { Meta } from '@storybook/svelte';
   import Canvas from '../Canvas.svelte';
+  import docsForStory from '$lib/utils/docsForStory';
 
   export const meta = {
     title: '2d components/Canvas',
@@ -10,14 +11,7 @@
       title: { type: 'string' },
       background: { type: 'string' }
     },
-    parameters: {
-      componentSubtitle: 'The start of each 2d component',
-      docs: {
-        description: {
-          component: 'Canvas is a component that allows you to draw 2d components on a canvas'
-        }
-      }
-    }
+    parameters: docsForStory('Canvas is a component that allows you to draw 2d components on a canvas', 'The start of each 2d component')
   } satisfies Meta<Canvas>;
 </script>
 
@@ -36,7 +30,7 @@
 <Story
   name="Default"
   source
-  parameters={{ docs: { description: { story: 'your story-specific description here' } } }}
+  parameters={docsForStory('your story-specific description here')}
 >
   <Canvas height="20rem" />
 </Story>
@@ -49,7 +43,7 @@
 <Story
   name="Split canvas"
   source
-  parameters={{ docs: { description: { story: 'Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal. See code for more details.' } } }}
+  parameters={docsForStory('Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal (this can even be a canvas3D). See code for more details.')}
 >
   <Canvas height="20rem">
     <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
