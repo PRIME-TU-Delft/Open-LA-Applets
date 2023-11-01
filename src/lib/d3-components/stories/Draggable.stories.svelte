@@ -6,7 +6,9 @@
     title: '2d components/Draggable',
     component: Draggable,
     tags: ['autodocs'],
-    docs: {description: {component: 'Draggable is a component that allows you to drag a point around the canvas'}}
+    parameters: docsForStory(
+      'Draggable is a component that allows you to drag a point around the canvas'
+    )
   } satisfies Meta<Draggable>;
 </script>
 
@@ -14,7 +16,7 @@
   import { Story, Template } from '@storybook/addon-svelte-csf';
   import Canvas from '../Canvas.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
+  import docsForStory from '$lib/utils/docsForStory';
 </script>
 
 <Template let:args>
@@ -32,4 +34,3 @@
 <Story name="With origin defined" source args={{ origin: new Vector2(1, 1) }} />
 <Story name="With width defined" source args={{ width: 0.1 }} />
 <Story name="With distance defined" source args={{ distance: 1 }} /> -->
-
