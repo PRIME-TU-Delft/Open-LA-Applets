@@ -25,11 +25,11 @@
 </script>
 
 <g>
-  <g class="text-xl" bind:this={gx} transform="translate(0,{height / 2})">
+  <g class="text-4xl font-serif" bind:this={gx} transform="translate(0,{height / 2})">
     <Grid linearScale={x} {width} {height} {zoomLevel} {length} type={gridType} side="x" />
   </g>
 
-  <g class="text-xl" bind:this={gy} transform="translate({width / 2},0)">
+  <g class="text-4xl font-serif" bind:this={gy} transform="translate({width / 2},0)">
     <Grid linearScale={y} {width} {height} {zoomLevel} {length} type={gridType} side="y" />
   </g>
 

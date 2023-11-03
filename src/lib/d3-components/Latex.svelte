@@ -7,7 +7,7 @@
   import { onMount } from 'svelte';
 
   export let latex: string = '';
-  export let textSize: number = 16;
+  export let textSize: number = 13;
   export let position: Vector2 = new Vector2(0, 0);
   export let offset: Vector2 = new Vector2(0, 0);
   export let color: string = 'black';
