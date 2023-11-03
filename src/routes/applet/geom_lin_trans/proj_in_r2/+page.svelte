@@ -55,99 +55,81 @@
   }
 </script>
 
-<div class="wrapper">
-  <!-- LEFT PANEL : orthogonal -->
-  <div class="panel">
-    <Canvas2D gridType={GridType.Square}>
-      <!-- L1 -->
-      <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={lineWidth} />
+<!-- LEFT PANEL : orthogonal -->
 
-      <!-- guide -->
-      <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} />
+<Canvas2D gridType={GridType.Square}>
+  <!-- L1 -->
+  <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={lineWidth} />
 
-      <!-- u1 -->
-      <Point2D position={u1} color={PrimeColor.red} radius={pointSize} />
-      <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} />
-      <Latex2D
-        latex={`\\mathbf{u}_1`}
-        position={u1}
-        offset={new Vector2(0, 0.3)}
-        color={PrimeColor.red}
-      />
+  <!-- guide -->
+  <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} />
 
-      <!-- w1 -->
-      <Vector2D direction={w1} color={PrimeColor.yellow} />
-      <Latex2D
-        latex={`\\mathbf{w}_1`}
-        position={w1}
-        offset={new Vector2(0, 0.2)}
-        color={PrimeColor.yellow}
-      />
+  <!-- u1 -->
+  <Point2D position={u1} color={PrimeColor.red} radius={pointSize} />
+  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} />
+  <Latex2D
+    latex={`\\mathbf{u}_1`}
+    position={u1}
+    offset={new Vector2(0, 0.3)}
+    color={PrimeColor.red}
+  />
 
-      <RightAngle vs={[v, dir_L]} origin={proj_u1} size={0.25} />
-      <RightAngle vs={[w1, dir_L]} size={0.25} />
+  <!-- w1 -->
+  <Vector2D direction={w1} color={PrimeColor.yellow} />
+  <Latex2D
+    latex={`\\mathbf{w}_1`}
+    position={w1}
+    offset={new Vector2(0, 0.2)}
+    color={PrimeColor.yellow}
+  />
 
-      <!-- T1(u1) -->
-      <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
-      <Latex2D
-        latex={`T_1(\\mathbf{u}_1)`}
-        position={proj_u1}
-        offset={new Vector2(0.2, -0.3)}
-        color={PrimeColor.ultramarine}
-      />
-    </Canvas2D>
-  </div>
+  <RightAngle vs={[v, dir_L]} origin={proj_u1} size={0.25} />
+  <RightAngle vs={[w1, dir_L]} size={0.25} />
+
+  <!-- T1(u1) -->
+  <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
+  <Latex2D
+    latex={`T_1(\\mathbf{u}_1)`}
+    position={proj_u1}
+    offset={new Vector2(0.2, -0.3)}
+    color={PrimeColor.ultramarine}
+  />
 
   <!-- RIGHT PANEL : projection in driection of w2 -->
-  <div class="panel">
-    <Canvas2D gridType={GridType.Square}>
-      <!-- L1 -->
-      <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={0.03} />
+  <svelte:fragment slot="splitCanvas">
+    <!-- L1 -->
+    <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={0.03} />
 
-      <!-- guide line -->
-      <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} />
+    <!-- guide line -->
+    <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} />
 
-      <!-- u2 -->
-      <Point2D position={u2} color={PrimeColor.red} radius={pointSize} />
-      <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} />
-      <Latex2D
-        latex={`\\mathbf{u}_2`}
-        position={u2}
-        offset={new Vector2(0, 0.3)}
-        color={PrimeColor.red}
-      />
+    <!-- u2 -->
+    <Point2D position={u2} color={PrimeColor.red} radius={pointSize} />
+    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} />
+    <Latex2D
+      latex={`\\mathbf{u}_2`}
+      position={u2}
+      offset={new Vector2(0, 0.3)}
+      color={PrimeColor.red}
+    />
 
-      <!-- w2 -->
-      <Vector2D direction={w2} color={PrimeColor.yellow} />
-      <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} />
-      <Latex2D
-        latex={`\\mathbf{w}_2`}
-        position={w2}
-        offset={new Vector2(0, 0.3)}
-        color={PrimeColor.yellow}
-      />
+    <!-- w2 -->
+    <Vector2D direction={w2} color={PrimeColor.yellow} />
+    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} />
+    <Latex2D
+      latex={`\\mathbf{w}_2`}
+      position={w2}
+      offset={new Vector2(0, 0.3)}
+      color={PrimeColor.yellow}
+    />
 
-      <!-- T2(u2) -->
-      <Point2D position={proj_u2} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
-      <Latex2D
-        latex={`T_2(\\mathbf{u}_2)`}
-        position={proj_u2}
-        offset={new Vector2(-0.2, 0.2)}
-        color={PrimeColor.ultramarine}
-      />
-    </Canvas2D>
-  </div>
-</div>
-
-<style>
-  .wrapper {
-    display: flex;
-    gap: 1rem;
-    height: 100%;
-  }
-
-  .panel {
-    width: 50vw;
-    height: 100%;
-  }
-</style>
+    <!-- T2(u2) -->
+    <Point2D position={proj_u2} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
+    <Latex2D
+      latex={`T_2(\\mathbf{u}_2)`}
+      position={proj_u2}
+      offset={new Vector2(-0.2, 0.2)}
+      color={PrimeColor.ultramarine}
+    />
+  </svelte:fragment>
+</Canvas2D>
