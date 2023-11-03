@@ -21,7 +21,7 @@
 <Canvas3D>
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\vec{u} = ${bVector(u)}`} position={u} />
+  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
 
   <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.ultramarine} />
 
@@ -41,7 +41,7 @@
   <!-- Angle between projection and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={'Proj_p(\\vec{u})'} position={u_proj} />
+  <Latex3D latex={'Proj_p(\\mathbf{u})'} position={u_proj.clone().add(new Vector3(0, -0.5, 0))} />
 
   <Axis3D />
 </Canvas3D>

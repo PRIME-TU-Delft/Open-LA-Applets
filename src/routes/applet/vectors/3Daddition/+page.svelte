@@ -19,8 +19,8 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(3.59, 9.83, 13.8)}
-  zoom={69}
+  cameraPosition={new Vector3(3.59, 1.83, 13.8)}
+  zoom={60}
   title="Geometrical interpretation of addition for three-dimensional vectors."
 >
   <!-- lower green vector -->
@@ -56,5 +56,5 @@
   />
   <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints />
 
-  <Axis3D showNumbers axisLength={5} floor />
+  <Axis3D showNumbers axisLength={10} floor />
 </Canvas3D>

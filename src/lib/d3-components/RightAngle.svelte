@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import Line from './Line.svelte';
 
   export let vs: [Vector2, Vector2]; // vectors to draw angle between

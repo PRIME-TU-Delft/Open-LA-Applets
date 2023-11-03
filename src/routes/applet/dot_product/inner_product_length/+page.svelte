@@ -18,7 +18,7 @@
 <Canvas3D bind:sliders cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
-  <Latex3D latex={'Q'} position={v_q} />
+  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />
 
   <!-- Vector a [Yellow] -->
   <Vector3D
@@ -27,11 +27,15 @@
     color={PrimeColor.yellow}
     length={sliders.y}
   />
-  <Latex3D latex={'A'} position={v_a} />
+  <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} size={1.3} />
 
   <!-- Vector v [Blue] -->
   <Vector3D direction={v_a} color={PrimeColor.ultramarine} length={v_len} />
-  <Latex3D latex={'\\vec{v}'} position={v_a.clone().multiplyScalar(0.5)} />
+  <Latex3D
+    latex={'\\mathbf{v}'}
+    position={v_a.clone().multiplyScalar(0.5).add(new Vector3(-0.7, -0.7, 0))}
+    color={PrimeColor.ultramarine}
+  />
 
   <!-- Helper green lines -->
   <Vector3D color={PrimeColor.green} direction={v_p} length={v_p.length()} />
@@ -68,8 +72,8 @@
   />
   <Vector3D striped origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
 
-  <!--  a_1, O -->
-  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, -0.3)} />
+  <!--  a_1-->
+
   <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
 
   <!-- a_2 -->
@@ -89,7 +93,7 @@
     <LatexUI
       params={[v_len, sliders.x, sliders.y]}
       colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
-      latex={'\\begin{aligned} OA = || \\vec{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
+      latex={'\\begin{aligned} OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
     />
   </div>
 

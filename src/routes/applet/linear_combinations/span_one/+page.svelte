@@ -9,9 +9,17 @@
 
 <Canvas3D>
   <Vector3D direction={vDir} length={vDir.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\vec{v}'} position={vDir} />
+  <Latex3D
+    latex={'\\mathbf{v}'}
+    position={vDir.clone().add(new Vector3(0, 0.4, 0))}
+    color={PrimeColor.red}
+  />
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'Span\\{\\vec{v}\\}'} position={lineDir} />
+  <Latex3D
+    latex={'Span\\{\\mathbf{v}\\}'}
+    position={lineDir.add(new Vector3(0, 0.4, 0))}
+    color={PrimeColor.ultramarine}
+  />
   <Axis3D />
 </Canvas3D>
