@@ -1,29 +1,22 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/p5-components';
-
-  import { GridType } from '$lib/p5-components/components/Grids';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
-  import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
-    import Vector from '$lib/p5-components/components/Vector.svelte';
+  import { Canvas2D, Draggable2D, Latex2D, Line2D, Point2D, RightAngle, Vector2D } from '$lib/d3-components';
+  import { GridType } from '$lib/d3-components/grids/GridTypes';
 
-  const pointSize= 15;
+  const pointSize= 0.02;
 
   const dir_L = new Vector2(2, 1);
   const start_L = dir_L.clone().multiplyScalar(-30);
   const end_L = dir_L.clone().multiplyScalar(30);
   
   let u1 = new Vector2(3, 3);
-  let u1_default = new Vector2(3, 3);
   
   let w1 = dir_L.clone().rotateAround(new Vector2(0, 0), 1/2*Math.PI).normalize();
 
   let u2 = new Vector2(2, -1);
-  let u2_default = new Vector2(2, -2);
 
   let w2 = new Vector2(1, -0.5);
-  let w2_default = new Vector2(1, -0.5);
 
   //othogonal proj u1 onto line L
   $: proj_u1 = dir_L.clone().multiplyScalar(dir_L.clone().dot(u1) / dir_L.clone().dot(dir_L));
@@ -50,45 +43,45 @@
 
 </script>
 
-<Canvas2D gridType={GridType.squareGrid}>
+<Canvas2D gridType={GridType.Square}>
  
   <!-- L1 -->
   <Line2D
   start={start_L}
   end={end_L}
   color={PrimeColor.ultramarine}
-  width={2}
+  width={0.03}
   />
   
   <!-- guide lines -->
-  <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} width={2}/>
-  <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} width={2}/>
+  <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} />
+  <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} />
 
   <!-- u1 -->
   <Point2D position={u1} color={PrimeColor.red} radius={pointSize}/>
-  <Draggables bind:position={u1} defaultPosition={u1_default} color={PrimeColor.red} />
-  <Latex2D latex={`\\bold{u}_1`} position={u1} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
+  <Draggable2D id='u1' bind:position={u1} color={PrimeColor.red} />
+  <Latex2D latex={`\\mathbf{u}_1`} position={u1} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
 
   <!-- u2 -->
   <Point2D position={u2} color={PrimeColor.red} radius={pointSize}/>
-  <Draggables bind:position={u2} defaultPosition={u2_default} color={PrimeColor.red} />
-  <Latex2D latex={`\\bold{u}_2`} position={u2} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
+  <Draggable2D id='u2' bind:position={u2} color={PrimeColor.red} />
+  <Latex2D latex={`\\mathbf{u}_2`} position={u2} offset={new Vector2(0, 0.3)} color={PrimeColor.red}/>
 
   <!-- w1 -->
   <Vector2D   direction={w1} color={PrimeColor.yellow} />
   <RightAngle vs={[ w1 , dir_L]} origin={proj_u1} size={0.25}/>
-  <Latex2D latex={`\\bold{w}_1`} position={w1} offset={new Vector2(0, 0.2)} color={PrimeColor.yellow}/>
+  <Latex2D latex={`\\mathbf{w}_1`} position={w1} offset={new Vector2(0, 0.2)} color={PrimeColor.yellow}/>
 
   <!-- w2 -->
   <Vector2D  direction={w2} color={PrimeColor.yellow}  />
-  <Draggables bind:position={w2} defaultPosition={w2_default} color={PrimeColor.yellow} />
-  <Latex2D latex={`\\bold{w}_2`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
+  <Draggable2D id='w2' bind:position={w2} color={PrimeColor.yellow} />
+  <Latex2D latex={`\\mathbf{w}_2`} position={w2} offset={new Vector2(0, 0.3)} color={PrimeColor.yellow}/>
 
   <!-- T1(u1) -->
   <RightAngle vs={[ v , dir_L]} origin={proj_u1} size={0.25}/>
   <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
   <Latex2D
-  latex={`T_1(\\bold{u}_1)`}
+  latex={`T_1(\\mathbf{u}_1)`}
   position={proj_u1}
   offset={new Vector2(0.2, -0.3)}
   color={PrimeColor.ultramarine} />
@@ -96,7 +89,7 @@
   <!-- T2(u2) -->
   <Point2D position={proj_u2} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
   <Latex2D
-  latex={`T_2(\\bold{u}_2)`}
+  latex={`T_2(\\mathbf{u}_2)`}
   position={proj_u2}
   offset={new Vector2(-0.2, 0.2)}
   color={PrimeColor.ultramarine} />
