@@ -32,7 +32,7 @@
   }
 
   onMount(() => {
-    const localUrl = $page.url.href.split('/').slice(-2).join('-');
+    const localUrl = $page?.url?.href?.split('/').slice(-2).join('-');
 
     const index = id + localUrl;
     const localPosition = localStorage.getItem(index);

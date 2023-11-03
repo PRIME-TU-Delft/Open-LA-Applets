@@ -4,7 +4,7 @@
   import { arc } from 'd3';
 
   export let color: PrimeColor = PrimeColor.black;
-  export let points: [Vector2, Vector2];
+  export let points: [Vector2, Vector2] = [new Vector2(1, 0), new Vector2(0, 1)];
   export let origin = new Vector2(0, 0);
   export let width = 0.05;
   export let distance = 0.5;
