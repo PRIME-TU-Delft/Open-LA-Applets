@@ -11,6 +11,7 @@
   export let showFormulasDefault = false;
   export let width = '100%';
   export let height = 'auto';
+  export let zoom = 1;
 
   // Is the scene inside an iframe?
   export let isIframe = false;
@@ -32,7 +33,7 @@
 >
   {@const totalWidth = $$slots.splitCanvas ? width / 2 : width}
 
-  <D3Canvas width={totalWidth} {height} {gridType}>
+  <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
     <!-- origin label-->
     <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
 
@@ -42,7 +43,7 @@
   {#if $$slots.splitCanvas}
     <div class="canvasDivider" />
 
-    <D3Canvas width={totalWidth} {height} {gridType}>
+    <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
       <!-- origin label-->
       <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
 

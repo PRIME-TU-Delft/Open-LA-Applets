@@ -14,8 +14,6 @@
   export let side: 'x' | 'y' = 'x';
   export let type: GridType;
 
-  console.log({ type });
-
   const strokeWidth = 0.25;
 
   $: vmax = Math.max(width, height);
