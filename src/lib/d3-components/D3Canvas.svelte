@@ -9,7 +9,7 @@
   export let tickLength = 30;
   export let gridType: GridType;
 
-  const id = "canvas-" + Math.random().toString(36).substr(2, 9);
+  const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
   let svg: SVGSVGElement;
   let zoomLevel = 1;
 

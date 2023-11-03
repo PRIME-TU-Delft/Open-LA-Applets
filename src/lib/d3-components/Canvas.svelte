@@ -42,7 +42,6 @@
   {#if $$slots.splitCanvas}
     <div class="canvasDivider" />
 
-
     <D3Canvas width={totalWidth} {height} {gridType}>
       <!-- origin label-->
       <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
@@ -61,6 +60,6 @@
     top: 0;
     width: 4px;
     height: 100%;
-    @apply shadow-2xl bg-slate-500
+    @apply shadow-2xl bg-slate-500;
   }
 </style>

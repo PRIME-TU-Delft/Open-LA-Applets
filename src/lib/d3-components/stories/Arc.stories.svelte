@@ -26,8 +26,11 @@
 <!-- Dynamic snippet should be disabled for this story -->
 <Story name="With color" source args={{ color: PrimeColor.red }} />
 
-<Story name="With points defined" source args={{ points: [new Vector2(1,1), new Vector2(-1,-1)] }} />
+<Story
+  name="With points defined"
+  source
+  args={{ points: [new Vector2(1, 1), new Vector2(-1, -1)] }}
+/>
 <Story name="With origin defined" source args={{ origin: new Vector2(1, 1) }} />
 <Story name="With width defined" source args={{ width: 0.1 }} />
 <Story name="With distance defined" source args={{ distance: 1 }} />
-
