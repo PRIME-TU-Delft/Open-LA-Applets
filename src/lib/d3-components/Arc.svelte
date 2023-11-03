@@ -2,12 +2,13 @@
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { arc } from 'd3';
+    import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
 
   export let color: PrimeColor = PrimeColor.black;
   export let points: [Vector2, Vector2];
   export let origin = new Vector2(0, 0);
-  export let width = 0.05;
-  export let distance = 0.5;
+  export let width = LINE_WIDTH;
+  export let distance = 0.8;
 
   $: startAngle = points[0].angle();
   $: endAngle = points[1].angle();

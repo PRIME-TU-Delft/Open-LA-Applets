@@ -1,9 +1,10 @@
 <script lang="ts">
+    import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import type { Vector2 } from 'three';
 
   export let position: Vector2;
   export let isSquare = false;
-  export let radius: number = 0.125;
+  export let radius: number = POINT_SIZE;
   export let color: string = 'black';
   export let pulse = false;
   export let opacity = 1;

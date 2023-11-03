@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
 
   export let start: Vector2 = new Vector2(0, 0);
   export let end: Vector2 = new Vector2(0, 0);
   export let color: string = 'black';
-  export let width: number = 0.05;
+  export let width: number = LINE_WIDTH;
   export let isDashed = false;
 </script>
 
@@ -15,5 +16,5 @@
   y2={end.y}
   stroke={color}
   stroke-width={width}
-  stroke-dasharray="{width} {isDashed ? width / 2 : 0}"
+  stroke-dasharray="{width} {isDashed ? width  : 0}"
 />

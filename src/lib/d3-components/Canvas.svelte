@@ -25,7 +25,7 @@
 >
   <D3Canvas {width} {height} {gridType}>
     <!-- origin label-->
-    <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
+    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
 
     <slot />
   </D3Canvas>
