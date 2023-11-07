@@ -7,7 +7,6 @@
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector2 = new Vector2(0, 0); // origin of vector
   export let direction: Vector2 = new Vector2(1, 0); // direction of vector
-  export const striped = false; // TODO: whether the line is striped
   export let length = 1; // length of the vector + cone
   export let radius = 0.05; // radius of the stem
   export let hideHead = false; // hide the cone
