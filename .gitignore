@@ -20,3 +20,4 @@ vite.config.ts.timestamp-*
 # Deploy
 .netlify/**
 build-*
+chromatic.log
