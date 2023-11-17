@@ -44,12 +44,7 @@
     'Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal (this can even be a canvas3D). See code for more details.'
   )}
   let:args
-  parameters={docsForStory(
-    'Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal (this can even be a canvas3D). See code for more details.'
-  )}
-  let:args
 >
-  <Canvas height="20rem" {...args}>
   <Canvas height="20rem" {...args}>
     <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
 
