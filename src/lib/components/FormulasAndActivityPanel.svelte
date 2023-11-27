@@ -1,20 +1,24 @@
-<script>
+<script lang="ts">
   import { activityStore } from '$lib/activityStore';
   import { mdiPause } from '@mdi/js';
   import Icon from '$lib/components/Icon.svelte';
   import { createEventDispatcher } from 'svelte';
+  import type { Formulas } from '$lib/utils/Formulas';
+  import LatexUI from '$lib/components/Latex.svelte';
 
   export let showFormulas = true;
   export let isChangingSliders = false;
   export let isIframe = false;
   export let isFullscreen = false;
-  export let hasFormulas = false;
+  export let formulas: Formulas[] = [];
+
+  $: hasFormulas = formulas.length > 0; // Are there any formulas to show?
 
   let dispatch = createEventDispatcher();
 </script>
 
 <div
-  class="formulas flex gap-1 w-full top-0 absolute z-50 justify-between"
+  class="formulas flex gap-1 w-full top-0 left-0 absolute z-50 justify-between"
   class:!justify-end={!isIframe || isFullscreen}
 >
   <!-- ACTIVITY PANEL -->
@@ -37,11 +41,14 @@
     </div>
   {/if}
 
-  <!-- TODO: change this logic -->
   <!-- FORMULAS -->
   {#if hasFormulas && (isChangingSliders || showFormulas || !isIframe || isFullscreen)}
     <div class="menu p-4 m-2 bg-base-200 rounded-lg" class:inset={!isIframe || isFullscreen}>
-      <slot />
+      {#each formulas as formula}
+        {#key formula.stringFormula}
+          <LatexUI latex={formula.stringFormula} />
+        {/key}
+      {/each}
     </div>
   {/if}
 </div>

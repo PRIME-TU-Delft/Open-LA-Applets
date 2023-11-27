@@ -23,6 +23,7 @@
   import Vector from '../Vector.svelte';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Formulas } from '$lib/utils/Formulas';
 </script>
 
 <Template let:args>
@@ -67,3 +68,27 @@
   args={{ zoom: 2.0 }}
   parameters={docsForStory('This canvas is zoomed in 2x by specifying zoom=2')}
 />
+
+<Story name="With formulas" source parameters={docsForStory('This canvas has formulas')} let:args>
+  <Canvas
+    formulas={[new Formulas('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
+    height="20rem"
+    {...args}
+  />
+</Story>
+
+<Story
+  name="With formulas in iframe"
+  source
+  parameters={docsForStory(
+    'This canvas has formulas in an iframe. Because this applet will have limited space, the fomulas are hidden by default and can be shown by \n - 1 Clicking the funciton button in the bottom, right,\n - 2 By going fullscreen. \n - 3 By supplying the `showFormulasDefault` prop in the canvas component.'
+  )}
+  let:args
+>
+  <Canvas
+    isIframe
+    formulas={[new Formulas('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
+    height="20rem"
+    {...args}
+  />
+</Story>
