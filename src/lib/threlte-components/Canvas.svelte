@@ -12,6 +12,8 @@
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
+  export let width = '100%';
+  export let height = 'auto';
   export let isIframe = false; // Is the scene inside an iframe?
   export let sliders: Sliders | undefined = undefined;
   export let formulas: Formula[] = [];
@@ -27,6 +29,8 @@
   let:height
   let:resetKey
   bind:sliders
+  --height={height}
+  --width={width}
 >
   <Canvas size={{ width, height }}>
     <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
