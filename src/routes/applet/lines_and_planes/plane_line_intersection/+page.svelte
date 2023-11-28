@@ -1,18 +1,18 @@
 <script lang="ts">
   import { AutoPlane, Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
 
   let sliders = new Sliders().addSlider(-0.6).addSlider(0.5).addSlider(1);
 
-  let formulas: Formulas[] = [];
+  let formulas: Formula[] = [];
 
   function setFormulas(x: number, y: number, z: number) {
-    const f1 = new Formulas('\\$x + 1y + 1z = 0', x, PrimeColor.red);
-    const f2 = new Formulas('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
-    const f3 = new Formulas('\\$x + 1y + 1z = 0', z, PrimeColor.green);
+    const f1 = new Formula('\\$x + 1y + 1z = 0', x, PrimeColor.red);
+    const f2 = new Formula('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
+    const f3 = new Formula('\\$x + 1y + 1z = 0', z, PrimeColor.green);
 
     return [f1, f2, f3];
   }

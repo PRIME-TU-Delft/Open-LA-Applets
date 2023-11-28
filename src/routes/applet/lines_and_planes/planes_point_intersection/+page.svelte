@@ -7,18 +7,18 @@
     Point3D,
     Vector3D
   } from '$lib/threlte-components';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
 
   let sliders = new Sliders().addSlider(0.5).addSlider(1);
-  let formulas: Formulas[] = [];
+  let formulas: Formula[] = [];
 
   function setFormulas(x: number, y: number) {
-    const f0 = new Formulas('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.green);
-    const f1 = new Formulas('P_2 = \\$x + 1y + 1z = 0', x, PrimeColor.red);
-    const f2 = new Formulas('P_3 = \\$x + 1y + 1z = 0', y, PrimeColor.yellow);
+    const f0 = new Formula('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.green);
+    const f1 = new Formula('P_2 = \\$x + 1y + 1z = 0', x, PrimeColor.red);
+    const f2 = new Formula('P_3 = \\$x + 1y + 1z = 0', y, PrimeColor.yellow);
 
     return [f0, f1, f2];
   }

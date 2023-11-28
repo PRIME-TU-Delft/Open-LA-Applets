@@ -23,7 +23,7 @@
   import Vector from '../Vector.svelte';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
 </script>
 
 <Template let:args>
@@ -71,7 +71,7 @@
 
 <Story name="With formulas" source parameters={docsForStory('This canvas has formulas')} let:args>
   <Canvas
-    formulas={[new Formulas('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
+    formulas={[new Formula('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
     height="20rem"
     {...args}
   />
@@ -87,7 +87,7 @@
 >
   <Canvas
     isIframe
-    formulas={[new Formulas('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
+    formulas={[new Formula('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
     height="20rem"
     {...args}
   />

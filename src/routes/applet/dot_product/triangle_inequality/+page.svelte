@@ -1,20 +1,20 @@
 <script lang="ts">
   import { Canvas2D, Draggable2D, Latex2D, Vector2D } from '$lib/d3-components';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
   let w = new Vector2(1, 3);
   let v = new Vector2(3, 0);
 
-  let formulas: Formulas[] = [];
+  let formulas: Formula[] = [];
 
   $: vPlusW = w.clone().add(v);
 
   function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
-    const f1 = new Formulas('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.ultramarine);
-    const f2 = new Formulas('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.green);
-    const f3 = new Formulas(
+    const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.ultramarine);
+    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.green);
+    const f3 = new Formula(
       '|| \\mathbf{v} + \\mathbf{w} || = \\$',
       Math.abs(vPlusWLen),
       PrimeColor.red

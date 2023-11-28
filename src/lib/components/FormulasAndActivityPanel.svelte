@@ -3,14 +3,14 @@
   import { mdiPause } from '@mdi/js';
   import Icon from '$lib/components/Icon.svelte';
   import { createEventDispatcher } from 'svelte';
-  import type { Formulas } from '$lib/utils/Formulas';
+  import type { Formula } from '$lib/utils/Formulas';
   import LatexUI from '$lib/components/Latex.svelte';
 
   export let showFormulas = true;
   export let isChangingSliders = false;
   export let isIframe = false;
   export let isFullscreen = false;
-  export let formulas: Formulas[] = [];
+  export let formulas: Formula[] = [];
 
   $: hasFormulas = formulas.length > 0; // Are there any formulas to show?
 

@@ -1,13 +1,13 @@
 <script lang="ts">
   import { AutoPlane, Axis3D, Canvas3D, PlaneFromNormal } from '$lib/threlte-components';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
   const normal = new Vector3(1, 3, 1).normalize();
-  let formulas: Formulas[] = [
-    new Formulas('1x + 1y + 3z = \\$', 0, PrimeColor.red),
-    new Formulas('1x + 1y + 3z = \\$', 0, PrimeColor.yellow)
+  let formulas: Formula[] = [
+    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.red),
+    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.yellow)
   ];
 </script>
 

@@ -6,7 +6,7 @@
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import SliderPanel from '$lib/components/SliderPanel.svelte';
   import ToggleSliders from '$lib/components/ToggleSliders.svelte';
-  import type { Formulas } from '$lib/utils/Formulas';
+  import type { Formula } from '$lib/utils/Formulas';
   import { Sliders } from '$lib/utils/Slider';
   import { onDestroy, onMount } from 'svelte';
 
@@ -16,7 +16,7 @@
   export let background = '#ffffff';
   export let showFormulasDefault = false;
   export let isIframe = false; // Is the scene inside an iframe?
-  export let formulas: Formulas[] = [];
+  export let formulas: Formula[] = [];
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?

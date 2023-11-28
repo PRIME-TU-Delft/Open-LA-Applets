@@ -5,7 +5,7 @@
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders, Slider } from '$lib/utils/Slider';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
 
   const n0 = new Vector3(1, 1, 1).normalize();
   let sliders = new Sliders().add(new Slider(0, -2, 2, 0.5, PrimeColor.green));
@@ -14,10 +14,10 @@
 
   $: f1 =
     sliders.x != undefined
-      ? new Formulas('P_1 = 1x + 1y + \\$z = 0', sliders.x, PrimeColor.green)
-      : new Formulas('');
-  $: f2 = new Formulas('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow);
-  $: f3 = new Formulas('P_3 = 1x + 1y + \\$z = 0', 0, PrimeColor.red);
+      ? new Formula('P_1 = 1x + 1y + \\$z = 0', sliders.x, PrimeColor.green)
+      : new Formula('');
+  $: f2 = new Formula('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow);
+  $: f3 = new Formula('P_3 = 1x + 1y + \\$z = 0', 0, PrimeColor.red);
 </script>
 
 <Canvas3D

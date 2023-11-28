@@ -1,6 +1,6 @@
 <script>
   import { Axis3D, Canvas3D, Latex3D, Vector3D } from '$lib/threlte-components';
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Slider, Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
@@ -11,7 +11,7 @@
   let sliders = new Sliders().add(new Slider(2, -1.5, 3, 0.1, PrimeColor.green));
 
   $: ru_len = sliders.x * u.length();
-  $: formula = new Formulas('r = \\$', sliders.x, PrimeColor.green);
+  $: formula = new Formula('r = \\$', sliders.x, PrimeColor.green);
 </script>
 
 <Canvas3D

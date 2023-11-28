@@ -1,14 +1,12 @@
 <script lang="ts">
-  import LatexUI from '$lib/components/Latex.svelte';
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
-  import { Vector3 } from 'three';
-
-  import { Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
+  import { Vector3 } from 'three';
 
   let sliders = new Sliders().addSlider(4.5, 3, 6).addSlider(6, 4, 8);
-  let formulas: Formulas[] = [];
+  let formulas: Formula[] = [];
 
   $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(sliders.x);
   $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(sliders.y));
@@ -17,12 +15,12 @@
   $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 
   function setFormulas(x: number, y: number, len: number) {
-    const f1 = new Formulas('OQ = \\$', x, PrimeColor.red);
-    const f2 = new Formulas('QA = \\$', y, PrimeColor.yellow);
-    const f3 = new Formulas('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
+    const f1 = new Formula('OQ = \\$', x, PrimeColor.red);
+    const f2 = new Formula('QA = \\$', y, PrimeColor.yellow);
+    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
       .addParam(1, sliders.x, PrimeColor.red)
       .addParam(2, sliders.y, PrimeColor.yellow);
-    const f4 = new Formulas('OA =  \\$', len, PrimeColor.ultramarine);
+    const f4 = new Formula('OA =  \\$', len, PrimeColor.ultramarine);
 
     formulas = [f1, f2, f3, f4];
   }

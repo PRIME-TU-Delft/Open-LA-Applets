@@ -15,7 +15,7 @@ import { PrimeColor } from './PrimeColors';
  * const formula = new Formulas('The value is 10');
  * console.log(formula.stringFormula); // The value is 10
  */
-export class Formulas {
+export class Formula {
   stringFormula: string;
   invalidFormula = false;
   autoIndex = 0;
