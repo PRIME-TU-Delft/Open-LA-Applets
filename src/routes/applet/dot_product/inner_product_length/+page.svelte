@@ -1,21 +1,36 @@
-<script>
-  import { Vector3 } from 'three';
+<script lang="ts">
   import LatexUI from '$lib/components/Latex.svelte';
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
+  import { Vector3 } from 'three';
 
+  import { Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
 
   let sliders = new Sliders().addSlider(4.5, 3, 6).addSlider(6, 4, 8);
+  let formulas: Formulas[] = [];
 
   $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(sliders.x);
   $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(sliders.y));
   $: v_p = v_q.clone().projectOnVector(new Vector3(1, 0, 0));
 
   $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
+
+  function setFormulas(x: number, y: number, len: number) {
+    const f1 = new Formulas('OQ = \\$', sliders.x, PrimeColor.red);
+    const f2 = new Formulas('QA = \\$', sliders.y, PrimeColor.yellow);
+    const f3 = new Formulas('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
+      .addParam(1, sliders.x, PrimeColor.red)
+      .addParam(2, sliders.y, PrimeColor.yellow);
+    const f4 = new Formulas('OA =  \\$', v_len, PrimeColor.ultramarine);
+
+    formulas = [f1, f2, f3, f4];
+  }
+
+  $: setFormulas(sliders.x, sliders.y, v_len);
 </script>
 
-<Canvas3D bind:sliders cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
+<Canvas3D bind:sliders {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
   <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />
@@ -76,14 +91,13 @@
 
   <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
 
-  <!-- a_2 -->
   <Latex3D latex={'a_2'} position={new Vector3(0, 0, v_a.z)} offset={0.5} />
   <Point3D position={new Vector3(0, 0, v_a.z)} color={PrimeColor.black} />
 
   <Latex3D latex={'a_3'} position={new Vector3(-0.3, sliders.y, 0)} offset={0.5} />
   <Point3D position={new Vector3(0, sliders.y, 0)} color={PrimeColor.black} />
 
-  <div slot="formulas">
+  <!-- <div slot="formulas">
     <LatexUI
       params={[sliders.x, sliders.y]}
       colors={[PrimeColor.red, PrimeColor.yellow]}
@@ -95,7 +109,7 @@
       colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
       latex={'\\begin{aligned} OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
     />
-  </div>
+  </div> -->
 
   <Axis3D showNumbers floor axisLength={10} />
 </Canvas3D>

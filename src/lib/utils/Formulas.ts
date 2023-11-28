@@ -18,32 +18,62 @@ import { PrimeColor } from './PrimeColors';
 export class Formulas {
   stringFormula: string;
   invalidFormula = false;
+  autoIndex = 0;
 
   /**
    * Create new instance of Formulas.
    * @param stringFormula The formula to be used.
-   * @param param The value to be replaced in the formula.
-   * @param color The color of the value.
+   * @param param The value(s) to be replaced in the formula.
+   * @param color The color(s) of the value.
    * @returns A new instance of Formulas.
    */
-  constructor(stringFormula: string, param?: string | number, color?: PrimeColor) {
-    if (!stringFormula) {
-      this.stringFormula = '';
-      this.invalidFormula = true;
-    }
+  constructor(stringFormula: string, param?: number | string, color?: PrimeColor) {
+    this.stringFormula = stringFormula || '';
 
-    if (param == undefined || param == null) {
-      this.stringFormula = stringFormula;
+    if (!stringFormula) {
+      this.invalidFormula = true;
       return;
     }
 
+    if (param == undefined || param == null) return;
+
     const value = parseFloat('' + param).toFixed(2) || param;
 
-    const input = stringFormula.replaceAll(
+    this.stringFormula = this.stringFormula.replaceAll(
       '\\$',
       `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
     );
+  }
 
-    this.stringFormula = input;
+  addParam(index: number, param: number | string, color?: PrimeColor) {
+    const value = parseFloat('' + param).toFixed(2) || param;
+
+    if (index <= 0) {
+      this.stringFormula = this.stringFormula.replaceAll(
+        `\\$`,
+        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
+      );
+    } else {
+      this.stringFormula = this.stringFormula.replaceAll(
+        `\\$${index}`,
+        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
+      );
+    }
+
+    return this;
+  }
+
+  /**
+   * Add a param to the formula indexed from 1.
+   * @param param param to be replaced in the formula
+   * @param color color of the param
+   * @returns this
+   */
+  addAutoParam(param: number | string, color?: PrimeColor) {
+    this.autoIndex += 1;
+
+    const index = this.autoIndex;
+
+    return this.addParam(index, param, color);
   }
 }
