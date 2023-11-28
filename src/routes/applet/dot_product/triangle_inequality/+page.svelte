@@ -1,17 +1,32 @@
 <script lang="ts">
-  import LatexUI from '$lib/components/Latex.svelte';
-  import { Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
+  import { Canvas2D, Draggable2D, Latex2D, Vector2D } from '$lib/d3-components';
+  import { Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
   let w = new Vector2(1, 3);
   let v = new Vector2(3, 0);
 
+  let formulas: Formulas[] = [];
+
   $: vPlusW = w.clone().add(v);
-  $: lengths = [Math.abs(v.length()), Math.abs(w.length()), Math.abs(vPlusW.length())];
+
+  function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
+    const f1 = new Formulas('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.ultramarine);
+    const f2 = new Formulas('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.green);
+    const f3 = new Formulas(
+      '|| \\mathbf{v} + \\mathbf{w} || = \\$',
+      Math.abs(vPlusWLen),
+      PrimeColor.red
+    );
+
+    formulas = [f1, f2, f3];
+  }
+
+  $: setFormulas(v.length(), w.length(), vPlusW.length());
 </script>
 
-<Canvas2D>
+<Canvas2D {formulas}>
   <Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
   <Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
 
@@ -52,12 +67,4 @@
     isDashed
     hideHead
   />
-
-  <div slot="formulas">
-    <LatexUI
-      params={lengths}
-      colors={[PrimeColor.ultramarine, PrimeColor.green, PrimeColor.red]}
-      latex={'\\begin{aligned} ||v|| = \\$0 \\\\ ||w|| = \\$1 \\\\ || v + w || = \\$2  \\end{aligned}'}
-    />
-  </div>
 </Canvas2D>

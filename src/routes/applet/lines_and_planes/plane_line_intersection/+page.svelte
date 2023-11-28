@@ -1,17 +1,28 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
-
-  import { Canvas3D, AutoPlane, Axis3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
-  import LatexUI from '$lib/components/Latex.svelte';
-
+  import { AutoPlane, Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
+  import { Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Sliders } from '$lib/utils/Slider';
+  import { Vector3 } from 'three';
 
   let sliders = new Sliders().addSlider(-0.6).addSlider(0.5).addSlider(1);
+
+  let formulas: Formulas[] = [];
+
+  function setFormulas(x: number, y: number, z: number) {
+    const f1 = new Formulas('\\$x + 1y + 1z = 0', x, PrimeColor.red);
+    const f2 = new Formulas('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
+    const f3 = new Formulas('\\$x + 1y + 1z = 0', z, PrimeColor.green);
+
+    return [f1, f2, f3];
+  }
+
+  $: formulas = setFormulas(sliders.x, sliders.y, sliders.z);
 </script>
 
 <Canvas3D
   cameraPosition={new Vector3(7.29, -4.94, 14.91)}
+  {formulas}
   zoom={37}
   bind:sliders
   title="Two planes with a line of intersection."
@@ -32,12 +43,4 @@
   {/if}
 
   <Axis3D axisLength={7} />
-
-  <div slot="formulas">
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.red]} latex={'\\$0x + 1y + 1z = 0'} />
-
-    <LatexUI params={[sliders.y]} colors={[PrimeColor.yellow]} latex={'\\$0x + 1y + 1z = 0'} />
-
-    <LatexUI params={[sliders.z]} colors={[PrimeColor.green]} latex={'\\$0x + 1y + 1z = 0'} />
-  </div>
 </Canvas3D>

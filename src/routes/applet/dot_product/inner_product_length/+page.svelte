@@ -17,12 +17,12 @@
   $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
 
   function setFormulas(x: number, y: number, len: number) {
-    const f1 = new Formulas('OQ = \\$', sliders.x, PrimeColor.red);
-    const f2 = new Formulas('QA = \\$', sliders.y, PrimeColor.yellow);
+    const f1 = new Formulas('OQ = \\$', x, PrimeColor.red);
+    const f2 = new Formulas('QA = \\$', y, PrimeColor.yellow);
     const f3 = new Formulas('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
       .addParam(1, sliders.x, PrimeColor.red)
       .addParam(2, sliders.y, PrimeColor.yellow);
-    const f4 = new Formulas('OA =  \\$', v_len, PrimeColor.ultramarine);
+    const f4 = new Formulas('OA =  \\$', len, PrimeColor.ultramarine);
 
     formulas = [f1, f2, f3, f4];
   }
@@ -96,20 +96,6 @@
 
   <Latex3D latex={'a_3'} position={new Vector3(-0.3, sliders.y, 0)} offset={0.5} />
   <Point3D position={new Vector3(0, sliders.y, 0)} color={PrimeColor.black} />
-
-  <!-- <div slot="formulas">
-    <LatexUI
-      params={[sliders.x, sliders.y]}
-      colors={[PrimeColor.red, PrimeColor.yellow]}
-      latex={'\\begin{aligned} OQ = \\$0 \\\\ QA = \\$1  \\end{aligned}'}
-    />
-
-    <LatexUI
-      params={[v_len, sliders.x, sliders.y]}
-      colors={[PrimeColor.ultramarine, PrimeColor.red, PrimeColor.yellow]}
-      latex={'\\begin{aligned} OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2} \\\\ = \\$0  \\end{aligned}'}
-    />
-  </div> -->
 
   <Axis3D showNumbers floor axisLength={10} />
 </Canvas3D>

@@ -1,9 +1,9 @@
 <script>
   import { Axis3D, Canvas3D, Latex3D, Vector3D } from '$lib/threlte-components';
-  import { Vector3 } from 'three';
-  import LatexUI from '$lib/components/Latex.svelte';
+  import { Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Slider, Sliders } from '$lib/utils/Slider';
+  import { Vector3 } from 'three';
 
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);
@@ -11,9 +11,15 @@
   let sliders = new Sliders().add(new Slider(2, -1.5, 3, 0.1, PrimeColor.green));
 
   $: ru_len = sliders.x * u.length();
+  $: formula = new Formulas('r = \\$', sliders.x, PrimeColor.green);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(3.31, 6.55, 15.68)} zoom={38} bind:sliders>
+<Canvas3D
+  formulas={[formula]}
+  cameraPosition={new Vector3(3.31, 6.55, 15.68)}
+  zoom={38}
+  bind:sliders
+>
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.red} length={v_0.length()} />
   <Latex3D position={v_0} latex={'\\mathbf{v}_0'} offset={0.6} color={PrimeColor.red} />
@@ -62,10 +68,6 @@
     hideHead
     color={PrimeColor.ultramarine}
   />
-
-  <div slot="formulas">
-    <LatexUI params={[sliders.x]} colors={[PrimeColor.green]} latex={'r = \\$0'} />
-  </div>
 
   <Axis3D axisLength={6} />
 </Canvas3D>
