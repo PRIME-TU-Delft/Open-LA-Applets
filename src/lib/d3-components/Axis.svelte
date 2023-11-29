@@ -20,16 +20,16 @@
     .range([height / 2 - 2 * vmax, height / 2 + 2 * vmax])
     .domain([length, -length]);
 
-  $: select(gy).call(axisLeft(y).ticks(length));
-  $: select(gx).call(axisBottom(x).ticks(length));
+  $: select(gy).call(axisLeft(y).ticks(length).tickFormat(() => ""));
+  $: select(gx).call(axisBottom(x).ticks(length).tickFormat(() => ""));
 </script>
 
 <g>
-  <g class="text-xl font-serif" bind:this={gx} transform="translate(0,{height / 2})">
+  <g bind:this={gx} transform="translate(0,{height / 2})">
     <Grid linearScale={x} {width} {height} {zoomLevel} {length} type={gridType} side="x" />
   </g>
 
-  <g class="text-xl font-serif" bind:this={gy} transform="translate({width / 2},0)">
+  <g bind:this={gy} transform="translate({width / 2},0)">
     <Grid linearScale={y} {width} {height} {zoomLevel} {length} type={gridType} side="y" />
   </g>
 
