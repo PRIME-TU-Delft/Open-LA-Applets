@@ -1,3 +1,4 @@
+import { Formula } from '$lib/utils/Formulas';
 import { Sliders } from '$lib/utils/Slider';
 import AnatomyCanvas from './AnatomyCanvas.svelte';
 
@@ -11,9 +12,17 @@ export default {
   component: AnatomyCanvas
 };
 
-export const OneSlider = {
+export const SimpleCanvas = {
   args: {
-    title: 'One slider',
-    sliders: sliders
+    title: 'Trivial example with red cube'
+  }
+};
+
+export const FullHeaderCanvas = {
+  args: {
+    title: 'Full header example',
+    isIframe: true,
+    formulas: [new Formula('3x = y')],
+    showFormulasDefault: true
   }
 };
