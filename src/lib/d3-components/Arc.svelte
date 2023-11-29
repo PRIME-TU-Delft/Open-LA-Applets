@@ -5,7 +5,7 @@
     import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
 
   export let color: PrimeColor = PrimeColor.black;
-  export let points: [Vector2, Vector2];
+  export let points: [Vector2, Vector2] = [new Vector2(1, 0), new Vector2(0, 1)];
   export let origin = new Vector2(0, 0);
   export let width = LINE_WIDTH;
   export let distance = 0.8;

@@ -1,6 +1,14 @@
-# Turborepo visuals
+# Open Linear Algebra Book Applets
 
 This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology. The applets are hosted here: https://openla.ewi.tudelft.nl.
+
+## Getting started
+
+We are using `pnpm` to install packages. To get started download [pnpm](https://pnpm.io/). Then run:
+
+```bash
+pnpm install
+```
 
 ## What's inside?
 
@@ -14,8 +22,7 @@ This repository contains multiple packages and applications for the PRIME Graphi
 
 ### Utilities
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-This Turborepo has some additional tools already setup for you:
+This repo has some additional tools already setup for you:
 
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
