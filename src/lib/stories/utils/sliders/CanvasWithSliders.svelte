@@ -10,13 +10,13 @@
 
 <Canvas height="20rem" {title} bind:sliders>
   {#if sliders}
-    {#if sliders?.x}
+    {#if sliders?.x != undefined}
       <Vector direction={new Vector2(sliders.x, 1)} length={3} color="green" />
     {/if}
-    {#if sliders?.y}
+    {#if sliders?.y != undefined}
       <Vector direction={new Vector2(sliders.x, sliders.y)} length={3} color="blue" />
     {/if}
-    {#if sliders?.z}
+    {#if sliders?.z != undefined}
       <Vector direction={new Vector2(sliders.x, sliders.y)} length={sliders.z} color="red" />
     {/if}
   {/if}

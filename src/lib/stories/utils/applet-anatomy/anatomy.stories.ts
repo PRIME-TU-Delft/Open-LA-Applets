@@ -23,6 +23,7 @@ export const FullHeaderCanvas = {
     title: 'Full header example',
     isIframe: true,
     formulas: [new Formula('3x = y')],
-    showFormulasDefault: true
+    showFormulasDefault: true,
+    sliders: sliders
   }
 };
