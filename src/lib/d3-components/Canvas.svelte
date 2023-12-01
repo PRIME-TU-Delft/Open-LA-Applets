@@ -15,7 +15,7 @@
   //these need to be moved to axis.svelte
   export let axisLength = 10;
   export let showOrigin = true;
-  export let showAxisNumbers = false;
+  export let showAxisNumbers = true;
 
   // Is the scene inside an iframe?
   export let isIframe = false;
