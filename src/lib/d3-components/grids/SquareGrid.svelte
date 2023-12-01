@@ -16,10 +16,7 @@
 </script>
 
 {#each axisIndeces as index}
-  {#if showOrigin}
-    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
-  {/if}
-
+  <!-- Grid Lines -->
   <line
     x1={index}
     y1={-length}
@@ -37,19 +34,28 @@
     stroke-width={stokeWidth(index)}
   />
 
+  <!-- Tick marks -->
+  <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+  <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+
+  <!-- Axis labels -->
+  {#if showOrigin}
+    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
+  {/if}
+
   {#if index != 0 && showAxisNumbers}
     <!-- X axis number labels -->
     {#if index > 0}
-      <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.07, -0.1)} />
+      <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.07, -0.15)} />
     {:else}
-      <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.15, -0.1)} />
+      <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.15, -0.15)} />
     {/if}
 
     <!-- Y axis number labels -->
     {#if index > 0}
-      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.28, index + 0.12)} />
+      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.3, index + 0.12)} />
     {:else}
-      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.5, index + 0.12)} />
+      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.12)} />
     {/if}
   {/if}
 {/each}
