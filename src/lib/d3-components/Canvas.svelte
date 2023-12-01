@@ -12,10 +12,6 @@
   export let width = '100%';
   export let height = 'auto';
   export let zoom = 1;
-  //these need to be moved to axis.svelte
-  export let axisLength = 10;
-  export let showOrigin = true;
-  export let showAxisNumbers = true;
 
   // Is the scene inside an iframe?
   export let isIframe = false;
@@ -38,31 +34,6 @@
   {@const totalWidth = $$slots.splitCanvas ? width / 2 : width}
 
   <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
-    <!-- origin label-->
-    {#if showOrigin}
-      <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
-    {/if}
-
-    <!-- axis numbers  -->
-    {#if showAxisNumbers}
-      {#each [...Array(axisLength + 1).keys()]
-        .flatMap((a) => [-a, a])
-        .filter((a) => a != 0) as position}
-        <Latex2D latex={position.toLocaleString()} position={new Vector2(position - 0.07, -0.1)} />
-        {#if position > 0}
-          <Latex2D
-            latex={position.toLocaleString()}
-            position={new Vector2(-0.28, position + 0.12)}
-          />
-        {:else}
-          <Latex2D
-            latex={position.toLocaleString()}
-            position={new Vector2(-0.5, position + 0.12)}
-          />
-        {/if}
-      {/each}
-    {/if}
-
     <slot />
   </D3Canvas>
 
