@@ -5,6 +5,7 @@
   import { Latex2D } from '.';
   import D3Canvas from './D3Canvas.svelte';
   import { GridType } from './grids/GridTypes';
+  import type { Formula } from '$lib/utils/Formulas';
 
   export let title = '';
   export let background = '#ffffff';
@@ -12,6 +13,7 @@
   export let width = '100%';
   export let height = 'auto';
   export let zoom = 1;
+  export let formulas: Formula[] = [];
 
   // Is the scene inside an iframe?
   export let isIframe = false;
@@ -24,6 +26,7 @@
   {title}
   {background}
   {showFormulasDefault}
+  {formulas}
   {isIframe}
   let:width
   let:height
@@ -50,8 +53,6 @@
       <slot name="splitCanvas" />
     </D3Canvas>
   {/if}
-
-  <svelte:fragment slot="formulas"><slot name="formulas" /></svelte:fragment>
 </AbstractCanvas>
 
 <style lang="postcss">
