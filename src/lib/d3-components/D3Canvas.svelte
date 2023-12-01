@@ -27,11 +27,11 @@
     .on('zoom', handleZoom);
 
   function handleResize() {
-    select(`#${id}`).call(zoomProtocol);
+    select(`#${id}`).call(zoomProtocol as any);
   }
 
   onMount(() => {
-    select(`#${id}`).call(zoomProtocol);
+    select(`#${id}`).call(zoomProtocol as any);
   });
 </script>
 
@@ -40,13 +40,12 @@
 <svg {id} bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
   <g>
     <g transform-origin="{width / 2} {height / 2}" transform="scale({zoom})">
-      <Axis {width} {height} {zoomLevel} length={tickLength} {gridType} />
-
       <g
         transform="translate({width / 2}, {height / 2}) scale({(2 * vmax) / 30}, {(-1 *
           (2 * vmax)) /
           30})"
       >
+        <Axis length={tickLength} {gridType} />
         <slot />
       </g>
     </g>
