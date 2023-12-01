@@ -5,7 +5,6 @@
   import { Latex2D } from '.';
   import D3Canvas from './D3Canvas.svelte';
   import { GridType } from './grids/GridTypes';
-    import { filter } from 'd3';
 
   export let title = '';
   export let background = '#ffffff';
@@ -13,14 +12,16 @@
   export let width = '100%';
   export let height = 'auto';
   export let zoom = 1;
+  //these need to be moved to axis.svelte
   export let axisLength = 10;
+  export let showOrigin = true;
+  export let showAxisNumbers = false;
 
   // Is the scene inside an iframe?
   export let isIframe = false;
   export let sliders: Sliders | undefined = undefined;
   // The grid type can be None, Square, Triangle
   export let gridType: GridType = GridType.Square;
-
 </script>
 
 <AbstractCanvas
@@ -38,16 +39,29 @@
 
   <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
     <!-- origin label-->
-    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
+    {#if showOrigin}
+      <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
+    {/if}
 
-    {#each [ ... Array(axisLength+1).keys()].flatMap(a => [-a, a]).filter(a => a != 0) as position}
-      <Latex2D latex={position.toLocaleString()} position={new Vector2(position -0.07, -0.1)}/>
-      {#if position > 0}
-      <Latex2D latex={position.toLocaleString()} position={new Vector2(-0.28, position + 0.12)}/>
-      {:else }
-      <Latex2D latex={position.toLocaleString()} position={new Vector2(-0.5, position + 0.12)}/>
-      {/if}
-    {/each}
+    <!-- axis numbers  -->
+    {#if showAxisNumbers}
+      {#each [...Array(axisLength + 1).keys()]
+        .flatMap((a) => [-a, a])
+        .filter((a) => a != 0) as position}
+        <Latex2D latex={position.toLocaleString()} position={new Vector2(position - 0.07, -0.1)} />
+        {#if position > 0}
+          <Latex2D
+            latex={position.toLocaleString()}
+            position={new Vector2(-0.28, position + 0.12)}
+          />
+        {:else}
+          <Latex2D
+            latex={position.toLocaleString()}
+            position={new Vector2(-0.5, position + 0.12)}
+          />
+        {/if}
+      {/each}
+    {/if}
 
     <slot />
   </D3Canvas>

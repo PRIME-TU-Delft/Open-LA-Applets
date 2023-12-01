@@ -2,7 +2,7 @@
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { arc } from 'd3';
-    import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
 
   export let color: PrimeColor = PrimeColor.black;
   export let points: [Vector2, Vector2] = [new Vector2(1, 0), new Vector2(0, 1)];

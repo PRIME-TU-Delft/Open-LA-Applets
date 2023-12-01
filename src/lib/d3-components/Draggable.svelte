@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-    import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
+  import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { drag, select } from 'd3';
   import { onMount } from 'svelte';
@@ -58,7 +58,13 @@
   });
 </script>
 
-<circle class="pulse" cx={position.x} cy={position.y} r={INTERACTIVITY_RADIUS.toLocaleString()} fill={color} />
+<circle
+  class="pulse"
+  cx={position.x}
+  cy={position.y}
+  r={INTERACTIVITY_RADIUS.toLocaleString()}
+  fill={color}
+/>
 <circle cx={position.x} cy={position.y} r={POINT_SIZE.toLocaleString()} fill={color} />
 
 <slot />

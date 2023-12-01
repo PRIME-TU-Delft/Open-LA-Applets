@@ -20,8 +20,16 @@
     .range([height / 2 - 2 * vmax, height / 2 + 2 * vmax])
     .domain([length, -length]);
 
-  $: select(gy).call(axisLeft(y).ticks(length).tickFormat(() => ""));
-  $: select(gx).call(axisBottom(x).ticks(length).tickFormat(() => ""));
+  $: select(gy).call(
+    axisLeft(y)
+      .ticks(length)
+      .tickFormat(() => '')
+  );
+  $: select(gx).call(
+    axisBottom(x)
+      .ticks(length)
+      .tickFormat(() => '')
+  );
 </script>
 
 <g>

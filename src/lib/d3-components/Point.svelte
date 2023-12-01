@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
+  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import type { Vector2 } from 'three';
 
   export let position: Vector2;

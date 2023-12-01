@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Vector2 } from 'three';
   import Line from './Line.svelte';
-    import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   export let vs: [Vector2, Vector2]; // vectors to draw angle between
   export let origin: Vector2 = new Vector2(0, 0); // common orgin of vectors
@@ -17,6 +17,16 @@
 <!-- draw two lines to represent right angle if perpendicular -->
 
 {#if Math.abs(u1.dot(u2)) <= 0.00000000001 && !u1.equals(u2)}
-  <Line {color} width={lineWidth} start={u1.clone().add(origin)} end={u1.clone().add(u2).add(origin)} />
-  <Line {color} width={lineWidth} start={u2.clone().add(origin)} end={u1.clone().add(u2).add(origin)} />
+  <Line
+    {color}
+    width={lineWidth}
+    start={u1.clone().add(origin)}
+    end={u1.clone().add(u2).add(origin)}
+  />
+  <Line
+    {color}
+    width={lineWidth}
+    start={u2.clone().add(origin)}
+    end={u1.clone().add(u2).add(origin)}
+  />
 {/if}
