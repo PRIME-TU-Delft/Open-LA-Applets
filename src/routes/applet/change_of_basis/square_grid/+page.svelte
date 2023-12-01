@@ -23,7 +23,7 @@
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_1'}
-      offset={new Vector2(0.2, 0.2)}
+      offset={new Vector2(0.2, 0.1)}
       color={PrimeColor.ultramarine}
     />
   </Vector2D>
@@ -31,7 +31,7 @@
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_2'}
-      offset={new Vector2(-0.2, 0.2)}
+      offset={new Vector2(-0.5, 0.2)}
       color={PrimeColor.ultramarine}
     />
   </Vector2D>
@@ -51,7 +51,7 @@
     <Latex2D
       position={endPoint}
       latex={'-\\mathbf{b_1}'}
-      offset={new Vector2(-0.2, 0.2)}
+      offset={new Vector2(-0.6, 0.1)}
       color={PrimeColor.red}
     />
   </Vector2D>

@@ -8,7 +8,7 @@
 
   $: L_start = v.clone().multiplyScalar(-20);
   $: L_end = v.clone().multiplyScalar(20);
-  $: L_label = v.clone().normalize().multiplyScalar(3.3).addScalar(0.3);
+  $: L_label = v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3));
 
   let w = new Vector2(2.5, 2.5);
 
@@ -21,7 +21,7 @@
 <Canvas2D>
   <!-- L /-->
   <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
-  <Latex2D latex={'\\mathcal{L}'} offset={L_label} color={PrimeColor.purple} />
+  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />
@@ -46,7 +46,7 @@
   <!-- w -->
   <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
   <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
-  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(-0.2, 0.1))} color={PrimeColor.green} />
+  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.green} />
 
   <!-- right angle -->
   <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />

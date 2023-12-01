@@ -15,7 +15,7 @@
   $: v2Extended = v2.length() * beta;
 </script>
 
-<Canvas2D>
+<Canvas2D zoom={0.7}>
   <Draggable2D snap id="u" bind:position={u} color={PrimeColor.ultramarine} />
 
   <!-- Bases -->
@@ -23,7 +23,7 @@
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}_1'}
-      offset={new Vector2(0.2, 0.2)}
+      offset={new Vector2(0.2, -0.1)}
       color={PrimeColor.green}
     />
   </Vector2D>
@@ -41,11 +41,11 @@
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{u}'}
-      offset={new Vector2(0.2, 0.2)}
+      offset={new Vector2(0.1, 0.2)}
       color={PrimeColor.ultramarine}
     />
   </Vector2D>
-
+ 
   <!-- Bases extended -->
   <Vector2D
     direction={v1.clone().multiplyScalar(alpha)}
@@ -79,7 +79,7 @@
   >
     {#key beta}
       <Latex2D
-        position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
+        position={endPoint.clone().add(new Vector2(-0.75, 0.3))}
         latex={`${beta.toFixed(2)} \\mathbf{v}_2`}
       />
     {/key}
