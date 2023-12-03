@@ -33,6 +33,7 @@
         trust: true,
         macros: { '\\f': '#1f(#2)' }
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       str = e.message;
     }
@@ -42,7 +43,8 @@
 <HTML position={[pos.x, pos.y, pos.z]}>
   <!-- Mousedown|preventDefault is here to stop user from interacting with labels via the mouse (i.e. dragging) -->
   <button on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
-    <!-- @eslint-disable svelte/no-at-html-tags html insertion is allowed because data is never modified by end-user -->
+    <!-- html insertion is allowed because data is never modified by end-user -->
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html str}
   </button>
 </HTML>

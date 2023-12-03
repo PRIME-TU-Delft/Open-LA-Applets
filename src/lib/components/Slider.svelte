@@ -11,8 +11,10 @@
   export let playSpeed: number = 1000 / 16;
 
   let icon = mdiPlay;
-  let playInterval: NodeJS.Timer; // interval for playing the slider
   let moveRight = false; // direction of the slider
+
+  // interval for playing the slider
+  let playInterval: NodeJS.Timeout; // eslint-disable-line no-undef
 
   const dispatch = createEventDispatcher();
 

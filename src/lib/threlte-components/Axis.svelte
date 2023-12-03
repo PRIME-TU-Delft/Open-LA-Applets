@@ -97,9 +97,9 @@
   {/each}
 {/if}
 
-<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex="x" />
-<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex="-x" />
+<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex="-y" />
+<Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex="-z" />
 
 <Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex="x" />
 <Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex="y" />

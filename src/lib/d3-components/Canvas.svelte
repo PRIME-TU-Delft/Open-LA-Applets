@@ -34,9 +34,6 @@
   {@const totalWidth = $$slots.splitCanvas ? width / 2 : width}
 
   <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
-    <!-- origin label-->
-    <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
-
     <slot />
   </D3Canvas>
 
