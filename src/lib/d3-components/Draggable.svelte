@@ -13,7 +13,8 @@
 
   let g: SVGGElement;
 
-  function dragstarted(event: DragEvent) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function dragstarted(_: DragEvent) {
     select(g).raise();
     select(g).attr('cursor', 'grabbing');
   }
