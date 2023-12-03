@@ -12,13 +12,11 @@
 
   const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
   let svg: SVGSVGElement;
-  let zoomLevel = 1;
 
   $: vmax = Math.max(width, height);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleZoom(e: any) {
-    zoomLevel = e.transform.k;
-
     select(`#${id} g`).attr('transform', e.transform);
   }
 
@@ -27,10 +25,12 @@
     .on('zoom', handleZoom);
 
   function handleResize() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     select(`#${id}`).call(zoomProtocol as any);
   }
 
   onMount(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     select(`#${id}`).call(zoomProtocol as any);
   });
 </script>

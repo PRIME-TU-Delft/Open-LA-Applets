@@ -1,6 +1,6 @@
 <script lang="ts">
   import { T, useThrelte } from '@threlte/core';
-  import { DoubleSide, Mesh, MeshBasicMaterial, Plane, PlaneGeometry, Vector3 } from 'three';
+  import { DoubleSide, MeshBasicMaterial, Plane, Vector3 } from 'three';
 
   import getRandomColor from '$lib/utils/PrimeColors';
   import PlaneSegments from '$lib/utils/Segments';

@@ -15,7 +15,8 @@
   let latexWrapper: SVGGElement;
 
   onMount(() => {
-    // @ts-ignore 2304 - MathJax is imported globally but cannot be found by TS
+    // MathJax is imported globally but cannot be found by TS
+    // eslint-disable-next-line no-undef
     select(latexWrapper).append(() => MathJax.tex2svg(latex).querySelector('svg'));
   });
 </script>
