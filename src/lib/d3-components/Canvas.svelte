@@ -59,10 +59,7 @@
     <div class="canvas3d relative overflow-hidden">
       <Canvas size={{ width: totalWidth, height }}>
         <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={zoom3d} />
-
-        <slot name="lights">
-          <T.AmbientLight intensity={1} />
-        </slot>
+        <T.AmbientLight intensity={1} />
 
         <slot name="splitCanvas3d" />
       </Canvas>
@@ -72,11 +69,7 @@
 
 <style lang="postcss">
   .canvasDivider {
-    position: static;
     left: calc(50% - 2px);
-    top: 0;
-    width: 4px;
-    height: 100%;
-    @apply shadow-2xl bg-slate-500;
+    @apply static top-0 w-1 h-full shadow-2xl bg-slate-500;
   }
 </style>
