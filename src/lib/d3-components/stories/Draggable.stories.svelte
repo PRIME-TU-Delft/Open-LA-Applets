@@ -18,6 +18,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import docsForStory from '$lib/utils/docsForStory';
   import { Vector2 } from 'three';
+  import { Vector2D } from '..';
+
+  let p1 = new Vector2(1, 2);
+  let p2 = new Vector2(2, 1);
 </script>
 
 <Template let:args>
@@ -46,8 +50,9 @@
 
     <svelte:fragment slot="splitCanvas">
       <!-- THESE are correct because they have unique ids -->
-      <Draggable {...args} position={new Vector2(1, 2)} color={PrimeColor.green} id="a" />
-      <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.red} id="b" />
+      <Draggable {...args} bind:position={p1} color={PrimeColor.green} id="a" />
+      <Draggable {...args} bind:position={p2} color={PrimeColor.red} id="b" />
+      <Vector2D direction={p1} length={p1.length()} color={PrimeColor.green} />
     </svelte:fragment>
   </Canvas>
 </Story>

@@ -25,12 +25,7 @@
   $: direction = direction.clone().normalize();
 
   $: {
-    endPoint = origin.clone().add(
-      direction
-        .clone()
-        .normalize()
-        .multiplyScalar(length - coneHeight / 2)
-    );
+    endPoint = origin.clone().add(direction.clone().normalize().multiplyScalar(length));
 
     // 😃 hipedihopedie quaternions fix all the things
     const quatRotation = new Quaternion().setFromUnitVectors(
@@ -49,7 +44,7 @@
   );
 </script>
 
-<Line2 {origin} {endPoint} {color} {radius} {striped} {alwaysOnTop} />
+<Line2 {origin} endPoint={conePosition} {color} {radius} {striped} {alwaysOnTop} />
 
 <!-- Line is length minus cone height -->
 <!-- <T.Line2 bind:ref={line}>
