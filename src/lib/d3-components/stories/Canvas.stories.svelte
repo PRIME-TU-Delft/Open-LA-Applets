@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
+  import docsForStory from '$lib/utils/docsForStory';
   import type { Meta } from '@storybook/svelte';
   import Canvas from '../Canvas.svelte';
-  import docsForStory from '$lib/utils/docsForStory';
 
   export const meta = {
     title: '2d components/Canvas',
@@ -19,10 +19,11 @@
 </script>
 
 <script>
-  import { Story, Template } from '@storybook/addon-svelte-csf';
-  import Vector from '../Vector.svelte';
-  import { Vector2 } from 'three';
+  import { Axis3D, Vector3D } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Story, Template } from '@storybook/addon-svelte-csf';
+  import { Vector2, Vector3 } from 'three';
+  import Vector from '../Vector.svelte';
 </script>
 
 <Template let:args>
@@ -41,7 +42,7 @@
   name="Split canvas"
   source
   parameters={docsForStory(
-    'Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal (this can even be a canvas3D). See code for more details.'
+    'Adding a split canvas is trivial, add a `svelte:fragment` with a slot to splitCanvas and populate the second canvas like normal. See code for more details.'
   )}
   let:args
 >
@@ -51,6 +52,25 @@
     <svelte:fragment slot="splitCanvas">
       <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
       <Vector direction={new Vector2(1, -1)} length={3} color={PrimeColor.ultramarine} />
+    </svelte:fragment>
+  </Canvas>
+</Story>
+
+<Story
+  name="Split canvas 3d"
+  source
+  parameters={docsForStory(
+    'Splitting is also possible with 2D and 3D combinations, add a `svelte:fragment` with a slot to splitCanvas3d and populate the second canvas like normal (this can even be a canvas3D). See code for more details.'
+  )}
+  let:args
+>
+  <Canvas height="20rem" cameraPosition={new Vector3(5.52, -5.35, 15.52)} {...args}>
+    <Vector direction={new Vector2(5, 2)} length={3} color={PrimeColor.red} />
+    <Vector direction={new Vector2(-5, 1)} length={3} color={PrimeColor.ultramarine} />
+
+    <svelte:fragment slot="splitCanvas3d">
+      <Vector3D direction={new Vector3(5, 2, 1)} length={3} color={PrimeColor.red} />
+      <Vector3D direction={new Vector3(-5, 1, 1)} length={3} color={PrimeColor.ultramarine} />
     </svelte:fragment>
   </Canvas>
 </Story>
