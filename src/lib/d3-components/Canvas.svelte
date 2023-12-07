@@ -6,6 +6,7 @@
   import { Vector3 } from 'three';
   import D3Canvas from './D3Canvas.svelte';
   import { GridType } from './grids/GridTypes';
+  import type { Formula } from '$lib/utils/Formulas';
 
   export let cameraPosition = new Vector3(10, 10, 10);
   export let enablePan = false;
@@ -16,6 +17,7 @@
   export let height = 'auto';
   export let zoom = 1;
   export let zoom3d = 29;
+  export let formulas: Formula[] = [];
 
   // Is the scene inside an iframe?
   export let isIframe = false;
@@ -28,6 +30,7 @@
   {title}
   {background}
   {showFormulasDefault}
+  {formulas}
   {isIframe}
   let:width
   let:height
@@ -65,8 +68,6 @@
       </Canvas>
     </div>
   {/if}
-
-  <svelte:fragment slot="formulas"><slot name="formulas" /></svelte:fragment>
 </AbstractCanvas>
 
 <style lang="postcss">
