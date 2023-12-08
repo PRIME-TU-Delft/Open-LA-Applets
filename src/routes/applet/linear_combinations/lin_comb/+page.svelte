@@ -16,7 +16,7 @@
 </script>
 
 <Canvas2D zoom={0.7}>
-  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.blue} />
 
   <!-- Bases -->
   <Vector2D direction={v1} length={v1.length()} color={PrimeColor.green} let:endPoint>
@@ -37,12 +37,12 @@
   </Vector2D>
 
   <!-- u -->
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{u}'}
       offset={new Vector2(0.1, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
  

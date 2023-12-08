@@ -40,12 +40,12 @@
   />
 
   <!-- Plane span -->
-  <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.ultramarine} size={15} />
+  <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.blue} size={15} />
   <Latex3D
     latex={'Span\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}'}
     position={w.clone().normalize().multiplyScalar(8)}
     offset={1.5}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <Axis3D />

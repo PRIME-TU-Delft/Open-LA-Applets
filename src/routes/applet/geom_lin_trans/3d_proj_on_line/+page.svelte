@@ -42,8 +42,8 @@
   <!-- Angle between proj and line l -->
   <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />
 
-  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.ultramarine} />
+  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
 
   <Axis3D />
 </Canvas3D>

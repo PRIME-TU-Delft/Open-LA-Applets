@@ -26,7 +26,7 @@
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
 
   <!-- Reflection v -->
-  <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.ultramarine} />
+  <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.blue} />
   <Vector3D
     origin={u}
     direction={u_refl.clone().sub(u)}
@@ -41,7 +41,7 @@
   <Latex3D
     latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`}
     position={u_refl}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <Axis3D />
