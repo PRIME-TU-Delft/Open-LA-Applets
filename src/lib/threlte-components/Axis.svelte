@@ -44,7 +44,7 @@
       to.set(-size, 0, indicator);
     }
 
-    return [from, to];
+     return [from, to];
   }
 
   $: if (responsiveSpacing && $cameraStore) {
@@ -85,11 +85,11 @@
   {#each labeledIndicators as indicator}
     {@const indicatorFixed = indicator.toFixed(2).replace('.00', '')}
     <!-- Y -->
-    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(indicator, 0, -.35)} />
+    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(indicator, 0, -.35)} offset={0} />
     <!-- Z -->
-    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(0, indicator,-.35)} />
+    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(0, indicator,-.35)} offset={0} />
     <!-- X -->
-    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(-0.35, 0, indicator)} />
+    <Latex3D latex={indicatorFixed.toString()} position={new Vector3(-0.35, 0, indicator)} offset={0}/>
   {/each}
 {/if}
 
