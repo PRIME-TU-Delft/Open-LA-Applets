@@ -41,9 +41,7 @@
     <div class="canvasDivider" />
 
     <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
-      <!-- origin label-->
-      <Latex2D latex={'O'} offset={new Vector2(-0.15, -0.16)} />
-
+      
       <slot name="splitCanvas" />
     </D3Canvas>
   {/if}
