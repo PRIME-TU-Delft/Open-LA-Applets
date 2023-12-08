@@ -44,9 +44,9 @@
   />
 
   <!-- w -->
-  <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
-  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.green} />
+  <Draggable2D id="w" bind:position={w} color={PrimeColor.dark_green} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.dark_green} />
+  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.dark_green} />
 
   <!-- right angle -->
   <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />

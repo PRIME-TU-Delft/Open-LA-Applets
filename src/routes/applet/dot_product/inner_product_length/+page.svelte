@@ -51,11 +51,11 @@
   />
 
   <!-- Helper green lines -->
-  <Vector3D color={PrimeColor.green} direction={v_p} length={v_p.length()} />
+  <Vector3D color={PrimeColor.dark_green} direction={v_p} length={v_p.length()} />
   <Vector3D
     direction={new Vector3(0, 0, -1)}
     origin={v_p}
-    color={PrimeColor.green}
+    color={PrimeColor.dark_green}
     length={-v_q.z}
   />
 

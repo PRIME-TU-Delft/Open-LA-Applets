@@ -12,7 +12,7 @@
   function setFormulas(x: number, y: number, z: number) {
     const f1 = new Formula('\\$x + 1y + 1z = 0', x, PrimeColor.red);
     const f2 = new Formula('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
-    const f3 = new Formula('\\$x + 1y + 1z = 0', z, PrimeColor.green);
+    const f3 = new Formula('\\$x + 1y + 1z = 0', z, PrimeColor.dark_green);
 
     return [f1, f2, f3];
   }

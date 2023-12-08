@@ -21,8 +21,8 @@
 
 <Canvas3D>
   <!-- Vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.dark_green} />
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.dark_green} />
 
   <!-- Projection vector from line L to u with a point at projection point -->
   <Point3D position={u_proj} color={PrimeColor.red} />

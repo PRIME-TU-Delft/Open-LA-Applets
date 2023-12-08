@@ -206,7 +206,7 @@ export class Slider {
   }
 
   green() {
-    this.color = PrimeColor.green;
+    this.color = PrimeColor.dark_green;
     return this;
   }
 

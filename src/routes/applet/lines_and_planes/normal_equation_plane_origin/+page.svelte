@@ -28,8 +28,8 @@
 
   <!-- Q -->
   <Vector3D direction={q} color={PrimeColor.red} length={q.length()} />
-  <Point3D position={q} color={PrimeColor.green} />
-  <Latex3D latex={'Q'} position={q} offset={0.6} color={PrimeColor.green} />
+  <Point3D position={q} color={PrimeColor.dark_green} />
+  <Latex3D latex={'Q'} position={q} offset={0.6} color={PrimeColor.dark_green} />
 
   <Angle3D vs={[n, q]} />
 

@@ -19,8 +19,8 @@
 
 <Canvas3D>
   <!-- vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.dark_green} />
+  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.dark_green} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />

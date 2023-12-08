@@ -24,17 +24,17 @@
   title="Geometrical interpretation of addition for three-dimensional vectors."
 >
   <!-- lower green vector -->
-  <Vector3D direction={v1} color={PrimeColor.green} length={v1.length()} />
+  <Vector3D direction={v1} color={PrimeColor.dark_green} length={v1.length()} />
   <Latex3D
     position={v1}
     offset={labelOffset}
-    color={PrimeColor.green}
+    color={PrimeColor.dark_green}
     latex={'\\begin{bmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v1} color={PrimeColor.green} showAxisPoints />
+  <PartialDeconstruction3D p={v1} color={PrimeColor.dark_green} showAxisPoints />
 
   <!-- upper green vector -->
-  <Vector3D direction={v1} origin={v2} color={PrimeColor.green} length={v1.length()} />
+  <Vector3D direction={v1} origin={v2} color={PrimeColor.dark_green} length={v1.length()} />
 
   <!-- blue vector -->
   <Vector3D direction={v2} color={PrimeColor.blue} length={v2.length()} />
