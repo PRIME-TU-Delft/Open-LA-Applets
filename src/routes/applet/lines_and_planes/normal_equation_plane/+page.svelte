@@ -28,12 +28,12 @@
   <PlaneFromNormal {normal} position={p} color={PrimeColor.yellow} />
 
   <!-- Normal -->
-  <Vector3D origin={p} direction={normal} color={PrimeColor.ultramarine} length={normal.length()} />
+  <Vector3D origin={p} direction={normal} color={PrimeColor.blue} length={normal.length()} />
   <Latex3D
     latex={'\\mathbf{n}'}
     position={p.clone().add(normal.clone())}
     offset={0.2}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- P -->

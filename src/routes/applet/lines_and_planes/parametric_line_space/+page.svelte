@@ -46,7 +46,7 @@
   <!-- Vector u -->
   <Vector3D
     direction={u}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     origin={v_0}
     length={u.length()}
     striped
@@ -56,7 +56,7 @@
     position={v_0.clone().add(u)}
     latex={'\\mathbf{u}'}
     offset={0.4}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- Line l -->
@@ -66,7 +66,7 @@
     radius={0.03}
     length={15}
     hideHead
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <Axis3D axisLength={6} />

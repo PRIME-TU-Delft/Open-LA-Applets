@@ -20,7 +20,7 @@
     const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
       .addParam(1, sliders.x, PrimeColor.red)
       .addParam(2, sliders.y, PrimeColor.yellow);
-    const f4 = new Formula('OA =  \\$', len, PrimeColor.ultramarine);
+    const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
 
     formulas = [f1, f2, f3, f4];
   }
@@ -43,11 +43,11 @@
   <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} size={1.3} />
 
   <!-- Vector v [Blue] -->
-  <Vector3D direction={v_a} color={PrimeColor.ultramarine} length={v_len} />
+  <Vector3D direction={v_a} color={PrimeColor.blue} length={v_len} />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={v_a.clone().multiplyScalar(0.5).add(new Vector3(-0.7, -0.7, 0))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- Helper green lines -->

@@ -35,12 +35,12 @@
   />
 
   <!-- v -->
-  <Draggable2D id="v" bind:position={v} color={PrimeColor.ultramarine} />
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
+  <Draggable2D id="v" bind:position={v} color={PrimeColor.blue} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex2D
     latex={'v'}
     offset={v.clone().add(new Vector2(0, -0.2))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- w -->

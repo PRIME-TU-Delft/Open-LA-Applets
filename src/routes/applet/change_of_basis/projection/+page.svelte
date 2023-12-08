@@ -23,12 +23,12 @@
 
 <Canvas3D>
   <!-- Vector b1 -->
-  <Vector3D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathbf{b}_1'} position={b1} color={PrimeColor.ultramarine} />
+  <Vector3D direction={b1} length={b1.length()} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathbf{b}_1'} position={b1} color={PrimeColor.blue} />
 
   <!-- Vector v -->
-  <Vector3D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathbf{b}_2'} position={b2} color={PrimeColor.ultramarine} />
+  <Vector3D direction={b2} length={b2.length()} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathbf{b}_2'} position={b2} color={PrimeColor.blue} />
 
   <!-- Vector w = b1 + b2 -->
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.red} />

@@ -23,8 +23,8 @@
   <PlaneFromNormal normal={n} color={PrimeColor.yellow} />
 
   <!-- Normal -->
-  <Vector3D direction={n} color={PrimeColor.ultramarine} length={n.length()} />
-  <Latex3D latex={'\\mathbf{n}'} position={n} offset={0.2} color={PrimeColor.ultramarine} />
+  <Vector3D direction={n} color={PrimeColor.blue} length={n.length()} />
+  <Latex3D latex={'\\mathbf{n}'} position={n} offset={0.2} color={PrimeColor.blue} />
 
   <!-- Q -->
   <Vector3D direction={q} color={PrimeColor.red} length={q.length()} />

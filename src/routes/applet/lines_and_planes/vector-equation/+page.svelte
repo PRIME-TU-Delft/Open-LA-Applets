@@ -14,7 +14,7 @@
   <Line2D
     start={v0.clone().sub(u.clone().multiplyScalar(4))}
     end={v1.clone().add(u.clone().multiplyScalar(5))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     width={0.1}
   />
 
@@ -30,7 +30,7 @@
       latex={'\\mathcal{L}'}
       offset={u.clone().multiplyScalar(-0.2).add(new Vector2(-0.2, -0.2))}
       position={endPoint}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 

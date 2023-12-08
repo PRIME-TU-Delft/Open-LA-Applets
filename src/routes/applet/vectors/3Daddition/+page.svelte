@@ -37,14 +37,14 @@
   <Vector3D direction={v1} origin={v2} color={PrimeColor.green} length={v1.length()} />
 
   <!-- blue vector -->
-  <Vector3D direction={v2} color={PrimeColor.ultramarine} length={v2.length()} />
+  <Vector3D direction={v2} color={PrimeColor.blue} length={v2.length()} />
   <Latex3D
     position={v2}
     offset={labelOffset}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     latex={'\\begin{bmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v2} color={PrimeColor.ultramarine} showAxisPoints />
+  <PartialDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
 
   <!-- red vector -->
   <Vector3D direction={v3} color={PrimeColor.red} length={v3.length()} />

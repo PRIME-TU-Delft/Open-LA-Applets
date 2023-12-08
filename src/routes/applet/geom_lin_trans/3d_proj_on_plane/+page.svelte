@@ -23,7 +23,7 @@
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
   <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
 
-  <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.ultramarine} />
+  <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.blue} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />

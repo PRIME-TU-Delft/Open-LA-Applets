@@ -46,11 +46,11 @@
       </Vector2D>
 
       <!-- v -->
-      <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine}>
+      <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
         <Latex2D
           latex={'\\mathbf{v}'}
           offset={new Vector2(0.1, 0.1)}
-          color={PrimeColor.ultramarine}
+          color={PrimeColor.blue}
         />
       </Vector2D>
 
@@ -71,8 +71,8 @@
       <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
       <Latex3D latex={'T(\\mathbf{e_2})'} position={te2} />
 
-      <Vector3D direction={tv} length={v.length()} color={PrimeColor.ultramarine} />
-      <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.ultramarine} />
+      <Vector3D direction={tv} length={v.length()} color={PrimeColor.blue} />
+      <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.blue} />
 
       <!-- Helper lines -->
       <Line3D points={[te1.clone().multiplyScalar(e1Length), tv.clone()]} color="black" isDashed />
