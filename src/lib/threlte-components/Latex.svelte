@@ -7,7 +7,7 @@
   export let color = 'black';
   export let position = new Vector3(0, 0, 0);
   export let size = 1;
-  export let offset = 0.25;
+  export let offset = 0;
 
   let str = '';
 
