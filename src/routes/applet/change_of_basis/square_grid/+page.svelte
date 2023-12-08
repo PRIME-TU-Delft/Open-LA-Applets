@@ -15,8 +15,8 @@
   <Draggable2D snap id="b2" bind:position={b2} color={PrimeColor.blue} />
 
   <!-- Arcs -->
-  <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.green} />
-  <Arc2D points={[b2, minusB1]} distance={0.75} color={PrimeColor.green} />
+  <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.dark_green} />
+  <Arc2D points={[b2, minusB1]} distance={0.75} color={PrimeColor.dark_green} />
 
   <!-- Bases -->
   <Vector2D direction={b1} length={b1.length()} color={PrimeColor.blue} let:endPoint>

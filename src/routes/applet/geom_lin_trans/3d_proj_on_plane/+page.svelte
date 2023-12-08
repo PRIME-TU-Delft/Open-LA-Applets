@@ -20,8 +20,8 @@
 
 <Canvas3D>
   <!-- vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.dark_green} />
+  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.dark_green} />
 
   <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.blue} />
 

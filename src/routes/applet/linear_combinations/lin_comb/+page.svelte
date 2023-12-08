@@ -19,12 +19,12 @@
   <Draggable2D snap id="u" bind:position={u} color={PrimeColor.blue} />
 
   <!-- Bases -->
-  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.dark_green} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}_1'}
       offset={new Vector2(0.2, -0.1)}
-      color={PrimeColor.green}
+      color={PrimeColor.dark_green}
     />
   </Vector2D>
   <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
@@ -50,7 +50,7 @@
   <Vector2D
     direction={v1.clone().multiplyScalar(alpha)}
     length={Math.abs(v1Extended)}
-    color={PrimeColor.green}
+    color={PrimeColor.dark_green}
     isDashed
     let:endPoint
   >

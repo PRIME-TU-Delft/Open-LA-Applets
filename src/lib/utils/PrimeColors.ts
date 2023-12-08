@@ -11,7 +11,7 @@ export enum BackgroundColors {
 export enum PrimeColor {
   red = '#E03C31',
   yellow = '#FFB81C',
-  green = '#009B77',
+  dark_green = '#009B77',
   blue = '#0076C2',
   pink = '#EF60A3',
   purple = '#6F1D77',

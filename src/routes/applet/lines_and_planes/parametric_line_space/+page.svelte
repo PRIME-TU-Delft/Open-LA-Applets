@@ -8,10 +8,10 @@
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);
 
-  let sliders = new Sliders().add(new Slider(2, -1.5, 3, 0.1, PrimeColor.green));
+  let sliders = new Sliders().add(new Slider(2, -1.5, 3, 0.1, PrimeColor.dark_green));
 
   $: ru_len = sliders.x * u.length();
-  $: formula = new Formula('r = \\$', sliders.x, PrimeColor.green);
+  $: formula = new Formula('r = \\$', sliders.x, PrimeColor.dark_green);
 </script>
 
 <Canvas3D
@@ -25,12 +25,12 @@
   <Latex3D position={v_0} latex={'\\mathbf{v}_0'} offset={0.6} color={PrimeColor.red} />
 
   <!-- Vector r * u -->
-  <Vector3D direction={u} color={PrimeColor.green} origin={v_0} length={ru_len} let:endPoint>
+  <Vector3D direction={u} color={PrimeColor.dark_green} origin={v_0} length={ru_len} let:endPoint>
     <Latex3D
       position={endPoint}
       latex={`\\space r\\mathbf{u}`}
       offset={0.5}
-      color={PrimeColor.green}
+      color={PrimeColor.dark_green}
     />
 
     <!-- Vector v -->

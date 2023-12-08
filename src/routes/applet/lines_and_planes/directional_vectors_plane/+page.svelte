@@ -32,8 +32,8 @@
   <Latex3D latex={'P'} position={p} offset={0.5} color={PrimeColor.pink} />
 
   <!-- Q -->
-  <Point3D position={q} color={PrimeColor.green} />
-  <Latex3D latex={'Q'} position={q} offset={0.5} color={PrimeColor.green} />
+  <Point3D position={q} color={PrimeColor.dark_green} />
+  <Latex3D latex={'Q'} position={q} offset={0.5} color={PrimeColor.dark_green} />
   <Vector3D direction={pq} origin={p} color={PrimeColor.red} length={pq.length()} />
 
   <!-- R -->
