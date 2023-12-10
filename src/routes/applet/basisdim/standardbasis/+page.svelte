@@ -18,12 +18,22 @@
 <Canvas2D zoom3d={100}>
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.ultramarine} let:endPoint>
-    <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(-0.3, 0.4)} position={endPoint} />
+    <Latex2D
+      latex={'\\mathbf{e_1}'}
+      offset={new Vector2(-0.3, 0.4)}
+      position={endPoint}
+      color={PrimeColor.ultramarine}
+    />
   </Vector2D>
 
   <!-- e2 -->
   <Vector2D direction={e2} length={e2Length} color={PrimeColor.green} let:endPoint>
-    <Latex2D latex={'\\mathbf{e_2}'} offset={new Vector2(0.2, -0.1)} position={endPoint} />
+    <Latex2D
+      latex={'\\mathbf{e_2}'}
+      offset={new Vector2(0.2, -0.1)}
+      position={endPoint}
+      color={PrimeColor.green}
+    />
   </Vector2D>
 
   <svelte:fragment slot="splitCanvas3d">
@@ -34,8 +44,8 @@
     <Vector3D direction={te2} length={te2.length()} color={PrimeColor.green} />
     <Vector3D direction={te3} length={te3.length()} color={PrimeColor.red} />
 
-    <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
-    <Latex3D latex={'T(\\mathbf{e_2})'} position={te2} />
-    <Latex3D latex={'T(\\mathbf{e_3})'} position={te3} />
+    <Latex3D latex={'\\mathbf{e_1}'} position={te1} color={PrimeColor.ultramarine} />
+    <Latex3D latex={'\\mathbf{e_2}'} position={te2} color={PrimeColor.green} />
+    <Latex3D latex={'\\mathbf{e_3}'} position={te3} color={PrimeColor.red} />
   </svelte:fragment>
 </Canvas2D>
