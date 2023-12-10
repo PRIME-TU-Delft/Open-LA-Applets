@@ -26,7 +26,7 @@
   $: setFormulas(v.length(), w.length(), vPlusW.length());
 </script>
 
-<Canvas2D {formulas}>
+<Canvas2D {formulas} title="The Triangle Inequality">
   <Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
   <Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
 

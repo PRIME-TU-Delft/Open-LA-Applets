@@ -21,7 +21,7 @@
   $: b2_proj = b2.clone().projectOnVector(b5); // Projection of b2 onto b5
 </script>
 
-<Canvas3D>
+<Canvas3D title="Projection with respect to a suitable basis">
   <!-- Vector b1 -->
   <Vector3D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} />
   <Latex3D latex={'\\mathbf{b}_1'} position={b1} color={PrimeColor.ultramarine} />

@@ -19,7 +19,7 @@
   $: u_proj = u.clone().projectOnVector(lineL.clone());
 </script>
 
-<Canvas3D>
+<Canvas3D title="Projection of a vector on a line">
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.green} />

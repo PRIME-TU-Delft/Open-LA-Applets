@@ -18,7 +18,7 @@
   const u_proj = u.clone().projectOnVector(v); // Projection point of vector u on plane p
 </script>
 
-<Canvas3D>
+<Canvas3D title="Projection of a vector on a plane">
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
   <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />

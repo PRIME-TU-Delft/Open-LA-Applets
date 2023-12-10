@@ -15,7 +15,7 @@
   let te3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas2D zoom3d={100}>
+<Canvas2D zoom3d={100} title="The standard bases in 2d and 3d">
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.ultramarine} let:endPoint>
     <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(-0.3, 0.4)} position={endPoint} />

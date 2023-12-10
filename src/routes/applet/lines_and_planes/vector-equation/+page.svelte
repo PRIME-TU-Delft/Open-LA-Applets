@@ -9,7 +9,7 @@
   $: v1 = v0.clone().add(u);
 </script>
 
-<Canvas2D>
+<Canvas2D title="A parametric vector of a line">
   <!-- Line L -->
   <Line2D
     start={v0.clone().sub(u.clone().multiplyScalar(4))}

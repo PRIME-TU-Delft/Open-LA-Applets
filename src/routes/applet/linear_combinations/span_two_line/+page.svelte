@@ -8,7 +8,7 @@
   $: lineDir = v.clone().normalize().multiplyScalar(10);
 </script>
 
-<Canvas3D>
+<Canvas3D title="Span of two parallel vectors">
   <Vector3D direction={v} length={v.length()} striped radius={0.08} color={PrimeColor.red} />
   <Latex3D
     latex={'\\mathbf{v}'}

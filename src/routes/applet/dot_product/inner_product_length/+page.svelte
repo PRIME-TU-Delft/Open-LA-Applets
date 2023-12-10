@@ -28,7 +28,12 @@
   $: setFormulas(sliders.x, sliders.y, v_len);
 </script>
 
-<Canvas3D bind:sliders {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
+<Canvas3D
+  bind:sliders
+  {formulas}
+  cameraPosition={new Vector3(2.73, 13.56, 10.42)}
+  title="Length of a vector using Pythagoras' Theorem"
+>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
   <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />

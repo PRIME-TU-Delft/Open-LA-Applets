@@ -8,7 +8,7 @@
   const w = u.clone().add(v); // Vector W = U + V;
 </script>
 
-<Canvas3D>
+<Canvas3D title="Span of three vectors lying in the same plane">
   <!-- Vector u -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.yellow} />

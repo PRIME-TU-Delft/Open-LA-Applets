@@ -19,7 +19,7 @@
   });
 </script>
 
-<Canvas2D>
+<Canvas2D title="Reflection of multiple points along a line">
   <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.ultramarine} />
 
   {#each u_ts as ut, index}

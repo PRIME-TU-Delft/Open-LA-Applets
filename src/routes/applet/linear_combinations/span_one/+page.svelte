@@ -7,7 +7,7 @@
   $: lineDir = vDir.clone().normalize().multiplyScalar(10); // Line L (v scaled)
 </script>
 
-<Canvas3D>
+<Canvas3D title="Span of a vector">
   <Vector3D direction={vDir} length={vDir.length()} color={PrimeColor.red} />
   <Latex3D
     latex={'\\mathbf{v}'}

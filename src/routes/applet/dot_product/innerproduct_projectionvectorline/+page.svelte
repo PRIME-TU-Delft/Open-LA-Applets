@@ -18,7 +18,7 @@
   $: proj_w_min_w = w.clone().sub(proj_w);
 </script>
 
-<Canvas2D>
+<Canvas2D title="Projection of a vector onto a non-zero vector">
   <!-- L /-->
   <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />

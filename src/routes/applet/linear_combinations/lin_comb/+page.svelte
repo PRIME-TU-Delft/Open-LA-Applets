@@ -15,7 +15,7 @@
   $: v2Extended = v2.length() * beta;
 </script>
 
-<Canvas2D zoom={0.7}>
+<Canvas2D zoom={0.7} title="Linear combination of 2 vectors">
   <Draggable2D snap id="u" bind:position={u} color={PrimeColor.ultramarine} />
 
   <!-- Bases -->
@@ -45,7 +45,7 @@
       color={PrimeColor.ultramarine}
     />
   </Vector2D>
- 
+
   <!-- Bases extended -->
   <Vector2D
     direction={v1.clone().multiplyScalar(alpha)}

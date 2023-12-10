@@ -18,6 +18,7 @@
   formulas={[formula]}
   cameraPosition={new Vector3(3.31, 6.55, 15.68)}
   zoom={38}
+  title="A parametric vector of a line in 3D space"
   bind:sliders
 >
   <!-- Vector v_0 -->

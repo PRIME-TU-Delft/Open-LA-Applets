@@ -10,7 +10,7 @@
   $: vMinusW = v.clone().sub(w);
 </script>
 
-<Canvas2D>
+<Canvas2D title="Addition and subtraction of 2 vectors">
   <Draggable2D snap id="b1" bind:position={w} color={PrimeColor.ultramarine} />
   <Draggable2D snap id="b2" bind:position={v} color={PrimeColor.ultramarine} />
 
