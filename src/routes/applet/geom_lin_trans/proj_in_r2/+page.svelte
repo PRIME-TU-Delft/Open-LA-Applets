@@ -12,9 +12,6 @@
   } from '$lib/d3-components';
   import { GridType } from '$lib/d3-components/grids/GridTypes';
 
-  const pointSize = 0.02;
-  const lineWidth = 0.03;
-
   const dir_L = new Vector2(2, 1);
   const start_L = dir_L.clone().multiplyScalar(-30);
   const end_L = dir_L.clone().multiplyScalar(30);
@@ -27,8 +24,7 @@
     .normalize();
 
   let u2 = new Vector2(2, -1);
-
-  let w2 = new Vector2(1, 0);
+  let w2 = new Vector2(2, 0);
 
   //othogonal proj u1 onto line L
   $: proj_u1 = dir_L.clone().multiplyScalar(dir_L.clone().dot(u1) / dir_L.clone().dot(dir_L));
@@ -59,14 +55,14 @@
 
 <Canvas2D gridType={GridType.Square} zoom={1.6}>
   <!-- L1 -->
-  <Line2D start={start_L} end={end_L} color={PrimeColor.blue} width={lineWidth} />
+  <Line2D start={start_L} end={end_L} color={PrimeColor.blue} />
 
   <!-- guide -->
   <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.darkGreen} />
 
   <!-- u1 -->
-  <Point2D position={u1} color={PrimeColor.red} radius={pointSize} />
-  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} />
+  <Point2D position={u1} color={PrimeColor.red}/>
+  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} snap/>
   <Latex2D
     latex={`\\mathbf{u}_1`}
     position={u1}
@@ -87,7 +83,7 @@
   <RightAngle vs={[w1, dir_L]} size={0.25} />
 
   <!-- T1(u1) -->
-  <Point2D position={proj_u1} isSquare color={PrimeColor.blue} radius={pointSize} />
+  <Point2D position={proj_u1} isSquare color={PrimeColor.blue} />
   <Latex2D
     latex={`T_1(\\mathbf{u}_1)`}
     position={proj_u1}
@@ -104,8 +100,8 @@
     <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.darkGreen} />
 
     <!-- u2 -->
-    <Point2D position={u2} color={PrimeColor.red} radius={pointSize} />
-    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} />
+    <Point2D position={u2} color={PrimeColor.red}/>
+    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} snap/>
     <Latex2D
       latex={`\\mathbf{u}_2`}
       position={u2}
@@ -115,7 +111,7 @@
 
     <!-- w2 -->
     <Vector2D direction={w2} color={PrimeColor.yellow} />
-    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} />
+    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} snap/>
     <Latex2D
       latex={`\\mathbf{w}_2`}
       position={w2}
@@ -124,7 +120,7 @@
     />
 
     <!-- T2(u2) -->
-    <Point2D position={proj_u2} isSquare color={PrimeColor.blue} radius={pointSize} />
+    <Point2D position={proj_u2} isSquare color={PrimeColor.blue}/>
     <Latex2D
       latex={`T_2(\\mathbf{u}_2)`}
       position={proj_u2}
