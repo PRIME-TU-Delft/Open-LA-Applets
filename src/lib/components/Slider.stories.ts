@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/svelte';
 import Slider from './Slider.svelte';
 import { Sliders } from '$lib/utils/Slider';
 
-let sliders = new Sliders().addSlider(0);
+const sliders = new Sliders().addSlider(0);
 
 // More on how to set up stories at: https://storybook.js.org/docs/svelte/writing-stories/introduction
 const meta = {

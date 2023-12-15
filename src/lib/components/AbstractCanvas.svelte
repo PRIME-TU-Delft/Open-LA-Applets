@@ -6,6 +6,7 @@
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import SliderPanel from '$lib/components/SliderPanel.svelte';
   import ToggleSliders from '$lib/components/ToggleSliders.svelte';
+  import type { Formula } from '$lib/utils/Formulas';
   import { Sliders } from '$lib/utils/Slider';
   import { onDestroy, onMount } from 'svelte';
 
@@ -15,6 +16,7 @@
   export let background = '#ffffff';
   export let showFormulasDefault = false;
   export let isIframe = false; // Is the scene inside an iframe?
+  export let formulas: Formula[] = [];
 
   let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
   let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
@@ -75,7 +77,7 @@
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400 drawer-content"
+    class="canvasWrapper border-l-4 border-gray-400 drawer-content flex"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
@@ -113,22 +115,21 @@
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
+
     <FormulasAndActivityPanel
       {isIframe}
       {isFullscreen}
       {showFormulas}
+      {formulas}
       {isChangingSliders}
-      hasFormulas={$$slots.formulas}
       on:pause={pause}
-    >
-      <slot name="formulas" />
-    </FormulasAndActivityPanel>
+    />
 
     <!-- ACTION BUTTONS -->
     <ActionButtons
       {isIframe}
       {sceneEl}
-      hasFormulas={$$slots.formulas}
+      hasFormulas={formulas.length > 0}
       bind:isFullscreen
       bind:showFormulas
       on:reset={reset}
@@ -136,7 +137,6 @@
   </div>
 
   <!-- SHARE WINDOW -->
-
   <ShareWindow {sliders} />
 </div>
 
@@ -147,7 +147,7 @@
 
   .canvasWrapper {
     position: relative;
-    width: var(--width, 100vw);
+    width: var(--width, 100%);
     height: var(--height, auto);
     overflow: hidden;
 

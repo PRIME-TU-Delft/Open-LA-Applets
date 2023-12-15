@@ -1,60 +1,66 @@
 <script lang="ts">
-  import { Axis2D, Canvas2D, Line2D, Vector2D, Latex2D } from '$lib/p5-components';
-
-  import { GridType } from '$lib/p5-components/components/Grids';
-  import { Vector2 } from 'three';
+  import { Canvas2D, Draggable2D, Latex2D, Line2D, Vector2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Slider, Sliders } from '$lib/utils/Slider';
-
-  let zoom = 1;
+  import { Vector2 } from 'three';
 
   const v0 = new Vector2(5, 0);
-  const v1 = new Vector2(3, 1);
-  let u = v1.clone().sub(v0);
+  let u = new Vector2(-2, 1);
 
-  let sliders = new Sliders()
-    .add(new Slider(v0.length(), 1, 6, 0.25, PrimeColor.red))
-    .add(new Slider(v1.length(), 1, 4, 0.125, PrimeColor.yellow));
-
-  $: {
-    v0.setLength(sliders.x);
-    v1.setLength(sliders.y);
-    u = v1.clone().sub(v0);
-  }
+  $: v1 = v0.clone().add(u);
 </script>
 
-<Canvas2D bind:sliders bind:zoom>
-  <Axis2D gridType={GridType.squareGrid} />
-
+<Canvas2D>
+  <!-- Line L -->
   <Line2D
     start={v0.clone().sub(u.clone().multiplyScalar(4))}
     end={v1.clone().add(u.clone().multiplyScalar(5))}
-    color={PrimeColor.ultramarine}
-    width={2}
+    color={PrimeColor.blue}
+    width={0.1}
   />
 
   <!-- V0 -->
-  <Vector2D direction={v0} length={sliders.x} color={PrimeColor.red}>
-    <Latex2D latex={'\\vec{v_0}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.red} />
+  <Vector2D direction={v0} length={v0.length()} color={PrimeColor.red} let:endPoint>
     <Latex2D
-      latex={'L'}
+      latex={'\\mathbf{v}_0'}
+      position={endPoint}
+      offset={new Vector2(0.1, 0.1)}
+      color={PrimeColor.red}
+    />
+    <Latex2D
+      latex={'\\mathcal{L}'}
       offset={u.clone().multiplyScalar(-0.2).add(new Vector2(-0.2, -0.2))}
-      color={PrimeColor.ultramarine}
+      position={endPoint}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 
   <!-- V1 -->
-  <Vector2D direction={v1} length={sliders.y} color={PrimeColor.yellow}>
-    <Latex2D latex={'\\vec{v_1}'} offset={new Vector2(-0.2, -0.3)} color={PrimeColor.yellow} />
+  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.yellow} let:endPoint>
+    <Latex2D
+      latex={'\\mathbf{v}_1'}
+      position={endPoint}
+      offset={new Vector2(-0.2, -0.3)}
+      color={PrimeColor.yellow}
+    />
   </Vector2D>
 
   <!-- U -->
-  {#key sliders.x + sliders.y}
-    <Vector2D direction={u} length={u.length()} color={PrimeColor.green}>
-      <Latex2D latex={'\\vec{u}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.green} />
-    </Vector2D>
-    <Vector2D origin={v0} direction={u} length={u.length()} color={PrimeColor.green}>
-      <Latex2D latex={'\\vec{u}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.green} />
-    </Vector2D>
-  {/key}
+  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.darkGreen} />
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.darkGreen} let:endPoint>
+    <Latex2D
+      latex={'\\mathbf{u}'}
+      position={endPoint}
+      offset={new Vector2(0.1, 0.1)}
+      color={PrimeColor.darkGreen}
+    />
+  </Vector2D>
+
+  <Vector2D origin={v0} direction={u} length={u.length()} color={PrimeColor.darkGreen} let:endPoint>
+    <Latex2D
+      latex={'\\mathbf{u}'}
+      position={endPoint}
+      offset={new Vector2(0.1, 0.1)}
+      color={PrimeColor.darkGreen}
+    />
+  </Vector2D>
 </Canvas2D>

@@ -4,6 +4,7 @@
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
   import SetCamera from './SetCamera.svelte';
+  import type { Formula } from '$lib/utils/Formulas';
 
   export let cameraPosition = new Vector3(10, 10, 10);
   export let enablePan = false;
@@ -13,12 +14,14 @@
   export let showFormulasDefault = false;
   export let isIframe = false; // Is the scene inside an iframe?
   export let sliders: Sliders | undefined = undefined;
+  export let formulas: Formula[] = [];
 </script>
 
 <AbstractCanvas
   {title}
   {background}
   {showFormulasDefault}
+  {formulas}
   {isIframe}
   let:width
   let:height
@@ -34,6 +37,4 @@
 
     <slot />
   </Canvas>
-
-  <svelte:fragment slot="formulas"><slot name="formulas" /></svelte:fragment>
 </AbstractCanvas>

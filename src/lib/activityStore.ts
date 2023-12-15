@@ -24,10 +24,10 @@ function createActivityStore() {
      * @param ms milliseconds to wait before disabling
      * @param fn fuction to call after ms
      */
-    disableAfterAnd: (ms: number, fn: () => void) => {
+    disableAfterAnd: (ms: number, fn?: () => void) => {
       clearTimeout(timeOut);
       timeOut = setTimeout(() => {
-        fn();
+        fn?.();
         set(false);
       }, ms);
     },
@@ -37,7 +37,7 @@ function createActivityStore() {
      * @param ms milliseconds to wait before disabling
      */
     disableAfter: (ms: number) => {
-      activityStore.disableAfterAnd(ms, () => {}); // Disable and do nothing
+      activityStore.disableAfterAnd(ms); // Disable and do nothing
     },
 
     /**

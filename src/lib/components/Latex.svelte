@@ -8,6 +8,7 @@
 
   let str = '';
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function convertLatex(_: string) {
     let input = latex;
 
@@ -32,6 +33,7 @@
         trust: true,
         strict: false
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       str = e.message;
     }
@@ -41,5 +43,6 @@
 </script>
 
 <div class="latex">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html str}
 </div>

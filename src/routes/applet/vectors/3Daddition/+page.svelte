@@ -19,32 +19,32 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(3.59, 9.83, 13.8)}
-  zoom={69}
+  cameraPosition={new Vector3(3.59, 1.83, 13.8)}
+  zoom={60}
   title="Geometrical interpretation of addition for three-dimensional vectors."
 >
   <!-- lower green vector -->
-  <Vector3D direction={v1} color={PrimeColor.green} length={v1.length()} />
+  <Vector3D direction={v1} color={PrimeColor.darkGreen} length={v1.length()} />
   <Latex3D
     position={v1}
     offset={labelOffset}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     latex={'\\begin{bmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v1} color={PrimeColor.green} showAxisPoints />
+  <PartialDeconstruction3D p={v1} color={PrimeColor.darkGreen} showAxisPoints />
 
   <!-- upper green vector -->
-  <Vector3D direction={v1} origin={v2} color={PrimeColor.green} length={v1.length()} />
+  <Vector3D direction={v1} origin={v2} color={PrimeColor.darkGreen} length={v1.length()} />
 
   <!-- blue vector -->
-  <Vector3D direction={v2} color={PrimeColor.ultramarine} length={v2.length()} />
+  <Vector3D direction={v2} color={PrimeColor.blue} length={v2.length()} />
   <Latex3D
     position={v2}
     offset={labelOffset}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     latex={'\\begin{bmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v2} color={PrimeColor.ultramarine} showAxisPoints />
+  <PartialDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
 
   <!-- red vector -->
   <Vector3D direction={v3} color={PrimeColor.red} length={v3.length()} />
@@ -56,5 +56,5 @@
   />
   <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints />
 
-  <Axis3D showNumbers axisLength={5} floor />
+  <Axis3D showNumbers axisLength={10} floor />
 </Canvas3D>

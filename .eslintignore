@@ -1,8 +1,11 @@
 .DS_Store
 node_modules
 /build
+/build-netlify
+/storybook-static
 /.svelte-kit
 /package
+.netlify
 .env
 .env.*
 !.env.example
@@ -13,3 +16,4 @@ package-lock.json
 yarn.lock
 
 .github
+

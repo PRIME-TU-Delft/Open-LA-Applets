@@ -70,7 +70,7 @@ export const WithOrigin: Story = {
 /**
  * forceRightAngle can be used to force the angle to be a right angle. This is used when a right angle is needed but the angle is not exactly 90 degrees.
  */
-export const forceRightAngle: Story = {
+export const ForceRightAngle: Story = {
   args: {
     ...Default.args,
     forceRightAngle: true
@@ -80,7 +80,7 @@ export const forceRightAngle: Story = {
 /**
  * Forcing an angle to become rounded can be used to achieve a round angle. This is especially useful when an angle is close to 90 degrees but needs to be rounded.
  */
-export const forceRoundAngle: Story = {
+export const ForceRoundAngle: Story = {
   args: {
     ...Default.args,
     vs: [new Vector3(0, 1, 0), new Vector3(1, 0, 0)],
