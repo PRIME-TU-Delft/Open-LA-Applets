@@ -29,7 +29,7 @@
   <!-- projection of w -->
   <Vector2D direction={proj_w} length={proj_w.length()} color={PrimeColor.red} />
   <Latex2D
-    latex={'\\hat{w}'}
+    latex={'\\mathbf{\\hat{w}}'}
     offset={proj_w.clone().add(new Vector2(0, -0.2))}
     color={PrimeColor.red}
   />
@@ -38,7 +38,7 @@
   <Draggable2D id="v" bind:position={v} color={PrimeColor.ultramarine} />
   <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
   <Latex2D
-    latex={'v'}
+    latex={'\\mathbf{v}'}
     offset={v.clone().add(new Vector2(0, -0.2))}
     color={PrimeColor.ultramarine}
   />
@@ -46,7 +46,7 @@
   <!-- w -->
   <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
   <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
-  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.green} />
+  <Latex2D latex={'\\mathbf{w}'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.green} />
 
   <!-- right angle -->
   <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />
