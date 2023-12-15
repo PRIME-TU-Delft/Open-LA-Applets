@@ -19,16 +19,16 @@
   const start_L = dir_L.clone().multiplyScalar(-30);
   const end_L = dir_L.clone().multiplyScalar(30);
 
-  let u1 = new Vector2(3, 3);
+  let u1 = new Vector2(2, 3);
 
   let w1 = dir_L
     .clone()
-    .rotateAround(new Vector2(0, 0), (1 / 2) * Math.PI)
+    .rotateAround(new Vector2(0, 0), (3 / 2) * Math.PI)
     .normalize();
 
-  let u2 = new Vector2(4, 0);
+  let u2 = new Vector2(2, -1);
 
-  let w2 = new Vector2(1, -0.5);
+  let w2 = new Vector2(1, 0);
 
   //othogonal proj u1 onto line L
   $: proj_u1 = dir_L.clone().multiplyScalar(dir_L.clone().dot(u1) / dir_L.clone().dot(dir_L));
@@ -57,12 +57,12 @@
 
 <!-- LEFT PANEL : orthogonal -->
 
-<Canvas2D gridType={GridType.Square}>
+<Canvas2D gridType={GridType.Square} zoom={1.6}>
   <!-- L1 -->
-  <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={lineWidth} />
+  <Line2D start={start_L} end={end_L} color={PrimeColor.blue} width={lineWidth} />
 
   <!-- guide -->
-  <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.green} />
+  <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.darkGreen} />
 
   <!-- u1 -->
   <Point2D position={u1} color={PrimeColor.red} radius={pointSize} />
@@ -79,7 +79,7 @@
   <Latex2D
     latex={`\\mathbf{w}_1`}
     position={w1}
-    offset={new Vector2(0, 0.2)}
+    offset={new Vector2(0, -0.2)}
     color={PrimeColor.yellow}
   />
 
@@ -87,21 +87,21 @@
   <RightAngle vs={[w1, dir_L]} size={0.25} />
 
   <!-- T1(u1) -->
-  <Point2D position={proj_u1} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
+  <Point2D position={proj_u1} isSquare color={PrimeColor.blue} radius={pointSize} />
   <Latex2D
     latex={`T_1(\\mathbf{u}_1)`}
     position={proj_u1}
     offset={new Vector2(0.2, -0.3)}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- RIGHT PANEL : projection in driection of w2 -->
   <svelte:fragment slot="splitCanvas">
     <!-- L1 -->
-    <Line2D start={start_L} end={end_L} color={PrimeColor.ultramarine} width={0.03} />
+    <Line2D start={start_L} end={end_L} color={PrimeColor.blue} width={0.03} />
 
     <!-- guide line -->
-    <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.green} />
+    <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.darkGreen} />
 
     <!-- u2 -->
     <Point2D position={u2} color={PrimeColor.red} radius={pointSize} />
@@ -124,12 +124,12 @@
     />
 
     <!-- T2(u2) -->
-    <Point2D position={proj_u2} isSquare color={PrimeColor.ultramarine} radius={pointSize} />
+    <Point2D position={proj_u2} isSquare color={PrimeColor.blue} radius={pointSize} />
     <Latex2D
       latex={`T_2(\\mathbf{u}_2)`}
       position={proj_u2}
-      offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      offset={new Vector2(-0.4, 0.5)}
+      color={PrimeColor.blue}
     />
   </svelte:fragment>
 </Canvas2D>
