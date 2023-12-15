@@ -20,14 +20,14 @@
 </script>
 
 <Canvas2D>
-  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.ultramarine} />
+  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.blue} />
 
   {#each u_ts as ut, index}
     <Vector2D
       origin={ut.u}
       direction={ut.ut.clone().sub(ut.u)}
       length={ut.u.clone().sub(ut.ut).length()}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
       isDashed
     />
 
@@ -39,12 +39,12 @@
       color={PrimeColor.red}
     />
 
-    <Point2D position={ut.ut} color={PrimeColor.ultramarine} isSquare />
+    <Point2D position={ut.ut} color={PrimeColor.blue} isSquare />
     <Latex2D
       latex={`R(\\mathbf{u}_${index + 1})`}
       position={ut.ut}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   {/each}
 </Canvas2D>

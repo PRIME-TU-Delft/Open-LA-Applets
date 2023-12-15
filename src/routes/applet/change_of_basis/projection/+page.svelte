@@ -23,12 +23,12 @@
 
 <Canvas3D>
   <!-- Vector b1 -->
-  <Vector3D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathbf{b}_1'} position={b1} color={PrimeColor.ultramarine} />
+  <Vector3D direction={b1} length={b1.length()} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathbf{b}_1'} position={b1} color={PrimeColor.blue} />
 
   <!-- Vector v -->
-  <Vector3D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathbf{b}_2'} position={b2} color={PrimeColor.ultramarine} />
+  <Vector3D direction={b2} length={b2.length()} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathbf{b}_2'} position={b2} color={PrimeColor.blue} />
 
   <!-- Vector w = b1 + b2 -->
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.red} />
@@ -51,22 +51,22 @@
   />
 
   <!-- Projection b1 -->
-  <Point3D position={b1_proj} color={PrimeColor.green} />
+  <Point3D position={b1_proj} color={PrimeColor.dark_green} />
   <Vector3D
     origin={b1_proj}
     direction={b1.clone().sub(b1_proj)}
     length={b1.clone().sub(b1_proj).length()}
-    color={PrimeColor.green}
+    color={PrimeColor.dark_green}
     striped
   />
 
   <!-- Projection b2 -->
-  <Point3D position={b2_proj} color={PrimeColor.green} />
+  <Point3D position={b2_proj} color={PrimeColor.dark_green} />
   <Vector3D
     origin={b2_proj}
     direction={b2.clone().sub(b2_proj)}
     length={b2.clone().sub(b2_proj).length()}
-    color={PrimeColor.green}
+    color={PrimeColor.dark_green}
     striped
   />
 

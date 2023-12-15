@@ -25,7 +25,7 @@
 
   {#if !sliders.allEqualValue}
     <Vector3D
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}

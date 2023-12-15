@@ -28,12 +28,12 @@
   <PlaneFromNormal {normal} position={p} color={PrimeColor.yellow} />
 
   <!-- Normal -->
-  <Vector3D origin={p} direction={normal} color={PrimeColor.ultramarine} length={normal.length()} />
+  <Vector3D origin={p} direction={normal} color={PrimeColor.blue} length={normal.length()} />
   <Latex3D
     latex={'\\mathbf{n}'}
     position={p.clone().add(normal.clone())}
     offset={0.2}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- P -->
@@ -41,8 +41,8 @@
   <Latex3D latex={'P'} position={p} offset={-0.5} color={PrimeColor.pink} />
 
   <!-- Q -->
-  <Point3D position={q.clone().add(p)} color={PrimeColor.green} />
-  <Latex3D latex={'Q'} position={q.clone().add(p)} offset={0.6} color={PrimeColor.green} />
+  <Point3D position={q.clone().add(p)} color={PrimeColor.dark_green} />
+  <Latex3D latex={'Q'} position={q.clone().add(p)} offset={0.6} color={PrimeColor.dark_green} />
   <Vector3D origin={p} direction={q} color={PrimeColor.red} length={normal.length()} />
 
   <Angle3D vs={[normal, q]} origin={p} size={0.5} />

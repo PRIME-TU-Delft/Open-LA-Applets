@@ -11,11 +11,16 @@ export enum BackgroundColors {
 export enum PrimeColor {
   red = '#E03C31',
   yellow = '#FFB81C',
-  green = '#009B77',
-  ultramarine = '#0076C2',
+  dark_green = '#009B77',
+  blue = '#0076C2',
   pink = '#EF60A3',
   purple = '#6F1D77',
-  black = '#565656'
+  black = '#565656',
+  orange = 'EC6842',
+  cyan = '00A6D6',
+  raspberry = 'A50034',
+  turquoise = '00B8C8'
+
 }
 
 export const primeColorArray = Object.values(PrimeColor);
