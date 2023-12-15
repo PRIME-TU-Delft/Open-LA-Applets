@@ -1,16 +1,14 @@
 <script lang="ts">
-  import { Arc2D, Canvas2D, Latex2D, Vector2D } from '$lib/p5-components';
-  import Draggables from '$lib/p5-components/components/Draggables.svelte';
-  import { GridType } from '$lib/p5-components/components/Grids';
-  import RightAngle from '$lib/p5-components/components/RightAngle.svelte';
-  import Vector from '$lib/p5-components/components/Vector.svelte';
+  import { Canvas2D, Latex2D, RightAngle, Vector2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import LatexUI from '$lib/components/Latex.svelte';
+  import Draggable from '$lib/d3-components/Draggable.svelte';
+    import { GridType } from '$lib/d3-components/grids/GridTypes';
 
   //todo consistant var naming -> camelcase or __
   //todo move labels
   //todo make version of grid class with only snap function so orthogonality check works
+  //todo new formula slot
 
   //vars for static section
   let o_static = new Vector2(-3, 0);
@@ -41,35 +39,32 @@
   $: isOrthogonal = Math.abs(w.dot(v)) <= 0.00000000001 && !v.equals(w);
 </script>
 
-<Canvas2D gridType={GridType.squareGrid}>
-  <!-- Interactive side -->
-  <Draggables snap bind:position={w_plus_o} defaultPosition={wDefault} color={PrimeColor.green} />
-  <Draggables
+<Canvas2D gridType={GridType.None}>
+  <!-- Interactive side  of image -->
+
+  <Draggable snap id={'\\mathbf{w+o}'} bind:position={w_plus_o} color={PrimeColor.darkGreen} />
+  <Draggable
     snap
+    id={'\\mathbf{v+o}'}
     bind:position={v_plus_o}
-    defaultPosition={vDefault}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
-  <!-- Arcs -->
-  <!-- <Arc2D origin={origin_interactive} points={[v, w]} distance={0.75} color={PrimeColor.green} /> -->
-  <RightAngle {origin} vs={[v, w]} />
-
   <!-- Bases -->
-  <Vector2D {origin} direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D {origin} direction={v} length={v.length()} color={PrimeColor.blue}>
     <Latex2D
-      position={endPoint}
-      latex={'v'}
-      offset={new Vector2(-0.2, 0.5)}
-      color={PrimeColor.ultramarine}
+      position={origin}
+      latex={'\\mathbf{v}'}
+      offset={v.clone().normalize().multiplyScalar(1.5).add(new Vector2(0, 0.2))}
+      color={PrimeColor.blue}
     />
   </Vector2D>
-  <Vector2D {origin} direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D {origin} direction={w} length={w.length()} color={PrimeColor.darkGreen}>
     <Latex2D
-      position={endPoint}
-      latex={'w'}
-      offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.green}
+      position={origin}
+      latex={'\\mathbf{w}'}
+      offset={w.clone().normalize().multiplyScalar(1.5).add(new Vector2(0.1, 0))}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -83,7 +78,7 @@
   >
     <Latex2D
       position={endPoint}
-      latex={'v + w'}
+      latex={'\\mathbf{v + w}'}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
     />
@@ -99,7 +94,7 @@
   >
     <Latex2D
       position={endPoint}
-      latex={'v - w'}
+      latex={'\\mathbf{v - w}'}
       offset={new Vector2(-0.2, -0.2)}
       color={PrimeColor.yellow}
     />
@@ -122,38 +117,41 @@
     isDashed
     hideHead
   />
+  <RightAngle {origin} vs={[v, w]} />
+
+
+
+
 
   <!-- Static part of image -->
-
-  <RightAngle origin={o_static} vs={[v_static, w_static]} />
 
   <!-- static Bases -->
   <Vector2D
     origin={o_static}
     direction={v_static}
     length={v_static.length()}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
-      latex={'v'}
+      latex={'\\mathbf{v}'}
       offset={new Vector2(-0.2, 0.5)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
   <Vector2D
     origin={o_static}
     direction={w_static}
     length={w_static.length()}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
-      latex={'w'}
+      latex={'\\mathbf{w}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -167,7 +165,7 @@
   >
     <Latex2D
       position={endPoint}
-      latex={'v + w'}
+      latex={'\\mathbf{v + w}'}
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.red}
     />
@@ -183,7 +181,7 @@
   >
     <Latex2D
       position={endPoint}
-      latex={'v - w'}
+      latex={'\\mathbf{v - w}'}
       offset={new Vector2(-0.2, -0.2)}
       color={PrimeColor.yellow}
     />
@@ -207,11 +205,13 @@
     hideHead
   />
 
-  <div slot="formulas">
+  <RightAngle origin={o_static} vs={[v_static, w_static]} />
+
+  <!-- <div slot="formulas">
     {#if isOrthogonal}
       <LatexUI params={[v.x]} latex={' v + w = v - w'} />
     {:else}
       <LatexUI params={[w.y]} latex={' v + w \\neq v - w'} />
     {/if}
-  </div>
+  </div> -->
 </Canvas2D>
