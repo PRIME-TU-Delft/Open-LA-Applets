@@ -1,35 +1,50 @@
 <script lang="ts">
-  import LatexUI from '$lib/components/Latex.svelte';
-  import { Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
+  import { Canvas2D, Draggable2D, Latex2D, Vector2D } from '$lib/d3-components';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
   let w = new Vector2(1, 3);
   let v = new Vector2(3, 0);
 
+  let formulas: Formula[] = [];
+
   $: vPlusW = w.clone().add(v);
-  $: lengths = [Math.abs(v.length()), Math.abs(w.length()), Math.abs(vPlusW.length())];
+
+  function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
+    const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.blue);
+    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.darkGreen);
+    const f3 = new Formula(
+      '|| \\mathbf{v} + \\mathbf{w} || = \\$',
+      Math.abs(vPlusWLen),
+      PrimeColor.red
+    );
+
+    formulas = [f1, f2, f3];
+  }
+
+  $: setFormulas(v.length(), w.length(), vPlusW.length());
 </script>
 
-<Canvas2D>
-  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
-  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
+<Canvas2D {formulas}>
+  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.darkGreen} />
+  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.blue} />
 
   <!-- Bases -->
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{w}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -48,16 +63,8 @@
     origin={v}
     direction={w}
     length={w.length()}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     isDashed
     hideHead
   />
-
-  <div slot="formulas">
-    <LatexUI
-      params={lengths}
-      colors={[PrimeColor.ultramarine, PrimeColor.green, PrimeColor.red]}
-      latex={'\\begin{aligned} ||v|| = \\$0 \\\\ ||w|| = \\$1 \\\\ || v + w || = \\$2  \\end{aligned}'}
-    />
-  </div>
 </Canvas2D>

@@ -3,18 +3,18 @@
   import { Vector2 } from 'three';
   import Line from './Line.svelte';
   import Triangle from './Triangle.svelte';
+  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
 
   export let color: string = getRandomColor(); //Color of both cone and stem
   export let origin: Vector2 = new Vector2(0, 0); // origin of vector
   export let direction: Vector2 = new Vector2(1, 0); // direction of vector
-  export const striped = false; // TODO: whether the line is striped
   export let length = 1; // length of the vector + cone
-  export let radius = 0.05; // radius of the stem
+  export let radius = VECTOR_WIDTH; // radius of the stem
   export let hideHead = false; // hide the cone
   export let isDashed = false;
 
   const CONE_HEIGHT = 0.5;
-  const CONE_DIAMETER = 0.125;
+  const CONE_DIAMETER = 0.12;
 
   let endPoint = origin.clone().add(direction.clone().multiplyScalar(length)); // store with tip of the vector
   $: coneHeight = hideHead ? 0 : CONE_HEIGHT;

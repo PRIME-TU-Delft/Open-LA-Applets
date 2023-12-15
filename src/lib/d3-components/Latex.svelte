@@ -7,7 +7,7 @@
   import { onMount } from 'svelte';
 
   export let latex: string = '';
-  export let textSize: number = 16;
+  export let textSize: number = 13;
   export let position: Vector2 = new Vector2(0, 0);
   export let offset: Vector2 = new Vector2(0, 0);
   export let color: string = 'black';
@@ -15,7 +15,8 @@
   let latexWrapper: SVGGElement;
 
   onMount(() => {
-    // @ts-ignore 2304 - MathJax is imported globally but cannot be found by TS
+    // MathJax is imported globally but cannot be found by TS
+    // eslint-disable-next-line no-undef
     select(latexWrapper).append(() => MathJax.tex2svg(latex).querySelector('svg'));
   });
 </script>
