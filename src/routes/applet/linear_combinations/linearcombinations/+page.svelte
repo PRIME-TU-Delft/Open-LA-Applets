@@ -79,7 +79,8 @@
   >
     {#key beta}
       <Latex2D
-        position={endPoint.clone().add(new Vector2(-0.75, 0.3))}
+        position={endPoint}
+        offset={endPoint.clone().normalize().multiplyScalar(0.45).sub(new Vector2(0.4, 0))}
         latex={`${beta.toFixed(2)} \\mathbf{v}_2`}
       />
     {/key}
