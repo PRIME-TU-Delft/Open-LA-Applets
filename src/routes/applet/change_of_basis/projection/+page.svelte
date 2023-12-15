@@ -51,22 +51,22 @@
   />
 
   <!-- Projection b1 -->
-  <Point3D position={b1_proj} color={PrimeColor.dark_green} />
+  <Point3D position={b1_proj} color={PrimeColor.darkGreen} />
   <Vector3D
     origin={b1_proj}
     direction={b1.clone().sub(b1_proj)}
     length={b1.clone().sub(b1_proj).length()}
-    color={PrimeColor.dark_green}
+    color={PrimeColor.darkGreen}
     striped
   />
 
   <!-- Projection b2 -->
-  <Point3D position={b2_proj} color={PrimeColor.dark_green} />
+  <Point3D position={b2_proj} color={PrimeColor.darkGreen} />
   <Vector3D
     origin={b2_proj}
     direction={b2.clone().sub(b2_proj)}
     length={b2.clone().sub(b2_proj).length()}
-    color={PrimeColor.dark_green}
+    color={PrimeColor.darkGreen}
     striped
   />
 

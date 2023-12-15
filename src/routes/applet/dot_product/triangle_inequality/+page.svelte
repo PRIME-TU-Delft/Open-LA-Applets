@@ -13,7 +13,7 @@
 
   function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
     const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.blue);
-    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.dark_green);
+    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.darkGreen);
     const f3 = new Formula(
       '|| \\mathbf{v} + \\mathbf{w} || = \\$',
       Math.abs(vPlusWLen),
@@ -27,7 +27,7 @@
 </script>
 
 <Canvas2D {formulas}>
-  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.dark_green} />
+  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.darkGreen} />
   <Draggable2D id="v" snap bind:position={v} color={PrimeColor.blue} />
 
   <!-- Bases -->
@@ -39,12 +39,12 @@
       color={PrimeColor.blue}
     />
   </Vector2D>
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.dark_green} let:endPoint>
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{w}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.dark_green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -63,7 +63,7 @@
     origin={v}
     direction={w}
     length={w.length()}
-    color={PrimeColor.dark_green}
+    color={PrimeColor.darkGreen}
     isDashed
     hideHead
   />
