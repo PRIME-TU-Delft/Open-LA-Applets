@@ -15,11 +15,11 @@
     color={PrimeColor.red}
   />
 
-  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
+  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
   <Latex3D
     latex={'Span\\{\\mathbf{v}\\}'}
     position={lineDir.add(new Vector3(0, 0.4, 0))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
   <Axis3D />
 </Canvas3D>

@@ -136,14 +136,14 @@ export class Slider {
   max = 1;
   stepSize = 0.1;
   value = 0;
-  color: string = PrimeColor.ultramarine;
+  color: string = PrimeColor.blue;
 
   constructor(
     defaultValue: number,
     min = -1,
     max = 1,
     step = 0.1,
-    color: string = PrimeColor.ultramarine
+    color: string = PrimeColor.blue
   ) {
     this.defaultValue = defaultValue;
     this.min = min;
@@ -196,7 +196,7 @@ export class Slider {
   }
 
   blue() {
-    this.color = PrimeColor.ultramarine;
+    this.color = PrimeColor.blue;
     return this;
   }
 
@@ -206,7 +206,7 @@ export class Slider {
   }
 
   green() {
-    this.color = PrimeColor.green;
+    this.color = PrimeColor.darkGreen;
     return this;
   }
 

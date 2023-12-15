@@ -11,17 +11,17 @@
 </script>
 
 <Canvas2D>
-  <Draggable2D snap id="b1" bind:position={w} color={PrimeColor.ultramarine} />
-  <Draggable2D snap id="b2" bind:position={v} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="b1" bind:position={w} color={PrimeColor.blue} />
+  <Draggable2D snap id="b2" bind:position={v} color={PrimeColor.blue} />
 
   <!-- Arcs -->
-  <Arc2D points={[v, w]} distance={0.75} color={PrimeColor.green} />
+  <Arc2D points={[v, w]} distance={0.75} color={PrimeColor.darkGreen} />
 
   <!-- Bases -->
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D position={endPoint} latex={'\\mathbf{v}'} offset={new Vector2(-0.2, 0.5)} />
   </Vector2D>
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D position={endPoint} latex={'\\mathbf{w}'} offset={new Vector2(-0.2, 0.2)} />
   </Vector2D>
 
