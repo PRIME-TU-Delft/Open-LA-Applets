@@ -45,7 +45,7 @@
       color={PrimeColor.ultramarine}
     />
   </Vector2D>
- 
+
   <!-- Bases extended -->
   <Vector2D
     direction={v1.clone().multiplyScalar(alpha)}

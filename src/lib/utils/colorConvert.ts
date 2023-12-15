@@ -19,19 +19,26 @@ export function hexToRGB(h: string) {
   return { r, g, b };
 }
 
-export function RGBToHSL({ r, g, b }) {
-  // Make r, g, and b fractions of 1
-  r /= 255;
-  g /= 255;
-  b /= 255;
+type RGB = {
+  r: number;
+  g: number;
+  b: number;
+};
+export function RGBToHSL({ r, g, b }: RGB) {
+  if (r > 1 && g > 1 && b > 1) {
+    // Make r, g, and b fractions of 1
+    r /= 255;
+    g /= 255;
+    b /= 255;
+  }
 
   // Find greatest and smallest channel values
-  let cmin = Math.min(r, g, b),
-    cmax = Math.max(r, g, b),
-    delta = cmax - cmin,
-    h = 0,
-    s = 0,
-    l = 0;
+  const cmin = Math.min(r, g, b);
+  const cmax = Math.max(r, g, b);
+  const delta = cmax - cmin;
+  let h = 0;
+  let s = 0;
+  let l = 0;
 
   // Calculate hue
   // No difference
