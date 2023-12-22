@@ -16,17 +16,27 @@
   let dir_L = new Vector2(2, 2);
   $: start_L = dir_L.clone().multiplyScalar(-10);
 
-  const u_ts = us.map((u) => {
-    const ut = u.clone().applyMatrix3(m);
+  function getOrthProjection(L: Vector2, p: Vector2) {
+    return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
+  }
+
+  $: u_ts = us.map((u) => {
+    const proj = getOrthProjection(dir_L, u);
+    const ut = proj.clone().add(proj.clone().sub(u));
     return { u, ut };
   });
 </script>
 
 <Canvas2D>
-  <Draggable2D id='dir_L' bind:position={dir_L} color={PrimeColor.cyan}/>
-
+  <!-- Line L -->
+  <Draggable2D id="dir_L" bind:position={dir_L} color={PrimeColor.cyan} />
   <Line2D start={start_L} end={start_L.clone().multiplyScalar(-1)} color={PrimeColor.cyan} />
-  <Latex2D latex={"\\mathcal{L}"} position={dir_L} offset={new Vector2(-0.25, 0.28)} color={PrimeColor.cyan}/>
+  <Latex2D
+    latex={'\\mathcal{L}'}
+    position={dir_L}
+    offset={new Vector2(-0.25, 0.28)}
+    color={PrimeColor.cyan}
+  />
 
   {#each u_ts as ut, index}
     <Vector2D
@@ -37,6 +47,7 @@
       isDashed
     />
 
+    <!-- u_n -->
     <Point2D position={ut.u} color={PrimeColor.raspberry} />
     <Latex2D
       latex={`\\mathbf{u}_${index + 1}`}
