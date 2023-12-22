@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Synced from '$lib/components/Synced.svelte';
   import { Arc2D, Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -11,6 +12,9 @@
 </script>
 
 <Canvas2D>
+  <Synced id="b1" position={b1} />
+  <Synced id="b2" position={b2} />
+
   <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.blue} />
   <Draggable2D snap id="b2" bind:position={b2} color={PrimeColor.blue} />
 
