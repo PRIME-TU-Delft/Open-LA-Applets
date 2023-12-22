@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/d3-components';
+  import { Canvas2D, Draggable2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
 
@@ -13,6 +13,9 @@
   const m = new Matrix3();
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
+  let dir_L = new Vector2(2, 2);
+  $: start_L = dir_L.clone().multiplyScalar(-10);
+
   const u_ts = us.map((u) => {
     const ut = u.clone().applyMatrix3(m);
     return { u, ut };
@@ -20,7 +23,10 @@
 </script>
 
 <Canvas2D>
-  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.cyan} />
+  <Draggable2D id='dir_L' bind:position={dir_L} color={PrimeColor.cyan}/>
+
+  <Line2D start={start_L} end={start_L.clone().multiplyScalar(-1)} color={PrimeColor.cyan} />
+  <Latex2D latex={"\\mathcal{L}"} position={dir_L} offset={new Vector2(-0.25, 0.28)} color={PrimeColor.cyan}/>
 
   {#each u_ts as ut, index}
     <Vector2D
