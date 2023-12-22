@@ -20,23 +20,23 @@
 </script>
 
 <Canvas2D>
-  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.blue} />
+  <Line2D start={new Vector2(-10, -10)} end={new Vector2(10, 10)} color={PrimeColor.cyan} />
 
   {#each u_ts as ut, index}
     <Vector2D
       origin={ut.u}
       direction={ut.ut.clone().sub(ut.u)}
       length={ut.u.clone().sub(ut.ut).length()}
-      color={PrimeColor.blue}
+      color={PrimeColor.darkGreen}
       isDashed
     />
 
-    <Point2D position={ut.u} color={PrimeColor.red} />
+    <Point2D position={ut.u} color={PrimeColor.raspberry} />
     <Latex2D
       latex={`\\mathbf{u}_${index + 1}`}
       position={ut.u}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
 
     <Point2D position={ut.ut} color={PrimeColor.blue} isSquare />
