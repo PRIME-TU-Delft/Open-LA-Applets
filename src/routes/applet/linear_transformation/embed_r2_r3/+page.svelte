@@ -47,11 +47,7 @@
 
       <!-- v -->
       <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
-        <Latex2D
-          latex={'\\mathbf{v}'}
-          offset={new Vector2(0.1, 0.1)}
-          color={PrimeColor.blue}
-        />
+        <Latex2D latex={'\\mathbf{v}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.blue} />
       </Vector2D>
 
       <!-- Helper lines -->
