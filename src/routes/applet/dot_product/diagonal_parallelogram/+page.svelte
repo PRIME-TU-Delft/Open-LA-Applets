@@ -3,12 +3,19 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Draggable from '$lib/d3-components/Draggable.svelte';
-    import { GridType } from '$lib/d3-components/grids/GridTypes';
+  import { GridType } from '$lib/d3-components/grids/GridTypes';
+  import { Formula } from '$lib/utils/Formulas';
 
-  //todo consistant var naming -> camelcase or __
-  //todo move labels
-  //todo make version of grid class with only snap function so orthogonality check works
-  //todo new formula slot
+  //[] todo consistant var naming -> camelcase or __
+  //[X] todo move labels
+  //[] todo make version of grid class with only snap function so orthogonality check works
+  //[X] todo new formula slot
+  //[] refactor length of this file
+
+  
+
+  let formulas: Formula[] = [];
+
 
   //vars for static section
   let o_static = new Vector2(-3, 0);
@@ -23,40 +30,50 @@
   let origin = new Vector2(1.5, 0);
 
   let w_plus_o = new Vector2(2, 3);
-  const wDefault = new Vector2(2, 3);
   //w is calculated this way because a draggable takes a global position, not a vector relative to origin
   //TODO rename var to make this more logical
   $: w = w_plus_o.clone().sub(origin);
 
   let v_plus_o = new Vector2(3.5, -2);
-  const vDefault = new Vector2(3.5, -2);
   $: v = v_plus_o.clone().sub(origin);
 
   $: vPlusW = v.clone().add(w);
   $: vMinusW = v.clone().sub(w);
 
   // keeps track of orthogonality
-  $: isOrthogonal = Math.abs(w.dot(v)) <= 0.00000000001 && !v.equals(w);
+  $: isOrthogonal = Math.abs(w.clone().normalize().dot(v.clone().normalize())) <= 0.05 && !v.equals(w);
+
+  function setFormulas( b: boolean) {
+
+    if ( b )  {
+      const f3 = new Formula('|v| = |w|');
+      formulas = [f3]
+    } else {
+      const f3 = new Formula('|v| != |w|');
+      formulas = [ f3]
+    }
+  }
+
+  $: setFormulas(isOrthogonal);
 </script>
 
-<Canvas2D gridType={GridType.None}>
+<Canvas2D gridType={GridType.None} {formulas}>
   <!-- Interactive side  of image -->
 
-  <Draggable snap id={'\\mathbf{w+o}'} bind:position={w_plus_o} color={PrimeColor.darkGreen} />
+  <Draggable id={'\\mathbf{w+o}'} bind:position={w_plus_o} color={PrimeColor.darkGreen} />
   <Draggable
-    snap
     id={'\\mathbf{v+o}'}
     bind:position={v_plus_o}
-    color={PrimeColor.blue}
+    color={PrimeColor.cyan}
   />
 
   <!-- Bases -->
-  <Vector2D {origin} direction={v} length={v.length()} color={PrimeColor.blue}>
+  <Vector2D {origin} direction={v} length={v.length()} color={PrimeColor.cyan}>
     <Latex2D
       position={origin}
       latex={'\\mathbf{v}'}
       offset={v.clone().normalize().multiplyScalar(1.5).add(new Vector2(0, 0.2))}
-      color={PrimeColor.blue}
+      color={PrimeColor.cyan}
     />
   </Vector2D>
   <Vector2D {origin} direction={w} length={w.length()} color={PrimeColor.darkGreen}>
@@ -73,14 +90,14 @@
     {origin}
     direction={vPlusW}
     length={vPlusW.length()}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v + w}'}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
   </Vector2D>
 
@@ -89,14 +106,14 @@
     origin={w.clone().add(origin)}
     direction={vMinusW}
     length={vMinusW.length()}
-    color={PrimeColor.yellow}
+    color={PrimeColor.orange}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v - w}'}
       offset={new Vector2(-0.2, -0.2)}
-      color={PrimeColor.yellow}
+      color={PrimeColor.orange}
     />
   </Vector2D>
 
@@ -130,14 +147,14 @@
     origin={o_static}
     direction={v_static}
     length={v_static.length()}
-    color={PrimeColor.blue}
+    color={PrimeColor.cyan}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}'}
-      offset={new Vector2(-0.2, 0.5)}
-      color={PrimeColor.blue}
+      offset={new Vector2(-0.4, 0.5)}
+      color={PrimeColor.cyan}
     />
   </Vector2D>
   <Vector2D
@@ -160,14 +177,14 @@
     origin={o_static}
     direction={vPlusW_static}
     length={vPlusW_static.length()}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v + w}'}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
   </Vector2D>
 
@@ -176,14 +193,14 @@
     origin={w_static.clone().add(o_static)}
     direction={vMinusW_static}
     length={vMinusW_static.length()}
-    color={PrimeColor.yellow}
+    color={PrimeColor.orange}
     let:endPoint
   >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v - w}'}
       offset={new Vector2(-0.2, -0.2)}
-      color={PrimeColor.yellow}
+      color={PrimeColor.orange}
     />
   </Vector2D>
 
