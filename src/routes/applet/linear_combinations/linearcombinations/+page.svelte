@@ -15,16 +15,16 @@
   $: v2Extended = v2.length() * beta;
 </script>
 
-<Canvas2D>
-  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.ultramarine} />
+<Canvas2D zoom={0.7}>
+  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.blue} />
 
   <!-- Bases -->
-  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}_1'}
-      offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.green}
+      offset={new Vector2(0.2, -0.1)}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
   <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
@@ -37,17 +37,23 @@
   </Vector2D>
 
   <!-- u -->
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{u}'}
-      offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      offset={new Vector2(0.1, 0.2)}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 
   <!-- Bases extended -->
-  <Vector2D direction={v1} length={v1Extended} color={PrimeColor.green} isDashed let:endPoint>
+  <Vector2D
+    direction={v1.clone().multiplyScalar(alpha)}
+    length={Math.abs(v1Extended)}
+    color={PrimeColor.darkGreen}
+    isDashed
+    let:endPoint
+  >
     {#key alpha}
       <Latex2D
         position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
@@ -64,10 +70,17 @@
     />
   </Vector2D>
 
-  <Vector2D direction={v2} length={v2Extended} color={PrimeColor.red} isDashed let:endPoint>
+  <Vector2D
+    direction={v2.clone().multiplyScalar(beta)}
+    length={Math.abs(v2Extended)}
+    color={PrimeColor.red}
+    isDashed
+    let:endPoint
+  >
     {#key beta}
       <Latex2D
-        position={endPoint.clone().add(endPoint.clone().normalize().multiplyScalar(0.3))}
+        position={endPoint}
+        offset={endPoint.clone().normalize().multiplyScalar(0.45).sub(new Vector2(0.4, 0))}
         latex={`${beta.toFixed(2)} \\mathbf{v}_2`}
       />
     {/key}

@@ -16,7 +16,7 @@
   let formulas: Formula[] = [];
 
   function setFormulas(x: number, y: number) {
-    const f0 = new Formula('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.green);
+    const f0 = new Formula('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.darkGreen);
     const f1 = new Formula('P_2 = \\$x + 1y + 1z = 0', x, PrimeColor.red);
     const f2 = new Formula('P_3 = \\$x + 1y + 1z = 0', y, PrimeColor.yellow);
 
@@ -38,11 +38,11 @@
   </AutoPlane>
 
   <!-- Plane x Rotated by 90 deg -->
-  <PlaneFromNormal normal={new Vector3(0.5, -1, 1)} color={PrimeColor.green} />
+  <PlaneFromNormal normal={new Vector3(0.5, -1, 1)} color={PrimeColor.darkGreen} />
 
   {#if !sliders.allEqualValue}
     <Vector3D
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}
@@ -50,7 +50,7 @@
       hideHead
     />
 
-    <Point3D color={PrimeColor.ultramarine} />
+    <Point3D color={PrimeColor.blue} />
   {/if}
 
   <Axis3D axisLength={7} />

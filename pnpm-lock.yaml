@@ -14,6 +14,9 @@ dependencies:
   d3:
     specifier: ^7.8.5
     version: 7.8.5
+  d3-hexbin:
+    specifier: ^0.2.2
+    version: 0.2.2
   daisyui:
     specifier: ^3.2.1
     version: 3.9.3
@@ -91,6 +94,9 @@ devDependencies:
   '@types/d3':
     specifier: ^7.4.0
     version: 7.4.2
+  '@types/d3-hexbin':
+    specifier: ^0.2.5
+    version: 0.2.5
   '@types/katex':
     specifier: ^0.16.3
     version: 0.16.5
@@ -3908,6 +3914,10 @@ packages:
       '@types/geojson': 7946.0.12
     dev: true
 
+  /@types/d3-hexbin@0.2.5:
+    resolution: {integrity: sha512-EF/1szlis0vN810Q3F//NYeiOjiRZHiRlHADQzc8GMMeaJx9J662LHsxJYBqwqlsTMZuvVk1qLULyvC7p1JNAg==}
+    dev: true
+
   /@types/d3-hierarchy@3.1.5:
     resolution: {integrity: sha512-DEcBUj1IL3WyPLDlh4m2nsNXnMLITXM5Vwcu4G85yJHtf2cVGPBjgky3L11WBnT+ayHKf06Tchk5mY1eGmd4WQ==}
     dev: true
@@ -5430,6 +5440,10 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       d3-array: 3.2.4
+    dev: false
+
+  /d3-hexbin@0.2.2:
+    resolution: {integrity: sha512-KS3fUT2ReD4RlGCjvCEm1RgMtp2NFZumdMu4DBzQK8AZv3fXRM6Xm8I4fSU07UXvH4xxg03NwWKWdvxfS/yc4w==}
     dev: false
 
   /d3-hierarchy@3.1.2:
