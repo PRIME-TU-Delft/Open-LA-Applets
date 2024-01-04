@@ -55,7 +55,7 @@
     {#if index > 0}
       <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.3, index + 0.12)} />
     {:else}
-      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.12)} />
+      <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.1)} />
     {/if}
   {/if}
 {/each}

@@ -12,8 +12,8 @@
   $: vPlusW = w.clone().add(v);
 
   function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
-    const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.ultramarine);
-    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.green);
+    const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.blue);
+    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.darkGreen);
     const f3 = new Formula(
       '|| \\mathbf{v} + \\mathbf{w} || = \\$',
       Math.abs(vPlusWLen),
@@ -27,24 +27,24 @@
 </script>
 
 <Canvas2D {formulas}>
-  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
-  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
+  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.darkGreen} />
+  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.blue} />
 
   <!-- Bases -->
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{w}'}
       offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -63,7 +63,7 @@
     origin={v}
     direction={w}
     length={w.length()}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     isDashed
     hideHead
   />

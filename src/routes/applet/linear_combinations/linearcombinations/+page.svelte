@@ -16,15 +16,15 @@
 </script>
 
 <Canvas2D zoom={0.7}>
-  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="u" bind:position={u} color={PrimeColor.blue} />
 
   <!-- Bases -->
-  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={v1} length={v1.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}_1'}
       offset={new Vector2(0.2, -0.1)}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
   <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
@@ -37,20 +37,20 @@
   </Vector2D>
 
   <!-- u -->
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{u}'}
       offset={new Vector2(0.1, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
- 
+
   <!-- Bases extended -->
   <Vector2D
     direction={v1.clone().multiplyScalar(alpha)}
     length={Math.abs(v1Extended)}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     isDashed
     let:endPoint
   >
@@ -79,7 +79,8 @@
   >
     {#key beta}
       <Latex2D
-        position={endPoint.clone().add(new Vector2(-0.75, 0.3))}
+        position={endPoint}
+        offset={endPoint.clone().normalize().multiplyScalar(0.45).sub(new Vector2(0.4, 0))}
         latex={`${beta.toFixed(2)} \\mathbf{v}_2`}
       />
     {/key}
