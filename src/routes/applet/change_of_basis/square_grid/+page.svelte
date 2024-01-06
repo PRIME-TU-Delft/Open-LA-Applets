@@ -7,16 +7,19 @@
   let b1 = new Vector2(2, 0);
   let b2 = new Vector2(-1, 2);
 
+  let b1droppedPos = b1;
+  let b2droppedPos = b2;
+
   $: b1plusb2 = b1.clone().add(b2);
   $: minusB1 = b1.clone().multiplyScalar(-1);
 </script>
 
 <Canvas2D>
-  <Synced id="b1" position={b1} />
-  <Synced id="b2" position={b2} />
+  <Synced id="b1" position={b1droppedPos} />
+  <Synced id="b2" position={b2droppedPos} />
 
-  <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.blue} />
-  <Draggable2D snap id="b2" bind:position={b2} color={PrimeColor.blue} />
+  <Draggable2D snap id="b1" bind:position={b1} bind:droppedPosition={b1droppedPos} color={PrimeColor.blue} />
+  <Draggable2D snap id="b2" bind:position={b2} bind:droppedPosition={b2droppedPos} color={PrimeColor.blue} />
 
   <!-- Arcs -->
   <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.darkGreen} />

@@ -44,7 +44,7 @@
 			// }
 			// ^ doesn't work, so for now just send to any origin
 			// Failed to execute ‘postMessage’ on ‘DOMWindow’: The target origin provided (‘https://dbalague.pages.ewi.tudelft.nl’) does not match the recipient window’s origin (‘http://localhost:5173’).
-			window.postMessage(this, "*");
+			window.top?.postMessage(this, "*");
 		}
 	}
 </script>

@@ -9,6 +9,7 @@
 
   export let id: string;
   export let position = new Vector2(0, 0);
+  export let droppedPosition = new Vector2(0, 0);
   export let color: PrimeColor = PrimeColor.blue;
   export let snap = false;
 
@@ -32,6 +33,7 @@
       position.x = Math.round(position.x);
       position.y = Math.round(position.y);
     }
+    droppedPosition = position;
   }
 
   onMount(() => {
