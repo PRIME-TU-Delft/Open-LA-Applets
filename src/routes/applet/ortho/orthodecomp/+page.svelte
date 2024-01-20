@@ -35,7 +35,7 @@
   <!-- proj_v -->
   <Vector3D direction={proj_v} length={proj_v.length()} color={PrimeColor.red} />
   <Latex3D
-    latex={'Proj_V(\\mathbf{v})'}
+    latex={'Proj_{\\mathcal{V}}(\\mathbf{v})'}
     position={proj_v.clone().add(new Vector3(0.2, 0, 0.2))}
     color={PrimeColor.red}
   />
@@ -47,6 +47,7 @@
     length={proj_v.clone().sub(v).length()}
     color={PrimeColor.black}
     striped
+    hideHead
   />
 
   <!-- Dotted lines v and w -->
@@ -56,9 +57,10 @@
     length={w.clone().sub(v).length()}
     color={PrimeColor.black}
     striped
+    hideHead
   />
 
   <!-- V -->
   <PlaneFromNormal position={V} normal={n0} color={PrimeColor.green} />
-  <Latex3D latex={'V'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.green} />
+  <Latex3D latex={'\\mathcal{V}'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.green} />
 </Canvas3D>

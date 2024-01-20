@@ -28,7 +28,7 @@
     origin={v.clone().multiplyScalar(-1)}
   >
     <Latex2D
-      latex={'\\mathbf{v}'}
+      latex={'\\mathcal{V}'}
       position={v.clone().add(new Vector2(-0.3, -0.1))}
       color={PrimeColor.green}
     />
@@ -42,7 +42,7 @@
     origin={v_ortho.clone().multiplyScalar(-1)}
   >
     <Latex2D
-      latex={'\\mathbf{v\\perp}'}
+      latex={'\\mathcal{V\\perp}'}
       position={v_ortho.clone().add(new Vector2(-0.3, 0.3))}
       color={PrimeColor.ultramarine}
     />
@@ -54,7 +54,7 @@
   <svelte:fragment slot="splitCanvas3d">
     <!-- v -->
     <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.green} />
-    <Latex3D latex={'\\mathbf{v}'} position={new Vector3(5, 0, 5)} color={PrimeColor.green} />
+    <Latex3D latex={'\\mathcal{V}'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.green} />
 
     <!-- v_ortho -->
     <Vector3D
@@ -63,6 +63,6 @@
       color={PrimeColor.ultramarine}
       origin={ve_ortho.clone().multiplyScalar(-1)}
     />
-    <Latex3D latex={'\\mathbf{v\\perp}'} position={ve_ortho} color={PrimeColor.ultramarine} />
+    <Latex3D latex={'\\mathcal{V\\perp}'} position={ve_ortho} color={PrimeColor.ultramarine} />
   </svelte:fragment>
 </Canvas2D>
