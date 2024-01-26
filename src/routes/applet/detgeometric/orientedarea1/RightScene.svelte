@@ -14,7 +14,7 @@
   $: C = tu.clone().add(tv); // C = u + v
 </script>
 
-<Axis3D showNumbers />
+<Axis3D />
 
 <Parallelogram3D points={[new Vector3(0, 0), tu, tv]} color={PrimeColor.yellow} strokeWidth={0.5} />
 
@@ -30,24 +30,24 @@
   <Point3D position={endPoint} color={PrimeColor.pink} />
 </Vector3D>
 
-<Latex3D latex={'C = \\tilde{\\mathbf{u}} + \\tilde{\\mathbf{v}}'} offset={0.2} position={C} />
+<Latex3D latex={'C'} offset={0.2} position={C} />
 
-<Vector3D striped direction={uxv} length={uxv.length()} color={PrimeColor.ultramarine} let:endPoint>
+<Vector3D striped direction={uxv} length={uxv.length()} color={PrimeColor.blue} let:endPoint>
   <Latex3D
     latex={'\\tilde{\\mathbf{u}} \\times \\tilde{\\mathbf{v}}'}
     offset={0.2}
     position={endPoint}
   />
-  <Point3D position={endPoint} color={PrimeColor.ultramarine} />
+  <Point3D position={endPoint} color={PrimeColor.blue} />
 </Vector3D>
 
 <!-- e1 & e2 & e3 -->
-<Vector3D direction={new Vector3(0, 0, 1)} length={1} color={PrimeColor.ultramarine} let:endPoint>
+<Vector3D direction={new Vector3(0, 0, 1)} length={1} color={PrimeColor.blue} let:endPoint>
   <Latex3D latex={'\\mathbf{e_1}'} offset={0.1} position={endPoint} />
 </Vector3D>
-<Vector3D direction={new Vector3(1, 0, 0)} length={1} color={PrimeColor.ultramarine} let:endPoint>
+<Vector3D direction={new Vector3(1, 0, 0)} length={1} color={PrimeColor.blue} let:endPoint>
   <Latex3D latex={'\\mathbf{e_2}'} offset={0.1} position={endPoint} />
 </Vector3D>
-<Vector3D direction={new Vector3(0, 1, 0)} length={1} color={PrimeColor.ultramarine} let:endPoint>
+<Vector3D direction={new Vector3(0, 1, 0)} length={1} color={PrimeColor.blue} let:endPoint>
   <Latex3D latex={'\\mathbf{e_3}'} offset={0.1} position={endPoint} />
 </Vector3D>

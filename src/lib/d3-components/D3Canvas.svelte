@@ -10,6 +10,7 @@
   export let tickLength = 30;
   export let gridType: GridType;
   export let zoom: number = 1;
+  export let showAxisNumbers = true;
 
   const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
 
@@ -48,7 +49,7 @@
           (2 * vmax)) /
           30})"
       >
-        <Axis length={tickLength} {gridType} />
+        <Axis {showAxisNumbers} length={tickLength} {gridType} />
         <slot />
       </g>
     </g>

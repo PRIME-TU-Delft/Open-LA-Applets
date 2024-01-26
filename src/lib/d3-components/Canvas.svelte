@@ -18,6 +18,7 @@
   export let zoom = 1;
   export let zoom3d = 29;
   export let formulas: Formula[] = [];
+  export let showAxisNumbers = true;
 
   // Is the scene inside an iframe?
   export let isIframe = false;
@@ -41,14 +42,14 @@
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
-  <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
+  <D3Canvas {showAxisNumbers} {zoom} width={totalWidth} {height} {gridType}>
     <slot />
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
     <div class="canvasDivider" />
 
-    <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
+    <D3Canvas {showAxisNumbers} {zoom} width={totalWidth} {height} {gridType}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {/if}
