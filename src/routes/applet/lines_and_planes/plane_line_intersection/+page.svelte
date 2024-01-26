@@ -12,7 +12,7 @@
   function setFormulas(x: number, y: number, z: number) {
     const f1 = new Formula('\\$x + 1y + 1z = 0', x, PrimeColor.red);
     const f2 = new Formula('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
-    const f3 = new Formula('\\$x + 1y + 1z = 0', z, PrimeColor.green);
+    const f3 = new Formula('\\$x + 1y + 1z = 0', z, PrimeColor.darkGreen);
 
     return [f1, f2, f3];
   }
@@ -33,7 +33,7 @@
 
   {#if !sliders.allEqualValue}
     <Vector3D
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
       length={11.5}
       origin={new Vector3(0, -4, 4)}
       direction={new Vector3(0, 1, -1)}

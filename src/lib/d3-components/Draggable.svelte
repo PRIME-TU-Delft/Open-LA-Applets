@@ -1,5 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { activityStore } from '$lib/activityStore';
+  import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { drag, select } from 'd3';
   import { onMount } from 'svelte';
@@ -7,12 +9,13 @@
 
   export let id: string;
   export let position = new Vector2(0, 0);
-  export let color: PrimeColor = PrimeColor.ultramarine;
+  export let color: PrimeColor = PrimeColor.blue;
   export let snap = false;
 
   let g: SVGGElement;
 
-  function dragstarted(event: DragEvent) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function dragstarted(_: DragEvent) {
     select(g).raise();
     select(g).attr('cursor', 'grabbing');
   }
@@ -57,13 +60,22 @@
   });
 </script>
 
-<circle class="pulse" cx={position.x} cy={position.y} r=".5" fill={color} />
-<circle cx={position.x} cy={position.y} r=".125" fill={color} />
+<circle
+  class="pulse"
+  cx={position.x}
+  cy={position.y}
+  r={INTERACTIVITY_RADIUS.toLocaleString()}
+  fill={color}
+  role="button"
+  tabindex="0"
+  on:mousedown={activityStore.enable}
+/>
+<circle cx={position.x} cy={position.y} r={POINT_SIZE.toLocaleString()} fill={color} />
 
 <slot />
 
 <g bind:this={g}>
-  <circle cx={position.x} cy={position.y} r=".5" opacity="0" />
+  <circle cx={position.x} cy={position.y} r={INTERACTIVITY_RADIUS} opacity="0" />
 </g>
 
 <style>
