@@ -57,7 +57,7 @@ export class Sliders {
 
   // Get the value of a slider by its index
   private getSlider(index: number) {
-    if (this._sliders.length < index) return 0;
+    if (this._sliders.length - 1 < index) return 0;
 
     return this._sliders[index].value;
   }
