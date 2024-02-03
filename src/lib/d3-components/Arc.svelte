@@ -10,15 +10,20 @@
   export let width = LINE_WIDTH;
   export let distance = 0.8;
 
-  $: startAngle = points[0].angle();
-  $: endAngle = points[1].angle();
+  $: startAngle = Math.PI / 2 + points[0].angle();
+  $: endAngle = Math.PI / 2 + points[1].angle();
 
-  // Arc defined by D3
+  // Makes sure the start angle is always less than the end angle
+  $: adjustedStartAngle =
+    startAngle > endAngle && startAngle - endAngle > Math.PI / 2
+      ? startAngle - 2 * Math.PI
+      : startAngle;
+
   $: d = arc()({
     innerRadius: distance - width / 2,
     outerRadius: distance + width / 2,
-    startAngle: Math.PI / 2 + startAngle,
-    endAngle: Math.PI / 2 + endAngle
+    startAngle: adjustedStartAngle,
+    endAngle: endAngle
   });
 </script>
 

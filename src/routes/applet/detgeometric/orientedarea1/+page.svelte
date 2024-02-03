@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
+  import { Arc2D, Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
   import Draggable from '$lib/d3-components/Draggable.svelte';
   import Parallelogram from '$lib/d3-components/Parallelogram.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import RightScene from './RightScene.svelte';
 
-  let u = new Vector2(2, 0.5);
+  let u = new Vector2(2, -0.5);
   let v = new Vector2(0.5, 2);
 
   $: C = u.clone().add(v);
@@ -49,6 +49,8 @@
   </Vector2D>
 
   <Latex2D latex={`C`} offset={new Vector2(0.1, 0.2)} position={C} />
+
+  <Arc2D points={[u, v]} />
 
   <svelte:fragment slot="splitCanvas3d">
     <!-- To reduce clutter in this file, the right scene is defined in a separate file. -->
