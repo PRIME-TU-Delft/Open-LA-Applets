@@ -16,10 +16,10 @@ export function debounce<T extends any[], S>(cb: (...args: T[]) => S, delay = 25
   };
 }
 
-export function throttle(callback, delay = 250) {
+export function throttle<T, A extends Array<T>>(callback: (...args: A) => void, delay = 250) {
   let shouldWait = false;
 
-  return (...args) => {
+  return (...args: A) => {
     if (shouldWait) return;
 
     callback(...args);

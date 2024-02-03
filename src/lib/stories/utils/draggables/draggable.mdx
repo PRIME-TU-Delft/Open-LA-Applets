@@ -1,0 +1,52 @@
+import { Canvas, Meta, Source } from '@storybook/blocks';
+
+import * as DraggableStory from './Draggable.stories';
+
+<Meta of={DraggableStory} />
+
+# Draggable
+
+The Draggable component enables interactivity with the mouse or touch for an element.
+It is exclusive to the Canvas 2D block because dragging in a 3D space can be ambiguous on a 2D screen.
+Just like sliders, zooming and panning are reset when the reset button is pressed.
+
+To create a draggable element, simply add a `Draggable2D` component to the Canvas 2D block with the following properties:
+
+- `id`: a unique identifier for the draggable element (required)
+- `position`: a `Vector2` object that will be updated with the position of the draggable element (required)
+- `color`: the color of the draggable element (optional, defaults to `PrimeColor.black`)
+
+<Source language="html" code={`<script lang="ts">
+  import { Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+
+let w = new Vector2(1, 3);
+let v = new Vector2(3, 0);
+
+</script>
+
+<Canvas2D {title}>
+  <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
+  <Draggable2D id="v" bind:position={v} color={PrimeColor.ultramarine} />
+
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
+</Canvas2D>
+`} />
+
+<Canvas of={DraggableStory.SimpleExample} />
+
+## Draggable snapping
+
+To enable snapping, add a `snap` property to the `Draggable2D` component.
+
+<Source
+  language="html"
+  code={`
+<Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
+<Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
+`}
+/>
+
+<Canvas of={DraggableStory.SnapExample} />
