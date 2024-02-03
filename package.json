@@ -13,7 +13,7 @@
     "format": "prettier --plugin-search-dir . --write .",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_7ac438918371f8a"
+    "chromatic": "npx chromatic --only-changed --project-token=chpt_7ac438918371f8a"
   },
   "dependencies": {
     "@mdi/js": "^7.2.96",
@@ -54,7 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.14",
-    "chromatic": "^7.5.4",
+    "chromatic": "^10.7.1",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-storybook": "^0.6.12",
