@@ -10,7 +10,7 @@
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
-  const url = $page.url;
+  const url = $page?.url;
   let searchInput: HTMLInputElement;
   let searchQuery = url.searchParams.get('q') || '';
 

@@ -44,7 +44,7 @@
   }
 
   $: {
-    const params = $page.url?.searchParams;
+    const params = $page?.url?.searchParams;
     title = params?.get('title') || title;
   }
 
@@ -55,7 +55,7 @@
   }
 
   onMount(() => {
-    const params = $page.url?.searchParams;
+    const params = $page?.url?.searchParams;
 
     if (sliders.fromURL) {
       sliders = sliders?.fromURL(params?.get('sliders') || '') || sliders;
