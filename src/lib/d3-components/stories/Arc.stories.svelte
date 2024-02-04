@@ -34,3 +34,14 @@
 <Story name="With origin defined" source args={{ origin: new Vector2(1, 1) }} />
 <Story name="With width defined" source args={{ width: 0.1 }} />
 <Story name="With distance defined" source args={{ distance: 1 }} />
+
+<Story
+  name="With arrow"
+  source
+  args={{ hasHead: true, points: [new Vector2(1, 1), new Vector2(-1, -1)] }}
+/>
+<Story
+  name="With arrow reversed"
+  source
+  args={{ hasHead: true, points: [new Vector2(-1, -1), new Vector2(1, 1)] }}
+/>
