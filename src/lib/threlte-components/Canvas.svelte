@@ -32,13 +32,39 @@
   --height={height}
   --width={width}
 >
-  <Canvas size={{ width, height }}>
-    <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
+  {@const totalWidth = $$slots.splitCanvas ? width / 2 : width}
 
-    <slot name="lights">
-      <T.AmbientLight intensity={1} />
-    </slot>
+  <div class="canvas3d relative overflow-hidden">
+    <Canvas size={{ width: totalWidth, height }}>
+      <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
 
-    <slot />
-  </Canvas>
+      <slot name="lights">
+        <T.AmbientLight intensity={1} />
+      </slot>
+
+      <slot />
+    </Canvas>
+  </div>
+
+  <!-- For adding a 2nd 3D canvas next to another 3D canvas -->
+  <!-- ! Camera position is identical to the first ! -->
+  {#if $$slots.splitCanvas}
+    <div class="canvasDivider" />
+
+    <div class="canvas3d relative overflow-hidden">
+      <Canvas size={{ width: totalWidth, height }}>
+        <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
+        <T.AmbientLight intensity={1} />
+
+        <slot name="splitCanvas" />
+      </Canvas>
+    </div>
+  {/if}
 </AbstractCanvas>
+
+<style lang="postcss">
+  .canvasDivider {
+    left: calc(50% - 2px);
+    @apply static top-0 w-1 h-full shadow-2xl bg-slate-500;
+  }
+</style>
