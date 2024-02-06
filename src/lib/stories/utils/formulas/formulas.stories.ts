@@ -14,12 +14,12 @@ const f2 = new Formula('Surface = 2 * (2 + 6 + 3) = \\$', 22, PrimeColor.yellow)
 const f3 = new Formula('Area = \\$1 * \\$3 * \\$2 = 6')
   .addParam(1, 1, PrimeColor.red)
   .addParam(3, 2, PrimeColor.yellow)
-  .addParam(2, 3, PrimeColor.green);
+  .addParam(2, 3, PrimeColor.darkGreen);
 
 const f4 = new Formula('Surface = \\$1 * (\\$1 + \\$2 + \\$3) = 22')
   .addAutoParam(2, PrimeColor.red)
   .addAutoParam(6, PrimeColor.yellow)
-  .addAutoParam(3, PrimeColor.green);
+  .addAutoParam(3, PrimeColor.darkGreen);
 
 export default {
   title: 'Tutorial/Formulas',

@@ -27,11 +27,11 @@ let v = new Vector2(3, 0);
 </script>
 
 <Canvas2D {title}>
-  <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
-  <Draggable2D id="v" bind:position={v} color={PrimeColor.ultramarine} />
+  <Draggable2D id="w" bind:position={w} color={PrimeColor.darkGreen} />
+  <Draggable2D id="v" bind:position={v} color={PrimeColor.blue} />
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
 </Canvas2D>
 `} />
 
@@ -44,8 +44,8 @@ To enable snapping, add a `snap` property to the `Draggable2D` component.
 <Source
   language="html"
   code={`
-<Draggable2D id="w" snap bind:position={w} color={PrimeColor.green} />
-<Draggable2D id="v" snap bind:position={v} color={PrimeColor.ultramarine} />
+<Draggable2D id="w" snap bind:position={w} color={PrimeColor.darkGreen} />
+<Draggable2D id="v" snap bind:position={v} color={PrimeColor.blue} />
 `}
 />
 

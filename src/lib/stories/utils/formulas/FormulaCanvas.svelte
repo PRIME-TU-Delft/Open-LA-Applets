@@ -16,8 +16,8 @@
     const f1 = new Formula('Area = |\\$1| * |\\$2| * |\\$3| = \\$4')
       .addAutoParam(x, PrimeColor.red)
       .addAutoParam(y, PrimeColor.yellow)
-      .addAutoParam(z, PrimeColor.green)
-      .addAutoParam(area, PrimeColor.ultramarine);
+      .addAutoParam(z, PrimeColor.darkGreen)
+      .addAutoParam(area, PrimeColor.blue);
 
     return [f1];
   }
