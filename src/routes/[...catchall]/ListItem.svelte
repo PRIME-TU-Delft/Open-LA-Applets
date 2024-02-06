@@ -6,6 +6,7 @@
 
   export let url = '';
   export let title = '';
+  export let subtitle = '';
 
   let showUrlIframe = '';
 
@@ -23,7 +24,14 @@
     {/if}
   </button>
   <a class="link-hover w-full bg-base-200 rounded p-4 flex justify-between items-center" href={url}>
-    <div>{formatString(title)}</div>
+    <div>
+      <span class="text-slate-500 text-sm">
+        {formatString(subtitle)} /
+      </span>
+      <span>
+        {formatString(title)}
+      </span>
+    </div>
     <Icon path={mdiArrowRight} />
   </a>
 </div>

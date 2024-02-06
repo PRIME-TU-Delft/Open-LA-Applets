@@ -8,7 +8,7 @@
   import { Formula } from '$lib/utils/Formulas';
 
   const n0 = new Vector3(1, 1, 1).normalize();
-  let sliders = new Sliders().add(new Slider(0, -2, 2, 0.5, PrimeColor.darkGreen));
+  let sliders = new Sliders().add(new Slider(0, -2, 0.5, 0.5, PrimeColor.darkGreen));
 
   $: n1 = new Vector3(sliders.x, 1, 1).normalize();
 
