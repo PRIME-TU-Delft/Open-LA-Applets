@@ -19,11 +19,11 @@
   class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1"
   class:inset={!isIframe || isFullscreen}
 >
-  <li class="tooltip tooltip-left" data-tip="Delete cache draggables">
-    {#if dev}
+  {#if dev}
+    <li class="tooltip tooltip-left" data-tip="Delete cache draggables">
       <RoundButton icon={mdiDelete} on:click={() => (localStorage.clear(), location.reload())} />
-    {/if}
-  </li>
+    </li>
+  {/if}
 
   {#if hasFormulas && isIframe && !isFullscreen}
     <li class="tooltip tooltip-left" data-tip="Toggle formulae">
