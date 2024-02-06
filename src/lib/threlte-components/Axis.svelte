@@ -11,7 +11,7 @@
   export let hideTicks = false;
   export let axisLength = 10;
   export let axisSpacing = 2;
-  export let responsiveSpacing = true;
+  export let responsiveSpacing = false;
   export let floor = false;
   export let hideOrigin = false;
 
