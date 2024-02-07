@@ -34,6 +34,8 @@
   }
 
   let search = debounce(async () => {
+    document.querySelector('html')?.scrollTo({ top: 0, behavior: 'smooth' });
+
     searchInput.focus();
     searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
 

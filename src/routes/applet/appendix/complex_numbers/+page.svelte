@@ -1,33 +1,70 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
-  import Arc from '$lib/d3-components/Arc.svelte';
-  import Draggable from '$lib/d3-components/Draggable.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Canvas2D, Line2D } from '$lib/d3-components';
+  import Angle from '$lib/d3-components/Angle.svelte';
+  import Point from '$lib/d3-components/Point.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Slider, Sliders } from '$lib/utils/Slider';
   import { Vector2 } from 'three';
+  import Latex2D from '$lib/d3-components/Latex.svelte';
 
-  let u = new Vector2(1, -2);
-  let v = new Vector2(-3, 4);
+  let sliders = new Sliders()
+    .add(new Slider(3, 3, 10, 1, PrimeColor.blue))
+    .add(new Slider(0.25, 0, 1, 0.125, PrimeColor.darkGreen));
+  const distance = 2 * Math.sqrt(2);
 
-  $: deltaAngle = (v.angle() - u.angle()).toFixed(3);
+  function polarToCartesian(
+    radius: number,
+    angleInRadians: number,
+    centerX: number = 0,
+    centerY: number = 0
+  ) {
+    return new Vector2(
+      centerX + radius * Math.cos(angleInRadians),
+      centerY + radius * Math.sin(angleInRadians)
+    );
+  }
 </script>
 
-<Canvas2D
-  showFormulasDefault
-  formulas={[
-    new Formula('u ' + u.angle().toFixed(3)),
-    new Formula('v ' + v.angle().toFixed(3)),
-    new Formula(deltaAngle)
-  ]}
->
-  <Draggable bind:position={u} id="u" color={PrimeColor.red} />
-  <Draggable bind:position={v} id="v" color={PrimeColor.darkGreen} />
+<Canvas2D showAxisNumbers={false} bind:sliders>
+  <!-- Start angle (green) -->
+  <Point position={polarToCartesian(distance, Math.PI * sliders.y)} color={PrimeColor.blue} />
+  <Line2D
+    start={polarToCartesian(distance, Math.PI * sliders.y)}
+    end={polarToCartesian(
+      distance,
+      ((Math.PI * 2) / sliders.x) * (sliders.x - 1) + Math.PI * sliders.y
+    )}
+    color={PrimeColor.blue}
+  />
 
-  <Vector2D direction={u} length={u.length()} color="red" />
-  <Latex2D position={u} latex="u" />
-  <Vector2D direction={v} length={v.length()} color="green" />
-  <Latex2D position={v} latex="v" />
+  <Angle
+    color={PrimeColor.darkGreen}
+    hasHead
+    {distance}
+    startAngle={0}
+    endAngle={Math.PI * sliders.y}
+  />
 
-  <Arc points={[u, v]} hasHead />
-  <Arc points={[v, u]} hasHead distance={1.6} />
+  <!-- Intermediate angles (red) -->
+  {#each new Array(sliders.x) as _, i}
+    {@const startAngle = ((Math.PI * 2) / sliders.x) * i + Math.PI * sliders.y}
+    {@const endAngle = startAngle + (Math.PI * 2) / sliders.x}
+    {@const startPos = polarToCartesian(distance, startAngle)}
+    {@const endPos = polarToCartesian(distance, endAngle)}
+
+    <Line2D start={startPos} end={endPos} color={PrimeColor.blue} />
+
+    {@const latexPos = polarToCartesian(distance + 0.5, endAngle)}
+    <Latex2D latex={endPos.x.toFixed(2) + ' + ' + endPos.y.toFixed(2) + 'i'} position={latexPos} />
+
+    {#if startAngle > Math.PI * 2}
+      <Point position={endPos} color={PrimeColor.blue} />
+    {:else if endAngle < Math.PI * 2}
+      <Point position={endPos} color={PrimeColor.blue} />
+      <Angle color={PrimeColor.red} {distance} {startAngle} {endAngle} hasHead />
+    {:else}
+      <Point position={endPos} color={PrimeColor.blue} />
+      <Angle color={PrimeColor.yellow} {distance} {startAngle} endAngle={Math.PI * 2} hasHead />
+    {/if}
+  {/each}
 </Canvas2D>
