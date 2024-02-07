@@ -1,15 +1,35 @@
 <script lang="ts">
   import { Canvas2D, Line2D } from '$lib/d3-components';
   import Angle from '$lib/d3-components/Angle.svelte';
+  import Latex2D from '$lib/d3-components/Latex.svelte';
   import Point from '$lib/d3-components/Point.svelte';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Slider, Sliders } from '$lib/utils/Slider';
   import { Vector2 } from 'three';
-  import Latex2D from '$lib/d3-components/Latex.svelte';
 
   let sliders = new Sliders()
     .add(new Slider(3, 3, 10, 1, PrimeColor.blue))
     .add(new Slider(0.25, 0, 1, 0.125, PrimeColor.darkGreen));
+
+  function createFormulas(fraction: number, offset: number) {
+    return [
+      new Formula(
+        '\\text{offset} = \\frac{\\$}{4} \\pi',
+        Math.round(offset * 4).toFixed(1),
+        PrimeColor.darkGreen
+      ),
+      new Formula(
+        '\\text{arc length} = \\frac{2}{\\$} \\pi',
+        Math.round(fraction).toFixed(1),
+        PrimeColor.red
+      )
+    ];
+  }
+
+  // const formulas = [new Formula('\\text{offset} = \\$ \\pi', sliders.y, PrimeColor.darkGreen)];
+  $: formulas = createFormulas(sliders.x, sliders.y);
+
   const distance = 2 * Math.sqrt(2);
 
   function polarToCartesian(
@@ -25,7 +45,7 @@
   }
 </script>
 
-<Canvas2D showAxisNumbers={false} bind:sliders>
+<Canvas2D showAxisNumbers={false} bind:sliders {formulas}>
   <!-- Start angle (green) -->
   <Point position={polarToCartesian(distance, Math.PI * sliders.y)} color={PrimeColor.blue} />
   <Line2D
