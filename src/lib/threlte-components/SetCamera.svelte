@@ -17,7 +17,7 @@
     return debounce(() => cameraStore.set(camera));
   }
 
-  const { renderer, frameloop } = useThrelte();
+  const { renderer, renderMode } = useThrelte();
 
   $: {
     const cameraSettings = parseCameraSettings($page.url?.searchParams);
@@ -30,10 +30,10 @@
   }
 
   $: if ($activityStore && renderer) {
-    frameloop.set('demand');
+    renderMode.set('on-demand');
   } else if (renderer) {
     requestAnimationFrame(() => {
-      frameloop.set('never');
+      renderMode.set('manual');
     });
   }
 </script>
