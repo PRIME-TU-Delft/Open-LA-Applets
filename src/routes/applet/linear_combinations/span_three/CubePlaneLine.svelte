@@ -5,7 +5,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import type { Toggle } from '$lib/utils/Toggle';
   import { T } from '@threlte/core';
-  // import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
+  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
   import { Vector3 } from 'three';
 
   export let toggles: Controls<readonly [Toggle, Toggle, Toggle]>;
@@ -15,11 +15,42 @@
 </script>
 
 {#if toggles[0] && toggles[1] && toggles[2]}
-  <!-- TODO -->
-  <!-- <T.Mesh> -->
-  <!-- <MeshLineGeometry {points} /> -->
-  <!-- <MeshLineMaterial width={0.5} color="#fe3d00" /> -->
-  <!-- </T.Mesh> -->
+  <T.Mesh scale={0.5}>
+    <MeshLineGeometry
+      points={[
+        new Vector3(-CUBE_SIZE, -CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, -CUBE_SIZE, CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, -CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, -CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, -CUBE_SIZE, CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE)
+      ]}
+    />
+    <MeshLineMaterial width={0.01} color={PrimeColor.black} opacity={0.5} transparent />
+  </T.Mesh>
+
+  <T.Mesh scale={0.5}>
+    <MeshLineGeometry
+      points={[
+        new Vector3(CUBE_SIZE, -CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, -CUBE_SIZE, -CUBE_SIZE),
+        new Vector3(-CUBE_SIZE, -CUBE_SIZE, CUBE_SIZE),
+        new Vector3(CUBE_SIZE, -CUBE_SIZE, CUBE_SIZE)
+      ]}
+    />
+    <MeshLineMaterial width={0.01} color={PrimeColor.black} opacity={0.5} transparent />
+  </T.Mesh>
 
   <T.Mesh>
     <T.BoxGeometry args={[CUBE_SIZE, CUBE_SIZE, CUBE_SIZE]} />

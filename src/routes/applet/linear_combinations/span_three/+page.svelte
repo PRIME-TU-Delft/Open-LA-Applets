@@ -14,7 +14,7 @@
     .addToggle(true, '\\mathbf{w}');
 </script>
 
-<Canvas3D bind:controls>
+<Canvas3D cameraPosition={new Vector3(7.63, 6.3, 14.22)} bind:controls>
   <CubePlaneLine toggles={controls} uvw={[u, v, w]} />
 
   {#if controls[0]}
