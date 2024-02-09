@@ -4,14 +4,16 @@
   import ActionButtons from '$lib/components/ActionButtons.svelte';
   import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
-  import SliderPanel from '$lib/components/SliderPanel.svelte';
-  import ToggleSliders from '$lib/components/ToggleSliders.svelte';
+  import ControllerPanel from '$lib/components/ControllerPanel.svelte';
+  import ToggleControls from '$lib/components/ToggleControls.svelte';
+  import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
-  import { Sliders } from '$lib/utils/Slider';
   import { onDestroy, onMount } from 'svelte';
 
+  type G = $$Generic<readonly Controller<number | boolean>[]>;
+
   /** "The ability to enable move (translate) the applet. On devices with a mouse this can be controlled by right mouse button dragging. On touchscreen devices, this can be done by dragging with two finders on the screen."*/
-  export let sliders = new Sliders();
+  export let controls: Controls<G> | undefined = undefined;
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
@@ -31,10 +33,10 @@
   let sceneEl: HTMLDivElement;
 
   /**
-   * Reset camera position, rotation and sliders.
+   * Reset camera position, rotation and controls.
    */
   function reset() {
-    sliders = sliders.reset(); // Reset sliders to default values
+    controls = controls?.reset(); // Reset controls to default values
     resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
@@ -57,9 +59,10 @@
   onMount(() => {
     const params = $page.url?.searchParams;
 
-    if (sliders.fromURL) {
-      sliders = sliders?.fromURL(params?.get('sliders') || '') || sliders;
+    if (controls) {
+      controls = controls.fromURL(params?.get('controls') || '') || controls;
     }
+
     isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
 
     if (!isIframe) {
@@ -102,15 +105,15 @@
     {/if}
 
     <!-- SLIDER PANEL -->
-    {#if sliders?.sliders?.length > 0}
-      <SliderPanel isInset={!isIframe || isFullscreen}>
-        <ToggleSliders
-          bind:sliders
+    {#if controls && controls.length > 0}
+      <ControllerPanel isInset={!isIframe || isFullscreen}>
+        <ToggleControls
+          bind:controls
           bind:isPlaying={isPlayingSliders}
           on:startChanging={() => (isChangingSliders = true)}
           on:stopChanging={() => (isChangingSliders = false)}
         />
-      </SliderPanel>
+      </ControllerPanel>
     {/if}
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
@@ -137,7 +140,7 @@
   </div>
 
   <!-- SHARE WINDOW -->
-  <ShareWindow {sliders} />
+  <ShareWindow {controls} />
 </div>
 
 <style lang="postcss">

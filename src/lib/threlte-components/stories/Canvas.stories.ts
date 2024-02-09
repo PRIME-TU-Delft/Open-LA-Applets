@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
 
-import { Sliders } from '$lib/utils/Slider';
 import CanvasWrapper from './CanvasWithBlock.svelte';
+import { Controls } from '$lib/utils/Controls';
 
 /**
  * The canvas element is the most crutial component for rendering an applet. All applets are wrapped in this parent component to facilitate basic threlte interactivity and UI visuals.
@@ -24,10 +24,10 @@ const meta = {
     sliders: {
       options: ['No slider', 'One slider', 'Two sliders', 'Three sliders'],
       mapping: {
-        'No slider': new Sliders(),
-        'One slider': new Sliders().addSlider(0),
-        'Two sliders': new Sliders().addSlider(0).addSlider(1),
-        'Three sliders': new Sliders().addSlider(0).addSlider(1).addSlider(2)
+        'No slider': undefined,
+        'One slider': Controls.addSlider(0),
+        'Two sliders': Controls.addSlider(0).addSlider(1),
+        'Three sliders': Controls.addSlider(0).addSlider(1).addSlider(2)
       }
     }
     // sliders: { type: SBType<SliderType[]> } TODO: define type
@@ -35,7 +35,7 @@ const meta = {
   args: {
     enablePan: false,
     zoom: 29,
-    sliders: new Sliders()
+    sliders: undefined
   }
 } satisfies Meta<CanvasWrapper>;
 
@@ -79,7 +79,7 @@ export const WithTitle: Story = {
  */
 export const MultipleSlider: Story = {
   args: {
-    sliders: new Sliders().addSlider(0).addSlider(1).addSlider(2)
+    sliders: Controls.addSlider(0).addSlider(1).addSlider(2)
   }
 };
 

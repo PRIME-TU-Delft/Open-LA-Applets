@@ -1,12 +1,9 @@
 import { Formula } from '$lib/utils/Formulas';
 import { PrimeColor } from '$lib/utils/PrimeColors';
-import { Sliders } from '$lib/utils/Slider';
+import { Controls } from '$lib/utils/Controls';
 import FormulaCanvas from './FormulaCanvas.svelte';
 
-const sliders = new Sliders()
-  .addSlider(1, -2, 3, 0.5)
-  .addSlider(2, -2, 3, 0.5)
-  .addSlider(3, -2, 3, 0.5);
+const sliders = Controls.addSlider(1, -2, 3, 0.5).addSlider(2, -2, 3, 0.5).addSlider(3, -2, 3, 0.5);
 
 const f1 = new Formula('Area = 1 * 2 * 3 = \\$', 6, PrimeColor.red);
 const f2 = new Formula('Surface = 2 * (2 + 6 + 3) = \\$', 22, PrimeColor.yellow);
