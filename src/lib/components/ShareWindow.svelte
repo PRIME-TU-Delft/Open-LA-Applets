@@ -133,7 +133,7 @@
               ''
             )}%29"
           >
-            <span>Go this applet's github page here</span> <Icon path={mdiOpenInNew} /></a
+            <span>Go to this applet's github page here</span> <Icon path={mdiOpenInNew} /></a
           >
         </li>
 
