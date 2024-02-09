@@ -1,5 +1,6 @@
 import { primeColorArray, type PrimeColor } from './PrimeColors';
 import { Slider } from './Slider';
+import { Toggle } from './Toggle';
 
 /**
  * Interface for a controller
@@ -39,6 +40,10 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
     return this._controls.length;
   }
 
+  *[Symbol.iterator]() {
+    yield* this._controls;
+  }
+
   isAllowedToAddControl(control: Controller<number | boolean>) {
     if (this._width + control.width >= this.MAX_WIDTH) {
       throw new Error(
@@ -74,6 +79,26 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
   static addSlider(dft: number, from?: number, to?: number, step?: number, color?: PrimeColor) {
     const newSlider = new Slider(dft, from, to, step, color || primeColorArray[0]);
     return new Controls([newSlider] as const, newSlider.width);
+  }
+
+  /**
+   * Add a new toggle to the toggles array
+   * @param dft - default value for the toggle default is false
+   * @returns this
+   */
+  addToggle(dft: boolean, title?: string, color?: PrimeColor) {
+    const newToggle = new Toggle(dft, title, color || primeColorArray[0]);
+    this.isAllowedToAddControl(newToggle);
+    return new Controls([...this.controls, newToggle] as const, this._width + newToggle.width);
+  }
+
+  /**
+   * Static method to create set Controls<T> to a new toggle
+   * @returns
+   */
+  static addToggle(dft: boolean, title?: string, color?: PrimeColor) {
+    const newToggle = new Toggle(dft, title, color || primeColorArray[0]);
+    return new Controls([newToggle] as const, newToggle.width);
   }
 
   // Reset all sliders to their default values

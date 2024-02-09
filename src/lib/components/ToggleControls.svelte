@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { Controls } from '$lib/utils/Controls';
   import { Slider } from '$lib/utils/Slider';
-  import ToggleSlider from './Slider.svelte';
+  import { Toggle } from '$lib/utils/Toggle';
+  import SvelteSlider from './Slider.svelte';
+  import SvelteToggle from './Toggle.svelte';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
@@ -21,7 +23,7 @@
 
 {#each controls.controls as controller, index}
   {#if controller instanceof Slider}
-    <ToggleSlider
+    <SvelteSlider
       bind:slider={controller}
       bind:isPlaying
       isExpanded={sliderExpanded == index}
@@ -29,7 +31,7 @@
       on:startChanging
       on:stopChanging
     />
-  {:else}
-    <p>Unknown control type</p>
+  {:else if controller instanceof Toggle}
+    <SvelteToggle bind:toggle={controller} />
   {/if}
 {/each}

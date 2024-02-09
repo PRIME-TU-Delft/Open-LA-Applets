@@ -1,6 +1,5 @@
-import { PrimeColor } from './PrimeColors';
-import { hexToRGB, RGBToHSL } from './colorConvert';
 import type { Controller } from './Controls';
+import { PrimeColor } from './PrimeColors';
 
 /**
  * The Slider class is used to create a slider with a default value and a range of values.
@@ -11,7 +10,7 @@ import type { Controller } from './Controls';
  * @param min The minimum value for the slider
  * @param max The maximum value for the slider
  * @param step The step size for the slider
- * @param color The color of the slider
+ * @param color The color of the slider default is blue
  */
 
 export class Slider implements Controller<number> {
@@ -63,49 +62,6 @@ export class Slider implements Controller<number> {
     return this;
   }
 
-  colorIndex(num: number) {
-    const colors = Object.values(PrimeColor);
-
-    this.color = colors[num];
-
-    return this;
-  }
-
-  grey() {
-    this.color = PrimeColor.black;
-    return this;
-  }
-
-  yellow() {
-    this.color = PrimeColor.yellow;
-    return this;
-  }
-
-  blue() {
-    this.color = PrimeColor.blue;
-    return this;
-  }
-
-  pink() {
-    this.color = PrimeColor.pink;
-    return this;
-  }
-
-  darkGreen() {
-    this.color = PrimeColor.darkGreen;
-    return this;
-  }
-
-  red() {
-    this.color = PrimeColor.red;
-    return this;
-  }
-
-  get hsl() {
-    const hsl = RGBToHSL(hexToRGB(this.color));
-    return hsl;
-  }
-
   reset() {
     this.value = this.defaultValue;
 
@@ -122,9 +78,3 @@ export class Slider implements Controller<number> {
     return this;
   }
 }
-
-export type SliderArray =
-  | readonly []
-  | readonly [Slider]
-  | readonly [Slider, Slider]
-  | readonly [Slider, Slider, Slider];
