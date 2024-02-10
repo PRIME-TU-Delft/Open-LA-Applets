@@ -1,9 +1,8 @@
 import { Formula } from '$lib/utils/Formulas';
-import { Sliders } from '$lib/utils/Slider';
+import { Controls } from '$lib/utils/Controls';
 import AnatomyCanvas from './AnatomyCanvas.svelte';
 
-const sliders = new Sliders()
-  .addSlider(0.5, -2, 2, 0.5)
+const sliders = Controls.addSlider(0.5, -2, 2, 0.5)
   .addSlider(1, -2, 2, 0.5)
   .addSlider(1.5, -2, 2, 0.5);
 

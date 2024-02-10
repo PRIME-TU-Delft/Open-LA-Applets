@@ -3,17 +3,19 @@
   import { mdiClose, mdiContentCopy, mdiOpenInNew } from '@mdi/js';
   import Icon from '$lib/components/Icon.svelte';
   import type { OrthographicCamera } from 'three';
-  import type { Sliders } from '$lib/utils/Slider';
+  import type { Controls } from '$lib/utils/Controls';
   import cameraStore from '../threlte-components/stores/cameraStore';
 
-  export let sliders: Sliders;
+  type G = $$Generic<readonly Controller<number | boolean>[]>;
+
+  export let controls: Controls<G> | undefined = undefined;
 
   let showCopyToClipboard = false;
   let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
 
   let urlInput: HTMLTextAreaElement;
 
-  $: state = sliders.sliders && getState($cameraStore);
+  $: state = controls?.controls && getState($cameraStore);
   $: url = $page.url?.origin + $page.url?.pathname;
   $: refUrl = $page.url?.pathname.replace('/applet/', '');
   $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
@@ -25,21 +27,21 @@
   function getState(camera: OrthographicCamera): string {
     if (!camera) return '';
 
-    let states: string[] = [];
+    let stateUrlString: string[] = [];
 
     const { position, zoom } = camera;
 
-    states.push(
+    stateUrlString.push(
       `position=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
     );
-    states.push(`zoom=${zoom.toFixed(2)}`);
+    stateUrlString.push(`zoom=${zoom.toFixed(2)}`);
 
-    const slidersUrl = sliders.getURL();
-    if (slidersUrl && sliders.hasSliders()) {
-      states.push(slidersUrl);
+    if (controls) {
+      const controlsUrl = controls.toURL();
+      stateUrlString.push(controlsUrl);
     }
 
-    return '?' + states.join('&');
+    return '?' + stateUrlString.join('&');
   }
 
   /**

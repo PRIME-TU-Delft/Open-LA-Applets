@@ -1,7 +1,7 @@
 <script lang="ts">
   import AbstractCanvas from '$lib/components/AbstractCanvas.svelte';
   import SetCamera from '$lib/threlte-components/SetCamera.svelte';
-  import type { Sliders } from '$lib/utils/Slider';
+  import type { Controller, Controls } from '$lib/utils/Controls';
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
   import D3Canvas from './D3Canvas.svelte';
@@ -19,9 +19,11 @@
   export let zoom3d = 29;
   export let formulas: Formula[] = [];
 
+  type G = $$Generic<readonly Controller<number | boolean>[]>;
+
   // Is the scene inside an iframe?
   export let isIframe = false;
-  export let sliders: Sliders | undefined = undefined;
+  export let controls: Controls<G> | undefined = undefined;
   // The grid type can be None, Square, Triangle
   export let gridType: GridType = GridType.Square;
 </script>
@@ -35,7 +37,7 @@
   let:width
   let:height
   let:resetKey
-  bind:sliders
+  bind:controls
   --height={height}
   --width={width}
 >
