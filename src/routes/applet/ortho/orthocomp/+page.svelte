@@ -2,7 +2,14 @@
   import { RightAngle, Canvas2D, Vector2D, Latex2D } from '$lib/d3-components';
 
   import { Vector2, Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, Vector3D, PlaneFromNormal } from '$lib/threlte-components';
+  import {
+    Angle3D,
+    Axis3D,
+    Canvas3D,
+    Latex3D,
+    Vector3D,
+    PlaneFromNormal
+  } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
 
   let v = new Vector2(3, -3);
@@ -28,7 +35,7 @@
     origin={v.clone().multiplyScalar(-1)}
   >
     <Latex2D
-      latex={'\\mathcal{V}'}
+      latex={'V'}
       position={v.clone().add(new Vector2(-0.3, -0.1))}
       color={PrimeColor.green}
     />
@@ -42,7 +49,7 @@
     origin={v_ortho.clone().multiplyScalar(-1)}
   >
     <Latex2D
-      latex={'\\mathcal{V\\perp}'}
+      latex={'V^{\\bot}'}
       position={v_ortho.clone().add(new Vector2(-0.3, 0.3))}
       color={PrimeColor.ultramarine}
     />
@@ -54,7 +61,7 @@
   <svelte:fragment slot="splitCanvas3d">
     <!-- v -->
     <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.green} />
-    <Latex3D latex={'\\mathcal{V}'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.green} />
+    <Latex3D latex={'V'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.green} />
 
     <!-- v_ortho -->
     <Vector3D
@@ -63,6 +70,8 @@
       color={PrimeColor.ultramarine}
       origin={ve_ortho.clone().multiplyScalar(-1)}
     />
-    <Latex3D latex={'\\mathcal{V\\perp}'} position={ve_ortho} color={PrimeColor.ultramarine} />
+    <Latex3D latex={'V^{\\bot}'} position={ve_ortho} color={PrimeColor.ultramarine} />
+
+    <Angle3D vs={[new Vector3(0, 5, 0), new Vector3(3, 0, -3)]} size={0.4} />
   </svelte:fragment>
 </Canvas2D>

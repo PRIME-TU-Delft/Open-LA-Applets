@@ -26,16 +26,20 @@
 <Canvas3D cameraPosition={new Vector3(10, 10, 17)} zoom={50} title="Name to be inserted">
   <!-- v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.ultramarine} />
+  <Latex3D
+    latex={'\\mathbf{u}'}
+    position={v.clone().add(new Vector3(0, 0.2, 0))}
+    color={PrimeColor.ultramarine}
+  />
 
   <!-- w -->
   <Vector3D direction={w} length={w.length()} color={PrimeColor.yellow} />
-  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.yellow} />
+  <Latex3D latex={'\\mathbf{u}_{V^{\\bot}}'} position={w} color={PrimeColor.yellow} />
 
   <!-- proj_v -->
   <Vector3D direction={proj_v} length={proj_v.length()} color={PrimeColor.red} />
   <Latex3D
-    latex={'Proj_{\\mathcal{V}}(\\mathbf{v})'}
+    latex={'\\mathbf{u}_{V}'}
     position={proj_v.clone().add(new Vector3(0.2, 0, 0.2))}
     color={PrimeColor.red}
   />
@@ -62,5 +66,5 @@
 
   <!-- V -->
   <PlaneFromNormal position={V} normal={n0} color={PrimeColor.green} />
-  <Latex3D latex={'\\mathcal{V}'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.green} />
+  <Latex3D latex={'V'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.green} />
 </Canvas3D>
