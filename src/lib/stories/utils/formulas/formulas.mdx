@@ -1,0 +1,84 @@
+import { Canvas, Meta, Source } from '@storybook/blocks';
+
+import * as FormulasStory from './formulas.stories';
+
+<Meta of={FormulasStory} />
+
+# Formulas
+
+Formulas are used to show how some objects in the canvas are derived from formulas.
+Formulas can also show properties of objects in the canvas such as length or area,
+depending on the context of the book.
+
+## Simple formula
+
+Formulas consist of a string, a value, and a color. Each formula is displayed on its own line.
+The character `\\$` is used as a placeholder for the value position.
+
+<Source language="html" code={`<script lang="ts">
+  import { Canvas3D } from '$lib/threlte-components';
+  import { Formula } from '$lib/utils/Formulas';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  
+  const f1 = new Formula('Area = 1 * 2 * 3 = \\$', 6, PrimeColor.red);
+  const f2 = new Formula('Surface = 2 * (2 + 6 + 3) = \\$', 22, PrimeColor.yellow);
+</script>
+
+<Canvas3D formulas={[f1,f2]}>
+  <!-- Your content here -->
+  <!-- slider values can be accessed in the canvas by providing the {sliders.x}, {sliders.y} and {sliders.z} variables -->
+</Canvas3D>`} />
+
+<Canvas of={FormulasStory.SimpleFormula} />
+
+## Formula with multiple colours on the same line
+
+Formulas can have multiple colours on the same line. This is useful when you want
+to highlight a multiple specific parts of the formula. Here it is curtial to use
+the `\\$` with a number to indicate the position of the value.
+
+> Using the same index will insert the same value at multiple places in the formula.
+
+The formula will have be colored by the `addParam` or `addAutoParam` methods. The `addParam` method
+takes the index of the `\\$` and the value to insert. The `addAutoParam` method takes the value to insert
+and will automatically increment the index starting from index 1. (Due to javascript limitations, the index does not start at 0)
+
+<Source language="ts" code={`const f1 = new Formula('Area = \\$1 * \\$3 * \\$2 = 6')
+  .addParam(1, 1, PrimeColor.red)
+  .addParam(3, 2, PrimeColor.yellow)
+  .addParam(2, 3, PrimeColor.darkGreen);
+
+{/* Notice the double $1 index */}
+const f2 = new Formula('Surface = \\$1 \* (\\$1 + \\$2 + \\$3) = 22')
+.addAutoParam(2, PrimeColor.red)
+.addAutoParam(6, PrimeColor.yellow)
+.addAutoParam(3, PrimeColor.darkGreen);
+
+const formulas = [f1, f2]
+`} />
+
+<Canvas of={FormulasStory.MulticolorFormula} />
+
+## Formula with interactivity
+
+The formulas are not interactive by default (in svelte v4, v5 will change this [see here](https://svelte.dev/blog/runes)).
+To make the formulas interactive, you need to use the `$` sign in front of the variable name.
+This will make the variable reactive and update the formula when the variable changes.
+
+<Source language="ts" code={`function setFormulas(x: number, y: number, z: number) {
+    const area = Math.abs(x * y * z);
+    const f1 = new Formula('Area = |\\$1| * |\\$2| * |\\$3| = \\$4')
+      .addAutoParam(x, PrimeColor.red)
+      .addAutoParam(y, PrimeColor.yellow)
+      .addAutoParam(z, PrimeColor.darkGreen)
+      .addAutoParam(area, PrimeColor.blue);
+
+    return [f1];
+
+}
+
+$: formulas = setFormulas(sliders.x, sliders.y, sliders.z)`} />
+
+> Notice how, the inclusion of, the formulas now provide more context to each slider.
+
+<Canvas of={FormulasStory.InteractiveFormula} />

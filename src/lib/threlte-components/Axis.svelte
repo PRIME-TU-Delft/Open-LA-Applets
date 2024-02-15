@@ -3,7 +3,6 @@
   import { DoubleSide, Vector3 } from 'three';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Label from './Label.svelte';
   import Latex3D from './Latex.svelte';
   import Line from './Line.svelte';
   import cameraStore from './stores/cameraStore';
@@ -28,7 +27,6 @@
   $: indicatorMax = indicators[indicators.length - 1];
 
   const tickSizes = [0.25, 0.125]; // Ortogonal lenth of tick
-  const axisLabelOpacity = 0.4;
 
   function getPoints(indicator: number, size: number, axis = 0): [Vector3, Vector3] {
     let from = new Vector3(indicator, 0, size);
@@ -84,19 +82,28 @@
 {#if showNumbers}
   {#each labeledIndicators as indicator}
     {@const indicatorFixed = indicator.toFixed(2).replace('.00', '')}
-
-    <Label position={new Vector3(indicator, 0.1, -0.15)} opacity={axisLabelOpacity}>
-      {indicatorFixed}
-    </Label>
-    <Label position={new Vector3(0, indicator, -0.15)} opacity={axisLabelOpacity}>
-      {indicatorFixed}
-    </Label>
-    <Label position={new Vector3(-0.15, 0.1, indicator)} opacity={axisLabelOpacity}>
-      {indicatorFixed}
-    </Label>
+    <!-- Y -->
+    <Latex3D
+      latex={indicatorFixed.toString()}
+      position={new Vector3(indicator, 0, -0.35)}
+      offset={0}
+    />
+    <!-- Z -->
+    <Latex3D
+      latex={indicatorFixed.toString()}
+      position={new Vector3(0, indicator, -0.35)}
+      offset={0}
+    />
+    <!-- X -->
+    <Latex3D
+      latex={indicatorFixed.toString()}
+      position={new Vector3(-0.35, 0, indicator)}
+      offset={0}
+    />
   {/each}
 {/if}
 
+<!-- x, y, z labels -->
 <Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex="-x" />
 <Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex="-y" />
 <Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex="-z" />

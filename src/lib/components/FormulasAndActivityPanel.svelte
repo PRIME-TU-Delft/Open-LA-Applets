@@ -27,14 +27,17 @@
       {#if $activityStore}
         <button
           style="--btn-text-case: none"
-          class="btn btn-sm bg-blue-500/70 hover:bg-blue-500/70 rounded-l-none text-white btn-ghost"
+          class="btn btn-sm bg-blue-500/70 h-fit hover:bg-blue-500/70 rounded-l-none text-white btn-ghost"
           on:click={() => dispatch('pause')}
         >
           <Icon path={mdiPause} />
           Click here to disable interactivity
         </button>
       {:else}
-        <button style="--btn-text-case: none" class="btn btn-sm bg-base-100 rounded-l-none w-fit">
+        <button
+          style="--btn-text-case: none"
+          class="btn h-fit btn-sm bg-base-100 rounded-l-none w-fit"
+        >
           Click once to enable interactivity
         </button>
       {/if}

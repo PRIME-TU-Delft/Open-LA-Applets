@@ -38,7 +38,7 @@
 
 <div class="flex flex-col gap-1 container my-10 mx-auto">
   {#each searchedFiles as { item: file } (file.url)}
-    <ListItem url={file.url} title={file.file} />
+    <ListItem url={file.url} title={file.file} subtitle={file.folder} />
   {:else}
     <div
       class="container my-10 mx-auto h-96 flex flex-col gap-2 items-center justify-center bg-base-200 border border-base-300 rounded-lg"

@@ -17,7 +17,7 @@
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
   <Latex3D
-    latex={'Span\\{\\mathbf{v}\\}'}
+    latex={'\\mathrm{Span}\\{\\mathbf{v}\\}'}
     position={lineDir.add(new Vector3(0, 0.4, 0))}
     color={PrimeColor.blue}
   />

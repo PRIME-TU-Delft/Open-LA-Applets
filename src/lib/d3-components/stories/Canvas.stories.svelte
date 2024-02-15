@@ -15,7 +15,7 @@
       'Canvas is a component that allows you to draw 2d components on a canvas.',
       'The start of each 2d component'
     )
-  } satisfies Meta<Canvas>;
+  } satisfies Meta<Canvas<any>>;
 </script>
 
 <script>

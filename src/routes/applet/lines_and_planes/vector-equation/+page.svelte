@@ -23,11 +23,11 @@
     <Latex2D
       latex={'\\mathbf{v}_0'}
       position={endPoint}
-      offset={new Vector2(0.1, 0.1)}
+      offset={new Vector2(0.1, 0.2)}
       color={PrimeColor.red}
     />
     <Latex2D
-      latex={'\\mathcal{L}'}
+      latex={'\\mathcal{L}_1'}
       offset={u.clone().multiplyScalar(-0.2).add(new Vector2(-0.2, -0.2))}
       position={endPoint}
       color={PrimeColor.blue}
@@ -39,7 +39,7 @@
     <Latex2D
       latex={'\\mathbf{v}_1'}
       position={endPoint}
-      offset={new Vector2(-0.2, -0.3)}
+      offset={new Vector2(-0.3, -0.3)}
       color={PrimeColor.yellow}
     />
   </Vector2D>
@@ -50,7 +50,7 @@
     <Latex2D
       latex={'\\mathbf{u}'}
       position={endPoint}
-      offset={new Vector2(0.1, 0.1)}
+      offset={new Vector2(0.1, 0.2)}
       color={PrimeColor.darkGreen}
     />
   </Vector2D>
@@ -59,7 +59,7 @@
     <Latex2D
       latex={'\\mathbf{u}'}
       position={endPoint}
-      offset={new Vector2(0.1, 0.1)}
+      offset={new Vector2(0.1, 0.2)}
       color={PrimeColor.darkGreen}
     />
   </Vector2D>
