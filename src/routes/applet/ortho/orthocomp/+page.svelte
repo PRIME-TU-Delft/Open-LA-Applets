@@ -31,13 +31,13 @@
   <Vector2D
     direction={v}
     length={v.length() * 2}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     origin={v.clone().multiplyScalar(-1)}
   >
     <Latex2D
       latex={'V'}
       position={v.clone().add(new Vector2(-0.3, -0.1))}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -45,13 +45,13 @@
   <Vector2D
     direction={v_ortho}
     length={v_ortho.length() * 2}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
     origin={v_ortho.clone().multiplyScalar(-1)}
   >
     <Latex2D
       latex={'V^{\\bot}'}
       position={v_ortho.clone().add(new Vector2(-0.3, 0.3))}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 
@@ -60,17 +60,17 @@
 
   <svelte:fragment slot="splitCanvas3d">
     <!-- v -->
-    <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.green} />
-    <Latex3D latex={'V'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.green} />
+    <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.darkGreen} />
+    <Latex3D latex={'V'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.darkGreen} />
 
     <!-- v_ortho -->
     <Vector3D
       direction={ve_ortho}
       length={ve_ortho.length() * 2}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
       origin={ve_ortho.clone().multiplyScalar(-1)}
     />
-    <Latex3D latex={'V^{\\bot}'} position={ve_ortho} color={PrimeColor.ultramarine} />
+    <Latex3D latex={'V^{\\bot}'} position={ve_ortho} color={PrimeColor.blue} />
 
     <Angle3D vs={[new Vector3(0, 5, 0), new Vector3(3, 0, -3)]} size={0.4} />
   </svelte:fragment>
