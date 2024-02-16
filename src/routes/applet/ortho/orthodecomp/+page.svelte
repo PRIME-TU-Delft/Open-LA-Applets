@@ -23,13 +23,13 @@
   let v = new Vector3(3, 4, 1.5);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(10, 10, 17)} zoom={50} title="Name to be inserted">
+<Canvas3D cameraPosition={new Vector3(10, 10, 17)} zoom={50}>
   <!-- v -->
-  <Vector3D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
+  <Vector3D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex3D
     latex={'\\mathbf{u}'}
     position={v.clone().add(new Vector3(0, 0.2, 0))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
   <!-- w -->
@@ -65,6 +65,6 @@
   />
 
   <!-- V -->
-  <PlaneFromNormal position={V} normal={n0} color={PrimeColor.green} />
-  <Latex3D latex={'V'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.green} />
+  <PlaneFromNormal position={V} normal={n0} color={PrimeColor.darkGreen} />
+  <Latex3D latex={'V'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.darkGreen} />
 </Canvas3D>
