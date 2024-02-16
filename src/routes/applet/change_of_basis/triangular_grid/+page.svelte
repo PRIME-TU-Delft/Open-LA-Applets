@@ -12,27 +12,27 @@
 </script>
 
 <Canvas2D gridType={GridType.Triangle}>
-  <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.ultramarine} />
+  <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.blue} />
 
   <!-- Arcs -->
-  <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.green} />
-  <Arc2D points={[b2, minusB1]} distance={0.75} color={PrimeColor.green} />
+  <Arc2D points={[b1, b1plusb2]} distance={0.75} color={PrimeColor.darkGreen} />
+  <Arc2D points={[b2, minusB1]} distance={0.75} color={PrimeColor.darkGreen} />
 
   <!-- Bases -->
-  <Vector2D direction={b1} length={b1.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={b1} length={b1.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_1'}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
-  <Vector2D direction={b2} length={b2.length()} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={b2} length={b2.length()} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_2'}
       offset={new Vector2(-0.5, 0.2)}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 

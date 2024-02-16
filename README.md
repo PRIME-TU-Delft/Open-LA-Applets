@@ -1,6 +1,6 @@
 # Open Linear Algebra Book Applets
 
-This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://dbalague.pages.ewi.tudelft.nl/openlabook/index.html) by the Delft University of Technology. The applets are hosted here: https://openla.ewi.tudelft.nl. Documentation can be found here: https://docs.ewi.tudelft.nl
+This repository contains multiple packages and applications for the PRIME Graphics group. It hosts the code for the interactive applets in the [Open Linear Algebra Book](https://prime.pages.ewi.tudelft.nl/openlabook) by the Delft University of Technology. The applets are hosted here: https://openla.ewi.tudelft.nl. Documentation can be found here: https://docs.openla.ewi.tudelft.nl
 
 ## Getting started
 

@@ -33,12 +33,11 @@
     if (e.key == 'k' && e.metaKey) searchInput.focus();
   }
 
-  let search = debounce(async () => {
+  let search = debounce(() => {
     searchInput.focus();
     searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
 
     url.searchParams.set('q', searchQuery);
-    await goto(url, { replaceState: true });
     searchInput.focus();
     searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
   }, 2000);
@@ -58,11 +57,7 @@
         placeholder="Enter applet name"
         class="input input-bordered w-full max-w-xs"
         bind:value={searchQuery}
-        on:keyup={async () => {
-          await search();
-
-          searchInput.setSelectionRange(searchQuery.length, searchQuery.length);
-        }}
+        on:keyup={() => search()}
       />
       <div class="absolute right-1 top-1/2 flex -translate-y-1/2 gap-1">
         <kbd class="kbd kbd-sm">⌘</kbd>

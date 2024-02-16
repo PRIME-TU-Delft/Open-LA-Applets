@@ -9,7 +9,7 @@
 
   export let id: string;
   export let position = new Vector2(0, 0);
-  export let color: PrimeColor = PrimeColor.ultramarine;
+  export let color: PrimeColor = PrimeColor.blue;
   export let snap = false;
 
   let g: SVGGElement;

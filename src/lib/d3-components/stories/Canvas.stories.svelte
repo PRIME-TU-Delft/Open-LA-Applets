@@ -15,7 +15,7 @@
       'Canvas is a component that allows you to draw 2d components on a canvas.',
       'The start of each 2d component'
     )
-  } satisfies Meta<Canvas>;
+  } satisfies Meta<Canvas<any>>;
 </script>
 
 <script>
@@ -52,7 +52,7 @@
 
     <svelte:fragment slot="splitCanvas">
       <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
-      <Vector direction={new Vector2(1, -1)} length={3} color={PrimeColor.ultramarine} />
+      <Vector direction={new Vector2(1, -1)} length={3} color={PrimeColor.blue} />
     </svelte:fragment>
   </Canvas>
 </Story>
@@ -67,11 +67,11 @@
 >
   <Canvas height="20rem" cameraPosition={new Vector3(5.52, -5.35, 15.52)} {...args}>
     <Vector direction={new Vector2(5, 2)} length={3} color={PrimeColor.red} />
-    <Vector direction={new Vector2(-5, 1)} length={3} color={PrimeColor.ultramarine} />
+    <Vector direction={new Vector2(-5, 1)} length={3} color={PrimeColor.blue} />
 
     <svelte:fragment slot="splitCanvas3d">
       <Vector3D direction={new Vector3(5, 2, 1)} length={3} color={PrimeColor.red} />
-      <Vector3D direction={new Vector3(-5, 1, 1)} length={3} color={PrimeColor.ultramarine} />
+      <Vector3D direction={new Vector3(-5, 1, 1)} length={3} color={PrimeColor.blue} />
     </svelte:fragment>
   </Canvas>
 </Story>

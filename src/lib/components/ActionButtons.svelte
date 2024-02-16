@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { mdiFunctionVariant, mdiRestart, mdiShare } from '@mdi/js';
+  import { mdiDelete, mdiFunctionVariant, mdiRestart, mdiShare } from '@mdi/js';
   import { createEventDispatcher } from 'svelte';
   import RoundButton from './RoundButton.svelte';
   import ToggleFullscreen from './ToggleFullscreen.svelte';
   import Icon from '$lib/components/Icon.svelte';
+  import { dev } from '$app/environment';
 
   export let isFullscreen = false; // Is the scene fullscreen?
   export let isIframe = true; // Is the scene inside an iframe?
@@ -18,6 +19,12 @@
   class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1"
   class:inset={!isIframe || isFullscreen}
 >
+  {#if dev}
+    <li class="tooltip tooltip-left" data-tip="Delete cache draggables">
+      <RoundButton icon={mdiDelete} on:click={() => (localStorage.clear(), location.reload())} />
+    </li>
+  {/if}
+
   {#if hasFormulas && isIframe && !isFullscreen}
     <li class="tooltip tooltip-left" data-tip="Toggle formulae">
       <RoundButton

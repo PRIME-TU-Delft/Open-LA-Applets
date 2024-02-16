@@ -1,0 +1,63 @@
+import { Canvas, Meta } from '@storybook/blocks';
+
+import * as AntomyStory from './anatomy.stories';
+
+<Meta of={AntomyStory} />
+
+# Anatomy of an Applet
+
+All applets can be split-up into four catogories: Canvas, Header, Action Bars
+and Share menu. Each will be explained in their subsequent section. A basic
+applet can be seen below for reference.
+
+<Canvas of={AntomyStory.SimpleCanvas} />
+
+## Canvas
+
+This is the main content of each applet, displaying either 2D or 3D content.
+To add content to the canvas, populate the main slot. To see how, observe the
+`2D components` and `threlte` stories.
+
+## Header
+
+The header consists of multiple areas: title, interactivity toggle, and formulas.
+Each area is optional. See below for a complete header.
+
+<Canvas of={AntomyStory.FullHeaderCanvas} />
+
+### Interactivity toggle
+
+To get the interactivity toggle, add the `isIframe` prop to the canvas. This is done
+by default in the interactive book. When clicked it toggles between active and pasive
+state. The pasive state preserves cpu cycles by pausing the applet and in addition
+will prevent a user from getting stuck scrolling over a page.
+
+### Title
+
+To display a title, include the `title` prop in the canvas. By default, it is hidden
+in iframe mode but can be shown by going fullscreen. This decision was made to align
+with the book, where the title appears at the bottom of each applet. In fullscreen mode,
+the title is displayed at the top to remind the end-user of the context.
+
+### Formulas
+
+The formulas, which provide critical information about the applet and its reactivity,
+are shown in the top right corner of the header. They often include the values of the
+sliders and their corresponding numbers in a formula. Formulas are hidden by default in
+the iframe mode but can be shown by toggleing the fx button in the action bar. It is also
+possible to show the formulas by default by setting the `showFormulasDefault` prop in the
+canvas. To include formulas, use the `formulas` prop in the canvas and provide an array of
+Formula objects. For more details, refer to the `formulas` story.
+
+## Action Bars
+
+The action bars are located at the bottom right of each applet. They control the interactivity
+and toggle UI elements. The action bars are split into two sections: the main action bar and
+the slider action bar. The main action bar is always visible and contains the fullscreen, reset,
+fx toggle and share buttons. The slider action bar is only visible when sliders are specified
+to see how to include sliders, refer to the `sliders` story.
+
+## Share menu
+
+One of the buttons in the action bar controls the toggle of the share menu. The share menu
+includes a link to the book, a link to the github issue for this applet and a licence notice.

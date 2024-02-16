@@ -21,8 +21,8 @@
 
 <Canvas3D>
   <!-- Vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
 
   <!-- Projection vector from line L to u with a point at projection point -->
   <Point3D position={u_proj} color={PrimeColor.red} />
@@ -42,8 +42,8 @@
   <!-- Angle between proj and line l -->
   <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />
 
-  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.ultramarine} />
-  <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.ultramarine} />
+  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
+  <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
 
   <Axis3D />
 </Canvas3D>

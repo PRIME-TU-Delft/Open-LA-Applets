@@ -10,8 +10,8 @@
 
 <Canvas3D>
   <!-- Vector u -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.yellow} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.red} />
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.red} />
 
   <!-- Vector v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
@@ -40,12 +40,11 @@
   />
 
   <!-- Plane span -->
-  <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.ultramarine} size={15} />
+  <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
   <Latex3D
-    latex={'Span\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}'}
+    latex={'\\mathrm{Span}\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}'}
     position={w.clone().normalize().multiplyScalar(8)}
     offset={1.5}
-    color={PrimeColor.ultramarine}
   />
 
   <Axis3D />
