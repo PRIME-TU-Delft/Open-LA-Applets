@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Canvas2D, Line2D } from '$lib/d3-components';
+  import { Canvas2D, Line2D, Vector2D } from '$lib/d3-components';
   import Angle from '$lib/d3-components/Angle.svelte';
   import Latex2D from '$lib/d3-components/Latex.svelte';
   import Point from '$lib/d3-components/Point.svelte';
@@ -10,8 +10,8 @@
 
   let sliders = new Sliders()
     .add(new Slider(3, 3, 8, 1, PrimeColor.blue)) // m
-    .add(new Slider(16, 8, 64, 8, PrimeColor.darkGreen)) // a
-    .add(new Slider(16, 8, 64, 8, PrimeColor.red)); // b
+    .add(new Slider(-16, -64, -8, 8, PrimeColor.purple)) // a
+    .add(new Slider(16, 8, 64, 8, PrimeColor.pink)); // b
 
   function cartesian2Polar(vec2: Vector2, offset: Vector2 = new Vector2(0, 0)) {
     const radius = offset.distanceTo(vec2);
@@ -40,8 +40,8 @@
     return [
       new Formula(`z^{\\$1} = -\\$2 + \\$3i`)
         .addAutoParam(m, PrimeColor.blue)
-        .addAutoParam(a, PrimeColor.darkGreen)
-        .addAutoParam(b, PrimeColor.red),
+        .addAutoParam(a, PrimeColor.purple)
+        .addAutoParam(b, PrimeColor.pink),
       new Formula(
         `r = \\sqrt[\\$]{${polarForm.radius.toFixed(2)}} = ${radius.toFixed(2)}`,
         m,
