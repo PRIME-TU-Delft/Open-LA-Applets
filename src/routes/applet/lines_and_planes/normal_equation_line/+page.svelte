@@ -1,19 +1,16 @@
 <script lang="ts">
-  import { Sliders } from '$lib/utils/Slider';
   import { RightAngle, Canvas2D, Latex2D, Vector2D, Draggable2D, Line2D, Point2D } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { Formula } from '$lib/utils/Formulas';
 
-  let sliders = new Sliders().addSlider(0, 0, 2 * Math.PI, 0.1 * Math.PI)
   let formulas: Formula[] = [];
 
   let P = new Vector2(2, 1.5);
-  let Q = new Vector2(6, -0.5);
-  let PQ = Q.clone().sub(P);
-  $: N = new Vector2(1, 2).rotateAround(new Vector2(0, 0), sliders.x);
+  $: Q = new Vector2(6, -0.5);
+  $: PQ = Q.clone().sub(P);
+  $: N = new Vector2(1, 2);
 
-  let L_offset = new Vector2(0, 2.5);
   $: L_dir = new Vector2(N.y, N.clone().x * -1); 
   $: L_start = L_dir.clone().multiplyScalar(-10).add(P);
   $: L_end = L_dir.clone().multiplyScalar(10).add(P);
@@ -31,14 +28,35 @@
     formulas = [f1, f2, f3];
   }
 
+  function snapQ(point: Vector2) {
+    //Distance from point Q to line L
+    const a = L_start.y - L_end.y;
+    const b = L_end.x - L_start.x;
+    const c = L_start.x * L_end.y - L_end.x * L_start.y;
+    const distance = Math.abs(a * point.x + b * point.y + c) / Math.sqrt(a * a + b * b);
+
+    //Calculate the closest point from the line to point q
+    const x3 = ((b * b * point.x) - (a * b * point.y) - (a * c)) / (a * a + b * b);
+    const y3 = ((a * a * point.y) - (a * b * point.x) - (b * c)) / (a * a + b * b);
+
+    if (distance < 0.2) {
+      Q = new Vector2(x3, y3);
+      PQ = Q.clone().sub(P);
+      setFormulas(N, PQ);
+    }
+  }
+
   $: setFormulas(N, PQ);
+  $: snapQ(Q);
 
 </script>
 
-<Canvas2D zoom={0.9} bind:sliders {formulas}>
+<Canvas2D zoom={0.9} {formulas} >
+  
+  <Draggable2D id="normal_equation_line1" bind:position={Q} color={PrimeColor.red} />
 
   <!-- RightAngle -->
-  <RightAngle vs={[N, L_dir]} size={0.3} lineWidth={0.02} origin={P}/>
+  <RightAngle vs={[N, PQ]} size={0.3} lineWidth={0.02} origin={P}/>
 
   <!-- Line L-->
   <Line2D start={L_start} end={L_end} color={PrimeColor.blue}></Line2D>
@@ -48,7 +66,7 @@
   <Vector2D origin={P} direction={PQ} length={PQ.length()} color={PrimeColor.darkGreen}></Vector2D>
 
   <Vector2D origin={P} direction={N} length={N.length()} color={PrimeColor.blue}>
-    <Latex2D latex={'\\vec{n}'} position={N.clone().add(P).add(new Vector2(0.3, 0.3))} color={PrimeColor.blue} />
+    <Latex2D latex={'\\vec{n}'} position={N.clone().add(P).add(new Vector2(0.1, 0.25))} color={PrimeColor.blue} />
   </Vector2D>
 
   <!-- Points -->
