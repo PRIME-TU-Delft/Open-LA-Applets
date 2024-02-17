@@ -24,11 +24,6 @@
   />
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
-  <Latex3D
-    latex={'Span\\{\\mathbf{v}\\}'}
-    position={lineDir}
-    offset={0.8}
-    color={PrimeColor.blue}
-  />
+  <Latex3D latex={'\\mathrm{Span}\\{\\mathbf{u,v}\\}'} position={lineDir} offset={0.8} />
   <Axis3D />
 </Canvas3D>

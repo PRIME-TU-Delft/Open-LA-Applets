@@ -93,8 +93,8 @@
       on:change={stopPlaying}
       on:mousedown={startChanging}
       on:touchstart={startChanging}
-      style="accent-color: {slider.color}; --s: {slider.hsl.h} {slider.hsl.s}% {slider.hsl.l}%;"
-      class="w-inherit range range-xs range-secondary"
+      style="accent-color: {slider.color}"
+      class="w-inherit range range-xs"
     />
   </label>
 {/if}
