@@ -9,6 +9,7 @@
   import { useThrelte } from '@threlte/core';
   import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
   import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
+  import CustomRenderer from './CustomRenderer.svelte';
 
   const { renderer, scene, camera } = useThrelte();
 
@@ -30,8 +31,8 @@
 {#if grid}
   <Grid
     position.y={-0.001}
-    cellColor="#fff"
-    sectionColor="#777"
+    cellColor="#c084fc"
+    sectionColor="#e9d5ff"
     fadeDistance={50}
     cellSize={2}
     infiniteGrid
@@ -39,7 +40,8 @@
 {/if}
 
 <AutoPlane values={[1, 3, 8]} let:value let:planeSegment let:color>
-  <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
+  <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} opacity={1} />
+  <CustomRenderer />
 </AutoPlane>
 
 <Vector3D
