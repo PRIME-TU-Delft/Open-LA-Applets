@@ -11,18 +11,19 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { Formula } from '$lib/utils/Formulas';
+  import { snapPointToLine } from '$lib/utils/MathLib';
 
   let formulas: Formula[] = [];
 
   let P = new Vector2(2, 1.5);
   $: Q = new Vector2(6, -0.5);
   $: PQ = Q.clone().sub(P);
-  $: N = new Vector2(1, 2);
+  let N = new Vector2(1, 2);
 
-  $: L_dir = new Vector2(N.y, N.clone().x * -1);
-  $: L_start = L_dir.clone().multiplyScalar(-10).add(P);
-  $: L_end = L_dir.clone().multiplyScalar(10).add(P);
-  $: L_label = L_dir.clone().multiplyScalar(4).add(new Vector2(0, 2));
+  let L_dir = new Vector2(N.y, N.clone().x * -1);
+  let L_start = L_dir.clone().multiplyScalar(-10).add(P);
+  let L_end = L_dir.clone().multiplyScalar(10).add(P);
+  let L_label = L_dir.clone().multiplyScalar(4).add(new Vector2(0, 2));
 
   function round(x: number) {
     return Math.round(x * 100) / 100;
@@ -45,18 +46,10 @@
   }
 
   function snapQ(point: Vector2) {
-    //Distance from point Q to line L
-    const a = L_start.y - L_end.y;
-    const b = L_end.x - L_start.x;
-    const c = L_start.x * L_end.y - L_end.x * L_start.y;
-    const distance = Math.abs(a * point.x + b * point.y + c) / Math.sqrt(a * a + b * b);
+    let result = snapPointToLine(point, L_start, L_end, 0.2)
 
-    //Calculate the closest point from the line to point q
-    const x3 = (b * b * point.x - a * b * point.y - a * c) / (a * a + b * b);
-    const y3 = (a * a * point.y - a * b * point.x - b * c) / (a * a + b * b);
-
-    if (distance < 0.2) {
-      Q = new Vector2(x3, y3);
+    if (result !== null) {
+      Q = result;
       PQ = Q.clone().sub(P);
     }
     setFormulas(N, PQ);
