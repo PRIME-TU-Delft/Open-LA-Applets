@@ -46,7 +46,7 @@
   }
 
   function snapQ(point: Vector2) {
-    let result = snapPointToLine(point, L_start, L_end, 0.2)
+    let result = snapPointToLine(point, L_start, L_end, 0.2);
 
     if (result !== null) {
       Q = result;
