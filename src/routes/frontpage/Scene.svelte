@@ -2,16 +2,9 @@
   import { AutoPlane, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
-  import { Grid, OrbitControls, Sky, Stars } from '@threlte/extras';
+  import { OrbitControls } from '@threlte/extras';
   import { Vector3 } from 'three';
-
-  import { Vector2 } from 'three';
-  import { useThrelte } from '@threlte/core';
-  import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-  import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
-  import CustomRenderer from './CustomRenderer.svelte';
-
-  const { renderer, scene, camera } = useThrelte();
+  import CustomRenderer from '$lib/threlte-components/CustomRenderer.svelte';
 
   export let elevation = 0;
   export let azimuth = 250;
@@ -21,27 +14,8 @@
   let zoom = 40;
 </script>
 
-<!-- <Pass pass={new UnrealBloomPass(new Vector2(256, 256), 0.5, 0.5, 0.75)} /> -->
-<!-- <Pass pass={new RenderPixelatedPass(5, scene, $camera)} /> -->
-
-<Sky {elevation} {azimuth} setEnvironment={true} />
-
-<Stars opacity={1} />
-
-{#if grid}
-  <Grid
-    position.y={-0.001}
-    cellColor="#c084fc"
-    sectionColor="#e9d5ff"
-    fadeDistance={50}
-    cellSize={2}
-    infiniteGrid
-  />
-{/if}
-
 <AutoPlane values={[1, 3, 8]} let:value let:planeSegment let:color>
   <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} opacity={1} />
-  <CustomRenderer />
 </AutoPlane>
 
 <Vector3D
@@ -55,10 +29,13 @@
 
 <T.OrthographicCamera makeDefault position={[position.x, position.y, position.z]} fov={10} {zoom}>
   <OrbitControls
-    nearest={0.1}
     enableZoom
     maxZoom={zoom * 10}
     minZoom={Math.max(zoom - 10, 1)}
     maxPolarAngle={Math.PI * 0.6}
+    autoRotate
+    autoRotateSpeed={0.3}
   />
 </T.OrthographicCamera>
+
+<CustomRenderer {elevation} {azimuth} {grid} />

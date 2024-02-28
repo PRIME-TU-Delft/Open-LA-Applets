@@ -1,10 +1,12 @@
 <script lang="ts">
   import AbstractCanvas from '$lib/components/AbstractCanvas.svelte';
   import type { Controls } from '$lib/utils/Controls';
+  import type { Formula } from '$lib/utils/Formulas';
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
+  import CustomRenderer from './CustomRenderer.svelte';
+  import Konami from './Konami.svelte';
   import SetCamera from './SetCamera.svelte';
-  import type { Formula } from '$lib/utils/Formulas';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
@@ -19,6 +21,8 @@
   export let isIframe = false; // Is the scene inside an iframe?
   export let controls: Controls<G> | undefined = undefined;
   export let formulas: Formula[] = [];
+
+  let enableEasterEgg = false;
 </script>
 
 <AbstractCanvas
@@ -36,6 +40,12 @@
 >
   <Canvas size={{ width, height }}>
     <SetCamera position={cameraPosition} {resetKey} {enablePan} {zoom} />
+
+    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} debug />
+
+    {#if enableEasterEgg}
+      <CustomRenderer />
+    {/if}
 
     <slot name="lights">
       <T.AmbientLight intensity={1} />
