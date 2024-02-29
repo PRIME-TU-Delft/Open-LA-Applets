@@ -7,7 +7,7 @@
   let grid = true;
 </script>
 
-<div class="absolute left-4 top-4">
+<div class="hidden absolute left-4 top-4">
   <label class="text-black" for="elevation">
     elevation: {elevation}
     <input type="range" bind:value={elevation} min={-3} max={10} />
