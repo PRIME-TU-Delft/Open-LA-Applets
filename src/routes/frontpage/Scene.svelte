@@ -14,9 +14,9 @@
   let zoom = 40;
 </script>
 
-<AutoPlane values={[1, 3, 8]} let:value let:planeSegment let:color>
-  <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} opacity={1} />
-</AutoPlane>
+<PlaneFromNormal normal={new Vector3(1, 1, 1)} color={PrimeColor.red} size={12} opacity={1} />
+<PlaneFromNormal normal={new Vector3(3, 1, 1)} color={PrimeColor.yellow} size={11} opacity={1} />
+<PlaneFromNormal normal={new Vector3(8, 1, 1)} color={PrimeColor.darkGreen} size={10} opacity={1} />
 
 <Vector3D
   color={PrimeColor.blue}
