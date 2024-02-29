@@ -60,7 +60,7 @@
   {/if}
 
   {#if !controls[0] && !controls[1] && !controls[2]}
-    <Point color={PrimeColor.blue} />
+    <Point color={PrimeColor.yellow} />
   {/if}
 
   <Axis3D />
