@@ -46,7 +46,7 @@ export class Formula {
   }
 
   addParam(index: number, param: number | string, color?: PrimeColor) {
-    const value = parseFloat('' + param).toFixed(2) || param;
+    const value = param;
 
     if (index <= 0) {
       this.stringFormula = this.stringFormula.replaceAll(
