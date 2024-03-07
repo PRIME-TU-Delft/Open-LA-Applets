@@ -1,3 +1,5 @@
+import type { Vector3 } from 'three';
+
 export { default as Angle3D } from './Angle.svelte';
 export { default as Arc3D } from './Arc.svelte';
 export { default as Axis3D } from './Axis.svelte';
@@ -11,3 +13,26 @@ export { default as PartialDeconstruction3D } from './PartialDeconstruction.svel
 export { PlaneFromNormal, PlaneFromPoints, AutoPlane } from './planes/index';
 
 export { default as cameraStore } from './stores/cameraStore';
+
+type SizeCSS =
+  | 'auto'
+  | 'inherit'
+  | 'initial'
+  | 'revert'
+  | 'unset'
+  | `${number}%`
+  | `${number}px`
+  | `${number}rem`
+  | `${number}em`
+  | `${number}vw`
+  | `${number}vh`
+  | `${number}vmin`
+  | `${number}vmax`;
+
+export type Canvas3DProps = {
+  cameraPosition: Vector3;
+  cameraZoom: number;
+  enablePan: boolean;
+  width: SizeCSS;
+  height: SizeCSS;
+};

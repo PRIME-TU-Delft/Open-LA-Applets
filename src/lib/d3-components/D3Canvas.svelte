@@ -1,17 +1,18 @@
 <script lang="ts">
-  import type { GridType } from './grids/GridTypes';
+  import { GridType } from './grids/GridTypes';
   import { select, zoom as zoomD3, type Selection, type BaseType } from 'd3';
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
   import { activityStore } from '$lib/activityStore';
   import { Vector2 } from 'three';
+  import type { Canvas2DProps } from '.';
 
-  export let width: number;
-  export let height: number;
-  export let tickLength = 30;
-  export let gridType: GridType;
-  export let zoom: number = 1;
-  export let cameraPosition: Vector2 = new Vector2();
+  export let cameraPosition: Canvas2DProps['cameraPosition'] = new Vector2(0, 0);
+  export let cameraZoom: Canvas2DProps['cameraZoom'] = 1;
+  export let width: Canvas2DProps['width'];
+  export let height: Canvas2DProps['height'];
+  export let tickLength: Canvas2DProps['tickLength'] = 30;
+  export let gridType: Canvas2DProps['gridType'] = GridType.Square;
 
   const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
 
@@ -25,7 +26,7 @@
   }
 
   const zoomProtocol = zoomD3<SVGSVGElement, unknown>()
-    .scaleExtent([1 / 3 / zoom, 3 / zoom])
+    .scaleExtent([1 / 3 / cameraZoom, 3 / cameraZoom])
     .on('zoom', handleZoom) as unknown as (
     selection: Selection<BaseType, unknown, HTMLElement, any>
   ) => void;
@@ -44,7 +45,7 @@
 
 <svg {id} {width} {height} viewBox="0 0 {width} {height}">
   <g>
-    <g transform-origin="{width / 2} {height / 2}" transform="scale({zoom})">
+    <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
       <g
         transform="translate({width / 2}, {height / 2}) scale({(2 * vmax) / 30}, {(-1 *
           (2 * vmax)) /

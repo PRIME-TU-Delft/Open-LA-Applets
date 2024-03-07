@@ -14,7 +14,7 @@
   let controls = Controls.addSlider(0, -3, 3, 0.5).addSlider(1, -3, 3, 0.5);
 </script>
 
-<Canvas2D bind:controls camPosition={new Vector2(controls[0], controls[1])}>
+<Canvas2D bind:controls cameraPosition={new Vector2(controls[0], controls[1])}>
   <Draggable2D snap id="b1" bind:position={b1} color={PrimeColor.blue} />
   <Draggable2D snap id="b2" bind:position={b2} color={PrimeColor.blue} />
 
