@@ -1,6 +1,8 @@
 <script lang="ts">
   import AbstractCanvas from '$lib/components/AbstractCanvas.svelte';
+  import Konami from '$lib/components/Konami.svelte';
   import type { Canvas3DProps } from '$lib/threlte-components';
+  import CustomRenderer from '$lib/threlte-components/CustomRenderer.svelte';
   import SetCamera from '$lib/threlte-components/SetCamera.svelte';
   import type { Controller, Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
@@ -28,6 +30,8 @@
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
   export let controls: Controls<G> | undefined = undefined;
+
+  let enableEasterEgg = false;
 </script>
 
 <AbstractCanvas
@@ -60,6 +64,12 @@
 
     <div class="canvas3d relative overflow-hidden">
       <Canvas size={{ width: totalWidth, height }}>
+        <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
+
+        {#if enableEasterEgg}
+          <CustomRenderer />
+        {/if}
+
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
           {resetKey}
