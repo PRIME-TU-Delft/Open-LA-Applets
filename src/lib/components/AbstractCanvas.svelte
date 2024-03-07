@@ -80,7 +80,7 @@
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-gray-400 drawer-content flex"
+    class="canvasWrapper border-l-4 border-slate-400 drawer-content"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
@@ -94,7 +94,9 @@
   >
     <!-- THRELTE SCENE -->
     {#key resetKey}
-      <slot {width} {height} {resetKey} />
+      <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3">
+        <slot {width} {height} {resetKey} />
+      </div>
     {/key}
 
     <!-- TITLE PANEL -->

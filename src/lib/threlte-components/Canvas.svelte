@@ -64,14 +64,10 @@
   </Canvas>
 
   {#if $$slots.splitCanvas}
-    <div class="canvasDivider" />
-
     <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {:else if $$slots.splitCanvas3d}
-    <div class="canvasDivider" />
-
     <div class="canvas3d relative overflow-hidden">
       <Canvas size={{ width: totalWidth, height }}>
         {#if enableEasterEgg}

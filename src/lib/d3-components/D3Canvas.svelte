@@ -51,7 +51,7 @@
           (2 * vmax)) /
           30})"
       >
-        <g transform="translate({cameraPosition.x}, {cameraPosition.y})">
+        <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
           <Axis length={tickLength} {gridType} />
           <slot />
         </g>
