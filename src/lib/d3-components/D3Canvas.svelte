@@ -4,12 +4,14 @@
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
   import { activityStore } from '$lib/activityStore';
+  import { Vector2 } from 'three';
 
   export let width: number;
   export let height: number;
   export let tickLength = 30;
   export let gridType: GridType;
   export let zoom: number = 1;
+  export let cameraPosition: Vector2 = new Vector2();
 
   const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
 
@@ -48,8 +50,10 @@
           (2 * vmax)) /
           30})"
       >
-        <Axis length={tickLength} {gridType} />
-        <slot />
+        <g transform="translate({cameraPosition.x}, {cameraPosition.y})">
+          <Axis length={tickLength} {gridType} />
+          <slot />
+        </g>
       </g>
     </g>
   </g>

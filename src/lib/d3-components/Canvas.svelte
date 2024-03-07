@@ -3,12 +3,13 @@
   import SetCamera from '$lib/threlte-components/SetCamera.svelte';
   import type { Controller, Controls } from '$lib/utils/Controls';
   import { Canvas, T } from '@threlte/core';
-  import { Vector3 } from 'three';
+  import { Vector2, Vector3 } from 'three';
   import D3Canvas from './D3Canvas.svelte';
   import { GridType } from './grids/GridTypes';
   import type { Formula } from '$lib/utils/Formulas';
 
   export let cameraPosition = new Vector3(10, 10, 10);
+  export let camPosition = new Vector2(0, 0);
   export let enablePan = false;
   export let title = '';
   export let background = '#ffffff';
@@ -43,7 +44,7 @@
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
-  <D3Canvas {zoom} width={totalWidth} {height} {gridType}>
+  <D3Canvas cameraPosition={camPosition} {zoom} width={totalWidth} {height} {gridType}>
     <slot />
   </D3Canvas>
 
