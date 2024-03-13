@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Draggable2D, InfiniteLine2D, Latex2D, Line2D, Vector2D } from '$lib/d3-components';
+  import {
+    Canvas2D,
+    Draggable2D,
+    InfiniteLine2D,
+    Latex2D,
+    Line2D,
+    Vector2D
+  } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -12,8 +19,7 @@
 
 <Canvas2D>
   <!-- Line L -->
-  <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan}/>
-
+  <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 
   <!-- V0 -->
   <Vector2D direction={v0} length={v0.length()} color={PrimeColor.red} let:endPoint>

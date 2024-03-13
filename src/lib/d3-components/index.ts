@@ -4,7 +4,7 @@ import type { GridType } from './grids/GridTypes';
 export { default as Arc2D } from './Arc.svelte';
 export { default as Axis2D } from './Axis.svelte';
 export { default as Canvas2D } from './Canvas.svelte';
-export { default as InfiniteLine2D} from './InfiniteLine.svelte';
+export { default as InfiniteLine2D } from './InfiniteLine.svelte';
 export { default as Latex2D } from './Latex.svelte';
 export { default as Line2D } from './Line.svelte';
 export { default as Point2D } from './Point.svelte';

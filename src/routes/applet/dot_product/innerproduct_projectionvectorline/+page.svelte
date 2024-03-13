@@ -1,5 +1,13 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Vector2D, Latex2D, Draggable2D, RightAngle, InfiniteLine2D } from '$lib/d3-components';
+  import {
+    Canvas2D,
+    Line2D,
+    Vector2D,
+    Latex2D,
+    Draggable2D,
+    RightAngle,
+    InfiniteLine2D
+  } from '$lib/d3-components';
 
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -20,7 +28,7 @@
 <Canvas2D>
   <!-- L /-->
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
-  <InfiniteLine2D direction={v} color={PrimeColor.purple}/>
+  <InfiniteLine2D direction={v} color={PrimeColor.purple} />
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />

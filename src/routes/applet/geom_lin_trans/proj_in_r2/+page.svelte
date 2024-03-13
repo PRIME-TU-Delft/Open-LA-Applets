@@ -61,8 +61,8 @@
   <Line2D start={u1} end={proj_u1} isDashed color={PrimeColor.darkGreen} />
 
   <!-- u1 -->
-  <Point2D position={u1} color={PrimeColor.red}/>
-  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} snap/>
+  <Point2D position={u1} color={PrimeColor.red} />
+  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.red} snap />
   <Latex2D
     latex={`\\mathbf{u}_1`}
     position={u1}
@@ -100,8 +100,8 @@
     <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.darkGreen} />
 
     <!-- u2 -->
-    <Point2D position={u2} color={PrimeColor.red}/>
-    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} snap/>
+    <Point2D position={u2} color={PrimeColor.red} />
+    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} snap />
     <Latex2D
       latex={`\\mathbf{u}_2`}
       position={u2}
@@ -111,7 +111,7 @@
 
     <!-- w2 -->
     <Vector2D direction={w2} color={PrimeColor.yellow} />
-    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} snap/>
+    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} snap />
     <Latex2D
       latex={`\\mathbf{w}_2`}
       position={w2}
@@ -120,7 +120,7 @@
     />
 
     <!-- T2(u2) -->
-    <Point2D position={proj_u2} isSquare color={PrimeColor.blue}/>
+    <Point2D position={proj_u2} isSquare color={PrimeColor.blue} />
     <Latex2D
       latex={`T_2(\\mathbf{u}_2)`}
       position={proj_u2}

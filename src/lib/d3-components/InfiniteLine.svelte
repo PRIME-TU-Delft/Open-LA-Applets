@@ -6,13 +6,18 @@
   export let color: string = 'black';
   export let width: number = LINE_WIDTH;
   export let isDashed = false;
-  
+
   $: dir = direction.clone().normalize();
-  $: start = dir.clone().multiplyScalar(GRID_SIZE_2D*2).add(origin);
-  $: end = dir.clone().multiplyScalar(GRID_SIZE_2D*-2).add(origin);
+  $: start = dir
+    .clone()
+    .multiplyScalar(GRID_SIZE_2D * 2)
+    .add(origin);
+  $: end = dir
+    .clone()
+    .multiplyScalar(GRID_SIZE_2D * -2)
+    .add(origin);
 
-//default grid size = 30 (in each dir)
-
+  //default grid size = 30 (in each dir)
 </script>
 
 <line
