@@ -25,3 +25,28 @@ export function snapPointToLine(point: Vector2, point1_line: Vector2, point2_lin
 
     return null
 }
+
+
+
+export function lineLineIntersection(A: Vector2, B: Vector2, C: Vector2, D: Vector2) {
+    const  xcd = D.x - C.x;
+    const  ycd = D.y - C.y;
+    const  xac = A.x - C.x;
+    const  yac = A.y - C.y;
+    
+    const  den = ycd * (B.x - A.x) - xcd * (B.y - A.y);
+    const  u0 = (xcd * yac - ycd * xac) / den;
+    return new Vector2(A.x + u0 * (B.x - A.x), A.y + u0 * (B.y - A.y));
+  }
+
+/**
+ * The lineLineIntersection function calculates an intersection point between two lines defined by two point each.
+ * projects p onto line in dir of L
+ * @param L line
+ * @param p point
+ * @returns 
+ */
+  export function OrthogonalProjection(L: Vector2, p: Vector2) {
+    return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
+  }
+
