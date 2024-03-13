@@ -1,16 +1,9 @@
 <script lang="ts">
-  import { RightAngle, Canvas2D, Vector2D, Latex2D } from '$lib/d3-components';
+  import { Canvas2D, Latex2D, RightAngle, Vector2D } from '$lib/d3-components';
 
-  import { Vector2, Vector3 } from 'three';
-  import {
-    Angle3D,
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    Vector3D,
-    PlaneFromNormal
-  } from '$lib/threlte-components';
+  import { Angle3D, Latex3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2, Vector3 } from 'three';
 
   let v = new Vector2(3, -3);
   let v_ortho = new Vector2(3, 3);
@@ -22,9 +15,8 @@
 </script>
 
 <Canvas2D
-  cameraPosition={new Vector3(10, 10, 13)}
-  zoom={1.5}
-  zoom3d={50}
+  splitCanvas3DProps={{ cameraPosition: new Vector3(10, 10, 13), cameraZoom: 50 }}
+  cameraZoom={1.5}
   title="The orthogonal complement of a line (left) and a plane (right)"
 >
   <!-- v -->

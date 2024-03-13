@@ -23,7 +23,7 @@
   let v = new Vector3(3, 4, 1.5);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(10, 10, 17)} zoom={50}>
+<Canvas3D cameraPosition={new Vector3(10, 10, 17)} cameraZoom={50}>
   <!-- v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex3D
