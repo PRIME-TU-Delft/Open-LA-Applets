@@ -27,11 +27,11 @@
   <Line2D start={w} end={proj_w} isDashed />
 
   <!-- projection of w -->
-  <Vector2D direction={proj_w} length={proj_w.length()} color={PrimeColor.red} />
+  <Vector2D direction={proj_w} length={proj_w.length()} color={PrimeColor.raspberry} />
   <Latex2D
     latex={'\\mathbf{\\hat{w}}'}
     offset={proj_w.clone().add(new Vector2(0, -0.2))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <!-- v -->

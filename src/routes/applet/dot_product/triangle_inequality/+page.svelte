@@ -17,7 +17,7 @@
     const f3 = new Formula(
       '|| \\mathbf{v} + \\mathbf{w} || = \\$',
       Math.abs(vPlusWLen),
-      PrimeColor.red
+      PrimeColor.raspberry
     );
 
     formulas = [f1, f2, f3];
@@ -49,12 +49,12 @@
   </Vector2D>
 
   <!-- v+w -->
-  <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.red} let:endPoint>
+  <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.raspberry} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v} + \\mathbf{w}'}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
   </Vector2D>
 

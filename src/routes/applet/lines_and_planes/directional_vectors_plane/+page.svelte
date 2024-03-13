@@ -34,12 +34,12 @@
   <!-- Q -->
   <Point3D position={q} color={PrimeColor.darkGreen} />
   <Latex3D latex={'Q'} position={q} offset={0.5} color={PrimeColor.darkGreen} />
-  <Vector3D direction={pq} origin={p} color={PrimeColor.red} length={pq.length()} />
+  <Vector3D direction={pq} origin={p} color={PrimeColor.raspberry} length={pq.length()} />
 
   <!-- R -->
   <Point3D position={r} color={PrimeColor.blue} />
   <Latex3D latex={'R'} position={r} offset={1} color={PrimeColor.blue} />
-  <Vector3D direction={pr} origin={p} color={PrimeColor.red} length={pr.length()} />
+  <Vector3D direction={pr} origin={p} color={PrimeColor.raspberry} length={pr.length()} />
 
   <Axis3D axisLength={7} showNumbers />
 </Canvas3D>

@@ -10,12 +10,12 @@
 
 <Canvas3D>
   <!-- Vector u -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.red} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.raspberry} />
+  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.raspberry} />
 
   <!-- Vector v -->
-  <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.red} />
+  <Vector3D direction={v} length={v.length()} color={PrimeColor.raspberry} />
+  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
 
   <!-- Vector w -->
   <Vector3D direction={w} length={w.length()} color={PrimeColor.pink} />

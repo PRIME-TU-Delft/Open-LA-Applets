@@ -59,7 +59,7 @@
 </script>
 
 <Canvas2D zoom={0.9} {formulas}>
-  <Draggable2D id="normal_equation_line1" bind:position={Q} color={PrimeColor.red} />
+  <Draggable2D id="normal_equation_line1" bind:position={Q} color={PrimeColor.raspberry} />
 
   <!-- RightAngle -->
   <RightAngle vs={[N, PQ]} size={0.3} lineWidth={0.02} origin={P} />
@@ -87,6 +87,6 @@
     color={PrimeColor.yellow}
   />
 
-  <Point2D position={Q} color={PrimeColor.red} />
-  <Latex2D latex={'Q'} position={Q.clone().add(new Vector2(-0.1, -0.2))} color={PrimeColor.red} />
+  <Point2D position={Q} color={PrimeColor.raspberry} />
+  <Latex2D latex={'Q'} position={Q.clone().add(new Vector2(-0.1, -0.2))} color={PrimeColor.raspberry} />
 </Canvas2D>

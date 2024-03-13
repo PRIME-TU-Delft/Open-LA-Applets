@@ -25,18 +25,18 @@
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
 
   <!-- Projection vector from line L to u with a point at projection point -->
-  <Point3D position={u_proj} color={PrimeColor.red} />
+  <Point3D position={u_proj} color={PrimeColor.raspberry} />
   <Vector3D
     origin={u}
     direction={u.clone().sub(u_proj).multiplyScalar(-1)}
     length={u.clone().sub(u_proj).length()}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     striped
   />
   <Latex3D
     latex={'proj_L(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <!-- Angle between proj and line l -->

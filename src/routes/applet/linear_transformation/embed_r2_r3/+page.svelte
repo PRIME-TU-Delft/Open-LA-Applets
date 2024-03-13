@@ -36,7 +36,7 @@
   <div class="panel">
     <Canvas2D bind:cameraZoom>
       <!-- e1 -->
-      <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.red}>
+      <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.raspberry}>
         <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(0, -0.2)} />
       </Vector2D>
 
@@ -61,7 +61,7 @@
       <Axis3D showNumbers />
 
       <!-- e1 & e2 -->
-      <Vector3D direction={te1} length={e1Length} color={PrimeColor.red} />
+      <Vector3D direction={te1} length={e1Length} color={PrimeColor.raspberry} />
       <Vector3D direction={te2} length={e2Length} color={PrimeColor.yellow} />
 
       <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />

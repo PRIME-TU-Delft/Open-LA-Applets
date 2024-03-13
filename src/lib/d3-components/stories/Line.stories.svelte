@@ -24,7 +24,7 @@
 </Template>
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" source args={{ color: PrimeColor.red }} />
+<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
 
 <Story name="With start" source args={{ start: new Vector2(1, 2) }} />
 <Story name="With end" source args={{ end: new Vector2(2, 3) }} />

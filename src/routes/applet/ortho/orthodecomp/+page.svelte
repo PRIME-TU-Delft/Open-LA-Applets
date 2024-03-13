@@ -37,11 +37,11 @@
   <Latex3D latex={'\\mathbf{u}_{V^{\\bot}}'} position={w} color={PrimeColor.yellow} />
 
   <!-- proj_v -->
-  <Vector3D direction={proj_v} length={proj_v.length()} color={PrimeColor.red} />
+  <Vector3D direction={proj_v} length={proj_v.length()} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{u}_{V}'}
     position={proj_v.clone().add(new Vector3(0.2, 0, 0.2))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <!-- Dotted lines v and ProjV(v) -->

@@ -17,7 +17,7 @@
 
   function setFormulas(c0: number, c1: number) {
     const f0 = new Formula('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.darkGreen);
-    const f1 = new Formula('P_2 = \\$x + 1y + 1z = 0', c0, PrimeColor.red);
+    const f1 = new Formula('P_2 = \\$x + 1y + 1z = 0', c0, PrimeColor.raspberry);
     const f2 = new Formula('P_3 = \\$x + 1y + 1z = 0', c1, PrimeColor.yellow);
 
     return [f0, f1, f2];

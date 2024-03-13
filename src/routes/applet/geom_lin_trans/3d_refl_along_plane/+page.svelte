@@ -31,7 +31,7 @@
     origin={u}
     direction={u_refl.clone().sub(u)}
     length={u_refl.clone().sub(u).length()}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     striped
   />
 

@@ -43,7 +43,7 @@
   <!-- Q -->
   <Point3D position={q.clone().add(p)} color={PrimeColor.darkGreen} />
   <Latex3D latex={'Q'} position={q.clone().add(p)} offset={0.6} color={PrimeColor.darkGreen} />
-  <Vector3D origin={p} direction={q} color={PrimeColor.red} length={normal.length()} />
+  <Vector3D origin={p} direction={q} color={PrimeColor.raspberry} length={normal.length()} />
 
   <Angle3D vs={[normal, q]} origin={p} size={0.5} />
 

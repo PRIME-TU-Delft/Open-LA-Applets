@@ -26,7 +26,7 @@
   </Vector2D>
 
   <!-- v+w -->
-  <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.red} let:endPoint>
+  <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.raspberry} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v} + \\mathbf{w}'}
