@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Vector2D, Latex2D, Draggable2D, RightAngle } from '$lib/d3-components';
+  import { Canvas2D, Line2D, Vector2D, Latex2D, Draggable2D, RightAngle, InfiniteLine2D } from '$lib/d3-components';
 
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-    import { OrthogonalProjection } from '$lib/utils/2DProjections';
+  import { OrthogonalProjection } from '$lib/utils/MathLib';
 
   let v = new Vector2(1, 0.5);
 
-  $: L_start = v.clone().multiplyScalar(-20);
-  $: L_end = v.clone().multiplyScalar(20);
   $: L_label = v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3));
 
   let w = new Vector2(2.5, 2.5);
@@ -21,8 +19,8 @@
 
 <Canvas2D>
   <!-- L /-->
-  <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
+  <InfiniteLine2D direction={v} color={PrimeColor.purple}/>
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />
