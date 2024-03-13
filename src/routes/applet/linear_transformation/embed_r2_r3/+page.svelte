@@ -6,7 +6,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
 
-  let zoom = 1;
+  let cameraZoom = 1;
 
   let e1 = new Vector2(1, 0);
   let e2 = new Vector2(0, 1);
@@ -34,7 +34,7 @@
   </div>
 
   <div class="panel">
-    <Canvas2D bind:zoom>
+    <Canvas2D bind:cameraZoom>
       <!-- e1 -->
       <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.red}>
         <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(0, -0.2)} />
@@ -57,7 +57,7 @@
   </div>
 
   <div class="panel">
-    <Canvas3D --width="100%" zoom={100}>
+    <Canvas3D --width="100%" cameraZoom={100}>
       <Axis3D showNumbers />
 
       <!-- e1 & e2 -->

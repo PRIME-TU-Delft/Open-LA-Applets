@@ -20,7 +20,7 @@
 
 <Canvas3D
   cameraPosition={new Vector3(3.59, 1.83, 13.8)}
-  zoom={60}
+  cameraZoom={60}
   title="Geometrical interpretation of addition for three-dimensional vectors."
 >
   <!-- lower green vector -->

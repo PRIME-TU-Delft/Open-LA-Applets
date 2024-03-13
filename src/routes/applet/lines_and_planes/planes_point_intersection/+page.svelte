@@ -29,7 +29,7 @@
 <Canvas3D
   cameraPosition={new Vector3(16.14, 3.31, 5.35)}
   {formulas}
-  zoom={41}
+  cameraZoom={41}
   bind:controls
   title="Two planes with a line of intersection."
 >

@@ -17,7 +17,7 @@
 <Canvas3D
   formulas={[formula]}
   cameraPosition={new Vector3(3.31, 6.55, 15.68)}
-  zoom={38}
+  cameraZoom={38}
   bind:controls
 >
   <!-- Vector v_0 -->
