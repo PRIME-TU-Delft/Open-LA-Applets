@@ -9,7 +9,6 @@
   const v = new Vector3(3, 1, 0); // Vector V;
   const w = u.clone().add(v); // Vector W = U + V;
 
-
   let controls = Controls.addToggle(true, '\\mathbf{u}')
     .addToggle(true, '\\mathbf{v}')
 
@@ -22,6 +21,7 @@
    */
   function createFormulas(t1: boolean, t2: boolean) {
     const t3 = true;
+    labelstring = '\\mathrm{Span}\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}'
     const formulaString = [t1, t2, t3]
       .filter((t) => t)
       .map((_, i) => {
@@ -31,18 +31,24 @@
 
     let formula = new Formula('\\mathbf{Span}\\{' + formulaString + '\\}');
 
-    
-
     // Selectivly add parameters to the formula
     if (t1) formula = formula.addAutoParam('u', PrimeColor.blue);
     if (t2) formula = formula.addAutoParam('v', PrimeColor.red);
-
     formula = formula.addAutoParam('w', PrimeColor.darkGreen);
+
 
     return [formula];
   }
 
+  function reloadString(t1: boolean, t2: boolean){
+    let labelstring = '\\mathrm{Span}\\{';
+    if (t1) labelstring = labelstring.concat("\\mathbf{u},")
+    if (t2) labelstring = labelstring.concat("\\mathbf{v},")
+    return labelstring.concat("\\mathbf{w}\\}");
+  }
+
   $: formulas = createFormulas(controls[0], controls[1]);
+  $: labelstring = reloadString(controls[0], controls[1]);
 
 </script>
 
@@ -61,8 +67,6 @@
     hideHead
     color={PrimeColor.black}
   />
-
-  
 {/if}
 
 {#if controls[1]}
@@ -94,19 +98,13 @@
   <!-- Vector w -->
   <Vector3D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.darkGreen} />
-  
 
-
-
-
-
-
-
+<!--  label -->
   <Latex3D
-    latex={'\\mathrm{Span}\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}'}
-    position={w.clone().normalize().multiplyScalar(8)}
-    offset={1.5}
-  />
+  latex={labelstring}
+  position={w.clone().normalize().multiplyScalar(8)}
+  offset={1.5}
+/>
 
   <Axis3D />
 </Canvas3D>
