@@ -39,7 +39,7 @@
     origin={w}
     direction={vMinusW}
     length={vMinusW.length()}
-    color={PrimeColor.pink}
+    color={PrimeColor.orange}
     let:endPoint
   >
     <Latex2D

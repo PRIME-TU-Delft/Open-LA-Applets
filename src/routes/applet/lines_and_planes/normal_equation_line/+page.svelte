@@ -65,17 +65,17 @@
   <RightAngle vs={[N, PQ]} size={0.3} lineWidth={0.02} origin={P} />
 
   <!-- Line L-->
-  <Line2D start={L_start} end={L_end} color={PrimeColor.blue} />
-  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.blue} />
+  <Line2D start={L_start} end={L_end} color={PrimeColor.cyan} />
+  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />
 
   <!-- Vectors -->
   <Vector2D origin={P} direction={PQ} length={PQ.length()} color={PrimeColor.darkGreen} />
 
-  <Vector2D origin={P} direction={N} length={N.length()} color={PrimeColor.pink}>
+  <Vector2D origin={P} direction={N} length={N.length()} color={PrimeColor.blue}>
     <Latex2D
       latex={'\\mathbf{n}'}
       position={N.clone().add(P).add(new Vector2(0.1, 0.25))}
-      color={PrimeColor.pink}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 

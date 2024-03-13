@@ -20,8 +20,8 @@
 
 <Canvas2D>
   <!-- L /-->
-  <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
-  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
+  <Line2D start={L_start} end={L_end} color={PrimeColor.cyan} />
+  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />

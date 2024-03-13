@@ -18,8 +18,8 @@
   <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
 
   <!-- Vector w -->
-  <Vector3D direction={w} length={w.length()} color={PrimeColor.pink} />
-  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.pink} />
+  <Vector3D direction={w} length={w.length()} color={PrimeColor.orange} />
+  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.orange} />
 
   <!-- helper striped Vectors -->
   <Vector3D
