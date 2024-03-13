@@ -9,12 +9,9 @@ export enum BackgroundColors {
 // Official Colors from TU Delft
 // https://www.tudelft.nl/huisstijl/bouwstenen/kleur
 export enum PrimeColor {
-  red = '#E03C31',
   yellow = '#FFB81C',
   darkGreen = '#009B77',
   blue = '#0076C2',
-  pink = '#EF60A3',
-  purple = '#6F1D77',
   black = '#565656',
   orange = '#EC6842',
   cyan = '#00A6D6',
