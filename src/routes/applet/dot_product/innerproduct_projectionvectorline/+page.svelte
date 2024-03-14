@@ -11,7 +11,7 @@
 
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { OrthogonalProjection } from '$lib/utils/MathLib';
+  import { orthogonalProjection } from '$lib/utils/MathLib';
 
   let v = new Vector2(1, 0.5);
 
@@ -19,7 +19,7 @@
 
   let w = new Vector2(2.5, 2.5);
 
-  $: proj_w = OrthogonalProjection(v, w);
+  $: proj_w = orthogonalProjection(v, w);
 
   // nesc for drawing right angle
   $: proj_w_min_w = w.clone().sub(proj_w);
