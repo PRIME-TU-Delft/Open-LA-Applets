@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Draggable2D, Latex2D, Line2D, Vector2D } from '$lib/d3-components';
+  import {
+    Canvas2D,
+    Draggable2D,
+    InfiniteLine2D,
+    Latex2D,
+    Line2D,
+    Vector2D
+  } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -7,16 +14,12 @@
   let u = new Vector2(-2, 1);
 
   $: v1 = v0.clone().add(u);
+  $: dir_L = v1.clone().sub(v0.clone());
 </script>
 
 <Canvas2D>
   <!-- Line L -->
-  <Line2D
-    start={v0.clone().sub(u.clone().multiplyScalar(4))}
-    end={v1.clone().add(u.clone().multiplyScalar(5))}
-    color={PrimeColor.blue}
-    width={0.1}
-  />
+  <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 
   <!-- V0 -->
   <Vector2D direction={v0} length={v0.length()} color={PrimeColor.red} let:endPoint>

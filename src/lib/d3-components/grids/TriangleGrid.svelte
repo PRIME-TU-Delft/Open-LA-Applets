@@ -1,9 +1,10 @@
 <script lang="ts">
   import Latex2D from '$lib/d3-components/Latex.svelte';
+  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { hexbin } from 'd3-hexbin';
   import { Vector2 } from 'three';
 
-  export let length = 30;
+  export let length = GRID_SIZE_2D;
   export let showOrigin = true;
   export let showAxisNumbers = true;
 
