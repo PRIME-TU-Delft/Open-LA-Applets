@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Vector2 } from 'three';
   import { Latex2D } from '..';
+  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
-  export let length = 30;
+  export let length = GRID_SIZE_2D;
   export let showOrigin = true;
   export let showAxisNumbers = true;
 

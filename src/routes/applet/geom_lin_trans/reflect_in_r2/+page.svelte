@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Draggable2D, Latex2D, Line2D, Point2D, Vector2D } from '$lib/d3-components';
+  import {
+    Canvas2D,
+    Draggable2D,
+    InfiniteLine2D,
+    Latex2D,
+    Point2D,
+    Vector2D
+  } from '$lib/d3-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
 
@@ -14,7 +21,6 @@
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
   let dir_L = new Vector2(2, 2);
-  $: start_L = dir_L.clone().multiplyScalar(-10);
 
   function getOrthProjection(L: Vector2, p: Vector2) {
     return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
@@ -30,7 +36,7 @@
 <Canvas2D>
   <!-- Line L -->
   <Draggable2D id="dir_L" bind:position={dir_L} color={PrimeColor.cyan} />
-  <Line2D start={start_L} end={start_L.clone().multiplyScalar(-1)} color={PrimeColor.cyan} />
+  <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />
   <Latex2D
     latex={'\\mathcal{L}'}
     position={dir_L}
