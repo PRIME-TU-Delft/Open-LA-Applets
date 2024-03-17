@@ -1,17 +1,16 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Vector2D } from '$lib/d3-components';
+  import { Canvas2D, Line2D } from '$lib/d3-components';
   import Angle from '$lib/d3-components/Angle.svelte';
   import Latex2D from '$lib/d3-components/Latex.svelte';
   import Point from '$lib/d3-components/Point.svelte';
+  import { Controls } from '$lib/utils/Controls';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Slider, Sliders } from '$lib/utils/Slider';
   import { Vector2 } from 'three';
 
-  let sliders = new Sliders()
-    .add(new Slider(3, 3, 8, 1, PrimeColor.blue)) // m
-    .add(new Slider(-16, -64, -8, 8, PrimeColor.purple)) // a
-    .add(new Slider(16, 8, 64, 8, PrimeColor.pink)); // b
+  let controls = Controls.addSlider(3, 3, 8, 1, PrimeColor.blue) // m
+    .addSlider(-16, -64, -8, 8, PrimeColor.purple) // a
+    .addSlider(16, 8, 64, 8, PrimeColor.pink); // b
 
   function cartesian2Polar(vec2: Vector2, offset: Vector2 = new Vector2(0, 0)) {
     const radius = offset.distanceTo(vec2);
@@ -30,8 +29,8 @@
     );
   }
 
-  $: polarForm = cartesian2Polar(new Vector2(sliders.y, sliders.z));
-  $: radius = Math.pow(polarForm.radius, 1 / sliders.x);
+  $: polarForm = cartesian2Polar(new Vector2(controls[1], controls[2]));
+  $: radius = Math.pow(polarForm.radius, 1 / controls[0]);
   $: angle = polarForm.angleInRadians;
 
   function createFormulas(m: number, a: number, b: number) {
@@ -57,24 +56,24 @@
     ];
   }
 
-  $: formulas = createFormulas(sliders.x, sliders.y, sliders.z);
+  $: formulas = createFormulas(controls[0], controls[1], controls[2]);
 </script>
 
-<Canvas2D showAxisNumbers={false} bind:sliders {formulas}>
+<Canvas2D showAxisNumbers={false} bind:controls {formulas}>
   <!-- Start angle (green) -->
   <Point position={polarToCartesian(radius, angle)} color={PrimeColor.blue} />
   <Line2D
     start={polarToCartesian(radius, angle)}
-    end={polarToCartesian(radius, angle + (Math.PI * 2) / sliders.x)}
+    end={polarToCartesian(radius, angle + (Math.PI * 2) / controls[0])}
     color={PrimeColor.blue}
   />
 
   <Angle color={PrimeColor.darkGreen} hasHead distance={radius} startAngle={0} endAngle={angle} />
 
   <!-- Intermediate angles (red) -->
-  {#each new Array(sliders.x) as _, i}
-    {@const startAngle = angle + (Math.PI * 2 * i) / sliders.x}
-    {@const endAngle = startAngle + (Math.PI * 2) / sliders.x}
+  {#each new Array(controls[0]) as _, i}
+    {@const startAngle = angle + (Math.PI * 2 * i) / controls[0]}
+    {@const endAngle = startAngle + (Math.PI * 2) / controls[0]}
     {@const startPos = polarToCartesian(radius, startAngle)}
     {@const endPos = polarToCartesian(radius, endAngle)}
     {@const latexPos = polarToCartesian(radius + 0.5, endAngle)}
