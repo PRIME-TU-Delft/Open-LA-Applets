@@ -1,11 +1,11 @@
 <script lang="ts">
   import { AutoPlane, Axis3D, Canvas3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
+  import { Controls } from '$lib/utils/Controls';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
 
-  let sliders = new Sliders().addSlider(-0.6).addSlider(0.5).addSlider(1);
+  let controls = Controls.addSlider(-0.6).addSlider(0.5).addSlider(1);
 
   let formulas: Formula[] = [];
 
@@ -17,21 +17,21 @@
     return [f1, f2, f3];
   }
 
-  $: formulas = setFormulas(sliders.x, sliders.y, sliders.z);
+  $: formulas = setFormulas(controls[0], controls[1], controls[2]);
 </script>
 
 <Canvas3D
   cameraPosition={new Vector3(7.29, -4.94, 14.91)}
   {formulas}
-  zoom={37}
-  bind:sliders
+  cameraZoom={37}
+  bind:controls
   title="Two planes with a line of intersection."
 >
-  <AutoPlane values={sliders.values} let:value let:planeSegment let:color>
+  <AutoPlane values={[controls[0], controls[1], controls[2]]} let:value let:planeSegment let:color>
     <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
   </AutoPlane>
 
-  {#if !sliders.allEqualValue}
+  {#if !controls.allSlidersEqualValue}
     <Vector3D
       color={PrimeColor.blue}
       length={11.5}

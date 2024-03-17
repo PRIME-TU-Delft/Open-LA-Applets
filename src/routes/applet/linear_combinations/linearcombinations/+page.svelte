@@ -15,7 +15,7 @@
   $: v2Extended = v2.length() * beta;
 </script>
 
-<Canvas2D zoom={0.7}>
+<Canvas2D cameraZoom={0.7}>
   <Draggable2D snap id="u" bind:position={u} color={PrimeColor.blue} />
 
   <!-- Bases -->

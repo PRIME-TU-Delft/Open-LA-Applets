@@ -22,7 +22,7 @@
 
 <Canvas3D
   cameraPosition={new Vector3(-11, 5.4, 12.4)}
-  zoom={46}
+  cameraZoom={46}
   title="A plane through the point P."
 >
   <PlaneFromNormal {normal} position={p} color={PrimeColor.yellow} />

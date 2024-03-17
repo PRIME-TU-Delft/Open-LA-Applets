@@ -1,36 +1,36 @@
 <script lang="ts">
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
+  import { Controls } from '$lib/utils/Controls';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
 
-  let sliders = new Sliders().addSlider(4.5, 3, 6).addSlider(6, 4, 8);
+  let controls = Controls.addSlider(4.5, 3, 6).addSlider(6, 4, 8);
   let formulas: Formula[] = [];
 
-  $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(sliders.x);
-  $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(sliders.y));
+  $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(controls[0]);
+  $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(controls[1]));
   $: v_p = v_q.clone().projectOnVector(new Vector3(1, 0, 0));
 
-  $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
+  $: v_len = Math.sqrt(controls[0] * controls[0] + controls[1] * controls[1]);
 
-  function setFormulas(x: number, y: number, len: number) {
-    const f1 = new Formula('OQ = \\$', x, PrimeColor.red);
-    const f2 = new Formula('QA = \\$', y, PrimeColor.yellow);
+  function setFormulas(c0: number, c1: number, len: number) {
+    const f1 = new Formula('OQ = \\$', c0, PrimeColor.red);
+    const f2 = new Formula('QA = \\$', c0, PrimeColor.yellow);
     const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
-      .addParam(1, sliders.x, PrimeColor.red)
-      .addParam(2, sliders.y, PrimeColor.yellow);
+      .addParam(1, c0, PrimeColor.red)
+      .addParam(2, c1, PrimeColor.yellow);
     const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
 
     formulas = [f1, f2, f3, f4];
   }
 
-  $: setFormulas(sliders.x, sliders.y, v_len);
+  $: setFormulas(controls[0], controls[1], v_len);
 </script>
 
-<Canvas3D bind:sliders {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
+<Canvas3D bind:controls {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
-  <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
+  <Vector3D direction={v_q} color={PrimeColor.red} length={controls[0]} />
   <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />
 
   <!-- Vector a [Yellow] -->
@@ -38,7 +38,7 @@
     origin={v_q}
     direction={new Vector3(0, 1, 0)}
     color={PrimeColor.yellow}
-    length={sliders.y}
+    length={controls[1]}
   />
   <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} size={1.3} />
 
@@ -78,10 +78,10 @@
   <!-- Helper striped lines -->
   <Vector3D
     direction={v_q}
-    origin={new Vector3(0, sliders.y, 0)}
+    origin={new Vector3(0, controls[1], 0)}
     color={'black'}
     striped
-    length={sliders.x}
+    length={controls[0]}
   />
   <Vector3D striped origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
 
@@ -92,8 +92,8 @@
   <Latex3D latex={'a_2'} position={new Vector3(0, 0, v_a.z)} offset={0.5} />
   <Point3D position={new Vector3(0, 0, v_a.z)} color={PrimeColor.black} />
 
-  <Latex3D latex={'a_3'} position={new Vector3(-0.3, sliders.y, 0)} offset={0.5} />
-  <Point3D position={new Vector3(0, sliders.y, 0)} color={PrimeColor.black} />
+  <Latex3D latex={'a_3'} position={new Vector3(-0.3, controls[1], 0)} offset={0.5} />
+  <Point3D position={new Vector3(0, controls[1], 0)} color={PrimeColor.black} />
 
   <Axis3D showNumbers floor axisLength={10} />
 </Canvas3D>

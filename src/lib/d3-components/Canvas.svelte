@@ -1,30 +1,38 @@
 <script lang="ts">
   import AbstractCanvas from '$lib/components/AbstractCanvas.svelte';
+  import Konami from '$lib/components/Konami.svelte';
+  import type { Canvas3DProps } from '$lib/threlte-components';
+  import CustomRenderer from '$lib/threlte-components/CustomRenderer.svelte';
   import SetCamera from '$lib/threlte-components/SetCamera.svelte';
-  import type { Sliders } from '$lib/utils/Slider';
+  import type { Controller, Controls } from '$lib/utils/Controls';
+  import type { Formula } from '$lib/utils/Formulas';
   import { Canvas, T } from '@threlte/core';
-  import { Vector3 } from 'three';
+  import { Vector2 } from 'three';
+  import type { Canvas2DProps } from '.';
   import D3Canvas from './D3Canvas.svelte';
   import { GridType } from './grids/GridTypes';
-  import type { Formula } from '$lib/utils/Formulas';
 
-  export let cameraPosition = new Vector3(10, 10, 10);
-  export let enablePan = false;
+  export let cameraPosition: Canvas2DProps['cameraPosition'] = new Vector2(0, 0);
+  export let cameraZoom: Canvas2DProps['cameraZoom'] = 1;
+  export let gridType: Canvas2DProps['gridType'] = GridType.Square;
+  export let tickLength: Canvas2DProps['tickLength'] = 30;
+
+  export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
+  export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
+
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
+  export let formulas: Formula[] = [];
+  export let isIframe = false;
   export let width = '100%';
   export let height = 'auto';
-  export let zoom = 1;
-  export let zoom3d = 29;
-  export let formulas: Formula[] = [];
   export let showAxisNumbers = true;
 
-  // Is the scene inside an iframe?
-  export let isIframe = false;
-  export let sliders: Sliders | undefined = undefined;
-  // The grid type can be None, Square, Triangle
-  export let gridType: GridType = GridType.Square;
+  type G = $$Generic<readonly Controller<number | boolean>[]>;
+  export let controls: Controls<G> | undefined = undefined;
+
+  let enableEasterEgg = false;
 </script>
 
 <AbstractCanvas
@@ -36,30 +44,35 @@
   let:width
   let:height
   let:resetKey
-  bind:sliders
+  bind:controls
   --height={height}
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
-  <D3Canvas {showAxisNumbers} {zoom} width={totalWidth} {height} {gridType}>
+  <D3Canvas {tickLength} {cameraPosition} {cameraZoom} width={totalWidth} {height} {gridType}>
     <slot />
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
-    <div class="canvasDivider" />
-
-    <D3Canvas {showAxisNumbers} {zoom} width={totalWidth} {height} {gridType}>
+    <D3Canvas {showAxisNumbers} width={totalWidth} {height} {...splitCanvas2DProps}>
       <slot name="splitCanvas" />
     </D3Canvas>
-  {/if}
-
-  {#if $$slots.splitCanvas3d}
-    <div class="canvasDivider" />
-
+  {:else if $$slots.splitCanvas3d}
     <div class="canvas3d relative overflow-hidden">
       <Canvas size={{ width: totalWidth, height }}>
-        <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={zoom3d} />
+        <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
+
+        {#if enableEasterEgg}
+          <CustomRenderer />
+        {/if}
+
+        <SetCamera
+          position={splitCanvas3DProps?.cameraPosition}
+          {resetKey}
+          enablePan={splitCanvas3DProps?.enablePan}
+          zoom={splitCanvas3DProps?.cameraZoom}
+        />
         <T.AmbientLight intensity={1} />
 
         <slot name="splitCanvas3d" />
@@ -67,10 +80,3 @@
     </div>
   {/if}
 </AbstractCanvas>
-
-<style lang="postcss">
-  .canvasDivider {
-    left: calc(50% - 2px);
-    @apply static top-0 w-1 h-full shadow-2xl bg-slate-500;
-  }
-</style>

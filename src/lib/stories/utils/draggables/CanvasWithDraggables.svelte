@@ -11,9 +11,9 @@
 </script>
 
 <Canvas2D {title}>
-  <Draggable2D id="w" {snap} bind:position={w} color={PrimeColor.green} />
-  <Draggable2D id="v" {snap} bind:position={v} color={PrimeColor.ultramarine} />
+  <Draggable2D id="w" {snap} bind:position={w} color={PrimeColor.darkGreen} />
+  <Draggable2D id="v" {snap} bind:position={v} color={PrimeColor.blue} />
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
 </Canvas2D>

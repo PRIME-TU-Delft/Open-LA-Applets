@@ -22,7 +22,7 @@
 
 <Canvas3D
   cameraPosition={new Vector3(7.7, 7.7, 13.47)}
-  zoom={41}
+  cameraZoom={41}
   title="A parametric vector equation of a plane."
 >
   <PlaneFromPoints points={[p, q, r]} color={PrimeColor.yellow} />

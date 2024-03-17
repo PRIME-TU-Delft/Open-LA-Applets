@@ -21,7 +21,7 @@
   let materials = [
     new MeshBasicMaterial({
       color,
-      transparent: true,
+      transparent: opacity < 1,
       opacity,
       side: DoubleSide
     })

@@ -15,24 +15,24 @@
   let te3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas2D zoom3d={100}>
+<Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }}>
   <!-- e1 -->
-  <Vector2D direction={e1} length={e1Length} color={PrimeColor.ultramarine} let:endPoint>
+  <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue} let:endPoint>
     <Latex2D
       latex={'\\mathbf{e_1}'}
       offset={new Vector2(-0.3, 0.4)}
       position={endPoint}
-      color={PrimeColor.ultramarine}
+      color={PrimeColor.blue}
     />
   </Vector2D>
 
   <!-- e2 -->
-  <Vector2D direction={e2} length={e2Length} color={PrimeColor.green} let:endPoint>
+  <Vector2D direction={e2} length={e2Length} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       latex={'\\mathbf{e_2}'}
       offset={new Vector2(0.2, -0.1)}
       position={endPoint}
-      color={PrimeColor.green}
+      color={PrimeColor.darkGreen}
     />
   </Vector2D>
 
@@ -40,12 +40,12 @@
     <Axis3D showNumbers />
 
     <!-- e1 & e2 & e3 -->
-    <Vector3D direction={te1} length={te1.length()} color={PrimeColor.ultramarine} />
-    <Vector3D direction={te2} length={te2.length()} color={PrimeColor.green} />
+    <Vector3D direction={te1} length={te1.length()} color={PrimeColor.blue} />
+    <Vector3D direction={te2} length={te2.length()} color={PrimeColor.darkGreen} />
     <Vector3D direction={te3} length={te3.length()} color={PrimeColor.red} />
 
-    <Latex3D latex={'\\mathbf{e_1}'} position={te1} color={PrimeColor.ultramarine} />
-    <Latex3D latex={'\\mathbf{e_2}'} position={te2} color={PrimeColor.green} />
+    <Latex3D latex={'\\mathbf{e_1}'} position={te1} color={PrimeColor.blue} />
+    <Latex3D latex={'\\mathbf{e_2}'} position={te2} color={PrimeColor.darkGreen} />
     <Latex3D latex={'\\mathbf{e_3}'} position={te3} color={PrimeColor.red} />
   </svelte:fragment>
 </Canvas2D>
