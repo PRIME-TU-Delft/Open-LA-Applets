@@ -12,7 +12,7 @@
   import { Controls } from '$lib/utils/Controls';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
 
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen)
+  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
   $: u = parametic_point_on_circle_3D(controls[0], 5);
 
   $: u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
@@ -40,11 +40,7 @@
   <!-- Angle between proj and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D
-    latex={`Refl_p(\\mathbf{u})`}
-    position={u_refl}
-    color={PrimeColor.blue}
-  />
+  <Latex3D latex={`Refl_p(\\mathbf{u})`} position={u_refl} color={PrimeColor.blue} />
 
   <Axis3D />
 </Canvas3D>

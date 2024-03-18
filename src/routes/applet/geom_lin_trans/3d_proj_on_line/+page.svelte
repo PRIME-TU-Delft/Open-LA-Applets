@@ -13,8 +13,7 @@
   import { Controls } from '$lib/utils/Controls';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
 
-
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen)
+  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
   $: u = parametic_point_on_circle_3D(controls[0], 5);
 
@@ -25,7 +24,6 @@
 </script>
 
 <Canvas3D bind:controls>
-
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
