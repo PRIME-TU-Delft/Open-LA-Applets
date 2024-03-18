@@ -42,7 +42,7 @@
   let:height
   let:resetKey
   bind:controls
-  --height={height}
+  --canvas-height={height}
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}

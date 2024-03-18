@@ -73,19 +73,16 @@
   onDestroy(() => reset);
 </script>
 
-<div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>
-  <!-- For screen readers / accesability acces to toggle the drawer  -->
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-
+<div class="rounded overflow-hidden h-full" bind:this={sceneEl}>
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-slate-400 drawer-content"
+    class="canvasWrapper h-full border-l-4 border-slate-400"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
-    style="height: var(--height, 100%); background: {background}"
+    style="height: var(--canvas-height, 100%); background: {background}"
     on:click={activityStore.enable}
     on:mousedown={activityStore.enable}
     on:keydown={activityStore.enable}
@@ -131,18 +128,10 @@
     />
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons
-      {isIframe}
-      {sceneEl}
-      hasFormulas={formulas.length > 0}
-      bind:isFullscreen
-      bind:showFormulas
-      on:reset={reset}
-    />
+    <ActionButtons {isIframe} {sceneEl} bind:isFullscreen on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->
-  <ShareWindow {controls} />
 </div>
 
 <style lang="postcss">
@@ -153,7 +142,7 @@
   .canvasWrapper {
     position: relative;
     width: var(--width, 100%);
-    height: var(--height, auto);
+    height: var(--canvas-height, 100%);
     overflow: hidden;
 
     &.isIframe {
