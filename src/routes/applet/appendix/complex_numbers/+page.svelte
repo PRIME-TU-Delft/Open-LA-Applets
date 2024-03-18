@@ -37,22 +37,16 @@
     const piAngle = polarForm.angleInRadians / Math.PI;
 
     return [
-      new Formula(`z^{\\$1} = -\\$2 + \\$3i`)
+      new Formula(
+        `\\begin{align*} z^{\\$1} &= -\\$2 + \\$3i \\\\ 
+        r &= \\sqrt[\\$1]{${polarForm.radius.toFixed(2)}} = ${radius.toFixed(2)}  \\\\
+        \\phi &= \\frac{\\arg(${a.toFixed(2)} + ${b.toFixed(2)}i)}{\\$1} = \\frac{${(
+          piAngle * m
+        ).toFixed(2)}}{\\$1}\\pi = ${piAngle.toFixed(2)}\\pi \\end{align*}`
+      )
         .addAutoParam(m, PrimeColor.blue)
         .addAutoParam(a, PrimeColor.purple)
-        .addAutoParam(b, PrimeColor.pink),
-      new Formula(
-        `r = \\sqrt[\\$]{${polarForm.radius.toFixed(2)}} = ${radius.toFixed(2)}`,
-        m,
-        PrimeColor.blue
-      ),
-      new Formula(
-        `\\phi = \\frac{\\arg(${a.toFixed(2)} + ${b.toFixed(2)}i)}{\\$} = \\frac{${(
-          piAngle * m
-        ).toFixed(2)}}{\\$}\\pi = ${piAngle.toFixed(2)}\\pi`,
-        m,
-        PrimeColor.blue
-      )
+        .addAutoParam(b, PrimeColor.pink)
     ];
   }
 
