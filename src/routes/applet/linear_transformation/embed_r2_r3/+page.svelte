@@ -26,58 +26,8 @@
   }
 </script>
 
-<<<<<<< HEAD
-<div class="wrapper">
-  <div class="formula">
-    <LatexUI latex={'T(x)=\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x'} />
-  </div>
-
-  <div class="panel">
-    <Canvas2D bind:cameraZoom>
-      <!-- e1 -->
-      <Vector2D bind:direction={e1} bind:length={e1Length} color={PrimeColor.raspberry}>
-        <Latex2D latex={'\\mathbf{e_1}'} offset={new Vector2(0, -0.2)} />
-      </Vector2D>
-
-      <!-- e2 -->
-      <Vector2D bind:direction={e2} bind:length={e2Length} color={PrimeColor.yellow}>
-        <Latex2D latex={'\\mathbf{e_2}'} offset={new Vector2(-0.2, 0)} />
-      </Vector2D>
-
-      <!-- v -->
-      <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
-        <Latex2D latex={'\\mathbf{v}'} offset={new Vector2(0.1, 0.1)} color={PrimeColor.blue} />
-      </Vector2D>
-
-      <!-- Helper lines -->
-      <Line2D start={e1.clone().multiplyScalar(e1Length)} end={v} width={2} isDashed />
-      <Line2D start={e2.clone().multiplyScalar(e2Length)} end={v} width={2} isDashed />
-    </Canvas2D>
-  </div>
-
-  <div class="panel">
-    <Canvas3D --width="100%" cameraZoom={100}>
-      <Axis3D showNumbers />
-
-      <!-- e1 & e2 -->
-      <Vector3D direction={te1} length={e1Length} color={PrimeColor.raspberry} />
-      <Vector3D direction={te2} length={e2Length} color={PrimeColor.yellow} />
-
-      <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
-      <Latex3D latex={'T(\\mathbf{e_2})'} position={te2} />
-
-      <Vector3D direction={tv} length={v.length()} color={PrimeColor.blue} />
-      <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.blue} />
-
-      <!-- Helper lines -->
-      <Line3D points={[te1.clone().multiplyScalar(e1Length), tv.clone()]} color="black" isDashed />
-      <Line3D points={[te2.clone().multiplyScalar(e2Length), tv.clone()]} color="black" isDashed />
-    </Canvas3D>
-  </div>
-=======
 <div class="formula">
   <LatexUI latex={'T(x)=\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x'} />
->>>>>>> main
 </div>
 
 <Canvas2D
@@ -86,7 +36,7 @@
   splitCanvas3DProps={{ cameraZoom: 50 }}
 >
   <!-- e1 -->
-  <Vector2D bind:direction={e1} length={1} color={PrimeColor.red}>
+  <Vector2D bind:direction={e1} length={1} color={PrimeColor.raspberry}>
     <Latex2D latex={'\\mathbf{e_1}'} position={e1} offset={new Vector2(0, -0.2)} />
   </Vector2D>
 
@@ -113,7 +63,7 @@
     <Axis3D />
 
     <!-- e1 & e2 -->
-    <Vector3D direction={te1} length={1} color={PrimeColor.red} />
+    <Vector3D direction={te1} length={1} color={PrimeColor.raspberry} />
     <Vector3D direction={te2} length={1} color={PrimeColor.yellow} />
 
     <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
