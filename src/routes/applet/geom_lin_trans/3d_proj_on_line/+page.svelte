@@ -11,12 +11,12 @@
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
-  import * from '$lib/utils/Mathlib';
+  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
+
 
   let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen)
 
-
-  $: u = parametic_point_on_circle_3D(controls[0]);
+  $: u = parametic_point_on_circle_3D(controls[0], 5);
 
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled

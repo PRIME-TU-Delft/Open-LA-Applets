@@ -9,18 +9,20 @@
     PlaneFromNormal
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { bVector } from '$lib/utils/LatexFormat';
+  import { Controls } from '$lib/utils/Controls';
+  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
 
-  const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
-  const u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
+  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen)
+  $: u = parametic_point_on_circle_3D(controls[0], 5);
 
-  const u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1))); // Projection point of vector u on plane p
+  $: u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
+  $: u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1))); // Projection point of vector u on plane p
 </script>
 
-<Canvas3D>
+<Canvas3D bind:controls>
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
-  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.darkGreen} />
+  <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
@@ -39,7 +41,7 @@
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
   <Latex3D
-    latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`}
+    latex={`Refl_p(\\mathbf{u})`}
     position={u_refl}
     color={PrimeColor.blue}
   />
