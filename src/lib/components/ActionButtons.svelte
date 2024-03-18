@@ -48,12 +48,11 @@
   <Button.Action on:click={() => dispatch('reset')} icon={mdiRestart} tooltip="Reset applet" />
 
   {#if screenfull.isEnabled}
-    <button on:click={toggleFullscreen}>
-      <Button.Action
-        icon={isFullscreen ? mdiFullscreenExit : mdiFullscreen}
-        tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
-      />
-    </button>
+    <Button.Action
+      on:click={toggleFullscreen}
+      icon={isFullscreen ? mdiFullscreenExit : mdiFullscreen}
+      tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
+    />
   {/if}
 </div>
 

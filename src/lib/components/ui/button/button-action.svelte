@@ -6,15 +6,17 @@
   export let tooltip = '';
 </script>
 
-<Tooltip.Root on:click>
-  <Tooltip.Trigger
-    class="w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center"
-  >
-    <slot>
-      <Icon path={icon} />
-    </slot>
-  </Tooltip.Trigger>
-  <Tooltip.Content side="left" transitionConfig={{ x: 5, duration: 100 }}>
-    <p>{tooltip}</p>
-  </Tooltip.Content>
-</Tooltip.Root>
+<button on:click>
+  <Tooltip.Root>
+    <Tooltip.Trigger
+      class="w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center"
+    >
+      <slot>
+        <Icon path={icon} />
+      </slot>
+    </Tooltip.Trigger>
+    <Tooltip.Content side="left" transitionConfig={{ x: 5, duration: 100 }}>
+      <p>{tooltip}</p>
+    </Tooltip.Content>
+  </Tooltip.Root>
+</button>
