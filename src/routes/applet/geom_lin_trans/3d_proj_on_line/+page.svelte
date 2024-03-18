@@ -10,14 +10,13 @@
     Vector3D
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-    import { Controls } from '$lib/utils/Controls';
-    import Vector from '$lib/threlte-components/Vector.svelte';
+  import { Controls } from '$lib/utils/Controls';
 
-  const u = new Vector3(3, 4, -3); // Vector U - detached from the line
-
-  let controls = Controls.addSlider(Math.PI, -2*Math.PI, 2*Math.PI, 0.3)
+  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15)
 
   function getPoint(t : number){
+    //a, b -> plane of circle, need to be perpendicular
+    //c -> center of circle
     const a = new Vector3(1, 0, 1).normalize();
     const b = new Vector3(1, 1, 0).normalize()
     const c = new Vector3(1, 1, 1);
@@ -28,7 +27,12 @@
     return new Vector3(x, y, z);
   }
 
-  $: P = getPoint(controls[0]);
+  const a = new Vector3(-1, 0, 1).normalize();
+    const b = new Vector3(-1, 1, 0).normalize()
+    const c = new Vector3(1, 1, 1);
+    const radius = 7;
+
+  $: u = getPoint(controls[0]);
 
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
@@ -37,7 +41,11 @@
 </script>
 
 <Canvas3D bind:controls>
-  <Point3D position={P} alwaysOnTop/>
+
+  <Vector3D direction={a} length={a.length()} color={PrimeColor.orange} origin={c}/>
+  <Vector3D direction={b} length={b.length()} color={PrimeColor.orange} origin={c}/>
+  <Point3D position={c} color={PrimeColor.orange}/>
+  <Latex3D latex={controls[0].toLocaleString()} position={c}/>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
