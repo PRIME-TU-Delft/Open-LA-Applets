@@ -8,11 +8,11 @@
 </script>
 
 <Canvas3D>
-  <Vector3D direction={vDir} length={vDir.length()} color={PrimeColor.red} />
+  <Vector3D direction={vDir} length={vDir.length()} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={vDir.clone().add(new Vector3(0, 0.4, 0))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />

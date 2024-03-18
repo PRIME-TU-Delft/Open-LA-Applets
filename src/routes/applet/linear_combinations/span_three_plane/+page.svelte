@@ -32,7 +32,7 @@
 
     // Selectivly add parameters to the formula
     if (t1) formula = formula.addAutoParam('u', PrimeColor.blue);
-    if (t2) formula = formula.addAutoParam('v', PrimeColor.red);
+    if (t2) formula = formula.addAutoParam('v', PrimeColor.raspberry);
     formula = formula.addAutoParam('w', PrimeColor.darkGreen);
 
     return [formula];
@@ -67,8 +67,8 @@
 
   {#if controls[1]}
     <!-- Vector v -->
-    <Vector3D direction={v} length={v.length()} color={PrimeColor.red} />
-    <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.red} />
+    <Vector3D direction={v} length={v.length()} color={PrimeColor.raspberry} />
+    <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
 
     <!-- helper striped Vectors -->
     <Vector3D
@@ -80,7 +80,7 @@
       color={PrimeColor.black}
     />
   {/if}
-
+  red
   {#if !controls[0] && !controls[1]}
     <!-- Line span -->
     <Vector3D
@@ -101,7 +101,7 @@
   <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.darkGreen} />
 
   <!--  label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} />
+  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5}/>
 
   <Axis3D />
 </Canvas3D>

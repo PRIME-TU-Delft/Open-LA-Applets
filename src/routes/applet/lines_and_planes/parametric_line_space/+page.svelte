@@ -21,8 +21,8 @@
   bind:controls
 >
   <!-- Vector v_0 -->
-  <Vector3D direction={v_0} color={PrimeColor.red} length={v_0.length()} />
-  <Latex3D position={v_0} latex={'\\mathbf{v}_0'} offset={0.6} color={PrimeColor.red} />
+  <Vector3D direction={v_0} color={PrimeColor.raspberry} length={v_0.length()} />
+  <Latex3D position={v_0} latex={'\\mathbf{v}_0'} offset={0.6} color={PrimeColor.raspberry} />
 
   <!-- Vector r * u -->
   <Vector3D direction={u} color={PrimeColor.darkGreen} origin={v_0} length={ru_len} let:endPoint>

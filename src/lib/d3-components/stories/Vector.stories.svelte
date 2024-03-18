@@ -23,7 +23,7 @@
   </Canvas>
 </Template>
 
-<Story name="With color" source args={{ color: PrimeColor.red }} />
+<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
 <Story name="With origin" source args={{ origin: new Vector2(1, 1) }} />
 <Story name="With direction" source args={{ origin: new Vector2(1, 1) }} />
 <Story name="With length" source args={{ length: 2 }} />

@@ -27,12 +27,12 @@
       color={PrimeColor.darkGreen}
     />
   </Vector2D>
-  <Vector2D direction={v2} length={v2.length()} color={PrimeColor.red} let:endPoint>
+  <Vector2D direction={v2} length={v2.length()} color={PrimeColor.raspberry} let:endPoint>
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{v}_2'}
       offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
   </Vector2D>
 
@@ -73,7 +73,7 @@
   <Vector2D
     direction={v2.clone().multiplyScalar(beta)}
     length={Math.abs(v2Extended)}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     isDashed
     let:endPoint
   >

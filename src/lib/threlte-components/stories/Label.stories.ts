@@ -41,7 +41,7 @@ const meta = {
     }
   },
   args: {
-    color: PrimeColor.red,
+    color: PrimeColor.raspberry,
     title: 'Label',
     size: 1
   }

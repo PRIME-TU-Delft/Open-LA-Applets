@@ -9,11 +9,11 @@
 </script>
 
 <Canvas3D>
-  <Vector3D direction={v} length={v.length()} striped radius={0.08} color={PrimeColor.red} />
+  <Vector3D direction={v} length={v.length()} striped radius={0.08} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={v.clone().add(new Vector3(0, 0.5, 0))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <Vector3D direction={u} length={u.length()} color={PrimeColor.yellow} />

@@ -31,23 +31,23 @@
   <Latex3D latex={'\\mathbf{b}_2'} position={b2} color={PrimeColor.blue} />
 
   <!-- Vector w = b1 + b2 -->
-  <Vector3D direction={b3} length={b1.length()} color={PrimeColor.red} />
-  <Latex3D latex={'\\mathbf{b}_3'} position={b3} color={PrimeColor.red} />
+  <Vector3D direction={b3} length={b1.length()} color={PrimeColor.raspberry} />
+  <Latex3D latex={'\\mathbf{b}_3'} position={b3} color={PrimeColor.raspberry} />
 
   <!-- Helper axis [black vectors] -->
-  <Vector3D direction={b4} length={8.5} hideHead color={PrimeColor.pink} />
+  <Vector3D direction={b4} length={8.5} hideHead color={PrimeColor.orange} />
   <Vector3D
     direction={b4.clone().multiplyScalar(-1)}
     length={8.5}
     hideHead
-    color={PrimeColor.pink}
+    color={PrimeColor.orange}
   />
-  <Vector3D direction={b5} length={8.5} hideHead color={PrimeColor.pink} />
+  <Vector3D direction={b5} length={8.5} hideHead color={PrimeColor.orange} />
   <Vector3D
     direction={b5.clone().multiplyScalar(-1)}
     length={8.5}
     hideHead
-    color={PrimeColor.pink}
+    color={PrimeColor.orange}
   />
 
   <!-- Projection b1 -->

@@ -15,10 +15,10 @@
   $: v_len = Math.sqrt(controls[0] * controls[0] + controls[1] * controls[1]);
 
   function setFormulas(c0: number, c1: number, len: number) {
-    const f1 = new Formula('OQ = \\$', c0, PrimeColor.red);
+    const f1 = new Formula('OQ = \\$', c0, PrimeColor.raspberry);
     const f2 = new Formula('QA = \\$', c0, PrimeColor.yellow);
     const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
-      .addParam(1, c0, PrimeColor.red)
+      .addParam(1, c0, PrimeColor.raspberry)
       .addParam(2, c1, PrimeColor.yellow);
     const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
 
@@ -30,8 +30,8 @@
 
 <Canvas3D bind:controls {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [Red] -->
-  <Vector3D direction={v_q} color={PrimeColor.red} length={controls[0]} />
-  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />
+  <Vector3D direction={v_q} color={PrimeColor.raspberry} length={controls[0]} />
+  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.raspberry} size={1.1} />
 
   <!-- Vector a [Yellow] -->
   <Vector3D

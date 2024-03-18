@@ -29,12 +29,12 @@
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
 
   <!-- Projection vector u and plane p -->
-  <Point3D position={u_proj} color={PrimeColor.red} />
+  <Point3D position={u_proj} color={PrimeColor.raspberry} />
   <Vector3D
     origin={u}
     direction={u_proj.clone().sub(u)}
     length={u_proj.clone().sub(u).length()}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     striped
   />
 
@@ -44,7 +44,7 @@
   <Latex3D
     latex={'Proj_p(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <Axis3D />

@@ -36,7 +36,7 @@
   splitCanvas3DProps={{ cameraZoom: 50 }}
 >
   <!-- e1 -->
-  <Vector2D bind:direction={e1} length={1} color={PrimeColor.red}>
+  <Vector2D bind:direction={e1} length={1} color={PrimeColor.raspberry}>
     <Latex2D latex={'\\mathbf{e_1}'} position={e1} offset={new Vector2(0, -0.2)} />
   </Vector2D>
 
@@ -63,7 +63,7 @@
     <Axis3D />
 
     <!-- e1 & e2 -->
-    <Vector3D direction={te1} length={1} color={PrimeColor.red} />
+    <Vector3D direction={te1} length={1} color={PrimeColor.raspberry} />
     <Vector3D direction={te2} length={1} color={PrimeColor.yellow} />
 
     <Latex3D latex={'T(\\mathbf{e_1})'} position={te1} />
