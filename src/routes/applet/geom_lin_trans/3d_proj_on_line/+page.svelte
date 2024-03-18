@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Vector3 } from 'three';
   import {
     Angle3D,
@@ -10,8 +10,25 @@
     Vector3D
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+    import { Controls } from '$lib/utils/Controls';
+    import Vector from '$lib/threlte-components/Vector.svelte';
 
   const u = new Vector3(3, 4, -3); // Vector U - detached from the line
+
+  let controls = Controls.addSlider(Math.PI, -2*Math.PI, 2*Math.PI, 0.3)
+
+  function getPoint(t : number){
+    const a = new Vector3(1, 0, 1).normalize();
+    const b = new Vector3(1, 1, 0).normalize()
+    const c = new Vector3(1, 1, 1);
+    const radius = 7;
+    let x = c.x + radius*Math.cos(t)*a.x + radius*Math.sin(t)*b.x;
+    let y = c.y + radius*Math.cos(t)*a.y + radius*Math.sin(t)*b.y;
+    let z = c.z + radius*Math.cos(t)*a.z + radius*Math.sin(t)*b.z;
+    return new Vector3(x, y, z);
+  }
+
+  $: P = getPoint(controls[0]);
 
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
@@ -19,7 +36,8 @@
   $: u_proj = u.clone().projectOnVector(lineL.clone());
 </script>
 
-<Canvas3D>
+<Canvas3D bind:controls>
+  <Point3D position={P} alwaysOnTop/>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
