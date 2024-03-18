@@ -62,15 +62,15 @@
 
 <circle
   class="pulse"
-  r={INTERACTIVITY_RADIUS}
-  opacity="0.5"
+  cx={position.x}
+  cy={position.y}
+  r={INTERACTIVITY_RADIUS.toLocaleString()}
   fill={color}
   role="button"
   tabindex="0"
   on:mousedown={activityStore.enable}
-  style="--x:{position.x}; --y:{position.y}"
 />
-<circle cx={position.x} cy={position.y} r={POINT_SIZE} fill={color} />
+<circle cx={position.x} cy={position.y} r={POINT_SIZE.toLocaleString()} fill={color} />
 
 <slot />
 
@@ -80,21 +80,20 @@
 
 <style>
   .pulse {
-    translate: calc(var(--x) * 1px) calc(var(--y) * 1px);
-    animation: pulse 3s infinite;
+    animation: pulse 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
   @keyframes pulse {
     0% {
-      scale: 1;
+      r: 0.5;
       opacity: 0.5;
     }
-    70% {
-      scale: 0.5;
+    50% {
+      r: 0.3;
       opacity: 0.25;
     }
     100% {
-      scale: 1;
+      r: 0.5;
       opacity: 0.5;
     }
   }
