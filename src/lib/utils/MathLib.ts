@@ -1,4 +1,4 @@
-import { Vector2 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 /**
  * The snapPointToLine function calculates the smallest distance from a point to a line.
@@ -57,4 +57,23 @@ export function lineLineIntersection(A: Vector2, B: Vector2, C: Vector2, D: Vect
  */
 export function orthogonalProjection(L: Vector2, p: Vector2) {
   return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
+}
+
+/**
+ * Given a time parameter t (in range -PI to PI) gives a point on a circle in 3D.
+ * @param t time parameter for parametric circle
+ */
+export function parametic_point_on_circle_3D(t : number){
+  //https://math.stackexchange.com/questions/73237/parametric-equation-of-a-circle-in-3d-space
+  //a, b -> plane of circle, need to be perpendicular, currently arent
+  //c -> center of circle
+  const a = new Vector3(1, 0, 1).normalize();
+  const b = new Vector3(1, 1, 0).normalize()
+  const c = new Vector3(1, 1, 1);
+  const radius = 7;
+
+  const x = c.x + radius*Math.cos(t)*a.x + radius*Math.sin(t)*b.x;
+  const y = c.y + radius*Math.cos(t)*a.y + radius*Math.sin(t)*b.y;
+  const z = c.z + radius*Math.cos(t)*a.z + radius*Math.sin(t)*b.z;
+  return new Vector3(x, y, z);
 }
