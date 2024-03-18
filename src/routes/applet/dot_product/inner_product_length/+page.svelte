@@ -8,7 +8,7 @@
   const slider_step = 0.5;
   let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.yellow)
     .addSlider(3, -5, 5, slider_step, PrimeColor.yellow)
-    .addSlider(6, -5, 5, slider_step, PrimeColor.yellow);
+    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow);
   let formulas: Formula[] = [];
 
   $: A = new Vector3(controls[1], controls[2], controls[0]);
@@ -17,7 +17,11 @@
 
   $: v_len = A.length();
 
-  function setFormulas(c0: number, c1: number, len: number) {
+  function setFormulas(c0: number, c1: number, len: number, A: Vector3) {
+    const f0 = new Formula('A = ( \\$1 , \\$2 , \\$3 )')
+      .addParam(1, A.z, PrimeColor.yellow)
+      .addParam(2, A.x, PrimeColor.yellow)
+      .addParam(3, A.y, PrimeColor.yellow);
     const f1 = new Formula('OQ = \\$', c0, PrimeColor.raspberry);
     const f2 = new Formula('QA = \\$', c1, PrimeColor.yellow);
     const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
@@ -25,10 +29,10 @@
       .addParam(2, c1, PrimeColor.yellow);
     const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
 
-    formulas = [f1, f2, f3, f4];
+    formulas = [f0, f1, f2, f3, f4];
   }
 
-  $: setFormulas(Q.length(), controls[1], v_len);
+  $: setFormulas(Q.length(), controls[1], v_len, A);
 </script>
 
 <Canvas3D bind:controls {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
