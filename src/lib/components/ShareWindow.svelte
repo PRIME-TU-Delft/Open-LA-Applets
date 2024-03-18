@@ -67,10 +67,10 @@
 <div class="drawer-side z-50">
   <label for="my-drawer" class="drawer-overlay" />
   <ul
-    class="menu p-0 max-w-xs sm:max-w-sm md:max-w-2xl bg-base-200 container h-full overflow-y-auto"
+    class="menu p-0 max-w-xs sm:max-w-sm md:max-w-2xl bg-slate-200 container h-full overflow-y-auto"
   >
     <div>
-      <div class="prose sticky top-0 z-20 bg-base-300/90 flex justify-between items-top p-2">
+      <div class="prose sticky top-0 z-20 bg-slate-300/90 flex justify-between items-top p-2">
         <h1 class="mb-0">Share and Embed</h1>
         <label for="my-drawer" class="btn btn-outline">
           <Icon path={mdiClose} />
@@ -78,7 +78,7 @@
       </div>
 
       <div class="prose">
-        <!-- class="menu prose p-4 w-80 h-full bg-base-200 text-base-content relative overflow-hidden overflow-y-auto" -->
+        <!-- class="menu prose p-4 w-80 h-full bg-slate-200 text-slate-content relative overflow-hidden overflow-y-auto" -->
 
         <h3>About</h3>
         <p>
@@ -180,6 +180,6 @@
 
 <style lang="postcss">
   h3 {
-    @apply sticky top-10 z-10 bg-base-300 p-2;
+    @apply sticky top-10 z-10 bg-slate-300 p-2;
   }
 </style>
