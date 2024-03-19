@@ -17,7 +17,7 @@
   export let enablePan: Canvas3DProps['enablePan'] = false;
   export let cameraZoom: Canvas3DProps['cameraZoom'] = 29;
   export let width: Canvas3DProps['width'] = '100%';
-  export let height: Canvas3DProps['height'] = 'auto';
+  export let height: Canvas3DProps['height'] = '100%';
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};

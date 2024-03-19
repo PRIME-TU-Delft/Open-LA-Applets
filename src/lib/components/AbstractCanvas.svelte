@@ -2,10 +2,8 @@
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
-  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
-  import ToggleControls from '$lib/components/ToggleControls.svelte';
+  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
@@ -105,14 +103,13 @@
 
     <!-- SLIDER PANEL -->
     {#if controls && controls.length > 0}
-      <ControllerPanel isInset={!isIframe || isFullscreen}>
-        <ToggleControls
-          bind:controls
-          bind:isPlaying={isPlayingSliders}
-          on:startChanging={() => (isChangingSliders = true)}
-          on:stopChanging={() => (isChangingSliders = false)}
-        />
-      </ControllerPanel>
+      <ControllerPanel
+        isInset={!isIframe || isFullscreen}
+        bind:controls
+        bind:isPlaying={isPlayingSliders}
+        on:startChanging={() => (isChangingSliders = true)}
+        on:stopChanging={() => (isChangingSliders = false)}
+      />
     {/if}
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
