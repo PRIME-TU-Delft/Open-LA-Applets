@@ -62,9 +62,3 @@
     </Popover.Root>
   {/if}
 </div>
-
-<style lang="postcss">
-  .inset {
-    @apply m-2;
-  }
-</style>

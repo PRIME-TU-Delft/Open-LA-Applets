@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { cn } from '$lib/utils';
+
   export let path: string;
   export let size = 1;
   export let color = 'currentColor';
@@ -7,6 +9,8 @@
   export let rotate = 0;
   export let spin = 0;
   export let title = '';
+  let className = '';
+  export { className as class };
 
   $: scaleV = flipV ? -1 : 1;
   $: scaleH = flipH ? -1 : 1;
@@ -16,6 +20,7 @@
 <svg
   viewBox="0 0 24 24"
   style="--color: {color}; --size: {size}rem; --rotate: {rotate}deg; --scaleV: {scaleV}; --scaleH: {scaleH}; --spin-duration: {absSpin}s;"
+  class={cn(className)}
 >
   {#if title}<title>{title}</title>{/if}
 
