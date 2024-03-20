@@ -6,7 +6,7 @@
 
   const vDir = new Vector3(3, 2, -3);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
-  let controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry)
+  let controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry);
   $: v = vDir.clone().normalize().multiplyScalar(controls[0]); // Direction of vector v
 </script>
 
