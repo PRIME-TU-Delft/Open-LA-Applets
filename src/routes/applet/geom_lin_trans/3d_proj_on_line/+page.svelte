@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Vector3 } from 'three';
   import {
     Angle3D,
@@ -10,8 +10,12 @@
     Vector3D
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Controls } from '$lib/utils/Controls';
+  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
 
-  const u = new Vector3(3, 4, -3); // Vector U - detached from the line
+  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+
+  $: u = parametic_point_on_circle_3D(controls[0], 5);
 
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
@@ -19,7 +23,7 @@
   $: u_proj = u.clone().projectOnVector(lineL.clone());
 </script>
 
-<Canvas3D>
+<Canvas3D bind:controls>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
