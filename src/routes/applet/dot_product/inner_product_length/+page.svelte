@@ -25,8 +25,8 @@
     const f1 = new Formula('OQ = \\$', c0, PrimeColor.raspberry);
     const f2 = new Formula('QA = \\$', c1, PrimeColor.yellow);
     const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
-      .addParam(1, c0, PrimeColor.raspberry)
-      .addParam(2, c1, PrimeColor.yellow);
+      .addParam(1, c0.toFixed(2), PrimeColor.raspberry)
+      .addParam(2, c1.toFixed(2), PrimeColor.yellow);
     const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
 
     formulas = [f0, f1, f2, f3, f4];
