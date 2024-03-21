@@ -6,7 +6,7 @@ import { PrimeColor } from './PrimeColors';
  * The value is replaced in the formula with the color of the value.
  * The \\$ character is used to replace the value in the formula.
  * @example
- * const formula = new Formulas('The value is $', 10, PrimeColor.red);
+ * const formula = new Formulas('The value is $', 10, PrimeColor.raspberry);
  * console.log(formula.stringFormula); // The value is 10
  * @example
  * const formula = new Formulas('The value is $', 10);

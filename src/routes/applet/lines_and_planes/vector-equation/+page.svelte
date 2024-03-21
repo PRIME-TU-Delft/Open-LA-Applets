@@ -22,12 +22,12 @@
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 
   <!-- V0 -->
-  <Vector2D direction={v0} length={v0.length()} color={PrimeColor.red} let:endPoint>
+  <Vector2D direction={v0} length={v0.length()} color={PrimeColor.raspberry} let:endPoint>
     <Latex2D
       latex={'\\mathbf{v}_0'}
       position={endPoint}
       offset={new Vector2(0.1, 0.2)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
     <Latex2D
       latex={'\\mathcal{L}_1'}

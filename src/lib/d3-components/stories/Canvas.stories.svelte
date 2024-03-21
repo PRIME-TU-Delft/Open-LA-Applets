@@ -48,10 +48,10 @@
   let:args
 >
   <Canvas height="20rem" {...args}>
-    <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
+    <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.raspberry} />
 
     <svelte:fragment slot="splitCanvas">
-      <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.red} />
+      <Vector direction={new Vector2(1, 2)} length={3} color={PrimeColor.raspberry} />
       <Vector direction={new Vector2(1, -1)} length={3} color={PrimeColor.blue} />
     </svelte:fragment>
   </Canvas>
@@ -66,11 +66,11 @@
   let:args
 >
   <Canvas height="20rem" cameraPosition={new Vector3(5.52, -5.35, 15.52)} {...args}>
-    <Vector direction={new Vector2(5, 2)} length={3} color={PrimeColor.red} />
+    <Vector direction={new Vector2(5, 2)} length={3} color={PrimeColor.raspberry} />
     <Vector direction={new Vector2(-5, 1)} length={3} color={PrimeColor.blue} />
 
     <svelte:fragment slot="splitCanvas3d">
-      <Vector3D direction={new Vector3(5, 2, 1)} length={3} color={PrimeColor.red} />
+      <Vector3D direction={new Vector3(5, 2, 1)} length={3} color={PrimeColor.raspberry} />
       <Vector3D direction={new Vector3(-5, 1, 1)} length={3} color={PrimeColor.blue} />
     </svelte:fragment>
   </Canvas>

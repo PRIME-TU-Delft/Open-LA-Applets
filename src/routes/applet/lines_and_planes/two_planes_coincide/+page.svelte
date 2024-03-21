@@ -6,7 +6,7 @@
 
   const normal = new Vector3(1, 3, 1).normalize();
   let formulas: Formula[] = [
-    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.red),
+    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.raspberry),
     new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.yellow)
   ];
 </script>

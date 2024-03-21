@@ -46,12 +46,12 @@
   <Canvas height="20rem" {...args} title="Left is wrong, Right is good">
     <!-- THESE are WRONG because they do not have ids -->
     <Draggable {...args} position={new Vector2(1, 2)} color={PrimeColor.darkGreen} />
-    <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.red} />
+    <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.raspberry} />
 
     <svelte:fragment slot="splitCanvas">
       <!-- THESE are correct because they have unique ids -->
-      <Draggable {...args} bind:position={p1} color={PrimeColor.darkGreen} id="a" />
-      <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.red} id="b" />
+      <Draggable {...args} position={new Vector2(1, 2)} color={PrimeColor.darkGreen} id="a" />
+      <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.raspberry} id="b" />
       <Vector2D direction={p1} length={p1.length()} color={PrimeColor.darkGreen} />
     </svelte:fragment>
   </Canvas>

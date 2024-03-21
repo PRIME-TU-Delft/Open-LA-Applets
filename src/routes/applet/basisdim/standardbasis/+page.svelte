@@ -42,10 +42,10 @@
     <!-- e1 & e2 & e3 -->
     <Vector3D direction={te1} length={te1.length()} color={PrimeColor.blue} />
     <Vector3D direction={te2} length={te2.length()} color={PrimeColor.darkGreen} />
-    <Vector3D direction={te3} length={te3.length()} color={PrimeColor.red} />
+    <Vector3D direction={te3} length={te3.length()} color={PrimeColor.raspberry} />
 
     <Latex3D latex={'\\mathbf{e_1}'} position={te1} color={PrimeColor.blue} />
     <Latex3D latex={'\\mathbf{e_2}'} position={te2} color={PrimeColor.darkGreen} />
-    <Latex3D latex={'\\mathbf{e_3}'} position={te3} color={PrimeColor.red} />
+    <Latex3D latex={'\\mathbf{e_3}'} position={te3} color={PrimeColor.raspberry} />
   </svelte:fragment>
 </Canvas2D>

@@ -28,7 +28,7 @@
 </Template>
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" source args={{ color: PrimeColor.red }} />
+<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
 
 <Story name="With position defined" source args={{ position: new Vector2(2, 0) }} />
 <Story name="With radius" source args={{ radius: 0.25 }} />

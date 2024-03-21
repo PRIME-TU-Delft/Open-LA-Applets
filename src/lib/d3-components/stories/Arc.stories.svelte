@@ -24,7 +24,7 @@
 </Template>
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" source args={{ color: PrimeColor.red }} />
+<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
 
 <Story
   name="With points defined"
