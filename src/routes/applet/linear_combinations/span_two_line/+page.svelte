@@ -4,7 +4,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
 
-  let controls = Controls.addSlider(2, -5, 5, 0.5, PrimeColor.red).addSlider(
+  let controls = Controls.addSlider(2, -5, 5, 0.5, PrimeColor.raspberry).addSlider(
     5,
     -5,
     5,
@@ -18,12 +18,12 @@
 </script>
 
 <Canvas3D bind:controls>
-  <Vector3D direction={v} length={controls[0]} striped radius={0.08} color={PrimeColor.red} />
+  <Vector3D direction={v} length={controls[0]} striped radius={0.08} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={v.clone().normalize().multiplyScalar(controls[0])}
     offset={0.5}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <Vector3D direction={u} length={controls[1]} color={PrimeColor.yellow} />

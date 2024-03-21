@@ -14,7 +14,7 @@
 
   $: f1 = new Formula('P_1 = 1x + 1y + \\$z = 0', controls[0], PrimeColor.darkGreen);
   $: f2 = new Formula('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow);
-  $: f3 = new Formula('P_3 = 1x + 1y + \\$z = 0', 0, PrimeColor.red);
+  $: f3 = new Formula('P_3 = 1x + 1y + \\$z = 0', 0, PrimeColor.raspberry);
 </script>
 
 <Canvas3D
@@ -24,7 +24,7 @@
   formulas={[f1, f2, f3]}
 >
   <PlaneFromNormal position={new Vector3(0, 1, 0)} normal={n0} color={PrimeColor.yellow} />
-  <PlaneFromNormal position={new Vector3(0, 0, 0)} normal={n0} color={PrimeColor.red} />
+  <PlaneFromNormal position={new Vector3(0, 0, 0)} normal={n0} color={PrimeColor.raspberry} />
 
   <PlaneFromNormal position={new Vector3(0, 0, 0)} normal={n1} color={PrimeColor.darkGreen} />
 

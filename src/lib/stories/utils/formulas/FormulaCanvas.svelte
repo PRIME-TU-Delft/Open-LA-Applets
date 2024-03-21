@@ -20,7 +20,7 @@
 
     const area = Math.abs(xf * yf * zf);
     const f1 = new Formula('Area = |\\$1| * |\\$2| * |\\$3| = \\$4')
-      .addAutoParam(xf, PrimeColor.red)
+      .addAutoParam(xf, PrimeColor.raspberry)
       .addAutoParam(yf, PrimeColor.yellow)
       .addAutoParam(zf, PrimeColor.darkGreen)
       .addAutoParam(area, PrimeColor.blue);

@@ -47,14 +47,14 @@
   <PartialDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
 
   <!-- red vector -->
-  <Vector3D direction={v3} color={PrimeColor.red} length={v3.length()} />
+  <Vector3D direction={v3} color={PrimeColor.raspberry} length={v3.length()} />
   <Latex3D
     position={v3}
     offset={labelOffset}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
     latex={'\\begin{bmatrix} ' + v3.x + ' \\\\ ' + v3.z + ' \\\\ ' + v3.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v3} color={PrimeColor.red} showAxisPoints />
+  <PartialDeconstruction3D p={v3} color={PrimeColor.raspberry} showAxisPoints />
 
   <Axis3D showNumbers axisLength={10} floor />
 </Canvas3D>

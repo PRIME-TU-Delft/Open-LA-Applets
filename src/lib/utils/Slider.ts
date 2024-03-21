@@ -22,13 +22,15 @@ export class Slider implements Controller<number> {
   color: string = PrimeColor.blue;
   width = 30;
   type = 'sliders';
+  label = '';
 
   constructor(
     defaultValue: number,
     min = -1,
     max = 1,
     step = 0.1,
-    color: string = PrimeColor.blue
+    color: string = PrimeColor.blue,
+    label: string = ''
   ) {
     this.defaultValue = defaultValue;
     this.min = min;
@@ -36,6 +38,7 @@ export class Slider implements Controller<number> {
     this.stepSize = step;
     this.value = defaultValue;
     this.color = color;
+    this.label = label;
   }
 
   static Default = new Slider(0);

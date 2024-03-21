@@ -41,7 +41,7 @@ const meta = {
     }
   },
   args: {
-    color: PrimeColor.red
+    color: PrimeColor.raspberry
   }
 } satisfies Meta<Angle>;
 
@@ -52,7 +52,7 @@ export const Default: Story = {
   args: {
     vs: [new Vector3(1, 1, 0), new Vector3(1, 0, 0)],
     size: 2,
-    color: PrimeColor.red,
+    color: PrimeColor.raspberry,
     title: 'Angle'
   }
 };

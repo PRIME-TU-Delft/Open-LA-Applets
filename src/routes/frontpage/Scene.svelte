@@ -12,9 +12,11 @@
 
   let position = new Vector3(10, 10, 7);
   let zoom = 40;
+  //the original red
+  const red = '#E03C31';
 </script>
 
-<PlaneFromNormal normal={new Vector3(1, 1, 1)} color={PrimeColor.red} size={12} opacity={1} />
+<PlaneFromNormal normal={new Vector3(1, 1, 1)} color={red} size={12} opacity={1} />
 <PlaneFromNormal normal={new Vector3(3, 1, 1)} color={PrimeColor.yellow} size={11} opacity={1} />
 <PlaneFromNormal normal={new Vector3(8, 1, 1)} color={PrimeColor.darkGreen} size={10} opacity={1} />
 

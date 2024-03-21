@@ -10,7 +10,7 @@
   let formulas: Formula[] = [];
 
   function setFormulas(x: number, y: number) {
-    const f1 = new Formula(`1x + 1y + (3 ${x < 0 ? '' : '+'}\\$)z = 0`, x, PrimeColor.red);
+    const f1 = new Formula(`1x + 1y + (3 ${x < 0 ? '' : '+'}\\$)z = 0`, x, PrimeColor.raspberry);
     const f2 = new Formula(
       `1x + 1y + (3 ${controls[1] < 0 ? '' : '+'}\\$)z = 0`,
       y,

@@ -3,6 +3,7 @@
   import { mdiArrowRight, mdiEye, mdiEyeOff } from '@mdi/js';
   import Icon from '$lib/components/Icon.svelte';
   import { fade } from 'svelte/transition';
+  import * as Button from '$lib/components/ui/button';
 
   export let url = '';
   export let title = '';
@@ -16,14 +17,19 @@
 </script>
 
 <div in:fade class="flex gap-2 items-center">
-  <button class="btn btn-secondary" on:click={() => toggleUrlIframe(url)}>
-    {#if showUrlIframe == url}
+  {#if showUrlIframe == url}
+    <Button.Root class="h-12 bg-blue-400 hover:bg-blue-900" on:click={() => toggleUrlIframe(url)}>
       <Icon path={mdiEyeOff} />
-    {:else}
+    </Button.Root>
+  {:else}
+    <Button.Root class="h-12 bg-blue-900" on:click={() => toggleUrlIframe(url)}>
       <Icon path={mdiEye} />
-    {/if}
-  </button>
-  <a class="link-hover w-full bg-base-200 rounded p-4 flex justify-between items-center" href={url}>
+    </Button.Root>
+  {/if}
+  <a
+    class="link-hover w-full bg-slate-200 rounded p-4 flex justify-between items-center"
+    href={url}
+  >
     <div>
       <span class="text-slate-500 text-sm">
         {formatString(subtitle)} /

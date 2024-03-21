@@ -9,7 +9,7 @@
   let formulas: Formula[] = [];
 
   function setFormulas(x: number, y: number) {
-    const f1 = new Formula('\\$x + 1y + 1z = 0', x, PrimeColor.red);
+    const f1 = new Formula('\\$x + 1y + 1z = 0', x, PrimeColor.raspberry);
     const f2 = new Formula('\\$x + 1y + 1z = 0', y, PrimeColor.yellow);
 
     return [f1, f2];

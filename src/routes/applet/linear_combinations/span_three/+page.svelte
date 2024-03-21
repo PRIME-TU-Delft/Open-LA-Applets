@@ -33,7 +33,7 @@
     let formula = new Formula('\\mathbf{Span}\\{' + formulaString + '\\}');
 
     // Selectivly add parameters to the formula
-    if (t1) formula = formula.addAutoParam('u', PrimeColor.red);
+    if (t1) formula = formula.addAutoParam('u', PrimeColor.raspberry);
     if (t2) formula = formula.addAutoParam('v', PrimeColor.blue);
     if (t3) formula = formula.addAutoParam('w', PrimeColor.darkGreen);
 
@@ -47,8 +47,8 @@
   <CubePlaneLine toggles={controls} uvw={[u, v, w]} />
 
   {#if controls[0]}
-    <Vector3D direction={u} length={u.length()} color={PrimeColor.red} />
-    <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.red} />
+    <Vector3D direction={u} length={u.length()} color={PrimeColor.raspberry} />
+    <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.raspberry} />
   {/if}
   {#if controls[1]}
     <Vector3D direction={v} length={v.length()} color={PrimeColor.blue} />

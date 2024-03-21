@@ -6,19 +6,17 @@ export enum BackgroundColors {
   light = '#E0E0E0'
 }
 
-// Official Colors from TU Delft
+// Official Colors from the TU Delft
 // https://www.tudelft.nl/huisstijl/bouwstenen/kleur
+// The ordering of the colors in this enum matters, applets in chapter 'lines and planes' are colored by order.
 export enum PrimeColor {
-  red = '#E03C31',
+  raspberry = '#A50034',
   yellow = '#FFB81C',
   darkGreen = '#009B77',
   blue = '#0076C2',
-  pink = '#EF60A3',
-  purple = '#6F1D77',
   black = '#565656',
   orange = '#EC6842',
-  cyan = '#00A6D6',
-  raspberry = '#A50034'
+  cyan = '#00A6D6'
 }
 
 export const primeColorArray = Object.values(PrimeColor);

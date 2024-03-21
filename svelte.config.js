@@ -13,7 +13,10 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter()
+    adapter: process.env.BUILD_ENV === 'netlify' ? netlifyAdapter() : nodeAdapter(),
+    alias: {
+      '@/*': './path/to/lib/*'
+    }
   }
 };
 
