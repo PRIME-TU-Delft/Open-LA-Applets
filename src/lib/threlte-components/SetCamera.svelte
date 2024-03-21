@@ -20,7 +20,7 @@
   const { renderer, renderMode } = useThrelte();
 
   $: {
-    const cameraSettings = parseCameraSettings($page.url?.searchParams);
+    const cameraSettings = parseCameraSettings($page?.url?.searchParams);
 
     if (cameraSettings) {
       position = cameraSettings.position || position;

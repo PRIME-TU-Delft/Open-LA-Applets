@@ -7,108 +7,17 @@ Authenticating with Chromatic
 Authenticated with Chromatic
     → Using project token '****************1f8a'
 Retrieving git information
+⚠ Using outdated package
+You are using an outdated version of the Chromatic CLI (v7.5.4).
+A new major version is available (v10.7.1).
+Run yarn upgrade chromatic --latest to upgrade.
 Retrieved git information
-    → Commit 'aafc802' on branch 'split-canvas'; found 1 parent build
+    → Commit 'de29afc' on branch '#67-oriented-area'; found 2 parent builds
 Collecting Storybook metadata
 Collected Storybook metadata
-    → Storybook 7.5.1 for Svelte; using the @storybook/sveltekit builder (7.5.1); supported addons found: Links, Essentials, Interactions
+    → Storybook 7.6.10 for Svelte; using the @storybook/sveltekit builder (7.6.10); supported addons found: Links, Essentials, Interactions
 Initializing build
 Initialized build
-    → Build 4 initialized
+    → Build 614 initialized
 Building your Storybook
-    → Running command: pnpm run build-storybook --output-dir /var/folders/9_/f1r1122x0z30nmvsjdphgnh40000gn/T/chromatic--64957-8I3Yuc4zViqV
-Storybook built in 14 seconds
-    → View build log at /Users/abeldebruijn/Documents/GitHub/turborepo-visuals/build-storybook.log
-Publish your built Storybook
-    → Validating Storybook files
-Publishing your built Storybook
-    → Retrieving target location
-    → Starting publish
-    → [                    ] 0%
-    → [                    ] 1%
-    → [=                   ] 4%
-    → [=                   ] 7%
-    → [==                  ] 12%
-    → [===                 ] 13%
-    → [===                 ] 15%
-    → [===                 ] 16%
-    → [====                ] 21%
-    → [====                ] 22%
-    → [=====               ] 23%
-    → [=====               ] 24%
-    → [=====               ] 27%
-    → [======              ] 28%
-    → [======              ] 32%
-    → [=======             ] 37%
-    → [========            ] 40%
-    → [========            ] 41%
-    → [=========           ] 46%
-    → [==========          ] 48%
-    → [==========          ] 49%
-    → [==========          ] 50%
-    → [==========          ] 52%
-    → [===========         ] 55%
-    → [===========         ] 56%
-    → [============        ] 58%
-    → [============        ] 60%
-    → [============        ] 62%
-    → [=============       ] 63%
-    → [=============       ] 64%
-    → [=============       ] 66%
-    → [==============      ] 68%
-    → [==============      ] 71%
-    → [==============      ] 72%
-    → [===============     ] 74%
-    → [===============     ] 77%
-    → [================    ] 79%
-    → [================    ] 80%
-    → [================    ] 82%
-    → [=================   ] 83%
-    → [=================   ] 84%
-    → [=================   ] 85%
-    → [=================   ] 86%
-    → [=================   ] 87%
-    → [==================  ] 88%
-    → [==================  ] 89%
-    → [==================  ] 90%
-    → [==================  ] 91%
-    → [==================  ] 92%
-    → [=================== ] 93%
-    → [=================== ] 95%
-    → [=================== ] 97%
-    → [====================] 98%
-    → [====================] 99%
-Publish complete in 17 seconds
-    → View your Storybook at https://64bd84b22e54c77ce9fcbc6b-ikpysqvuwf.chromatic.com
-Verifying your Storybook
-    → This may take a few minutes
-Started build 4
-    → View build details at https://www.chromatic.com/build?appId=64bd84b22e54c77ce9fcbc6b&number=4
-Running 22 tests
-    → This may take a few minutes
-ℹ Speed up Continuous Integration
-Your project is linked to GitHub so Chromatic will report results there.
-This means you can pass the --exit-once-uploaded flag to skip waiting for build results.
-Read more here: https://www.chromatic.com/docs/cli#chromatic-options
-    → [=                   ] 1/22  Slider › Default 
-    → [==                  ] 2/22  Arc › With color 
-    → [===                 ] 3/22  Arc › With points defined 
-    → [=====               ] 5/22  Arc › With width defined 
-    → [=====               ] 6/22  Arc › With distance defined 
-    → [======              ] 7/22  Canvas › Default 
-    → [=======             ] 8/22  Canvas › With title 
-    → [==========          ] 11/22  Draggable › With color 
-    → [===========         ] 12/22  Angle › Default 
-    → [============        ] 13/22  Angle › With Origin 
-    → [==============      ] 15/22  Angle › Force Round Angle 
-    → [===============     ] 16/22  Axis › Default 
-    → [================    ] 18/22  Canvas › Is Iframe 
-    → [=================   ] 19/22  Canvas › With Title 
-    → [==================  ] 20/22  Canvas › Multiple Slider 
-    → [=================== ] 21/22  Canvas › Canvas With Formulas 
-    → [====================] 22/22  Label › Default 
-✖ Found 22 visual changes: Review the changes at https://www.chromatic.com/build?appId=64bd84b22e54c77ce9fcbc6b&number=4
-
-ℹ For CI/CD use cases, this command failed with exit code 1
-Pass --exit-zero-on-changes to succeed this command regardless of changes.
-Pass --auto-accept-changes to succeed and automatically accept any changes.
+    → Running command: pnpm run build-storybook --output-dir /var/folders/9_/f1r1122x0z30nmvsjdphgnh40000gn/T/chromatic--87913-hCHeEZ2NWkkO

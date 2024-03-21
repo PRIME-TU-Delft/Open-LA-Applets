@@ -18,6 +18,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import docsForStory from '$lib/utils/docsForStory';
   import { Vector2 } from 'three';
+  import { Vector2D } from '..';
+
+  let p1 = new Vector2(1, 2);
+  let p2 = new Vector2(2, 1);
 </script>
 
 <Template let:args>
@@ -48,6 +52,7 @@
       <!-- THESE are correct because they have unique ids -->
       <Draggable {...args} position={new Vector2(1, 2)} color={PrimeColor.darkGreen} id="a" />
       <Draggable {...args} position={new Vector2(2, 1)} color={PrimeColor.raspberry} id="b" />
+      <Vector2D direction={p1} length={p1.length()} color={PrimeColor.darkGreen} />
     </svelte:fragment>
   </Canvas>
 </Story>
@@ -55,3 +60,12 @@
 <Story name="With color" source args={{ color: PrimeColor.darkGreen, id: 'color' }} />
 
 <Story name="With position" source args={{ position: new Vector2(1, 2), id: 'position' }} />
+
+<Story
+  name="With snap"
+  parameters={docsForStory(
+    'When dragging, the circle will snap to the nearest grid position upon release.'
+  )}
+  source
+  args={{ position: new Vector2(1, 2), snap: true, id: 'snap' }}
+/>

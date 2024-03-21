@@ -16,8 +16,8 @@
   let urlInput: HTMLTextAreaElement;
 
   $: state = controls?.controls && getState($cameraStore);
-  $: url = $page.url?.origin + $page.url?.pathname;
-  $: refUrl = $page.url?.pathname.replace('/applet/', '');
+  $: url = $page?.url?.origin + $page.url?.pathname;
+  $: refUrl = $page?.url?.pathname.replace('/applet/', '');
   $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
   /**
@@ -171,7 +171,7 @@
         <img
           class="h-24 w-full object-contain"
           alt="prime-tudelft"
-          src="{$page.url?.origin || ''}/logo-black.png"
+          src="{$page?.url?.origin || ''}/logo-black.png"
         />
       </div>
     </div>
