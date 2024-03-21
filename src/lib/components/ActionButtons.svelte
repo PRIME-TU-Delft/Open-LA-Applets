@@ -1,53 +1,60 @@
 <script lang="ts">
-  import { mdiDelete, mdiFunctionVariant, mdiRestart, mdiShare } from '@mdi/js';
-  import { createEventDispatcher } from 'svelte';
-  import RoundButton from './RoundButton.svelte';
-  import ToggleFullscreen from './ToggleFullscreen.svelte';
-  import Icon from '$lib/components/Icon.svelte';
   import { dev } from '$app/environment';
+  import * as Button from '$lib/components/ui/button';
+  import * as Dialog from '$lib/components/ui/dialog';
+  import { mdiDelete, mdiFullscreen, mdiFullscreenExit, mdiRestart, mdiShare } from '@mdi/js';
+  import screenfull from 'screenfull';
+  import { createEventDispatcher } from 'svelte';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
 
   export let isFullscreen = false; // Is the scene fullscreen?
   export let isIframe = true; // Is the scene inside an iframe?
-  export let hasFormulas = false; // Does the scene have a formulas panel?
-  export let showFormulas = false; // Is the formulas panel visible?
   export let sceneEl: HTMLDivElement;
 
   let dispatch = createEventDispatcher();
+
+  if (screenfull.isEnabled) {
+    screenfull.on('change', () => {
+      isFullscreen = screenfull.isFullscreen;
+    });
+  }
+
+  function toggleFullscreen() {
+    if (!screenfull.isEnabled || !sceneEl) return;
+
+    screenfull.toggle(sceneEl);
+  }
 </script>
 
-<ul
-  class="menu bg-base-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1"
+<div
+  class="bg-slate-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1 flex gap-1 flex-col"
   class:inset={!isIframe || isFullscreen}
 >
   {#if dev}
-    <li class="tooltip tooltip-left" data-tip="Delete cache draggables">
-      <RoundButton icon={mdiDelete} on:click={() => (localStorage.clear(), location.reload())} />
-    </li>
+    <Button.Action
+      on:click={() => (localStorage.clear(), location.reload())}
+      icon={mdiDelete}
+      tooltip="Delete cache draggables"
+    />
   {/if}
 
-  {#if hasFormulas && isIframe && !isFullscreen}
-    <li class="tooltip tooltip-left" data-tip="Toggle formulae">
-      <RoundButton
-        twClass={showFormulas ? 'btn-accent btn-outline' : ''}
-        icon={mdiFunctionVariant}
-        on:click={() => (showFormulas = !showFormulas)}
-      />
-    </li>
+  <Dialog.Root>
+    <Dialog.Trigger>
+      <Button.Action icon={mdiShare} tooltip="Share or embed applet" />
+    </Dialog.Trigger>
+    <ShareWindow />
+  </Dialog.Root>
+
+  <Button.Action on:click={() => dispatch('reset')} icon={mdiRestart} tooltip="Reset applet" />
+
+  {#if screenfull.isEnabled}
+    <Button.Action
+      on:click={toggleFullscreen}
+      icon={isFullscreen ? mdiFullscreenExit : mdiFullscreen}
+      tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
+    />
   {/if}
-  <label for="my-drawer">
-    <li class="tooltip tooltip-left" data-tip="Share or embed applet">
-      <div class="btn btn-square flex flex-col justify-center">
-        <Icon path={mdiShare} />
-      </div>
-    </li>
-  </label>
-  <li class="tooltip tooltip-left" data-tip="Reset applet">
-    <RoundButton icon={mdiRestart} on:click={() => dispatch('reset')} />
-  </li>
-  <li class="tooltip tooltip-left" data-tip="Toggle fullscreen">
-    <ToggleFullscreen {sceneEl} bind:isFullscreen />
-  </li>
-</ul>
+</div>
 
 <style lang="postcss">
   .inset {

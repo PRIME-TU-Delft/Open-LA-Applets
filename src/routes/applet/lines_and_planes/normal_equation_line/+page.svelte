@@ -58,7 +58,7 @@
   $: snapQ(Q);
 </script>
 
-<Canvas2D zoom={0.9} {formulas}>
+<Canvas2D cameraZoom={0.9} {formulas}>
   <Draggable2D id="normal_equation_line1" bind:position={Q} color={PrimeColor.raspberry} />
 
   <!-- RightAngle -->
@@ -88,5 +88,9 @@
   />
 
   <Point2D position={Q} color={PrimeColor.raspberry} />
-  <Latex2D latex={'Q'} position={Q.clone().add(new Vector2(-0.1, -0.2))} color={PrimeColor.raspberry} />
+  <Latex2D
+    latex={'Q'}
+    position={Q.clone().add(new Vector2(-0.1, -0.2))}
+    color={PrimeColor.raspberry}
+  />
 </Canvas2D>

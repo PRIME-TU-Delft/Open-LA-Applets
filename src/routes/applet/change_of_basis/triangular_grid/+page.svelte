@@ -37,7 +37,12 @@
   </Vector2D>
 
   <!-- B1 + B2 -->
-  <Vector2D direction={b1plusb2} length={b1plusb2.length()} color={PrimeColor.raspberry} let:endPoint>
+  <Vector2D
+    direction={b1plusb2}
+    length={b1plusb2.length()}
+    color={PrimeColor.raspberry}
+    let:endPoint
+  >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_1 + \\mathbf{b}_2'}

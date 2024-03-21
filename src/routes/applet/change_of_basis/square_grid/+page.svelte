@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Slider from '$lib/components/Slider.svelte';
-  import { Arc2D, Canvas2D, Latex2D, Vector2D, Draggable2D } from '$lib/d3-components';
+  import { Arc2D, Canvas2D, Draggable2D, Latex2D, Vector2D } from '$lib/d3-components';
   import { Controls } from '$lib/utils/Controls';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -11,7 +10,14 @@
   $: b1plusb2 = b1.clone().add(b2);
   $: minusB1 = b1.clone().multiplyScalar(-1);
 
-  let controls = Controls.addSlider(0, -3, 3, 0.5).addSlider(1, -3, 3, 0.5);
+  let controls = Controls.addSlider(0, -3, 3, 0.5, PrimeColor.raspberry, 'Camera pos x').addSlider(
+    1,
+    -3,
+    3,
+    0.5,
+    PrimeColor.yellow,
+    'Camera pos y'
+  );
 </script>
 
 <Canvas2D bind:controls cameraPosition={new Vector2(controls[0], controls[1])}>
@@ -41,7 +47,12 @@
   </Vector2D>
 
   <!-- B1 + B2 -->
-  <Vector2D direction={b1plusb2} length={b1plusb2.length()} color={PrimeColor.raspberry} let:endPoint>
+  <Vector2D
+    direction={b1plusb2}
+    length={b1plusb2.length()}
+    color={PrimeColor.raspberry}
+    let:endPoint
+  >
     <Latex2D
       position={endPoint}
       latex={'\\mathbf{b}_1 + \\mathbf{b}_2'}

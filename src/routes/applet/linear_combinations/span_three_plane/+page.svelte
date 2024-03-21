@@ -101,7 +101,7 @@
   <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.darkGreen} />
 
   <!--  label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5}/>
+  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} />
 
   <Axis3D />
 </Canvas3D>

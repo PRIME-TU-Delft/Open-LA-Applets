@@ -29,10 +29,6 @@
   <!-- L /-->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />
-=======
-  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
-  <InfiniteLine2D direction={v} color={PrimeColor.purple} />
->>>>>>> main
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />

@@ -16,7 +16,7 @@ export enum PrimeColor {
   blue = '#0076C2',
   black = '#565656',
   orange = '#EC6842',
-  cyan = '#00A6D6',
+  cyan = '#00A6D6'
 }
 
 export const primeColorArray = Object.values(PrimeColor);
