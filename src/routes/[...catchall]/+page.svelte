@@ -1,13 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
   import NavBar from './NavBar.svelte';
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
-
-  const url = $page?.url;
-  let searchQuery = url.searchParams.get('q') || '';
 
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Developer' },
@@ -24,14 +19,10 @@
   );
 </script>
 
-<NavBar {url} bind:searchQuery />
+<NavBar {fileUrls} />
 
 <div class="mx-auto max-w-2xl p-10">
-  {#if searchQuery}
-    <FilterList {fileUrls} bind:searchQuery />
-  {:else}
-    <FolderList {fileUrls} />
-  {/if}
+  <FolderList {fileUrls} />
 
   <div
     class="container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border border-base-300 bg-base-200 p-4"
