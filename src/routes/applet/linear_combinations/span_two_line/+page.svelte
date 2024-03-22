@@ -4,9 +4,9 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
 
-  let controls = Controls.addSlider(2, -5, 5, Math.PI, PrimeColor.raspberry, 'length of v', (n) =>
+  let controls = Controls.addSlider(3, -5, 5, 2, PrimeColor.raspberry, 'length of v', (n) =>
     n.toFixed(1)
-  ).addSlider(5, -5, 5, Math.PI, PrimeColor.yellow, 'length of u', (n) => n.toFixed(1));
+  ).addSlider(5, -5, 5, 2, PrimeColor.yellow, 'length of u', (n) => n.toFixed(1));
 
   $: v = new Vector3(3, 2, -3).normalize().multiplyScalar(3); // Vector v;
   $: u = v.clone().multiplyScalar(2); // Vector u = 2 * v;
