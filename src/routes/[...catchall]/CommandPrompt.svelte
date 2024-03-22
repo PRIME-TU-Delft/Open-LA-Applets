@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import Icon from '$lib/components/Icon.svelte';
   import * as Command from '$lib/components/ui/command/index.js';
-  import { mdiArrowRight, mdiEye, mdiEyeOff, mdiFile } from '@mdi/js';
+  import { mdiArrowRight, mdiClose, mdiEye, mdiEyeOff, mdiFile, mdiFileOutline } from '@mdi/js';
   import { onMount } from 'svelte';
   import { scale } from 'svelte/transition';
 
@@ -42,13 +42,31 @@
       return acc;
     }, {} as Record<string, File[]>);
 
-  $: !open && (openApplets = new Set<string>([]));
+  function reset() {
+    console.log('reset');
+    showPreview = false;
+    openApplets = new Set<string>([]);
+  }
+
+  $: !open && reset();
 
   function selectPreviewApplet(file: File) {
     if (openApplets.has(file.file)) {
       openApplets.delete(file.file);
     } else {
       openApplets.add(file.file);
+    }
+
+    openApplets = new Set(openApplets);
+  }
+
+  function selectPreviewAppletFolder(files: File[]) {
+    const hasAll = files.every((file) => openApplets.has(file.file));
+
+    if (hasAll) {
+      files.forEach((file) => openApplets.delete(file.file));
+    } else {
+      files.forEach((file) => openApplets.add(file.file));
     }
 
     openApplets = new Set(openApplets);
@@ -91,30 +109,51 @@
     <Command.Empty>No results found.</Command.Empty>
 
     <Command.Item value="show hide preview" onSelect={toggleShowPreview}>
-      <Icon class="mx-2" path={showPreview ? mdiEyeOff : mdiEye} />
-      <span>{showPreview ? 'Hide' : 'Show'} preview</span>
+      <Icon class="mx-2" path={showPreview ? mdiFileOutline : mdiEye} />
+      <span>{showPreview ? 'Go to' : 'Preview'} mode</span>
     </Command.Item>
 
+    {#if openApplets.size > 0}
+      <Command.Item value="close all previews" onSelect={() => (openApplets = new Set([]))}>
+        <Icon class="mx-2" path={mdiClose} />
+        <span>Close all previews</span>
+      </Command.Item>
+    {/if}
+
     {#each Object.entries(folders) as [folderTitle, files]}
+      {@const hasAllPreviewed = files.every((file) => openApplets.has(file.file))}
       <Command.Separator />
 
       <Command.Group heading={folderTitle}>
+        {#if showPreview && files.length > 1}
+          <Command.Item
+            class="flex flex-col gap-3"
+            value={folderTitle}
+            onSelect={() => selectPreviewAppletFolder(files)}
+          >
+            <div class="flex gap-2 justify-start w-full">
+              <Icon path={hasAllPreviewed ? mdiEyeOff : mdiEye} />
+              <span
+                >{hasAllPreviewed ? 'Hide all previews' : 'Preview all applets'} from {folderTitle}</span
+              >
+            </div>
+          </Command.Item>
+        {/if}
+
         {#each files as file}
           {#if showPreview}
+            {@const isPreviewed = openApplets.has(file.file)}
             <Command.Item
               class="flex flex-col gap-3"
               value={folderTitle + ' ' + file.file}
               onSelect={() => selectPreviewApplet(file)}
             >
-              <div class="flex w-full justify-between">
-                <div class="flex">
-                  <Icon path={mdiFile} />
-                  <span>Go to {file.file}</span>
-                </div>
-                <Icon path={openApplets.has(file.file) ? mdiEyeOff : mdiEye} />
+              <div class="flex gap-2 justify-start w-full">
+                <Icon path={isPreviewed ? mdiEyeOff : mdiEye} />
+                <span>Preview {file.file}</span>
               </div>
 
-              {#if openApplets.has(file.file)}
+              {#if isPreviewed}
                 <iframe
                   in:scale
                   title={file.file}
@@ -131,9 +170,9 @@
               value={folderTitle + ' ' + file.file}
               onSelect={() => goto(file.url)}
             >
-              <div class="flex">
-                <Icon path={mdiFile} />
-                <span>Go to {file.file}</span>
+              <div class="flex gap-2">
+                <Icon path={mdiFileOutline} />
+                <span>Go to {file.file} applet</span>
               </div>
               <Icon path={mdiArrowRight} />
             </Command.Item>
