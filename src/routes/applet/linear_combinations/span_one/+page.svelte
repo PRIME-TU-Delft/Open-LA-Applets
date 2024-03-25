@@ -20,9 +20,9 @@
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.darkGreen} />
   <Latex3D
-    latex={'Span\\{\\mathbf{v}\\}'}
+    latex={'\\mathbf{Span}\\{\\mathbf{v}\\}'}
     position={lineDir.add(new Vector3(0, 0.4, 0))}
-    color={PrimeColor.darkGreen}
+    color={PrimeColor.black}
   />
   <Axis3D />
 </Canvas3D>
