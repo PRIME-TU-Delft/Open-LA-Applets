@@ -14,6 +14,8 @@
     .addToggle(true, '\\mathbf{v}')
     .addToggle(true, '\\mathbf{w}');
 
+  //TODO
+  // update formulas
 
   /**
    * Creates formulas based on the given inputs.
@@ -42,15 +44,30 @@
     return [formula];
   }
 
-  function reloadString(t1: boolean, t2: boolean) {
+  function reloadString(t1: boolean, t2: boolean, t3: boolean) {
     let labelstring = '\\mathrm{Span}\\{';
-    if (t1) labelstring = labelstring.concat('\\mathbf{u},');
-    if (t2) labelstring = labelstring.concat('\\mathbf{v},');
-    return labelstring.concat('\\mathbf{w}\\}');
+    if (t1) labelstring = labelstring.concat('\\mathbf{u}');
+
+    if (!t2 && !t3) {
+      return labelstring.concat('\\}')}
+    else if (t1){
+      labelstring = labelstring.concat(', ');
+    }
+
+    if (t2) labelstring = labelstring.concat('\\mathbf{v}');
+
+    if (!t3) {
+      return labelstring.concat('\\}')}
+    else if (t2 && t3) { //no comma in case of u,w
+      labelstring = labelstring.concat(', ');
+    }
+ 
+    if (t3) labelstring = labelstring.concat('\\mathbf{w}');
+    return labelstring.concat('\\}');
   }
 
-  $: formulas = createFormulas(controls[0], controls[1]);
-  $: labelstring = reloadString(controls[0], controls[1]);
+  $: formulas = createFormulas(controls[0], controls[1], controls[2]);
+  $: labelstring = reloadString(controls[0], controls[1], controls[2]);
 </script>
 
 <Canvas3D {formulas} bind:controls>
