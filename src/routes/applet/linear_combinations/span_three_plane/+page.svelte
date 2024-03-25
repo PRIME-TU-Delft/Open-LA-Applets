@@ -6,6 +6,9 @@
   import { Formula } from '$lib/utils/Formulas';
   import Point from '$lib/threlte-components/Point.svelte';
 
+  //TODO 
+  // span label should not have colors
+
   const u = new Vector3(1, 2, -2); // Vector U;
   const v = new Vector3(3, 1, 0); // Vector V;
   const w = u.clone().add(v); // Vector W = U + V;
@@ -14,9 +17,6 @@
     .addToggle(true, '\\mathbf{v}')
     .addToggle(true, '\\mathbf{w}');
 
-  //TODO
-  // update formulas
-
   /**
    * Creates formulas based on the given inputs.
    *
@@ -24,9 +24,8 @@
    * @param {number} b - The second input number.
    * @returns {string[]} - An array of formulas.
    */
-  function createFormulas(t1: boolean, t2: boolean) {
-    const t3 = true;
-    labelstring = '\\mathrm{Span}\\{\\mathbf{u},\\mathbf{v},\\mathbf{w}\\}';
+
+  function createFormulas(t1: boolean, t2: boolean, t3: boolean) {
     const formulaString = [t1, t2, t3]
       .filter((t) => t)
       .map((_, i) => {
@@ -44,30 +43,10 @@
     return [formula];
   }
 
-  function reloadString(t1: boolean, t2: boolean, t3: boolean) {
-    let labelstring = '\\mathrm{Span}\\{';
-    if (t1) labelstring = labelstring.concat('\\mathbf{u}');
-
-    if (!t2 && !t3) {
-      return labelstring.concat('\\}')}
-    else if (t1){
-      labelstring = labelstring.concat(', ');
-    }
-
-    if (t2) labelstring = labelstring.concat('\\mathbf{v}');
-
-    if (!t3) {
-      return labelstring.concat('\\}')}
-    else if (t2 && t3) { //no comma in case of u,w
-      labelstring = labelstring.concat(', ');
-    }
- 
-    if (t3) labelstring = labelstring.concat('\\mathbf{w}');
-    return labelstring.concat('\\}');
-  }
-
   $: formulas = createFormulas(controls[0], controls[1], controls[2]);
-  $: labelstring = reloadString(controls[0], controls[1], controls[2]);
+  $: labelstring = (formulas[0].stringFormula);
+
+
 </script>
 
 <Canvas3D {formulas} bind:controls>
@@ -112,8 +91,7 @@
     {/if}
   {/if}
 
-  <!--  Span label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} />
+
 
   {#if !controls[0] && !controls[1] && controls[2]}
     <!-- Line span w -->
@@ -151,6 +129,9 @@
     <!-- Plane span -->
     <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
   {/if}
+
+  <!--  Span label -->
+  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} color={PrimeColor.black} />
 
   <Axis3D />
 </Canvas3D>
