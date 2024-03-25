@@ -4,12 +4,16 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
   import { Formula } from '$lib/utils/Formulas';
+  import Point from '$lib/threlte-components/Point.svelte';
 
   const u = new Vector3(1, 2, -2); // Vector U;
   const v = new Vector3(3, 1, 0); // Vector V;
   const w = u.clone().add(v); // Vector W = U + V;
 
-  let controls = Controls.addToggle(true, '\\mathbf{u}').addToggle(true, '\\mathbf{v}');
+  let controls = Controls.addToggle(true, '\\mathbf{u}')
+    .addToggle(true, '\\mathbf{v}')
+    .addToggle(true, '\\mathbf{w}');
+
 
   /**
    * Creates formulas based on the given inputs.
@@ -50,39 +54,52 @@
 </script>
 
 <Canvas3D {formulas} bind:controls>
+  <!-- Vector u -->
   {#if controls[0]}
-    <!-- Vector u -->
     <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />
     <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.blue} />
-
-    <Vector3D
-      origin={u}
-      direction={v}
-      length={v.length()}
-      striped
-      hideHead
-      color={PrimeColor.black}
-    />
   {/if}
 
+  <!-- Vector v -->
   {#if controls[1]}
-    <!-- Vector v -->
     <Vector3D direction={v} length={v.length()} color={PrimeColor.raspberry} />
     <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
-
-    <!-- helper striped Vectors -->
-    <Vector3D
-      origin={v}
-      direction={u}
-      length={u.length()}
-      striped
-      hideHead
-      color={PrimeColor.black}
-    />
   {/if}
-  red
-  {#if !controls[0] && !controls[1]}
-    <!-- Line span -->
+
+  <!-- Vector w -->
+  {#if controls[2]}
+    <Vector3D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
+    <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.darkGreen} />
+
+    {#if controls[0]}
+      <Vector3D
+        origin={u}
+        direction={v}
+        length={v.length()}
+        striped
+        hideHead
+        color={PrimeColor.black}
+      />
+    {/if}
+
+    {#if controls[1]}
+      <!-- helper striped Vectors : vw -->
+      <Vector3D
+        origin={v}
+        direction={u}
+        length={u.length()}
+        striped
+        hideHead
+        color={PrimeColor.black}
+      />
+    {/if}
+  {/if}
+
+  <!--  Span label -->
+  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} />
+
+  {#if !controls[0] && !controls[1] && controls[2]}
+    <!-- Line span w -->
     <Vector3D
       origin={w.clone().normalize().multiplyScalar(-15)}
       direction={w}
@@ -91,17 +108,32 @@
       hideHead
       radius={0.04}
     />
+  {:else if controls[0] && !controls[1] && !controls[2]}
+    <!-- Line span u -->
+    <Vector3D
+      origin={u.clone().normalize().multiplyScalar(-15)}
+      direction={u}
+      length={30}
+      color={PrimeColor.yellow}
+      hideHead
+      radius={0.04}
+    />
+  {:else if !controls[0] && controls[1] && !controls[2]}
+    <!-- Line span v -->
+    <Vector3D
+      origin={v.clone().normalize().multiplyScalar(-15)}
+      direction={v}
+      length={30}
+      color={PrimeColor.yellow}
+      hideHead
+      radius={0.04}
+    />
+  {:else if !controls[0] && !controls[1] && !controls[2]}
+    <Point color={PrimeColor.yellow} />
   {:else}
     <!-- Plane span -->
     <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
   {/if}
-
-  <!-- Vector w -->
-  <Vector3D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'\\mathbf{w}'} position={w} color={PrimeColor.darkGreen} />
-
-  <!--  label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} />
 
   <Axis3D />
 </Canvas3D>
