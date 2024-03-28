@@ -99,7 +99,7 @@
         >{slider.label}:
         {#key slider.value}
           <p class="absolute left-full text-sm" style="color:{slider.color};">
-            {slider.value}
+            {slider.valueFn(slider.value)}
           </p>
         {/key}
       </Label>
