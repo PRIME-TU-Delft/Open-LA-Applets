@@ -6,8 +6,8 @@
   import { Vector3 } from 'three';
 
   const slider_step = 0.5;
-  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.yellow)
-    .addSlider(3, -5, 5, slider_step, PrimeColor.yellow)
+  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.darkGreen)
+    .addSlider(3, -5, 5, slider_step, PrimeColor.darkGreen)
     .addSlider(6, -5, 6, slider_step, PrimeColor.yellow);
   let formulas: Formula[] = [];
 
@@ -19,17 +19,19 @@
 
   function setFormulas(c0: number, c1: number, len: number, A: Vector3) {
     const f0 = new Formula('A = ( \\$1 , \\$2 , \\$3 )')
-      .addParam(1, A.z, PrimeColor.yellow)
-      .addParam(2, A.x, PrimeColor.yellow)
+      .addParam(1, A.z, PrimeColor.darkGreen)
+      .addParam(2, A.x, PrimeColor.darkGreen)
       .addParam(3, A.y, PrimeColor.yellow);
-    const f1 = new Formula('OQ = \\$', c0, PrimeColor.raspberry);
-    const f2 = new Formula('QA = \\$', c1, PrimeColor.yellow);
-    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
+    const f1 = new Formula('OQ = \\sqrt{\\$1^2 + \\$2^2} =  \\$3', ).addParam(1, A.z, PrimeColor.darkGreen).addParam(2, A.x, PrimeColor.darkGreen)
+    .addParam(3, c0.toFixed(2), PrimeColor.raspberry); // a.x, a.z , len oq = c0 
+    const f2 = new Formula('QA = \\$', A.y, PrimeColor.yellow);
+    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2} = \\$3')
       .addParam(1, c0.toFixed(2), PrimeColor.raspberry)
-      .addParam(2, c1.toFixed(2), PrimeColor.yellow);
-    const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
+      .addParam(2, A.y.toFixed(2), PrimeColor.yellow)
+      .addParam(3, len.toFixed(2), PrimeColor.blue);
 
-    formulas = [f0, f1, f2, f3, f4];
+
+    formulas = [f0, f1, f2, f3];
   }
 
   $: setFormulas(Q.length(), controls[1], v_len, A);
@@ -83,11 +85,10 @@
     origin={Q}
   />
 
-  <!--  a_1-->
-  <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
 
-  <!-- a_2 -->
-  <Latex3D latex={'a_2'} position={new Vector3(0, 0, A.z)} offset={0.5} />
+
+  <!-- a_1 -->
+  <Latex3D latex={'a_1'} position={new Vector3(0, 0, A.z)} offset={0.5} />
   <Point3D position={new Vector3(0, 0, A.z)} color={PrimeColor.black} />
   <Vector3D
     striped
@@ -96,6 +97,9 @@
     color="black"
     length={Math.abs(v_p.length())}
   />
+
+  <!--  a_2-->
+  <Latex3D latex={'a_2'} position={v_p} offset={0.5} />
 
   <!-- a_3 -->
   <Latex3D latex={'a_3'} position={new Vector3(-0.3, A.y, 0)} offset={0.5} />
