@@ -18,16 +18,16 @@
 
 <Parallelogram3D points={[new Vector3(0, 0), tu, tv]} color={PrimeColor.yellow} strokeWidth={0.5} />
 
-<Vector3D direction={tu} length={tu.length()} color={PrimeColor.red} let:endPoint>
+<Vector3D direction={tu} length={tu.length()} color={PrimeColor.raspberry} let:endPoint>
   <Latex3D latex={'\\tilde{\\mathbf{u}}'} position={endPoint.clone().multiplyScalar(0.5)} />
   <Latex3D latex={'A'} offset={0.2} position={endPoint} />
-  <Point3D position={endPoint} color={PrimeColor.red} />
+  <Point3D position={endPoint} color={PrimeColor.raspberry} />
 </Vector3D>
 
-<Vector3D direction={tv} length={tv.length()} color={PrimeColor.pink} let:endPoint>
+<Vector3D direction={tv} length={tv.length()} color={PrimeColor.darkGreen} let:endPoint>
   <Latex3D latex={'\\tilde{\\mathbf{v}}'} position={endPoint.clone().multiplyScalar(0.5)} />
   <Latex3D latex={'B'} offset={0.2} position={endPoint} />
-  <Point3D position={endPoint} color={PrimeColor.pink} />
+  <Point3D position={endPoint} color={PrimeColor.darkGreen} />
 </Vector3D>
 
 <Latex3D latex={'C'} offset={0.2} position={C} />

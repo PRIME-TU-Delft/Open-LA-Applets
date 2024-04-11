@@ -12,28 +12,28 @@
   $: C = u.clone().add(v);
 </script>
 
-<Canvas2D zoom3d={50} showAxisNumbers={false}>
+<Canvas2D splitCanvas3DProps={{ cameraZoom: 50 }} showAxisNumbers={false}>
   <Parallelogram points={[new Vector2(0, 0), u, v]} color={PrimeColor.yellow} />
 
   <!-- U & V -->
-  <Draggable bind:position={u} color={PrimeColor.red} id="u" />
-  <Draggable bind:position={v} color={PrimeColor.pink} id="v" />
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.red} let:endPoint>
+  <Draggable bind:position={u} color={PrimeColor.raspberry} id="u" />
+  <Draggable bind:position={v} color={PrimeColor.darkGreen} id="v" />
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.raspberry} let:endPoint>
     <Latex2D
       latex={'\\mathbf{u}'}
       offset={new Vector2(0.2, -0.1)}
       position={endPoint.clone().multiplyScalar(0.5)}
-      color={PrimeColor.red}
+      color={PrimeColor.raspberry}
     />
     <Latex2D latex={'A'} extend={0.2} position={endPoint} />
   </Vector2D>
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.pink} let:endPoint>
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.darkGreen} let:endPoint>
     <Latex2D
       latex={'\\mathbf{v}'}
       offset={new Vector2(0.1, -0.1)}
       position={endPoint.clone().multiplyScalar(0.5)}
-      color={PrimeColor.pink}
+      color={PrimeColor.darkGreen}
     />
     <Latex2D latex={'B'} extend={0.4} offset={new Vector2(-0.2, 0)} position={endPoint} />
   </Vector2D>

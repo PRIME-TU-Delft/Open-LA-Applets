@@ -30,6 +30,6 @@
 <Story name="Default" source />
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" source args={{ color: PrimeColor.red }} />
+<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
 
-<Story name="With strokeWidth" source args={{ color: PrimeColor.red, strokeWidth: 2 }} />
+<Story name="With strokeWidth" source args={{ color: PrimeColor.raspberry, strokeWidth: 2 }} />
