@@ -13,10 +13,17 @@
   import { Controls } from '$lib/utils/Controls';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
 
+  const no_trajectory_points = 30; //how many trailing points on tracetory
+  const trajectory = [...Array(no_trajectory_points)].map((_, i) => 0 + i *  (2*Math.PI/no_trajectory_points));
+
+  
+
+
   let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
   $: u = parametic_point_on_circle_3D(controls[0], 5);
-
+  //$: trajectory = [controls[0]-1, controls[0]-2, controls[0]-3, controls[0]-4] //TODO replace with funcitonal
+  
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
 
@@ -49,5 +56,12 @@
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
   <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
 
-  <Axis3D />
+  <!--Trail trajectory-->
+  {#each trajectory as t}
+    {#if t != 0 }
+      
+    {/if}
+    <Point3D position={parametic_point_on_circle_3D(t, 5)} color ={PrimeColor.darkGreen}/>
+    
+  {/each}
 </Canvas3D>
