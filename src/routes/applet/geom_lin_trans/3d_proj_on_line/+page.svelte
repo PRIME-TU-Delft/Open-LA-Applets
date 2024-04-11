@@ -12,13 +12,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
   import { parametic_point_on_circle_3D  as getPoint} from '$lib/utils/MathLib';
+  import EllipseTrajectory from '../EllipseTrajectory.svelte';
 
   const ellipse_radius = 5;
 
-  const no_trajectory_points = 40; //amt of points on tracetory
-  const trajectory_color = '#AADBD0';
-  const trajectory = [...Array(no_trajectory_points)].map((_, i) =>[i , ( i *  (2*Math.PI/no_trajectory_points))]); // [index , val]
-  
   let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
   $: u = getPoint(controls[0], ellipse_radius);
@@ -31,6 +28,7 @@
 </script>
 
 <Canvas3D bind:controls>
+  <EllipseTrajectory {ellipse_radius}/>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <!-- Projection vector from line L to u with a point at projection point -->
@@ -54,15 +52,5 @@
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
   <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
-
-  <!--Trail trajectory-->
-  {#each trajectory as [i, t]}
-    {#if i != 0}
-      <Line3D points={[getPoint(t, ellipse_radius), getPoint(trajectory[i-1][1], ellipse_radius)]} color={trajectory_color}/>
-
-    {:else}
-      <Line3D points={[getPoint(0, ellipse_radius), getPoint(trajectory[no_trajectory_points-1][1], ellipse_radius)]} color={trajectory_color}/>
-    {/if}
-  {/each}
 
 </Canvas3D>
