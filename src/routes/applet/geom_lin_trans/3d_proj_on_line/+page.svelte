@@ -11,17 +11,17 @@
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
-  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
+  import { parametic_point_on_circle_3D  as getPoint} from '$lib/utils/MathLib';
 
-  const no_trajectory_points = 30; //how many trailing points on tracetory
-  const trajectory = [...Array(no_trajectory_points)].map((_, i) => 0 + i *  (2*Math.PI/no_trajectory_points));
+  const ellipse_radius = 5;
 
+  const no_trajectory_points = 40; //amt of points on tracetory
+  const trajectory_color = '#AADBD0';
+  const trajectory = [...Array(no_trajectory_points)].map((_, i) =>[i , ( i *  (2*Math.PI/no_trajectory_points))]); // [index , val]
   
-
-
   let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
-  $: u = parametic_point_on_circle_3D(controls[0], 5);
+  $: u = getPoint(controls[0], ellipse_radius);
   //$: trajectory = [controls[0]-1, controls[0]-2, controls[0]-3, controls[0]-4] //TODO replace with funcitonal
   
   $: lineL = new Vector3(3, 2, -1); // Line L
@@ -33,8 +33,6 @@
 <Canvas3D bind:controls>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
-
   <!-- Projection vector from line L to u with a point at projection point -->
   <Point3D position={u_proj} color={PrimeColor.raspberry} />
   <Vector3D
@@ -57,11 +55,13 @@
   <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
 
   <!--Trail trajectory-->
-  {#each trajectory as t}
-    {#if t != 0 }
-      
+  {#each trajectory as [i, t]}
+    {#if i != 0}
+      <Line3D points={[getPoint(t, ellipse_radius), getPoint(trajectory[i-1][1], ellipse_radius)]} color={trajectory_color}/>
+
+    {:else}
+      <Line3D points={[getPoint(0, ellipse_radius), getPoint(trajectory[no_trajectory_points-1][1], ellipse_radius)]} color={trajectory_color}/>
     {/if}
-    <Point3D position={parametic_point_on_circle_3D(t, 5)} color ={PrimeColor.darkGreen}/>
-    
   {/each}
+
 </Canvas3D>
