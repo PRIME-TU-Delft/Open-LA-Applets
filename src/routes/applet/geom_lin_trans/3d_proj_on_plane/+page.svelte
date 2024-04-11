@@ -39,7 +39,8 @@
     origin={u}
     direction={u_proj.clone().sub(u)}
     length={u_proj.clone().sub(u).length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.black}
+    hideHead
     striped
   />
 
@@ -47,7 +48,7 @@
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
   <Latex3D
-    latex={'Proj_p(\\mathbf{u})'}
+    latex={'proj_\\mathcal{P}(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
     color={PrimeColor.raspberry}
   />

@@ -6,7 +6,10 @@
     Canvas3D,
     Latex3D,
     Vector3D,
-    PlaneFromNormal
+    PlaneFromNormal,
+
+    Point3D
+
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
@@ -33,14 +36,18 @@
     origin={u}
     direction={u_refl.clone().sub(u)}
     length={u_refl.clone().sub(u).length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.black}
     striped
+    hideHead
   />
 
   <!-- Angle between proj and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D latex={`Refl_p(\\mathbf{u})`} position={u_refl} color={PrimeColor.blue} />
+
+  <!--Point of relection-->
+  <Latex3D latex={`refl_\\mathcal{P}(\\mathbf{u})`} position={u_refl} color={PrimeColor.raspberry} />
+  <Point3D position={u_refl} color={PrimeColor.raspberry}/>
 
   <Axis3D />
 </Canvas3D>

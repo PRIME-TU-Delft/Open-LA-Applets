@@ -39,8 +39,9 @@
     origin={u}
     direction={u.clone().sub(u_proj).multiplyScalar(-1)}
     length={u.clone().sub(u_proj).length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.black}
     striped
+    hideHead
   />
   <Latex3D
     latex={'proj_L(\\mathbf{u})'}
