@@ -22,15 +22,14 @@
       .addParam(1, A.z, PrimeColor.darkGreen)
       .addParam(2, A.x, PrimeColor.darkGreen)
       .addParam(3, A.y, PrimeColor.yellow);
-    const f1 = new Formula('OQ = \\sqrt{\\$1^2 + \\$2^2} =  \\$3', ).addParam(1, A.z, PrimeColor.darkGreen).addParam(2, A.x, PrimeColor.darkGreen)
+    const f1 = new Formula('OQ = \\sqrt{(\\$1)^2 + (\\$2)^2} =  \\$3', ).addParam(1, A.z, PrimeColor.darkGreen).addParam(2, A.x, PrimeColor.darkGreen)
     .addParam(3, c0.toFixed(2), PrimeColor.raspberry); // a.x, a.z , len oq = c0 
-    const f2 = new Formula('QA = \\$', A.y, PrimeColor.yellow);
-    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2} = \\$3')
-      .addParam(1, c0.toFixed(2), PrimeColor.raspberry)
-      .addParam(2, A.y.toFixed(2), PrimeColor.yellow)
-      .addParam(3, len.toFixed(2), PrimeColor.blue);
-
-    formulas = [f0, f1, f2, f3];
+    const f2 = new Formula('OA = || \\mathbf{\\$1} || = \\sqrt{(\\$2)^2 + (\\$3)^2} = \\$4')
+      .addParam(1, 'v', PrimeColor.blue)
+      .addParam(2, c0.toFixed(2), PrimeColor.raspberry)
+      .addParam(3, A.y.toFixed(2), PrimeColor.yellow)
+      .addParam(4, len.toFixed(2), PrimeColor.blue);
+    formulas = [f0, f1, f2];
   }
 
   $: setFormulas(Q.length(), controls[1], v_len, A);
@@ -83,8 +82,6 @@
     size={1}
     origin={Q}
   />
-
-
 
   <!-- a_1 -->
   <Latex3D latex={'a_1'} position={new Vector3(0, 0, A.z)} offset={0.5} />
