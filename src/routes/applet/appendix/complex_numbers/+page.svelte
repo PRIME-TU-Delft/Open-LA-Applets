@@ -9,8 +9,8 @@
   import { Vector2 } from 'three';
 
   let controls = Controls.addSlider(3, 3, 8, 1, PrimeColor.blue) // m
-    .addSlider(-16, -64, -8, 8, PrimeColor.purple) // a
-    .addSlider(16, 8, 64, 8, PrimeColor.pink); // b
+    .addSlider(-16, -64, -8, 8, PrimeColor.darkGreen) // a
+    .addSlider(16, 8, 64, 8, PrimeColor.raspberry); // b
 
   function cartesian2Polar(vec2: Vector2, offset: Vector2 = new Vector2(0, 0)) {
     const radius = offset.distanceTo(vec2);
@@ -38,15 +38,15 @@
 
     return [
       new Formula(
-        `\\begin{align*} z^{\\$1} &= -\\$2 + \\$3i \\\\ 
+        `\\begin{align*} z^{\\$1} &= \\$2 + \\$3i \\\\ 
         r &= \\sqrt[\\$1]{${polarForm.radius.toFixed(2)}} = ${radius.toFixed(2)}  \\\\
-        \\phi &= \\frac{\\arg(${a.toFixed(2)} + ${b.toFixed(2)}i)}{\\$1} = \\frac{${(
+        \\phi &= \\frac{\\arg(${a.toFixed(2)} + ${b.toFixed(2)}i)}{\\$1} \\\\ &= \\frac{${(
           piAngle * m
         ).toFixed(2)}}{\\$1}\\pi = ${piAngle.toFixed(2)}\\pi \\end{align*}`
       )
         .addAutoParam(m, PrimeColor.blue)
-        .addAutoParam(a, PrimeColor.purple)
-        .addAutoParam(b, PrimeColor.pink)
+        .addAutoParam(a, PrimeColor.darkGreen)
+        .addAutoParam(b, PrimeColor.raspberry)
     ];
   }
 
@@ -85,7 +85,7 @@
       <Point position={endPos} color={PrimeColor.blue} />
     {:else if endAngle < Math.PI * 2}
       <Point position={endPos} color={PrimeColor.blue} />
-      <Angle color={PrimeColor.red} distance={radius} {startAngle} {endAngle} hasHead />
+      <Angle color={PrimeColor.raspberry} distance={radius} {startAngle} {endAngle} hasHead />
     {:else}
       <Point position={endPos} color={PrimeColor.blue} />
       <Angle
