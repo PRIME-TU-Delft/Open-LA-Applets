@@ -1,14 +1,17 @@
 <script lang="ts">
-  import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
-  import Icon from '$lib/components/Icon.svelte';
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import * as Button from '$lib/components/ui/button';
+  import { Label } from '$lib/components/ui/label';
   import type { Slider } from '$lib/utils/Slider';
-  import RoundButton from './RoundButton.svelte';
+  import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { generateUUID } from 'three/src/math/MathUtils';
 
   export let slider: Slider;
   export let isExpanded: boolean = false;
   export let isPlaying: boolean = false;
   export let playSpeed: number = 1000 / 16;
+
+  let uuid = generateUUID();
 
   let icon = mdiPlay;
   let moveRight = false; // direction of the slider
@@ -68,24 +71,43 @@
 {#if !isExpanded}
   <!-- If not selected display only the expand button -->
   <div class="tooltip tooltip-top" data-tip="Extend slider">
-    <RoundButton
+    <Button.Action
+      class="text-white"
       --bg={slider.color}
       icon={mdiPlus}
-      color="white"
+      tooltip="Expand slider"
+      side="top"
       on:click={() => dispatch('expand')}
     />
   </div>
 {:else}
   <!-- If the slider is selected / expanded -->
-  <div class="tooltip tooltip-top" data-tip="Toggle animation">
-    <button style="background: {slider.color}" class="rounded-full p-4" on:click={togglePlay}>
-      <Icon path={icon} color="white" size={1} />
-    </button>
-  </div>
+  <Button.Action
+    class="text-white rounded-full"
+    --bg={slider.color}
+    {icon}
+    tooltip="Toggle animation"
+    side="top"
+    on:click={togglePlay}
+  />
 
-  <label class="w-full">
+  <div class="flex flex-col gap-1">
+    {#if slider.label}
+      <Label
+        class="relative w-fit flex gap-1 items-center text-slate-700 text-xs pr-1"
+        for="range-{uuid}"
+        >{slider.label}:
+        {#key slider.value}
+          <p class="absolute left-full text-sm" style="color:{slider.color};">
+            {slider.valueFn(slider.value)}
+          </p>
+        {/key}
+      </Label>
+    {/if}
+
     <input
       type="range"
+      id="range-{uuid}"
       min={slider.min}
       max={slider.max}
       step={slider.stepSize}
@@ -94,7 +116,6 @@
       on:mousedown={startChanging}
       on:touchstart={startChanging}
       style="accent-color: {slider.color}"
-      class="w-inherit range range-xs"
     />
-  </label>
+  </div>
 {/if}

@@ -2,10 +2,8 @@
   import { page } from '$app/stores';
   import { activityStore } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
-  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
-  import ToggleControls from '$lib/components/ToggleControls.svelte';
+  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
@@ -73,19 +71,16 @@
   onDestroy(() => reset);
 </script>
 
-<div class="rounded overflow-hidden h-full drawer" bind:this={sceneEl}>
-  <!-- For screen readers / accesability acces to toggle the drawer  -->
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-
+<div class="rounded overflow-hidden h-full" bind:this={sceneEl}>
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper border-l-4 border-slate-400 drawer-content"
+    class="canvasWrapper h-full border-l-4 border-slate-400"
     class:active={$activityStore}
     class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
-    style="height: var(--height, 100%); background: {background}"
+    style="height: var(--canvas-height, 100%); background: {background}"
     on:click={activityStore.enable}
     on:mousedown={activityStore.enable}
     on:keydown={activityStore.enable}
@@ -108,14 +103,13 @@
 
     <!-- SLIDER PANEL -->
     {#if controls && controls.length > 0}
-      <ControllerPanel isInset={!isIframe || isFullscreen}>
-        <ToggleControls
-          bind:controls
-          bind:isPlaying={isPlayingSliders}
-          on:startChanging={() => (isChangingSliders = true)}
-          on:stopChanging={() => (isChangingSliders = false)}
-        />
-      </ControllerPanel>
+      <ControllerPanel
+        isInset={!isIframe || isFullscreen}
+        bind:controls
+        bind:isPlaying={isPlayingSliders}
+        on:startChanging={() => (isChangingSliders = true)}
+        on:stopChanging={() => (isChangingSliders = false)}
+      />
     {/if}
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
@@ -131,18 +125,10 @@
     />
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons
-      {isIframe}
-      {sceneEl}
-      hasFormulas={formulas.length > 0}
-      bind:isFullscreen
-      bind:showFormulas
-      on:reset={reset}
-    />
+    <ActionButtons {isIframe} {sceneEl} bind:isFullscreen on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->
-  <ShareWindow {controls} />
 </div>
 
 <style lang="postcss">
@@ -153,7 +139,7 @@
   .canvasWrapper {
     position: relative;
     width: var(--width, 100%);
-    height: var(--height, auto);
+    height: var(--canvas-height, 100%);
     overflow: hidden;
 
     &.isIframe {

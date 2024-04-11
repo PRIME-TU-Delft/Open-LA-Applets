@@ -53,7 +53,7 @@
 
 <!-- LEFT PANEL : orthogonal -->
 
-<Canvas2D gridType={GridType.Square} zoom={1.6}>
+<Canvas2D gridType={GridType.Square} cameraZoom={1.6}>
   <!-- L1 -->
   <Line2D start={start_L} end={end_L} color={PrimeColor.blue} />
 
@@ -100,8 +100,8 @@
     <Line2D start={u2} end={proj_u2} isDashed color={PrimeColor.darkGreen} />
 
     <!-- u2 -->
-    <Point2D position={u2} color={PrimeColor.red} />
-    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.red} snap />
+    <Point2D position={u2} color={PrimeColor.raspberry} />
+    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.raspberry} snap />
     <Latex2D
       latex={`\\mathbf{u}_2`}
       position={u2}

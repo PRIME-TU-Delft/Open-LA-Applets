@@ -1,17 +1,22 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { mdiClose, mdiContentCopy, mdiOpenInNew } from '@mdi/js';
   import Icon from '$lib/components/Icon.svelte';
-  import type { OrthographicCamera } from 'three';
+  import * as Accordion from '$lib/components/ui/accordion';
+  import { Button } from '$lib/components/ui/button';
+  import { Checkbox } from '$lib/components/ui/checkbox';
+  import * as Dialog from '$lib/components/ui/dialog';
+  import Label from '$lib/components/ui/label/label.svelte';
+  import { Textarea } from '$lib/components/ui/textarea';
   import type { Controls } from '$lib/utils/Controls';
+  import { mdiOpenInNew } from '@mdi/js';
+  import type { OrthographicCamera } from 'three';
   import cameraStore from '../threlte-components/stores/cameraStore';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
   export let controls: Controls<G> | undefined = undefined;
 
-  let showCopyToClipboard = false;
-  let includeState = true; // If true, the url will include the current state of the applet  (camera position, etc...)
+  let includeState = false; // If true, the url will include the current state of the applet  (camera position, etc...)
 
   let urlInput: HTMLTextAreaElement;
 
@@ -43,143 +48,95 @@
 
     return '?' + stateUrlString.join('&');
   }
-
-  /**
-   * Copies the url to the clipboard
-   */
-  function copyToClipboard() {
-    urlInput.focus();
-
-    if (includeState) {
-      navigator.clipboard.writeText(url + state);
-    } else {
-      navigator.clipboard.writeText(url);
-    }
-
-    showCopyToClipboard = true;
-
-    setTimeout(() => {
-      showCopyToClipboard = false;
-    }, 3000);
-  }
 </script>
 
-<div class="drawer-side z-50">
-  <label for="my-drawer" class="drawer-overlay" />
-  <ul
-    class="menu p-0 max-w-xs sm:max-w-sm md:max-w-2xl bg-base-200 container h-full overflow-y-auto"
-  >
-    <div>
-      <div class="prose sticky top-0 z-20 bg-base-300/90 flex justify-between items-top p-2">
-        <h1 class="mb-0">Share and Embed</h1>
-        <label for="my-drawer" class="btn btn-outline">
-          <Icon path={mdiClose} />
-        </label>
-      </div>
+<Dialog.Content class="sm:max-w-xl">
+  <Dialog.Header>
+    <Dialog.Title>Share and embed</Dialog.Title>
+    <Dialog.Description class="prose">
+      This applet was created for the
+      <a
+        class="flex items-center gap-1"
+        href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
+      >
+        TU Delft Open Linear Algebra book <Icon path={mdiOpenInNew} /></a
+      >
+      For more information about these applets, please visit
+      <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
 
-      <div class="prose">
-        <!-- class="menu prose p-4 w-80 h-full bg-base-200 text-base-content relative overflow-hidden overflow-y-auto" -->
+      <Button
+        class="flex gap-1 no-prose no-underline my-4"
+        href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl?.replaceAll(
+          '_',
+          ''
+        )}%29"
+      >
+        <p>Go to this applet's github page here</p>
+        <Icon path={mdiOpenInNew} />
+      </Button>
 
-        <h3>About</h3>
-        <p>
-          This applet was created for the
-          <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
-            TU Delft Open Linear Algebra book</a
-          >.
-        </p>
-
-        <h3>Embed</h3>
-        <div class="form-control">
-          <label class="cursor-pointer label">
-            <span class="label-text">Include current state</span>
-            <input type="checkbox" class="toggle toggle-accent" bind:checked={includeState} />
-          </label>
-
-          <label class="label" for="url-state">
-            <span class="label-text">Url to this applet</span>
-          </label>
-          <div class="relative w-full form-control">
-            <textarea
-              id="url-state"
-              class="textarea textarea-bordered h-24"
-              bind:this={urlInput}
-              style="overflow-wrap: normal;"
-              readonly
-              value={url + (includeState ? state : '')}
-            />
-            <button
-              class="absolute btn btn-sm btn-square btn-primary right-1 top-1"
-              on:click={copyToClipboard}
+      <Accordion.Root class="w-full">
+        <!-- EMBEDING -->
+        <Accordion.Item value="Embed">
+          <Accordion.Trigger>Embed</Accordion.Trigger>
+          <Accordion.Content>
+            <Checkbox id="include-state" bind:checked={includeState} />
+            <Label
+              for="include-state"
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              <Icon path={mdiContentCopy} />
-            </button>
-          </div>
-          <label class="label" for="url-state">
-            <span
-              class="label-text-alt text-green-400 opacity-0"
-              class:opacity-100={showCopyToClipboard}>Copied url to clipboard</span
+              Include current state in url
+            </Label>
+
+            <Label
+              for="url-state"
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-          </label>
-        </div>
+              Url to this apple
+            </Label>
+            <Textarea readonly bind:el={urlInput} value={url + (includeState ? state : '')} />
+          </Accordion.Content>
+        </Accordion.Item>
 
-        <h3>Applet Id</h3>
-        <input class="w-full rounded p-2" type="text" readonly value={refUrl} />
-
-        <li>
-          <a
-            class="w-full flex justify-between"
-            rel="noopener noreferrer"
-            target="_blank"
-            href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl?.replaceAll(
-              '_',
-              ''
-            )}%29"
-          >
-            <span>Go to this applet's github page here</span> <Icon path={mdiOpenInNew} /></a
-          >
-        </li>
-
-        <h3>License</h3>
-        <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-          ><img
-            alt="Creative Commons License"
-            style="border-width:0"
-            src="https://i.creativecommons.org/l/by/4.0/88x31.png"
-          /></a
-        ><br /><span>PRIME Linear Algebra applets</span>
-        by
-        <a
-          href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
-          property="cc:attributionName"
-          rel="cc:attributionURL">PRIME, TU Delft</a
-        >
-        is licensed under a
-        <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-          >Creative Commons Attribution 4.0 International License</a
-        >.<br />Based on a work at
-        <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
-          >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
-        >.<br />Permissions beyond the scope of this license may be available at
-        <a
-          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
-          rel="cc:morePermissions"
-          >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
-        >.
-      </div>
-
-      <div class="bg-slate-300/70 w-full rounded p-2 my-4">
-        <img
-          class="h-24 w-full object-contain"
-          alt="prime-tudelft"
-          src="{$page?.url?.origin || ''}/logo-black.png"
-        />
-      </div>
-    </div>
-  </ul>
-</div>
-
-<style lang="postcss">
-  h3 {
-    @apply sticky top-10 z-10 bg-base-300 p-2;
-  }
-</style>
+        <!-- LICENCING -->
+        <Accordion.Item value="Licence">
+          <Accordion.Trigger>Licence [CC-BY v4.0 / Apache v2.0]</Accordion.Trigger>
+          <Accordion.Content>
+            <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+              ><img
+                alt="Creative Commons License"
+                style="border-width:0"
+                src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+              /></a
+            ><br /><span>PRIME Linear Algebra applets</span>
+            by
+            <a
+              href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
+              property="cc:attributionName"
+              rel="cc:attributionURL">PRIME, TU Delft</a
+            >
+            is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
+              >Creative Commons Attribution 4.0 International License</a
+            >.<br />Based on a work at
+            <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
+              >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
+            >.<br />Permissions beyond the scope of this license may be available at
+            <a
+              href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
+              rel="cc:morePermissions"
+              >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
+            >.
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
+    </Dialog.Description>
+  </Dialog.Header>
+  <Dialog.Footer class="bg-slate-300/70 w-full rounded p-2 my-4">
+    <img
+      class="h-24 w-full object-contain"
+      alt="prime-tudelft"
+      src="{$page.url?.origin || ''}/logo-black.png"
+    />
+  </Dialog.Footer>
+</Dialog.Content>

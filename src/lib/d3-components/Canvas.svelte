@@ -26,7 +26,7 @@
   export let formulas: Formula[] = [];
   export let isIframe = false;
   export let width = '100%';
-  export let height = 'auto';
+  export let height = '100%';
   export let showAxisNumbers = true;
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
@@ -45,7 +45,7 @@
   let:height
   let:resetKey
   bind:controls
-  --height={height}
+  --canvas-height={height}
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
