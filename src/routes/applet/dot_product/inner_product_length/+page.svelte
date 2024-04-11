@@ -6,9 +6,9 @@
   import { Vector3 } from 'three';
 
   const slider_step = 0.5;
-  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.darkGreen)
-    .addSlider(3, -5, 5, slider_step, PrimeColor.darkGreen)
-    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow);
+  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.darkGreen, 'a_1')
+    .addSlider(3, -5, 5, slider_step, PrimeColor.darkGreen, 'a_2')
+    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow,'a_3');
   let formulas: Formula[] = [];
 
   $: A = new Vector3(controls[1], controls[2], controls[0]);
@@ -29,7 +29,6 @@
       .addParam(1, c0.toFixed(2), PrimeColor.raspberry)
       .addParam(2, A.y.toFixed(2), PrimeColor.yellow)
       .addParam(3, len.toFixed(2), PrimeColor.blue);
-
 
     formulas = [f0, f1, f2, f3];
   }
