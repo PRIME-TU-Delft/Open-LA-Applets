@@ -1,30 +1,92 @@
-<script>
+<script lang="ts">
   import { Vector3 } from 'three';
-  import { Axis3D, Canvas3D, Latex3D, Vector3D, PlaneFromPoints } from '$lib/threlte-components';
+  import { Axis3D, Canvas3D, Latex3D, PlaneFromPoints, Vector3D } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Controls } from '$lib/utils/Controls';
+  import { Formula } from '$lib/utils/Formulas';
+  import Point from '$lib/threlte-components/Point.svelte';
 
-  const u = new Vector3(1, 2, -2); // Vector u
-  const v = new Vector3(3, 1, 0); // Vector v
+  const u = new Vector3(1, 2, -2); // Vector U;
+  const v = new Vector3(3, 1, 0); // Vector V;
+  const w = u.clone().add(v); // Vector W = U + V;
 
-  const labelPosition = u.clone().add(v).normalize().multiplyScalar(8); // only used for label -> Span{u,v}
+
+  let controls = Controls.addToggle(true, '\\mathbf{u}')
+    .addToggle(true, '\\mathbf{v}')
+
+  /**
+   * Creates formulas based on the given inputs.
+   *
+   * @param {number} a - The first input number.
+   * @param {number} b - The second input number.
+   * @returns {string[]} - An array of formulas.
+   */
+
+  function createFormulas(t1: boolean, t2: boolean) {
+    const formulaString = [t1, t2]
+      .filter((t) => t)
+      .map((_, i) => {
+        return `\\mathbf{\\$${i + 1}}`;
+      })
+      .join(', '); // array of strings joined by comma
+
+    let formula = new Formula('\\mathbf{Span}\\{' + formulaString + '\\}');
+
+    // Selectivly add parameters to the formula
+    if (t1) formula = formula.addAutoParam('u', PrimeColor.blue);
+    if (t2) formula = formula.addAutoParam('v', PrimeColor.raspberry);
+
+    return [formula];
+  }
+
+  $: formulas = createFormulas(controls[0], controls[1]);
+  $: labelstring = (formulas[0].stringFormula);
+
+
 </script>
 
-<Canvas3D>
+<Canvas3D {formulas} bind:controls>
   <!-- Vector u -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.raspberry} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.raspberry} />
+  {#if controls[0]}
+    <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />
+    <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.blue} />
+  {/if}
 
   <!-- Vector v -->
-  <Vector3D direction={v} length={v.length()} color={PrimeColor.raspberry} />
-  <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
+  {#if controls[1]}
+    <Vector3D direction={v} length={v.length()} color={PrimeColor.raspberry} />
+    <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
+  {/if}
 
-  <!-- Plane span -->
-  <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
-  <Latex3D
-    latex={'\\mathrm{Span}\\{\\mathbf{u},\\mathbf{v}\\}'}
-    position={labelPosition}
-    offset={1.5}
-  />
+  {#if controls[0] && !controls[1] }
+    <!-- Line span u -->
+    <Vector3D
+      origin={u.clone().normalize().multiplyScalar(-15)}
+      direction={u}
+      length={30}
+      color={PrimeColor.yellow}
+      hideHead
+      radius={0.04}
+    />
+  {:else if !controls[0] && controls[1] }
+    <!-- Line span v -->
+    <Vector3D
+      origin={v.clone().normalize().multiplyScalar(-15)}
+      direction={v}
+      length={30}
+      color={PrimeColor.yellow}
+      hideHead
+      radius={0.04}
+    />
+  {:else if !controls[0] && !controls[1]}
+    <Point color={PrimeColor.yellow} />
+  {:else}
+    <!-- Plane span -->
+    <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
+  {/if}
+
+  <!--  Span label -->
+  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} color={PrimeColor.black} />
 
   <Axis3D />
 </Canvas3D>
