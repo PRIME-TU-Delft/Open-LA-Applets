@@ -41,7 +41,7 @@
   }
 
   $: formulas = createFormulas(controls[0], controls[1], controls[2]);
-  $: labelstring = (formulas[0].stringFormula);
+  $: labelstring = formulas[0].stringFormula;
 </script>
 
 <Canvas3D cameraPosition={new Vector3(7.63, 6.3, 14.22)} {formulas} bind:controls>
@@ -65,7 +65,12 @@
   {/if}
 
   <Axis3D />
-  
+
   <!--  Span label -->
-  <Latex3D latex={labelstring} position={v.clone().normalize().multiplyScalar(11)} offset={1.5} color={PrimeColor.black} />
+  <Latex3D
+    latex={labelstring}
+    position={v.clone().normalize().multiplyScalar(11)}
+    offset={1.5}
+    color={PrimeColor.black}
+  />
 </Canvas3D>

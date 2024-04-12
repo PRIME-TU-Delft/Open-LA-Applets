@@ -12,7 +12,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
-   import EllipseTrajectory from '../EllipseTrajectory.svelte';
+  import EllipseTrajectory from '../EllipseTrajectory.svelte';
 
   const ellipse_radius = 5;
 
@@ -24,8 +24,7 @@
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius} reverse_in_red/>
-
+  <EllipseTrajectory {ellipse_radius} reverse_in_red />
 
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
@@ -50,8 +49,13 @@
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
 
   <!--Point of relection-->
-  <Latex3D latex={`refl_\\mathcal{P}(\\mathbf{u})`} position={u_refl} color={PrimeColor.raspberry} offset={0.7}/>
-  <Point3D position={u_refl} color={PrimeColor.raspberry}/>
+  <Latex3D
+    latex={`refl_\\mathcal{P}(\\mathbf{u})`}
+    position={u_refl}
+    color={PrimeColor.raspberry}
+    offset={0.7}
+  />
+  <Point3D position={u_refl} color={PrimeColor.raspberry} />
 
   <Axis3D />
 </Canvas3D>

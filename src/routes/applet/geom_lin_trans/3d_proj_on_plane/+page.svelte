@@ -26,7 +26,7 @@
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius}/>
+  <EllipseTrajectory {ellipse_radius} />
 
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />

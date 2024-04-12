@@ -10,9 +10,7 @@
   const v = new Vector3(3, 1, 0); // Vector V;
   const w = u.clone().add(v); // Vector W = U + V;
 
-
-  let controls = Controls.addToggle(true, '\\mathbf{u}')
-    .addToggle(true, '\\mathbf{v}')
+  let controls = Controls.addToggle(true, '\\mathbf{u}').addToggle(true, '\\mathbf{v}');
 
   /**
    * Creates formulas based on the given inputs.
@@ -40,9 +38,7 @@
   }
 
   $: formulas = createFormulas(controls[0], controls[1]);
-  $: labelstring = (formulas[0].stringFormula);
-
-
+  $: labelstring = formulas[0].stringFormula;
 </script>
 
 <Canvas3D {formulas} bind:controls>
@@ -58,7 +54,7 @@
     <Latex3D latex={'\\mathbf{v}'} position={v} color={PrimeColor.raspberry} />
   {/if}
 
-  {#if controls[0] && !controls[1] }
+  {#if controls[0] && !controls[1]}
     <!-- Line span u -->
     <Vector3D
       origin={u.clone().normalize().multiplyScalar(-15)}
@@ -68,7 +64,7 @@
       hideHead
       radius={0.04}
     />
-  {:else if !controls[0] && controls[1] }
+  {:else if !controls[0] && controls[1]}
     <!-- Line span v -->
     <Vector3D
       origin={v.clone().normalize().multiplyScalar(-15)}
@@ -86,7 +82,12 @@
   {/if}
 
   <!--  Span label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} color={PrimeColor.black} />
+  <Latex3D
+    latex={labelstring}
+    position={w.clone().normalize().multiplyScalar(8)}
+    offset={1.5}
+    color={PrimeColor.black}
+  />
 
   <Axis3D />
 </Canvas3D>

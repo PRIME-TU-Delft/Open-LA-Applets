@@ -11,7 +11,7 @@
   } from '$lib/threlte-components';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
-  import { parametic_point_on_circle_3D  as getPoint} from '$lib/utils/MathLib';
+  import { parametic_point_on_circle_3D as getPoint } from '$lib/utils/MathLib';
   import EllipseTrajectory from '../EllipseTrajectory.svelte';
 
   const ellipse_radius = 5;
@@ -20,7 +20,7 @@
 
   $: u = getPoint(controls[0], ellipse_radius);
   //$: trajectory = [controls[0]-1, controls[0]-2, controls[0]-3, controls[0]-4] //TODO replace with funcitonal
-  
+
   $: lineL = new Vector3(3, 2, -1); // Line L
   $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
 
@@ -28,7 +28,7 @@
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius}/>
+  <EllipseTrajectory {ellipse_radius} />
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <!-- Projection vector from line L to u with a point at projection point -->
@@ -52,5 +52,4 @@
 
   <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
   <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
-
 </Canvas3D>

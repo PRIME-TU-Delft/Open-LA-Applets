@@ -8,7 +8,7 @@
   const slider_step = 0.5;
   let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.darkGreen, 'a_1')
     .addSlider(3, -5, 5, slider_step, PrimeColor.darkGreen, 'a_2')
-    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow,'a_3');
+    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow, 'a_3');
   let formulas: Formula[] = [];
 
   $: A = new Vector3(controls[1], controls[2], controls[0]);
@@ -22,8 +22,10 @@
       .addParam(1, A.z, PrimeColor.darkGreen)
       .addParam(2, A.x, PrimeColor.darkGreen)
       .addParam(3, A.y, PrimeColor.yellow);
-    const f1 = new Formula('OQ = \\sqrt{(\\$1)^2 + (\\$2)^2} =  \\$3', ).addParam(1, A.z, PrimeColor.darkGreen).addParam(2, A.x, PrimeColor.darkGreen)
-    .addParam(3, c0.toFixed(2), PrimeColor.raspberry); // a.x, a.z , len oq = c0 
+    const f1 = new Formula('OQ = \\sqrt{(\\$1)^2 + (\\$2)^2} =  \\$3')
+      .addParam(1, A.z, PrimeColor.darkGreen)
+      .addParam(2, A.x, PrimeColor.darkGreen)
+      .addParam(3, c0.toFixed(2), PrimeColor.raspberry); // a.x, a.z , len oq = c0
     const f2 = new Formula('OA = || \\mathbf{\\$1} || = \\sqrt{(\\$2)^2 + (\\$3)^2} = \\$4')
       .addParam(1, 'v', PrimeColor.blue)
       .addParam(2, c0.toFixed(2), PrimeColor.raspberry)

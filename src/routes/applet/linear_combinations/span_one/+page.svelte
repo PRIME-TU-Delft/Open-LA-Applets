@@ -4,16 +4,12 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/utils/Controls';
 
-
-
-
   const vDir = new Vector3(3, 2, -3);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
   let controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry);
 
   $: v = new Vector3(3, 2, -3).normalize().multiplyScalar(3); // Vector v;
   $: vLen = Math.abs(controls[0]) < 1 ? (controls[0] < 0 ? -1 : 1) : controls[0];
-
 </script>
 
 <Canvas3D bind:controls>

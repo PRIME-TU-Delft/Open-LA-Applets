@@ -6,7 +6,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import Point from '$lib/threlte-components/Point.svelte';
 
-  //TODO 
+  //TODO
   // span label should not have colors
 
   const u = new Vector3(1, 2, -2); // Vector U;
@@ -44,9 +44,7 @@
   }
 
   $: formulas = createFormulas(controls[0], controls[1], controls[2]);
-  $: labelstring = (formulas[0].stringFormula);
-
-
+  $: labelstring = formulas[0].stringFormula;
 </script>
 
 <Canvas3D {formulas} bind:controls>
@@ -91,8 +89,6 @@
     {/if}
   {/if}
 
-
-
   {#if !controls[0] && !controls[1] && controls[2]}
     <!-- Line span w -->
     <Vector3D
@@ -131,7 +127,12 @@
   {/if}
 
   <!--  Span label -->
-  <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} offset={1.5} color={PrimeColor.black} />
+  <Latex3D
+    latex={labelstring}
+    position={w.clone().normalize().multiplyScalar(8)}
+    offset={1.5}
+    color={PrimeColor.black}
+  />
 
   <Axis3D />
 </Canvas3D>
