@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { activityStore } from '$lib/activityStore';
+  import { isActive } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
   import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
@@ -40,7 +40,7 @@
 
   function pause() {
     reset();
-    activityStore.reset();
+    isActive.reset();
   }
 
   $: {
@@ -50,7 +50,7 @@
 
   function waitThenReset() {
     if (isIframe) {
-      activityStore.disableAfterAnd(60000, reset);
+      isActive.disableAfterAnd(60000, reset);
     }
   }
 
@@ -64,7 +64,7 @@
     isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
 
     if (!isIframe) {
-      activityStore.enable();
+      isActive.enable();
     }
   });
 
@@ -76,15 +76,15 @@
     role="button"
     tabindex="0"
     class="canvasWrapper h-full border-l-4 border-slate-400"
-    class:active={$activityStore}
+    class:active={$isActive}
     class:isIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
     style="height: var(--canvas-height, 100%); background: {background}"
-    on:click={activityStore.enable}
-    on:mousedown={activityStore.enable}
-    on:keydown={activityStore.enable}
-    on:mouseenter={activityStore.removeTimeOut}
+    on:click={isActive.enable}
+    on:mousedown={isActive.enable}
+    on:keydown={isActive.enable}
+    on:mouseenter={isActive.removeTimeOut}
     on:mouseleave={waitThenReset}
   >
     <!-- THRELTE SCENE -->

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { activityStore } from '$lib/activityStore';
+  import { isActive } from '$lib/activityStore';
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
@@ -20,7 +20,7 @@
   const { renderer, renderMode } = useThrelte();
 
   $: {
-    const cameraSettings = parseCameraSettings($page.url?.searchParams);
+    const cameraSettings = parseCameraSettings($page?.url?.searchParams);
 
     if (cameraSettings) {
       position = cameraSettings.position || position;
@@ -29,7 +29,7 @@
     }
   }
 
-  $: if ($activityStore && renderer) {
+  $: if ($isActive && renderer) {
     renderMode.set('on-demand');
   } else if (renderer) {
     requestAnimationFrame(() => {
@@ -38,7 +38,7 @@
   }
 </script>
 
-{#key resetKey && $activityStore}
+{#key resetKey && $isActive}
   <T.OrthographicCamera
     makeDefault
     position={[position.x, position.y, position.z]}
@@ -50,7 +50,7 @@
       ref.lookAt(new Vector3(0, 0, 0));
     }}
   >
-    {#if $activityStore}
+    {#if $isActive}
       <OrbitControls
         enableZoom
         {enablePan}

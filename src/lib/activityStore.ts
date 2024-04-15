@@ -37,7 +37,7 @@ function createActivityStore() {
      * @param ms milliseconds to wait before disabling
      */
     disableAfter: (ms: number) => {
-      activityStore.disableAfterAnd(ms); // Disable and do nothing
+      isActive.disableAfterAnd(ms); // Disable and do nothing
     },
 
     /**
@@ -62,4 +62,4 @@ function createActivityStore() {
   };
 }
 
-export const activityStore = createActivityStore();
+export const isActive = createActivityStore();

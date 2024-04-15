@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { activityStore } from '$lib/activityStore';
+  import { isActive } from '$lib/activityStore';
   import Icon from '$lib/components/Icon.svelte';
   import LatexUI from '$lib/components/Latex.svelte';
   import * as Button from '$lib/components/ui/button';
@@ -27,7 +27,7 @@
 >
   {#if isIframe && !isFullscreen}
     <div class="select-none w-fit">
-      {#if $activityStore}
+      {#if $isActive}
         <button
           class="bg-blue-500/70 h-fit p-1 inline-flex items-center gap-1 hover:bg-blue-500/70 rounded rounded-l-none text-white"
           on:click={() => dispatch('pause')}

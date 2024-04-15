@@ -3,7 +3,7 @@
   import { select, zoom as zoomD3, type Selection, type BaseType } from 'd3';
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
-  import { activityStore } from '$lib/activityStore';
+  import { isActive } from '$lib/activityStore';
   import { Vector2 } from 'three';
   import type { Canvas2DProps } from '.';
 
@@ -20,7 +20,7 @@
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleZoom(element: SVGSVGElement & { transform: any }) {
-    if ($activityStore) {
+    if ($isActive) {
       select(`#${id} g`).attr('transform', element.transform);
     }
   }
