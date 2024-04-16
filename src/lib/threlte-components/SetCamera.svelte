@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { isActive } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
   import { parseCameraSettings } from '$lib/utils/parseURL';
   import { debounce } from '$lib/utils/timeDelay';
-  import cameraStore from './stores/cameraStore';
+  import { cameraStore } from '$lib/stores/cameraStore';
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
@@ -14,7 +14,10 @@
   export let position = new Vector3(10, 10, 10);
 
   function debounceSetCameraStore(camera: OrthographicCamera) {
-    return debounce(() => cameraStore.set(camera));
+    const position3D = camera.position;
+    const zoom3D = camera.zoom;
+
+    return debounce(() => cameraStore.updateState({ position3D, zoom3D }));
   }
 
   const { renderer, renderMode } = useThrelte();
@@ -46,8 +49,11 @@
     {zoom}
     let:ref={camera}
     on:create={({ ref }) => {
-      cameraStore.set(ref);
-      ref.lookAt(new Vector3(0, 0, 0));
+      const camera = ref;
+      const position3D = camera.position;
+      const zoom3D = camera.zoom;
+      cameraStore.init({ position3D, zoom3D });
+      ref.lookAt(0, 0, 0);
     }}
   >
     {#if $isActive}

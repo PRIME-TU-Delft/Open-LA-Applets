@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isActive } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import Icon from '$lib/components/Icon.svelte';
   import LatexUI from '$lib/components/Latex.svelte';
   import * as Button from '$lib/components/ui/button';

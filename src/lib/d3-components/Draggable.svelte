@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { isActive } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { drag, select } from 'd3';

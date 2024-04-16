@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { isActive } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
   import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';

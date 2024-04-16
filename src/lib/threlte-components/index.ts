@@ -12,8 +12,6 @@ export { default as PartialDeconstruction3D } from './PartialDeconstruction.svel
 
 export { PlaneFromNormal, PlaneFromPoints, AutoPlane } from './planes/index';
 
-export { default as cameraStore } from './stores/cameraStore';
-
 type SizeCSS =
   | 'auto'
   | 'inherit'

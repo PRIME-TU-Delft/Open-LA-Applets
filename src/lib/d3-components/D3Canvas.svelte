@@ -3,7 +3,7 @@
   import { select, zoom as zoomD3, type Selection, type BaseType } from 'd3';
   import { onMount } from 'svelte';
   import Axis from './Axis.svelte';
-  import { isActive } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import { Vector2 } from 'three';
   import type { Canvas2DProps } from '.';
 
