@@ -39,7 +39,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  {isIframe}
+  inIframe={isIframe}
   let:width
   let:height
   let:resetKey

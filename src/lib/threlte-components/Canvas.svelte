@@ -37,7 +37,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  {isIframe}
+  inIframe={isIframe}
   let:width
   let:height
   let:resetKey
@@ -50,7 +50,7 @@
   <Canvas size={{ width: totalWidth, height }}>
     <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={cameraZoom} />
 
-    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} debug />
+    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
 
     {#if enableEasterEgg}
       <CustomRenderer />

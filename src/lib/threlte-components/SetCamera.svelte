@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import { isActive } from '$lib/stores/activityStore';
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera, Vector3 } from 'three';
-  import { parseCameraSettings } from '$lib/utils/parseURL';
   import { debounce } from '$lib/utils/timeDelay';
   import { cameraStore } from '$lib/stores/cameraStore';
 
@@ -22,16 +20,6 @@
 
   const { renderer, renderMode } = useThrelte();
 
-  $: {
-    const cameraSettings = parseCameraSettings($page?.url?.searchParams);
-
-    if (cameraSettings) {
-      position = cameraSettings.position || position;
-      enablePan = cameraSettings.enablePan || enablePan;
-      zoom = cameraSettings.zoom || zoom;
-    }
-  }
-
   $: if ($isActive && renderer) {
     renderMode.set('on-demand');
   } else if (renderer) {
@@ -39,9 +27,12 @@
       renderMode.set('manual');
     });
   }
+
+  // TODO: Remove this
+  $: console.log('load from $');
 </script>
 
-{#key resetKey && $isActive}
+{#key $isActive}
   <T.OrthographicCamera
     makeDefault
     position={[position.x, position.y, position.z]}

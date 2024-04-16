@@ -43,7 +43,8 @@
     </div>
   {/if}
 
-  {#if hasFormulas}
+  <!-- TODO: improve formulas -->
+  {#if hasFormulas && false}
     <Popover.Root open={isChangingSliders || showFormulas || !isIframe || isFullscreen}>
       <Popover.Trigger asChild let:builder>
         <Button.Root class={popoverClass} builders={[builder]} variant="outline">
