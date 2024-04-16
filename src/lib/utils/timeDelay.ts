@@ -5,7 +5,7 @@
  * @returns Generic S
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function debounce<T extends any[], S>(cb: (...args: T[]) => S, delay = 250) {
+export function debounce<T, S>(cb: (...args: T[]) => S, delay = 250) {
   let timeout: NodeJS.Timeout;
 
   return (...args: T[]) => {

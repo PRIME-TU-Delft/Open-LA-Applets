@@ -1,17 +1,17 @@
 import { writable } from 'svelte/store';
 import type { Vector2, Vector3 } from 'three';
 
-export type Camera2DStore = {
+export type Camera2DState = {
   position2D: Vector2;
   zoom2D: number;
 };
 
-export type Camera3DStore = {
+export type Camera3DState = {
   position3D: Vector3;
   zoom3D: number;
 };
 
-export type CameraState = Camera2DStore | Camera3DStore | (Camera2DStore & Camera3DStore);
+export type CameraState = Camera2DState | Camera3DState | (Camera2DState & Camera3DState);
 
 /**
  * Creates a camera store with the provided initial state and update functions.

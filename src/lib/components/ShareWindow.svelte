@@ -26,27 +26,31 @@
 
   /**
    * Returns a string with the current state of the camera
-   * @param camera
+   * @param cameraState
    */
-  function getState(camera: CameraState, controls?: Controls<G>): string {
-    if (!camera) return '';
+  function getState(cameraState: CameraState, controls?: Controls<G>): string {
+    if (!cameraState) return '';
 
     let stateUrlString: string[] = [];
 
-    if ('position3D' in camera) {
-      const position = camera.position3D;
-      const zoom = camera.zoom3D;
-      stateUrlString.push(
-        `position3d=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
-      );
-      stateUrlString.push(`zoom3d=${zoom.toFixed(2)}`);
+    if ('position3D' in cameraState) {
+      const position = cameraState.position3D;
+      if (position)
+        stateUrlString.push(
+          `position3d=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
+        );
+
+      const zoom = cameraState.zoom3D;
+      if (zoom) stateUrlString.push(`zoom3d=${zoom.toFixed(2)}`);
     }
 
-    if ('position2D' in camera) {
-      const position = camera.position2D;
-      const zoom = camera.zoom2D;
-      stateUrlString.push(`position2d=${position.x.toFixed(2)},${position.y.toFixed(2)}`);
-      stateUrlString.push(`zoom2d=${zoom.toFixed(2)}`);
+    if ('position2D' in cameraState) {
+      const position = cameraState.position2D;
+      if (position)
+        stateUrlString.push(`position2d=${position.x.toFixed(2)},${position.y.toFixed(2)}`);
+
+      const zoom = cameraState.zoom2D;
+      if (zoom) stateUrlString.push(`zoom2d=${zoom?.toFixed(2)}`);
     }
 
     if (controls) {
