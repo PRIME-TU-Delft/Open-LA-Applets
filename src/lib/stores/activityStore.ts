@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { globalStateStore } from './globalStateStore';
 
 /**
@@ -16,6 +16,10 @@ function createActivityStore() {
      * Enable orbitcontroller and clear any current timeouts
      */
     enable: () => {
+      if (get(globalStateStore).isActive) {
+        return;
+      }
+
       clearInterval(timeOut);
       globalStateStore.changeState({ isActive: true });
       set(true); // Set activity to true

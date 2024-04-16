@@ -5,6 +5,9 @@
   import { OrthographicCamera, Vector3 } from 'three';
   import { debounce } from '$lib/utils/timeDelay';
   import { cameraStore } from '$lib/stores/cameraStore';
+  import { onMount } from 'svelte';
+  import { page } from '$app/stores';
+  import { setPosition, setZoom } from '$lib/utils/parseUrl';
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
@@ -28,8 +31,20 @@
     });
   }
 
-  // TODO: Remove this
-  $: console.log('load from $');
+  onMount(() => {
+    const url = $page?.url;
+
+    if (!url) return;
+
+    setPosition(url.searchParams);
+
+    // Set the zoom level for the camera
+    setZoom(url.searchParams);
+
+    if ('position3D' in $cameraStore) position = $cameraStore.position3D;
+
+    if ('zoom3D' in $cameraStore) zoom = $cameraStore.zoom3D;
+  });
 </script>
 
 {#key $isActive}
