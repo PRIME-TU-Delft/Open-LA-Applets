@@ -11,7 +11,6 @@
 
   export let enablePan = false;
   export let zoom = 29; // Zoom level - For orthographic camera
-  export let resetKey = 0;
   export let position = new Vector3(10, 10, 10);
 
   function debounceSetCameraStore(camera: OrthographicCamera) {
@@ -24,10 +23,10 @@
   const { renderer, renderMode } = useThrelte();
 
   $: if ($isActive && renderer) {
-    renderMode.set('on-demand');
+    renderMode.set('on-demand'); // The scene will play and update when mouse is dragging
   } else if (renderer) {
     requestAnimationFrame(() => {
-      renderMode.set('manual');
+      renderMode.set('manual'); // The scene is paused
     });
   }
 
@@ -47,31 +46,33 @@
   });
 </script>
 
-{#key $isActive}
-  <T.OrthographicCamera
-    makeDefault
-    position={[position.x, position.y, position.z]}
-    fov={15}
-    {zoom}
-    let:ref={camera}
-    on:create={({ ref }) => {
-      const camera = ref;
-      const position3D = camera.position;
-      const zoom3D = camera.zoom;
-      cameraStore.init({ position3D, zoom3D });
-      ref.lookAt(0, 0, 0);
-    }}
-  >
-    {#if $isActive}
-      <OrbitControls
-        enableZoom
-        {enablePan}
-        maxZoom={zoom * 10}
-        minZoom={Math.max(zoom - 10, 1)}
-        maxPolarAngle={Math.PI * 0.6}
-        on:create={() => debounceSetCameraStore(camera)()}
-        on:change={() => debounceSetCameraStore(camera)()}
-      />
-    {/if}
-  </T.OrthographicCamera>
+{#key position.x + position.y + position.z + zoom}
+  {#key $isActive}
+    <T.OrthographicCamera
+      makeDefault
+      position={[position.x, position.y, position.z]}
+      fov={15}
+      {zoom}
+      let:ref={camera}
+      on:create={({ ref }) => {
+        const camera = ref;
+        const position3D = camera.position;
+        const zoom3D = camera.zoom;
+        cameraStore.init({ position3D, zoom3D });
+        ref.lookAt(0, 0, 0);
+      }}
+    >
+      {#if $isActive}
+        <OrbitControls
+          enableZoom
+          {enablePan}
+          maxZoom={zoom * 10}
+          minZoom={Math.max(zoom - 10, 1)}
+          maxPolarAngle={Math.PI * 0.6}
+          on:create={() => debounceSetCameraStore(camera)()}
+          on:change={() => debounceSetCameraStore(camera)()}
+        />
+      {/if}
+    </T.OrthographicCamera>
+  {/key}
 {/key}

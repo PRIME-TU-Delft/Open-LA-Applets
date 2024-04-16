@@ -48,7 +48,7 @@
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
   <Canvas size={{ width: totalWidth, height }}>
-    <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={cameraZoom} />
+    <SetCamera position={cameraPosition} {enablePan} zoom={cameraZoom} />
 
     <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
 
@@ -76,7 +76,6 @@
 
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
-          {resetKey}
           enablePan={splitCanvas3DProps?.enablePan}
           zoom={splitCanvas3DProps?.cameraZoom}
         />

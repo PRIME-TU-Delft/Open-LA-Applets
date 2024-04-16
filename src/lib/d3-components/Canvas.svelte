@@ -68,7 +68,6 @@
 
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
-          {resetKey}
           enablePan={splitCanvas3DProps?.enablePan}
           zoom={splitCanvas3DProps?.cameraZoom}
         />
