@@ -9,7 +9,7 @@
 
   export let title: string = 'default without sliders';
   export let controls: Controls<G> | undefined = undefined;
-  export let isIframe: boolean = false;
+  export let inIframe: boolean = false;
   export let showFormulasDefault: boolean = false;
   export let formulas: Formula[] = [];
 
@@ -33,7 +33,7 @@
   }
 </script>
 
-<Canvas3D {formulas} {isIframe} {showFormulasDefault} height="20rem" {title} bind:controls>
+<Canvas3D {formulas} {inIframe} {showFormulasDefault} height="20rem" {title} bind:controls>
   <T.Mesh>
     {#if controls && controls?.controls.length > 0}
       <T.BoxGeometry args={[controls[0], controls[0], controls[0]]} />

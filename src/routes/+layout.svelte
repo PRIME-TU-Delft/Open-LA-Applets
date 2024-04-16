@@ -5,8 +5,6 @@
   import { globalStateStore } from '$lib/stores/globalStateStore';
   import { setPosition, setZoom } from '$lib/utils/parseUrl';
 
-  $: console.log($globalStateStore);
-
   afterNavigate(() => {
     const url = $page?.url;
 

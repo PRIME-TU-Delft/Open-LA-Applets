@@ -53,6 +53,5 @@
     <Point3D color={PrimeColor.blue} />
   {/if}
 
-  <!-- TODO: add this back -->
-  <!-- <Axis3D axisLength={7} /> -->
+  <Axis3D axisLength={7} />
 </Canvas3D>

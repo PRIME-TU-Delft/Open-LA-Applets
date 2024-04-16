@@ -7,25 +7,24 @@
   import type { Formula } from '$lib/utils/Formulas';
   import { mdiFunctionVariant, mdiPause } from '@mdi/js';
   import { createEventDispatcher } from 'svelte';
+  import { isInset } from '$lib/stores/globalStateStore';
 
   export let showFormulas = true;
   export let isChangingSliders = false;
-  export let isIframe = false;
-  export let isFullscreen = false;
   export let formulas: Formula[] = [];
 
   $: hasFormulas = formulas.length > 0; // Are there any formulas to show?
 
   let dispatch = createEventDispatcher();
 
-  $: popoverClass = !isIframe || isFullscreen ? 'm-2' : 'm-0';
+  $: popoverClass = $isInset ? 'm-2' : 'm-0';
 </script>
 
 <div
   class="formulas flex gap-1 w-full top-0 left-0 absolute z-50 justify-between"
-  class:!justify-end={!isIframe || isFullscreen}
+  class:!justify-end={$isInset}
 >
-  {#if isIframe && !isFullscreen}
+  {#if !$isInset}
     <div class="select-none w-fit">
       {#if $isActive}
         <button
@@ -45,7 +44,7 @@
 
   <!-- TODO: improve formulas -->
   {#if hasFormulas && false}
-    <Popover.Root open={isChangingSliders || showFormulas || !isIframe || isFullscreen}>
+    <Popover.Root open={isChangingSliders || showFormulas || $isInset}>
       <Popover.Trigger asChild let:builder>
         <Button.Root class={popoverClass} builders={[builder]} variant="outline">
           <Icon path={mdiFunctionVariant} />

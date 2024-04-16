@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 
 type GlobalState = {
   inIframe: boolean;
@@ -30,4 +30,20 @@ function createGlobalStateStore() {
   };
 }
 
+/**
+ * The global state store.
+ */
 export const globalStateStore = createGlobalStateStore();
+
+/**
+ * Determines if the component is inset.
+ *
+ * @remarks
+ * This function is derived from the `globalStateStore` and returns `true` if the component is not in an iframe or if it is in fullscreen mode.
+ *
+ * @param $globalState - The global state object.
+ * @returns A boolean value indicating if the component is inset.
+ */
+export const isInset = derived(globalStateStore, ($globalState) => {
+  return !$globalState.inIframe || $globalState.isFullscreen;
+});

@@ -25,7 +25,7 @@
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let inIframe = false; // Is the scene inside an iframe?
   export let controls: Controls<G> | undefined = undefined;
   export let formulas: Formula[] = [];
 
@@ -37,7 +37,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  inIframe={isIframe}
+  {inIframe}
   let:width
   let:height
   let:resetKey

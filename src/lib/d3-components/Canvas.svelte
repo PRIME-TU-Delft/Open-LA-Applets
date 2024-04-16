@@ -24,7 +24,7 @@
   export let background = '#ffffff';
   export let showFormulasDefault = false;
   export let formulas: Formula[] = [];
-  export let isIframe = false;
+  export let inIframe = false;
   export let width = '100%';
   export let height = '100%';
 
@@ -39,7 +39,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  inIframe={isIframe}
+  {inIframe}
   let:width
   let:height
   let:resetKey

@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { globalStateStore } from '$lib/stores/globalStateStore';
-
   import { page } from '$app/stores';
-  import { isActive } from '$lib/stores/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
   import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
+  import { isActive } from '$lib/stores/activityStore';
+  import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
@@ -20,8 +19,6 @@
   export let inIframe = false; // Is the scene inside an iframe?
   export let formulas: Formula[] = [];
 
-  let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
-  let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
 
   let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
@@ -96,7 +93,7 @@
     {/key}
 
     <!-- TITLE PANEL -->
-    {#if title && (!inIframe || isFullscreen)}
+    {#if title && $isInset}
       <div class="absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
@@ -104,36 +101,23 @@
 
     <!-- SLIDER PANEL -->
     {#if controls && controls.length > 0}
-      <ControllerPanel
-        isInset={!inIframe || isFullscreen}
-        bind:controls
-        bind:isPlaying={isPlayingSliders}
-        on:startChanging={() => (isChangingSliders = true)}
-        on:stopChanging={() => (isChangingSliders = false)}
-      />
+      <ControllerPanel bind:controls />
     {/if}
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
 
-    <FormulasAndActivityPanel
-      isIframe={inIframe}
-      {isFullscreen}
-      {showFormulas}
-      {formulas}
-      {isChangingSliders}
-      on:pause={pause}
-    />
+    <FormulasAndActivityPanel {showFormulas} {formulas} on:pause={pause} />
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons isIframe={inIframe} {sceneEl} bind:isFullscreen on:reset={reset} />
+    <ActionButtons {sceneEl} bind:isFullscreen on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->
 </div>
 
 <style lang="postcss">
-  :global(html:has(.isIframe)) {
+  :global(html:has(.inIframe)) {
     background: white;
   }
 

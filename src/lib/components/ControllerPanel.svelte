@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
   import type { Controls } from '$lib/utils/Controls';
   import { Slider } from '$lib/utils/Slider';
   import { Toggle } from '$lib/utils/Toggle';
@@ -9,7 +10,6 @@
 
   export let controls: Controls<G>;
   export let isPlaying = false;
-  export let isInset = false;
 
   let sliderExpanded = 0;
 
@@ -24,7 +24,7 @@
 
 <div
   class="flex gap-1 py-2 px-3 bg-slate-200 rounded-lg absolute bottom-0 right-16 transition-all items-center border-none"
-  class:inset={isInset}
+  class:inset={$isInset}
 >
   {#each controls.controls as controller, index}
     {#if controller instanceof Slider}
@@ -33,8 +33,8 @@
         bind:isPlaying
         isExpanded={sliderExpanded == index}
         on:expand={() => expandIndex(index)}
-        on:startChanging
-        on:stopChanging
+        on:startChanging={() => globalStateStore.changeState({ controlsInteractive: true })}
+        on:stopChanging={() => globalStateStore.changeState({ controlsInteractive: false })}
       />
     {:else if controller instanceof Toggle}
       <SvelteToggle bind:toggle={controller} />
