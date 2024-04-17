@@ -69,12 +69,15 @@
   onDestroy(() => reset);
 </script>
 
-<div class="rounded overflow-hidden h-full" bind:this={sceneEl}>
+<div
+  class="rounded-[0.5rem] overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-3"
+  class:active={$isActive}
+  bind:this={sceneEl}
+>
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper h-full border-l-4 border-slate-400"
-    class:active={$isActive}
+    class="canvasWrapper h-full rounded-[0.4rem]"
     class:inIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
@@ -121,19 +124,16 @@
     background: white;
   }
 
+  .active {
+    @apply from-blue-400 to-blue-500 p-1;
+  }
+
   .canvasWrapper {
     position: relative;
     width: var(--width, 100%);
     height: var(--canvas-height, 100%);
     overflow: hidden;
-
-    &.inIframe {
-      @apply border-l-4 border-gray-400;
-
-      &.active {
-        @apply border-blue-500;
-      }
-    }
+    @apply shadow-md;
   }
 
   :global(.canvasWrapper > canvas) {
