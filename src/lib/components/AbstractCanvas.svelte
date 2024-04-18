@@ -19,8 +19,6 @@
   export let inIframe = false; // Is the scene inside an iframe?
   export let formulas: Formula[] = [];
 
-  let isFullscreen = false; // Is the scene fullscreen?
-
   let resetKey = Math.random();
   let height = 0;
   let width = 0;
@@ -104,7 +102,7 @@
     {/if}
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons {sceneEl} bind:isFullscreen on:reset={reset} />
+    <ActionButtons {sceneEl} on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->

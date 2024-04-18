@@ -1,8 +1,7 @@
 <script lang="ts">
-  import * as Dialog from '$lib/components/ui/dialog';
   import * as Button from '$lib/components/ui/button';
-  import { mdiRestart } from '@mdi/js';
   import { cn } from '$lib/utils';
+  import { mdiRestart } from '@mdi/js';
 
   export let tooltip: string;
   export let translate: string;
@@ -10,20 +9,14 @@
   export { classes as class };
 
   $: outerClasses = cn(
-    'resetButton absolute top-1/2 -translate-y-1/2 z-[-1] motion-safe:transition-all',
+    'absolute top-1/2 -translate-y-1/2 z-[-1] motion-safe:transition-all rounded-lg backdrop-blur-sm bg-blue-200/80 hover:bg-blue-300/80',
     translate
   );
   $: innerClasses = cn('w-16 h-8 flex gap-0.5 text-blue-900', classes);
 </script>
 
 <div class={outerClasses}>
-  <Dialog.Root>
-    <Dialog.Trigger
-      class="rounded-lg backdrop-blur-sm bg-blue-200/80 hover:bg-blue-300/80 transition-colors"
-    >
-      <Button.Action on:click class={innerClasses} icon={mdiRestart} {tooltip}>
-        <slot />
-      </Button.Action>
-    </Dialog.Trigger>
-  </Dialog.Root>
+  <Button.Action on:click class={innerClasses} icon={mdiRestart} {tooltip}>
+    <slot />
+  </Button.Action>
 </div>
