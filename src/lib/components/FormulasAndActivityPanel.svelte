@@ -24,24 +24,6 @@
   class="formulas flex gap-1 w-full top-0 left-0 absolute z-50 justify-between"
   class:!justify-end={$isInset}
 >
-  {#if !$isInset}
-    <div class="select-none w-fit">
-      {#if $isActive}
-        <button
-          class="bg-blue-500/70 h-fit p-1 inline-flex items-center gap-1 hover:bg-blue-500/70 rounded rounded-l-none text-white"
-          on:click={() => dispatch('pause')}
-        >
-          <Icon path={mdiPause} />
-          Click here to disable interactivity
-        </button>
-      {:else}
-        <button class="h-fit btn-sm bg-slate-100/70 p-1 rounded rounded-l-none w-fit">
-          Click once to enable interactivity
-        </button>
-      {/if}
-    </div>
-  {/if}
-
   <!-- TODO: improve formulas -->
   {#if hasFormulas && false}
     <Popover.Root open={isChangingSliders || showFormulas || $isInset}>

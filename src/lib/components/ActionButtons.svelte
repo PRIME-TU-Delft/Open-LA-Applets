@@ -29,7 +29,7 @@
 </script>
 
 <div
-  class="bg-slate-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1 flex gap-1 flex-col"
+  class="bg-slate-200 rounded-lg absolute right-0 top-0 opacity-80 hover:opacity-100 p-1 flex gap-1"
   class:inset={$isInset}
 >
   {#if dev}

@@ -1,13 +1,13 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
-  import ControllerPanel from '$lib/components/ControllerPanel.svelte';
-  import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
+  import ControllerAndActivityPanel from '$lib/components/ControllerAndActivityPanel.svelte';
   import { isActive } from '$lib/stores/activityStore';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
+  import ActivityPanel from './ActivityPanel.svelte';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
@@ -20,8 +20,6 @@
   export let formulas: Formula[] = [];
 
   let isFullscreen = false; // Is the scene fullscreen?
-
-  let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
 
   let resetKey = Math.random();
   let height = 0;
@@ -70,14 +68,14 @@
 </script>
 
 <div
-  class="rounded-[0.5rem] overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-3"
+  class="overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-3"
   class:active={$isActive}
   bind:this={sceneEl}
 >
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper h-full rounded-[0.4rem]"
+    class="canvasWrapper h-full rounded-lg"
     class:inIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
@@ -102,15 +100,12 @@
       </div>
     {/if}
 
-    <!-- SLIDER PANEL -->
+    <!-- Controller PANEL / Activity panel  -->
     {#if controls && controls.length > 0}
-      <ControllerPanel bind:controls />
+      <ControllerAndActivityPanel bind:controls />
+    {:else}
+      <ActivityPanel />
     {/if}
-
-    <!-- FORMULAS AND ACTIVITY PANEL  -->
-    <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
-
-    <FormulasAndActivityPanel {showFormulas} {formulas} on:pause={pause} />
 
     <!-- ACTION BUTTONS -->
     <ActionButtons {sceneEl} bind:isFullscreen on:reset={reset} />

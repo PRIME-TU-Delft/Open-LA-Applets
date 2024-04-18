@@ -23,7 +23,7 @@
 </script>
 
 <div
-  class="flex gap-1 py-2 px-3 bg-slate-200 rounded-lg absolute bottom-0 right-16 transition-all items-center border-none"
+  class="flex gap-1 py-2 px-3 bg-slate-200 rounded-lg absolute bottom-0 right-0 transition-all items-center border-none"
   class:inset={$isInset}
 >
   {#each controls.controls as controller, index}
