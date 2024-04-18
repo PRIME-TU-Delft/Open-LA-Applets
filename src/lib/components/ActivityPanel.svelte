@@ -13,7 +13,7 @@
 </script>
 
 <div
-  class="flex gap-1 hover:scale-105 text-blue-900 scale-100 transition-transform bg-blue-100 shadow-md rounded-lg absolute bottom-2 left-1/2 -translate-x-1/2 items-center"
+  class="flex gap-1 hover:scale-105 text-blue-900 scale-100 transition-transform backdrop-blur-md bg-blue-200/70 shadow-md rounded-lg absolute bottom-2 left-1/2 -translate-x-1/2 items-center"
   class:m-2={$isInset}
 >
   {#if !$isActive}

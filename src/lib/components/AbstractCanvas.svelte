@@ -35,11 +35,6 @@
     resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
-  function pause() {
-    reset();
-    isActive.reset();
-  }
-
   $: {
     const params = $page.url?.searchParams;
     title = params?.get('title') || title;
@@ -102,7 +97,7 @@
 
     <!-- Controller PANEL / Activity panel  -->
     {#if controls && controls.length > 0}
-      <ControllerAndActivityPanel bind:controls />
+      <ControllerAndActivityPanel on:reset={reset} bind:controls />
     {:else}
       <ActivityPanel />
     {/if}

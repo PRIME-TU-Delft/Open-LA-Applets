@@ -47,8 +47,6 @@
     <ShareWindow />
   </Dialog.Root>
 
-  <Button.Action on:click={() => dispatch('reset')} icon={mdiRestart} tooltip="Reset applet" />
-
   {#if screenfull.isEnabled}
     <Button.Action
       on:click={toggleFullscreen}
