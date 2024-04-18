@@ -5,20 +5,23 @@
   import { cn } from '$lib/utils';
 
   export let tooltip: string;
-  export let translateX: string;
+  export let translate: string;
+  let classes: string = '';
+  export { classes as class };
 
-  $: classes = cn(
+  $: outerClasses = cn(
     'resetButton absolute top-1/2 -translate-y-1/2 z-[-1] transition-all',
-    translateX
+    translate
   );
+  $: innerClasses = cn('w-16 h-8 flex gap-0.5 text-blue-900', classes);
 </script>
 
-<div class={classes}>
+<div class={outerClasses}>
   <Dialog.Root>
     <Dialog.Trigger
-      class="rounded-xl backdrop-blur-sm bg-blue-300/70 hover:bg-blue-400/70 transition-colors"
+      class="rounded-lg backdrop-blur-sm bg-blue-200/80 hover:bg-blue-300/80 transition-colors"
     >
-      <Button.Action on:click class="w-16 h-8 flex gap-0.5" icon={mdiRestart} {tooltip}>
+      <Button.Action on:click class={innerClasses} icon={mdiRestart} {tooltip}>
         <slot />
       </Button.Action>
     </Dialog.Trigger>

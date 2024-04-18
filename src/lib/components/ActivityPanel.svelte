@@ -34,7 +34,7 @@
         </Dialog.Trigger>
       </Dialog.Root>
 
-      Stop interacting
+      Pause the scene
     </button>
   {/if}
 </div>

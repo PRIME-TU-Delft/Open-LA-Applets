@@ -55,18 +55,31 @@
     {/each}
   </div>
 
+  <!-- NOTIFY -->
+  <SideButton
+    translate={$isActive
+      ? 'left-1/2 -translate-x-1/2 top-5 scale-0'
+      : 'left-1/2 -translate-x-1/2 -top-6 scale-100'}
+    class="w-full text-nowrap"
+    tooltip="Start the scene so you can interact"
+  >
+    <span class="text-xs p-2 text-blue-900">Click anywhere in the scene to start interacting</span>
+  </SideButton>
+
+  <!-- PAUSE SCENE -->
   <SideButton
     on:click={pauseScene}
-    translateX={$isActive ? '-left-[4.5rem]' : 'left-1'}
+    translate={$isActive ? '-left-[4.5rem]' : 'left-1'}
     tooltip="Pause the scene so you can scroll again"
   >
     <span class="text-xs">Pause</span>
     <Icon path={mdiPause} />
   </SideButton>
 
+  <!-- RESET SCENE -->
   <SideButton
     on:click={() => dispatch('reset')}
-    translateX={$isActive ? '-right-[4.5rem]' : 'right-1'}
+    translate={$isActive ? '-right-[4.5rem]' : 'right-1'}
     tooltip="Will reset sliders, toggles and scene"
   >
     <Icon path={mdiRestart} />
@@ -79,9 +92,5 @@
 <style lang="postcss">
   .inset {
     @apply m-0;
-  }
-
-  .pauseButton.active {
-    @apply -left-12;
   }
 </style>
