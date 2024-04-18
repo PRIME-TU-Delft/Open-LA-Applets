@@ -63,15 +63,16 @@
 </script>
 
 <div
-  class="overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-3"
+  class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
   class:active={$isActive}
   bind:this={sceneEl}
 >
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper h-full rounded-lg"
+    class="canvasWrapper h-full rounded-lg motion-safe:scale-[0.97] motion-safe:transition-transform"
     class:inIframe
+    class:active={$isActive}
     bind:clientHeight={height}
     bind:clientWidth={width}
     style="height: var(--canvas-height, 100%); background: {background}"
@@ -114,8 +115,12 @@
     background: white;
   }
 
-  .active {
-    @apply from-blue-400 to-blue-500 p-1;
+  .outerWrapper.active {
+    @apply from-blue-400 to-blue-500;
+  }
+
+  .canvasWrapper.active {
+    @apply scale-100;
   }
 
   .canvasWrapper {

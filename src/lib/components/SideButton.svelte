@@ -10,7 +10,7 @@
   export { classes as class };
 
   $: outerClasses = cn(
-    'resetButton absolute top-1/2 -translate-y-1/2 z-[-1] transition-all',
+    'resetButton absolute top-1/2 -translate-y-1/2 z-[-1] motion-safe:transition-all',
     translate
   );
   $: innerClasses = cn('w-16 h-8 flex gap-0.5 text-blue-900', classes);
