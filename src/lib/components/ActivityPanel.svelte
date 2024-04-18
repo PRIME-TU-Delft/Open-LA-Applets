@@ -18,25 +18,23 @@
 >
   {#if !$isActive}
     <div class="px-2 py-1 relative md:text-nowrap text-balance text-center">
-    Click anywhere in the scene to start interacting
-    <span class="absolute -right-1 -top-1 flex h-3 w-3">
-  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-  <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-</span>
+      Click anywhere in the scene to start interacting
+      <span class="absolute -right-1 -top-1 flex h-3 w-3">
+        <span
+          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+        />
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500" />
+      </span>
     </div>
   {:else}
-  <button class="px-2 py-1" on:click={toggleActive}>
-    <Dialog.Root>
-      <Dialog.Trigger class="rounded-sm bg-blue-200 hover:bg-blue-300 transition-colors">
-        <Button.Action
-          class="w-6 h-6"           
-          icon={mdiPause}
-          tooltip="Pause scene"
-        />
-      </Dialog.Trigger>
-    </Dialog.Root>
+    <button class="px-2 py-1" on:click={toggleActive}>
+      <Dialog.Root>
+        <Dialog.Trigger class="rounded-sm bg-blue-200 hover:bg-blue-300 transition-colors">
+          <Button.Action class="w-6 h-6" icon={mdiPause} tooltip="Pause scene" />
+        </Dialog.Trigger>
+      </Dialog.Root>
 
-    Stop interacting
-  </button>
+      Stop interacting
+    </button>
   {/if}
 </div>
