@@ -23,8 +23,6 @@
   let height = 0;
   let width = 0;
 
-  let sceneEl: HTMLDivElement;
-
   /**
    * Reset camera position, rotation and controls.
    */
@@ -63,7 +61,6 @@
 <div
   class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
   class:active={$isActive}
-  bind:this={sceneEl}
 >
   <div
     role="button"
@@ -102,7 +99,7 @@
     {/if}
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons {sceneEl} on:reset={reset} />
+    <ActionButtons {formulas} on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->

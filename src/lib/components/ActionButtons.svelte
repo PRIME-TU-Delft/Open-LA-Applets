@@ -5,11 +5,18 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
-  import { mdiDelete, mdiFullscreen, mdiFullscreenExit, mdiShare } from '@mdi/js';
+  import type { Formula } from '$lib/utils/Formulas';
+  import {
+    mdiDelete,
+    mdiFullscreen,
+    mdiFullscreenExit,
+    mdiFunctionVariant,
+    mdiShare
+  } from '@mdi/js';
   import screenfull from 'screenfull';
   import Icon from './Icon.svelte';
 
-  export let sceneEl: HTMLDivElement;
+  export let formulas: Formula[] = [];
 
   let isFullscreen = false; // Is the scene fullscreen?
 
@@ -22,34 +29,43 @@
   }
 
   function toggleFullscreen() {
-    if (!screenfull.isEnabled || !sceneEl) return;
+    if (!screenfull.isEnabled || !document) return;
 
-    screenfull.toggle(sceneEl);
+    screenfull.toggle(document.body);
   }
 </script>
 
-<!-- <div
-  class="bg-slate-200 rounded-lg absolute right-0 top-0 opacity-80 hover:opacity-100 p-1 flex gap-1"
-  class:inset={$isInset}
->
+<div class="absolute right-0 top-0 p-1 flex" class:inset={$isInset}>
   <Dialog.Root>
-    <Dialog.Trigger>
-      <Button.Action icon={mdiShare} tooltip="Share or embed applet" />
+    <Dialog.Trigger
+      class="bg-blue-200/80 scale-[0.8] hover:bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+    >
+      <Button.Action side="bottom" icon={mdiShare} tooltip="Share or embed applet" />
     </Dialog.Trigger>
     <ShareWindow />
   </Dialog.Root>
 
-  {#if screenfull.isEnabled}
+  {#if screenfull.isEnabled && document}
     <Button.Action
+      side="bottom"
+      class="!bg-blue-200/80 scale-[0.8] hover:!bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
       on:click={toggleFullscreen}
       icon={isFullscreen ? mdiFullscreenExit : mdiFullscreen}
       tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
     />
   {/if}
-</div> -->
+
+  {#if formulas && formulas.length >= 1}
+    <Button.Action
+      side="bottom"
+      class="!bg-blue-200/80 scale-[0.8] hover:!bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+      icon={mdiFunctionVariant}
+      tooltip="Toggle function"
+    />
+  {/if}
+</div>
 
 {#if dev}
-  <Button.Root on:click={() => (localStorage.clear(), location.reload())} />
   <Tooltip.Root on:click={() => (localStorage.clear(), location.reload())}>
     <Tooltip.Trigger
       class="absolute bottom-2 flex gap-1 px-2 py-1 items-center rounded-md text-blue-900 hover:opacity-100 opacity-20 transition-opacity left-2 bg-blue-300 hover:bg-blue-300/80 backdrop-blur-md"
