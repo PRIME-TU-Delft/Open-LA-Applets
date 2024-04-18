@@ -17,7 +17,7 @@
   class:m-2={$isInset}
 >
   {#if !$isActive}
-    <div class="px-2 py-1 relative md:text-nowrap text-balance text-center">
+    <div class="px-2 py-1 relative sm:text-nowrap text-balance text-center">
       Click anywhere in the scene to start interacting
       <span class="absolute -right-1 -top-1 flex h-3 w-3">
         <span
