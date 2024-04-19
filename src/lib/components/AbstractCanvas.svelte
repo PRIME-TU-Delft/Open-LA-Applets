@@ -7,6 +7,7 @@
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
   import ActivityPanel from './ActivityPanel.svelte';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
@@ -20,7 +21,7 @@
   export let formulas: Formula[] = [];
   export let splitFormulas: Formula[] = [];
 
-  let resetKey = Math.random();
+  let resetKey = generateUUID();
   let height = 0;
   let width = 0;
 
@@ -29,7 +30,7 @@
    */
   function reset() {
     controls = controls?.reset(); // Reset controls to default values
-    resetKey = Math.random(); // Update the key to reset the set camera component
+    resetKey = generateUUID(); // Update the key to reset the set camera component
   }
 
   function pause() {
@@ -63,6 +64,8 @@
 
   onDestroy(() => reset);
 </script>
+
+<svelte:window on:resize={() => (resetKey = generateUUID())} />
 
 <div
   class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"

@@ -70,6 +70,12 @@
     if (!$isActive) stopPlaying();
   }
 
+  $: {
+    for (let i = 0; i < 10; i++) {
+      console.log({ id: generateUUID() });
+    }
+  }
+
   onDestroy(stopPlaying);
 </script>
 
