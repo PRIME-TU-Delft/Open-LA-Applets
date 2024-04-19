@@ -42,13 +42,11 @@
   {inIframe}
   let:width
   let:height
-  let:resetKey
   bind:controls
   --canvas-height={height}
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
-
   <D3Canvas {tickLength} {cameraPosition} {cameraZoom} width={totalWidth} {height} {gridType}>
     <slot />
   </D3Canvas>

@@ -31,6 +31,14 @@
     resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
+  function pause() {
+    if ($isActive) {
+      isActive.reset();
+    }
+
+    reset();
+  }
+
   function waitThenReset() {
     if (inIframe) {
       isActive.disableAfterAnd(60000, reset);
@@ -90,9 +98,9 @@
 
     <!-- CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0}
-      <ControllerAndActivityPanel on:reset={reset} bind:controls />
+      <ControllerAndActivityPanel on:pause={pause} on:reset={reset} bind:controls />
     {:else}
-      <ActivityPanel />
+      <ActivityPanel on:pause={pause} />
     {/if}
 
     <!-- ACTION BUTTONS / FORMULAE (top-right) -->

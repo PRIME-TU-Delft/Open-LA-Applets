@@ -1,15 +1,12 @@
 <script lang="ts">
+  import * as Button from '$lib/components/ui/button';
+  import * as Dialog from '$lib/components/ui/dialog';
   import { isActive } from '$lib/stores/activityStore';
   import { isInset } from '$lib/stores/globalStateStore';
-  import * as Dialog from '$lib/components/ui/dialog';
-  import * as Button from '$lib/components/ui/button';
   import { mdiPause } from '@mdi/js';
+  import { createEventDispatcher } from 'svelte';
 
-  function toggleActive(e: MouseEvent) {
-    if ($isActive) {
-      isActive.reset();
-    }
-  }
+  const dispatch = createEventDispatcher();
 </script>
 
 <div
@@ -27,7 +24,7 @@
       </span>
     </div>
   {:else}
-    <button class="px-2 py-1" on:click={toggleActive}>
+    <button class="px-2 py-1" on:click={() => dispatch('pause')}>
       <Dialog.Root>
         <Dialog.Trigger class="rounded-sm bg-blue-200 hover:bg-blue-300 transition-colors">
           <Button.Action class="w-6 h-6" icon={mdiPause} tooltip="Pause scene" />

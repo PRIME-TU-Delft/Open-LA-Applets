@@ -27,12 +27,6 @@
     sliderExpanded = index;
     isPlaying = false;
   }
-
-  function pauseScene() {
-    dispatch('reset');
-
-    isActive.reset();
-  }
 </script>
 
 <div class="absolute bottom-2 left-1/2 -translate-x-1/2 transition-all" class:inset={$isInset}>
@@ -68,7 +62,7 @@
 
   <!-- PAUSE SCENE -->
   <SideButton
-    on:click={pauseScene}
+    on:click={() => dispatch('pause')}
     translate={$isActive ? '-left-[4.5rem]' : 'left-1'}
     tooltip="Pause the scene so you can scroll again"
   >

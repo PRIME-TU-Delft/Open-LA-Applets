@@ -37,6 +37,11 @@
   }
 
   $: formulasShown = $globalStateStore.controlsInteractive || showFormulas || $isInset;
+
+  function clearLocalStorage(): void {
+    localStorage.clear();
+    location.reload();
+  }
 </script>
 
 <div class="absolute top-1 right-0">
@@ -85,15 +90,17 @@
 </div>
 
 {#if dev}
-  <Tooltip.Root on:click={() => (localStorage.clear(), location.reload())}>
-    <Tooltip.Trigger
-      class="absolute bottom-2 flex gap-1 px-2 py-1 items-center rounded-md text-blue-900 hover:opacity-100 opacity-20 transition-opacity left-2 bg-blue-300 hover:bg-blue-300/80 backdrop-blur-md"
-    >
-      <span>Dev:</span>
-      <Icon path={mdiDelete} />
-    </Tooltip.Trigger>
-    <Tooltip.Content side="top">
-      <p>Clear localStorage cache for draggables</p>
-    </Tooltip.Content>
-  </Tooltip.Root>
+  <button on:click={clearLocalStorage}>
+    <Tooltip.Root>
+      <Tooltip.Trigger
+        class="absolute bottom-2 flex gap-1 px-2 py-1 items-center rounded-md text-blue-900 hover:opacity-100 opacity-20 transition-opacity left-2 bg-blue-300 hover:bg-blue-300/80 backdrop-blur-md"
+      >
+        <span>Dev:</span>
+        <Icon path={mdiDelete} />
+      </Tooltip.Trigger>
+      <Tooltip.Content side="top">
+        <p>Clear localStorage cache for draggables</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  </button>
 {/if}
