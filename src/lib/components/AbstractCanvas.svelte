@@ -104,7 +104,12 @@
     {/if}
 
     <!-- ACTION BUTTONS / FORMULAE (top-right) -->
-    <ActionButtonsAndFormula bind:showFormulas={showFormulasDefault} {formulas} on:reset={reset} />
+    <ActionButtonsAndFormula
+      bind:showFormulas={showFormulasDefault}
+      {formulas}
+      {controls}
+      on:reset={reset}
+    />
   </div>
 </div>
 

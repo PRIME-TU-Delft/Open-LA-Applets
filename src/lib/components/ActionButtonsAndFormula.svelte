@@ -1,25 +1,33 @@
 <script lang="ts">
   import { dev } from '$app/environment';
+  import LatexUI from '$lib/components/Latex.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import * as Button from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
+  import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
-  import LatexUI from '$lib/components/Latex.svelte';
   import {
     mdiDelete,
     mdiFullscreen,
     mdiFullscreenExit,
     mdiFunctionVariant,
+    mdiRestart,
     mdiShare
   } from '@mdi/js';
   import screenfull from 'screenfull';
+  import { createEventDispatcher } from 'svelte';
   import Icon from './Icon.svelte';
 
-  export let formulas: Formula[] = [];
+  type G = $$Generic<readonly Controller<number | boolean>[]>;
 
+  export let formulas: Formula[] = [];
+  export let controls: Controls<G> | undefined = undefined;
   export let showFormulas = false;
+
+  const dispatch = createEventDispatcher();
+
   let isFullscreen = false; // Is the scene fullscreen?
 
   if (screenfull.isEnabled) {
@@ -45,6 +53,7 @@
 </script>
 
 <div class="absolute top-1 right-0">
+  <!-- FORMULAE -->
   {#if formulasShown && formulas && formulas.length >= 1}
     <div class="mr-2 grid gap-1 bg-white/80 backdrop-blur-md p-2 rounded-md shadow-sm">
       {#each formulas as formula}
@@ -55,7 +64,19 @@
     </div>
   {/if}
 
+  <!-- ACTION BUTTON -->
   <div class="float-end right-0 top-0 p-1 flex">
+    {#if !controls || controls.length == 0}
+      <Button.Action
+        side="bottom"
+        class="!bg-blue-200/80 scale-[0.8] hover:!bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+        on:click={() => dispatch('reset')}
+        icon={mdiRestart}
+        tooltip="Will reset the scene to original camera positions"
+      />
+    {/if}
+
+    <!-- SHARE BUTTON -->
     <Dialog.Root>
       <Dialog.Trigger
         class="bg-blue-200/80 scale-[0.8] hover:bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
@@ -65,6 +86,7 @@
       <ShareWindow />
     </Dialog.Root>
 
+    <!-- FULLSCREEN BUTTON -->
     {#if screenfull.isEnabled && document}
       <Button.Action
         side="bottom"
@@ -75,6 +97,7 @@
       />
     {/if}
 
+    <!-- TOGGLE FORMULAE -->
     {#if !$isInset && formulas && formulas.length >= 1}
       <Button.Action
         side="bottom"
