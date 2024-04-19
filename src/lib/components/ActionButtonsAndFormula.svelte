@@ -55,7 +55,7 @@
 <div class="absolute top-1 right-0">
   <!-- FORMULAE -->
   {#if formulasShown && formulas && formulas.length >= 1}
-    <div class="mr-2 grid gap-1 bg-white/80 backdrop-blur-md p-2 rounded-md shadow-sm">
+    <div class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
       {#each formulas as formula}
         {#key formula.stringFormula}
           <LatexUI latex={formula.stringFormula} />
