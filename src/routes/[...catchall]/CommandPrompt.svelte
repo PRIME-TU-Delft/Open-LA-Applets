@@ -43,7 +43,6 @@
     }, {} as Record<string, File[]>);
 
   function reset() {
-    console.log('reset');
     showPreview = false;
     openApplets = new Set<string>([]);
   }
