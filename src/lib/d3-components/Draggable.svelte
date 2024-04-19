@@ -16,6 +16,7 @@
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function dragstarted(_: DragEvent) {
+    isActive.enable();
     select(g).raise();
     select(g).attr('cursor', 'grabbing');
   }
