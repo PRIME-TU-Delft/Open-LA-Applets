@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import ActionButtons from '$lib/components/ActionButtons.svelte';
+  import ActionButtonsAndFormula from '$lib/components/ActionButtonsAndFormula.svelte';
   import ControllerAndActivityPanel from '$lib/components/ControllerAndActivityPanel.svelte';
   import { isActive } from '$lib/stores/activityStore';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
@@ -31,19 +31,16 @@
     resetKey = Math.random(); // Update the key to reset the set camera component
   }
 
-  $: {
-    const params = $page.url?.searchParams;
-    title = params?.get('title') || title;
-  }
-
   function waitThenReset() {
     if (inIframe) {
       isActive.disableAfterAnd(60000, reset);
     }
   }
 
+  $: title = $globalStateStore.title ?? title;
   $: inIframe = $globalStateStore.inIframe ?? inIframe;
 
+  // Derived state
   $: inIframe && isActive.reset();
   $: !inIframe && isActive.enable();
 
@@ -77,39 +74,33 @@
     on:mouseenter={isActive.removeTimeOut}
     on:mouseleave={waitThenReset}
   >
-    <!-- THRELTE SCENE -->
+    <!-- THRELTE/D3 SCENE (centre) -->
     {#key resetKey}
       <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3">
         <slot {width} {height} {resetKey} />
       </div>
     {/key}
 
-    <!-- TITLE PANEL -->
+    <!-- TITLE PANEL (top-left) -->
     {#if title && $isInset}
       <div class="absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
     {/if}
 
-    <!-- Controller PANEL / Activity panel  -->
+    <!-- CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0}
       <ControllerAndActivityPanel on:reset={reset} bind:controls />
     {:else}
       <ActivityPanel />
     {/if}
 
-    <!-- ACTION BUTTONS -->
-    <ActionButtons {formulas} on:reset={reset} />
+    <!-- ACTION BUTTONS / FORMULAE (top-right) -->
+    <ActionButtonsAndFormula bind:showFormulas={showFormulasDefault} {formulas} on:reset={reset} />
   </div>
-
-  <!-- SHARE WINDOW -->
 </div>
 
 <style lang="postcss">
-  :global(html:has(.inIframe)) {
-    background: white;
-  }
-
   .outerWrapper.active {
     @apply from-blue-400 to-blue-500;
   }
