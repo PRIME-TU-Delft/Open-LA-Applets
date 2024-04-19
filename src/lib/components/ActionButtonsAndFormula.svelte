@@ -56,9 +56,11 @@
 <div class="absolute top-1 right-0">
   <!-- FORMULAE -->
   {#if formulasShown}
-    <div class="flex">
+    <div class="flex justify-end">
       {#if formulas && formulas.length >= 1}
-        <div class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
+        <div
+          class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs"
+        >
           {#each formulas as formula}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
@@ -68,7 +70,7 @@
       {/if}
 
       {#if splitFormulas && splitFormulas.length >= 1}
-        <div class="grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
+        <div class="grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs">
           {#each splitFormulas as formula}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />

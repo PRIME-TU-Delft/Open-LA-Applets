@@ -53,7 +53,7 @@
   $: te3Latex = splitFormulas.get(2).clone().stripInvalid();
 </script>
 
-<Canvas2D {formulas} {splitFormulas} splitCanvas3DProps={{ cameraZoom: 100 }}>
+<Canvas2D showFormulasDefault {formulas} {splitFormulas} splitCanvas3DProps={{ cameraZoom: 100 }}>
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue} let:endPoint>
     <Latex2D
