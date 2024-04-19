@@ -18,6 +18,7 @@
   export let showFormulasDefault = false;
   export let inIframe = false; // Is the scene inside an iframe?
   export let formulas: Formula[] = [];
+  export let splitFormulas: Formula[] = [];
 
   let resetKey = Math.random();
   let height = 0;
@@ -107,6 +108,7 @@
     <ActionButtonsAndFormula
       bind:showFormulas={showFormulasDefault}
       {formulas}
+      {splitFormulas}
       {controls}
       on:reset={reset}
     />

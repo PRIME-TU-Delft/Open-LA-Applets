@@ -19,6 +19,7 @@
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
+  export let splitFormulas: Formula[] = [];
 
   export let title = '';
   export let background = '#ffffff';
@@ -39,6 +40,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
+  {splitFormulas}
   {inIframe}
   let:width
   let:height

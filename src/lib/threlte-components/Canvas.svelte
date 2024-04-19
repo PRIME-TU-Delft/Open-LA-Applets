@@ -38,6 +38,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
+  {splitFormulas}
   {inIframe}
   let:width
   let:height

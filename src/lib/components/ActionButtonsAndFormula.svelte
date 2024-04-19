@@ -23,6 +23,7 @@
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
   export let formulas: Formula[] = [];
+  export let splitFormulas: Formula[] = [];
   export let controls: Controls<G> | undefined = undefined;
   export let showFormulas = false;
 
@@ -54,13 +55,27 @@
 
 <div class="absolute top-1 right-0">
   <!-- FORMULAE -->
-  {#if formulasShown && formulas && formulas.length >= 1}
-    <div class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
-      {#each formulas as formula}
-        {#key formula.stringFormula}
-          <LatexUI latex={formula.stringFormula} />
-        {/key}
-      {/each}
+  {#if formulasShown}
+    <div class="flex">
+      {#if formulas && formulas.length >= 1}
+        <div class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
+          {#each formulas as formula}
+            {#key formula.stringFormula}
+              <LatexUI latex={formula.stringFormula} />
+            {/key}
+          {/each}
+        </div>
+      {/if}
+
+      {#if splitFormulas && splitFormulas.length >= 1}
+        <div class="grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm">
+          {#each splitFormulas as formula}
+            {#key formula.stringFormula}
+              <LatexUI latex={formula.stringFormula} />
+            {/key}
+          {/each}
+        </div>
+      {/if}
     </div>
   {/if}
 

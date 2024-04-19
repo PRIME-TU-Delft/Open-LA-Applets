@@ -16,7 +16,7 @@ import { PrimeColor } from './PrimeColors';
  * console.log(formula.stringFormula); // The value is 10
  */
 export class Formula {
-  illegalCharacters = /&|#/g;
+  illegalCharacters = /&/g;
   stringFormula: string;
   invalidFormula = false;
   autoIndex = 0;
