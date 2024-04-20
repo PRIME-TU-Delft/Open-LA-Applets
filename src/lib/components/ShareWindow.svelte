@@ -21,8 +21,8 @@
   let urlInput: HTMLTextAreaElement;
 
   $: state = controls?.controls && getState($cameraStore);
-  $: url = $page.url?.origin + $page.url?.pathname;
-  $: refUrl = $page.url?.pathname.replace('/applet/', '');
+  $: url = $page?.url?.origin + $page.url?.pathname;
+  $: refUrl = $page?.url?.pathname.replace('/applet/', '');
   $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
   /**

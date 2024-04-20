@@ -44,7 +44,7 @@
   }
 
   $: {
-    const params = $page.url?.searchParams;
+    const params = $page?.url?.searchParams;
     title = params?.get('title') || title;
   }
 
@@ -55,7 +55,7 @@
   }
 
   onMount(() => {
-    const params = $page.url?.searchParams;
+    const params = $page?.url?.searchParams;
 
     if (controls) {
       controls = controls.fromURL(params?.get('controls') || '') || controls;
