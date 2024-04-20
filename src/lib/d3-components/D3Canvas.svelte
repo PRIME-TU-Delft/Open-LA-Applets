@@ -18,6 +18,7 @@
   export let height: Canvas2DProps['height'];
   export let tickLength: Canvas2DProps['tickLength'] = 30;
   export let gridType: Canvas2DProps['gridType'] = GridType.Square;
+  export let showAxisNumbers = true;
 
   const id = 'canvas-' + generateUUID();
 
@@ -90,8 +91,9 @@
           (2 * vmax)) /
           30})"
       >
+        <slot />
         <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-          <Axis length={tickLength} {gridType} />
+          <Axis {showAxisNumbers} length={tickLength} {gridType} />
           <slot />
         </g>
       </g>
