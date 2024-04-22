@@ -4,7 +4,7 @@
   import type { Canvas2DProps } from '$lib/d3-components';
   import D3Canvas from '$lib/d3-components/D3Canvas.svelte';
   import type { Controls } from '$lib/utils/Controls';
-  import type { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
   import type { Canvas3DProps } from '.';
@@ -21,6 +21,7 @@
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
+  export let splitFormulas: Formula[] = [];
 
   export let title = '';
   export let background = '#ffffff';
@@ -37,6 +38,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
+  {splitFormulas}
   {inIframe}
   let:width
   let:height

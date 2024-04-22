@@ -45,7 +45,7 @@
 {#if showUrlIframe == url}
   <iframe
     {title}
-    class="w-full h-96 bg-white rounded"
+    class="w-full h-[30rem] bg-white rounded"
     src={url + '?iframe=true'}
     frameborder="0"
     allowfullscreen

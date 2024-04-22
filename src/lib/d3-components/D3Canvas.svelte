@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { GridType } from './grids/GridTypes';
-  import { select, zoom as zoomD3, type Selection, type BaseType } from 'd3';
-  import { onDestroy, onMount } from 'svelte';
-  import Axis from './Axis.svelte';
-  import { isActive } from '$lib/stores/activityStore';
-  import { Vector2 } from 'three';
-  import type { Canvas2DProps } from '.';
   import { page } from '$app/stores';
-  import { setPosition, setZoom } from '$lib/utils/parseUrl';
+  import { isActive } from '$lib/stores/activityStore';
   import { cameraStore, type Camera2DState } from '$lib/stores/cameraStore';
+  import { setPosition, setZoom } from '$lib/utils/parseUrl';
   import { debounce } from '$lib/utils/timeDelay';
+  import { select, zoom as zoomD3, type BaseType, type Selection } from 'd3';
+  import { onMount } from 'svelte';
+  import { Vector2 } from 'three';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
+  import type { Canvas2DProps } from '.';
+  import Axis from './Axis.svelte';
+  import { GridType } from './grids/GridTypes';
 
   export let cameraPosition: Canvas2DProps['cameraPosition'] = new Vector2(0, 0);
   export let cameraZoom: Canvas2DProps['cameraZoom'] = 1;
@@ -19,7 +20,7 @@
   export let gridType: Canvas2DProps['gridType'] = GridType.Square;
   export let showAxisNumbers = true;
 
-  const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
+  const id = 'canvas-' + generateUUID();
 
   $: vmax = Math.max(width, height);
 

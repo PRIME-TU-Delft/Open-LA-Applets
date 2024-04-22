@@ -1,12 +1,11 @@
 <script lang="ts">
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
   import { Controls } from '$lib/utils/Controls';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
   let controls = Controls.addSlider(4.5, 3, 6).addSlider(6, 4, 8);
-  let formulas: Formula[] = [];
 
   $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(controls[0]);
   $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(controls[1]));
@@ -15,17 +14,19 @@
   $: v_len = Math.sqrt(controls[0] * controls[0] + controls[1] * controls[1]);
 
   function setFormulas(c0: number, c1: number, len: number) {
-    const f1 = new Formula('OQ = \\$', c0, PrimeColor.raspberry);
-    const f2 = new Formula('QA = \\$', c0, PrimeColor.yellow);
-    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
+    const f1 = new Formula('OQ &= \\$', c0, PrimeColor.raspberry);
+    const f2 = new Formula('QA &= \\$', c0, PrimeColor.yellow);
+    const f3 = new Formula('OA &= || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
       .addParam(1, c0, PrimeColor.raspberry)
       .addParam(2, c1, PrimeColor.yellow);
-    const f4 = new Formula('OA =  \\$', len, PrimeColor.blue);
+    const f4 = new Formula('OA &=  \\$', len, PrimeColor.blue);
 
-    formulas = [f1, f2, f3, f4];
+    const formulas = new Formulas(f1, f2, f3, f4).align();
+
+    return formulas;
   }
 
-  $: setFormulas(controls[0], controls[1], v_len);
+  $: formulas = setFormulas(controls[0], controls[1], v_len);
 </script>
 
 <Canvas3D bind:controls {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
