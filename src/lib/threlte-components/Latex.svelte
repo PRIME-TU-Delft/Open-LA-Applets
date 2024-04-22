@@ -24,7 +24,7 @@
     try {
       // For reference: https://katex.org/docs/options.html
       str = katex.renderToString(latex, {
-        displayMode: false,
+        displayMode: true,
         leqno: false,
         fleqn: false,
         throwOnError: true,

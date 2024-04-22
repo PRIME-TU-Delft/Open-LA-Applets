@@ -78,7 +78,7 @@
   <!-- θ -->
   <Angle vs={[new Vector3(0, 1, 0), c]} size={2} />
   <Latex3D
-    latex={'\\theta'}
+    latex={String.raw`\theta`}
     position={c
       .clone()
       .normalize()
@@ -92,6 +92,35 @@
   <Plane
     position={[c.x + controls[1] / 2, c.y, c.z + controls[0] / 2]}
     size={[controls[1], controls[0]]}
+  />
+
+  <!-- A x B -->
+  <Vector3D
+    direction={new Vector3(0, 1, 0)}
+    length={controls[0] * controls[1]}
+    color={PrimeColor.raspberry}
+  />
+  <Latex3D
+    latex={String.raw`a \times b`}
+    position={new Vector3(0, 1, 0).multiplyScalar(controls[0] * controls[1] * 0.75)}
+    offset={0}
+    hasBackground
+  />
+
+  <!-- h  -->
+  <Vector3D
+    origin={new Vector3(controls[1] * 0.75, 0, controls[0] * 0.75)}
+    direction={new Vector3(0, 1, 0)}
+    length={c.y}
+    color={PrimeColor.raspberry}
+    hideHead
+  />
+  <Latex3D
+    latex={'h'}
+    position={new Vector3(controls[1] * 0.75, c.y / 2, controls[0] * 0.75)}
+    offset={0}
+    color={PrimeColor.raspberry}
+    hasBackground
   />
 
   <!-- Helper Vectors -->
@@ -118,9 +147,4 @@
     color={PrimeColor.yellow}
   />
   <Point3D position={new Vector3(controls[1], 0, controls[0])} color={PrimeColor.yellow} />
-
-  <Latex3D
-    latex={'\\mathcal{V}'}
-    position={new Vector3(controls[1] / 2, c.y / 2 - 0.2, controls[0] / 2)}
-  />
 </Canvas3D>
