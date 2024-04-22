@@ -3,8 +3,8 @@
   import Konami from '$lib/components/Konami.svelte';
   import type { Canvas2DProps } from '$lib/d3-components';
   import D3Canvas from '$lib/d3-components/D3Canvas.svelte';
-  import type { Controls } from '$lib/utils/Controls';
-  import { Formula, Formulas } from '$lib/utils/Formulas';
+  import type { Controls, Controller } from '$lib/utils/Controls';
+  import { Formula } from '$lib/utils/Formulas';
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
   import type { Canvas3DProps } from '.';
