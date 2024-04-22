@@ -44,8 +44,8 @@
   }
 
   function setFormulas(b: boolean) {
-    const plus = ' | \\mathbf{v} + \\mathbf{w} |';
-    const min = '|\\mathbf{v} - \\mathbf{w}|';
+    const plus = ' | \\mathbf{v + w} |';
+    const min = '|\\mathbf{v - w}|';
     if (b) {
       const f3 = new Formula('{\\$1} = \\$2')
         .addParam(1, plus, PrimeColor.raspberry)
