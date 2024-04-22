@@ -5,7 +5,7 @@
   import RightAngle from '$lib/d3-components/RightAngle.svelte';
 
   //vars for static section
-  let o_static = new Vector2(-4, -1);
+  let o_static = new Vector2(-1.5, 0);
 
   let w_static = new Vector2(1.5, 3);
   let v_static = new Vector2(2, -1);

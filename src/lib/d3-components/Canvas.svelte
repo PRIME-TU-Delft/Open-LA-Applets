@@ -54,7 +54,7 @@
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
-    <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps}>
+    <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps} {cameraZoom} {gridType}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {:else if $$slots.splitCanvas3d}
