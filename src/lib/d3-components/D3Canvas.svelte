@@ -22,7 +22,7 @@
 
   const id = 'canvas-' + generateUUID();
 
-  $: vmax = Math.max(width, height);
+  $: vmin = Math.min(width, height);
 
   const debounceCameraStore = debounce((state: Partial<Camera2DState>) => {
     cameraStore.updatePartialState(state);
@@ -87,8 +87,8 @@
   <g>
     <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
       <g
-        transform="translate({width / 2}, {height / 2}) scale({(2 * vmax) / 30}, {(-1 *
-          (2 * vmax)) /
+        transform="translate({width / 2}, {height / 2}) scale({(2 * vmin) / 30}, {(-1 *
+          (2 * vmin)) /
           30})"
       >
         <slot />

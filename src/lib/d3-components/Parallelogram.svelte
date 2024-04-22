@@ -4,6 +4,7 @@
   export let points: [Vector2, Vector2, Vector2];
   export let color: string = 'black';
   export let strokeWidth: number = 1;
+  export let opacity: number = 1;
 
   $: [a, b, c] = points.map((p) => p.toArray().join(','));
 
@@ -14,4 +15,10 @@
   This component is used to draw a parallelogram in 2D. It needs three points to be defined and will automatically calculate the fourth point.
  -->
 
-<polygon fill={color} stroke="black" stroke-width={strokeWidth * 0.05} points="{a} {b} {d} {c} " />
+<polygon
+  fill={color}
+  stroke="black"
+  stroke-width={strokeWidth * 0.05}
+  {opacity}
+  points="{a} {b} {d} {c} "
+/>
