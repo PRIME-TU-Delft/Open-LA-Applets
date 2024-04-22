@@ -20,7 +20,7 @@ export const SimpleCanvas = {
 export const FullHeaderCanvas = {
   args: {
     title: 'Full header example',
-    isIframe: true,
+    inIframe: true,
     formulas: [new Formula('3x = y')],
     showFormulasDefault: true,
     sliders: sliders

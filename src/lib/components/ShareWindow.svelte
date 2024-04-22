@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { cameraStore, type CameraState } from '$lib/stores/cameraStore';
   import { page } from '$app/stores';
   import Icon from '$lib/components/Icon.svelte';
   import * as Accordion from '$lib/components/ui/accordion';
@@ -9,8 +10,6 @@
   import { Textarea } from '$lib/components/ui/textarea';
   import type { Controls } from '$lib/utils/Controls';
   import { mdiOpenInNew } from '@mdi/js';
-  import type { OrthographicCamera } from 'three';
-  import cameraStore from '../threlte-components/stores/cameraStore';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
 
@@ -20,26 +19,39 @@
 
   let urlInput: HTMLTextAreaElement;
 
-  $: state = controls?.controls && getState($cameraStore);
-  $: url = $page?.url?.origin + $page.url?.pathname;
-  $: refUrl = $page?.url?.pathname.replace('/applet/', '');
+  $: state = getState($cameraStore, controls);
+  $: url = $page.url?.origin + $page.url?.pathname;
+  $: refUrl = $page.url?.pathname.replace('/applet/', '');
   $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
   /**
    * Returns a string with the current state of the camera
-   * @param camera
+   * @param cameraState
    */
-  function getState(camera: OrthographicCamera): string {
-    if (!camera) return '';
+  function getState(cameraState: CameraState, controls?: Controls<G>): string {
+    if (!cameraState) return '';
 
     let stateUrlString: string[] = [];
 
-    const { position, zoom } = camera;
+    if ('position3D' in cameraState) {
+      const position = cameraState.position3D;
+      if (position)
+        stateUrlString.push(
+          `position3d=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
+        );
 
-    stateUrlString.push(
-      `position=${position.x.toFixed(2)},${position.y.toFixed(2)},${position.z.toFixed(2)}`
-    );
-    stateUrlString.push(`zoom=${zoom.toFixed(2)}`);
+      const zoom = cameraState.zoom3D;
+      if (zoom) stateUrlString.push(`zoom3d=${zoom.toFixed(2)}`);
+    }
+
+    if ('position2D' in cameraState) {
+      const position = cameraState.position2D;
+      if (position)
+        stateUrlString.push(`position2d=${position.x.toFixed(2)},${position.y.toFixed(2)}`);
+
+      const zoom = cameraState.zoom2D;
+      if (zoom) stateUrlString.push(`zoom2d=${zoom?.toFixed(2)}`);
+    }
 
     if (controls) {
       const controlsUrl = controls.toURL();

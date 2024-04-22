@@ -13,8 +13,6 @@ export { default as Vector3D } from './Vector.svelte';
 
 export { AutoPlane, PlaneFromNormal, PlaneFromPoints } from './planes/index';
 
-export { default as cameraStore } from './stores/cameraStore';
-
 type SizeCSS =
   | 'auto'
   | 'inherit'

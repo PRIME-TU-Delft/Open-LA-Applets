@@ -31,7 +31,7 @@
       <h2>Credits</h2>
       <p>
         These applets were created for the
-        <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
+        <a href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html">
           TU Delft Open Linear Algebra book
         </a>
       </p>

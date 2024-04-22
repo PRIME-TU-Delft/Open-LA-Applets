@@ -20,7 +20,7 @@ const meta = {
     background: { type: 'string', control: 'color', description: 'Background color of the canvas' },
     zoom: { type: 'number', defaultValue: 29, description: 'Default zoom level into the applet' },
     showFormulasDefault: { type: 'boolean' },
-    isIframe: { type: 'boolean' },
+    inIframe: { type: 'boolean' },
     sliders: {
       options: ['No slider', 'One slider', 'Two sliders', 'Three sliders'],
       mapping: {
@@ -53,11 +53,11 @@ export const Primairy: Story = {
 };
 
 /**
- * The main use case for these applets is to use them within the open book. The argument `isIframe` is used to indicate that the applet is used within an iframe. This will add/hide the UI elements that are needed in this context.
+ * The main use case for these applets is to use them within the open book. The argument `inIframe` is used to indicate that the applet is used within an iframe. This will add/hide the UI elements that are needed in this context.
  */
-export const IsIframe: Story = {
+export const InIframe: Story = {
   args: {
-    isIframe: true,
+    inIframe: true,
     title: 'Applet with this and that mathematical properties'
   }
 };

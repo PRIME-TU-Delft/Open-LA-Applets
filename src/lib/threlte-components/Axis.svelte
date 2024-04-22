@@ -5,7 +5,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex3D from './Latex.svelte';
   import Line from './Line.svelte';
-  import cameraStore from './stores/cameraStore';
+  import { cameraStore } from '$lib/stores/cameraStore';
 
   export let showNumbers = false;
   export let hideTicks = false;
@@ -45,8 +45,8 @@
     return [from, to];
   }
 
-  $: if (responsiveSpacing && $cameraStore) {
-    spacing = 3 / (1 + Math.floor($cameraStore.zoom / 50));
+  $: if (responsiveSpacing && $cameraStore && 'zoom3D' in $cameraStore) {
+    spacing = 3 / (1 + Math.floor($cameraStore.zoom3D / 50));
   } else {
     spacing = axisSpacing;
   }

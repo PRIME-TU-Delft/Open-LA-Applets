@@ -25,7 +25,7 @@
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let inIframe = false; // Is the scene inside an iframe?
   export let controls: Controls<G> | undefined = undefined;
   export let formulas: Formula[] = [];
 
@@ -37,7 +37,7 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  {isIframe}
+  {inIframe}
   let:width
   let:height
   let:resetKey
@@ -48,9 +48,9 @@
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
   <Canvas size={{ width: totalWidth, height }}>
-    <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={cameraZoom} />
+    <SetCamera position={cameraPosition} {enablePan} zoom={cameraZoom} />
 
-    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} debug />
+    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
 
     {#if enableEasterEgg}
       <CustomRenderer />
@@ -76,7 +76,6 @@
 
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
-          {resetKey}
           enablePan={splitCanvas3DProps?.enablePan}
           zoom={splitCanvas3DProps?.cameraZoom}
         />

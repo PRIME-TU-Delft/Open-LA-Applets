@@ -1,14 +1,14 @@
 <script lang="ts">
   import { dev } from '$app/environment';
+  import ShareWindow from '$lib/components/ShareWindow.svelte';
   import * as Button from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
+  import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
   import { mdiDelete, mdiFullscreen, mdiFullscreenExit, mdiRestart, mdiShare } from '@mdi/js';
   import screenfull from 'screenfull';
   import { createEventDispatcher } from 'svelte';
-  import ShareWindow from '$lib/components/ShareWindow.svelte';
 
   export let isFullscreen = false; // Is the scene fullscreen?
-  export let isIframe = true; // Is the scene inside an iframe?
   export let sceneEl: HTMLDivElement;
 
   let dispatch = createEventDispatcher();
@@ -16,6 +16,8 @@
   if (screenfull.isEnabled) {
     screenfull.on('change', () => {
       isFullscreen = screenfull.isFullscreen;
+
+      globalStateStore.changeState({ isFullscreen });
     });
   }
 
@@ -28,7 +30,7 @@
 
 <div
   class="bg-slate-200 rounded-lg absolute bottom-0 right-0 opacity-80 hover:opacity-100 p-1 flex gap-1 flex-col"
-  class:inset={!isIframe || isFullscreen}
+  class:inset={$isInset}
 >
   {#if dev}
     <Button.Action

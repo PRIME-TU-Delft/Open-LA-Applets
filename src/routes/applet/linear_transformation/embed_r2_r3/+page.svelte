@@ -26,7 +26,8 @@
   }
 </script>
 
-<div class="formula">
+<!-- TODO move this to formulas -->
+<div class="absolute left-1/2 top-1/3 scale-100 -translate-x-1/2 -translate-y-1/2 z-30">
   <LatexUI latex={'T(x)=\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x'} />
 </div>
 
@@ -77,14 +78,3 @@
     <Line3D points={[te2.clone().multiplyScalar(e2Length), tv.clone()]} color="black" isDashed />
   </svelte:fragment>
 </Canvas2D>
-
-<style>
-  .formula {
-    position: absolute;
-    left: 50%;
-    top: 30%;
-    scale: 1.5;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-  }
-</style>

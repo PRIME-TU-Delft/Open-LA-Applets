@@ -1,9 +1,10 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { activityStore } from '$lib/activityStore';
   import ActionButtons from '$lib/components/ActionButtons.svelte';
   import ControllerPanel from '$lib/components/ControllerPanel.svelte';
   import FormulasAndActivityPanel from '$lib/components/FormulasAndActivityPanel.svelte';
+  import { isActive } from '$lib/stores/activityStore';
+  import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
   import type { Controls } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
@@ -15,11 +16,9 @@
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let inIframe = false; // Is the scene inside an iframe?
   export let formulas: Formula[] = [];
 
-  let isPlayingSliders = false; // Are any of the sliders being changed AUTOMATIC?
-  let isChangingSliders = false; // Are any of the sliders being changed MANUALLY?
   let isFullscreen = false; // Is the scene fullscreen?
 
   let showFormulas = showFormulasDefault; // Show the formulas panel (if it exists)
@@ -40,7 +39,7 @@
 
   function pause() {
     reset();
-    activityStore.reset();
+    isActive.reset();
   }
 
   $: {
@@ -49,10 +48,15 @@
   }
 
   function waitThenReset() {
-    if (isIframe) {
-      activityStore.disableAfterAnd(60000, reset);
+    if (inIframe) {
+      isActive.disableAfterAnd(60000, reset);
     }
   }
+
+  $: inIframe = $globalStateStore.inIframe ?? inIframe;
+
+  $: inIframe && isActive.reset();
+  $: !inIframe && isActive.enable();
 
   onMount(() => {
     const params = $page?.url?.searchParams;
@@ -60,31 +64,28 @@
     if (controls) {
       controls = controls.fromURL(params?.get('controls') || '') || controls;
     }
-
-    isIframe = JSON.parse(params?.get('iframe') || 'false') || isIframe;
-
-    if (!isIframe) {
-      activityStore.enable();
-    }
   });
 
   onDestroy(() => reset);
 </script>
 
-<div class="rounded overflow-hidden h-full" bind:this={sceneEl}>
+<div
+  class="rounded-[0.5rem] overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-3"
+  class:active={$isActive}
+  bind:this={sceneEl}
+>
   <div
     role="button"
     tabindex="0"
-    class="canvasWrapper h-full border-l-4 border-slate-400"
-    class:active={$activityStore}
-    class:isIframe
+    class="canvasWrapper h-full rounded-[0.4rem]"
+    class:inIframe
     bind:clientHeight={height}
     bind:clientWidth={width}
     style="height: var(--canvas-height, 100%); background: {background}"
-    on:click={activityStore.enable}
-    on:mousedown={activityStore.enable}
-    on:keydown={activityStore.enable}
-    on:mouseenter={activityStore.removeTimeOut}
+    on:click={isActive.enable}
+    on:mousedown={isActive.enable}
+    on:keydown={isActive.enable}
+    on:mouseenter={isActive.removeTimeOut}
     on:mouseleave={waitThenReset}
   >
     <!-- THRELTE SCENE -->
@@ -95,45 +96,36 @@
     {/key}
 
     <!-- TITLE PANEL -->
-    {#if title && (!isIframe || isFullscreen)}
-      <div class="menu absolute left-2 top-2 bg-base-100 rounded-lg p-4">
+    {#if title && $isInset}
+      <div class="absolute left-2 top-2 bg-base-100 rounded-lg p-4">
         {title}
       </div>
     {/if}
 
     <!-- SLIDER PANEL -->
     {#if controls && controls.length > 0}
-      <ControllerPanel
-        isInset={!isIframe || isFullscreen}
-        bind:controls
-        bind:isPlaying={isPlayingSliders}
-        on:startChanging={() => (isChangingSliders = true)}
-        on:stopChanging={() => (isChangingSliders = false)}
-      />
+      <ControllerPanel bind:controls />
     {/if}
 
     <!-- FORMULAS AND ACTIVITY PANEL  -->
     <!-- Only show if there are formulas and (showFormulas is shown OR not an iframe OR is fullscreen) -->
 
-    <FormulasAndActivityPanel
-      {isIframe}
-      {isFullscreen}
-      {showFormulas}
-      {formulas}
-      {isChangingSliders}
-      on:pause={pause}
-    />
+    <FormulasAndActivityPanel {showFormulas} {formulas} on:pause={pause} />
 
     <!-- ACTION BUTTONS -->
-    <ActionButtons {isIframe} {sceneEl} bind:isFullscreen on:reset={reset} />
+    <ActionButtons {sceneEl} bind:isFullscreen on:reset={reset} />
   </div>
 
   <!-- SHARE WINDOW -->
 </div>
 
 <style lang="postcss">
-  :global(html:has(.isIframe)) {
+  :global(html:has(.inIframe)) {
     background: white;
+  }
+
+  .active {
+    @apply from-blue-400 to-blue-500 p-1;
   }
 
   .canvasWrapper {
@@ -141,14 +133,7 @@
     width: var(--width, 100%);
     height: var(--canvas-height, 100%);
     overflow: hidden;
-
-    &.isIframe {
-      @apply border-l-4 border-gray-400;
-
-      &.active {
-        @apply border-blue-500;
-      }
-    }
+    @apply shadow-md;
   }
 
   :global(.canvasWrapper > canvas) {

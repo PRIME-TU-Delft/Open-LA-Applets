@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { activityStore } from '$lib/activityStore';
+  import { isActive } from '$lib/stores/activityStore';
   import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { drag, select } from 'd3';
@@ -67,7 +67,7 @@
   fill={color}
   role="button"
   tabindex="0"
-  on:mousedown={activityStore.enable}
+  on:mousedown={isActive.enable}
   style="--x:{position.x}; --y:{position.y}"
 />
 <circle cx={position.x} cy={position.y} r={POINT_SIZE} fill={color} />
