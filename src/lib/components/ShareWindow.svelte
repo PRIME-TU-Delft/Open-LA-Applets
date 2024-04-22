@@ -8,7 +8,7 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import Label from '$lib/components/ui/label/label.svelte';
   import { Textarea } from '$lib/components/ui/textarea';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls, Controller } from '$lib/utils/Controls';
   import { mdiOpenInNew } from '@mdi/js';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;

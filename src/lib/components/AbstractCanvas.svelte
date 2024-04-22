@@ -4,7 +4,7 @@
   import ControllerAndActivityPanel from '$lib/components/ControllerAndActivityPanel.svelte';
   import { isActive } from '$lib/stores/activityStore';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls, Controller } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import { onDestroy, onMount } from 'svelte';
   import { generateUUID } from 'three/src/math/MathUtils.js';

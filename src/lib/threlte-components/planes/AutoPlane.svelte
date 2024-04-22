@@ -8,15 +8,18 @@
     if (!vs) return [];
 
     // group values in array of indeces [1, 1, 2, 3, 1, 3] => { 1: [0,1,4], 2: [2], 3: [3,5] }
-    const groups = vs.reduce((a, value, index) => {
-      if (value in a) {
-        a[value].push(index);
-      } else {
-        a[value] = [index];
-      }
+    const groups = vs.reduce(
+      (a, value, index) => {
+        if (value in a) {
+          a[value].push(index);
+        } else {
+          a[value] = [index];
+        }
 
-      return a;
-    }, {} as { [key: number]: number[] });
+        return a;
+      },
+      {} as { [key: number]: number[] }
+    );
 
     return vs.map((v, index) => {
       const offset = groups[v].findIndex((i) => i === index);

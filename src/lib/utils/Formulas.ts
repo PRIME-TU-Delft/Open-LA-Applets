@@ -128,8 +128,6 @@ export class Formulas extends Array<Formula> {
 
     this.push(new Formula(alignFormulas));
 
-    console.log(this);
-
     return this;
   }
 }
