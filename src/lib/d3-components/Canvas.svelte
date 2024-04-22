@@ -27,6 +27,7 @@
   export let inIframe = false;
   export let width = '100%';
   export let height = '100%';
+  export let showAxisNumbers = true;
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
   export let controls: Controls<G> | undefined = undefined;
@@ -54,7 +55,7 @@
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
-    <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps}>
+    <D3Canvas {showAxisNumbers} width={totalWidth} {height} {...splitCanvas2DProps}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {:else if $$slots.splitCanvas3d}
