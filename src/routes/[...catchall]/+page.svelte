@@ -6,6 +6,7 @@
 
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Developer' },
+    { name: 'Pauline Hengst', title: 'Developer' },
     { name: 'Julia van der Kris', title: 'Developer' },
     { name: 'Christophe Smet', title: 'Teacher' },
     { name: 'Fokko van de Bult', title: 'Teacher' },
@@ -37,9 +38,9 @@
       </p>
 
       <h3>Contributors</h3>
-      <div class="flex w-full flex-wrap justify-between gap-2">
+      <div class="columns-1 md:columns-2 gap-2">
         {#each contributors as { name, title }}
-          <div class="flex gap-2">
+          <div class="flex gap-2 mb-2">
             <div class="not-prose w-24 overflow-hidden rounded">
               <img
                 class="aspect-square object-cover"
