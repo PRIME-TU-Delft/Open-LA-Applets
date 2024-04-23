@@ -1,10 +1,9 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
-import { PrimeColor, BackgroundColors } from '$lib/utils/PrimeColors';
+import { PrimeColor } from '$lib/utils/PrimeColors';
 
 <Meta title="Colors" />
 
 <ColorPalette>
-  <ColorItem title="Background colors" subtitle="Some of the greys" colors={BackgroundColors} />
   <ColorItem title="Prime colors" subtitle="Enum of colors" colors={PrimeColor} />
 </ColorPalette>
 

@@ -3,6 +3,7 @@
 
   export let points: Vector2[];
   export let color: string = 'black';
+  export let strokeColor: string = color;
   export let strokeWidth: number = 1;
   export let opacity: number = 1;
   export let offset: Vector2 = new Vector2(0, 0);
@@ -16,7 +17,7 @@
 
 <polygon
   fill={color}
-  stroke="black"
+  stroke={strokeColor}
   stroke-width={strokeWidth * 0.05}
   {opacity}
   points={pointsJoin}

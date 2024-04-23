@@ -81,7 +81,7 @@
         href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl?.replaceAll(
           '_',
           ''
-        )}%29"
+        )}+OR+{lastUrl.split('_')[0]}%29"
       >
         <p>Go to this applet's github page here</p>
         <Icon path={mdiOpenInNew} />

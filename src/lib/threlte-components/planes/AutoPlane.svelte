@@ -28,16 +28,10 @@
     });
   }
 
-  function getColor(index: number) {
-    const colors = Object.values(PrimeColor);
-
-    return colors[index % colors.length];
-  }
-
   $: planeSegments = getPlaneSegments(values);
   $: zipValueSegments = values.map((v, i) => [v, planeSegments[i]] as [number, PlaneSegments]);
 </script>
 
 {#each zipValueSegments as [value, planeSegment], index}
-  <slot {value} {index} {planeSegment} color={getColor(index)} />
+  <slot {value} {index} {planeSegment} color={PrimeColor.getColor(index)} />
 {/each}
