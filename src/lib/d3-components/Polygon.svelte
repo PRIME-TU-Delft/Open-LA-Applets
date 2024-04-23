@@ -15,10 +15,12 @@
   This component is used to draw a poligon in 2D. It needs n points in clockwise or anti-clockwise order to be defined.
  -->
 
-<polygon
-  fill={color}
-  stroke={strokeColor}
-  stroke-width={strokeWidth * 0.05}
-  {opacity}
-  points={pointsJoin}
-/>
+{#key strokeWidth + opacity}
+  <polygon
+    fill={color}
+    stroke={strokeColor}
+    stroke-width={strokeWidth * 0.05}
+    {opacity}
+    points={pointsJoin}
+  />
+{/key}
