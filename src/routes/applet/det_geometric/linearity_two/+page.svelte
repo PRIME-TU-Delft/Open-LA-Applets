@@ -6,7 +6,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  let controls = Controls.addSlider(1.1, 0, 4, 0.1, PrimeColor.raspberry, 'Animation', () => '');
+  let controls = Controls.addSlider(0, 0, 4, 0.1, PrimeColor.raspberry, 'Animation', () => '');
 
   const clamp = (number: number, min: number, max: number) => Math.max(min, Math.min(number, max));
 
