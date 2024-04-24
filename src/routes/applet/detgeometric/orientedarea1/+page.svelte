@@ -3,16 +3,19 @@
   import Draggable from '$lib/d3-components/Draggable.svelte';
   import Parallelogram from '$lib/d3-components/Parallelogram.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
+  import { Vector2, Vector3 } from 'three';
   import RightScene from './RightScene.svelte';
 
-  let u = new Vector2(2, -0.5);
+  let u = new Vector2(3, 1);
   let v = new Vector2(0.5, 2);
 
   $: C = u.clone().add(v);
 </script>
 
-<Canvas2D splitCanvas3DProps={{ cameraZoom: 50 }} showAxisNumbers={false}>
+<Canvas2D
+  splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new Vector3(5.79, 14.65, 7.2) }}
+  showAxisNumbers={false}
+>
   <Parallelogram points={[new Vector2(0, 0), u, v]} color={PrimeColor.yellow} />
 
   <!-- U & V -->
