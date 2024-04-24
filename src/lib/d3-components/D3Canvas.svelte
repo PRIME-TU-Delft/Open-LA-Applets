@@ -89,7 +89,6 @@
           (2 * width)) /
           30})"
       >
-        <slot />
         <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
           <Axis {showAxisNumbers} length={tickLength} {gridType} />
           <slot />
