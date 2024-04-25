@@ -81,6 +81,9 @@ importers:
       '@storybook/addon-svelte-csf':
         specifier: ^4.1.2
         version: 4.1.2(@storybook/svelte@8.0.9(svelte@4.2.15))(@sveltejs/vite-plugin-svelte@3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.12.7)(less@4.2.0)(terser@5.30.3)))(svelte@4.2.15)(vite@5.2.9(@types/node@20.12.7)(less@4.2.0)(terser@5.30.3))
+      '@storybook/addon-themes':
+        specifier: ^8.0.9
+        version: 8.0.9
       '@storybook/blocks':
         specifier: ^8.0.9
         version: 8.0.9(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1477,6 +1480,9 @@ packages:
         optional: true
       vite:
         optional: true
+
+  '@storybook/addon-themes@8.0.9':
+    resolution: {integrity: sha512-aAbKIT//bqKbMeRLKtVStwndi+XrYxeg94tDKTFrIv2W1It6QJlO/5FMjI+cgtHHBi6w/4ThKDYwjupasaBdlg==}
 
   '@storybook/addon-toolbars@8.0.9':
     resolution: {integrity: sha512-nNSBnnBOhQ+EJwkrIkK4ZBYPcozNmEH770CZ/6NK85SUJ6WEBZapE6ru33jIUokFGEvlOlNCeai0GUc++cQP8w==}
@@ -6498,6 +6504,10 @@ snapshots:
       vite: 5.2.9(@types/node@20.12.7)(less@4.2.0)(terser@5.30.3)
     transitivePeerDependencies:
       - babel-plugin-macros
+
+  '@storybook/addon-themes@8.0.9':
+    dependencies:
+      ts-dedent: 2.2.0
 
   '@storybook/addon-toolbars@8.0.9': {}
 
