@@ -10,10 +10,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write .",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --only-changed --project-token=chpt_7ac438918371f8a"
+    "format": "prettier --plugin-search-dir . --write ."
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
@@ -37,18 +34,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.17",
-    "@storybook/addon-interactions": "^7.6.17",
-    "@storybook/addon-links": "^7.6.17",
-    "@storybook/addon-mdx-gfm": "^7.6.17",
-    "@storybook/addon-svelte-csf": "^4.1.2",
-    "@storybook/addon-themes": "^8.0.9",
-    "@storybook/blocks": "^7.6.17",
-    "@storybook/icons": "^1.2.9",
-    "@storybook/node-logger": "^8.0.9",
-    "@storybook/svelte": "^7.6.17",
-    "@storybook/sveltekit": "^7.6.17",
-    "@storybook/testing-library": "0.0.14-next.2",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-netlify": "^3.0.0",
     "@sveltejs/adapter-node": "^2.0.0",
@@ -63,7 +48,6 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.19",
-    "chromatic": "^10.9.6",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-storybook": "^0.6.15",
@@ -71,9 +55,6 @@
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "storybook": "^7.6.17",
     "svelte": "^4.2.14",
     "svelte-check": "^3.6.9",
     "three": "^0.161.0",
