@@ -71,7 +71,7 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
     label?: string,
     valueFn?: (v: number) => string
   ) {
-    const colors = PrimeColor.asArray()
+    const colors = PrimeColor.asArray();
     const sliderColor = color || colors[this.length % colors.length];
 
     const newSlider = new Slider(dft, from, to, step, sliderColor, label, valueFn);

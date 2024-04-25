@@ -5,7 +5,7 @@ export type ColorString = `#${string}`;
 // The ordering of the colors in this enum matters, applets in chapter 'lines and planes' are colored by order.
 export class PrimeColor {
   static raspberry: ColorString = '#A50034';
-  static yellow: ColorString = '#FFB81C'
+  static yellow: ColorString = '#FFB81C';
   static darkGreen: ColorString = '#009B77';
   static blue: ColorString = '#0076C2';
   static black: ColorString = '#565656';
@@ -13,7 +13,7 @@ export class PrimeColor {
   static cyan: ColorString = '#00A6D6';
 
   // Opacity is a value between 0 and 1
-  static opacity(opacity: number): string { 
+  static opacity(opacity: number): string {
     return Math.round(opacity * 255).toString(16);
   }
 
@@ -21,13 +21,13 @@ export class PrimeColor {
     return Object.values(PrimeColor);
   }
 
-  static getRandomColor(): ColorString { 
+  static getRandomColor(): ColorString {
     const colors = Object.values(PrimeColor);
     const randomIndex = Math.round(Math.random() * colors.length);
     return colors[randomIndex];
   }
 
-  static getColor(index: number): ColorString { 
+  static getColor(index: number): ColorString {
     const colors = Object.values(PrimeColor);
     return colors[index % colors.length];
   }
