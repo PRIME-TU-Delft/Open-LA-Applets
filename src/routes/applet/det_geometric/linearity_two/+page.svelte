@@ -2,11 +2,12 @@
   import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
   import Point from '$lib/d3-components/Point.svelte';
   import Polygon from '$lib/d3-components/Polygon.svelte';
+  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { Controls } from '$lib/utils/Controls';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  let controls = Controls.addSlider(0, 0, 3.5, 0.1, PrimeColor.raspberry, 'Animation', () => '');
+  let controls = Controls.addSlider(0, 0, 3.5, 0.1, PrimeColor.raspberry);
 
   const clamp = (number: number, min: number, max: number) => Math.max(min, Math.min(number, max));
 
@@ -131,6 +132,11 @@
   <Point position={uw} />
   <Point position={uvw} />
   <Point position={vw} />
+  <Point position={uv} radius={POINT_SIZE * 0.75} />
+  <Point position={v} radius={POINT_SIZE * 0.75} />
+  <Point position={w} radius={POINT_SIZE * 0.75} />
+  <Point position={o} radius={POINT_SIZE * 0.75} />
+  <Point position={u} radius={POINT_SIZE * 0.75} />
 
   <Latex2D latex={'A'} position={u} offset={new Vector2(0.15, 0.3)} />
   <Latex2D latex={'B'} position={w} offset={new Vector2(-0.1, -0.2)} />
@@ -146,11 +152,11 @@
       position={uv.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.2, -0.1)}
     />
-  {:else if controls[0] > 2}
+  {:else if controls[0] >= 2}
     <Latex2D
       latex={'OAEG'}
       position={uvw.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.2, -0.1)}
+      offset={new Vector2(-0.2, 0.2)}
     />
   {/if}
 

@@ -5,7 +5,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  let controls = Controls.addSlider(0, 0, 1, 0.1, PrimeColor.raspberry, 'Animation', () => '');
+  let controls = Controls.addSlider(0, 0, 1, 0.1, PrimeColor.raspberry);
 
   // Primitives
   const o = new Vector2(0, 0);
@@ -132,6 +132,7 @@
     length={vw.length()}
     color={PrimeColor.black}
     isDashed
+    hideHead
     radius={0.04}
   />
 
