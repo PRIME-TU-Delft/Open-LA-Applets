@@ -5,7 +5,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  let controls = Controls.addSlider(0, 0, 1, 0.1, PrimeColor.raspberry);
+  let controls = Controls.addSlider(0, 0, 1.5, 0.1, PrimeColor.raspberry);
 
   // Primitives
   const o = new Vector2(0, 0);
@@ -32,34 +32,36 @@
 </script>
 
 <Canvas2D bind:controls showAxisNumbers={false}>
-  <!-- Polygons -->
-  <Polygon points={OAIC} color={PrimeColor.raspberry} opacity={0.2} />
+  <!-- MARK: Polygons -->
   <Polygon
-    points={CIDE}
-    color={tick > 0.5 ? PrimeColor.raspberry : PrimeColor.blue}
+    points={OAIC}
+    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.raspberry}
     opacity={0.2}
   />
+  <Polygon points={CIDE} color={tick > 0.5 ? PrimeColor.orange : PrimeColor.blue} opacity={0.2} />
 
   <Polygon
-    offset={u.clone().multiplyScalar(-tick)}
+    offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
     points={ABI}
-    color={PrimeColor.raspberry}
+    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.raspberry}
+    strokeWidth={0}
     opacity={0.2}
   />
   <Polygon
-    offset={u.clone().multiplyScalar(-tick)}
+    offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
     points={BDI}
-    color={tick > 0.5 ? PrimeColor.raspberry : PrimeColor.blue}
+    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.blue}
+    strokeWidth={0}
     opacity={0.2}
   />
 
-  <!-- U, V, W, V +W -->
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.raspberry} />
+  <!-- MARK: U, V, W, V +W -->
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.orange} />
   <Latex2D
     latex={String.raw`\mathbf{u}`}
     position={u.clone().multiplyScalar(0.5)}
     offset={new Vector2(0, -0.1)}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.orange}
   />
 
   <Vector2D direction={v} length={v.length()} color={PrimeColor.raspberry} />
@@ -70,12 +72,12 @@
     color={PrimeColor.raspberry}
   />
 
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.raspberry} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.blue} />
   <Latex2D
     latex={String.raw`\mathbf{w}`}
     position={w.clone().multiplyScalar(0.5)}
     offset={new Vector2(-0.1, -0.2)}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.blue}
   />
 
   <Vector2D direction={vw} length={vw.length()} color={PrimeColor.darkGreen} />
