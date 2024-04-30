@@ -5,12 +5,12 @@
   import { Controls } from '$lib/utils/Controls';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
+  import { BackSide, FrontSide, Vector3 } from 'three';
 
   let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, '||a||')
     .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, '||b||')
     .addSlider(0.5, 0, 1, 0.1, PrimeColor.darkGreen, 'θ', (v) => (v / Math.PI).toFixed(2))
-    .addToggle(false, '\\text{Fill}');
+    .addToggle(true, '\\text{Fill}');
 
   function getC(theta: number, length: number = 3) {
     let c = new Vector3(0, 1, 0);
@@ -19,7 +19,7 @@
     return c;
   }
 
-  function getFomulas(c0: number, c1: number, c2: number, a: Vector3, b: Vector3, c: Vector3) {
+  function getFomulas(a: Vector3, b: Vector3, c: Vector3, c2: number) {
     const height = c.y;
     const axb = a.clone().cross(b);
 
@@ -42,13 +42,13 @@
   $: a = new Vector3(0, 0, 1).setLength(controls[0]);
   $: b = new Vector3(1, 0, 0.25).setLength(controls[1]);
   $: c = getC(controls[2]);
-  $: formulas = getFomulas(controls[0], controls[1], controls[2], a, b, c);
+  $: formulas = getFomulas(a, b, c, controls[2]);
 </script>
 
 <Canvas3D bind:controls {formulas} cameraPosition={new Vector3(-13.52, 5.17, 9.53)} cameraZoom={50}>
   <Axis3D showNumbers responsiveSpacing={false} />
 
-  <!-- A -->
+  <!-- MARK: A -->
   <Vector3D direction={a} length={controls[0]} color={PrimeColor.blue} />
   <Latex3D
     latex={'a'}
@@ -58,7 +58,7 @@
   />
   <Latex3D latex={'A'} position={a.clone().add(new Vector3(0, -0.25, 0))} />
 
-  <!-- B -->
+  <!-- MARK: B -->
   <Vector3D direction={b} length={controls[1]} color={PrimeColor.cyan} />
   <Latex3D
     latex={'b'}
@@ -68,7 +68,7 @@
   />
   <Latex3D latex={'B'} position={b.clone().add(new Vector3(0, 0.25, 0))} />
 
-  <!-- C -->
+  <!-- MARK: C -->
   <Vector3D direction={c} length={c.length()} color={PrimeColor.darkGreen} />
   <Latex3D
     latex={'c'}
@@ -88,7 +88,7 @@
       .add(new Vector3(0, -0.25, 0))}
   />
 
-  <!-- θ -->
+  <!-- MARK: θ -->
   <Angle vs={[new Vector3(0, 1, 0), c]} size={2} />
   <Latex3D
     latex={String.raw`\theta`}
@@ -100,12 +100,61 @@
       .multiplyScalar(2)}
   />
 
-  <!-- Planes -->
-  {#if !controls[3]}
-    <Parallelogram points={[o, a, b]} color={PrimeColor.blue} strokeColor={PrimeColor.blue} />
+  <!-- MARK: Planes -->
+  <Parallelogram
+    points={[o, a, b]}
+    color={PrimeColor.blue}
+    opacity={0.5}
+    strokeWidth={0.5}
+    strokeColor={PrimeColor.blue}
+  />
+  <Parallelogram
+    offset={c}
+    points={[o, a, b]}
+    color={PrimeColor.blue}
+    opacity={0.5}
+    strokeWidth={0.5}
+    strokeColor={PrimeColor.blue}
+  />
+
+  {#if controls[3]}
+    <Parallelogram
+      points={[o, a, c]}
+      color={PrimeColor.yellow}
+      opacity={0.25}
+      strokeWidth={0.5}
+      strokeColor={PrimeColor.yellow}
+      side={BackSide}
+    />
+    <Parallelogram
+      points={[o, a, c]}
+      offset={b}
+      color={PrimeColor.yellow}
+      opacity={0.25}
+      strokeWidth={0.5}
+      strokeColor={PrimeColor.yellow}
+      side={FrontSide}
+    />
+    <Parallelogram
+      points={[o, b, c]}
+      color={PrimeColor.yellow}
+      opacity={0.25}
+      strokeWidth={0.5}
+      strokeColor={PrimeColor.yellow}
+      side={FrontSide}
+    />
+    <Parallelogram
+      points={[o, b, c]}
+      offset={a}
+      color={PrimeColor.yellow}
+      opacity={0.25}
+      strokeWidth={0.5}
+      strokeColor={PrimeColor.yellow}
+      side={BackSide}
+    />
   {/if}
 
-  <!-- A x B -->
+  <!-- MARK: A x B -->
   <Vector3D
     direction={new Vector3(0, 1, 0)}
     length={a.clone().cross(b).length()}
@@ -119,9 +168,9 @@
     hasBackground
   />
 
-  <!-- h  -->
+  <!-- MARK: h  -->
   <Vector3D
-    origin={new Vector3(controls[1] * 0.75, 0, controls[0] * 0.75)}
+    origin={new Vector3(-0.25, 0, -0.25)}
     direction={new Vector3(0, 1, 0)}
     length={c.y}
     color={PrimeColor.raspberry}
@@ -129,19 +178,37 @@
   />
   <Latex3D
     latex={'h'}
-    position={new Vector3(controls[1] * 0.75, c.y / 2, controls[0] * 0.75)}
+    position={new Vector3(-0.25, c.y / 2, -0.25)}
     offset={0}
     color={PrimeColor.raspberry}
     hasBackground
   />
 
-  <!-- Helper Vectors -->
-  <Vector3D origin={a} direction={c} length={c.length()} color={PrimeColor.yellow} />
+  <!-- MARK: Helper Vectors -->
+  <!-- From c to h -->
+  <Vector3D
+    origin={c}
+    direction={new Vector3(-c.x - 0.25, 0, -c.z - 0.25)}
+    length={new Vector3(-c.x - 0.25, 0, -c.z - 0.25).length()}
+    color={PrimeColor.black}
+    radius={0.025}
+    striped
+    hideHead
+  />
+
+  <!-- Yellow vectors -->
+  <Vector3D origin={a} direction={c} length={c.length()} color={PrimeColor.yellow} hideHead />
   <Point3D position={a} color={PrimeColor.yellow} />
 
-  <Vector3D origin={b} direction={c} length={c.length()} color={PrimeColor.yellow} />
+  <Vector3D origin={b} direction={c} length={c.length()} color={PrimeColor.yellow} hideHead />
   <Point3D position={b} color={PrimeColor.yellow} />
 
-  <Vector3D origin={a.clone().add(b)} direction={c} length={c.length()} color={PrimeColor.yellow} />
+  <Vector3D
+    origin={a.clone().add(b)}
+    direction={c}
+    length={c.length()}
+    color={PrimeColor.yellow}
+    hideHead
+  />
   <Point3D position={a.clone().add(b)} color={PrimeColor.yellow} />
 </Canvas3D>
