@@ -1,11 +1,16 @@
 <script lang="ts">
-  import { GridType } from './grids/GridTypes';
-  import { select, zoom as zoomD3, type Selection, type BaseType } from 'd3';
+  import { page } from '$app/stores';
+  import { isActive } from '$lib/stores/activityStore';
+  import { cameraStore, type Camera2DState } from '$lib/stores/cameraStore';
+  import { setPosition, setZoom } from '$lib/utils/parseUrl';
+  import { debounce } from '$lib/utils/timeDelay';
+  import { select, zoom as zoomD3, type BaseType, type Selection } from 'd3';
   import { onMount } from 'svelte';
-  import Axis from './Axis.svelte';
-  import { activityStore } from '$lib/activityStore';
   import { Vector2 } from 'three';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
   import type { Canvas2DProps } from '.';
+  import Axis from './Axis.svelte';
+  import { GridType } from './grids/GridTypes';
 
   export let cameraPosition: Canvas2DProps['cameraPosition'] = new Vector2(0, 0);
   export let cameraZoom: Canvas2DProps['cameraZoom'] = 1;
@@ -13,15 +18,28 @@
   export let height: Canvas2DProps['height'];
   export let tickLength: Canvas2DProps['tickLength'] = 30;
   export let gridType: Canvas2DProps['gridType'] = GridType.Square;
+  export let showAxisNumbers = true;
 
-  const id = 'canvas-' + Math.random().toString(36).substr(2, 9);
+  const id = 'canvas-' + generateUUID();
 
   $: vmax = Math.max(width, height);
 
+  const debounceCameraStore = debounce((state: Partial<Camera2DState>) => {
+    cameraStore.updatePartialState(state);
+  }, 1000);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleZoom(element: SVGSVGElement & { transform: any }) {
-    if ($activityStore) {
-      select(`#${id} g`).attr('transform', element.transform);
+  function handleZoom(element: SVGSVGElement & { transform: { k: number; x: number; y: number } }) {
+    if ($isActive) {
+      const { transform } = element;
+
+      const state = {
+        zoom2D: transform.k
+      };
+
+      debounceCameraStore(state);
+
+      select(`#${id} g`).attr('transform', element.transform?.toString());
     }
   }
 
@@ -38,6 +56,28 @@
 
   onMount(() => {
     select(`#${id}`).call(zoomProtocol);
+
+    const url = $page?.url;
+
+    if (!url) return;
+
+    setPosition(url.searchParams);
+
+    // Set the zoom level for the camera
+    setZoom(url.searchParams);
+
+    debounceCameraStore({ position2D: cameraPosition, zoom2D: cameraZoom });
+
+    if (!$cameraStore) return;
+
+    if ('position2D' in $cameraStore) cameraPosition = $cameraStore.position2D;
+
+    if ('zoom2D' in $cameraStore) cameraZoom = $cameraStore.zoom2D;
+
+    return () => {
+      cameraPosition = new Vector2(0, 0);
+      cameraZoom = 1.5;
+    };
   });
 </script>
 
@@ -52,7 +92,7 @@
           30})"
       >
         <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-          <Axis length={tickLength} {gridType} />
+          <Axis {showAxisNumbers} length={tickLength} {gridType} />
           <slot />
         </g>
       </g>

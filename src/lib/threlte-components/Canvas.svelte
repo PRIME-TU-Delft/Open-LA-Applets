@@ -4,7 +4,7 @@
   import type { Canvas2DProps } from '$lib/d3-components';
   import D3Canvas from '$lib/d3-components/D3Canvas.svelte';
   import type { Controls } from '$lib/utils/Controls';
-  import type { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { Canvas, T } from '@threlte/core';
   import { Vector3 } from 'three';
   import type { Canvas3DProps } from '.';
@@ -21,11 +21,12 @@
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
+  export let splitFormulas: Formula[] = [];
 
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
-  export let isIframe = false; // Is the scene inside an iframe?
+  export let inIframe = false; // Is the scene inside an iframe?
   export let controls: Controls<G> | undefined = undefined;
   export let formulas: Formula[] = [];
 
@@ -37,7 +38,8 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  {isIframe}
+  {splitFormulas}
+  {inIframe}
   let:width
   let:height
   let:resetKey
@@ -48,9 +50,9 @@
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
 
   <Canvas size={{ width: totalWidth, height }}>
-    <SetCamera position={cameraPosition} {resetKey} {enablePan} zoom={cameraZoom} />
+    <SetCamera position={cameraPosition} {enablePan} zoom={cameraZoom} />
 
-    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} debug />
+    <Konami on:konami={() => (enableEasterEgg = !enableEasterEgg)} />
 
     {#if enableEasterEgg}
       <CustomRenderer />
@@ -76,7 +78,6 @@
 
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
-          {resetKey}
           enablePan={splitCanvas3DProps?.enablePan}
           zoom={splitCanvas3DProps?.cameraZoom}
         />

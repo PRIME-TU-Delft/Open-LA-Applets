@@ -1,4 +1,5 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
+import { globalStateStore } from './globalStateStore';
 
 /**
  * Store for enabling/disabling orbitcontroller
@@ -15,7 +16,12 @@ function createActivityStore() {
      * Enable orbitcontroller and clear any current timeouts
      */
     enable: () => {
+      if (get(globalStateStore).isActive) {
+        return;
+      }
+
       clearInterval(timeOut);
+      globalStateStore.changeState({ isActive: true });
       set(true); // Set activity to true
     },
 
@@ -28,6 +34,7 @@ function createActivityStore() {
       clearTimeout(timeOut);
       timeOut = setTimeout(() => {
         fn?.();
+        globalStateStore.changeState({ isActive: false });
         set(false);
       }, ms);
     },
@@ -37,7 +44,7 @@ function createActivityStore() {
      * @param ms milliseconds to wait before disabling
      */
     disableAfter: (ms: number) => {
-      activityStore.disableAfterAnd(ms); // Disable and do nothing
+      isActive.disableAfterAnd(ms); // Disable and do nothing
     },
 
     /**
@@ -56,10 +63,11 @@ function createActivityStore() {
      */
     reset: () => {
       requestAnimationFrame(() => {
+        globalStateStore.changeState({ isActive: false });
         set(false); // Reset activity to false
       });
     }
   };
 }
 
-export const activityStore = createActivityStore();
+export const isActive = createActivityStore();

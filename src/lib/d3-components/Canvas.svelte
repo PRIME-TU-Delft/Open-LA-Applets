@@ -19,14 +19,16 @@
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
+  export let splitFormulas: Formula[] = [];
 
   export let title = '';
   export let background = '#ffffff';
   export let showFormulasDefault = false;
   export let formulas: Formula[] = [];
-  export let isIframe = false;
+  export let inIframe = false;
   export let width = '100%';
   export let height = '100%';
+  export let showAxisNumbers = true;
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
   export let controls: Controls<G> | undefined = undefined;
@@ -39,22 +41,21 @@
   {background}
   {showFormulasDefault}
   {formulas}
-  {isIframe}
+  {splitFormulas}
+  {inIframe}
   let:width
   let:height
-  let:resetKey
   bind:controls
   --canvas-height={height}
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
-
   <D3Canvas {tickLength} {cameraPosition} {cameraZoom} width={totalWidth} {height} {gridType}>
     <slot />
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
-    <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps}>
+    <D3Canvas {showAxisNumbers} width={totalWidth} {height} {...splitCanvas2DProps}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {:else if $$slots.splitCanvas3d}
@@ -68,7 +69,6 @@
 
         <SetCamera
           position={splitCanvas3DProps?.cameraPosition}
-          {resetKey}
           enablePan={splitCanvas3DProps?.enablePan}
           zoom={splitCanvas3DProps?.cameraZoom}
         />
