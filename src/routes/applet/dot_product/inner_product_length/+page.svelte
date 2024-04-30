@@ -46,7 +46,10 @@
   <Vector3D direction={v_a} color={PrimeColor.blue} length={v_len} />
   <Latex3D
     latex={'\\mathbf{v}'}
-    position={v_a.clone().multiplyScalar(0.5).add(new Vector3(-0.7, -0.7, 0))}
+    position={v_a
+      .clone()
+      .multiplyScalar(0.5)
+      .add(new Vector3(-0.7, -0.7, 0))}
     color={PrimeColor.blue}
   />
 

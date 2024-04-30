@@ -16,7 +16,7 @@
 
 <!-- draw two lines to represent right angle if perpendicular -->
 
-{#if Math.abs(u1.dot(u2)) <= 0.005&& !u1.equals(u2)}
+{#if Math.abs(u1.dot(u2)) <= 0.005 && !u1.equals(u2)}
   <Line
     {color}
     width={lineWidth}
