@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import katex from 'katex';
-  import { primeColorArray } from '$lib/utils/PrimeColors';
 
   export let latex = '';
   export let params: (string | number)[] = [];
-  export let colors: string[] = primeColorArray;
+  export let colors: string[] = PrimeColor.asArray();
 
   let str = '';
 

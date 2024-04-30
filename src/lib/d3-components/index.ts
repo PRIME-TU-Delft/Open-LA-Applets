@@ -20,4 +20,5 @@ export type Canvas2DProps = {
   height: number;
   tickLength: number;
   gridType: GridType;
+  showAxisNumbers: boolean;
 };

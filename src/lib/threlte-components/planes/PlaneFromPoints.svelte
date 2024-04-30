@@ -2,7 +2,7 @@
   import { T, useThrelte } from '@threlte/core';
   import { DoubleSide, MeshBasicMaterial, Plane, Vector3 } from 'three';
 
-  import getRandomColor from '$lib/utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import PlaneSegments from '$lib/utils/Segments';
 
   export let points: [Vector3, Vector3, Vector3] = [
@@ -10,7 +10,7 @@
     new Vector3(0, 1, 0),
     new Vector3(0, 0, 1)
   ];
-  export let color = getRandomColor();
+  export let color = PrimeColor.getRandomColor();
   export let size = 10;
   export let opacity = 0.8;
   export let planeSegment = PlaneSegments.default();
