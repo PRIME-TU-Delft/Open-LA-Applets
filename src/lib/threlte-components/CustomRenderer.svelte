@@ -3,9 +3,9 @@
   import { Grid, Sky, Stars } from '@threlte/extras';
   import { onMount } from 'svelte';
   import { Camera, Vector2 } from 'three';
-  import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-  import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-  import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+  import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+  import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+  import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
   export let elevation = 0;
   export let azimuth = 250;

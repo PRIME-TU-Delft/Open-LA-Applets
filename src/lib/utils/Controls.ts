@@ -45,7 +45,7 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
   }
 
   isAllowedToAddControl(control: Controller<number | boolean>) {
-    if (this._width + control.width >= this.MAX_WIDTH) {
+    if (this._width + control.width > this.MAX_WIDTH) {
       throw new Error(
         `Controls width exceeded: ${this._width + control.width} > ${this.MAX_WIDTH}`
       );

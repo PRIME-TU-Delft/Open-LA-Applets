@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { BufferAttribute, BufferGeometry, LineSegments, type Vector3 } from 'three';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
+  import { BufferAttribute, BufferGeometry, type Vector3 } from 'three';
   import { Line3D } from '.';
 
   export let points: [Vector3, Vector3, Vector3];
-  export let color: string = 'black';
+  export let color: string = PrimeColor.black;
   export let strokeWidth: number = 1;
+  export let strokeColor: string = PrimeColor.black;
 
   $: p3 = points[1].clone().add(points[2]).sub(points[0]);
 
@@ -32,7 +34,7 @@
   <T.MeshBasicMaterial {color} />
 </T.Mesh>
 
-<Line3D points={[points[0], points[1]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[points[0], points[2]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[p3, points[1]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[p3, points[2]]} radius={strokeWidth * 0.05} color="black" />
+<Line3D points={[points[0], points[1]]} radius={strokeWidth * 0.05} color={strokeColor} />
+<Line3D points={[points[0], points[2]]} radius={strokeWidth * 0.05} color={strokeColor} />
+<Line3D points={[p3, points[1]]} radius={strokeWidth * 0.05} color={strokeColor} />
+<Line3D points={[p3, points[2]]} radius={strokeWidth * 0.05} color={strokeColor} />
