@@ -30,47 +30,47 @@
   const OAEG = [o, u, uvw, vw]; // OAEG
   const CGEF = [v, vw, uvw, uv]; // CGEF
 
-  // Substract
+  // Subtract
   const OBDA = [o, w, uw, u]; // OBDA / CGEF
 </script>
 
 <Canvas2D bind:controls showAxisNumbers={false}>
-  <!-- Polygons -->
+  <!-- MARK: Polygons -->
   {#if controls[0] < 1}
     <Polygon
       points={OAFC}
-      color={PrimeColor.raspberry + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.raspberry}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
   {:else if controls[0] < 2}
     <Polygon
       points={OAFCG}
-      color={PrimeColor.raspberry + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.raspberry}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
 
     <Polygon
       points={OGC}
       offset={u.clone().multiplyScalar(clamp(controls[0] - 1, 0, 1))}
-      color={PrimeColor.raspberry + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.raspberry}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
   {:else}
     <Polygon
       points={CGEF}
-      color={PrimeColor.raspberry + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.raspberry}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
       opacity={3 - controls[0]}
     />
 
     <Polygon
       points={OAEG}
-      color={PrimeColor.raspberry + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.raspberry}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
   {/if}
@@ -78,38 +78,38 @@
   <Polygon
     points={OBDA}
     offset={v.clone().multiplyScalar(Math.min(1, controls[0]))}
-    color={PrimeColor.blue + PrimeColor.opacity(0.2)}
-    strokeColor={PrimeColor.blue}
+    color={PrimeColor.raspberry + PrimeColor.opacity(0.2)}
+    strokeColor={PrimeColor.raspberry}
     strokeWidth={0.75}
     opacity={3 - controls[0]}
   />
 
-  <!-- U, V, W, V +W -->
-  <Vector2D direction={u} length={u.length()} color={PrimeColor.raspberry} />
+  <!-- MARK: U, V, W, V + W -->
+  <Vector2D direction={u} length={u.length()} color={PrimeColor.orange} />
   <Latex2D
     latex={String.raw`\mathbf{u}`}
     position={u.clone().multiplyScalar(0.5)}
     offset={new Vector2(0, -0.1)}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.orange}
   />
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.raspberry} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex2D
     latex={String.raw`\mathbf{v}`}
     position={v.clone().multiplyScalar(0.5)}
     offset={new Vector2(0, -0.1)}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.blue}
   />
 
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.blue} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.raspberry} />
   <Latex2D
     latex={String.raw`\mathbf{w}`}
     position={w.clone().multiplyScalar(0.5)}
     offset={new Vector2(0, -0.1)}
-    color={PrimeColor.blue}
+    color={PrimeColor.raspberry}
   />
 
-  <!-- VW -->
+  <!-- MARK: VW -->
   {#if controls[0] > 1}
     <Vector2D direction={vw} length={vw.length()} color={PrimeColor.darkGreen} />
     <Latex2D
@@ -128,7 +128,7 @@
     />
   {/if}
 
-  <!-- LABELS A-G -->
+  <!-- MARK: LABELS A-G -->
   <Point position={uw} />
   <Point position={uvw} />
   <Point position={vw} />
