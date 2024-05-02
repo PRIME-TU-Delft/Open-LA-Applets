@@ -39,29 +39,29 @@
   {#if controls[0] < 1}
     <Polygon
       points={OAFC}
-      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.blue}
+      color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
+      strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
   {:else if controls[0] < 2}
     <Polygon
       points={OAFCG}
-      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.blue}
+      color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
+      strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
 
     <Polygon
       points={OGC}
       offset={u.clone().multiplyScalar(clamp(controls[0] - 1, 0, 1))}
-      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
-      strokeColor={PrimeColor.blue}
+      color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
+      strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
   {:else}
     <Polygon
       points={CGEF}
-      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      color={PrimeColor.blue + PrimeColor.opacity(0.2)}
       strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
       opacity={3 - controls[0]}
@@ -69,7 +69,7 @@
 
     <Polygon
       points={OAEG}
-      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
+      color={(controls[0] > 2 ? PrimeColor.blue : PrimeColor.darkGreen) + PrimeColor.opacity(0.1)}
       strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
@@ -93,12 +93,12 @@
     color={PrimeColor.orange}
   />
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.darkGreen} />
   <Latex2D
     latex={String.raw`\mathbf{v}`}
     position={v.clone().multiplyScalar(0.5)}
     offset={new Vector2(0, -0.1)}
-    color={PrimeColor.blue}
+    color={PrimeColor.darkGreen}
   />
 
   <Vector2D direction={w} length={w.length()} color={PrimeColor.raspberry} />
@@ -111,21 +111,15 @@
 
   <!-- MARK: VW -->
   {#if controls[0] > 1}
-    <Vector2D direction={vw} length={vw.length()} color={PrimeColor.darkGreen} />
+    <Vector2D direction={vw} length={vw.length()} color={PrimeColor.blue} />
     <Latex2D
       latex={String.raw`\mathbf{v+w}`}
       position={vw.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.8, 0.3)}
-      color={PrimeColor.darkGreen}
+      color={PrimeColor.blue}
     />
 
-    <Vector2D
-      origin={u}
-      direction={vw}
-      length={vw.length()}
-      color={PrimeColor.darkGreen}
-      hideHead
-    />
+    <Vector2D origin={u} direction={vw} length={vw.length()} color={PrimeColor.blue} hideHead />
   {/if}
 
   <!-- MARK: LABELS A-G -->
