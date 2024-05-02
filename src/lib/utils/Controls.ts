@@ -1,4 +1,4 @@
-import { primeColorArray, type PrimeColor } from './PrimeColors';
+import { PrimeColor, type ColorString } from './PrimeColors';
 import { Slider } from './Slider';
 import { Toggle } from './Toggle';
 
@@ -45,7 +45,7 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
   }
 
   isAllowedToAddControl(control: Controller<number | boolean>) {
-    if (this._width + control.width >= this.MAX_WIDTH) {
+    if (this._width + control.width > this.MAX_WIDTH) {
       throw new Error(
         `Controls width exceeded: ${this._width + control.width} > ${this.MAX_WIDTH}`
       );
@@ -67,11 +67,12 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
     from?: number,
     to?: number,
     step?: number,
-    color?: PrimeColor,
+    color?: ColorString,
     label?: string,
     valueFn?: (v: number) => string
   ) {
-    const sliderColor = color || primeColorArray[this.length % primeColorArray.length];
+    const colors = PrimeColor.asArray();
+    const sliderColor = color || colors[this.length % colors.length];
 
     const newSlider = new Slider(dft, from, to, step, sliderColor, label, valueFn);
 
@@ -82,6 +83,13 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
 
   /**
    * Static method to create set Controls<T> to a new slider
+   * @param dft - default value for the slider default is 0
+   * @param from - from value, default is -1
+   * @param to - to value, default is 1
+   * @param step - step size, default is 0.1
+   * @param color - color for the slider default is raspberry
+   * @param label - label for the slider
+   * @param valueFn - function to format the value
    * @returns
    */
   static addSlider(
@@ -89,31 +97,36 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
     from?: number,
     to?: number,
     step?: number,
-    color?: PrimeColor,
+    color: ColorString = PrimeColor.getColor(0),
     label?: string,
     valueFn?: (v: number) => string
   ) {
-    const newSlider = new Slider(dft, from, to, step, color || primeColorArray[0], label, valueFn);
+    const newSlider = new Slider(dft, from, to, step, color, label, valueFn);
     return new Controls([newSlider] as const, newSlider.width);
   }
 
   /**
    * Add a new toggle to the toggles array
    * @param dft - default value for the toggle default is false
+   * @param title - title for the toggle
+   * @param color - color for the toggle default is raspberry
    * @returns this
    */
-  addToggle(dft: boolean, title?: string, color?: PrimeColor) {
-    const newToggle = new Toggle(dft, title, color || primeColorArray[0]);
+  addToggle(dft: boolean, title?: string, color: ColorString = PrimeColor.getColor(0)) {
+    const newToggle = new Toggle(dft, title, color);
     this.isAllowedToAddControl(newToggle);
     return new Controls([...this.controls, newToggle] as const, this._width + newToggle.width);
   }
 
   /**
    * Static method to create set Controls<T> to a new toggle
+   * @param dft - default value for the toggle default is false
+   * @param title - title for the toggle
+   * @param color - color for the toggle default is raspberry
    * @returns
    */
-  static addToggle(dft: boolean, title?: string, color?: PrimeColor) {
-    const newToggle = new Toggle(dft, title, color || primeColorArray[0]);
+  static addToggle(dft: boolean, title?: string, color: ColorString = PrimeColor.getColor(0)) {
+    const newToggle = new Toggle(dft, title, color);
     return new Controls([newToggle] as const, newToggle.width);
   }
 

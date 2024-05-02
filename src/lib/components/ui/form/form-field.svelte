@@ -1,14 +1,8 @@
-<script lang="ts" context="module">
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  import type { FormPath, SuperForm } from 'sveltekit-superforms';
-  type T = Record<string, unknown>;
-  type U = unknown;
-</script>
-
 <script lang="ts">
   import { cn } from '$lib/utils.js';
   import * as FormPrimitive from 'formsnap';
   import type { HTMLAttributes } from 'svelte/elements';
+  import type { FormPath, SuperForm } from 'sveltekit-superforms';
 
   type T = $$Generic<Record<string, unknown>>;
   type U = $$Generic<FormPath<T>>;
