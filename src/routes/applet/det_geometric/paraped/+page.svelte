@@ -26,14 +26,22 @@
     const f1 = new Formula('h &= ||\\mathbf{c}||\\cdot \\cos(\\$1\\pi) = \\$2')
       .addAutoParam((c2 / Math.PI).toFixed(2), PrimeColor.darkGreen)
       .addAutoParam(height.toFixed(2), PrimeColor.raspberry);
-    const f2 = new Formula('\\mathcal{A}&= \\text{area}(OABC) \\\\ &= ||\\$1 \\times \\$2|| = \\$3')
+    const f2 = new Formula(
+      '\\mathcal{\\$4}&= \\text{area}(OP\\thinspace QR) \\\\ &= ||\\$1 \\times \\$2|| = \\$3'
+    )
       .addAutoParam('a', PrimeColor.blue)
       .addAutoParam('b', PrimeColor.cyan)
-      .addAutoParam(axb.length().toFixed(2), PrimeColor.blue);
-    const f3 = new Formula('\\mathcal{V} &= h \\cdot \\mathcal{A} = \\$1 \\cdot \\$2 = \\$3')
+      .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
+      .addAutoParam('A', PrimeColor.blue);
+    const f3 = new Formula(
+      '\\mathcal{\\$4} &= \\$5 \\cdot \\mathcal{\\$6} = \\$1 \\cdot \\$2 = \\$3'
+    )
       .addAutoParam(height.toFixed(2), PrimeColor.raspberry)
-      .addAutoParam(axb.length().toFixed(2), PrimeColor.blue)
-      .addAutoParam((height * axb.length()).toFixed(1), PrimeColor.darkGreen);
+      .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
+      .addAutoParam((height * axb.length()).toFixed(1), PrimeColor.darkGreen)
+      .addAutoParam('V', PrimeColor.yellow)
+      .addAutoParam('h', PrimeColor.raspberry)
+      .addAutoParam('A', PrimeColor.blue);
 
     return new Formulas(f1, f2, f3).align();
   }
@@ -56,7 +64,7 @@
     color={PrimeColor.blue}
     hasBackground
   />
-  <Latex3D latex={'A'} position={a.clone().add(new Vector3(0, -0.25, 0))} />
+  <Latex3D latex={'P'} position={a.clone().add(new Vector3(0, -0.25, 0))} />
 
   <!-- MARK: B -->
   <Vector3D direction={b} length={controls[1]} color={PrimeColor.cyan} />
@@ -66,7 +74,7 @@
     color={PrimeColor.cyan}
     hasBackground
   />
-  <Latex3D latex={'B'} position={b.clone().add(new Vector3(0, 0.25, 0))} />
+  <Latex3D latex={'R'} position={b.clone().add(new Vector3(0, 0.25, 0))} />
 
   <!-- MARK: C -->
   <Vector3D direction={c} length={c.length()} color={PrimeColor.darkGreen} />
@@ -81,7 +89,7 @@
     color={PrimeColor.darkGreen}
   />
   <Latex3D
-    latex={'C'}
+    latex={'Q'}
     position={a
       .clone()
       .add(b)
