@@ -14,7 +14,7 @@
   const proj_v3 = u.clone().projectOnVector(v3);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(10, 10, 17)} cameraZoom={50}>
+<Canvas3D cameraPosition={new Vector3(3.24, 10.17, 19.37)} cameraZoom={50}>
   <!-- MARK: V1 & V2 -->
   <Vector3D direction={v1} length={v1.length()} color={PrimeColor.black} />
   <Latex3D latex={String.raw`\mathbf{v_1}`} position={v1} color={PrimeColor.black} />
@@ -45,6 +45,7 @@
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_1}}\mathbf{u}`}
     position={proj_v1}
+    offset={0.5}
     color={PrimeColor.raspberry}
   />
 
@@ -57,6 +58,7 @@
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_2}}\mathbf{u}`}
     position={proj_v2}
+    offset={0.5}
     color={PrimeColor.raspberry}
   />
 
@@ -111,6 +113,15 @@
     origin={new Vector3(0, u.y, 0)}
     direction={new Vector3(u.x, 0, u.z)}
     length={new Vector3(u.x, 0, u.z).length()}
+    color={PrimeColor.black}
+    hideHead
+    striped
+  />
+
+  <Vector
+    origin={new Vector3(u.x, 0, u.z)}
+    direction={new Vector3(0, u.y, 0)}
+    length={u.y}
     color={PrimeColor.black}
     hideHead
     striped
