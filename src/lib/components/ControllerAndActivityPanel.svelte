@@ -1,7 +1,7 @@
 <script lang="ts">
   import { isActive } from '$lib/stores/activityStore';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls, Controller } from '$lib/utils/Controls';
   import { Slider } from '$lib/utils/Slider';
   import { Toggle } from '$lib/utils/Toggle';
   import { mdiPause, mdiRestart } from '@mdi/js';

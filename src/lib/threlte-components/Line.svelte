@@ -1,10 +1,10 @@
 <script lang="ts">
-  import getRandomColor from '$lib/utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { BufferGeometry, Line, Vector3 } from 'three';
   import Line2 from './Line2.svelte';
 
-  export let color: string = getRandomColor();
+  export let color: string = PrimeColor.getRandomColor();
   export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
   export let isDashed = false;
   export let radius: number | undefined = undefined;

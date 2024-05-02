@@ -8,6 +8,7 @@
   export let position = new Vector3(0, 0, 0);
   export let size = 1;
   export let offset = 0.25;
+  export let hasBackground = false;
 
   let str = '';
 
@@ -40,22 +41,20 @@
   }
 </script>
 
-<HTML position={[pos.x, pos.y, pos.z]}>
-  <!-- Mousedown|preventDefault is here to stop user from interacting with labels via the mouse (i.e. dragging) -->
-  <button on:mousedown|preventDefault class="latex" style="color: {color}; font-size: {size}rem">
+<HTML center occlude position={[pos.x, pos.y, pos.z]} pointerEvents="none">
+  <div
+    class="select-none pointer-events-none"
+    class:hasBackground
+    style="color: {color}; font-size: {size}rem;"
+  >
     <!-- html insertion is allowed because data is never modified by end-user -->
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html str}
-  </button>
+  </div>
 </HTML>
 
-<style>
-  .latex {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    user-select: none;
-    pointer-events: none;
+<style lang="postcss">
+  .hasBackground {
+    @apply px-1 rounded-lg bg-slate-50/30 backdrop-blur-sm;
   }
 </style>

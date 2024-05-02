@@ -1,13 +1,26 @@
 <script lang="ts">
-  import { BufferAttribute, BufferGeometry, LineSegments, type Vector3 } from 'three';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
+  import {
+    BufferAttribute,
+    BufferGeometry,
+    DoubleSide,
+    type FrontSide,
+    type BackSide,
+    Vector3
+  } from 'three';
   import { Line3D } from '.';
 
   export let points: [Vector3, Vector3, Vector3];
-  export let color: string = 'black';
+  export let offset: Vector3 = new Vector3();
+  export let color: string = PrimeColor.black;
   export let strokeWidth: number = 1;
+  export let strokeColor: string = PrimeColor.black;
+  export let opacity = 1;
+  export let side: typeof FrontSide | typeof BackSide | typeof DoubleSide = DoubleSide;
 
-  $: p3 = points[1].clone().add(points[2]).sub(points[0]);
+  $: offsetPoints = points.map((point) => point.clone().add(offset));
+  $: p3 = offsetPoints[1].clone().add(offsetPoints[2]).sub(offsetPoints[0]);
 
   let geometry = new BufferGeometry();
 
@@ -19,20 +32,28 @@
     );
     geometry.setAttribute('position', new BufferAttribute(vertices, 3));
 
-    const indices = new Uint16Array([0, 1, 2, 0, 2, 3, 0, 3, 1, 1, 3, 2]);
+    const indices = new Uint16Array([0, 2, 3, 0, 3, 1]);
     geometry.setIndex(new BufferAttribute(indices, 1));
 
     return geometry;
   }
 
-  $: geometry = setGeometry(points[0], points[1], points[2]);
+  $: geometry = setGeometry(offsetPoints[0], offsetPoints[1], offsetPoints[2]);
 </script>
 
 <T.Mesh {geometry}>
-  <T.MeshBasicMaterial {color} />
+  <T.MeshBasicMaterial {side} {color} transparent={opacity < 1} {opacity} />
 </T.Mesh>
 
-<Line3D points={[points[0], points[1]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[points[0], points[2]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[p3, points[1]]} radius={strokeWidth * 0.05} color="black" />
-<Line3D points={[p3, points[2]]} radius={strokeWidth * 0.05} color="black" />
+<Line3D
+  points={[offsetPoints[0], offsetPoints[1]]}
+  radius={strokeWidth * 0.05}
+  color={strokeColor}
+/>
+<Line3D
+  points={[offsetPoints[0], offsetPoints[2]]}
+  radius={strokeWidth * 0.05}
+  color={strokeColor}
+/>
+<Line3D points={[p3, offsetPoints[1]]} radius={strokeWidth * 0.05} color={strokeColor} />
+<Line3D points={[p3, offsetPoints[2]]} radius={strokeWidth * 0.05} color={strokeColor} />

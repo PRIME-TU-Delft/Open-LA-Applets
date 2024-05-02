@@ -6,7 +6,7 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Tooltip from '$lib/components/ui/tooltip';
   import { globalStateStore, isInset } from '$lib/stores/globalStateStore';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls, Controller } from '$lib/utils/Controls';
   import type { Formula } from '$lib/utils/Formulas';
   import {
     mdiDelete,

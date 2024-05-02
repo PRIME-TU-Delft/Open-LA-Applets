@@ -8,7 +8,7 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import Label from '$lib/components/ui/label/label.svelte';
   import { Textarea } from '$lib/components/ui/textarea';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls, Controller } from '$lib/utils/Controls';
   import { mdiOpenInNew } from '@mdi/js';
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
@@ -20,7 +20,7 @@
   let urlInput: HTMLTextAreaElement;
 
   $: state = getState($cameraStore, controls);
-  $: url = $page?.url?.origin + $page.url?.pathname;
+  $: url = $page?.url?.origin + $page?.url?.pathname;
   $: refUrl = $page?.url?.pathname.replace('/applet/', '');
   $: lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
@@ -81,7 +81,7 @@
         href="https://github.com/PRIME-TU-Delft/turborepo-visuals/issues?q=is%3Aissue+%28{lastUrl}+OR+{lastUrl?.replaceAll(
           '_',
           ''
-        )}%29"
+        )}+OR+{lastUrl.split('_')[0]}%29"
       >
         <p>Go to this applet's github page here</p>
         <Icon path={mdiOpenInNew} />
