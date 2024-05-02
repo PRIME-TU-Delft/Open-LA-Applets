@@ -1,5 +1,5 @@
 <script>
-  import { Canvas3D, Latex3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
+  import { Canvas3D, Latex3D, PlaneFromNormal, Point3D, Vector3D } from '$lib/threlte-components';
   import Vector from '$lib/threlte-components/Vector.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
@@ -29,7 +29,7 @@
   <!-- U_v_perp -->
   <Vector3D direction={new Vector3(0, 1, 0)} length={u.y} color={PrimeColor.orange} />
   <Latex3D
-    latex={String.raw`\mathbf{u}_{\mathcal{V}\perp}`}
+    latex={String.raw`\mathbf{u}_{\mathcal{V}^{\perp}}`}
     position={new Vector3(0, u.y, 0)}
     offset={0.3}
     color={PrimeColor.orange}
@@ -42,11 +42,13 @@
     color={PrimeColor.raspberry}
     alwaysOnTop
   />
+  <Point3D position={proj_v1} color={PrimeColor.raspberry} />
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_1}}\mathbf{u}`}
     position={proj_v1}
-    offset={0.5}
+    offset={0.75}
     color={PrimeColor.raspberry}
+    hasBackground
   />
 
   <Vector3D
@@ -55,11 +57,13 @@
     color={PrimeColor.raspberry}
     alwaysOnTop
   />
+  <Point3D position={proj_v2} color={PrimeColor.raspberry} />
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_2}}\mathbf{u}`}
     position={proj_v2}
-    offset={0.5}
+    offset={0.75}
     color={PrimeColor.raspberry}
+    hasBackground
   />
 
   <Vector3D
