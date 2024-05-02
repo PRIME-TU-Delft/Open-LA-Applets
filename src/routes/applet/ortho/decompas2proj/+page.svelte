@@ -15,18 +15,27 @@
 </script>
 
 <Canvas3D cameraPosition={new Vector3(10, 10, 17)} cameraZoom={50}>
-  <!-- V1 & V2 -->
+  <!-- MARK: V1 & V2 -->
   <Vector3D direction={v1} length={v1.length()} color={PrimeColor.black} />
   <Latex3D latex={String.raw`\mathbf{v_1}`} position={v1} color={PrimeColor.black} />
 
   <Vector3D direction={v2} length={v2.length()} color={PrimeColor.black} />
   <Latex3D latex={String.raw`\mathbf{v_2}`} position={v2} color={PrimeColor.black} />
 
-  <!-- U -->
+  <!-- MARK: U & U_v -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />
   <Latex3D latex={String.raw`\mathbf{u}`} position={u} color={PrimeColor.blue} />
 
-  <!-- Proj v1 & v2 -->
+  <!-- U_v_perp -->
+  <Vector3D direction={new Vector3(0, 1, 0)} length={u.y} color={PrimeColor.orange} />
+  <Latex3D
+    latex={String.raw`\mathbf{u}_{\mathcal{V}\perp}`}
+    position={new Vector3(0, u.y, 0)}
+    offset={0.3}
+    color={PrimeColor.orange}
+  />
+
+  <!-- MARK: Proj v1 & v2 -->
   <Vector3D
     direction={proj_v1}
     length={proj_v1.length()}
@@ -63,7 +72,7 @@
     color={PrimeColor.raspberry}
   />
 
-  <!-- Helper vectors -->
+  <!-- MARK: Helper vectors -->
   <Vector3D
     origin={proj_v1}
     direction={proj_v2}
@@ -98,7 +107,16 @@
     striped
   />
 
-  <!-- V -->
+  <Vector
+    origin={new Vector3(0, u.y, 0)}
+    direction={new Vector3(u.x, 0, u.z)}
+    length={new Vector3(u.x, 0, u.z).length()}
+    color={PrimeColor.black}
+    hideHead
+    striped
+  />
+
+  <!-- MARK: V -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.darkGreen} />
   <Latex3D
     latex={String.raw`\mathcal{V}`}
