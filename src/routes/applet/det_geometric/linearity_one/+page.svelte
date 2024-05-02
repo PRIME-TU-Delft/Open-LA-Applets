@@ -35,22 +35,26 @@
   <!-- MARK: Polygons -->
   <Polygon
     points={OAIC}
-    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.raspberry}
+    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.darkGreen}
     opacity={0.2}
   />
-  <Polygon points={CIDE} color={tick > 0.5 ? PrimeColor.orange : PrimeColor.blue} opacity={0.2} />
+  <Polygon
+    points={CIDE}
+    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.raspberry}
+    opacity={0.2}
+  />
 
   <Polygon
     offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
     points={ABI}
-    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.raspberry}
+    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.darkGreen}
     strokeWidth={0}
     opacity={0.2}
   />
   <Polygon
     offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
     points={BDI}
-    color={tick > 0.5 ? PrimeColor.orange : PrimeColor.blue}
+    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.raspberry}
     strokeWidth={0}
     opacity={0.2}
   />
@@ -64,36 +68,36 @@
     color={PrimeColor.orange}
   />
 
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.raspberry} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.darkGreen} />
   <Latex2D
     latex={String.raw`\mathbf{v}`}
     position={v.clone().multiplyScalar(0.5)}
     offset={new Vector2(0.1, -0.1)}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.darkGreen}
   />
 
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.blue} />
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.raspberry} />
   <Latex2D
     latex={String.raw`\mathbf{w}`}
     position={w.clone().multiplyScalar(0.5)}
     offset={new Vector2(-0.1, -0.2)}
-    color={PrimeColor.blue}
+    color={PrimeColor.raspberry}
   />
 
-  <Vector2D direction={vw} length={vw.length()} color={PrimeColor.darkGreen} />
+  <Vector2D direction={vw} length={vw.length()} color={PrimeColor.blue} />
   <Latex2D
     latex={String.raw`\mathbf{v + w}`}
     position={vw.clone().multiplyScalar(0.5)}
     offset={new Vector2(-1, 0.2)}
-    color={PrimeColor.darkGreen}
+    color={PrimeColor.blue}
   />
 
-  <!-- U + V -->
+  <!-- MARK: U + V -->
   <Vector2D
     origin={u}
     direction={v}
     length={v.length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.darkGreen}
     hideHead
     radius={0.04}
   />
@@ -101,19 +105,17 @@
     origin={v}
     direction={u}
     length={u.length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.orange}
     hideHead
     radius={0.04}
   />
 
   <!-- CBDE -->
-  <Vector2D origin={v} direction={w} length={w.length()} color={PrimeColor.blue} radius={0.04} />
-
   <Vector2D
-    origin={vw}
-    direction={u}
-    length={u.length()}
-    color={PrimeColor.blue}
+    origin={v}
+    direction={w}
+    length={w.length()}
+    color={PrimeColor.raspberry}
     radius={0.04}
     hideHead
   />
@@ -122,23 +124,30 @@
     origin={vw}
     direction={u}
     length={u.length()}
-    color={PrimeColor.blue}
+    color={PrimeColor.orange}
     radius={0.04}
     hideHead
   />
 
-  <Vector2D origin={uv} direction={w} length={w.length()} color={PrimeColor.blue} radius={0.04} />
+  <Vector2D
+    origin={uv}
+    direction={w}
+    length={w.length()}
+    color={PrimeColor.raspberry}
+    radius={0.04}
+    hideHead
+  />
   <Vector2D
     origin={u}
     direction={vw}
     length={vw.length()}
-    color={PrimeColor.black}
+    color={PrimeColor.blue}
     isDashed
     hideHead
     radius={0.04}
   />
 
-  <!-- A, B, C, D, E Labels -->
+  <!-- MARK: A, B, C, D, E Labels -->
   <Latex2D latex={'A'} position={u} />
   <Latex2D latex={'B'} position={uv} offset={new Vector2(0.1, 0.2)} />
   <Latex2D latex={'C'} position={v} offset={new Vector2(0, 0.4)} />
@@ -159,7 +168,4 @@
       offset={new Vector2(-0.1, 0.2)}
     />
   {/if}
-
-  <!-- Intersect -->
-  <Point2D position={intersect} color={PrimeColor.black} />
 </Canvas2D>
