@@ -43,7 +43,12 @@
   $: formulas = createFormulas(controls[0], controls[1], controls[2]);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(7.63, 6.3, 14.22)} {formulas} bind:controls>
+<Canvas3D
+  showFormulasDefault
+  cameraPosition={new Vector3(7.63, 6.3, 14.22)}
+  {formulas}
+  bind:controls
+>
   <CubePlaneLine toggles={controls} uvw={[u, v, w]} />
 
   {#if controls[0]}
