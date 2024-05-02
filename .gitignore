@@ -23,3 +23,5 @@ build-*
 
 **/*.log
 chromatic.log
+
+*storybook.log

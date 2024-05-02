@@ -18,19 +18,22 @@
 
       return { file, folder };
     })
-    .reduce((acc, curr) => {
-      const file = {
-        title: curr.file,
-        url: `/applet/${curr.folder}/${curr.file}`
-      };
+    .reduce(
+      (acc, curr) => {
+        const file = {
+          title: curr.file,
+          url: `/applet/${curr.folder}/${curr.file}`
+        };
 
-      if (curr.folder in acc) {
-        acc[curr.folder].push(file);
-      } else {
-        acc[curr.folder] = [file];
-      }
-      return acc;
-    }, {} as Record<string, File[]>);
+        if (curr.folder in acc) {
+          acc[curr.folder].push(file);
+        } else {
+          acc[curr.folder] = [file];
+        }
+        return acc;
+      },
+      {} as Record<string, File[]>
+    );
 </script>
 
 <Accordion.Root class="container my-10 mx-auto">

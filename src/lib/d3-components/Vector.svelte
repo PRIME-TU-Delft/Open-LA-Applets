@@ -1,11 +1,11 @@
 <script lang="ts">
-  import getRandomColor from '$lib/utils/PrimeColors';
+  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Line from './Line.svelte';
   import Triangle from './Triangle.svelte';
-  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
 
-  export let color: string = getRandomColor(); //Color of both cone and stem
+  export let color: ColorString = PrimeColor.getRandomColor(); //Color of both cone and stem
   export let origin: Vector2 = new Vector2(0, 0); // origin of vector
   export let direction: Vector2 = new Vector2(1, 0); // direction of vector
   export let length = 1; // length of the vector + cone

@@ -16,6 +16,7 @@
   export let cameraZoom: Canvas2DProps['cameraZoom'] = 1;
   export let gridType: Canvas2DProps['gridType'] = GridType.Square;
   export let tickLength: Canvas2DProps['tickLength'] = 30;
+  export let showAxisNumbers: Canvas2DProps['showAxisNumbers'] = true;
 
   export let splitCanvas2DProps: Partial<Canvas2DProps> = {};
   export let splitCanvas3DProps: Partial<Canvas3DProps> = {};
@@ -28,7 +29,6 @@
   export let inIframe = false;
   export let width = '100%';
   export let height = '100%';
-  export let showAxisNumbers = true;
 
   type G = $$Generic<readonly Controller<number | boolean>[]>;
   export let controls: Controls<G> | undefined = undefined;
@@ -50,12 +50,20 @@
   --width={width}
 >
   {@const totalWidth = $$slots.splitCanvas || $$slots.splitCanvas3d ? width / 2 : width}
-  <D3Canvas {tickLength} {cameraPosition} {cameraZoom} width={totalWidth} {height} {gridType}>
+  <D3Canvas
+    {showAxisNumbers}
+    {tickLength}
+    {cameraPosition}
+    {cameraZoom}
+    width={totalWidth}
+    {height}
+    {gridType}
+  >
     <slot />
   </D3Canvas>
 
   {#if $$slots.splitCanvas}
-    <D3Canvas {showAxisNumbers} width={totalWidth} {height} {...splitCanvas2DProps}>
+    <D3Canvas width={totalWidth} {height} {...splitCanvas2DProps}>
       <slot name="splitCanvas" />
     </D3Canvas>
   {:else if $$slots.splitCanvas3d}

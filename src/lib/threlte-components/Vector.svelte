@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
-  import getRandomColor from '$lib/utils/PrimeColors';
   import Line2 from './Line2.svelte';
 
-  export let color: string = getRandomColor(); //Color of both cone and stem
+  export let color: string = PrimeColor.getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
   export let striped = false; // whether the line is striped
