@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as Button from '$lib/components/ui/button';
   import { Label } from '$lib/components/ui/label';
+  import { convertLatex } from '$lib/utils/LatexFormat';
   import type { Slider } from '$lib/utils/Slider';
   import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
   import { createEventDispatcher, onDestroy } from 'svelte';
@@ -94,12 +95,13 @@
   <div class="flex flex-col gap-1">
     {#if slider.label}
       <Label
-        class="relative w-fit flex gap-1 items-center text-slate-700 text-xs pr-1"
+        class="relative w-fit flex gap-1 items-center text-slate-700 text-s pr-2 pl-2"
         for="range-{uuid}"
-        >{slider.label}:
+      >
+        {@html convertLatex(slider.label + ' : ')}
         {#key slider.value}
-          <p class="absolute left-full text-sm" style="color:{slider.color};">
-            {slider.valueFn(slider.value)}
+          <p class="absolute left-full text-sm latex" style="color:{slider.color};">
+            {@html convertLatex(slider.valueFn(slider.value))}
           </p>
         {/key}
       </Label>

@@ -1,4 +1,6 @@
+import katex from 'katex';
 import type { Controller } from './Controls';
+import { convertAndFormatLatex } from './LatexFormat';
 import { PrimeColor } from './PrimeColors';
 
 /**
