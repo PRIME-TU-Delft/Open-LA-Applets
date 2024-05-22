@@ -40,14 +40,22 @@
     icon = mdiPause;
 
     playInterval = setInterval(() => {
-      // Bounce the slider back and forth
       slider.value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
 
-      if (slider.value >= slider.max) {
-        moveRight = true;
-      } else if (slider.value <= slider.min) {
+      if (slider.loops) {
+        // Slider moves to min val
+        if (slider.value >= slider.max) slider.value = slider.min;
         moveRight = false;
+      } else {
+        // Bounce the slider back and forth
+        if (slider.value >= slider.max) {
+          moveRight = true;
+        } else if (slider.value <= slider.min) {
+          moveRight = false;
+        }
       }
+
+      console.log(slider.loops);
     }, playSpeed);
   }
 

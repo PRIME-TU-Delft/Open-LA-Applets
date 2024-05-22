@@ -16,7 +16,16 @@
 
   const ellipse_radius = 5;
 
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+  let controls = Controls.addSlider(
+    -4.2,
+    -Math.PI,
+    Math.PI,
+    0.15,
+    PrimeColor.darkGreen,
+    undefined,
+    undefined,
+    true
+  );
   $: u = parametic_point_on_circle_3D(controls[0], ellipse_radius);
 
   $: u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected

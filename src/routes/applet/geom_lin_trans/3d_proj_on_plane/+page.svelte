@@ -17,7 +17,16 @@
   const ellipse_radius = 5;
 
   // const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+  let controls = Controls.addSlider(
+    -4.2,
+    -Math.PI,
+    Math.PI,
+    0.15,
+    PrimeColor.darkGreen,
+    undefined,
+    undefined,
+    true
+  );
   $: u = parametic_point_on_circle_3D(controls[0], ellipse_radius);
 
   $: v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane

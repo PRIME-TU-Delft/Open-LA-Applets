@@ -16,7 +16,16 @@
 
   const ellipse_radius = 5;
 
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+  let controls = Controls.addSlider(
+    2,
+    -Math.PI,
+    Math.PI,
+    0.15,
+    PrimeColor.darkGreen,
+    undefined,
+    undefined,
+    true
+  );
 
   $: u = getPoint(controls[0], ellipse_radius);
   //$: trajectory = [controls[0]-1, controls[0]-2, controls[0]-3, controls[0]-4] //TODO replace with funcitonal
