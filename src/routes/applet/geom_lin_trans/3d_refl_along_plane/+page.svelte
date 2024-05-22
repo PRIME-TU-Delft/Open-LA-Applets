@@ -33,7 +33,7 @@
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius} reverse_in_red />
+  <EllipseTrajectory r={ellipse_radius} reverse_in_red />
 
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
@@ -59,7 +59,7 @@
 
   <!--Point of relection-->
   <Latex3D
-    latex={`refl_\\mathcal{P}(\\mathbf{u})`}
+    latex={`\\mathrm{refl}_\\mathcal{P}(\\mathbf{u})`}
     position={u_refl}
     color={PrimeColor.raspberry}
     offset={0.7}

@@ -37,7 +37,8 @@
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius} />
+  <Axis3D />
+  <EllipseTrajectory r={ellipse_radius} />
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <!-- Projection vector from line L to u with a point at projection point -->
@@ -51,7 +52,7 @@
     hideHead
   />
   <Latex3D
-    latex={'proj_L(\\mathbf{u})'}
+    latex={'\\mathrm{proj}_L(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
     color={PrimeColor.raspberry}
   />

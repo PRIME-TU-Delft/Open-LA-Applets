@@ -2,34 +2,38 @@
   import { Line3D } from '$lib/threlte-components';
 
   import { parametic_point_on_circle_3D as getPoint } from '$lib/utils/MathLib';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  export let ellipse_radius = 5;
-  export let no_trajectory_points = 35; //amt of points on tracetory
+  export let r = 5;
+  export let no_trajectory_points = 35; //amt of points on trajetory
   export let reverse_in_red = false; //for refl applet
-  const trajectory_color = '#AADBD0'; //hardcoded as line materials have no opacity
+  export let trajectory_on_plane = false;
+  const trajectory_color_green = '#AADBD0'; //hardcoded as line materials have no opacity
   const trajectory_color_red = '#E5ADBF'; //hardcoded as line materials have no opacity
+
+  //make pair list if [i, t] -> (postition, value in range [0, 2pi])
   const ts = [...Array(no_trajectory_points)].map((_, i) => [
     i,
     i * ((2 * Math.PI) / no_trajectory_points)
   ]); // [index , val]
+
+  function proj_t_plane(t: number) {
+    let u = getPoint(t, r);
+    let v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
+    console.log(v);
+    return u.clone().projectOnVector(v);
+  }
 </script>
 
 <!--Trail trajectory-->
-
 {#each ts as [i, t]}
   {#if i != 0}
-    <Line3D
-      points={[getPoint(t, ellipse_radius), getPoint(ts[i - 1][1], ellipse_radius)]}
-      color={trajectory_color}
-    />
+    <Line3D points={[getPoint(t, r), getPoint(ts[i - 1][1], r)]} color={trajectory_color_green} />
   {:else}
     <Line3D
-      points={[
-        getPoint(0, ellipse_radius),
-        getPoint(ts[no_trajectory_points - 1][1], ellipse_radius)
-      ]}
-      color={trajectory_color}
+      points={[getPoint(0, r), getPoint(ts[no_trajectory_points - 1][1], r)]}
+      color={trajectory_color_green}
     />
   {/if}
 {/each}
@@ -39,17 +43,30 @@
     {#if i != 0}
       <Line3D
         points={[
-          getPoint(t, ellipse_radius).multiply(new Vector3(1, -1, 1)),
-          getPoint(ts[i - 1][1], ellipse_radius).multiply(new Vector3(1, -1, 1))
+          getPoint(t, r).multiply(new Vector3(1, -1, 1)),
+          getPoint(ts[i - 1][1], r).multiply(new Vector3(1, -1, 1))
         ]}
         color={trajectory_color_red}
       />
     {:else}
       <Line3D
         points={[
-          getPoint(0, ellipse_radius).multiply(new Vector3(1, -1, 1)),
-          getPoint(ts[no_trajectory_points - 1][1], ellipse_radius).multiply(new Vector3(1, -1, 1))
+          getPoint(0, r).multiply(new Vector3(1, -1, 1)),
+          getPoint(ts[no_trajectory_points - 1][1], r).multiply(new Vector3(1, -1, 1))
         ]}
+        color={trajectory_color_red}
+      />
+    {/if}
+  {/each}
+{/if}
+
+{#if trajectory_on_plane}
+  {#each ts as [i, t]}
+    {#if i != 0}
+      <Line3D points={[proj_t_plane(t), proj_t_plane(ts[i - 1][1])]} color={trajectory_color_red} />
+    {:else}
+      <Line3D
+        points={[proj_t_plane(ts[0][1]), proj_t_plane(ts[no_trajectory_points - 1][1])]}
         color={trajectory_color_red}
       />
     {/if}

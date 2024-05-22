@@ -30,12 +30,11 @@
   $: u = parametic_point_on_circle_3D(controls[0], ellipse_radius);
 
   $: v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
-
   $: u_proj = u.clone().projectOnVector(v); // Projection point of vector u on plane p
 </script>
 
 <Canvas3D bind:controls>
-  <EllipseTrajectory {ellipse_radius} />
+  <EllipseTrajectory r={ellipse_radius} trajectory_on_plane />
 
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
@@ -61,7 +60,7 @@
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
   <Latex3D
-    latex={'proj_\\mathcal{P}(\\mathbf{u})'}
+    latex={'\\mathrm{proj}_\\mathcal{P}(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
     color={PrimeColor.raspberry}
   />
