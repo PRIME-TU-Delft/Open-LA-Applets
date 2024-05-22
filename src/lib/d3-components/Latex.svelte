@@ -3,6 +3,7 @@
   import { select } from 'd3';
 
   import 'mathjax/es5/tex-svg';
+  import 'mathjax/es5/input/tex/extensions/color.js';
 
   import { onMount } from 'svelte';
 
@@ -18,6 +19,8 @@
   let latexWrapper: SVGGElement;
 
   onMount(() => {
+    if (!window) return;
+
     // MathJax is imported globally but cannot be found by TS
     // eslint-disable-next-line no-undef
     select(latexWrapper).append(() => MathJax.tex2svg(latex).querySelector('svg'));
