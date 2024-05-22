@@ -9,8 +9,11 @@
   export let no_trajectory_points = 35; //amt of points on trajetory
   export let reverse_in_red = false; //for refl applet
   export let trajectory_on_plane = false;
-  const trajectory_color_green = '#AADBD0'; //hardcoded as line materials have no opacity
-  const trajectory_color_red = '#E5ADBF'; //hardcoded as line materials have no opacity
+
+  //hardcoded as line materials have no opacity
+  const trajectory_color_green = '#AADBD0';
+  const trajectory_color_red = '#E5ADBF';
+  const traj_color_orng = '#f19a1d';
 
   //make pair list if [i, t] -> (postition, value in range [0, 2pi])
   const ts = [...Array(no_trajectory_points)].map((_, i) => [
@@ -63,11 +66,11 @@
 {#if trajectory_on_plane}
   {#each ts as [i, t]}
     {#if i != 0}
-      <Line3D points={[proj_t_plane(t), proj_t_plane(ts[i - 1][1])]} color={trajectory_color_red} />
+      <Line3D points={[proj_t_plane(t), proj_t_plane(ts[i - 1][1])]} color={traj_color_orng} />
     {:else}
       <Line3D
         points={[proj_t_plane(ts[0][1]), proj_t_plane(ts[no_trajectory_points - 1][1])]}
-        color={trajectory_color_red}
+        color={traj_color_orng}
       />
     {/if}
   {/each}
