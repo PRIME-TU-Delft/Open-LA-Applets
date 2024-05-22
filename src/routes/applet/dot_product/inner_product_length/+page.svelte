@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
   import { Controls } from '$lib/utils/Controls';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 

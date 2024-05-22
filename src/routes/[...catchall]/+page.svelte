@@ -1,16 +1,12 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import FilterList from './FilterList.svelte';
   import FolderList from './FolderList.svelte';
   import NavBar from './NavBar.svelte';
 
   const modules = import.meta.glob('$routes/applet/**/+page.svelte');
 
-  const url = $page?.url;
-  let searchQuery = url.searchParams.get('q') || '';
-
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Developer' },
+    { name: 'Pauline Hengst', title: 'Developer' },
     { name: 'Julia van der Kris', title: 'Developer' },
     { name: 'Christophe Smet', title: 'Teacher' },
     { name: 'Fokko van de Bult', title: 'Teacher' },
@@ -24,14 +20,10 @@
   );
 </script>
 
-<NavBar {url} bind:searchQuery />
+<NavBar {fileUrls} />
 
-<div class="mx-auto max-w-2xl p-10">
-  {#if searchQuery}
-    <FilterList {fileUrls} bind:searchQuery />
-  {:else}
-    <FolderList {fileUrls} />
-  {/if}
+<div class="mx-auto max-w-4xl p-10">
+  <FolderList {fileUrls} />
 
   <div
     class="container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border border-base-300 bg-base-200 p-4"
@@ -40,15 +32,15 @@
       <h2>Credits</h2>
       <p>
         These applets were created for the
-        <a href="https://dbalague.pages.ewi.tudelft.nl/openlabook">
+        <a href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html">
           TU Delft Open Linear Algebra book
         </a>
       </p>
 
       <h3>Contributors</h3>
-      <div class="flex w-full flex-wrap justify-between gap-2">
+      <div class="columns-1 md:columns-2 gap-2">
         {#each contributors as { name, title }}
-          <div class="flex gap-2">
+          <div class="flex gap-2 mb-2">
             <div class="not-prose w-24 overflow-hidden rounded">
               <img
                 class="aspect-square object-cover"

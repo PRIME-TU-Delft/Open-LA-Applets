@@ -7,6 +7,7 @@ export { default as Canvas2D } from './Canvas.svelte';
 export { default as InfiniteLine2D } from './InfiniteLine.svelte';
 export { default as Latex2D } from './Latex.svelte';
 export { default as Line2D } from './Line.svelte';
+export { default as Parallelogram } from './Parallelogram.svelte';
 export { default as Point2D } from './Point.svelte';
 export { default as RightAngle } from './RightAngle.svelte';
 export { default as Vector2D } from './Vector.svelte';
@@ -19,4 +20,5 @@ export type Canvas2DProps = {
   height: number;
   tickLength: number;
   gridType: GridType;
+  showAxisNumbers: boolean;
 };

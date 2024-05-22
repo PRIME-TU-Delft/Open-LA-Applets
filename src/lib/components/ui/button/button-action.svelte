@@ -12,7 +12,7 @@
 </script>
 
 <button on:click>
-  <Tooltip.Root>
+  <Tooltip.Root openDelay={300} closeDelay={50}>
     <Tooltip.Trigger
       class={cn(
         'w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center',

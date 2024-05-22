@@ -2,10 +2,11 @@
   import * as Button from '$lib/components/ui/button';
   import { Label } from '$lib/components/ui/label';
   import { convertLatex } from '$lib/utils/LatexFormat';
+  import { isActive } from '$lib/stores/activityStore';
   import type { Slider } from '$lib/utils/Slider';
   import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
   import { createEventDispatcher, onDestroy } from 'svelte';
-  import { generateUUID } from 'three/src/math/MathUtils';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
 
   export let slider: Slider;
   export let isExpanded: boolean = false;
@@ -72,6 +73,10 @@
 
   $: {
     if (!isPlaying) stopPlaying();
+  }
+
+  $: {
+    if (!$isActive) stopPlaying();
   }
 
   onDestroy(stopPlaying);

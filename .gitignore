@@ -22,3 +22,6 @@ vite.config.ts.timestamp-*
 build-*
 
 **/*.log
+chromatic.log
+
+*storybook.log

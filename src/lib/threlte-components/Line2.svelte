@@ -1,14 +1,14 @@
 <script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { forwardEventHandlers, T, useThrelte } from '@threlte/core';
   import { Color, Vector3 } from 'three';
-  import { Line2 as ThreeLine2 } from 'three/examples/jsm/lines/Line2';
-  import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
-  import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
-  import getRandomColor from '$lib/utils/PrimeColors';
+  import { Line2 as ThreeLine2 } from 'three/examples/jsm/lines/Line2.js';
+  import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
+  import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let endPoint: Vector3 = new Vector3(1, 0, 0); // direction of vector
-  export let color: string = getRandomColor(); // direction of vector
+  export let color: string = PrimeColor.getRandomColor(); // direction of vector
   export let radius = 0.05; // direction of vector
   export let striped = false; // whether the line is striped
   export let alwaysOnTop = false; // whether the line is rendered on top of everything else

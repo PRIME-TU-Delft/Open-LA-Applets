@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { T } from '@threlte/core';
-  import { DoubleSide, Vector3 } from 'three';
-
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { T, useFrame } from '@threlte/core';
+  import { DoubleSide, OrthographicCamera, Vector3 } from 'three';
   import Latex3D from './Latex.svelte';
   import Line from './Line.svelte';
-  import cameraStore from './stores/cameraStore';
 
   export let showNumbers = false;
   export let hideTicks = false;
@@ -45,11 +43,14 @@
     return [from, to];
   }
 
-  $: if (responsiveSpacing && $cameraStore) {
-    spacing = 3 / (1 + Math.floor($cameraStore.zoom / 50));
-  } else {
-    spacing = axisSpacing;
-  }
+  useFrame(({ camera }) => {
+    const cam = camera.current as OrthographicCamera;
+    if (responsiveSpacing && cam) {
+      spacing = 3 / (1 + Math.floor(cam.zoom / 50));
+    } else {
+      spacing = axisSpacing;
+    }
+  });
 </script>
 
 <!-- Main axis lines -->
@@ -87,18 +88,21 @@
       latex={indicatorFixed.toString()}
       position={new Vector3(indicator, 0, -0.35)}
       offset={0}
+      size={0.75}
     />
     <!-- Z -->
     <Latex3D
       latex={indicatorFixed.toString()}
       position={new Vector3(0, indicator, -0.35)}
       offset={0}
+      size={0.75}
     />
     <!-- X -->
     <Latex3D
       latex={indicatorFixed.toString()}
       position={new Vector3(-0.35, 0, indicator)}
       offset={0}
+      size={0.75}
     />
   {/each}
 {/if}

@@ -106,7 +106,7 @@
   let:args
 >
   <Canvas
-    isIframe
+    inIframe
     formulas={[new Formula('P_2 = 1x + 1y + \\$z = 0', 1, PrimeColor.yellow)]}
     height="20rem"
     {...args}

@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
-  import getRandomColor from '$lib/utils/PrimeColors';
   import Line2 from './Line2.svelte';
 
-  export let color: string = getRandomColor(); //Color of both cone and stem
+  export let color: string = PrimeColor.getRandomColor(); //Color of both cone and stem
   export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
   export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
   export let striped = false; // whether the line is striped
@@ -25,12 +25,7 @@
   $: direction = direction.clone().normalize();
 
   $: {
-    endPoint = origin.clone().add(
-      direction
-        .clone()
-        .normalize()
-        .multiplyScalar(length - coneHeight / 2)
-    );
+    endPoint = origin.clone().add(direction.clone().normalize().multiplyScalar(length));
 
     // 😃 hipedihopedie quaternions fix all the things
     const quatRotation = new Quaternion().setFromUnitVectors(
@@ -49,7 +44,7 @@
   );
 </script>
 
-<Line2 {origin} {endPoint} {color} {radius} {striped} {alwaysOnTop} />
+<Line2 {origin} endPoint={conePosition} {color} {radius} {striped} {alwaysOnTop} />
 
 <!-- Line is length minus cone height -->
 <!-- <T.Line2 bind:ref={line}>

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { primeColorArray } from '$lib/utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { convertAndFormatLatex } from '$lib/utils/LatexFormat';
 
   export let latex = '';
   export let params: (string | number)[] = [];
-  export let colors: string[] = primeColorArray;
+  export let colors: string[] = PrimeColor.asArray();
 
   $: str = convertAndFormatLatex(latex, params, colors);
 </script>
