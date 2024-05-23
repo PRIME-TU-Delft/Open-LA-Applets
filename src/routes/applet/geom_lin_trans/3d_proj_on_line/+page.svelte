@@ -39,8 +39,11 @@
 <Canvas3D bind:controls>
   <Axis3D />
   <EllipseTrajectory r={ellipse_radius} />
+
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
+  <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />
+
   <!-- Projection vector from line L to u with a point at projection point -->
   <Point3D position={u_proj} color={PrimeColor.raspberry} />
   <Vector3D

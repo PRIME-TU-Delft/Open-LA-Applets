@@ -6,7 +6,7 @@
   import { Vector3 } from 'three';
 
   export let r = 5;
-  export let no_trajectory_points = 35; //amt of points on trajetory
+  export let no_trajectory_points = 70; //amt of points on trajetory
   export let reverse_in_red = false; //for refl applet
   export let trajectory_on_plane = false;
 
@@ -24,7 +24,6 @@
   function proj_t_plane(t: number) {
     let u = getPoint(t, r);
     let v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
-    console.log(v);
     return u.clone().projectOnVector(v);
   }
 </script>

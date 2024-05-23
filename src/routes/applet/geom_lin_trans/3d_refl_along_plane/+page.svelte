@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Vector3 } from 'three';
   import {
     Angle3D,
@@ -27,6 +27,15 @@
     true
   );
   $: u = parametic_point_on_circle_3D(controls[0], ellipse_radius);
+  let uAbovep = 1;
+  function funct(u: Vector3) {
+    if (u.y > 0) {
+      uAbovep = 1;
+    } else {
+      uAbovep = -1;
+    }
+  }
+  $: funct(u);
 
   $: u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
   $: u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1))); // Projection point of vector u on plane p
@@ -41,6 +50,7 @@
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
+  <Latex3D latex={`\\mathcal{P}`} position={new Vector3(1, 0, -5.5)} color={PrimeColor.yellow} />
 
   <!-- Reflection v -->
   <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.blue} />
@@ -54,8 +64,16 @@
   />
 
   <!-- Angle between proj and horizontal axis -->
-  <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
-  <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
+  <Angle3D
+    origin={u_proj.multiplyScalar(uAbovep)}
+    vs={[new Vector3(1, 0, 0), new Vector3(0, 1, 0)]}
+    size={0.5}
+  />
+  <Angle3D
+    origin={u_proj.multiplyScalar(uAbovep)}
+    vs={[new Vector3(0, 0, 1), new Vector3(0, 1, 0)]}
+    size={0.5}
+  />
 
   <!--Point of relection-->
   <Latex3D

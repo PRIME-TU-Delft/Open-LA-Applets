@@ -13,6 +13,7 @@
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { Controls } from '$lib/utils/Controls';
   import EllipseTrajectory from '../EllipseTrajectory.svelte';
+  import Vector from '$lib/threlte-components/Vector.svelte';
 
   const ellipse_radius = 5;
 
@@ -44,6 +45,7 @@
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
+  <Latex3D latex={`\\mathcal{P}`} position={new Vector3(1, 0, -5.5)} color={PrimeColor.yellow} />
 
   <!-- Projection vector u and plane p -->
   <Point3D position={u_proj} color={PrimeColor.raspberry} />
