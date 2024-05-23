@@ -59,6 +59,35 @@ export function orthogonalProjection(L: Vector2, p: Vector2) {
   return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
 }
 
+export function orthogonalProjectionWithOffset(point: Vector2, origin: Vector2, direction: Vector2): Vector2 {
+  // Destructure the point, origin, and direction into their components
+  const [Px, Py] = point;
+  const [Ox, Oy] = origin;
+  const [Dx, Dy] = direction;
+
+  // Step 1: Calculate the vector OP from O to P
+  const OPx = Px - Ox;
+  const OPy = Py - Oy;
+
+  // Step 2: Calculate the dot product of OP and D
+  const dotProduct = OPx * Dx + OPy * Dy;
+
+  // Step 3: Calculate the magnitude squared of D
+  const directionMagnitudeSquared = Dx * Dx + Dy * Dy;
+
+  // Step 4: Calculate the projection factor
+  const projectionFactor = dotProduct / directionMagnitudeSquared;
+
+  // Step 5: Scale the direction vector by the projection factor
+  const projectionDx = projectionFactor * Dx;
+  const projectionDy = projectionFactor * Dy;
+
+  // Step 6: Calculate the projection point by adding the scaled direction to the origin
+  const projectionPoint: Vector2 = new Vector2(Ox + projectionDx, Oy + projectionDy);
+
+  return projectionPoint;
+}
+
 /**
  * Given a time parameter t (in range -PI to PI) gives a point on a circle in 3D.
  * @param t time parameter for parametric circle
