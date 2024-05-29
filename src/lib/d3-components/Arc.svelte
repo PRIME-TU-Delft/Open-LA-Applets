@@ -9,17 +9,35 @@
   export let origin = new Vector2(0, 0);
   export let width = LINE_WIDTH;
   export let distance = 0.8;
+  export let smallestAngle = false;
 
   $: startAngle = points[0].angle();
   $: endAngle = points[1].angle();
 
   // Arc defined by D3
-  $: d = arc()({
+  let d = arc()({
     innerRadius: distance - width / 2,
     outerRadius: distance + width / 2,
     startAngle: Math.PI / 2 + startAngle,
+    //startAngle: -Math.PI * 1.5 + startAngle,
     endAngle: Math.PI / 2 + endAngle
   });
+
+  function update(start: number, end: number) {
+    let startAngle2 = Math.PI / 2 + start;
+    if (smallestAngle && Math.abs(start - end) > Math.PI) {
+      startAngle2 = -Math.PI * 1.5 + startAngle;
+    }
+    d = arc()({
+      innerRadius: distance - width / 2,
+      outerRadius: distance + width / 2,
+      startAngle: startAngle2,
+      endAngle: Math.PI / 2 + end
+    });
+  }
+
+  $: update(startAngle, endAngle);
+
 </script>
 
 <g transform="translate({origin.x},{origin.y})">

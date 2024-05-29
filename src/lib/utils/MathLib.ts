@@ -31,3 +31,17 @@ export function snapPointToLine(
 
   return null;
 }
+
+export function isPointBelowLine(
+  point: Vector2,
+  point1_line: Vector2,
+  point2_line: Vector2,
+) {
+  const slope = (point2_line.y - point1_line.y) / (point2_line.x - point1_line.x);
+
+  const yIntercept = point1_line.y - slope * point1_line.x;
+
+  const yOnLine = slope * point.x + yIntercept;
+
+  return point.y > yOnLine;
+}

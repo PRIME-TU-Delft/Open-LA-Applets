@@ -8,53 +8,83 @@
     Line2D,
     Vector2D
   } from '$lib/d3-components';
-  import { snapPointToLine } from '$lib/utils/MathLib';
+  import { Formula } from '$lib/utils/Formulas';
+  import { isPointBelowLine, snapPointToLine } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
 
+  let formulas: Formula[] = [];
   let v = new Vector2(2, 2 / 3);
   let L_start = v.clone().multiplyScalar(-20);
   let L_end = v.clone().multiplyScalar(20);
   let L_label = v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3));
 
   let A_L = v.clone().multiplyScalar(1.5);
-  let wL_start = new Vector2(2.5, 2.5);
-  let w_L = wL_start.clone();
+
+  let w_L = new Vector2(2.5, 2.5);
   let wL_sub_AL = w_L.clone().sub(A_L);
 
   let A_R = v.clone().multiplyScalar(-1.5);
-  let wR_start = new Vector2(-3.5, 0.5);
-  let w_R = wR_start.clone();
+  let w_R = new Vector2(-3.5, 0.5);
   let wR_sub_AR = w_R.clone().sub(A_R);
 
-  function snapW(point_L: Vector2, point_R: Vector2) {
-    let result_L = snapPointToLine(point_L, A_L, wL_start, 100);
-    if (result_L !== null) {
-      if (result_L.x >= 3 || result_L.y <= 1) {
-        result_L = new Vector2(3, 1);
-      }
-      w_L = result_L;
+  let phiL_label = new Vector2(0.8, 2 / 3);
+  let phiR_label = new Vector2(0.8, 2 / 3);
+
+  function updateA(wl: Vector2, wr: Vector2) {
+    let point = snapPointToLine(wl, L_start, L_end, 500);
+    if (point === null) {
+      return;
     }
+    A_L = point;
     wL_sub_AL = w_L.clone().sub(A_L);
 
-    let result_R = snapPointToLine(point_R, A_R, wR_start, 100);
-    if (result_R !== null) {
-      if (result_R.x >= -3 || result_R.y <= -1) {
-        result_R = new Vector2(-3, -1);
-      }
-      w_R = result_R;
+    point = snapPointToLine(wr, L_start, L_end, 500);
+    if (point === null) {
+      return;
     }
+    A_R = point;
     wR_sub_AR = w_R.clone().sub(A_R);
   }
-  $: snapW(w_L, w_R);
+
+  function setFormulas(wL: Vector2, wR: Vector2) {
+    const f1 = new Formula('v \\cdot w = \\$', v.clone().dot(wL) , PrimeColor.red);
+    const f2 = new Formula('v \\cdot w = \\$', v.clone().dot(wR) , PrimeColor.red);
+
+    formulas = [f1, f2];
+  }
+
+  function flipPhi(wL: Vector2, wR: Vector2) {
+
+    if (isPointBelowLine(L_start, L_end, wL)) {
+      
+      phiL_label = new Vector2(1.1, 0.3);
+    }
+    else {
+      phiL_label = new Vector2(0.8, 2 / 3);
+    }
+
+    if (isPointBelowLine(L_start, L_end, wR)) {
+      phiR_label = new Vector2(1.1, 0.3);
+    }
+    else {
+      phiR_label = new Vector2(0.8, 2 / 3);
+    }
+  }
+
+  $: setFormulas(w_L, w_R);
+  $: updateA(w_L, w_R)
+  $: flipPhi(w_L, w_R)
+
 </script>
 
-<Canvas2D zoom={1.3}>
+<Canvas2D zoom={1.3} {formulas}>
   <Draggable2D id="angle_and_projection1" bind:position={w_L} color={PrimeColor.darkGreen} />
   <!-- Arcs -->
   <RightAngle vs={[wL_sub_AL, A_L]} lineWidth={0.03} origin={A_L} />
-  <Arc2D points={[w_L, v]} distance={0.8} />
-  <Latex2D latex={'\\varphi'} position={new Vector2(0.8, 2 / 3)} color={PrimeColor.black} />
+
+  <Arc2D points={[w_L, v]} distance={0.8} smallestAngle={true}/>
+  <Latex2D latex={'\\varphi'} position={phiL_label} color={PrimeColor.black} />
 
   <!-- L /-->
   <Line2D start={L_start} end={L_end} color={PrimeColor.cyan} />
@@ -95,8 +125,9 @@
     <Draggable2D id="angle_and_projection2" bind:position={w_R} color={PrimeColor.darkGreen} />
     <!-- Arcs -->
     <RightAngle vs={[wR_sub_AR, A_R]} lineWidth={0.03} origin={A_R} />
-    <Arc2D points={[w_R, v]} distance={0.8} />
-    <Latex2D latex={'\\varphi'} position={new Vector2(0.5, 0.9)} color={PrimeColor.black} />
+
+    <Arc2D points={[w_R, v]} distance={0.8} smallestAngle={true} />
+    <Latex2D latex={'\\varphi'} position={phiR_label} color={PrimeColor.black} />
 
     <!-- L /-->
     <Line2D start={L_start} end={L_end} color={PrimeColor.cyan} />
