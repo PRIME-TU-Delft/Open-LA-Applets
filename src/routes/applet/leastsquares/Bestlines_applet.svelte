@@ -10,7 +10,6 @@
     Line2D
   } from '$lib/d3-components';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-
   import { lineLineIntersection, orthogonalProjectionWithOffset } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
@@ -28,11 +27,11 @@
   const m = new Matrix3();
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
-  let dir_L_1 = new Vector2(-2, 5);
+  let dir_L_1 = new Vector2(-1, 5);
   let dir_L_2 = new Vector2(7, 4);
   $: dir_L = dir_L_1.clone().sub(dir_L_2);
 
-  //func tto proj in y directon
+  //non orth proj funct
   function projectInY(p: Vector2, origin_L: Vector2, dir_L: Vector2) {
     return lineLineIntersection(
       new Vector2(p.x, 100),
@@ -96,13 +95,15 @@
   <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
 
   <Latex2D
-    latex={'dist(\\mathrm{P}_4, l) \\rightarrow'}
+    latex={isOrthogonal
+      ? 'dist(\\mathrm{P}_4, l) \\rightarrow'
+      : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
     position={u_ts[3].p
       .clone()
       .sub(u_ts[3].pt)
       .multiplyScalar(0.5)
       .add(u_ts[3].pt)
-      .add(new Vector2(-1.7, 0))}
+      .add(isOrthogonal ? new Vector2(-1.7, 0) : new Vector2(-2.5, 0))}
     color={PrimeColor.raspberry}
   />
 
