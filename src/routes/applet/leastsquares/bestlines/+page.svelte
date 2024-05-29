@@ -36,19 +36,21 @@
     return { p, pt, dist };
   });
   //TODO : latex font??
-  $: total_dist = u_ts
-    .map((p) => p.dist)
-    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  function calcTotalDist(u_ts: any[]) {
+    return u_ts
+      .map((p) => p.dist)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  }
 
-  function setFormulas(u_ts: any[], total_dist: number) {
+  function setFormulas(u_ts: any[]) {
     const f1 = new Formula('dist(\\mathrm{P}_4, l) = \\$', u_ts[3].dist, PrimeColor.raspberry);
-    const f2 = new Formula('\\sum_{n=1}^{dist(\\mathrm{P}_n, l)} = \\$', total_dist);
+    const f2 = new Formula('\\sum_{n=1}^{dist(\\mathrm{P}_n, l)} = \\$', calcTotalDist(u_ts));
     const formulas = new Formulas(f1, f2).align();
 
     return formulas;
   }
 
-  $: formulas = setFormulas(u_ts, total_dist);
+  $: formulas = setFormulas(u_ts);
 </script>
 
 <Canvas2D {formulas} cameraPosition={new Vector2(3, 3)}>
