@@ -10,25 +10,33 @@
     Line2D
   } from '$lib/d3-components';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { lineLineIntersection, orthogonalProjectionWithOffset } from '$lib/utils/MathLib';
+  import {
+    leastSquaresLine,
+    lineLineIntersection,
+    orthogonalProjectionWithOffset
+  } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
 
   export let isOrthogonal = true;
+  export let pointsDraggable = false;
 
-  const ps = [
+  let ps = [
     new Vector2(1, 3),
     new Vector2(2, 1),
     new Vector2(3, 3),
     new Vector2(4, 7),
-    new Vector2(5, 5)
-  ] as const;
+    new Vector2(5, 3)
+  ];
 
   const m = new Matrix3();
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
   let dir_L_1 = new Vector2(-1, 5);
   let dir_L_2 = new Vector2(7, 4);
+
+  $: [dir_L_1, dir_L_2] = pointsDraggable ? leastSquaresLine(ps) : [dir_L_1, dir_L_2];
+
   $: dir_L = dir_L_1.clone().sub(dir_L_2);
 
   //non orth proj funct
@@ -74,8 +82,11 @@
 
 <Canvas2D {formulas} cameraPosition={new Vector2(4, 4)} cameraZoom={0.9}>
   <!-- Line L -->
-  <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
-  <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
+  {#if !pointsDraggable}
+    <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
+    <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
+  {/if}
+
   <InfiniteLine2D
     origin={dir_L_1}
     direction={dir_L_1.clone().sub(dir_L_2)}
@@ -126,7 +137,10 @@
       />
     {/key}
 
-    <!-- u_n -->
+    <!-- p_n -->
+    {#if pointsDraggable}
+      <Draggable2D id={'p' + index} bind:position={ps[index]} color={PrimeColor.orange} snap />
+    {/if}
     <Point2D position={pt.p} color={PrimeColor.orange} />
     <Latex2D
       latex={`P_${index + 1}`}

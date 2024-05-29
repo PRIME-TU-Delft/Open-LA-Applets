@@ -59,6 +59,13 @@ export function orthogonalProjection(L: Vector2, p: Vector2) {
   return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
 }
 
+/**
+ * Orthogonally projects a point on an infinite line with a given direction and point on line (origin)
+ * @param point: point to project
+ * @param origin : point on line
+ * @param direction direction of line
+ * @returns point of projection
+ */
 export function orthogonalProjectionWithOffset(point: Vector2, origin: Vector2, direction: Vector2): Vector2 {
   // Destructure the point, origin, and direction into their components
   const [Px, Py] = point;
@@ -105,4 +112,39 @@ export function parametic_point_on_circle_3D(t: number, radius: number) {
   const y = c.y + radius * Math.cos(t) * a.y + radius * Math.sin(t) * b.y;
   const z = c.z + radius * Math.cos(t) * a.z + radius * Math.sin(t) * b.z;
   return new Vector3(x, y, z);
+}
+
+export function leastSquaresLine(points: Vector2[]) {
+  const n = points.length;
+
+  // Calculate the means of x and y
+  let meanX = 0;
+  let meanY = 0;
+  for (const point of points) {
+    meanX += point.x;
+    meanY += point.y;
+  }
+  meanX /= n;
+  meanY /= n;
+
+  // Calculate the slope (m)
+  let numerator = 0;
+  let denominator = 0;
+  for (const point of points) {
+    numerator += (point.x - meanX) * (point.y - meanY);
+    denominator += (point.x - meanX) ** 2;
+  }
+  const slope = numerator / denominator;
+
+  // Calculate the y-intercept (b)
+  const intercept = meanY - slope * meanX;
+
+  // Determine two points on the line
+  // Using the min and max x-values to determine the points
+  const x1 = Math.min(...points.map((p) => p.x));
+  const x2 = Math.max(...points.map((p) => p.x));
+  const y1 = slope * x1 + intercept;
+  const y2 = slope * x2 + intercept;
+
+  return [new Vector2(x1, y1), new Vector2(x2, y2)];
 }
