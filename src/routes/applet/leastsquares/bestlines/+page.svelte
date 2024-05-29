@@ -26,8 +26,8 @@
   const m = new Matrix3();
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
-  let dir_L_1 = new Vector2(-2, 1);
-  let dir_L_2 = new Vector2(7, 2);
+  let dir_L_1 = new Vector2(-2, 5);
+  let dir_L_2 = new Vector2(7, 4);
   $: dir_L = dir_L_1.clone().sub(dir_L_2);
 
   $: u_ts = ps.map((p) => {
@@ -43,9 +43,11 @@
   }
 
   function setFormulas(u_ts: any[]) {
-    const f1 = new Formula('dist(\\mathrm{P}_4, l) = \\$', u_ts[3].dist, PrimeColor.raspberry);
-    const f2 = new Formula('\\sum_{n=1}^{dist(\\mathrm{P}_n, l)} = \\$', calcTotalDist(u_ts));
-    const formulas = new Formulas(f1, f2).align();
+    const f2 = new Formula('\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3')
+      .addParam(1, '\\mathrm{P}_n', PrimeColor.orange)
+      .addParam(2, 'l', PrimeColor.cyan)
+      .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
+    const formulas = new Formulas(f2).align();
 
     return formulas;
   }
@@ -55,8 +57,8 @@
 
 <Canvas2D {formulas} cameraPosition={new Vector2(3, 3)}>
   <!-- Line L -->
-  <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} />
-  <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} />
+  <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
+  <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
   <InfiniteLine2D
     origin={dir_L_1}
     direction={dir_L_1.clone().sub(dir_L_2)}
@@ -68,26 +70,26 @@
     offset={new Vector2(-0.25, 0.28)}
     color={PrimeColor.cyan}
   />
-  <Latex2D
-    latex={'\\mathcal{l : y = ax + b}'}
-    position={dir_L_2.clone().add(new Vector2(0.2, -1.6))}
-    offset={new Vector2(-0.25, 0.28)}
-    color={PrimeColor.cyan}
-  />
-  <Latex2D
-    latex={'\\mathrm{l : y = ax + b}'}
-    position={dir_L_2.clone().add(new Vector2(0.2, -2.6))}
-    offset={new Vector2(-0.25, 0.28)}
-    color={PrimeColor.cyan}
-  />
 
   <!-- guide lines to p1 -->
   <Line2D start={new Vector2(ps[0].x, 0)} end={ps[0]} isDashed />
   <Line2D start={new Vector2(0, ps[0].y)} end={ps[0]} isDashed />
-  <Latex2D position={new Vector2(ps[0].x, 0.5)} latex={'x_1'} />
-  <Latex2D position={new Vector2(-0.2, ps[0].y)} latex={'y_1'} />lee
+  <Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
+  <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
+
+  <Latex2D
+    latex={'dist(\\mathrm{P}_4, l) \\rightarrow'}
+    position={u_ts[3].p
+      .clone()
+      .sub(u_ts[3].pt)
+      .multiplyScalar(0.5)
+      .add(u_ts[3].pt)
+      .add(new Vector2(-1.7, 0))}
+    color={PrimeColor.raspberry}
+  />
 
   {#each u_ts as pt, index}
+    <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
     <!-- distances -->
     <Vector2D
       origin={pt.p}
@@ -99,7 +101,7 @@
     {#key pt}
       <Latex2D
         position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
-        latex={pt.dist.toFixed(3)}
+        latex={pt.dist.toFixed(2)}
       />
     {/key}
 
@@ -111,6 +113,5 @@
       offset={new Vector2(0.2, 0.2)}
       color={PrimeColor.orange}
     />
-    <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
   {/each}
 </Canvas2D>
