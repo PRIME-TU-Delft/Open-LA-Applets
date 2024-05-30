@@ -18,7 +18,7 @@
   <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{v}'}
-    position={v.clone().add(new Vector3(0, 0.4, 0))}
+    position={v.clone().normalize().multiplyScalar(controls[0]).add(new Vector3(0, 0.4, 0))}
     color={PrimeColor.raspberry}
   />
 
