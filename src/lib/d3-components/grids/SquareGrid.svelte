@@ -2,6 +2,7 @@
   import { Vector2 } from 'three';
   import { Latex2D } from '..';
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   export let length = GRID_SIZE_2D;
   export let showOrigin = true;
@@ -23,7 +24,7 @@
     y1={-length}
     x2={index}
     y2={length}
-    stroke="black"
+    stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
     stroke-width={stokeWidth(index)}
   />
   <line
@@ -31,7 +32,7 @@
     y1={index}
     x2={length}
     y2={index}
-    stroke="black"
+    stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
     stroke-width={stokeWidth(index)}
   />
 
