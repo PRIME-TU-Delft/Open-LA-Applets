@@ -1,6 +1,5 @@
 <script lang="ts">
   import {
-    Canvas2D,
     Draggable2D,
     InfiniteLine2D,
     Latex2D,
@@ -67,7 +66,7 @@
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
-  function setFormulas(u_ts: any[]) {
+  export function setFormulas(u_ts: any[]) {
     const f2 = new Formula('\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3')
       .addParam(1, '\\mathrm{P}_n', PrimeColor.orange)
       .addParam(2, 'l', PrimeColor.cyan)
@@ -78,75 +77,71 @@
   }
 
   $: formulas = setFormulas(u_ts);
+
+  export function getFormulas() {
+    return formulas;
+  }
 </script>
 
-<Canvas2D {formulas} cameraPosition={new Vector2(4, 4)} cameraZoom={0.9}>
-  <!-- Line L -->
-  {#if !pointsDraggable}
-    <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
-    <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
+<!-- Line L -->
+{#if !pointsDraggable}
+  <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
+  <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
+{/if}
+
+<InfiniteLine2D origin={dir_L_1} direction={dir_L_1.clone().sub(dir_L_2)} color={PrimeColor.cyan} />
+<Latex2D
+  latex={'l : y = ax + b'}
+  position={dir_L_2.clone().add(new Vector2(0.2, -0.6))}
+  offset={new Vector2(-0.25, 0.28)}
+  color={PrimeColor.cyan}
+/>
+
+<!-- guide lines to p1 -->
+<Line2D start={new Vector2(ps[0].x, 0)} end={ps[0]} isDashed />
+<Line2D start={new Vector2(0, ps[0].y)} end={ps[0]} isDashed />
+<Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
+<Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
+
+<Latex2D
+  latex={isOrthogonal ? 'dist(\\mathrm{P}_4, l) \\rightarrow' : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
+  position={u_ts[3].p
+    .clone()
+    .sub(u_ts[3].pt)
+    .multiplyScalar(0.5)
+    .add(u_ts[3].pt)
+    .add(isOrthogonal ? new Vector2(-1.7, 0) : new Vector2(-2.5, 0))}
+  color={PrimeColor.raspberry}
+/>
+
+{#each u_ts as pt, index}
+  {#if isOrthogonal}
+    <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
   {/if}
-
-  <InfiniteLine2D
-    origin={dir_L_1}
-    direction={dir_L_1.clone().sub(dir_L_2)}
-    color={PrimeColor.cyan}
-  />
-  <Latex2D
-    latex={'l : y = ax + b'}
-    position={dir_L_2.clone().add(new Vector2(0.2, -0.6))}
-    offset={new Vector2(-0.25, 0.28)}
-    color={PrimeColor.cyan}
-  />
-
-  <!-- guide lines to p1 -->
-  <Line2D start={new Vector2(ps[0].x, 0)} end={ps[0]} isDashed />
-  <Line2D start={new Vector2(0, ps[0].y)} end={ps[0]} isDashed />
-  <Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
-  <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
-
-  <Latex2D
-    latex={isOrthogonal
-      ? 'dist(\\mathrm{P}_4, l) \\rightarrow'
-      : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
-    position={u_ts[3].p
-      .clone()
-      .sub(u_ts[3].pt)
-      .multiplyScalar(0.5)
-      .add(u_ts[3].pt)
-      .add(isOrthogonal ? new Vector2(-1.7, 0) : new Vector2(-2.5, 0))}
+  <!-- distances -->
+  <Vector2D
+    origin={pt.p}
+    direction={pt.pt.clone().sub(pt.p)}
+    length={pt.p.clone().sub(pt.pt).length()}
     color={PrimeColor.raspberry}
+    hideHead
   />
-
-  {#each u_ts as pt, index}
-    {#if isOrthogonal}
-      <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
-    {/if}
-    <!-- distances -->
-    <Vector2D
-      origin={pt.p}
-      direction={pt.pt.clone().sub(pt.p)}
-      length={pt.p.clone().sub(pt.pt).length()}
-      color={PrimeColor.raspberry}
-      hideHead
-    />
-    {#key pt}
-      <Latex2D
-        position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
-        latex={pt.dist.toFixed(2)}
-      />
-    {/key}
-
-    <!-- p_n -->
-    {#if pointsDraggable}
-      <Draggable2D id={'p' + index} bind:position={ps[index]} color={PrimeColor.orange} snap />
-    {/if}
-    <Point2D position={pt.p} color={PrimeColor.orange} />
+  {#key pt}
     <Latex2D
-      latex={`P_${index + 1}`}
-      position={pt.p}
-      offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.orange}
+      position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
+      latex={pt.dist.toFixed(2)}
     />
-  {/each}
-</Canvas2D>
+  {/key}
+
+  <!-- p_n -->
+  {#if pointsDraggable}
+    <Draggable2D id={'p' + index} bind:position={ps[index]} color={PrimeColor.orange} snap />
+  {/if}
+  <Point2D position={pt.p} color={PrimeColor.orange} />
+  <Latex2D
+    latex={`P_${index + 1}`}
+    position={pt.p}
+    offset={new Vector2(0.2, 0.2)}
+    color={PrimeColor.orange}
+  />
+{/each}
