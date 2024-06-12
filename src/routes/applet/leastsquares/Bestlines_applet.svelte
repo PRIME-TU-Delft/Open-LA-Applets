@@ -68,8 +68,8 @@
 
   export function setFormulas(u_ts: any[]) {
     const f2 = new Formula('\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3')
-      .addParam(1, '\\mathrm{P}_n', PrimeColor.orange)
-      .addParam(2, 'l', PrimeColor.cyan)
+      .addParam(1, 'P_n', PrimeColor.orange)
+      .addParam(2, '\\ell', PrimeColor.cyan)
       .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
     const formulas = new Formulas(f2).align();
 
@@ -91,7 +91,7 @@
 
 <InfiniteLine2D origin={dir_L_1} direction={dir_L_1.clone().sub(dir_L_2)} color={PrimeColor.cyan} />
 <Latex2D
-  latex={'l : y = ax + b'}
+  latex={'\\ell : y = ax + b'}
   position={dir_L_2.clone().add(new Vector2(0.2, -0.6))}
   offset={new Vector2(-0.25, 0.28)}
   color={PrimeColor.cyan}
@@ -104,7 +104,9 @@
 <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
 
 <Latex2D
-  latex={isOrthogonal ? 'dist(\\mathrm{P}_4, l) \\rightarrow' : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
+  latex={isOrthogonal
+    ? '\\mathrm{dist}(P_4, \\ell) \\rightarrow'
+    : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
   position={u_ts[3].p
     .clone()
     .sub(u_ts[3].pt)
