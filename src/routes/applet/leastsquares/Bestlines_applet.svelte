@@ -17,8 +17,15 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
 
-  export let isOrthogonal = true;
+  export let isOrthogonal = false; //orthogonal projection version of applet
+  export let isLeastSquares = false; //leastquares version of applet
   export let pointsDraggable = false;
+
+  const latex = isOrthogonal
+    ? '\\mathrm{dist}(P_4, \\ell) \\rightarrow'
+    : isLeastSquares
+      ? '|y_4 - (ax_4 + b_4)|^2\\rightarrow'
+      : '|y_4 - (ax_4 + b_4)| \\rightarrow';
 
   let ps = [
     new Vector2(1, 3),
@@ -56,7 +63,8 @@
       pt = projectInY(p, dir_L_1, dir_L);
     }
 
-    const dist = p.clone().sub(pt).length();
+    let dist = p.clone().sub(pt).length();
+    isLeastSquares ? (dist = dist * dist) : (dist = dist);
     return { p, pt, dist };
   });
 
@@ -66,8 +74,14 @@
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
+  const formulaLatex = isOrthogonal
+    ? '\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3'
+    : isLeastSquares
+      ? '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 '
+      : '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 ';
+
   export function setFormulas(u_ts: any[]) {
-    const f2 = new Formula('\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3')
+    const f2 = new Formula(formulaLatex)
       .addParam(1, 'P_n', PrimeColor.orange)
       .addParam(2, '\\ell', PrimeColor.cyan)
       .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
@@ -77,10 +91,6 @@
   }
 
   $: formulas = setFormulas(u_ts);
-
-  export function getFormulas() {
-    return formulas;
-  }
 </script>
 
 <!-- Line L -->
@@ -104,9 +114,7 @@
 <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
 
 <Latex2D
-  latex={isOrthogonal
-    ? '\\mathrm{dist}(P_4, \\ell) \\rightarrow'
-    : '|y_2 - (ax_2 + b_2)| \\rightarrow'}
+  {latex}
   position={u_ts[3].p
     .clone()
     .sub(u_ts[3].pt)

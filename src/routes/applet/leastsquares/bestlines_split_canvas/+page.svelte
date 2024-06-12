@@ -7,8 +7,8 @@
 </script>
 
 <Canvas2D splitCanvas2DProps={{ cameraPosition: new Vector2(4, 4) }}>
-  <BestlinesApplet />
+  <BestlinesApplet isOrthogonal={true} />
   <svelte:fragment slot="splitCanvas">
-    <BestlinesApplet isOrthogonal={false} />
+    <BestlinesApplet />
   </svelte:fragment>
 </Canvas2D>
