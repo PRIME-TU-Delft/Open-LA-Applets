@@ -21,7 +21,7 @@
   export let isLeastSquares = false; //leastquares version of applet
   export let pointsDraggable = false;
 
-  const latex = isOrthogonal
+  const distLabelLatex = isOrthogonal
     ? '\\mathrm{dist}(P_4, \\ell) \\rightarrow'
     : isLeastSquares
       ? '|y_4 - (ax_4 + b_4)|^2\\rightarrow'
@@ -55,7 +55,7 @@
     );
   }
 
-  $: u_ts = ps.map((p) => {
+  $: ps_proj = ps.map((p) => {
     let pt: Vector2;
     if (isOrthogonal) {
       pt = orthogonalProjectionWithOffset(p, dir_L_1, dir_L);
@@ -90,7 +90,7 @@
     return formulas;
   }
 
-  $: formulas = setFormulas(u_ts);
+  $: formulas = setFormulas(ps_proj);
 </script>
 
 <!-- Line L -->
@@ -114,17 +114,17 @@
 <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
 
 <Latex2D
-  {latex}
-  position={u_ts[3].p
+  latex={distLabelLatex}
+  position={ps_proj[3].p
     .clone()
-    .sub(u_ts[3].pt)
+    .sub(ps_proj[3].pt)
     .multiplyScalar(0.5)
-    .add(u_ts[3].pt)
-    .add(isOrthogonal ? new Vector2(-1.7, 0) : new Vector2(-2.5, 0))}
+    .add(ps_proj[3].pt)
+    .add(isOrthogonal ? new Vector2(-1.8, 0) : new Vector2(-2.65, 0))}
   color={PrimeColor.raspberry}
 />
 
-{#each u_ts as pt, index}
+{#each ps_proj as pt, index}
   {#if isOrthogonal}
     <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
   {/if}

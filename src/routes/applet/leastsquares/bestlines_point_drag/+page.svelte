@@ -5,5 +5,5 @@
 </script>
 
 <Canvas2D cameraPosition={new Vector2(4, 4)} cameraZoom={0.9}>
-  <BestlinesApplet isOrthogonal={false} pointsDraggable />
+  <BestlinesApplet isLeastSquares={true} pointsDraggable />
 </Canvas2D>
