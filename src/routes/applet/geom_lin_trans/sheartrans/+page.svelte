@@ -1,21 +1,25 @@
 <script>
-  import { Canvas2D, Latex2D, Line2D, Vector2D } from '$lib/d3-components';
-  import Draggable from '$lib/d3-components/Draggable.svelte';
+  import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
   import InfiniteLine from '$lib/d3-components/InfiniteLine.svelte';
   import Parallelogram from '$lib/d3-components/Parallelogram.svelte';
+  import { Controls } from '$lib/utils/Controls';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
   const w = new Vector2(1, 1);
   const v = new Vector2(-1, 1);
 
-  let te1 = new Vector2(2, 1);
-  let tv = new Vector2(-1, 1);
+  let controls = Controls.addSlider(0, -3, 3, 0.5, PrimeColor.blue, 'T(e_1)', (v) =>
+    v.toFixed(2)
+  ).addSlider(0, -3, 3, 0.5, PrimeColor.darkGreen, 'T(v)', (v) => v.toFixed(2));
+
+  $: te1 = new Vector2(1, 0).add(w.clone().multiplyScalar(controls[0]));
+  $: tv = v.clone().add(w.clone().multiplyScalar(controls[1]));
 
   const cameraZoom = 2;
 </script>
 
-<Canvas2D {cameraZoom} splitCanvas2DProps={{ cameraZoom }}>
+<Canvas2D bind:controls {cameraZoom} splitCanvas2DProps={{ cameraZoom }}>
   <!-- Parallograms -->
   <Parallelogram
     points={[new Vector2(0, 0), w, v]}
@@ -90,7 +94,6 @@
       color={PrimeColor.blue}
       position={te1}
     />
-    <Draggable id="e2" bind:position={te1} color={PrimeColor.blue} snap />
 
     <Vector2D direction={new Vector2(0, 1)} length={1} color={PrimeColor.blue} isDashed />
     <!-- <Latex2D latex={'T(\\mathbf{e_2})'} extend={0.5} color={PrimeColor.blue} position={new Vector2(0,1)} /> -->
