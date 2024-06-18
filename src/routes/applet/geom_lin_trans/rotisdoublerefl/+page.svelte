@@ -13,23 +13,34 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { Controls } from '$lib/utils/Controls';
 
-  let dir_La = new Vector2(3, 2);
-  let dir_Lb = new Vector2(2, 3);
   let v = new Vector2(-3, -1);
 
-  $: angle_a = dir_La.angle();
-  $: angle_b = dir_Lb.angle();
+  let controls = Controls.addSlider(
+    0.5,
+    0,
+    Math.PI,
+    0.1,
+    PrimeColor.cyan,
+    'Angle L_1',
+    (v) => (v / Math.PI).toFixed(2) + 'π'
+  ).addSlider(
+    0.4,
+    0,
+    Math.PI * 0.75,
+    0.1,
+    PrimeColor.blue,
+    'Angle L_2',
+    (v) => (v / Math.PI).toFixed(2) + 'π'
+  );
 
-  $: dir_L1 = angle_a < angle_b ? dir_La : dir_Lb;
-  $: dir_L2 = angle_a < angle_b ? dir_Lb : dir_La;
-
-  $: angle_1 = Math.min(angle_a, angle_b);
-  $: angle_2 = Math.max(angle_a, angle_b);
+  $: dir_L1 = new Vector2(1, 0).rotateAround(new Vector2(0, 0), controls[0]);
+  $: dir_L2 = dir_L1.clone().rotateAround(new Vector2(0, 0), controls[1]);
 
   function getFormulas(angle_1: number, angle_2: number) {
     const phiDiv2 = angle_1 / Math.PI;
-    const thetaDiv2 = angle_2 / Math.PI - phiDiv2;
+    const thetaDiv2 = angle_2 / Math.PI;
 
     const f1 = new Formula('\\phi / 2 = \\$\\pi', phiDiv2.toFixed(2), PrimeColor.cyan);
     const f2 = new Formula('\\theta / 2 = \\$\\pi', thetaDiv2.toFixed(2), PrimeColor.blue);
@@ -41,7 +52,7 @@
     return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
   }
 
-  $: formulas = getFormulas(angle_1, angle_2);
+  $: formulas = getFormulas(controls[0], controls[1]);
 
   let T_L1: Vector2;
   let T_L2: Vector2;
@@ -57,19 +68,7 @@
   }
 </script>
 
-<Canvas2D {formulas}>
-  <!-- La & Lb draggables -->
-  <Draggable2D
-    id="dir_La"
-    bind:position={dir_La}
-    color={angle_a < angle_b ? PrimeColor.cyan : PrimeColor.blue}
-  />
-  <Draggable2D
-    id="dir_Lb"
-    bind:position={dir_Lb}
-    color={angle_a < angle_b ? PrimeColor.blue : PrimeColor.cyan}
-  />
-
+<Canvas2D {formulas} bind:controls>
   <!-- L1 -->
   <InfiniteLine2D direction={dir_L1} color={PrimeColor.cyan} />
   <Latex2D
@@ -155,7 +154,7 @@
 
   <Angle
     startAngle={v.angle()}
-    endAngle={v.angle() + 2 * (angle_b - angle_a)}
+    endAngle={v.angle() + 2 * controls[1]}
     distance={1}
     color={PrimeColor.darkGreen}
   />
