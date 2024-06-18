@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import Icon from '$lib/components/Icon.svelte';
   import * as Command from '$lib/components/ui/command/index.js';
-  import { mdiArrowRight, mdiClose, mdiEye, mdiEyeOff, mdiFile, mdiFileOutline } from '@mdi/js';
+  import { mdiArrowRight, mdiClose, mdiEye, mdiEyeOff, mdiFileOutline } from '@mdi/js';
   import { onMount } from 'svelte';
   import { scale } from 'svelte/transition';
 
