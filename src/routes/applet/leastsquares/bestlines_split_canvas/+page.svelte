@@ -1,39 +1,26 @@
 <script lang="ts">
-  import { Canvas2D } from '$lib/d3-components';
-  import { Vector2 } from 'three';
-  import BestlinesApplet from './Bestlines_applet.svelte';
-
-  //TODO camerazoom = 1.39
-
   import {
+    Canvas2D,
     Draggable2D,
     InfiniteLine2D,
     Latex2D,
+    Line2D,
     Point2D,
-    Vector2D,
     RightAngle,
-    Line2D
+    Vector2D
   } from '$lib/d3-components';
-  import { Formula, Formulas } from '$lib/utils/Formulas';
-  import {
-    leastSquaresLine,
-    lineLineIntersection,
-    orthogonalProjectionWithOffset
-  } from '$lib/utils/MathLib';
+  import { Vector2 } from 'three';
+  import { distLabelLatex, projectPoints, setFormulas } from '../formula_gen';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Matrix3 } from 'three';
 
-  export let isOrthogonal = false; //orthogonal projection version of applet
-  export let isLeastSquares = false; //leastquares version of applet
-  export let pointsDraggable = false;
+  const cameraPosition = new Vector2(4, 4);
+  const cameraZoom = 1.39;
 
-  const distLabelLatex = isOrthogonal
-    ? '\\mathrm{dist}(\\mathcal{P}_4, \\mathcal{L}) \\rightarrow'
-    : isLeastSquares
-      ? '|y_4 - (ax_4 + b_4)|^2\\rightarrow'
-      : '|y_4 - (ax_4 + b_4)| \\rightarrow';
+  //these vars are used to differentiate the four least-squares applet versions in this section
+  let isOrthogonal_left = true; //orthogonal projection version of applet
+  let isLeastSquares_left = false; //leastquares version of applet
 
-  let ps = [
+  let ps_left = [
     new Vector2(1, 3),
     new Vector2(2, 1),
     new Vector2(3, 3),
@@ -41,71 +28,182 @@
     new Vector2(5, 3)
   ];
 
-  const m = new Matrix3();
-  m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
+  // starting points of draggables
+  let dir_L_1_left = new Vector2(-1, 5);
+  let dir_L_2_left = new Vector2(7, 4);
 
-  let dir_L_1 = new Vector2(-1, 5);
-  let dir_L_2 = new Vector2(7, 4);
+  $: dir_L_left = dir_L_1_left.clone().sub(dir_L_2_left);
+  $: ps_proj_left = projectPoints(
+    ps_left,
+    isOrthogonal_left,
+    isLeastSquares_left,
+    dir_L_1_left,
+    dir_L_left
+  );
+  $: formulas_left = setFormulas(ps_proj_left, isOrthogonal_left, isLeastSquares_left);
 
-  $: [dir_L_1, dir_L_2] = pointsDraggable ? leastSquaresLine(ps) : [dir_L_1, dir_L_2];
+  //same for right side
+  //these vars are used to differentiate the four least-squares applet versions in this section
+  let isOrthogonal_right = false; //orthogonal projection version of applet
+  let isLeastSquares_right = false; //leastquares version of applet
 
-  $: dir_L = dir_L_1.clone().sub(dir_L_2);
+  let ps_right = [
+    new Vector2(1, 3),
+    new Vector2(2, 1),
+    new Vector2(3, 3),
+    new Vector2(4, 7),
+    new Vector2(5, 3)
+  ];
 
-  //non orth proj funct
-  function projectInY(p: Vector2, origin_L: Vector2, dir_L: Vector2) {
-    return lineLineIntersection(
-      new Vector2(p.x, 100),
-      new Vector2(p.x, -100),
-      dir_L.clone().multiplyScalar(20).add(origin_L),
-      dir_L.clone().multiplyScalar(-20).add(origin_L)
-    );
-  }
+  // starting points of draggables
+  let dir_L_1_right = new Vector2(-1, 5);
+  let dir_L_2_right = new Vector2(7, 4);
 
-  $: ps_proj = ps.map((p) => {
-    let pt: Vector2;
-    if (isOrthogonal) {
-      pt = orthogonalProjectionWithOffset(p, dir_L_1, dir_L);
-    } else {
-      pt = projectInY(p, dir_L_1, dir_L);
-    }
-
-    let dist = p.clone().sub(pt).length();
-    isLeastSquares ? (dist = dist * dist) : (dist = dist);
-    return { p, pt, dist };
-  });
-
-  function calcTotalDist(u_ts: any[]) {
-    return u_ts
-      .map((p) => p.dist)
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  }
-
-  const formulaLatex = isOrthogonal
-    ? '\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3'
-    : isLeastSquares
-      ? '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 '
-      : '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 ';
-
-  export function setFormulas(u_ts: any[]) {
-    const f2 = new Formula(formulaLatex)
-      .addParam(1, '\\mathcal{P}_n', PrimeColor.orange)
-      .addParam(2, '\\mathcal{L}', PrimeColor.cyan)
-      .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
-    const formulas = new Formulas(f2).align();
-
-    return formulas;
-  }
-
-  $: formulas = setFormulas(ps_proj);
+  $: dir_L_right = dir_L_1_right.clone().sub(dir_L_2_right);
+  $: ps_proj_right = projectPoints(
+    ps_right,
+    isOrthogonal_right,
+    isLeastSquares_right,
+    dir_L_1_right,
+    dir_L_right
+  );
+  $: formulas_right = setFormulas(ps_proj_right, isOrthogonal_right, isLeastSquares_right);
 </script>
 
 <Canvas2D
-  {formulas}
-  splitCanvas2DProps={{ cameraPosition: new Vector2(4, 4) }}
-  splitFormulas={formulas}
+  {cameraPosition}
+  {cameraZoom}
+  formulas={formulas_left}
+  splitCanvas2DProps={{ cameraPosition: cameraPosition, cameraZoom: cameraZoom }}
+  splitFormulas={formulas_right}
 >
-  <BestlinesApplet isOrthogonal={true} />
+  <!--                                                                                        LEFT VERSION -->
+  <!-- Line L -->
+
+  <Draggable2D id="dir_L_1_left" bind:position={dir_L_1_left} color={PrimeColor.cyan} snap />
+  <Draggable2D id="dir_L_2_left" bind:position={dir_L_2_left} color={PrimeColor.cyan} snap />
+
+  <InfiniteLine2D
+    origin={dir_L_1_left}
+    direction={dir_L_1_left.clone().sub(dir_L_2_left)}
+    color={PrimeColor.cyan}
+  />
+  <Latex2D
+    latex={'\\mathcal{L} : y = ax + b'}
+    position={dir_L_2_left.clone().add(new Vector2(0.2, -0.6))}
+    offset={new Vector2(-0.25, 0.28)}
+    color={PrimeColor.cyan}
+  />
+
+  <!-- guide lines to p1 -->
+  <Line2D start={new Vector2(ps_left[0].x, 0)} end={ps_left[0]} isDashed />
+  <Line2D start={new Vector2(0, ps_left[0].y)} end={ps_left[0]} isDashed />
+  <Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
+  <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
+
+  <Latex2D
+    latex={distLabelLatex(isOrthogonal_left, isLeastSquares_left)}
+    position={ps_proj_left[3].p
+      .clone()
+      .sub(ps_proj_left[3].pt)
+      .multiplyScalar(0.5)
+      .add(ps_proj_left[3].pt)
+      .add(isOrthogonal_left ? new Vector2(-1.8, 0) : new Vector2(-2.65, 0))}
+    color={PrimeColor.raspberry}
+  />
+
+  {#each ps_proj_left as pt, index}
+    {#if isOrthogonal_left}
+      <RightAngle origin={pt.pt} vs={[dir_L_left, pt.p.clone().sub(pt.pt)]} />
+    {/if}
+    <!-- distances -->
+    <Vector2D
+      origin={pt.p}
+      direction={pt.pt.clone().sub(pt.p)}
+      length={pt.p.clone().sub(pt.pt).length()}
+      color={PrimeColor.raspberry}
+      hideHead
+    />
+    {#key pt}
+      <Latex2D
+        position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
+        latex={pt.dist.toFixed(2)}
+      />
+    {/key}
+
+    <!-- \\mathcal{P}_n -->
+    <Point2D position={pt.p} color={PrimeColor.orange} />
+    <Latex2D
+      latex={`\\mathcal{P}_${index + 1}`}
+      position={pt.p}
+      offset={new Vector2(0.2, 0.2)}
+      color={PrimeColor.orange}
+    />
+  {/each}
   <svelte:fragment slot="splitCanvas">
-    <BestlinesApplet />
+    <!--                                                                                RIGHT VERSION -->
+
+    <!-- Line L -->
+
+    <Draggable2D id="dir_L_1_right" bind:position={dir_L_1_right} color={PrimeColor.cyan} snap />
+    <Draggable2D id="dir_L_2_right" bind:position={dir_L_2_right} color={PrimeColor.cyan} snap />
+
+    <InfiniteLine2D
+      origin={dir_L_1_right}
+      direction={dir_L_1_right.clone().sub(dir_L_2_right)}
+      color={PrimeColor.cyan}
+    />
+    <Latex2D
+      latex={'\\mathcal{L} : y = ax + b'}
+      position={dir_L_2_right.clone().add(new Vector2(0.2, -0.6))}
+      offset={new Vector2(-0.25, 0.28)}
+      color={PrimeColor.cyan}
+    />
+
+    <!-- guide lines to p1 -->
+    <Line2D start={new Vector2(ps_right[0].x, 0)} end={ps_right[0]} isDashed />
+    <Line2D start={new Vector2(0, ps_right[0].y)} end={ps_right[0]} isDashed />
+    <Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
+    <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
+
+    <Latex2D
+      latex={distLabelLatex(isOrthogonal_right, isLeastSquares_right)}
+      position={ps_proj_right[3].p
+        .clone()
+        .sub(ps_proj_right[3].pt)
+        .multiplyScalar(0.5)
+        .add(ps_proj_right[3].pt)
+        .add(isOrthogonal_right ? new Vector2(-1.8, 0) : new Vector2(-2.65, 0))}
+      color={PrimeColor.raspberry}
+    />
+
+    {#each ps_proj_right as pt, index}
+      {#if isOrthogonal_right}
+        <RightAngle origin={pt.pt} vs={[dir_L_right, pt.p.clone().sub(pt.pt)]} />
+      {/if}
+      <!-- distances -->
+      <Vector2D
+        origin={pt.p}
+        direction={pt.pt.clone().sub(pt.p)}
+        length={pt.p.clone().sub(pt.pt).length()}
+        color={PrimeColor.raspberry}
+        hideHead
+      />
+      {#key pt}
+        <Latex2D
+          position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
+          latex={pt.dist.toFixed(2)}
+        />
+      {/key}
+
+      <!-- \\mathcal{P}_n -->
+      <Point2D position={pt.p} color={PrimeColor.orange} />
+      <Latex2D
+        latex={`\\mathcal{P}_${index + 1}`}
+        position={pt.p}
+        offset={new Vector2(0.2, 0.2)}
+        color={PrimeColor.orange}
+      />
+    {/each}
   </svelte:fragment>
 </Canvas2D>
