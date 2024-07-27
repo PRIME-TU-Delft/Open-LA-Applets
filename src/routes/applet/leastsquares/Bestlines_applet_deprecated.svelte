@@ -6,7 +6,8 @@
     Point2D,
     Vector2D,
     RightAngle,
-    Line2D
+    Line2D,
+    Canvas2D
   } from '$lib/d3-components';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import {
@@ -22,7 +23,7 @@
   export let pointsDraggable = false;
 
   const distLabelLatex = isOrthogonal
-    ? '\\mathrm{dist}(P_4, \\ell) \\rightarrow'
+    ? '\\mathrm{dist}(\\mathcal{P}_4, \\mathcal{L}) \\rightarrow'
     : isLeastSquares
       ? '|y_4 - (ax_4 + b_4)|^2\\rightarrow'
       : '|y_4 - (ax_4 + b_4)| \\rightarrow';
@@ -82,8 +83,8 @@
 
   export function setFormulas(u_ts: any[]) {
     const f2 = new Formula(formulaLatex)
-      .addParam(1, 'P_n', PrimeColor.orange)
-      .addParam(2, '\\ell', PrimeColor.cyan)
+      .addParam(1, '\\mathcal{P}_n', PrimeColor.orange)
+      .addParam(2, '\\mathcal{L}', PrimeColor.cyan)
       .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
     const formulas = new Formulas(f2).align();
 
@@ -101,7 +102,7 @@
 
 <InfiniteLine2D origin={dir_L_1} direction={dir_L_1.clone().sub(dir_L_2)} color={PrimeColor.cyan} />
 <Latex2D
-  latex={'\\ell : y = ax + b'}
+  latex={'\\mathcal{L} : y = ax + b'}
   position={dir_L_2.clone().add(new Vector2(0.2, -0.6))}
   offset={new Vector2(-0.25, 0.28)}
   color={PrimeColor.cyan}
@@ -143,13 +144,13 @@
     />
   {/key}
 
-  <!-- p_n -->
+  <!-- \\mathcal{P}_n -->
   {#if pointsDraggable}
     <Draggable2D id={'p' + index} bind:position={ps[index]} color={PrimeColor.orange} snap />
   {/if}
   <Point2D position={pt.p} color={PrimeColor.orange} />
   <Latex2D
-    latex={`P_${index + 1}`}
+    latex={`\\mathcal{P}_${index + 1}`}
     position={pt.p}
     offset={new Vector2(0.2, 0.2)}
     color={PrimeColor.orange}

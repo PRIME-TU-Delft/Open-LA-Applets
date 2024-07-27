@@ -1,10 +1,4 @@
 <script lang="ts">
-  import { Canvas2D } from '$lib/d3-components';
-  import { Vector2 } from 'three';
-  import BestlinesApplet from './Bestlines_applet.svelte';
-
-  //TODO camerazoom = 1.39
-
   import {
     Draggable2D,
     InfiniteLine2D,
@@ -12,7 +6,8 @@
     Point2D,
     Vector2D,
     RightAngle,
-    Line2D
+    Line2D,
+    Canvas2D
   } from '$lib/d3-components';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import {
@@ -21,7 +16,7 @@
     orthogonalProjectionWithOffset
   } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Matrix3 } from 'three';
+  import { Matrix3, Vector2 } from 'three';
 
   export let isOrthogonal = false; //orthogonal projection version of applet
   export let isLeastSquares = false; //leastquares version of applet
@@ -99,13 +94,65 @@
   $: formulas = setFormulas(ps_proj);
 </script>
 
-<Canvas2D
-  {formulas}
-  splitCanvas2DProps={{ cameraPosition: new Vector2(4, 4) }}
-  splitFormulas={formulas}
->
-  <BestlinesApplet isOrthogonal={true} />
-  <svelte:fragment slot="splitCanvas">
-    <BestlinesApplet />
-  </svelte:fragment>
-</Canvas2D>
+<!-- Line L -->
+{#if !pointsDraggable}
+  <Draggable2D id="dir_L_1" bind:position={dir_L_1} color={PrimeColor.cyan} snap />
+  <Draggable2D id="dir_L_2" bind:position={dir_L_2} color={PrimeColor.cyan} snap />
+{/if}
+
+<InfiniteLine2D origin={dir_L_1} direction={dir_L_1.clone().sub(dir_L_2)} color={PrimeColor.cyan} />
+<Latex2D
+  latex={'\\mathcal{L} : y = ax + b'}
+  position={dir_L_2.clone().add(new Vector2(0.2, -0.6))}
+  offset={new Vector2(-0.25, 0.28)}
+  color={PrimeColor.cyan}
+/>
+
+<!-- guide lines to p1 -->
+<Line2D start={new Vector2(ps[0].x, 0)} end={ps[0]} isDashed />
+<Line2D start={new Vector2(0, ps[0].y)} end={ps[0]} isDashed />
+<Latex2D position={new Vector2(1.2, 0.3)} latex={'x_1'} />
+<Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
+
+<Latex2D
+  latex={distLabelLatex}
+  position={ps_proj[3].p
+    .clone()
+    .sub(ps_proj[3].pt)
+    .multiplyScalar(0.5)
+    .add(ps_proj[3].pt)
+    .add(isOrthogonal ? new Vector2(-1.8, 0) : new Vector2(-2.65, 0))}
+  color={PrimeColor.raspberry}
+/>
+
+{#each ps_proj as pt, index}
+  {#if isOrthogonal}
+    <RightAngle origin={pt.pt} vs={[dir_L, pt.p.clone().sub(pt.pt)]} />
+  {/if}
+  <!-- distances -->
+  <Vector2D
+    origin={pt.p}
+    direction={pt.pt.clone().sub(pt.p)}
+    length={pt.p.clone().sub(pt.pt).length()}
+    color={PrimeColor.raspberry}
+    hideHead
+  />
+  {#key pt}
+    <Latex2D
+      position={pt.p.clone().sub(pt.pt).multiplyScalar(0.5).add(pt.pt).add(new Vector2(0.1, 0))}
+      latex={pt.dist.toFixed(2)}
+    />
+  {/key}
+
+  <!-- \\mathcal{P}_n -->
+  {#if pointsDraggable}
+    <Draggable2D id={'p' + index} bind:position={ps[index]} color={PrimeColor.orange} snap />
+  {/if}
+  <Point2D position={pt.p} color={PrimeColor.orange} />
+  <Latex2D
+    latex={`\\mathcal{P}_${index + 1}`}
+    position={pt.p}
+    offset={new Vector2(0.2, 0.2)}
+    color={PrimeColor.orange}
+  />
+{/each}
