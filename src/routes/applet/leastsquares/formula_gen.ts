@@ -5,8 +5,6 @@ import { lineLineIntersection, orthogonalProjectionWithOffset } from '$lib/utils
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import { Vector2 } from 'three';
 
-
-
 export function projectPoints(
     ps: Vector2[],
     isOrthogonal: boolean, isLeastSquares: boolean,

@@ -10,26 +10,15 @@
     Canvas2D
   } from '$lib/d3-components';
   import { Controls } from '$lib/utils/Controls';
-  import { Formula, Formulas } from '$lib/utils/Formulas';
-  import {
-    leastSquaresLine,
-    lineLineIntersection,
-    orthogonalProjectionWithOffset
-  } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Matrix3, Vector2 } from 'three';
+  import { Vector2 } from 'three';
+  import { distLabelLatex, projectPoints, setFormulas } from '../formula_gen';
+  import { leastSquaresLine } from '$lib/utils/MathLib';
 
-  //TODO these vars were used to determine version of applet when contents was extracted to one file, need to remove because code had to be duplicated anyway
-
+  //these vars are used to differentiate the four least-squares applet versions in this section
   let isOrthogonal = false; //orthogonal projection version of applet
   let isLeastSquares = true; //leastquares version of applet
   let pointsDraggable = true; //draggable points version of applet
-
-  const distLabelLatex = isOrthogonal
-    ? '\\mathrm{dist}(\\mathcal{P}_4, \\mathcal{L}) \\rightarrow'
-    : isLeastSquares
-      ? '|y_4 - (ax_4 + b_4)|^2\\rightarrow'
-      : '|y_4 - (ax_4 + b_4)| \\rightarrow';
 
   let ps = [
     new Vector2(1, 3),
@@ -39,62 +28,14 @@
     new Vector2(5, 3)
   ];
 
-  const m = new Matrix3();
-  m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
-
+  // starting points of draggables
   let dir_L_1 = new Vector2(-1, 5);
   let dir_L_2 = new Vector2(7, 4);
 
-  $: [dir_L_1, dir_L_2] = pointsDraggable ? leastSquaresLine(ps) : [dir_L_1, dir_L_2];
-
   $: dir_L = dir_L_1.clone().sub(dir_L_2);
-
-  //non orth proj funct
-  function projectInY(p: Vector2, origin_L: Vector2, dir_L: Vector2) {
-    return lineLineIntersection(
-      new Vector2(p.x, 100),
-      new Vector2(p.x, -100),
-      dir_L.clone().multiplyScalar(20).add(origin_L),
-      dir_L.clone().multiplyScalar(-20).add(origin_L)
-    );
-  }
-
-  $: ps_proj = ps.map((p) => {
-    let pt: Vector2;
-    if (isOrthogonal) {
-      pt = orthogonalProjectionWithOffset(p, dir_L_1, dir_L);
-    } else {
-      pt = projectInY(p, dir_L_1, dir_L);
-    }
-
-    let dist = p.clone().sub(pt).length();
-    isLeastSquares ? (dist = dist * dist) : (dist = dist);
-    return { p, pt, dist };
-  });
-
-  function calcTotalDist(u_ts: any[]) {
-    return u_ts
-      .map((p) => p.dist)
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  }
-
-  const formulaLatex = isOrthogonal
-    ? '\\sum_{n=1}^{5} dist(\\$1,\\$2) = \\$3'
-    : isLeastSquares
-      ? '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 '
-      : '\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$3 ';
-
-  function setFormulas(u_ts: any[]) {
-    const f2 = new Formula(formulaLatex)
-      .addParam(1, '\\mathcal{P}_n', PrimeColor.orange)
-      .addParam(2, '\\mathcal{L}', PrimeColor.cyan)
-      .addParam(3, calcTotalDist(u_ts).toFixed(2), PrimeColor.raspberry);
-    const formulas = new Formulas(f2).align();
-
-    return formulas;
-  }
-
-  $: formulas = setFormulas(ps_proj);
+  $: [dir_L_1, dir_L_2] = pointsDraggable ? leastSquaresLine(ps) : [dir_L_1, dir_L_2];
+  $: ps_proj = projectPoints(ps, isOrthogonal, isLeastSquares, dir_L_1, dir_L);
+  $: formulas = setFormulas(ps_proj, isOrthogonal, isLeastSquares);
 
   let controls = Controls.addToggle(true).addToggle(false).addToggle(false);
 </script>
@@ -125,7 +66,7 @@
   <Latex2D position={new Vector2(0.3, 3.3)} latex={'y_1'} />
 
   <Latex2D
-    latex={distLabelLatex}
+    latex={distLabelLatex(isOrthogonal, isLeastSquares)}
     position={ps_proj[3].p
       .clone()
       .sub(ps_proj[3].pt)
