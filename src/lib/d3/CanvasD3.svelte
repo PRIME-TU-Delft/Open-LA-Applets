@@ -1,136 +1,136 @@
 <script lang="ts" context="module">
-	import type { Snippet } from 'svelte';
-	import { Vector2 } from 'three';
+  import type { Snippet } from 'svelte';
+  import { Vector2 } from 'three';
 
-	export type Canvas2DProps = {
-		cameraPosition?: Vector2;
-		cameraZoom?: number;
-		tickLength?: number; // TODO: move axis to separate component
-		showAxisNumbers?: boolean;
-		width: number;
-		enablePan?: boolean;
-		draggables?: Draggable[];
-		children: Snippet;
-	};
+  export type Canvas2DProps = {
+    cameraPosition?: Vector2;
+    cameraZoom?: number;
+    tickLength?: number; // TODO: move axis to separate component
+    showAxisNumbers?: boolean;
+    width: number;
+    enablePan?: boolean;
+    draggables?: Draggable[];
+    children: Snippet;
+  };
 </script>
 
 <script lang="ts">
-	import type { Draggable } from '$lib/controls/Draggables.svelte';
-	import { activityState } from '$lib/stores/activity.svelte';
-	import { globalState } from '$lib/stores/globalState.svelte';
-	import {
-		select,
-		zoom,
-		zoomIdentity,
-		zoomTransform,
-		type BaseType,
-		type Selection,
-		type Transition
-	} from 'd3';
-	import { generateUUID } from 'three/src/math/MathUtils.js';
-	import Axis from './Axis.svelte';
-	import Draggable2D from './Draggable2D.svelte';
+  import type { Draggable } from '$lib/controls/Draggables.svelte';
+  import { activityState } from '$lib/stores/activity.svelte';
+  import { globalState } from '$lib/stores/globalState.svelte';
+  import {
+    select,
+    zoom,
+    zoomIdentity,
+    zoomTransform,
+    type BaseType,
+    type Selection,
+    type Transition
+  } from 'd3';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
+  import Axis from './Axis.svelte';
+  import Draggable2D from './Draggable2D.svelte';
 
-	let {
-		cameraPosition = new Vector2(0, 0),
-		cameraZoom = 1,
-		tickLength,
-		showAxisNumbers,
-		width,
-		enablePan = true,
-		draggables = [],
-		children
-	}: Canvas2DProps = $props();
+  let {
+    cameraPosition = new Vector2(0, 0),
+    cameraZoom = 1,
+    tickLength,
+    showAxisNumbers,
+    width,
+    enablePan = true,
+    draggables = [],
+    children
+  }: Canvas2DProps = $props();
 
-	let id = 'canvas-' + generateUUID();
+  let id = 'canvas-' + generateUUID();
 
-	let height = $derived(globalState.height);
+  let height = $derived(globalState.height);
 
-	function transformScene(transform: any) {
-		if (enablePan) {
-			select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
-		} else {
-			select(`#${id} g`)
-				.attr('transform', `scale(${transform.k})`)
-				.attr('transform-origin', 'center center');
-		}
-	}
+  function transformScene(transform: any) {
+    if (enablePan) {
+      select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
+    } else {
+      select(`#${id} g`)
+        .attr('transform', `scale(${transform.k})`)
+        .attr('transform-origin', 'center center');
+    }
+  }
 
-	/**
-	 * Zoom protocol for the camera.
-	 * @see https://observablehq.com/@d3/drag-zoom?collection=@d3/d3-drag
-	 */
-	const zoomProtocol = $derived.by(() => {
-		const minZoom = cameraZoom / 3;
-		const maxZoom = 3 / cameraZoom;
+  /**
+   * Zoom protocol for the camera.
+   * @see https://observablehq.com/@d3/drag-zoom?collection=@d3/d3-drag
+   */
+  const zoomProtocol = $derived.by(() => {
+    const minZoom = cameraZoom / 3;
+    const maxZoom = 3 / cameraZoom;
 
-		return zoom()
-			.scaleExtent([minZoom, maxZoom])
-			.on('zoom', ({ transform }) => {
-				if (!activityState.isActive) return;
+    return zoom()
+      .scaleExtent([minZoom, maxZoom])
+      .on('zoom', ({ transform }) => {
+        if (!activityState.isActive) return;
 
-				transformScene(transform);
-			});
-	}) as (selection: Selection<BaseType, unknown, BaseType, unknown>) => void;
+        transformScene(transform);
+      });
+  }) as (selection: Selection<BaseType, unknown, BaseType, unknown>) => void;
 
-	/**
-	 * Reset the camera position and zoom level.
-	 * This function is called when the reset button is clicked.
-	 * It will animate the camera to the default position and zoom level in 750ms.
-	 */
-	function reset() {
-		const svg = select(`#${id}`);
-		const node = svg.node() as Element;
+  /**
+   * Reset the camera position and zoom level.
+   * This function is called when the reset button is clicked.
+   * It will animate the camera to the default position and zoom level in 750ms.
+   */
+  function reset() {
+    const svg = select(`#${id}`);
+    const node = svg.node() as Element;
 
-		const transformFn = zoom().on('zoom', ({ transform }) => {
-			transformScene(transform);
-		}).transform as (t: Transition<BaseType, unknown, BaseType, unknown>) => void;
+    const transformFn = zoom().on('zoom', ({ transform }) => {
+      transformScene(transform);
+    }).transform as (t: Transition<BaseType, unknown, BaseType, unknown>) => void;
 
-		svg
-			.transition()
-			.duration(750)
-			.call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
-	}
+    svg
+      .transition()
+      .duration(750)
+      .call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
+  }
 
-	$effect(() => {
-		const _ = [width, height, cameraPosition, cameraZoom]; // update when width, height or camera changes
+  $effect(() => {
+    const _ = [width, height, cameraPosition, cameraZoom]; // update when width, height or camera changes
 
-		if (activityState.isActive) {
-			// Attach the zoom event listener
-			select(`#${id}`).call(zoomProtocol);
-		} else {
-			// Release the zoom event listener
-			select(`#${id}`).on('.zoom', null);
-		}
-	});
+    if (activityState.isActive) {
+      // Attach the zoom event listener
+      select(`#${id}`).call(zoomProtocol);
+    } else {
+      // Release the zoom event listener
+      select(`#${id}`).on('.zoom', null);
+    }
+  });
 
-	/**
-	 * Reset the d3 canvas when the reset key changes.
-	 */
-	$effect(() => {
-		const _ = globalState.resetKey;
+  /**
+   * Reset the d3 canvas when the reset key changes.
+   */
+  $effect(() => {
+    const _ = globalState.resetKey;
 
-		reset();
-	});
+    reset();
+  });
 </script>
 
 <svg {id} {width} {height} viewBox="0 0 {width} {height}">
-	<g>
-		<g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
-			<g
-				transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
-					(2 * width)) /
-					30})"
-			>
-				<g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-					<Axis {showAxisNumbers} length={tickLength} />
-					{@render children()}
+  <g>
+    <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
+      <g
+        transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
+          (2 * width)) /
+          30})"
+      >
+        <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
+          <Axis {showAxisNumbers} length={tickLength} />
+          {@render children()}
 
-					{#each draggables as d}
-						<Draggable2D draggable={d} />
-					{/each}
-				</g>
-			</g>
-		</g>
-	</g>
+          {#each draggables as d}
+            <Draggable2D draggable={d} />
+          {/each}
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>

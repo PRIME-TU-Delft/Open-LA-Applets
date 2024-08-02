@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { Vector2 } from 'three';
+  import { Vector2 } from 'three';
 
-	type TriangleProps = {
-		points: Vector2[];
-		color?: string;
-	};
+  type TriangleProps = {
+    points: Vector2[];
+    color?: string;
+  };
 
-	let { points, color = 'black' }: TriangleProps = $props();
+  let { points, color = 'black' }: TriangleProps = $props();
 </script>
 
 <!-- @component

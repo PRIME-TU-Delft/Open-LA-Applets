@@ -14,98 +14,98 @@ import { PrimeColor } from '$lib/utils/PrimeColors';
  */
 
 export class Slider implements Controller<number> {
-	defaultValue = 0;
-	value = $state(0);
-	min = -1;
-	max = 1;
-	stepSize = 0.1;
-	color: string = PrimeColor.blue;
-	width = 30;
-	type = 'sliders';
-	label = '';
-	valueFn: (v: number) => string;
+  defaultValue = 0;
+  value = $state(0);
+  min = -1;
+  max = 1;
+  stepSize = 0.1;
+  color: string = PrimeColor.blue;
+  width = 30;
+  type = 'sliders';
+  label = '';
+  valueFn: (v: number) => string;
 
-	constructor(
-		defaultValue: number,
-		min = -1,
-		max = 1,
-		step = 0.1,
-		color: string = PrimeColor.blue,
-		label: string = '',
-		valueFn: (v: number) => string = (v) => v.toString()
-	) {
-		this.defaultValue = defaultValue;
-		this.min = min;
-		this.max = max;
-		this.stepSize = step;
-		this.value = defaultValue;
-		this.color = color;
-		this.label = label;
-		this.valueFn = valueFn;
-	}
+  constructor(
+    defaultValue: number,
+    min = -1,
+    max = 1,
+    step = 0.1,
+    color: string = PrimeColor.blue,
+    label: string = '',
+    valueFn: (v: number) => string = (v) => v.toString()
+  ) {
+    this.defaultValue = defaultValue;
+    this.min = min;
+    this.max = max;
+    this.stepSize = step;
+    this.value = defaultValue;
+    this.color = color;
+    this.label = label;
+    this.valueFn = valueFn;
+  }
 
-	static Default = new Slider(0);
+  static Default = new Slider(0);
 
-	static set(dft = 0) {
-		return new Slider(dft);
-	}
+  static set(dft = 0) {
+    return new Slider(dft);
+  }
 
-	from(min = -1) {
-		this.min = min;
+  from(min = -1) {
+    this.min = min;
 
-		return this;
-	}
+    return this;
+  }
 
-	to(max = 1) {
-		this.max = max;
+  to(max = 1) {
+    this.max = max;
 
-		return this;
-	}
+    return this;
+  }
 
-	step(stp = 0.1) {
-		this.stepSize = stp;
+  step(stp = 0.1) {
+    this.stepSize = stp;
 
-		return this;
-	}
+    return this;
+  }
 
-	updateBy(step: number) {
-		this.value = this.value + step;
-	}
+  updateBy(step: number) {
+    this.value = this.value + step;
+  }
 
-	reset(ms: number = 750, timeSteps: number = 20) {
-		// this.value = this.defaultValue;
-		const delta = this.defaultValue - this.value;
+  reset(ms: number = 750, timeSteps: number = 20) {
+    // this.value = this.defaultValue;
+    const delta = this.defaultValue - this.value;
 
-		// Return early if the delta is near zero
-		if (Math.abs(delta) < 0.0001) {
-			this.value = this.defaultValue;
-			return this;
-		}
+    // Return early if the delta is near zero
+    if (Math.abs(delta) < 0.0001) {
+      this.value = this.defaultValue;
+      return this;
+    }
 
-		// Animate the slider to the default value in 750ms in timeSteps steps
-		const step = delta / timeSteps;
+    // Animate the slider to the default value in 750ms in timeSteps steps
+    const step = delta / timeSteps;
 
-		let i = 0;
+    let i = 0;
 
-		const interval = setInterval(() => {
-			this.updateBy(step);
+    const interval = setInterval(() => {
+      this.updateBy(step);
 
-			if (i++ === timeSteps - 1) {
-				clearInterval(interval);
-				this.value = this.defaultValue;
-			}
-		}, ms / timeSteps);
+      if (i++ === timeSteps - 1) {
+        clearInterval(interval);
+        this.value = this.defaultValue;
+      }
+    }, ms / timeSteps);
 
-		return this;
-	}
+    return this;
+  }
 
-	toURL() {
-		return `${this.value}`;
-	}
+  toURL() {
+    return `${this.value}`;
+  }
 
-	fromURL(s: string) {
-		this.value = parseFloat(s);
+  fromURL(s: string) {
+    this.value = parseFloat(s);
 
-		return this;
-	}
+    return this;
+  }
 }

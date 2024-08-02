@@ -1,50 +1,50 @@
 <script lang="ts">
-	import { formatString } from '$lib/utils/FormatString';
-	import * as Accordion from '$lib/components/ui/accordion';
-	import ListItem from './ListItem.svelte';
+  import { formatString } from '$lib/utils/FormatString';
+  import * as Accordion from '$lib/components/ui/accordion';
+  import ListItem from './ListItem.svelte';
 
-	export let fileUrls: string[];
+  export let fileUrls: string[];
 
-	type File = {
-		title: string;
-		url: string;
-	};
+  type File = {
+    title: string;
+    url: string;
+  };
 
-	$: folders = fileUrls
-		.map((fileUrl) => {
-			const parts = fileUrl.split('/');
-			const file = parts.pop() || '';
-			const folder = parts.join('/');
+  $: folders = fileUrls
+    .map((fileUrl) => {
+      const parts = fileUrl.split('/');
+      const file = parts.pop() || '';
+      const folder = parts.join('/');
 
-			return { file, folder };
-		})
-		.reduce(
-			(acc, curr) => {
-				const file = {
-					title: curr.file,
-					url: `/applet/${curr.folder}/${curr.file}`
-				};
+      return { file, folder };
+    })
+    .reduce(
+      (acc, curr) => {
+        const file = {
+          title: curr.file,
+          url: `/applet/${curr.folder}/${curr.file}`
+        };
 
-				if (curr.folder in acc) {
-					acc[curr.folder].push(file);
-				} else {
-					acc[curr.folder] = [file];
-				}
-				return acc;
-			},
-			{} as Record<string, File[]>
-		);
+        if (curr.folder in acc) {
+          acc[curr.folder].push(file);
+        } else {
+          acc[curr.folder] = [file];
+        }
+        return acc;
+      },
+      {} as Record<string, File[]>
+    );
 </script>
 
 <Accordion.Root class="container my-10 mx-auto">
-	{#each Object.entries(folders) as [folderTitle, files], index}
-		<Accordion.Item value="item-{index}">
-			<Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
-			{#each files as { title, url }}
-				<Accordion.Content>
-					<ListItem {title} {url} />
-				</Accordion.Content>
-			{/each}
-		</Accordion.Item>
-	{/each}
+  {#each Object.entries(folders) as [folderTitle, files], index}
+    <Accordion.Item value="item-{index}">
+      <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
+      {#each files as { title, url }}
+        <Accordion.Content>
+          <ListItem {title} {url} />
+        </Accordion.Content>
+      {/each}
+    </Accordion.Item>
+  {/each}
 </Accordion.Root>

@@ -1,27 +1,27 @@
 <script lang="ts">
-	import { Vector2 } from 'three';
-	import Line from './Line2D.svelte';
-	import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+  import Line from './Line2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
-	type RightAngle2DProps = {
-		vs: [Vector2, Vector2];
-		origin?: Vector2;
-		size?: number;
-		color?: string;
-		lineWidth?: number;
-	};
+  type RightAngle2DProps = {
+    vs: [Vector2, Vector2];
+    origin?: Vector2;
+    size?: number;
+    color?: string;
+    lineWidth?: number;
+  };
 
-	let {
-		vs,
-		origin = new Vector2(0, 0),
-		size = 0.3,
-		color = PrimeColor.black,
-		lineWidth = 0.02
-	}: RightAngle2DProps = $props();
+  let {
+    vs,
+    origin = new Vector2(0, 0),
+    size = 0.3,
+    color = PrimeColor.black,
+    lineWidth = 0.02
+  }: RightAngle2DProps = $props();
 
-	//resize vectors
-	const u1 = $derived(vs[0].clone().multiplyScalar(size / vs[0].length()));
-	const u2 = $derived(vs[1].clone().multiplyScalar(size / vs[1].length()));
+  //resize vectors
+  const u1 = $derived(vs[0].clone().multiplyScalar(size / vs[0].length()));
+  const u2 = $derived(vs[1].clone().multiplyScalar(size / vs[1].length()));
 </script>
 
 <!-- @component 
@@ -40,16 +40,16 @@
 
 <!-- draw two lines to represent right angle if perpendicular -->
 {#if Math.abs(u1.dot(u2)) <= 0.005 && !u1.equals(u2)}
-	<Line
-		{color}
-		width={lineWidth}
-		start={u1.clone().add(origin)}
-		end={u1.clone().add(u2).add(origin)}
-	/>
-	<Line
-		{color}
-		width={lineWidth}
-		start={u2.clone().add(origin)}
-		end={u1.clone().add(u2).add(origin)}
-	/>
+  <Line
+    {color}
+    width={lineWidth}
+    start={u1.clone().add(origin)}
+    end={u1.clone().add(u2).add(origin)}
+  />
+  <Line
+    {color}
+    width={lineWidth}
+    start={u2.clone().add(origin)}
+    end={u1.clone().add(u2).add(origin)}
+  />
 {/if}

@@ -1,18 +1,18 @@
 <script lang="ts">
-	import type { Vector2 } from 'three';
+  import type { Vector2 } from 'three';
 
-	type ParallelogramProps = {
-		points: [Vector2, Vector2, Vector2];
-		color?: string;
-		strokeWidth?: number;
-		opacity?: number;
-	};
+  type ParallelogramProps = {
+    points: [Vector2, Vector2, Vector2];
+    color?: string;
+    strokeWidth?: number;
+    opacity?: number;
+  };
 
-	let { points, color = 'black', strokeWidth = 1, opacity = 1 }: ParallelogramProps = $props();
+  let { points, color = 'black', strokeWidth = 1, opacity = 1 }: ParallelogramProps = $props();
 
-	const [a, b, c] = $derived(points.map((p) => p.toArray().join(',')));
+  const [a, b, c] = $derived(points.map((p) => p.toArray().join(',')));
 
-	const d = $derived(points[1].clone().add(points[2]).sub(points[0]).toArray().join(','));
+  const d = $derived(points[1].clone().add(points[2]).sub(points[0]).toArray().join(','));
 </script>
 
 <!-- @component
@@ -20,9 +20,9 @@
  -->
 
 <polygon
-	fill={color}
-	stroke="black"
-	stroke-width={strokeWidth * 0.05}
-	{opacity}
-	points="{a} {b} {d} {c} "
+  fill={color}
+  stroke="black"
+  stroke-width={strokeWidth * 0.05}
+  {opacity}
+  points="{a} {b} {d} {c} "
 />

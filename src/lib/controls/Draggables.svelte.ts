@@ -15,76 +15,76 @@ import { Vector2 } from 'three';
  */
 
 export class Draggable implements Controller<Vector2> {
-	defaultValue = new Vector2(0, 0);
-	value = $state(new Vector2(0, 0));
-	color: string = PrimeColor.blue;
-	width = 0;
-	type = 'draggable';
-	label = '';
-	snapFn: (value: Vector2) => Vector2;
-	valueFn: (v: number) => string;
+  defaultValue = new Vector2(0, 0);
+  value = $state(new Vector2(0, 0));
+  color: string = PrimeColor.blue;
+  width = 0;
+  type = 'draggable';
+  label = '';
+  snapFn: (value: Vector2) => Vector2;
+  valueFn: (v: number) => string;
 
-	constructor(
-		defaultValue: Vector2,
-		color: string = PrimeColor.blue,
-		label: string = '',
-		snapFn: (value: Vector2) => Vector2 = (v) => v,
-		valueFn: (v: number) => string = (v) => v.toString()
-	) {
-		this.defaultValue = defaultValue.clone();
-		this.value = defaultValue;
-		this.color = color;
-		this.label = label;
-		this.snapFn = snapFn;
-		this.valueFn = valueFn;
-	}
+  constructor(
+    defaultValue: Vector2,
+    color: string = PrimeColor.blue,
+    label: string = '',
+    snapFn: (value: Vector2) => Vector2 = (v) => v,
+    valueFn: (v: number) => string = (v) => v.toString()
+  ) {
+    this.defaultValue = defaultValue.clone();
+    this.value = defaultValue;
+    this.color = color;
+    this.label = label;
+    this.snapFn = snapFn;
+    this.valueFn = valueFn;
+  }
 
-	static Default = new Draggable(new Vector2(0, 0));
+  static Default = new Draggable(new Vector2(0, 0));
 
-	static set(dft = new Vector2(0, 0)) {
-		return new Draggable(dft);
-	}
+  static set(dft = new Vector2(0, 0)) {
+    return new Draggable(dft);
+  }
 
-	static get snapToGrid() {
-		return (value: Vector2) => {
-			return new Vector2(Math.round(value.x), Math.round(value.y));
-		};
-	}
+  static get snapToGrid() {
+    return (value: Vector2) => {
+      return new Vector2(Math.round(value.x), Math.round(value.y));
+    };
+  }
 
-	updateBy(step: Vector2) {
-		this.value = this.value.clone().sub(step);
-	}
+  updateBy(step: Vector2) {
+    this.value = this.value.clone().sub(step);
+  }
 
-	reset(ms: number, timeSteps: number = 20) {
-		const delta = this.value.clone().sub(this.defaultValue).divideScalar(timeSteps);
+  reset(ms: number, timeSteps: number = 20) {
+    const delta = this.value.clone().sub(this.defaultValue).divideScalar(timeSteps);
 
-		// Return early if the delta is near zero
-		if (delta.length() < 0.0001) {
-			this.value = this.defaultValue.clone();
-			return this;
-		}
+    // Return early if the delta is near zero
+    if (delta.length() < 0.0001) {
+      this.value = this.defaultValue.clone();
+      return this;
+    }
 
-		let i = 0;
-		const interval = setInterval(() => {
-			this.updateBy(delta);
+    let i = 0;
+    const interval = setInterval(() => {
+      this.updateBy(delta);
 
-			if (i++ === timeSteps - 1) {
-				clearInterval(interval);
-				this.value = this.defaultValue.clone();
-			}
-		}, ms / timeSteps);
+      if (i++ === timeSteps - 1) {
+        clearInterval(interval);
+        this.value = this.defaultValue.clone();
+      }
+    }, ms / timeSteps);
 
-		return this;
-	}
+    return this;
+  }
 
-	toURL() {
-		return `${this.value}`;
-	}
+  toURL() {
+    return `${this.value}`;
+  }
 
-	fromURL(s: string) {
-		const [x, y] = s.split(',').map(parseFloat);
-		this.value = new Vector2(x, y);
+  fromURL(s: string) {
+    const [x, y] = s.split(',').map(parseFloat);
+    this.value = new Vector2(x, y);
 
-		return this;
-	}
+    return this;
+  }
 }

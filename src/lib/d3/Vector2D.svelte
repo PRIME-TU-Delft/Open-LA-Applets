@@ -1,60 +1,60 @@
 <script lang="ts">
-	import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
-	import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
-	import type { Snippet } from 'svelte';
-	import { Vector2 } from 'three';
-	import Line2D from './Line2D.svelte';
-	import Triangle2D from './Triangle2D.svelte';
+  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
+  import { Vector2 } from 'three';
+  import Line2D from './Line2D.svelte';
+  import Triangle2D from './Triangle2D.svelte';
 
-	type VectorProps = {
-		color?: ColorString;
-		origin?: Vector2;
-		direction?: Vector2;
-		length?: number;
-		radius?: number;
-		hideHead?: boolean;
-		isDashed?: boolean;
-		noNormalise?: boolean;
-		children?: Snippet<[Vector2]>;
-	};
+  type VectorProps = {
+    color?: ColorString;
+    origin?: Vector2;
+    direction?: Vector2;
+    length?: number;
+    radius?: number;
+    hideHead?: boolean;
+    isDashed?: boolean;
+    noNormalise?: boolean;
+    children?: Snippet<[Vector2]>;
+  };
 
-	let {
-		color = PrimeColor.getRandomColor(),
-		origin = new Vector2(0, 0),
-		direction = new Vector2(1, 0),
-		length = 1,
-		radius = VECTOR_WIDTH,
-		hideHead = false,
-		isDashed = false,
-		noNormalise: noNormalise = false,
-		children
-	}: VectorProps = $props();
+  let {
+    color = PrimeColor.getRandomColor(),
+    origin = new Vector2(0, 0),
+    direction = new Vector2(1, 0),
+    length = 1,
+    radius = VECTOR_WIDTH,
+    hideHead = false,
+    isDashed = false,
+    noNormalise: noNormalise = false,
+    children
+  }: VectorProps = $props();
 
-	const CONE_HEIGHT = 0.5;
-	const CONE_DIAMETER = 0.12;
+  const CONE_HEIGHT = 0.5;
+  const CONE_DIAMETER = 0.12;
 
-	const endPoint = $derived(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
-	const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
+  const endPoint = $derived(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
+  const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
 
-	$effect(() => {
-		if (!noNormalise) {
-			direction = direction.clone().normalize();
-		}
-	});
+  $effect(() => {
+    if (!noNormalise) {
+      direction = direction.clone().normalize();
+    }
+  });
 
-	const coneStart = $derived(
-		origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2))
-	);
-	const leftConePoint = $derived(
-		coneStart
-			.clone()
-			.add(new Vector2(-direction.y, direction.x).normalize().multiplyScalar(CONE_DIAMETER))
-	);
-	const rightConePoint = $derived(
-		coneStart
-			.clone()
-			.add(new Vector2(direction.y, -direction.x).normalize().multiplyScalar(CONE_DIAMETER))
-	);
+  const coneStart = $derived(
+    origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2))
+  );
+  const leftConePoint = $derived(
+    coneStart
+      .clone()
+      .add(new Vector2(-direction.y, direction.x).normalize().multiplyScalar(CONE_DIAMETER))
+  );
+  const rightConePoint = $derived(
+    coneStart
+      .clone()
+      .add(new Vector2(direction.y, -direction.x).normalize().multiplyScalar(CONE_DIAMETER))
+  );
 </script>
 
 <!--@component
@@ -77,9 +77,9 @@
 <Line2D start={origin} end={coneStart} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
-	<Triangle2D points={[leftConePoint, endPoint, rightConePoint]} {color} />
+  <Triangle2D points={[leftConePoint, endPoint, rightConePoint]} {color} />
 {/if}
 
 {#if children}
-	{@render children(endPoint)}
+  {@render children(endPoint)}
 {/if}

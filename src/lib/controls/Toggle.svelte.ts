@@ -9,42 +9,42 @@ import { PrimeColor } from '$lib/utils/PrimeColors';
  */
 
 export class Toggle implements Controller<boolean> {
-	defaultValue = false;
-	value = $state(false);
-	color: string = PrimeColor.blue;
-	width = 10;
-	label: string | undefined = undefined;
-	type = 'toggle';
+  defaultValue = false;
+  value = $state(false);
+  color: string = PrimeColor.blue;
+  width = 10;
+  label: string | undefined = undefined;
+  type = 'toggle';
 
-	constructor(
-		defaultValue: boolean,
-		label: string | undefined = undefined,
-		color: string = PrimeColor.blue
-	) {
-		this.defaultValue = defaultValue;
-		this.value = defaultValue;
-		this.color = color;
-		this.label = label;
-	}
+  constructor(
+    defaultValue: boolean,
+    label: string | undefined = undefined,
+    color: string = PrimeColor.blue
+  ) {
+    this.defaultValue = defaultValue;
+    this.value = defaultValue;
+    this.color = color;
+    this.label = label;
+  }
 
-	static Default = new Toggle(false);
-	static set(dft = false) {
-		return new Toggle(dft);
-	}
+  static Default = new Toggle(false);
+  static set(dft = false) {
+    return new Toggle(dft);
+  }
 
-	reset() {
-		this.value = this.defaultValue;
+  reset() {
+    this.value = this.defaultValue;
 
-		return this;
-	}
+    return this;
+  }
 
-	toURL() {
-		return `${this.value}`;
-	}
+  toURL() {
+    return `${this.value}`;
+  }
 
-	fromURL(s: string) {
-		this.value = Boolean(s);
+  fromURL(s: string) {
+    this.value = Boolean(s);
 
-		return this;
-	}
+    return this;
+  }
 }
