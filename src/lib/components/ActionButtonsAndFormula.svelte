@@ -45,7 +45,7 @@
 	}
 
 	let formulasShown = $derived(
-		globalState.controlsInteractive || showFormulas || globalState.isInset
+		globalState.controlsInteractive || showFormulas || globalState.isInset()
 	);
 </script>
 
@@ -119,7 +119,7 @@
 		{/if}
 
 		<!-- TOGGLE FORMULAE -->
-		{#if !globalState.isInset && formulas && formulas.length >= 1}
+		{#if !globalState.isInset() && formulas && formulas.length >= 1}
 			<Button.Action
 				side="bottom"
 				class="{!formulasShown

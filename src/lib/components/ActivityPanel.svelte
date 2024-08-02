@@ -14,7 +14,7 @@
 
 <div
 	class="flex gap-1 hover:scale-105 text-blue-900 scale-100 transition-transform backdrop-blur-md bg-blue-200/70 shadow-md rounded-lg absolute bottom-2 left-1/2 -translate-x-1/2 items-center"
-	class:m-2={globalState.isInset}
+	class:m-2={globalState.isInset()}
 >
 	{#if !activityState.isActive}
 		<div class="px-4 py-1 relative sm:text-nowrap text-balance text-center items-center flex gap-2">

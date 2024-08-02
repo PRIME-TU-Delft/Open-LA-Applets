@@ -30,7 +30,7 @@
 
 <div
 	class="absolute bottom-2 left-1/2 -translate-x-1/2 transition-all"
-	class:inset={globalState.isInset}
+	class:inset={globalState.isInset()}
 >
 	<div
 		class="py-2 px-3 rounded-lg flex gap-1 items-center shadow-md bg-blue-50/70 backdrop-blur-md"
