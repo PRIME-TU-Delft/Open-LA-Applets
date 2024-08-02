@@ -27,7 +27,7 @@ class GlobalState {
 	 * This is a derived state.
 	 * @type {boolean}
 	 */
-	isInset = $derived(() => globalState.inIframe || globalState.isFullscreen);
+	isInset = $derived(() => !globalState.inIframe || globalState.isFullscreen);
 
 	/**
 	 * Represents the title of the application.

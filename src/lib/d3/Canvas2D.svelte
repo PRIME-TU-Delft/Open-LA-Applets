@@ -8,6 +8,7 @@
 	import type { Camera3DProps } from '$lib/threlte/Camera3D.svelte';
 	import Camera3D from '$lib/threlte/Camera3D.svelte';
 	import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
+	import { hasProps } from '$lib/utils/hasProps';
 	import { parseUrl } from '$lib/utils/ParseUrl';
 	import { Canvas } from '@threlte/core';
 	import { type Snippet } from 'svelte';
@@ -47,7 +48,9 @@
 	}: CanvasProps = $props();
 
 	const canvasWidth = $derived(
-		splitCanvas2DProps || splitCanvas3DProps ? globalState.width / 2 : globalState.width
+		hasProps(splitCanvas2DProps) || hasProps(splitCanvas3DProps)
+			? globalState.width / 2
+			: globalState.width
 	);
 
 	// Concat all draggables and pass them to the Scene component to be able to reset them

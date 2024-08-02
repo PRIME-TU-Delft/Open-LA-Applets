@@ -24,12 +24,19 @@
 	const INTERVALS = 20;
 	const DURATION = 750;
 
+	let interval: number;
+	let doReset: number;
+
 	function onCreate({ ref }: { ref: Camera }) {
 		ref.lookAt(0, 0, 0);
 	}
 
-	$effect(() => {
-		const _ = globalState.resetKey;
+	/**
+	 * Function for reseting the 3D camera to the original position and zoom
+	 * Do this with a smooth animation and ✨ QuAtErNiOnS ✨
+	 */
+	function resetCamera() {
+		clearInterval(interval);
 
 		// Original values
 		const originalZoom = zoom;
@@ -42,7 +49,7 @@
 
 		const zoomDelta = originalZoom - currentZoom;
 
-		const interval = setInterval(() => {
+		interval = setInterval(() => {
 			// Find quaternion to rotate from current to original position
 			const rot = new Quaternion().setFromUnitVectors(
 				currentPosition.clone().normalize(),
@@ -74,10 +81,24 @@
 
 			clearInterval(interval);
 		}, DURATION);
+	}
+
+	$effect(() => {
+		const _ = globalState.resetKey;
+
+		resetCamera();
 
 		return () => clearInterval(interval);
 	});
 </script>
+
+<!-- Reset the camera when the window size changes, but only if it has not been resized within the past 100 milliseconds. -->
+<svelte:window
+	onresize={() => {
+		clearTimeout(doReset);
+		doReset = setTimeout(resetCamera, 100);
+	}}
+/>
 
 <T.OrthographicCamera
 	makeDefault

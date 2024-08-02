@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Konami from '$lib/components/Konami.svelte';
 	import type { SceneProps } from '$lib/components/Scene.svelte';
 	import Scene from '$lib/components/Scene.svelte';
@@ -6,13 +7,13 @@
 	import CanvasD3 from '$lib/d3/CanvasD3.svelte';
 	import { activityState } from '$lib/stores/activity.svelte';
 	import { globalState } from '$lib/stores/globalState.svelte';
+	import { parseUrl } from '$lib/utils/ParseUrl';
+	import { hasProps } from '$lib/utils/hasProps';
 	import { Canvas } from '@threlte/core';
 	import type { Snippet } from 'svelte';
 	import { NoToneMapping, Vector3 } from 'three';
 	import Camera3D, { type Camera3DProps } from './Camera3D.svelte';
 	import CustomRenderer from './CustomRenderer.svelte';
-	import { page } from '$app/stores';
-	import { parseUrl } from '$lib/utils/ParseUrl';
 
 	type CanvasProps = SceneProps &
 		Omit<Camera3DProps, 'children' | 'width'> & {
@@ -44,7 +45,9 @@
 	}: CanvasProps = $props();
 
 	const canvasWidth = $derived(
-		splitCanvas2DProps || splitCanvas3DProps ? globalState.width / 2 : globalState.width
+		hasProps(splitCanvas2DProps) || hasProps(splitCanvas3DProps)
+			? globalState.width / 2
+			: globalState.width
 	);
 
 	// Concat all draggables and pass them to the Scene component to be able to reset them
@@ -53,10 +56,6 @@
 	const renderMode = $derived(activityState.isActive ? 'on-demand' : 'manual');
 
 	let enableEasterEgg = $state(false);
-
-	$effect(() => {
-		globalState.title = title || '';
-	});
 
 	$effect.pre(() => {
 		const searchParams = $page.url.searchParams;
@@ -83,7 +82,14 @@
 	});
 </script>
 
-<Scene draggables={allDraggables} {controls} {showFormulasDefault} {formulas} {splitFormulas}>
+<Scene
+	{title}
+	draggables={allDraggables}
+	{controls}
+	{showFormulasDefault}
+	{formulas}
+	{splitFormulas}
+>
 	<div style="width: {canvasWidth}px" class="overflow">
 		<Canvas {renderMode} toneMapping={NoToneMapping}>
 			<Camera3D {cameraPosition} {cameraZoom} {enablePan} />
