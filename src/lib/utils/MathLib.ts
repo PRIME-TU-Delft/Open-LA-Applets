@@ -1,6 +1,17 @@
 import { Vector2, Vector3 } from 'three';
 
 /**
+ * round to a certain number of decimal places
+ * @param x - number to round
+ * @param precision - number of decimal places
+ * @returns rounded number
+ */
+export function round(x: number, precision = 2) {
+	const factor = Math.pow(10, precision);
+	return Math.round(x * factor) / factor;
+}
+
+/**
  * The snapPointToLine function calculates the smallest distance from a point to a line.
  * It then returns the closest point on that line if the actual distance is smaller than the required distance
  * @param point The point to check the distance from
@@ -10,24 +21,24 @@ import { Vector2, Vector3 } from 'three';
  * @returns the closest point on the line or null
  */
 export function snapPointToLine(
-  point: Vector2,
-  point1_line: Vector2,
-  point2_line: Vector2,
-  distance: number
+	point: Vector2,
+	point1_line: Vector2,
+	point2_line: Vector2,
+	distance: number
 ) {
-  const a = point1_line.y - point2_line.y;
-  const b = point2_line.x - point1_line.x;
-  const c = point1_line.x * point2_line.y - point2_line.x * point1_line.y;
-  const actual_distance = Math.abs(a * point.x + b * point.y + c) / Math.sqrt(a * a + b * b);
+	const a = point1_line.y - point2_line.y;
+	const b = point2_line.x - point1_line.x;
+	const c = point1_line.x * point2_line.y - point2_line.x * point1_line.y;
+	const actual_distance = Math.abs(a * point.x + b * point.y + c) / Math.sqrt(a * a + b * b);
 
-  //Calculate the closest point from the line to point q
-  const x3 = (b * b * point.x - a * b * point.y - a * c) / (a * a + b * b);
-  const y3 = (a * a * point.y - a * b * point.x - b * c) / (a * a + b * b);
+	//Calculate the closest point from the line to point q
+	const x3 = (b * b * point.x - a * b * point.y - a * c) / (a * a + b * b);
+	const y3 = (a * a * point.y - a * b * point.x - b * c) / (a * a + b * b);
 
-  if (actual_distance < distance) {
-    return new Vector2(x3, y3);
-  }
-  return null;
+	if (actual_distance < distance) {
+		return new Vector2(x3, y3);
+	}
+	return point;
 }
 
 /**
@@ -40,13 +51,13 @@ export function snapPointToLine(
  */
 
 export function lineLineIntersection(A: Vector2, B: Vector2, C: Vector2, D: Vector2) {
-  const xcd = D.x - C.x;
-  const ycd = D.y - C.y;
-  const xac = A.x - C.x;
-  const yac = A.y - C.y;
-  const den = ycd * (B.x - A.x) - xcd * (B.y - A.y);
-  const u0 = (xcd * yac - ycd * xac) / den;
-  return new Vector2(A.x + u0 * (B.x - A.x), A.y + u0 * (B.y - A.y));
+	const xcd = D.x - C.x;
+	const ycd = D.y - C.y;
+	const xac = A.x - C.x;
+	const yac = A.y - C.y;
+	const den = ycd * (B.x - A.x) - xcd * (B.y - A.y);
+	const u0 = (xcd * yac - ycd * xac) / den;
+	return new Vector2(A.x + u0 * (B.x - A.x), A.y + u0 * (B.y - A.y));
 }
 
 /**
@@ -56,7 +67,47 @@ export function lineLineIntersection(A: Vector2, B: Vector2, C: Vector2, D: Vect
  * @returns point of projection
  */
 export function orthogonalProjection(L: Vector2, p: Vector2) {
-  return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
+	return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
+}
+
+/**
+ * Orthogonally projects a point on an infinite line with a given direction and point on line (origin)
+ * @param point: point to project
+ * @param origin : point on line
+ * @param direction direction of line
+ * @returns point of projection
+ */
+export function orthogonalProjectionWithOffset(
+	point: Vector2,
+	origin: Vector2,
+	direction: Vector2
+): Vector2 {
+	// Destructure the point, origin, and direction into their components
+	const [Px, Py] = point;
+	const [Ox, Oy] = origin;
+	const [Dx, Dy] = direction;
+
+	// Step 1: Calculate the vector OP from O to P
+	const OPx = Px - Ox;
+	const OPy = Py - Oy;
+
+	// Step 2: Calculate the dot product of OP and D
+	const dotProduct = OPx * Dx + OPy * Dy;
+
+	// Step 3: Calculate the magnitude squared of D
+	const directionMagnitudeSquared = Dx * Dx + Dy * Dy;
+
+	// Step 4: Calculate the projection factor
+	const projectionFactor = dotProduct / directionMagnitudeSquared;
+
+	// Step 5: Scale the direction vector by the projection factor
+	const projectionDx = projectionFactor * Dx;
+	const projectionDy = projectionFactor * Dy;
+
+	// Step 6: Calculate the projection point by adding the scaled direction to the origin
+	const projectionPoint: Vector2 = new Vector2(Ox + projectionDx, Oy + projectionDy);
+
+	return projectionPoint;
 }
 
 /**
@@ -65,15 +116,50 @@ export function orthogonalProjection(L: Vector2, p: Vector2) {
  * @param radius of circle
  */
 export function parametic_point_on_circle_3D(t: number, radius: number) {
-  //https://math.stackexchange.com/questions/73237/parametric-equation-of-a-circle-in-3d-space
-  //a, b -> plane of circle, need to be perpendicular, currently arent
-  //c -> center of circle
-  const a = new Vector3(1, 0, 1).normalize();
-  const b = new Vector3(1, 1, 0).normalize();
-  const c = new Vector3(0, 0, 0);
+	//https://math.stackexchange.com/questions/73237/parametric-equation-of-a-circle-in-3d-space
+	//a, b -> plane of circle, need to be perpendicular, currently arent
+	//c -> center of circle
+	const a = new Vector3(1, 0, 1).normalize();
+	const b = new Vector3(1, 1, 0).normalize();
+	const c = new Vector3(0, 0, 0);
 
-  const x = c.x + radius * Math.cos(t) * a.x + radius * Math.sin(t) * b.x;
-  const y = c.y + radius * Math.cos(t) * a.y + radius * Math.sin(t) * b.y;
-  const z = c.z + radius * Math.cos(t) * a.z + radius * Math.sin(t) * b.z;
-  return new Vector3(x, y, z);
+	const x = c.x + radius * Math.cos(t) * a.x + radius * Math.sin(t) * b.x;
+	const y = c.y + radius * Math.cos(t) * a.y + radius * Math.sin(t) * b.y;
+	const z = c.z + radius * Math.cos(t) * a.z + radius * Math.sin(t) * b.z;
+	return new Vector3(x, y, z);
+}
+
+export function leastSquaresLine(points: Vector2[]) {
+	const n = points.length;
+
+	// Calculate the means of x and y
+	let meanX = 0;
+	let meanY = 0;
+	for (const point of points) {
+		meanX += point.x;
+		meanY += point.y;
+	}
+	meanX /= n;
+	meanY /= n;
+
+	// Calculate the slope (m)
+	let numerator = 0;
+	let denominator = 0;
+	for (const point of points) {
+		numerator += (point.x - meanX) * (point.y - meanY);
+		denominator += (point.x - meanX) ** 2;
+	}
+	const slope = numerator / denominator;
+
+	// Calculate the y-intercept (b)
+	const intercept = meanY - slope * meanX;
+
+	// Determine two points on the line
+	// Using the min and max x-values to determine the points
+	const x1 = Math.min(...points.map((p) => p.x));
+	const x2 = Math.max(...points.map((p) => p.x));
+	const y1 = slope * x1 + intercept;
+	const y2 = slope * x2 + intercept;
+
+	return [new Vector2(x1, y1), new Vector2(x2, y2)];
 }

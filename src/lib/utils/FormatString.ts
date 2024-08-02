@@ -3,6 +3,6 @@
  * @param string String to format
  */
 export function formatString(string: string) {
-  const spaces = string.replaceAll('_', ' ');
-  return spaces.charAt(0).toUpperCase() + spaces.slice(1);
+	const spaces = string.replaceAll('_', ' ');
+	return spaces.charAt(0).toUpperCase() + spaces.slice(1);
 }

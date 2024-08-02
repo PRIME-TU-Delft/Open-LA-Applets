@@ -16,118 +16,118 @@ import { PrimeColor } from './PrimeColors';
  * console.log(formula.stringFormula); // The value is 10
  */
 export class Formula {
-  illegalCharacters = /&/g;
-  stringFormula: string;
-  invalidFormula = false;
-  autoIndex = 0;
+	illegalCharacters = /&/g;
+	stringFormula: string;
+	invalidFormula = false;
+	autoIndex = 0;
 
-  /**
-   * Create new instance of Formulas.
-   * @param stringFormula The formula to be used.
-   * @param param The value(s) to be replaced in the formula.
-   * @param color The color(s) of the value.
-   * @returns A new instance of Formulas.
-   */
-  constructor(stringFormula: string, param?: number | string, color?: PrimeColor) {
-    this.stringFormula = stringFormula || '';
+	/**
+	 * Create new instance of Formulas.
+	 * @param stringFormula The formula to be used.
+	 * @param param The value(s) to be replaced in the formula.
+	 * @param color The color(s) of the value.
+	 * @returns A new instance of Formulas.
+	 */
+	constructor(stringFormula: string, param?: number | string, color?: PrimeColor) {
+		this.stringFormula = stringFormula || '';
 
-    if (!stringFormula) {
-      this.invalidFormula = true;
-      return;
-    }
+		if (!stringFormula) {
+			this.invalidFormula = true;
+			return;
+		}
 
-    if (param == undefined || param == null) return;
+		if (param == undefined || param == null) return;
 
-    const value = parseFloat('' + param).toFixed(2) || param;
+		const value = parseFloat('' + param).toFixed(2) || param;
 
-    this.stringFormula = this.stringFormula.replaceAll(
-      '\\$',
-      `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
-    );
-  }
+		this.stringFormula = this.stringFormula.replaceAll(
+			'\\$',
+			`\\textcolor{${color || PrimeColor.black}}{${value}}`
+		);
+	}
 
-  addParam(index: number, param: number | string, color?: PrimeColor) {
-    const value = param;
+	addParam(index: number, param: number | string, color?: PrimeColor) {
+		const value = param;
 
-    if (index <= 0) {
-      this.stringFormula = this.stringFormula.replaceAll(
-        `\\$`,
-        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
-      );
-    } else {
-      this.stringFormula = this.stringFormula.replaceAll(
-        `\\$${index}`,
-        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
-      );
-    }
+		if (index <= 0) {
+			this.stringFormula = this.stringFormula.replaceAll(
+				`\\$`,
+				`\\textcolor{${color || PrimeColor.black}}{${value}}`
+			);
+		} else {
+			this.stringFormula = this.stringFormula.replaceAll(
+				`\\$${index}`,
+				`\\textcolor{${color || PrimeColor.black}}{${value}}`
+			);
+		}
 
-    return this;
-  }
+		return this;
+	}
 
-  /**
-   * Add a param to the formula indexed from 1.
-   * @param param param to be replaced in the formula
-   * @param color color of the param
-   * @returns this
-   */
-  addAutoParam(param: number | string, color?: PrimeColor) {
-    this.autoIndex += 1;
+	/**
+	 * Add a param to the formula indexed from 1.
+	 * @param param param to be replaced in the formula
+	 * @param color color of the param
+	 * @returns this
+	 */
+	addAutoParam(param: number | string, color?: PrimeColor) {
+		this.autoIndex += 1;
 
-    const index = this.autoIndex;
+		const index = this.autoIndex;
 
-    return this.addParam(index, param, color);
-  }
+		return this.addParam(index, param, color);
+	}
 
-  clone(): Formula {
-    return new Formula(this.stringFormula);
-  }
+	clone(): Formula {
+		return new Formula(this.stringFormula);
+	}
 
-  removeColor(): this {
-    // Regex that filters out the color (color is a hex value)
-    const regex = /\\htmlStyle{color: #[0-9a-fA-F]{6};}{(.+?)}/g;
+	removeColor(): this {
+		// Regex that filters out the color (color is a hex value)
+		const regex = /\\textcolor{#[0-9a-fA-F]{6}}{(.+?)}/g;
 
-    // Remove the color from the formula but keep its value
-    this.stringFormula = this.stringFormula.replace(regex, '$1');
+		// Remove the color from the formula but keep its value
+		this.stringFormula = this.stringFormula.replace(regex, '$1');
 
-    return this;
-  }
+		return this;
+	}
 
-  stripInvalid(): this {
-    this.stringFormula = this.stringFormula.replace(this.illegalCharacters, '');
+	stripInvalid(): this {
+		this.stringFormula = this.stringFormula.replace(this.illegalCharacters, '');
 
-    return this;
-  }
+		return this;
+	}
 }
 
 export class Formulas extends Array<Formula> {
-  private backup: Formula[] = []; // Backup of the formulas, incase we need to revert back to the original
+	private backup: Formula[] = []; // Backup of the formulas, incase we need to revert back to the original
 
-  /**
-   * Create new instance of Formulas.
-   * @param formulas The formulas to be used.
-   * @returns A new instance of Formulas.
-   */
-  constructor(...formulas: Formula[]) {
-    super(...formulas);
-    this.backup = [...formulas];
-  }
+	/**
+	 * Create new instance of Formulas.
+	 * @param formulas The formulas to be used.
+	 * @returns A new instance of Formulas.
+	 */
+	constructor(...formulas: Formula[]) {
+		super(...formulas);
+		this.backup = [...formulas];
+	}
 
-  get(index: number): Formula {
-    return this.backup[index];
-  }
+	get(index: number): Formula {
+		return this.backup[index];
+	}
 
-  align(): this {
-    const fomulas = this.map((formula) => {
-      return formula.stringFormula;
-    }).join(' \\\\ ');
+	align(): this {
+		const fomulas = this.map((formula) => {
+			return formula.stringFormula;
+		}).join(' \\\\ ');
 
-    const alignFormulas = `\\begin{aligned} ${fomulas} \\end{aligned}`;
+		const alignFormulas = `\\begin{aligned} ${fomulas} \\end{aligned}`;
 
-    // Remove all entries from the array
-    this.splice(0, this.length);
+		// Remove all entries from the array
+		this.splice(0, this.length);
 
-    this.push(new Formula(alignFormulas));
+		this.push(new Formula(alignFormulas));
 
-    return this;
-  }
+		return this;
+	}
 }

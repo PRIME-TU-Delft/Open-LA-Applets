@@ -1,53 +1,51 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
-  import {
-    Angle3D,
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    Line3D,
-    Point3D,
-    Vector3D
-  } from '$lib/threlte-components';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Controls } from '$lib/utils/Controls';
-  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
+	import { Controls } from '$lib/controls/Controls';
+	import Angle3D from '$lib/threlte/Angle3D.svelte';
+	import Axis3D from '$lib/threlte/Axis3D.svelte';
+	import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+	import Latex3D from '$lib/threlte/Latex3D.svelte';
+	import Line3D from '$lib/threlte/Line3D.svelte';
+	import Point3D from '$lib/threlte/Point3D.svelte';
+	import Vector3D from '$lib/threlte/Vector3D.svelte';
+	import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
+	import { PrimeColor } from '$lib/utils/PrimeColors';
+	import { Vector3 } from 'three';
 
-  let controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+	const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
-  $: u = parametic_point_on_circle_3D(controls[0], 5);
+	const u = $derived(parametic_point_on_circle_3D(controls[0], 5));
 
-  $: lineL = new Vector3(3, 2, -1); // Line L
-  $: lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
+	const lineL = new Vector3(3, 2, -1); // Line L
+	const lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
 
-  $: u_proj = u.clone().projectOnVector(lineL.clone());
+	const u_proj = $derived(u.clone().projectOnVector(lineL.clone()));
 </script>
 
-<Canvas3D bind:controls>
-  <!-- Vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
+<Canvas3D {controls}>
+	<!-- Vector U -->
+	<Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
+	<Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
 
-  <!-- Projection vector from line L to u with a point at projection point -->
-  <Point3D position={u_proj} color={PrimeColor.raspberry} />
-  <Vector3D
-    origin={u}
-    direction={u.clone().sub(u_proj).multiplyScalar(-1)}
-    length={u.clone().sub(u_proj).length()}
-    color={PrimeColor.raspberry}
-    striped
-  />
-  <Latex3D
-    latex={'proj_L(\\mathbf{u})'}
-    position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
-    color={PrimeColor.raspberry}
-  />
+	<!-- Projection vector from line L to u with a point at projection point -->
+	<Point3D position={u_proj} color={PrimeColor.raspberry} />
+	<Vector3D
+		origin={u}
+		direction={u.clone().sub(u_proj).multiplyScalar(-1)}
+		length={u.clone().sub(u_proj).length()}
+		color={PrimeColor.raspberry}
+		isDashed
+	/>
+	<Latex3D
+		latex={'proj_L(\\mathbf{u})'}
+		position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
+		color={PrimeColor.raspberry}
+	/>
 
-  <!-- Angle between proj and line l -->
-  <Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />
+	<!-- Angle between proj and line l -->
+	<Angle3D origin={u_proj} vs={[lineL, u.clone().sub(u_proj)]} />
 
-  <Line3D points={[lineDir.clone().multiplyScalar(-1), lineDir]} color={PrimeColor.blue} />
-  <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
+	<Line3D origin={lineDir.clone().multiplyScalar(-1)} endPoint={lineDir} color={PrimeColor.blue} />
+	<Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
 
-  <Axis3D />
+	<Axis3D />
 </Canvas3D>

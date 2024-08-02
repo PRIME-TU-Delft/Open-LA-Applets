@@ -1,70 +1,77 @@
 <script lang="ts">
-  import { Canvas2D, Draggable2D, Latex2D, Vector2D } from '$lib/d3-components';
-  import { Formula } from '$lib/utils/Formulas';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
+	import { Draggable } from '$lib/controls/Draggables.svelte';
+	import Canvas2D from '$lib/d3/Canvas2D.svelte';
+	import Latex2D from '$lib/d3/Latex2D.svelte';
+	import Vector2D from '$lib/d3/Vector2D.svelte';
+	import { Formula } from '$lib/utils/Formulas';
+	import { PrimeColor } from '$lib/utils/PrimeColors';
+	import { Vector2 } from 'three';
 
-  let w = new Vector2(1, 3);
-  let v = new Vector2(3, 0);
+	const draggables = [
+		new Draggable(new Vector2(1, 3), PrimeColor.darkGreen, 'w'),
+		new Draggable(new Vector2(3, 0), PrimeColor.blue, 'v')
+	];
 
-  let formulas: Formula[] = [];
+	let w = $derived(draggables[0].value);
+	let v = $derived(draggables[1].value);
 
-  $: vPlusW = w.clone().add(v);
+	const vPlusW = $derived(w.clone().add(v));
 
-  function setFormulas(vLen: number, wLen: number, vPlusWLen: number) {
-    const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(vLen), PrimeColor.blue);
-    const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(wLen), PrimeColor.darkGreen);
-    const f3 = new Formula(
-      '|| \\mathbf{v} + \\mathbf{w} || = \\$',
-      Math.abs(vPlusWLen),
-      PrimeColor.raspberry
-    );
+	const formulas = $derived.by(() => {
+		const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(v.length()), PrimeColor.blue);
+		const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(w.length()), PrimeColor.darkGreen);
+		const f3 = new Formula(
+			'|| \\mathbf{v} + \\mathbf{w} || = \\$',
+			Math.abs(vPlusW.length()),
+			PrimeColor.raspberry
+		);
 
-    formulas = [f1, f2, f3];
-  }
-
-  $: setFormulas(v.length(), w.length(), vPlusW.length());
+		return [f1, f2, f3];
+	});
 </script>
 
-<Canvas2D {formulas}>
-  <Draggable2D id="w" snap bind:position={w} color={PrimeColor.darkGreen} />
-  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.blue} />
+<Canvas2D {draggables} {formulas}>
+	<!-- Bases -->
+	<Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
+		{#snippet children(endPoint)}
+			<Latex2D
+				position={endPoint}
+				latex={'\\mathbf{v}'}
+				offset={new Vector2(-0.2, 0.2)}
+				color={PrimeColor.blue}
+			/>
+		{/snippet}
+	</Vector2D>
+	<Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen}>
+		{#snippet children(endPoint)}
+			<Latex2D
+				position={endPoint}
+				latex={'\\mathbf{w}'}
+				offset={new Vector2(-0.2, 0.2)}
+				color={PrimeColor.darkGreen}
+			/>
+		{/snippet}
+	</Vector2D>
 
-  <!-- Bases -->
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} let:endPoint>
-    <Latex2D
-      position={endPoint}
-      latex={'\\mathbf{v}'}
-      offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.blue}
-    />
-  </Vector2D>
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} let:endPoint>
-    <Latex2D
-      position={endPoint}
-      latex={'\\mathbf{w}'}
-      offset={new Vector2(-0.2, 0.2)}
-      color={PrimeColor.darkGreen}
-    />
-  </Vector2D>
+	<!-- v+w -->
+	<Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.raspberry}>
+		{#snippet children(endPoint)}
+			<Latex2D
+				position={endPoint}
+				latex={'\\mathbf{v} + \\mathbf{w}'}
+				offset={new Vector2(0.2, 0.2)}
+				color={PrimeColor.raspberry}
+			/>
+		{/snippet}
+	</Vector2D>
 
-  <!-- v+w -->
-  <Vector2D direction={vPlusW} length={vPlusW.length()} color={PrimeColor.raspberry} let:endPoint>
-    <Latex2D
-      position={endPoint}
-      latex={'\\mathbf{v} + \\mathbf{w}'}
-      offset={new Vector2(0.2, 0.2)}
-      color={PrimeColor.raspberry}
-    />
-  </Vector2D>
-
-  <!-- Helper lins -->
-  <Vector2D
-    origin={v}
-    direction={w}
-    length={w.length()}
-    color={PrimeColor.darkGreen}
-    isDashed
-    hideHead
-  />
+	<!-- Helper lins -->
+	<Vector2D
+		origin={v}
+		direction={w}
+		length={w.length()}
+		color={PrimeColor.darkGreen}
+		isDashed
+		hideHead
+	/>
 </Canvas2D>
