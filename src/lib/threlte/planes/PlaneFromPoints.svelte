@@ -42,13 +42,13 @@
 <T.Mesh material={materials} bind:ref={planeMesh}>
 	<T.PlaneGeometry
 		args={[size, size, planeSegment.segments, 1]}
-		oncreate={({ ref }: {ref: PlaneGeometry}) => {
-				for (let i = 0; i < planeSegment.segments; i++) {
-					if (i % planeSegment.interval == planeSegment.offset) {
-						// A rectangle consists of two triangles 6 vertices
-						ref.addGroup(i * 6, 6, 0);
-					}
+		oncreate={({ ref }: { ref: PlaneGeometry }) => {
+			for (let i = 0; i < planeSegment.segments; i++) {
+				if (i % planeSegment.interval == planeSegment.offset) {
+					// A rectangle consists of two triangles 6 vertices
+					ref.addGroup(i * 6, 6, 0);
 				}
-			}}
+			}
+		}}
 	/>
 </T.Mesh>

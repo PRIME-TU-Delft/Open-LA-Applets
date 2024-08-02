@@ -57,14 +57,14 @@ This component is a 3D plane defined by a normal vector and a position vector.
 	<T.Mesh bind:ref={planeNormalMesh} material={materials}>
 		<T.PlaneGeometry
 			args={[size, size, planeSegment.segments, 1]}
-			oncreate={({ ref }: {ref: PlaneGeometry}) => {
-			for (let i = 0; i < planeSegment.segments; i++) {
-				if (i % planeSegment.interval == planeSegment.offset) {
-					// A rectangle consists of two triangles 6 vertices
-					ref.addGroup(i * 6, 6, 0);
+			oncreate={({ ref }: { ref: PlaneGeometry }) => {
+				for (let i = 0; i < planeSegment.segments; i++) {
+					if (i % planeSegment.interval == planeSegment.offset) {
+						// A rectangle consists of two triangles 6 vertices
+						ref.addGroup(i * 6, 6, 0);
+					}
 				}
-			}
-		}}
+			}}
 		/>
 	</T.Mesh>
 </T.Group>

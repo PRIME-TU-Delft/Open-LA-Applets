@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { PrimeColor } from '$lib/utils/PrimeColors';
-	import type { Key, ThrelteUseTaskOptions } from '@threlte/core';
 	import { HierarchicalObject, T, useTask, useThrelte } from '@threlte/core';
 	import { onMount } from 'svelte';
 	import {
@@ -21,8 +20,6 @@
 		type Object3DEventMap,
 		type Sprite
 	} from 'three';
-
-	type TaskOptions = Pick<ThrelteUseTaskOptions, 'after' | 'before' | 'stage'> & { key?: Key };
 
 	type GizmoProps = {
 		size?: number;

@@ -4,8 +4,7 @@ node_modules
 /build-netlify
 /storybook-static
 /.svelte-kit
-/package
-.netlify
+.netlify/*
 .env
 .env.*
 !.env.example

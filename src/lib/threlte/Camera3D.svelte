@@ -84,7 +84,7 @@
 	position={[cameraPosition.x, cameraPosition.y, cameraPosition.z]}
 	fov={15}
 	{zoom}
-	oncreate={(e: {ref: Camera}) => onCreate(e)}
+	oncreate={(e: { ref: Camera }) => onCreate(e)}
 	near={-100}
 	far={100}
 >
