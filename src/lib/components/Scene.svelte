@@ -128,7 +128,7 @@
 
     <!-- ACTION BUTTONS / FORMULAE (top-right) -->
     <ActionButtonsAndFormula
-      bind:showFormulas={showFormulasDefault}
+      showFormulas={showFormulasDefault}
       {formulas}
       {splitFormulas}
       {controls}

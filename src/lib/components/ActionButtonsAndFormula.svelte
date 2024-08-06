@@ -24,19 +24,20 @@
     formulas = [],
     splitFormulas = [],
     controls = undefined,
-    showFormulas = $bindable(false)
+    showFormulas = false
   }: Canvas2DProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
 
-  if (screenfull.isEnabled) {
-    // TODO: svelte-5 add to effect with cleanup
-    screenfull.on('change', () => {
-      isFullscreen = screenfull.isFullscreen;
+  $effect(() => {
+    if (screenfull.isEnabled) {
+      screenfull.on('change', () => {
+        isFullscreen = screenfull.isFullscreen;
 
-      globalState.changeState({ isFullscreen });
-    });
-  }
+        globalState.changeState({ isFullscreen });
+      });
+    }
+  });
 
   function toggleFullscreen() {
     if (!screenfull.isEnabled || !document) return;
@@ -55,7 +56,7 @@
     <div class="flex justify-end">
       {#if formulas && formulas.length >= 1}
         <div
-          class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs"
+          class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs border-blue-500 border-3"
         >
           {#each formulas as formula}
             {#key formula.stringFormula}
@@ -118,13 +119,15 @@
       </Button.Action>
     {/if}
 
-    <!-- TOGGLE FORMULAE -->
+    <!-- TOGGLE FORMULAE BUTTON -->
     {#if !globalState.isInset() && formulas && formulas.length >= 1}
       <Button.Action
         side="bottom"
         class="{!formulasShown
           ? '!bg-blue-200/80 hover:!bg-blue-300/80'
-          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  backdrop-blur-md rounded-md shadow-sm"
+          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  backdrop-blur-md rounded-md shadow-sm border-blue-500 border-0 {showFormulas
+          ? 'border-2'
+          : ''}"
         tooltip="Toggle function"
         onclick={() => (showFormulas = !showFormulas)}
       >
