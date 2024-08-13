@@ -28,7 +28,7 @@
     offset.y +
     extendedOffset.y}) scale({0.02 * fontSize},{-0.02 * fontSize})"
 >
-  <foreignObject x="0" y="0" width="100%" height="100%" class="overflow-visible">
-    <Latex class="absolute -translate-x-1/2 -translate-y-1/2" {latex} {color} />
+  <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
+    <Latex {latex} {color} />
   </foreignObject>
 </g>

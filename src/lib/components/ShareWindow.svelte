@@ -1,12 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import * as Accordion from '$lib/components/ui/accordion';
-  import { Checkbox } from '$lib/components/ui/checkbox';
   import * as Dialog from '$lib/components/ui/dialog';
-  import Label from '$lib/components/ui/label/label.svelte';
   import { ExternalLink } from 'lucide-svelte';
-
-  let includeState = false; // If true, the url will include the current state of the applet  (camera position, etc...)
+  import Embedding from './Embedding.svelte';
 </script>
 
 <Dialog.Content class="sm:max-w-xl">
@@ -18,7 +15,7 @@
         class="flex items-center gap-1"
         href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
       >
-        TU Delft Open Linear Algebra book <ExternalLink /></a
+        TU Delft Open Linear Algebra book <ExternalLink class="w-4 h-4" /></a
       >
       For more information about these applets, please visit
       <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
@@ -28,20 +25,7 @@
         <Accordion.Item value="Embed">
           <Accordion.Trigger>Embed</Accordion.Trigger>
           <Accordion.Content>
-            <Checkbox id="include-state" bind:checked={includeState} />
-            <Label
-              for="include-state"
-              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Include current state in url
-            </Label>
-
-            <Label
-              for="url-state"
-              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Url to this apple
-            </Label>
+            <Embedding />
           </Accordion.Content>
         </Accordion.Item>
 

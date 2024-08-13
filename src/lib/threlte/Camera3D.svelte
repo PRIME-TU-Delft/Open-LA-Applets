@@ -3,20 +3,24 @@
     cameraPosition?: Vector3;
     enablePan?: boolean;
     cameraZoom?: number;
+    isSplit?: boolean;
   };
 </script>
 
 <script lang="ts">
   import { activityState } from '$lib/stores/activity.svelte';
+  import { Camera3D, cameraState } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import { T, useThrelte } from '@threlte/core';
+  import { T, useTask, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
+  import { onDestroy } from 'svelte';
   import { Camera, OrthographicCamera, Quaternion, Vector3 } from 'three';
 
   let {
     enablePan = true,
     cameraZoom: zoom = 29,
-    cameraPosition = new Vector3(10, 10, 10)
+    cameraPosition = new Vector3(10, 10, 10),
+    isSplit = false
   }: Camera3DProps = $props();
 
   const { camera, advance } = useThrelte();
@@ -83,12 +87,32 @@
     }, DURATION);
   }
 
+  // Function that changes the camera State for 3D camera
+  // Updates when the camera "changes"
+  // TODO: specify a better type for e
+  function handleCameraChange(e: any) {
+    const cam = $camera as OrthographicCamera;
+
+    const splitCamera3D = new Camera3D(cam);
+
+    if (isSplit) {
+      cameraState.splitCamera3D = splitCamera3D;
+    } else {
+      cameraState.camera3D = splitCamera3D;
+    }
+  }
+
   $effect(() => {
     const _ = globalState.resetKey;
 
     resetCamera();
 
     return () => clearInterval(interval);
+  });
+
+  onDestroy(() => {
+    if (isSplit) cameraState.splitCamera3D = undefined;
+    else cameraState.camera3D = undefined;
   });
 </script>
 
@@ -116,6 +140,8 @@
       maxZoom={zoom * 10}
       minZoom={Math.max(zoom / 5, 1)}
       maxPolarAngle={Math.PI * 0.6}
+      onchange={(e: any) => handleCameraChange(e)}
+      oncreate={(e: any) => handleCameraChange(e)}
     />
   {/if}
 </T.OrthographicCamera>

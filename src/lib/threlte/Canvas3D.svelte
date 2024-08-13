@@ -109,7 +109,7 @@
   {:else if splitCanvas3DChildren}
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       <Canvas {renderMode} toneMapping={NoToneMapping}>
-        <Camera3D {...splitCanvas3DProps} />
+        <Camera3D {...splitCanvas3DProps} isSplit />
 
         {@render splitCanvas3DChildren()}
 

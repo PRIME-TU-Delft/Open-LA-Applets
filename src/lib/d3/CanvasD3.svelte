@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { Snippet } from 'svelte';
+  import { onDestroy, type Snippet } from 'svelte';
   import { Vector2 } from 'three';
 
   export type Canvas2DProps = {
@@ -10,6 +10,7 @@
     width: number;
     enablePan?: boolean;
     draggables?: Draggable[];
+    isSplit?: boolean;
     children: Snippet;
   };
 </script>
@@ -17,6 +18,7 @@
 <script lang="ts">
   import type { Draggable } from '$lib/controls/Draggables.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
+  import { Camera2D, cameraState, type Transform2D } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import {
     select,
@@ -39,6 +41,7 @@
     width,
     enablePan = true,
     draggables = [],
+    isSplit = false,
     children
   }: Canvas2DProps = $props();
 
@@ -46,7 +49,11 @@
 
   let height = $derived(globalState.height);
 
-  function transformScene(transform: any) {
+  /**
+   * Transform function that translates and scales the whole scene
+   * @param transform {x: number, y: number, k: number} - k is zoom
+   */
+  function transformScene(transform: Transform2D) {
     if (enablePan) {
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
@@ -54,6 +61,15 @@
         .attr('transform', `scale(${transform.k})`)
         .attr('transform-origin', 'center center');
     }
+
+    const x = 15 / (width / -transform.x) + cameraPosition.x ?? 0;
+    const y = 15 / (width / transform.y) + cameraPosition.y ?? 0;
+
+    const transform2d = { x, y, k: transform.k } as Transform2D;
+
+    // Update camera
+    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, enablePan);
+    else cameraState.camera2D = Camera2D.new(transform2d, enablePan);
   }
 
   /**
@@ -90,6 +106,10 @@
       .transition()
       .duration(750)
       .call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
+
+    // Update camera
+    if (isSplit) cameraState.splitCamera2D = new Camera2D(0, 0, 1);
+    else cameraState.camera2D = new Camera2D(0, 0, 1);
   }
 
   $effect(() => {
@@ -111,6 +131,12 @@
     const _ = globalState.resetKey;
 
     reset();
+  });
+
+  // Remove / clean-upw camera store entries
+  onDestroy(() => {
+    if (isSplit) cameraState.splitCamera2D = undefined;
+    else cameraState.camera2D = undefined;
   });
 </script>
 

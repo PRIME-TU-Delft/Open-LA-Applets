@@ -1,8 +1,8 @@
 /**
- * Store for enabling/disabling orbitcontroller
+ * Store for enabling/disabling scroll lock
  */
 class ActivityState {
-  isActive = $state(false); // TODO: make into "paused" | "reactive" | "resetting"
+  isActive = $state(false);
   private timeOut: number | undefined = undefined;
 
   /**
