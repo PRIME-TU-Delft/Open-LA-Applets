@@ -32,6 +32,7 @@
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import Axis from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
+  import { debounce } from '$lib/utils/TimingFunctions';
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -48,6 +49,14 @@
   let id = 'canvas-' + generateUUID();
 
   let height = $derived(globalState.height);
+
+  function update2DCamera(transform2d: Transform2D) {
+    // Update camera
+    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, enablePan);
+    else cameraState.camera2D = Camera2D.new(transform2d, enablePan);
+  }
+
+  const debouncedUpdate2DCamera = debounce(update2DCamera, 100);
 
   /**
    * Transform function that translates and scales the whole scene
@@ -67,9 +76,7 @@
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
-    // Update camera
-    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, enablePan);
-    else cameraState.camera2D = Camera2D.new(transform2d, enablePan);
+    debouncedUpdate2DCamera(transform2d);
   }
 
   /**

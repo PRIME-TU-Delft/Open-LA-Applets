@@ -11,6 +11,7 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { Camera3D, cameraState } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
+  import { debounce } from '$lib/utils/TimingFunctions';
   import { T, useTask, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { onDestroy } from 'svelte';
@@ -89,8 +90,9 @@
 
   // Function that changes the camera State for 3D camera
   // Updates when the camera "changes"
-  // TODO: specify a better type for e
-  function handleCameraChange(e: any) {
+  function handleCameraChange() {
+    console.log('update');
+
     const cam = $camera as OrthographicCamera;
 
     const splitCamera3D = new Camera3D(cam);
@@ -101,6 +103,8 @@
       cameraState.camera3D = splitCamera3D;
     }
   }
+
+  const debounceHandleCameraChange = debounce(handleCameraChange, 100);
 
   $effect(() => {
     const _ = globalState.resetKey;
@@ -140,8 +144,8 @@
       maxZoom={zoom * 10}
       minZoom={Math.max(zoom / 5, 1)}
       maxPolarAngle={Math.PI * 0.6}
-      onchange={(e: any) => handleCameraChange(e)}
-      oncreate={(e: any) => handleCameraChange(e)}
+      onchange={() => debounceHandleCameraChange()}
+      oncreate={() => debounceHandleCameraChange()}
     />
   {/if}
 </T.OrthographicCamera>
