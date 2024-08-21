@@ -103,7 +103,7 @@
     onmouseenter={() => activityState.removeTimeout()}
     onmouseleave={() => waitThenReset()}
   >
-    <!-- THRELTE/D3 SCENE (centre) -->
+    <!-- MARK: THRELTE/D3 SCENE (centre) -->
     <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
       {#if children}
         {@render children()}
@@ -112,21 +112,21 @@
       {/if}
     </div>
 
-    <!-- TITLE PANEL (top-left) -->
+    <!-- MARK: TITLE PANEL (top-left) -->
     {#if globalState.title && globalState.isInset()}
       <div class="absolute left-2 top-2 bg-blue-200 rounded p-2">
         {globalState.title}
       </div>
     {/if}
 
-    <!-- CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
+    <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0 && controls._width > 0}
       <ControllerAndActivityPanel {controls} onLock={(e) => lock(e)} onReset={() => reset()} />
     {:else}
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
-    <!-- ACTION BUTTONS / FORMULAE (top-right) -->
+    <!-- MARK: ACTION BUTTONS / FORMULAE (top-right) -->
     <ActionButtonsAndFormula
       showFormulas={showFormulasDefault}
       {formulas}
