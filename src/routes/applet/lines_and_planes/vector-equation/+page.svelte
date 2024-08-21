@@ -96,7 +96,7 @@
   >
     {#snippet children(endPoint)}
       <Latex2D
-        latex={'\\mathbf{u}'}
+        latex={'k \\cdot \\mathbf{u}'}
         position={endPoint}
         offset={new Vector2(0.1, 0.2)}
         color={PrimeColor.darkGreen}
