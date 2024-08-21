@@ -98,7 +98,7 @@
       <Latex2D
         latex={'k \\cdot \\mathbf{u}'}
         position={endPoint}
-        offset={new Vector2(0.1, 0.2)}
+        offset={new Vector2(0.2, 0.3)}
         color={PrimeColor.darkGreen}
       />
     {/snippet}
