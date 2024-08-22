@@ -65,8 +65,8 @@
 
   {#if hasHead}
     <g
-      transform="rotate({(endAngle / Math.PI) *
-        180}) translate({distance}, 0) rotate(180) translate(0, {2 * Math.PI * width})"
+      transform="rotate({(endAngle / Math.PI) * 180 -
+        90}) translate({distance}, 0) rotate(180) translate(0, {2 * Math.PI * width})"
     >
       <path transform="" d={triangle} fill={color} />
     </g>
