@@ -8,8 +8,8 @@
   import { Vector2 } from 'three';
 
   const draggables = [
-    new Draggable(new Vector2(-3, -4), PrimeColor.blue, 'v'),
-    new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'w')
+    new Draggable(new Vector2(-3, -4), PrimeColor.blue, 'v', Draggable.snapToGrid),
+    new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'w', Draggable.snapToGrid)
   ];
 
   const v = $derived(draggables[0].value);
@@ -33,5 +33,15 @@
     color={PrimeColor.darkGreen}
   />
 
-  <SmallestArc2D points={[w, v]} distance={1.5} color="red" />
+  <SmallestArc2D points={[w, v]} distance={1.5}>
+    {#snippet label(position)}
+      <Latex2D
+        latex={'\\varphi'}
+        {position}
+        offset={new Vector2(0, 0.1)}
+        extend={0.1}
+        color={PrimeColor.black}
+      />
+    {/snippet}
+  </SmallestArc2D>
 </Canvas2D>

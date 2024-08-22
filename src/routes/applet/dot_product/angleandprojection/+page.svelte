@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
-  import Angle2D from '$lib/d3/Angle2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import SmallestArc2D from '$lib/d3/SmallestArc2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
@@ -14,19 +14,8 @@
     new Draggable(new Vector2(-3, 4), PrimeColor.darkGreen, 'v', Draggable.snapToGrid)
   ];
 
-  /**
-   * Makes sure that an angle is sticktly between 0 and 2 * PI
-   * @param angle
-   */
-  function normalizeAngle(angle: number) {
-    angle = angle % (2 * Math.PI);
-
-    return angle < 0 ? angle + 2 * Math.PI : angle;
-  }
-
   const v = new Vector2(3, 1);
   const w = $derived(draggables[0].value);
-  const angle = $derived(normalizeAngle(w.clone().angle() - v.clone().angle()) / Math.PI);
 
   const formulas = $derived.by(() => {
     const ortho = w.clone().dot(v.clone()) / v.clone().dot(v.clone());
@@ -35,7 +24,10 @@
       '\\frac{\\mathbf{w} \\cdot \\mathbf{v}}{\\mathbf{v} \\cdot \\mathbf{v}} = \\$1'
     ).addAutoParam(round(ortho), PrimeColor.darkGreen);
 
-    const f2 = new Formula('\\varphi = \\$1 \\pi').addAutoParam(round(angle), PrimeColor.darkGreen);
+    const f2 = new Formula('\\varphi = \\$1 \\pi').addAutoParam(
+      round(v.angleTo(w) / Math.PI),
+      PrimeColor.darkGreen
+    );
     return [f1, f2];
   });
 </script>
@@ -111,26 +103,15 @@
   />
 
   <!-- ARC -->
-  {#if angle.toFixed(2) == '1.00'}
-    <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
-    <Latex2D
-      latex={'\\varphi'}
-      position={new Vector2(-1, 3).normalize()}
-      offset={new Vector2(0, 0.1)}
-    />
-  {:else if angle < 0 || angle > 1}
-    <Angle2D startAngle={w.angle()} endAngle={v.angle()} />
-    <Latex2D
-      latex={'\\varphi'}
-      position={w.clone().normalize().add(v.clone().normalize()).normalize()}
-      offset={new Vector2(0, 0.1)}
-    />
-  {:else}
-    <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
-    <Latex2D
-      latex={'\\varphi'}
-      position={w.clone().normalize().add(v.clone().normalize()).normalize().multiplyScalar(1.1)}
-      offset={new Vector2(0, 0.1)}
-    />
-  {/if}
+  <SmallestArc2D points={[w, v]} distance={1.5}>
+    {#snippet label(position)}
+      <Latex2D
+        latex={'\\varphi'}
+        {position}
+        offset={new Vector2(0, 0.1)}
+        extend={0.1}
+        color={PrimeColor.black}
+      />
+    {/snippet}
+  </SmallestArc2D>
 </Canvas2D>
