@@ -60,6 +60,23 @@
   );
 </script>
 
+<!-- @component
+@name Angle2D
+@description
+  A component that renders an angle between two vectors.
+@props
+  - color: string - The color of the angle.
+  - startAngle: number - The start angle of the angle.
+  - endAngle: number - The end angle of the angle.
+  - origin: Vector2 - The origin of the angle.
+  - width: number - The width of the angle.
+  - distance: number - The distance of the angle from the origin.
+  - hasHead: boolean - Whether the angle has a head.
+@example
+<Angle2D startAngle={0} endAngle={Math.PI / 2} />
+
+-->
+
 <g transform="translate({origin.x}, {origin.y}) rotate({rotation})">
   <path {d} fill={color} />
 

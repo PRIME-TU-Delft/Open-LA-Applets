@@ -27,6 +27,31 @@
   const labelPosition = $derived(v.clone().normalize().add(w.clone().normalize()).normalize());
 </script>
 
+<!-- 
+@component
+  @name SmallestArc2D
+  @description
+    A component that renders the smallest arc between two vectors. i.e. the arc that is less than PI/180deg.
+  @props
+    - points: Vector2[] - The two vectors that define the arc.
+    - distance: number - The distance of the arc from the origin.
+    - label: (position: Vector2) => Snippet - A function that returns a snippet that renders the label of the arc.
+
+  @example
+  <SmallestArc2D points={[w, v]} distance={1.5}>
+    {#snippet label(position)}
+      <Latex2D
+        latex={'\\varphi'}
+        {position}
+        offset={new Vector2(0, 0.1)}
+        extend={0.1}
+        color={PrimeColor.black}
+      />
+    {/snippet}
+  </SmallestArc2D>
+  
+-->
+
 {#if angle == 1}
   {@const labelPosition = v.clone().normalize()}
   <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
