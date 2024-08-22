@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Angle2D from '$lib/d3/Angle2D.svelte';
-  import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
