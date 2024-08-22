@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
-  import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -12,21 +11,31 @@
   import { Vector2 } from 'three';
 
   const draggables = [
-    new Draggable(new Vector2(-3, -4), PrimeColor.darkGreen, 'v', Draggable.snapToGrid)
+    new Draggable(new Vector2(-3, 4), PrimeColor.darkGreen, 'v', Draggable.snapToGrid)
   ];
+
+  /**
+   * Makes sure that an angle is sticktly between 0 and 2 * PI
+   * @param angle
+   */
+  function normalizeAngle(angle: number) {
+    angle = angle % (2 * Math.PI);
+
+    return angle < 0 ? angle + 2 * Math.PI : angle;
+  }
 
   const v = new Vector2(3, 1);
   const w = $derived(draggables[0].value);
+  const angle = $derived(normalizeAngle(w.clone().angle() - v.clone().angle()) / Math.PI);
 
   const formulas = $derived.by(() => {
     const ortho = w.clone().dot(v.clone()) / v.clone().dot(v.clone());
-    const angle = (w.clone().angle() - v.clone().angle()) / Math.PI;
 
     const f1 = new Formula(
       '\\frac{\\mathbf{w} \\cdot \\mathbf{v}}{\\mathbf{v} \\cdot \\mathbf{v}} = \\$1'
     ).addAutoParam(round(ortho), PrimeColor.darkGreen);
 
-    const f2 = new Formula('\\theta = \\$1 \\pi').addAutoParam(round(angle), PrimeColor.darkGreen);
+    const f2 = new Formula('\\varphi = \\$1 \\pi').addAutoParam(round(angle), PrimeColor.darkGreen);
     return [f1, f2];
   });
 </script>
@@ -34,8 +43,14 @@
 <Canvas2D showAxisNumbers={false} {draggables} {formulas}>
   <!-- L and v -->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
+  <InfiniteLine2D
+    direction={new Vector2(1, -3)}
+    color={PrimeColor.black + PrimeColor.opacity(0.5)}
+    isDashed
+  />
+
   <Latex2D
-    latex={'\\mathcal{L_1}'}
+    latex={'\\mathcal{L}'}
     position={v.clone().normalize().multiplyScalar(4)}
     offset={new Vector2(0, -0.05)}
     color={PrimeColor.cyan}
@@ -51,7 +66,71 @@
 
   <!-- W -->
   <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
+  <Latex2D
+    latex={'\\mathbf{w}'}
+    position={w.clone()}
+    extend={0.5}
+    offset={new Vector2(0, -0.05)}
+    color={PrimeColor.darkGreen}
+  />
+
+  <!-- LABELS -->
+  <!-- first quatrand -->
+  <Latex2D
+    latex={'0 \\leq \\varphi \\leq \\frac{\\pi}{2}'}
+    position={new Vector2(2, 3)}
+    offset={new Vector2(0, 0.1)}
+    color={PrimeColor.black}
+    fontSize={0.75}
+  />
+  <!-- second quatrand -->
+  <Latex2D
+    latex={'\\frac{\\pi}{2} \\leq \\varphi \\leq \\pi'}
+    position={new Vector2(-3, 2)}
+    offset={new Vector2(0, 0.1)}
+    color={PrimeColor.black}
+    fontSize={0.75}
+  />
+
+  <!-- third quatrand -->
+  <Latex2D
+    latex={'\\pi \\leq \\varphi \\leq \\frac{3\\pi}{2}'}
+    position={new Vector2(-3, -2.5)}
+    offset={new Vector2(0, 0.1)}
+    color={PrimeColor.black}
+    fontSize={0.75}
+  />
+
+  <!-- fourth quatrand -->
+  <Latex2D
+    latex={'\\frac{3\\pi}{2} \\leq \\varphi \\leq 2\\pi'}
+    position={new Vector2(2, -1.5)}
+    offset={new Vector2(0, 0.1)}
+    color={PrimeColor.black}
+    fontSize={0.75}
+  />
 
   <!-- ARC -->
-  <Angle2D startAngle={w.angle()} endAngle={v.angle()} />
+  {#if angle.toFixed(2) == '1.00'}
+    <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
+    <Latex2D
+      latex={'\\varphi'}
+      position={new Vector2(-1, 3).normalize()}
+      offset={new Vector2(0, 0.1)}
+    />
+  {:else if angle < 0 || angle > 1}
+    <Angle2D startAngle={w.angle()} endAngle={v.angle()} />
+    <Latex2D
+      latex={'\\varphi'}
+      position={w.clone().normalize().add(v.clone().normalize()).normalize()}
+      offset={new Vector2(0, 0.1)}
+    />
+  {:else}
+    <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
+    <Latex2D
+      latex={'\\varphi'}
+      position={w.clone().normalize().add(v.clone().normalize()).normalize().multiplyScalar(1.1)}
+      offset={new Vector2(0, 0.1)}
+    />
+  {/if}
 </Canvas2D>

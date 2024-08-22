@@ -24,14 +24,34 @@
     hasHead = false
   }: AngleProps = $props();
 
-  let d = $derived(
-    arc()({
-      innerRadius: distance - width / 2,
-      outerRadius: distance + width / 2,
-      startAngle: startAngle + Math.PI / 2,
-      endAngle: endAngle + Math.PI / 2
-    })
-  );
+  const inverted = $derived.by(() => startAngle > endAngle);
+  const rotation = $derived.by(() => {
+    let angle = 90;
+
+    if (inverted) {
+      angle += (startAngle / Math.PI) * 180;
+    }
+
+    return angle;
+  });
+
+  let d = $derived.by(() => {
+    if (inverted) {
+      return arc()({
+        innerRadius: distance - width / 2,
+        outerRadius: distance + width / 2,
+        startAngle: 0,
+        endAngle: 2 * Math.PI - startAngle + endAngle
+      });
+    } else {
+      return arc()({
+        innerRadius: distance - width / 2,
+        outerRadius: distance + width / 2,
+        startAngle: startAngle,
+        endAngle: endAngle
+      });
+    }
+  });
 
   let triangle = $derived(
     symbol()
@@ -40,7 +60,7 @@
   );
 </script>
 
-<g transform="translate({origin.x},{origin.y})">
+<g transform="translate({origin.x}, {origin.y}) rotate({rotation})">
   <path {d} fill={color} />
 
   {#if hasHead}

@@ -1,17 +1,19 @@
-<script lang="ts">
-  import { Vector2 } from 'three';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import Angle2D from './Angle2D.svelte';
-
-  type ArcProps = {
+<script context="module" lang="ts">
+  export type ArcProps = {
     color?: string;
-    points?: Vector2[];
+    points: Vector2[];
     origin?: Vector2;
     width?: number;
     distance?: number;
     hasHead?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { Vector2 } from 'three';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
+  import Angle2D from './Angle2D.svelte';
 
   let {
     color = PrimeColor.black,
