@@ -49,7 +49,7 @@
       />
     {/snippet}
   </SmallestArc2D>
-  
+
 -->
 
 {#if angle == 1}
