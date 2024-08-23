@@ -7,7 +7,7 @@
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import { parseUrl } from '$lib/utils/ParseUrl';
+  import { parseUrl } from '$lib/utils/parseUrl';
   import { hasProps } from '$lib/utils/hasProps';
   import { Canvas } from '@threlte/core';
   import type { Snippet } from 'svelte';

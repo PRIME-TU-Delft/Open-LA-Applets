@@ -9,7 +9,7 @@
   import Camera3D from '$lib/threlte/Camera3D.svelte';
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
   import { hasProps } from '$lib/utils/hasProps';
-  import { parseUrl } from '$lib/utils/ParseUrl';
+  import { parseUrl } from '$lib/utils/parseUrl';
   import { Canvas } from '@threlte/core';
   import { type Snippet } from 'svelte';
   import { NoToneMapping, Vector2 } from 'three';
