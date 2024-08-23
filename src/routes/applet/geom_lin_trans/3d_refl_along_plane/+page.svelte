@@ -17,7 +17,7 @@
   const u_proj = $derived(u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1)))); // Projection point of vector u on plane p
 </script>
 
-<Canvas3D {controls}>
+<Canvas3D {controls} title="Reflection of a vector along a plane">
   <!-- vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />

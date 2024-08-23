@@ -21,7 +21,7 @@
   const u_proj = $derived(u.clone().projectOnVector(lineL.clone()));
 </script>
 
-<Canvas3D {controls}>
+<Canvas3D {controls} title="Projection of a vector on a line">
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />

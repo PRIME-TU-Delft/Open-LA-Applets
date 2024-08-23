@@ -42,7 +42,7 @@
   });
 </script>
 
-<Canvas2D {controls} {draggables} {formulas}>
+<Canvas2D {draggables} title="A parametric vector of a line">
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 

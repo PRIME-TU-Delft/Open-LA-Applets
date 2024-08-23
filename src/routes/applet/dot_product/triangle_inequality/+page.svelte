@@ -30,7 +30,7 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas}>
+<Canvas2D {draggables} {formulas} title="The Triangle Inequality">
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
     {#snippet children(endPoint)}
