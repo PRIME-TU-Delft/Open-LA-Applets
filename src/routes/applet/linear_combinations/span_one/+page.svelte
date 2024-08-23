@@ -18,7 +18,7 @@
   const v = $derived(vDir.clone().normalize().multiplyScalar(vLength)); // Direction of vector v
 </script>
 
-<Canvas3D {controls}>
+<Canvas3D {controls} title="Span of a vector">
   <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{v}'}

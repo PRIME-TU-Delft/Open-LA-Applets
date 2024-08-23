@@ -34,7 +34,7 @@
   );
 </script>
 
-<Canvas2D {draggables}>
+<Canvas2D {draggables} title="Reflection of multiple points along a line">
   <!-- Line L -->
   <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />
   <Latex2D

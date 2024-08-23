@@ -25,7 +25,7 @@
   const proj_w_min_w = $derived(w.clone().sub(proj_w));
 </script>
 
-<Canvas2D {draggables}>
+<Canvas2D {draggables} title="Projection of a vector onto a non-zero vector">
   <!-- L /-->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />

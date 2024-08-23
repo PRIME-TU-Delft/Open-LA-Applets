@@ -45,7 +45,7 @@
   });
 </script>
 
-<Canvas3D {formulas} {controls}>
+<Canvas3D title="Span of three vectors lying in the same plane" {formulas} {controls}>
   {#if controls[0]}
     <!-- Vector u -->
     <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />

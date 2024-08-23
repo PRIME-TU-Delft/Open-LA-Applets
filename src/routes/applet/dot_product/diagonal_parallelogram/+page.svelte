@@ -51,6 +51,7 @@
 </script>
 
 <Canvas2D
+  title="Addition and subtraction of 2 vectors"
   cameraZoom={1.5}
   cameraPosition={new Vector2(2, 1)}
   splitCanvas2DProps={{
