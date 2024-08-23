@@ -39,7 +39,7 @@
   );
 
   const formulas = [
-    new Formula(`{\\$1} \\neq \\$2`)
+    new Formula(`{\\$1} = \\$2`)
       .addParam(1, ' | \\mathbf{v + w} |', PrimeColor.raspberry)
       .addParam(2, '|\\mathbf{v - w}|', PrimeColor.orange)
   ];
