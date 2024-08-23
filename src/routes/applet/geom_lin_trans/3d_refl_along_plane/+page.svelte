@@ -1,48 +1,44 @@
 <script>
-  import { Vector3 } from 'three';
-  import {
-    Angle3D,
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    Vector3D,
-    PlaneFromNormal
-  } from '$lib/threlte-components';
+  import { Controls } from '$lib/controls/Controls';
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { bVector } from '$lib/utils/LatexFormat';
+  import { Vector3 } from 'three';
 
-  const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
-  const u_refl = u.clone().multiply(new Vector3(1, -1, 1)); // Vector U_reflected
+  const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+  const u = $derived(parametic_point_on_circle_3D(controls[0], 5));
 
-  const u_proj = u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1))); // Projection point of vector u on plane p
+  const u_refl = $derived(u.clone().multiply(new Vector3(1, -1, 1))); // Vector U_reflected
+  const u_proj = $derived(u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1)))); // Projection point of vector u on plane p
 </script>
 
-<Canvas3D title="Reflection of a vector along a plane">
+<Canvas3D {controls} title="Reflection of a vector along a plane">
   <!-- vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
+  <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
 
   <!-- Reflection v -->
-  <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.ultramarine} />
+  <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.blue} />
   <Vector3D
     origin={u}
     direction={u_refl.clone().sub(u)}
     length={u_refl.clone().sub(u).length()}
-    color={PrimeColor.red}
-    striped
+    color={PrimeColor.raspberry}
+    isDashed
   />
 
   <!-- Angle between proj and horizontal axis -->
   <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), u.clone().sub(u_proj)]} size={0.5} />
   <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), u.clone().sub(u_proj)]} size={0.5} />
-  <Latex3D
-    latex={`Refl_p(\\mathbf{u}) = ${bVector(u_refl)}`}
-    position={u_refl}
-    color={PrimeColor.ultramarine}
-  />
+  <Latex3D latex={`Refl_p(\\mathbf{u})`} position={u_refl} color={PrimeColor.blue} />
 
   <Axis3D />
 </Canvas3D>

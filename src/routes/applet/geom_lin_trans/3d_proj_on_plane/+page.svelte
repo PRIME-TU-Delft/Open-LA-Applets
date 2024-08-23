@@ -1,41 +1,43 @@
 <script>
-  import { Vector3 } from 'three';
-  import {
-    Angle3D,
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    Point3D,
-    Vector3D,
-    PlaneFromNormal
-  } from '$lib/threlte-components';
+  import { Controls } from '$lib/controls/Controls';
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Point3D from '$lib/threlte/Point3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { bVector } from '$lib/utils/LatexFormat';
+  import { Vector3 } from 'three';
 
-  const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
-  const v = u.clone().multiply(new Vector3(1, 0, 1)); // direction of projection on plane
+  // const u = new Vector3(3, 4, 2); // Vector U - detached from the plane
+  const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
 
-  const u_proj = u.clone().projectOnVector(v); // Projection point of vector u on plane p
+  const u = $derived(parametic_point_on_circle_3D(controls[0], 5));
+  const v = $derived(u.clone().multiply(new Vector3(1, 0, 1))); // direction of projection on plane
+
+  const u_proj = $derived(u.clone().projectOnVector(v)); // Projection point of vector u on plane p
 </script>
 
-<Canvas3D title="Projection of a vector on a plane">
+<Canvas3D {controls} title="Projection of a vector on a plane">
   <!-- vector U -->
-  <Vector3D direction={u} length={u.length()} color={PrimeColor.green} />
-  <Latex3D latex={`\\mathbf{u} = ${bVector(u)}`} position={u} color={PrimeColor.green} />
+  <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
+  <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />
 
-  <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.ultramarine} />
+  <Vector3D direction={v} length={u_proj.length()} color={PrimeColor.blue} />
 
   <!-- Plane p -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} />
 
   <!-- Projection vector u and plane p -->
-  <Point3D position={u_proj} color={PrimeColor.red} />
+  <Point3D position={u_proj} color={PrimeColor.raspberry} />
   <Vector3D
     origin={u}
     direction={u_proj.clone().sub(u)}
     length={u_proj.clone().sub(u).length()}
-    color={PrimeColor.red}
-    striped
+    color={PrimeColor.raspberry}
+    isDashed
   />
 
   <!-- Angle between projection and horizontal axis -->
@@ -44,7 +46,7 @@
   <Latex3D
     latex={'Proj_p(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <Axis3D />

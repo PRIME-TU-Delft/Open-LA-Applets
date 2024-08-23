@@ -1,66 +1,73 @@
 <script lang="ts">
-  import { Angle3D, Axis3D, Canvas3D, Latex3D, Point3D, Vector3D } from '$lib/threlte-components';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Controls } from '$lib/controls/Controls';
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import Point3D from '$lib/threlte/Point3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Sliders } from '$lib/utils/Slider';
   import { Vector3 } from 'three';
 
-  let sliders = new Sliders().addSlider(4.5, 3, 6).addSlider(6, 4, 8);
-  let formulas: Formula[] = [];
+  const controls = Controls.addSlider(4.5, 3, 6).addSlider(6, 4, 8);
 
-  $: v_q = new Vector3(2, 0, -1).normalize().multiplyScalar(sliders.x);
-  $: v_a = v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(sliders.y));
-  $: v_p = v_q.clone().projectOnVector(new Vector3(1, 0, 0));
+  const v_q = $derived(new Vector3(2, 0, -1).normalize().multiplyScalar(controls[0]));
+  const v_a = $derived(v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(controls[1])));
+  const v_p = $derived(v_q.clone().projectOnVector(new Vector3(1, 0, 0)));
 
-  $: v_len = Math.sqrt(sliders.x * sliders.x + sliders.y * sliders.y);
+  const v_len = $derived(Math.sqrt(controls[0] * controls[0] + controls[1] * controls[1]));
 
-  function setFormulas(x: number, y: number, len: number) {
-    const f1 = new Formula('OQ = \\$', x, PrimeColor.red);
-    const f2 = new Formula('QA = \\$', y, PrimeColor.yellow);
-    const f3 = new Formula('OA = || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
-      .addParam(1, sliders.x, PrimeColor.red)
-      .addParam(2, sliders.y, PrimeColor.yellow);
-    const f4 = new Formula('OA =  \\$', len, PrimeColor.ultramarine);
+  const formulas = $derived.by(() => {
+    const f1 = new Formula('OQ &= \\$', controls[0], PrimeColor.raspberry);
+    const f2 = new Formula('QA &= \\$', controls[0], PrimeColor.yellow);
+    const f3 = new Formula('OA &= || \\mathbf{v} || = \\sqrt{\\$1^2 + \\$2^2}')
+      .addParam(1, controls[0], PrimeColor.raspberry)
+      .addParam(2, controls[1], PrimeColor.yellow);
+    const f4 = new Formula('OA &=  \\$', v_len, PrimeColor.blue);
 
-    formulas = [f1, f2, f3, f4];
-  }
+    const formulas = new Formulas(f1, f2, f3, f4).align();
 
-  $: setFormulas(sliders.x, sliders.y, v_len);
+    return formulas;
+  });
 </script>
 
 <Canvas3D
-  bind:sliders
+  {controls}
   {formulas}
   cameraPosition={new Vector3(2.73, 13.56, 10.42)}
   title="Length of a vector using Pythagoras' Theorem"
 >
   <!-- Vector q [Red] -->
-  <Vector3D direction={v_q} color={PrimeColor.red} length={sliders.x} />
-  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.red} size={1.1} />
+  <Vector3D direction={v_q} color={PrimeColor.raspberry} length={controls[0]} />
+  <Latex3D latex={'Q'} position={v_q} color={PrimeColor.raspberry} fontSize={1.1} />
 
   <!-- Vector a [Yellow] -->
   <Vector3D
     origin={v_q}
     direction={new Vector3(0, 1, 0)}
     color={PrimeColor.yellow}
-    length={sliders.y}
+    length={controls[1]}
   />
-  <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} size={1.3} />
+  <Latex3D latex={'A'} position={v_a} color={PrimeColor.yellow} fontSize={1.3} />
 
   <!-- Vector v [Blue] -->
-  <Vector3D direction={v_a} color={PrimeColor.ultramarine} length={v_len} />
+  <Vector3D direction={v_a} color={PrimeColor.blue} length={v_len} />
   <Latex3D
     latex={'\\mathbf{v}'}
-    position={v_a.clone().multiplyScalar(0.5).add(new Vector3(-0.7, -0.7, 0))}
-    color={PrimeColor.ultramarine}
+    position={v_a
+      .clone()
+      .multiplyScalar(0.5)
+      .add(new Vector3(-0.7, -0.7, 0))}
+    color={PrimeColor.blue}
   />
 
   <!-- Helper green lines -->
-  <Vector3D color={PrimeColor.green} direction={v_p} length={v_p.length()} />
+  <Vector3D color={PrimeColor.darkGreen} direction={v_p} length={v_p.length()} />
   <Vector3D
     direction={new Vector3(0, 0, -1)}
     origin={v_p}
-    color={PrimeColor.green}
+    color={PrimeColor.darkGreen}
     length={-v_q.z}
   />
 
@@ -83,22 +90,22 @@
   <!-- Helper striped lines -->
   <Vector3D
     direction={v_q}
-    origin={new Vector3(0, sliders.y, 0)}
+    origin={new Vector3(0, controls[1], 0)}
     color={'black'}
-    striped
-    length={sliders.x}
+    isDashed
+    length={controls[0]}
   />
-  <Vector3D striped origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
+  <Vector3D isDashed origin={new Vector3(0, 0, v_a.z)} color="black" length={v_p.x} />
 
   <!--  a_1-->
 
-  <Latex3D latex={'a_1'} position={v_p} offset={0.5} />
+  <Latex3D latex={'a_1'} position={v_p} extend={0.5} />
 
-  <Latex3D latex={'a_2'} position={new Vector3(0, 0, v_a.z)} offset={0.5} />
+  <Latex3D latex={'a_2'} position={new Vector3(0, 0, v_a.z)} extend={0.5} />
   <Point3D position={new Vector3(0, 0, v_a.z)} color={PrimeColor.black} />
 
-  <Latex3D latex={'a_3'} position={new Vector3(-0.3, sliders.y, 0)} offset={0.5} />
-  <Point3D position={new Vector3(0, sliders.y, 0)} color={PrimeColor.black} />
+  <Latex3D latex={'a_3'} position={new Vector3(-0.3, controls[1], 0)} extend={0.5} />
+  <Point3D position={new Vector3(0, controls[1], 0)} color={PrimeColor.black} />
 
   <Axis3D showNumbers floor axisLength={10} />
 </Canvas3D>

@@ -1,24 +1,28 @@
 node_modules
-/build
-/storybook-static
+
+# Output
+.output
+.vercel
+.netlify
 /.svelte-kit
-/package
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# misc
-.DS_Store
-*.pem
-
-# local env files
-!.env.example
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Deploy
-.netlify/**
-build-*
-
+# Logs
 **/*.log
+chromatic.log
+
+*storybook.log

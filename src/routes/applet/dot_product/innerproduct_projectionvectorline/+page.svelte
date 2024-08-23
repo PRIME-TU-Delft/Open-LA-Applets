@@ -1,53 +1,62 @@
 <script lang="ts">
-  import { Canvas2D, Line2D, Vector2D, Latex2D, Draggable2D, RightAngle } from '$lib/d3-components';
-
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { orthogonalProjection } from '$lib/utils/MathLib';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
 
-  let v = new Vector2(1, 0.5);
+  const draggables = [
+    new Draggable(new Vector2(1, 0.5), PrimeColor.blue, 'v'),
+    new Draggable(new Vector2(2.5, 2.5), PrimeColor.darkGreen, 'w')
+  ];
 
-  $: L_start = v.clone().multiplyScalar(-20);
-  $: L_end = v.clone().multiplyScalar(20);
-  $: L_label = v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3));
+  const v = $derived(draggables[0].value);
+  const w = $derived(draggables[1].value);
 
-  let w = new Vector2(2.5, 2.5);
-
-  $: proj_w = v.clone().multiplyScalar(w.clone().dot(v) / v.clone().dot(v));
+  const L_label = $derived(v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3)));
+  const proj_w = $derived(orthogonalProjection(v, w));
 
   // nesc for drawing right angle
-  $: proj_w_min_w = w.clone().sub(proj_w);
+  const proj_w_min_w = $derived(w.clone().sub(proj_w));
 </script>
 
-<Canvas2D title="Projection of a vector onto a non-zero vector">
+<Canvas2D {draggables} title="Projection of a vector onto a non-zero vector">
   <!-- L /-->
-  <Line2D start={L_start} end={L_end} color={PrimeColor.purple} />
-  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.purple} />
+  <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
+  <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />
 
   <!-- projection guide/-->
   <Line2D start={w} end={proj_w} isDashed />
 
-  <!-- projection of w -->
-  <Vector2D direction={proj_w} length={proj_w.length()} color={PrimeColor.red} />
+  <!-- w -->
+  <Vector2D direction={w} length={w.length()} color={PrimeColor.darkGreen} />
   <Latex2D
-    latex={'\\hat{w}'}
+    latex={'\\mathbf{w}'}
+    offset={w.clone().add(new Vector2(0.1, 0.2))}
+    color={PrimeColor.darkGreen}
+  />
+
+  <!-- projection of w -->
+  <Vector2D direction={proj_w} length={proj_w.length()} color={PrimeColor.raspberry} />
+  <Latex2D
+    latex={'\\mathbf{\\hat{w}}'}
     offset={proj_w.clone().add(new Vector2(0, -0.2))}
-    color={PrimeColor.red}
+    color={PrimeColor.raspberry}
   />
 
   <!-- v -->
-  <Draggable2D id="v" bind:position={v} color={PrimeColor.ultramarine} />
-  <Vector2D direction={v} length={v.length()} color={PrimeColor.ultramarine} />
+  <Vector2D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex2D
-    latex={'v'}
+    latex={'\\mathbf{v}'}
     offset={v.clone().add(new Vector2(0, -0.2))}
-    color={PrimeColor.ultramarine}
+    color={PrimeColor.blue}
   />
 
-  <!-- w -->
-  <Draggable2D id="w" bind:position={w} color={PrimeColor.green} />
-  <Vector2D direction={w} length={w.length()} color={PrimeColor.green} />
-  <Latex2D latex={'w'} offset={w.clone().add(new Vector2(0.1, 0.2))} color={PrimeColor.green} />
-
   <!-- right angle -->
-  <RightAngle size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />
+  <RightAngle2D size={0.3} vs={[proj_w_min_w, v.clone().multiplyScalar(-1)]} origin={proj_w} />
 </Canvas2D>

@@ -1,47 +1,68 @@
 <script lang="ts">
-  import { mdiPause, mdiPlay, mdiPlus } from '@mdi/js';
-  import Icon from '$lib/components/Icon.svelte';
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import type { Slider } from '$lib/utils/Slider';
-  import RoundButton from './RoundButton.svelte';
+  import * as Button from '$lib/components/ui/button';
+  import { Label } from '$lib/components/ui/label';
+  import { activityState } from '$lib/stores/activity.svelte';
+  import type { Slider } from '$lib/controls/Slider.svelte';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
+  import { Pause, Play, Plus } from 'lucide-svelte';
 
-  export let slider: Slider;
-  export let isExpanded: boolean = false;
-  export let isPlaying: boolean = false;
-  export let playSpeed: number = 1000 / 16;
+  type SliderProps = {
+    value: number;
+    slider: Slider;
+    isExpanded: boolean;
+    playSpeed?: number;
+    onStopChanging?: () => void;
+    onStartChanging?: () => void;
+    onExpand?: () => void;
+  };
 
-  let icon = mdiPlay;
-  let moveRight = false; // direction of the slider
+  let {
+    value = $bindable(),
+    slider,
+    isExpanded = false,
+    playSpeed = 1000 / 16,
+    onStopChanging,
+    onStartChanging,
+    onExpand
+  }: SliderProps = $props();
+
+  let uuid = generateUUID();
+
+  let icon = $state(Play);
+  let moveRight = $state(false); // direction of the slider
+  let label = $derived(slider.valueFn(value));
+  let isPlaying = $state(false); // is the slider playing
 
   // interval for playing the slider
-  let playInterval: NodeJS.Timeout; // eslint-disable-line no-undef
-
-  const dispatch = createEventDispatcher();
+  let playInterval: number | undefined = $state();
 
   function round() {
-    slider.value = Math.round(slider.value / slider.stepSize) * slider.stepSize;
+    value = Math.round(value / slider.stepSize) * slider.stepSize;
   }
 
   function stopPlaying() {
     isPlaying = false;
-    icon = mdiPlay;
+    icon = Play;
 
     clearInterval(playInterval);
     round();
-    dispatch('stopChanging');
+
+    if (onStopChanging) onStopChanging();
   }
 
   function startPlaying() {
     isPlaying = true;
-    icon = mdiPause;
+    icon = Pause;
+    // console.log({ isPlaying });
 
     playInterval = setInterval(() => {
+      // console.log('is playing');
       // Bounce the slider back and forth
-      slider.value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
+      value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
 
-      if (slider.value >= slider.max) {
+      if (value >= slider.max) {
         moveRight = true;
-      } else if (slider.value <= slider.min) {
+      } else if (value <= slider.min) {
         moveRight = false;
       }
     }, playSpeed);
@@ -55,46 +76,74 @@
   function startChanging() {
     stopPlaying();
 
-    dispatch('startChanging');
+    if (onStartChanging) onStartChanging();
   }
 
-  $: {
-    if (!isPlaying) stopPlaying();
-  }
+  $effect(() => {
+    if (!activityState.isActive) {
+      setTimeout(() => {
+        stopPlaying();
+      }, 750);
+    }
+  });
 
-  onDestroy(stopPlaying);
+  $effect(() => {
+    if (!isExpanded) {
+      stopPlaying();
+    }
+  });
 </script>
 
 {#if !isExpanded}
   <!-- If not selected display only the expand button -->
   <div class="tooltip tooltip-top" data-tip="Extend slider">
-    <RoundButton
+    <Button.Action
+      class="text-white"
       --bg={slider.color}
-      icon={mdiPlus}
-      color="white"
-      on:click={() => dispatch('expand')}
-    />
+      tooltip="Expand slider"
+      side="top"
+      onclick={() => (onExpand ? onExpand() : {})}
+    >
+      <Plus class="w-4 h-4" strokeWidth={4} />
+    </Button.Action>
   </div>
 {:else}
   <!-- If the slider is selected / expanded -->
-  <div class="tooltip tooltip-top" data-tip="Toggle animation">
-    <button style="background: {slider.color}" class="rounded-full p-4" on:click={togglePlay}>
-      <Icon path={icon} color="white" size={1} />
-    </button>
-  </div>
+  <Button.Action
+    class="text-white rounded-full"
+    --bg={slider.color}
+    tooltip="Toggle animation"
+    side="top"
+    onclick={() => togglePlay()}
+  >
+    {#key icon}
+      <svelte:component this={icon} class="w-4 h-4" fill="white" strokeWidth={0} />
+    {/key}
+  </Button.Action>
 
-  <label class="w-full">
+  <div class="flex flex-col gap-1">
+    {#if slider.label}
+      <Label
+        class="relative w-fit flex gap-1 items-center text-slate-700 text-xs pr-1"
+        for="range-{uuid}"
+        >{slider.label}:
+        <p class="absolute left-full text-sm" style="color:{slider.color};">
+          {label}
+        </p>
+      </Label>
+    {/if}
+
     <input
       type="range"
+      id="range-{uuid}"
       min={slider.min}
       max={slider.max}
       step={slider.stepSize}
-      bind:value={slider.value}
-      on:change={stopPlaying}
-      on:mousedown={startChanging}
-      on:touchstart={startChanging}
-      style="accent-color: {slider.color}; --s: {slider.hsl.h} {slider.hsl.s}% {slider.hsl.l}%;"
-      class="w-inherit range range-xs range-secondary"
+      bind:value
+      onchange={stopPlaying}
+      onmousedown={startChanging}
+      ontouchstart={startChanging}
+      style="accent-color: {slider.color}"
     />
-  </label>
+  </div>
 {/if}
