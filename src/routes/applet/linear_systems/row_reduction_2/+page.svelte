@@ -6,7 +6,7 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
-  import { controls } from './transitionSteps';
+  import { controls } from './animation';
 
   const formulas = $derived.by(() => {
     const r = (x: number) => round(x, 1);
