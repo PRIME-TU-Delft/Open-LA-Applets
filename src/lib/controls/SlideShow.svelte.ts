@@ -12,8 +12,14 @@ export class SlideShow<State> implements Controller<State> {
 
   value = $state() as State;
   index = $state(0);
+
+  // The state of the animation that are automatically generated in the next() method
   states = $state([]) as State[];
+
+  // The steps of the animation
   steps: SlideShowSteps<State>;
+
+  // Do not play the animation if animation is already in progress, otherwise state will be overwritten
   inTransition = $state(false);
 
   type = 'animation';
@@ -64,6 +70,12 @@ export class SlideShow<State> implements Controller<State> {
     return s as State;
   }
 
+  /**
+   * Advances the animation by one step and animates the transition
+   * @param ms - The duration of the transition in milliseconds
+   * @param timeSteps - The number of steps in the transition
+   * @returns A promise that resolves when the transition is complete
+   */
   async next(ms: number = 750, timeSteps: number = 20) {
     if (!this.hasNext() || this.inTransition) return Promise.resolve(this);
 
@@ -90,6 +102,12 @@ export class SlideShow<State> implements Controller<State> {
     }, ms / timeSteps);
   }
 
+  /**
+   * Reverses the animation by one step and animates the transition
+   * @param ms - The duration of the transition in milliseconds
+   * @param timeSteps - The number of steps in the transition
+   * @returns A promise that resolves when the transition is complete
+   */
   async prev(ms: number = 750, timeSteps: number = 20) {
     if (!this.hasPrev() || this.inTransition) return Promise.resolve(this);
 
