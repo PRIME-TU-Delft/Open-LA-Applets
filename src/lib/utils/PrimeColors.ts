@@ -1,4 +1,4 @@
-export type ColorString = `#${string}`;
+export type ColorString = `${string}`;
 
 // Official Colors from the TU Delft
 // https://www.tudelft.nl/huisstijl/bouwstenen/kleur
