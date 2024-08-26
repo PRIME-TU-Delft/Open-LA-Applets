@@ -26,7 +26,7 @@
     return pre + res + post;
   });
 
-  const moreThanOne = $derived.by(() => controls.values.filter(Boolean).length > 1);
+  const moreThanOneEnabled = $derived.by(() => controls.values.filter(Boolean).length > 1);
 </script>
 
 <Canvas2D
@@ -85,7 +85,7 @@
     color={PrimeColor.yellow}
     fontSize={0.8}
   />
-  {#if moreThanOne}
+  {#if moreThanOneEnabled}
     <rect
       x={-10}
       y={-10}
