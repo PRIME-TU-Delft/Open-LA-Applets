@@ -11,6 +11,7 @@
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
+    customAxis?: boolean;
     children: Snippet;
   };
 </script>
@@ -43,6 +44,7 @@
     enablePan = true,
     draggables = [],
     isSplit = false,
+    customAxis = false,
     children
   }: Canvas2DProps = $props();
 
@@ -156,7 +158,9 @@
           30})"
       >
         <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-          <Axis {showAxisNumbers} length={tickLength} />
+          {#if !customAxis}
+            <Axis {showAxisNumbers} length={tickLength} />
+          {/if}
           {@render children()}
 
           {#each draggables as d}
