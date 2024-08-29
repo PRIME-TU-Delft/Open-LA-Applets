@@ -21,16 +21,21 @@
     const f1 = new Formula('|| \\mathbf{v} || = \\$', Math.abs(v.length()), PrimeColor.blue);
     const f2 = new Formula('|| \\mathbf{w} || = \\$', Math.abs(w.length()), PrimeColor.darkGreen);
     const f3 = new Formula(
+      '|| \\mathbf{v} || +  || \\mathbf{w} || = \\$',
+      Math.abs(v.length() + w.length()),
+      PrimeColor.raspberry
+    );
+    const f4 = new Formula(
       '|| \\mathbf{v} + \\mathbf{w} || = \\$',
       Math.abs(vPlusW.length()),
       PrimeColor.raspberry
     );
 
-    return [f1, f2, f3];
+    return [f1, f2, f3, f4];
   });
 </script>
 
-<Canvas2D {draggables} {formulas} title="The Triangle Inequality">
+<Canvas2D {draggables} {formulas} title="The triangle inequality">
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
     {#snippet children(endPoint)}
