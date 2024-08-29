@@ -1,0 +1,66 @@
+<script>
+  import { Controls } from '$lib/controls/Controls';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import InfiniteLine3D from '$lib/threlte/InfiniteLine3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { round, roundString } from '$lib/utils/MathLib';
+  import { MathVector3 } from '$lib/utils/MathVector';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector3 } from 'three';
+
+  const controls = Controls.addSlider(4, -5, 6, 0.5, PrimeColor.raspberry, 'a', roundString);
+
+  const v = new MathVector3(-4, 3, 1);
+
+  const v_offset = $derived(new MathVector3(-controls[0], controls[0], 0));
+
+  const formulas = $derived.by(() => {
+    const minusA = round(-controls[0]);
+
+    const f1 = new Formula(
+      `\\Bigg\\lbrace 
+        \\begin{bmatrix}\\$1 \\\\ \\$2 \\\\0 \\end{bmatrix} + 
+        t \\space \\begin{bmatrix}-4 \\\\ 3 \\\\ 1 \\end{bmatrix} \\space | \\space
+        t \\in \\mathbb{R} \\Bigg\\rbrace`
+    )
+      .addAutoParam(minusA, PrimeColor.raspberry)
+      .addAutoParam(round(controls[0]), PrimeColor.raspberry);
+
+    return [f1];
+  });
+</script>
+
+<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
+  <!-- Default -->
+  <Vector3D direction={v} length={v.length()} color={PrimeColor.yellow} alwaysOnTop />
+  <Latex3D latex={'\\mathbf{v}'} position={v} extend={0.5} color={PrimeColor.yellow} />
+
+  <InfiniteLine3D direction={v} color={PrimeColor.blue} />
+
+  <!-- Extended -->
+  <Vector3D
+    origin={v_offset}
+    direction={v}
+    length={v.length()}
+    color={PrimeColor.yellow}
+    alwaysOnTop
+  />
+  <Latex3D
+    offset={v_offset}
+    latex={'\\mathbf{v}'}
+    position={v}
+    extend={0.5}
+    color={PrimeColor.yellow}
+  />
+
+  <InfiniteLine3D origin={v_offset} direction={v} color={PrimeColor.darkGreen} />
+
+  <!-- R0 -->
+  <Vector3D direction={v_offset} length={v_offset.length()} color={PrimeColor.raspberry} />
+  <Latex3D latex={'\\mathbf{r_0}'} position={v_offset} extend={0.5} color={PrimeColor.raspberry} />
+
+  <Axis3D />
+</Canvas3D>
