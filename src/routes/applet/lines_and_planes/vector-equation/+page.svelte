@@ -18,7 +18,7 @@
   const dir_L = $derived(v1.clone().sub(v0.clone()));
 </script>
 
-<Canvas2D {draggables}>
+<Canvas2D {draggables} title="A parametric vector of a line">
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 

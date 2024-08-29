@@ -32,7 +32,12 @@
   });
 </script>
 
-<Canvas3D {controls} {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
+<Canvas3D
+  {controls}
+  {formulas}
+  cameraPosition={new Vector3(2.73, 13.56, 10.42)}
+  title="Length of a vector using Pythagoras' Theorem"
+>
   <!-- Vector q [Red] -->
   <Vector3D direction={v_q} color={PrimeColor.raspberry} length={controls[0]} />
   <Latex3D latex={'Q'} position={v_q} color={PrimeColor.raspberry} fontSize={1.1} />

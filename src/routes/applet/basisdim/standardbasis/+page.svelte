@@ -19,7 +19,7 @@
   let te3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }}>
+<Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }} title="The standard bases in 2d and 3d">
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue}>
     {#snippet children(endPoint)}
