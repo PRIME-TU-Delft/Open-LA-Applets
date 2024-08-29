@@ -80,16 +80,16 @@
 
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
-      {#if index > 0}
+      {#if index > 0 && index % 2 == 0}
         <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.07, -0.15)} />
-      {:else}
+      {:else if index % 2 == 0}
         <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.15, -0.15)} />
       {/if}
 
       <!-- Y axis number labels -->
-      {#if index > 0}
+      {#if index > 0 && index % 2 == 0}
         <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.3, index + 0.12)} />
-      {:else}
+      {:else if index % 2 == 0}
         <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.1)} />
       {/if}
     {/if}
