@@ -76,7 +76,7 @@ export class SlideShow<State> implements Controller<State> {
    * @param timeSteps - The number of steps in the transition
    * @returns A promise that resolves when the transition is complete
    */
-  async next(ms: number = 750, timeSteps: number = 20) {
+  next(ms: number = 750, timeSteps: number = 20) {
     if (!this.hasNext() || this.inTransition) return Promise.resolve(this);
 
     this.inTransition = true;
@@ -108,7 +108,7 @@ export class SlideShow<State> implements Controller<State> {
    * @param timeSteps - The number of steps in the transition
    * @returns A promise that resolves when the transition is complete
    */
-  async prev(ms: number = 750, timeSteps: number = 20) {
+  prev(ms: number = 750, timeSteps: number = 20) {
     if (!this.hasPrev() || this.inTransition) return Promise.resolve(this);
 
     this.inTransition = true;
@@ -137,20 +137,20 @@ export class SlideShow<State> implements Controller<State> {
     this.index = 0;
   }
 
-  reset(ms: number = 750, timeSteps: number = 20) {
+  reset(ms: number = 1000, timeSteps: number = 20) {
     if (this.index == 0) return this;
 
-    async function loop(obj: SlideShow<State>) {
-      for (let i = 0; i < obj.index; i++) {
-        await obj.prev(ms / obj.index, timeSteps / 2);
-      }
-    }
-
-    loop(this);
-
-    setTimeout(() => {
-      this.setToDefault();
-    }, ms + 10);
+    const interval = setInterval(
+      () => {
+        if (this.index == 0) {
+          clearInterval(interval);
+          this.setToDefault();
+          return this;
+        }
+        this.prev(ms / this.index, timeSteps);
+      },
+      ms / this.index + 1
+    );
 
     return this;
   }
