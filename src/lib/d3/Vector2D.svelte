@@ -4,6 +4,7 @@
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Line2D from './Line2D.svelte';
+  import Point2D from './Point2D.svelte';
   import Triangle2D from './Triangle2D.svelte';
 
   type VectorProps = {
@@ -42,18 +43,10 @@
     }
   });
 
-  const coneStart = $derived(
-    origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2))
-  );
-  const leftConePoint = $derived(
-    coneStart
-      .clone()
-      .add(new Vector2(-direction.y, direction.x).normalize().multiplyScalar(CONE_DIAMETER))
-  );
-  const rightConePoint = $derived(
-    coneStart
-      .clone()
-      .add(new Vector2(direction.y, -direction.x).normalize().multiplyScalar(CONE_DIAMETER))
+  const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
+
+  const coneStartPos = $derived(
+    origin.clone().add(direction.clone().multiplyScalar(coneStart - coneHeight / 2))
   );
 </script>
 
@@ -74,10 +67,25 @@
 -->
 
 <!-- Line 2D -->
-<Line2D start={origin} end={coneStart} {color} width={radius} {isDashed} />
+<Line2D start={origin} end={coneStartPos} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
-  <Triangle2D points={[leftConePoint, endPoint, rightConePoint]} {color} />
+  {#if length == 0}
+    <Point2D position={new Vector2()} {color} />
+  {:else}
+    <g
+      transform={`translate(${origin.x}, ${origin.y}) rotate(${(direction.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
+    >
+      <Triangle2D
+        points={[
+          new Vector2(CONE_DIAMETER, 0),
+          new Vector2(-CONE_DIAMETER, 0),
+          new Vector2(0, coneHeight)
+        ]}
+        {color}
+      />
+    </g>
+  {/if}
 {/if}
 
 {#if children}
