@@ -22,6 +22,7 @@
   cameraPosition={new Vector3(3.31, 6.55, 15.68)}
   cameraZoom={38}
   {controls}
+  title="A parametric vector of a line in 3D space"
 >
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.raspberry} length={v_0.length()} />

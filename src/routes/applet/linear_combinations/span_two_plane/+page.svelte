@@ -13,7 +13,7 @@
   const labelPosition = u.clone().add(v).normalize().multiplyScalar(8); // only used for label -> Span{u,v}
 </script>
 
-<Canvas3D>
+<Canvas3D title="Span of two vectors">
   <!-- Vector u -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.raspberry} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.raspberry} />

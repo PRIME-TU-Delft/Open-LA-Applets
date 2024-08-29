@@ -24,7 +24,7 @@
   const uLen = $derived(Math.abs(controls[1]) < 1 ? (controls[1] < 0 ? -1 : 1) : controls[1]);
 </script>
 
-<Canvas3D {controls}>
+<Canvas3D title="Span of two parallel vectors" {controls}>
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->
   {#if controls[0] * controls[1] >= 0 && Math.abs(controls[0]) <= Math.abs(controls[1])}
     <Vector3D direction={v} length={vLen} color={PrimeColor.raspberry} alwaysOnTop />

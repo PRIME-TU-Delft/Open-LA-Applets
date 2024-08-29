@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Vector2 } from 'three';
   import Latex from '$lib/components/Latex.svelte';
+  import { Vector2 } from 'three';
 
   type Latex2DProps = {
     latex: string;
@@ -21,6 +21,8 @@
   }: Latex2DProps = $props();
 
   let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 </script>
 
 <g
@@ -29,6 +31,10 @@
     extendedOffset.y}) scale({0.02 * fontSize},{-0.02 * fontSize})"
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
-    <Latex {latex} {color} />
+    {#if isSafari}
+      <Latex {latex} {color} outputType="mathml" />
+    {:else}
+      <Latex {latex} {color} outputType="html" />
+    {/if}
   </foreignObject>
 </g>
