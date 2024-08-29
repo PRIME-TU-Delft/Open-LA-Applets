@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Formula } from '$lib/utils/Formulas';
-  import { snapPointToLine } from '$lib/utils/MathLib';
+  import { round, snapPointToLine } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { Draggable } from '$lib/controls/Draggables.svelte';
@@ -38,15 +38,26 @@
     Math.abs(w.clone().normalize().dot(v.clone().normalize())) <= 0.05 && !v.equals(w)
   );
 
-  const formulas = $derived.by(() => {
+  const formulas = [
+    new Formula(`{\\$1} = \\$2`)
+      .addParam(1, ' | \\mathbf{v + w} |', PrimeColor.raspberry)
+      .addParam(2, '|\\mathbf{v - w}|', PrimeColor.orange)
+  ];
+
+  const splitFormulas = $derived.by(() => {
     const plus = ' | \\mathbf{v + w} |';
     const min = '|\\mathbf{v - w}|';
 
-    const formula = new Formula(`{\\$1} ${isOrthogonal ? '=' : '\\neq'} \\$2`)
+    const f1 = new Formula(`\\$1 ${isOrthogonal ? '=' : '\\neq'} \\$2`)
       .addParam(1, plus, PrimeColor.raspberry)
       .addParam(2, min, PrimeColor.orange);
 
-    return [formula];
+    const f2 = new Formula(`\\$1 \\cdot \\$2 = \\$3`)
+      .addParam(1, '|\\mathbf{v}|', PrimeColor.blue)
+      .addParam(2, '|\\mathbf{w}|', PrimeColor.darkGreen)
+      .addParam(3, round(w.dot(v)), PrimeColor.raspberry);
+
+    return [f1, f2];
   });
 </script>
 
@@ -61,7 +72,9 @@
     cameraPosition: new Vector2(2, 1)
   }}
   {formulas}
+  {splitFormulas}
   enablePan={false}
+  showFormulasDefault
 >
   <!-- MARK: STATIC -->
   <StaticImg />
