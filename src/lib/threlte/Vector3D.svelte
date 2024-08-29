@@ -4,6 +4,7 @@
   import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
   import Line3D from './Line3D.svelte';
   import type { Snippet } from 'svelte';
+  import Point3D from './Point3D.svelte';
 
   type Vector3DProps = {
     color?: string;
@@ -83,10 +84,14 @@
 
 <!-- Cone on top of line -->
 {#if !hideHead}
-  <T.Mesh position={conePosition.toArray()} bind:ref={coneMesh}>
-    <T.MeshBasicMaterial {color} side={DoubleSide} />
-    <T.ConeGeometry args={[CONE_DIAMETER * radius, CONE_HEIGHT, RADIUS_SEGMENTS]} />
-  </T.Mesh>
+  {#if length == 0}
+    <Point3D position={origin} {color} />
+  {:else}
+    <T.Mesh position={conePosition.toArray()} bind:ref={coneMesh}>
+      <T.MeshBasicMaterial {color} side={DoubleSide} />
+      <T.ConeGeometry args={[CONE_DIAMETER * radius, CONE_HEIGHT, RADIUS_SEGMENTS]} />
+    </T.Mesh>
+  {/if}
 {/if}
 
 {#if children}
