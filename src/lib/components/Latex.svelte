@@ -18,7 +18,7 @@
     params = [],
     colors = PrimeColor.asArray(),
     color = 'black',
-    outputType = 'mathml',
+    outputType = 'html',
     class: classes = '',
     fontSize = 1
   }: LatexProps = $props();
