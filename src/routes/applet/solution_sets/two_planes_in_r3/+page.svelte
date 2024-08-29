@@ -6,7 +6,7 @@
   import PlaneFromPoints from '$lib/threlte/planes/PlaneFromPoints.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
-  import { roundString } from '$lib/utils/MathLib';
+  import { round, roundString } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
@@ -25,13 +25,13 @@
         s \\space \\begin{bmatrix}-3 \\\\ 1 \\\\ 0 \\end{bmatrix} + 
         t \\space \\begin{bmatrix}1 \\\\ 0 \\\\ 1 \\end{bmatrix} \\space | \\space
         s, t \\in \\mathbb{R} \\Bigg\\rbrace`
-    ).addAutoParam(controls[0], PrimeColor.raspberry);
+    ).addAutoParam(round(controls[0]), PrimeColor.raspberry);
 
     return [f1];
   });
 </script>
 
-<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)}>
+<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
   <!-- Default -->
   <Vector3D direction={v1} length={v1.length()} color={PrimeColor.yellow} />
   <Latex3D latex={'\\mathbf{v_1}'} position={v1} extend={0.5} color={PrimeColor.yellow} />
