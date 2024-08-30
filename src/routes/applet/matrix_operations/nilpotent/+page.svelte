@@ -25,7 +25,7 @@
 
       state.displayAs = t > 0.9 ? 'line' : 'image';
 
-      return { state, labelNext: 'Scale x to 0', labelPrev: 'Original state' };
+      return { state, labelNext: 'Project on x1', labelPrev: 'Original state' };
     },
     (t: number, state: S) => {
       state.transformType = 'rotate';
@@ -41,7 +41,7 @@
 
       state.displayAs = t > 0.9 ? 'dot' : 'line';
 
-      return { state, labelNext: 'Scale x to 0 again', labelPrev: 'Widen along x axis' };
+      return { state, labelNext: 'Project on x1', labelPrev: 'Expand on x1' };
     }
   ];
 
