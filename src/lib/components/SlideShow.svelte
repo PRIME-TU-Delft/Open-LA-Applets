@@ -4,7 +4,7 @@
   import type { SlideShow } from '$lib/controls/SlideShow.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { ChevronLeft, ChevronRight } from 'lucide-svelte';
-  import { fade, scale } from 'svelte/transition';
+  import { scale } from 'svelte/transition';
   import { generateUUID } from 'three/src/math/MathUtils.js';
 
   type SlideShowProps = {
