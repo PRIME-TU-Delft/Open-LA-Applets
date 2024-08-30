@@ -16,11 +16,13 @@
 </script>
 
 <Canvas3D cameraZoom={100} cameraPosition={new Vector3(8.92, 14.8, -1.1)}>
+  <!-- C atom -->
   <Point3D position={new Vector3()} size={0.25} color="rgb(47,73,74)" />
   <Latex3D latex={'\\mathbf{C}'} hasBackground />
 
   {#each hAtoms as atom}
-    <Point3D position={atom} size={0.25} color="rgb(108,139,139)" />
+    <!-- H atoms -->
+    <Point3D position={atom} size={0.25} color="#ccc" />
     <Vector3D direction={atom} noNormalise color={PrimeColor.black} hideHead />
     <Latex3D latex={'\\mathbf{H}'} position={atom} hasBackground />
   {/each}
