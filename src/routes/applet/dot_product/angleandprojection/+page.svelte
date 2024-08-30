@@ -18,10 +18,10 @@
   const w = $derived(draggables[0].value);
 
   const formulas = $derived.by(() => {
-    const ortho = w.clone().dot(v.clone()) / v.clone().dot(v.clone());
+    const ortho = w.clone().dot(v.clone()) / (w.length() * v.length());
 
     const f1 = new Formula(
-      '\\frac{\\mathbf{w} \\cdot \\mathbf{v}}{\\mathbf{v} \\cdot \\mathbf{v}} = \\$1'
+      '\\frac{\\mathbf{v} \\cdot \\mathbf{w}}{||\\mathbf{v}|| \\space ||\\mathbf{w}||} = \\$1'
     ).addAutoParam(round(ortho), PrimeColor.darkGreen);
 
     const f2 = new Formula('\\varphi = \\$1 \\pi').addAutoParam(
@@ -61,15 +61,15 @@
   <Latex2D
     latex={'\\mathbf{w}'}
     position={w.clone()}
-    extend={0.5}
-    offset={new Vector2(0, -0.05)}
+    extend={0.25}
+    offset={new Vector2(-0.25, 0.25)}
     color={PrimeColor.darkGreen}
   />
 
   <!-- LABELS -->
   <!-- first quatrand -->
   <Latex2D
-    latex={'0 \\leq \\varphi \\leq \\frac{\\pi}{2}'}
+    latex={'0 \\lt \\varphi \\lt \\frac{\\pi}{2}'}
     position={new Vector2(2, 3)}
     offset={new Vector2(0, 0.1)}
     color={PrimeColor.black}
@@ -77,7 +77,7 @@
   />
   <!-- second quatrand -->
   <Latex2D
-    latex={'\\frac{\\pi}{2} \\leq \\varphi \\leq \\pi'}
+    latex={'\\frac{\\pi}{2} \\lt \\varphi \\lt \\pi'}
     position={new Vector2(-3, 2)}
     offset={new Vector2(0, 0.1)}
     color={PrimeColor.black}
@@ -86,7 +86,7 @@
 
   <!-- third quatrand -->
   <Latex2D
-    latex={'\\pi \\leq \\varphi \\leq \\frac{3\\pi}{2}'}
+    latex={'\\frac{\\pi}{2} \\lt \\varphi \\lt \\pi'}
     position={new Vector2(-3, -2.5)}
     offset={new Vector2(0, 0.1)}
     color={PrimeColor.black}
@@ -95,7 +95,7 @@
 
   <!-- fourth quatrand -->
   <Latex2D
-    latex={'\\frac{3\\pi}{2} \\leq \\varphi \\leq 2\\pi'}
+    latex={'0 \\lt \\varphi \\lt \\frac{\\pi}{2}'}
     position={new Vector2(2, -1.5)}
     offset={new Vector2(0, 0.1)}
     color={PrimeColor.black}
