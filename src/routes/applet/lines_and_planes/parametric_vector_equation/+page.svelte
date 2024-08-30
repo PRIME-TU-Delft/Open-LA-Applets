@@ -30,13 +30,13 @@
     const f2 = new Formula(
       '\\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} &= \\begin{bmatrix} \\$3  \\\\ \\$4 \\end{bmatrix} + \\$5 \\begin{bmatrix} \\$6 \\\\ \\$7 \\end{bmatrix}'
     )
-      .addAutoParam(round(v1.x), PrimeColor.yellow)
-      .addAutoParam(round(v1.y), PrimeColor.yellow)
-      .addAutoParam(round(v0.x), PrimeColor.raspberry)
-      .addAutoParam(round(v0.y), PrimeColor.raspberry)
-      .addAutoParam(controls[0].toFixed(2), PrimeColor.darkGreen)
-      .addAutoParam(round(u.x), PrimeColor.darkGreen)
-      .addAutoParam(round(u.y), PrimeColor.darkGreen);
+      .addAutoParam(round(v1.x, 1), PrimeColor.yellow)
+      .addAutoParam(round(v1.y, 1), PrimeColor.yellow)
+      .addAutoParam(round(v0.x, 1), PrimeColor.raspberry)
+      .addAutoParam(round(v0.y, 1), PrimeColor.raspberry)
+      .addAutoParam(controls[0].toFixed(1), PrimeColor.darkGreen)
+      .addAutoParam(round(u.x, 1), PrimeColor.darkGreen)
+      .addAutoParam(round(u.y, 1), PrimeColor.darkGreen);
 
     return new Formulas(f1, f2).align();
   });
@@ -82,7 +82,7 @@
       <Latex2D
         latex={'\\mathbf{u}'}
         position={endPoint}
-        offset={new Vector2(0.1, 0.2)}
+        offset={new Vector2(0.1, 0.5)}
         color={PrimeColor.darkGreen}
       />
     {/snippet}
