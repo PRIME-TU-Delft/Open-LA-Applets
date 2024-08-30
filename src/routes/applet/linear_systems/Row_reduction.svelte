@@ -30,7 +30,11 @@
 
     const [r1, r2, r3] = controls[0];
     const f1 = new Formula(
-      `\\begin{bmatrix} ${toColor(r1, PrimeColor.raspberry)} \\\\ ${toColor(r2, PrimeColor.darkGreen)} \\\\ ${toColor(r3, PrimeColor.yellow)}\\end{bmatrix}`
+      `\\left(\\hspace{-5pt}\\begin{array}{ccc|c}
+      ${toColor(r1, PrimeColor.raspberry)} \\\\ 
+      ${toColor(r2, PrimeColor.darkGreen)} \\\\ 
+      ${toColor(r3, PrimeColor.yellow)}
+      \\end{array}\\hspace{-5pt}\\right)`
     );
 
     return [f1];
@@ -41,9 +45,15 @@
   {@const vs = controls[0]}
 
   {#each vs as v, i}
+    {@const a = v.x}
+    {@const b = v.y}
+    {@const c = v.z}
+    {@const d = v.w}
+    {@const normal = new MathVector3(v.x, v.y, v.z)}
+
     <PlaneFromNormal
-      normal={new MathVector3(v.x, v.y, v.z)}
-      position={new Vector3(0, v.w, 0)}
+      {normal}
+      position={normal.clone().multiplyScalar(d / (a * a + b * b + c * c))}
       color={COLOR[i]}
     />
   {/each}

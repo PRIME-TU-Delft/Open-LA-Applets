@@ -16,10 +16,7 @@
 </script>
 
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
-  <span>Step: {controller.index}</span>
-
   {#if controller.label != undefined}
-    <span class="mx-2">|</span>
     <span>{controller.label}</span>
   {/if}
 </Label>
