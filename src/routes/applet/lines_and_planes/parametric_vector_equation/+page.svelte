@@ -26,7 +26,7 @@
   const dir_L = $derived(v1.clone().sub(v0.clone()));
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('\\mathbf{v}_1 &= \\mathbf{v}_0 + k \\cdot \\mathbf{u}');
+    const f1 = new Formula('\\mathbf{v}_1 &= \\mathbf{v}_0 + r \\mathbf{u}');
     const f2 = new Formula(
       '\\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} &= \\begin{bmatrix} \\$3  \\\\ \\$4 \\end{bmatrix} + \\$5 \\begin{bmatrix} \\$6 \\\\ \\$7 \\end{bmatrix}'
     )
@@ -42,7 +42,7 @@
   });
 </script>
 
-<Canvas2D {draggables} title="A parametric vector of a line">
+<Canvas2D {draggables} {formulas} showFormulasDefault title="A parametric vector of a line">
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 
