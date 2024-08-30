@@ -26,19 +26,30 @@
 
   let d = $derived(
     arc()({
-      innerRadius: distance - width / 2,
-      outerRadius: distance + width / 2,
+      innerRadius: distance - width,
+      outerRadius: distance + width,
       startAngle: startAngle + Math.PI / 2,
-      endAngle: endAngle + Math.PI / 2
+      endAngle: endAngle + Math.PI / 2 - width
     })
   );
 
-  let triangle = $derived(
-    symbol()
-      .type(symbolTriangle)
-      .size(2 * width)()
-  );
+  let triangle = $derived(symbol().type(symbolTriangle).size(width)());
 </script>
+
+<!--@component
+@props
+- color: string=`PrimeColor.black` - The color of the angle.
+- startAngle: number=`0` - The start angle of the angle.
+- endAngle: number=`0` - The end angle of the angle.
+- origin: Vector2=`new Vector2(0,0)` - The origin of the angle.
+- width: number=`LINE_WIDTH` - The width of the angle.
+- distance: number=`0.8` - The distance of the angle.
+- hasHead: boolean=`false` - Whether the angle has a head or not.
+
+@example
+<Angle2D startAngle={0} endAngle={(1 / 4) * Math.PI} color={PrimeColor.raspberry} distance={0.5} hasHead />
+
+-->
 
 <g transform="translate({origin.x},{origin.y})">
   <path {d} fill={color} />
