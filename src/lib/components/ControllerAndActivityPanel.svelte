@@ -1,18 +1,20 @@
-<script lang="ts">
+<script lang="ts" generics="State">
   import * as Button from '$lib/components/ui/button';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { Slider } from '$lib/controls/Slider.svelte';
+  import { SlideShow } from '$lib/controls/SlideShow.svelte';
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
   import SideButton from './SideButton.svelte';
   import SvelteSlider from './Slider.svelte';
+  import SvelteSlideShow from './SlideShow.svelte';
   import SvelteToggle from './Toggle.svelte';
 
-  type G = readonly Controller<number | boolean>[];
+  type G = readonly Controller<number | boolean | State>[];
   type ControllerAndActivityPanelProps = {
-    controls: Controls<G>;
+    controls: Controls<State, G>;
     onLock: (e: MouseEvent | CustomEvent) => void;
     onReset: () => void;
   };
@@ -47,6 +49,8 @@
         />
       {:else if controller instanceof Toggle}
         <SvelteToggle bind:value={controller.value} toggle={controller} />
+      {:else if controller instanceof SlideShow}
+        <SvelteSlideShow {controller} />
       {/if}
     {/each}
   </div>

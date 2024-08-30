@@ -1,6 +1,7 @@
 import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
 import { Slider } from './Slider.svelte';
 import { Toggle } from './Toggle.svelte';
+import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 
 /**
  * Interface for a controller
@@ -17,7 +18,7 @@ export interface Controller<T> {
   fromURL(s: string): Controller<T>;
 }
 
-export class Controls<T extends readonly Controller<number | boolean>[]> {
+export class Controls<State, T extends readonly Controller<number | boolean | State>[]> {
   private readonly _controls: T;
   _width: number; // width of the controls
 
@@ -134,9 +135,20 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
     return new Controls([newToggle] as const, newToggle.width);
   }
 
+  /**
+   * Static method to create set Controls<T> to a new animation
+   * @param dft - default value for the animation
+   * @param label - label for the animation
+   * @returns
+   */
+  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {
+    const newSlideShow = new SlideShow(dft, steps, label);
+    return new Controls([newSlideShow] as const, newSlideShow.width);
+  }
+
   // Reset all sliders to their default values
   reset() {
-    this._controls.map((c) => c.reset());
+    this._controls.map(async (c) => c.reset());
 
     return this;
   }
@@ -199,10 +211,6 @@ export class Controls<T extends readonly Controller<number | boolean>[]> {
 
   set 4(value: T[4]['value']) {
     this.controls[4].value = value;
-  }
-
-  hasSliders() {
-    return this._controls.filter((c) => c instanceof Slider).length > 0;
   }
 
   /**
