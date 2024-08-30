@@ -5,6 +5,8 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { round } from '$lib/utils/MathLib';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -17,9 +19,23 @@
   const te1 = $derived(new Vector2(1, 0).add(w.clone().multiplyScalar(controls[0])));
 
   const tv = $derived(v.clone().sub(w.clone().multiplyScalar(controls[0] * 2)));
+
+  const formulas = $derived.by(() => {
+    const te1 = new Vector2(1, 0).add(w.clone().multiplyScalar(controls[0]));
+    const te2 = new Vector2(0, 1).add(w.clone().multiplyScalar(controls[0]));
+
+    const f1 = new Formula(
+      `T(\\mathbf{x}) = \\begin{bmatrix} \\$1 & \\$2 \\\\ \\$3 & \\$4 \\end{bmatrix} \\mathbf{x}`
+    )
+      .addAutoParam(round(te1.x, 1), PrimeColor.blue)
+      .addAutoParam(round(te2.x, 1), PrimeColor.blue)
+      .addAutoParam(round(te1.y, 1), PrimeColor.blue)
+      .addAutoParam(round(te2.y, 1), PrimeColor.blue);
+    return [f1];
+  });
 </script>
 
-<Canvas2D {controls} cameraZoom={2} splitCanvas2DProps={{ cameraZoom: 2 }}>
+<Canvas2D {controls} {formulas} cameraZoom={2} splitCanvas2DProps={{ cameraZoom: 2 }}>
   <!-- Parallograms -->
   <Parallelogram2D
     points={[new Vector2(0, 0), w, v]}
