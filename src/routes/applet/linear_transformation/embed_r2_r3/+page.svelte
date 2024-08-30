@@ -19,9 +19,7 @@
   const e1Length = 1;
   const e2Length = 2;
 
-  const draggables = [
-    new Draggable(new Vector2(1, 2), PrimeColor.raspberry, 'v', Draggable.snapToGrid)
-  ];
+  const draggables = [new Draggable(new Vector2(1, 2), PrimeColor.blue, 'v', Draggable.snapToGrid)];
 
   const v = $derived(draggables[0].value);
 
@@ -29,7 +27,9 @@
   const te2 = new Vector3(e2.y, 0, e2.x);
   const tv = $derived(new Vector3(v.y, 0, v.x));
 
-  const f1 = new Formula('T(x)= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x');
+  const f1 = new Formula(
+    'T(\\mathbf{x})= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} \\mathbf{x}'
+  );
 </script>
 
 <Canvas2D
