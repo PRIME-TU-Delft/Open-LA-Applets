@@ -26,12 +26,12 @@
   {@render subspace()}
 
   <Point2D position={sum} color={PrimeColor.cyan} />
-  <Vector2D direction={sum} length={sum.length()} color={PrimeColor.cyan} />
-  <Latex2D
-    position={sum}
+  <Vector2D
+    direction={sum}
+    length={sum.length()}
     color={PrimeColor.cyan + PrimeColor.opacity(0.7)}
-    latex={`\\mathbf{u} + \\mathbf{v}`}
   />
+  <Latex2D position={sum} color={PrimeColor.cyan} latex={`\\mathbf{u} + \\mathbf{v}`} />
 
   <Vector2D
     direction={draggables[0].value}
