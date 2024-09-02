@@ -2,6 +2,7 @@ import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
 import { Slider } from './Slider.svelte';
 import { Toggle } from './Toggle.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
+import { Dropdown } from './Dropdown.svelte';
 
 /**
  * Interface for a controller
@@ -18,7 +19,7 @@ export interface Controller<T> {
   fromURL(s: string): Controller<T>;
 }
 
-export class Controls<State, T extends readonly Controller<number | boolean | State>[]> {
+export class Controls<State, T extends readonly Controller<number | boolean | string | State>[]> {
   private readonly _controls: T;
   _width: number; // width of the controls
 
@@ -49,7 +50,7 @@ export class Controls<State, T extends readonly Controller<number | boolean | St
     return this._controls.map((c) => c);
   }
 
-  isAllowedToAddControl(control: Controller<number | boolean>) {
+  isAllowedToAddControl(control: Controller<number | boolean | string>) {
     if (this._width + control.width > this.MAX_WIDTH) {
       throw new Error(
         `Controls width exceeded: ${this._width + control.width} > ${this.MAX_WIDTH}`
@@ -111,7 +112,7 @@ export class Controls<State, T extends readonly Controller<number | boolean | St
   }
 
   /**
-   * Add a new toggle to the toggles array
+   * Add a new toggle to the controls array
    * @param dft - default value for the toggle default is false
    * @param title - title for the toggle
    * @param color - color for the toggle default is raspberry
@@ -133,6 +134,30 @@ export class Controls<State, T extends readonly Controller<number | boolean | St
   static addToggle(dft: boolean, title?: string, color: ColorString = PrimeColor.getColor(0)) {
     const newToggle = new Toggle(dft, title, color);
     return new Controls([newToggle] as const, newToggle.width);
+  }
+
+  /**
+   * Add a new Dropdown to the controls array
+   * @param labels - labels for the dropdown
+   * @param dft - default value for the dropdown
+   * @param color - color for the dropdown default is raspberry
+   */
+  addDropdown(dft: string, values: string[], color?: ColorString) {
+    const newDropdown = new Dropdown(dft, values, color);
+    this.isAllowedToAddControl(newDropdown);
+    return new Controls([...this.controls, newDropdown] as const, this._width + newDropdown.width);
+  }
+
+  /**
+   * Static method to create set Controls<T> to a new dropdown
+   * @param labels - labels for the dropdown
+   * @param dft - default value for the dropdown
+   * @param color - color for the dropdown default is raspberry
+   * @returns
+   */
+  static addDropdown(dft: string, values: string[], color?: ColorString) {
+    const newDropdown = new Dropdown(dft, values, color);
+    return new Controls([newDropdown] as const, newDropdown.width);
   }
 
   /**

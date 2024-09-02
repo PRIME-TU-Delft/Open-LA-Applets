@@ -77,6 +77,16 @@ export class Draggable implements Controller<Vector2> {
     return this;
   }
 
+  clone() {
+    return new Draggable(
+      this.defaultValue.clone(),
+      this.color,
+      this.label,
+      this.snapFn,
+      this.valueFn
+    );
+  }
+
   toURL() {
     return `${this.value}`;
   }
