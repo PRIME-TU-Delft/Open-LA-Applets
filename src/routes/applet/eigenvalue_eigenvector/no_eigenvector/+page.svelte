@@ -11,22 +11,14 @@
   const controls = Controls.addSlider(
     0,
     0,
-    2 * Math.PI,
-    Math.PI / 10,
+    2,
+    1 / 20,
     PrimeColor.raspberry,
-    'Angle v1',
-    (x) => round(x / Math.PI, 2).toString() + 'π'
-  ).addSlider(
-    0,
-    0,
-    2 * Math.PI,
-    Math.PI / 10,
-    PrimeColor.darkGreen,
-    'Angle v1',
-    (x) => round(x / Math.PI, 2).toString() + 'π'
+    'Angle',
+    (x) => round(x, 2).toString() + 'π'
   );
 
-  const A = new Matrix3(7 / 3, 2 / 3, 0, -2 / 3, 2 / 3, 0, 0, 0, 0);
+  const A = new Matrix3(5 / 3, -2 / 3, 0, -1 / 3, 4 / 3, 0, 0, 0, 0);
 
   function rotationMatrix(angle: number) {
     const c = Math.cos(angle);
@@ -35,14 +27,14 @@
   }
 
   const v1 = $derived.by(() => {
-    const rotation = rotationMatrix(controls[0]);
+    const rotation = rotationMatrix(controls[0] * Math.PI);
     const v = new Vector3(2, 1, 0);
     v.applyMatrix3(rotation);
 
     return new Vector2(v.x, v.y);
   });
   const v2 = $derived.by(() => {
-    const rotation = rotationMatrix(controls[1]);
+    const rotation = rotationMatrix(controls[0] * Math.PI);
     const v = new Vector3(1, 0, 0);
     v.applyMatrix3(rotation);
 
@@ -59,43 +51,47 @@
   const Av2 = $derived(applyMatrixA(v2));
 
   const Av1Label = $derived.by(() => {
-    const solutionsV1 = [
-      [0.5, 1],
-      [0.7, 2],
-      [1.5, 1],
-      [1.7, 2]
+    const solutions = [
+      { angle: 0.1, lambda: 1 },
+      { angle: 0.7, lambda: 2 },
+      { angle: 1.1, lambda: 1 },
+      { angle: 1.7, lambda: 2 }
     ];
 
-    const solution = solutionsV1.find((v) => round(controls[0] / Math.PI) === v[0]);
+    const solution = solutions.find((v) => controls[0] === v.angle);
 
     if (solution) {
-      return 'A\\mathbf{v_1}=' + solution[1] + '\\mathbf{v_1}';
+      return 'A\\mathbf{v_2}=' + solution.lambda + '\\mathbf{v_2}';
     }
 
-    return 'A\\mathbf{v_1}\\neq\\lambda\\mathbf{v_1}';
+    return 'A\\mathbf{v_2}\\neq\\lambda\\mathbf{v_2}';
   });
   const Av2Label = $derived.by(() => {
-    const solutionsV1 = [
-      [0.5, 1],
-      [0.7, 2],
-      [1.5, 1],
-      [1.7, 2]
+    const solutions = [
+      { angle: 0.25, lambda: 1 },
+      { angle: 0.85, lambda: 2 },
+      { angle: 1.25, lambda: 1 },
+      { angle: 1.85, lambda: 2 }
     ];
 
-    const solution = solutionsV1.find((v) => round(controls[1] / Math.PI) === v[0]);
+    const solution = solutions.find((v) => controls[0] === v.angle);
 
     if (solution) {
-      return 'A\\mathbf{v_2}=' + solution[1] + '\\mathbf{v_2}';
+      return 'A\\mathbf{v_2}=' + solution.lambda + '\\mathbf{v_2}';
     }
 
     return 'A\\mathbf{v_2}\\neq\\lambda\\mathbf{v_2}';
   });
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('A = \\frac{1}{3}\\begin{bmatrix} 7 & 2 \\\\ -2 & 2 \\end{bmatrix}');
-    const f2 = new Formula('v_1 = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix}')
+    const f1 = new Formula('A = \\frac{1}{3}\\begin{bmatrix} 5 & -2 \\\\ -1 & 4 \\end{bmatrix}');
+    const f2 = new Formula(
+      'v_1 = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} \\quad v_2 = \\begin{bmatrix} \\$3 \\\\ \\$4 \\end{bmatrix}'
+    )
       .addAutoParam(round(v1.x, 1), PrimeColor.raspberry)
-      .addAutoParam(round(v1.y, 1), PrimeColor.raspberry);
+      .addAutoParam(round(v1.y, 1), PrimeColor.raspberry)
+      .addAutoParam(round(v2.x, 1), PrimeColor.raspberry)
+      .addAutoParam(round(v2.y, 1), PrimeColor.raspberry);
 
     return [f1, f2];
   });
@@ -132,13 +128,13 @@
       color={PrimeColor.blue}
     />
 
-    <Vector2D direction={v2} length={v2.length()} color={PrimeColor.darkGreen} />
+    <Vector2D direction={v2} length={v2.length()} color={PrimeColor.raspberry} />
     <Latex2D
       offset={new Vector2(-0.25, 0)}
       extend={0.5}
       latex={'\\mathbf{v_2}'}
       position={v2}
-      color={PrimeColor.darkGreen}
+      color={PrimeColor.raspberry}
     />
   {/snippet}
 </Canvas2D>
