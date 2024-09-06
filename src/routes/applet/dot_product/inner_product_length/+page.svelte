@@ -10,7 +10,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  const controls = Controls.addSlider(4.5, 3, 6).addSlider(6, 4, 8);
+  const controls = Controls.addSlider(4.5, 3, 6, 0.1).addSlider(6, 4, 8, 0.1);
 
   const v_q = $derived(new Vector3(2, 0, -1).normalize().multiplyScalar(controls[0]));
   const v_a = $derived(v_q.clone().add(new Vector3(0, 1, 0).multiplyScalar(controls[1])));

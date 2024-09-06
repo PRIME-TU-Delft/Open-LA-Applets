@@ -20,16 +20,11 @@
   } from './draggables';
   import { confettiState, type Side } from '$lib/stores/confetti.svelte';
 
-  const controls = Controls.addSlider(
-    1.5,
-    -5,
-    5,
-    0.5,
-    PrimeColor.raspberry,
-    'c',
-    (x) => round(x, 1).toString(),
-    validateSlider
-  ).addDropdown('', values, PrimeColor.yellow);
+  const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, {
+    label: 'c',
+    valueFn: (x) => round(x, 1).toString(),
+    onRelease: validateSlider
+  }).addDropdown('', values, PrimeColor.yellow);
 
   /**
    * Check if conffetti should be shown when the slider is changed

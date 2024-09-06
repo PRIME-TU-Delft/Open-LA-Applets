@@ -23,6 +23,7 @@ export class Slider implements Controller<number> {
   width = 30;
   type = 'sliders';
   label = '';
+  loop = false;
   valueFn: (v: number) => string;
   onRelease: (v: number) => void;
 
@@ -33,6 +34,7 @@ export class Slider implements Controller<number> {
     step = 0.1,
     color: string = PrimeColor.blue,
     label: string = '',
+    loop: boolean = false,
     valueFn: (v: number) => string = (v) => v.toString(),
     onRelease: (v: number) => void = () => {}
   ) {
@@ -43,6 +45,7 @@ export class Slider implements Controller<number> {
     this.value = defaultValue;
     this.color = color;
     this.label = label;
+    this.loop = loop;
     this.valueFn = valueFn;
     this.onRelease = onRelease;
   }

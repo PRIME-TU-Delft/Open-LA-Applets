@@ -61,27 +61,44 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
   }
 
   /**
-   * add a new slider to the sliders array
+   * Adds a new slider to the sliders array
    * @param dft - default value for the slider default is 0
    * @param from - from value, default is -1
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
+   * @param color - color for the slider default is raspberry
+   * @param options.loop - If the slider bounces or loops during autoplay
+   * @param options.label - label for the slider
+   * @param options.valueFn - function to format the value
    * @returns this
    */
   addSlider(
     dft: number,
-    from?: number,
-    to?: number,
-    step?: number,
+    from: number,
+    to: number,
+    step: number,
     color?: ColorString,
-    label?: string,
-    valueFn?: (v: number) => string,
-    onRelease?: (v: number) => void
+    options?: {
+      label?: string;
+      loop?: boolean;
+      valueFn?: (v: number) => string;
+      onRelease?: (v: number) => void;
+    }
   ) {
     const colors = PrimeColor.asArray();
     const sliderColor = color || colors[this.length % colors.length];
 
-    const newSlider = new Slider(dft, from, to, step, sliderColor, label, valueFn, onRelease);
+    const newSlider = new Slider(
+      dft,
+      from,
+      to,
+      step,
+      sliderColor,
+      options?.label,
+      options?.loop,
+      options?.valueFn,
+      options?.onRelease
+    );
 
     this.isAllowedToAddControl(newSlider);
 
@@ -95,21 +112,35 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
-   * @param label - label for the slider
-   * @param valueFn - function to format the value
-   * @returns
+   * @param options.loop - If the slider bounces or loops during autoplay
+   * @param options.label - label for the slider
+   * @param options.valueFn - function to format the value
+   * @returns this
    */
   static addSlider(
     dft: number,
-    from?: number,
-    to?: number,
-    step?: number,
+    from: number,
+    to: number,
+    step: number,
     color: ColorString = PrimeColor.getColor(0),
-    label?: string,
-    valueFn?: (v: number) => string,
-    onRelease?: (v: number) => void
+    options?: {
+      label?: string;
+      loop?: boolean;
+      valueFn?: (v: number) => string;
+      onRelease?: (v: number) => void;
+    }
   ) {
-    const newSlider = new Slider(dft, from, to, step, color, label, valueFn, onRelease);
+    const newSlider = new Slider(
+      dft,
+      from,
+      to,
+      step,
+      color,
+      options?.label,
+      options?.loop,
+      options?.valueFn,
+      options?.onRelease
+    );
     return new Controls([newSlider] as const, newSlider.width);
   }
 
