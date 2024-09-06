@@ -20,20 +20,61 @@
   } from './draggables';
   import { confettiState, type Side } from '$lib/stores/confetti.svelte';
 
-  const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, 'c', (x) =>
-    round(x, 1).toString()
+  const controls = Controls.addSlider(
+    1.5,
+    -5,
+    5,
+    0.5,
+    PrimeColor.raspberry,
+    'c',
+    (x) => round(x, 1).toString(),
+    validateSlider
   ).addDropdown('', values, PrimeColor.yellow);
 
-  $inspect({ confetti: confettiState.side });
+  /**
+   * Check if conffetti should be shown when the slider is changed
+   */
+  function validateSlider() {
+    if (controls[1] == 'Disc') {
+      validateDisk(new Vector2(), 'right');
+    } else if (controls[1] == 'First quadrant' && (prod.x < 0 || prod.y < 0)) {
+      confettiState.setState('right', 500);
+    }
+  }
 
   function validateDisk(v: Vector2, side: Side) {
     const newPoint = snapToMaxDistance(v, 2.5);
 
-    console.log(side, prod.length());
-
     if (side == 'left' && sum.length() > 2.5) {
       confettiState.setState(side, 500);
     } else if (side == 'right' && prod.length() >= 2.5) {
+      confettiState.setState(side, 500);
+    }
+
+    return newPoint;
+  }
+
+  function validateAxis(v: Vector2, side: Side) {
+    const newPoint = snapToMaxDistance(v, 2.5);
+
+    if (side == 'left' && sum.x != 0 && sum.y != 0) {
+      confettiState.setState(side, 500);
+    }
+
+    return newPoint;
+  }
+
+  function validateCone(v: Vector2, side: Side = 'left') {
+    const newPoint = snapToCone(v);
+
+    if (side == 'right') return newPoint;
+    const angle = sum.angle();
+
+    if (
+      (angle > 0 && angle < Math.PI / 4) ||
+      (angle > Math.PI / 2 && angle < (5 * Math.PI) / 4) ||
+      angle > (3 * Math.PI) / 2
+    ) {
       confettiState.setState(side, 500);
     }
 
@@ -70,8 +111,20 @@
         ];
       case 'Two axes':
         return [
-          new Draggable(new Vector2(2, 0), PrimeColor.darkGreen, 'u', (v) => snapToAxis(v)),
-          new Draggable(new Vector2(1, 0), PrimeColor.orange, 'v', (v) => snapToAxis(v))
+          new Draggable(
+            new Vector2(2, 0),
+            PrimeColor.darkGreen,
+            'u',
+            (v) => snapToAxis(v),
+            (v) => validateAxis(v, side)
+          ),
+          new Draggable(
+            new Vector2(1, 0),
+            PrimeColor.orange,
+            'v',
+            (v) => snapToAxis(v),
+            (v) => validateAxis(v, side)
+          )
         ];
       case 'First quadrant':
         return [
@@ -82,8 +135,20 @@
         ];
       case 'Two-sided cone':
         return [
-          new Draggable(new Vector2(1, 3), PrimeColor.darkGreen, 'u', (v) => snapToCone(v)),
-          new Draggable(new Vector2(1, 1), PrimeColor.orange, 'v', (v) => snapToCone(v))
+          new Draggable(
+            new Vector2(1, 3),
+            PrimeColor.darkGreen,
+            'u',
+            (v) => snapToCone(v),
+            (v) => validateCone(v, side)
+          ),
+          new Draggable(
+            new Vector2(1, 1),
+            PrimeColor.orange,
+            'v',
+            (v) => snapToCone(v),
+            (v) => validateCone(v)
+          )
         ];
     }
     return [];
@@ -128,9 +193,12 @@
   {#snippet splitCanvas2DChildren()}
     {@render subspace()}
 
-    <Point2D position={prod} color={PrimeColor.raspberry} />
-    <Vector2D direction={prod} length={prod.length()} color={PrimeColor.raspberry} />
-    <Latex2D position={prod} color={PrimeColor.raspberry} latex={`c \\cdot \\mathbf{u}`} />
+    <Point2D position={prod} color={PrimeColor.cyan} />
+    <Vector2D direction={prod} length={prod.length()} color={PrimeColor.cyan} />
+    <Latex2D
+      position={prod}
+      latex={`\\textcolor{${PrimeColor.raspberry}}{c} \\textcolor{${PrimeColor.darkGreen}}{\\thinspace \\mathbf{u}}`}
+    />
 
     <Vector2D
       direction={splitDraggables[0].value}

@@ -22,8 +22,6 @@
 
   // Use the derived value to update the class with cn utility
   const confettiClass = $derived(cn(confettiClasses));
-
-  $inspect({ confettiClass });
 </script>
 
 <!-- @component
@@ -41,6 +39,6 @@
 <!-- CONFETTI -->
 {#if confettiState.side != 'none'}
   <div class={confettiClass}>
-    <Confetti duration={1000} amount={100} xSpread={0.4} rounded x={[-1.5, 1.5]} y={[-0.5, 1.5]} />
+    <Confetti duration={1500} amount={100} xSpread={0.4} rounded x={[-1.5, 1.5]} y={[-0.5, 1.5]} />
   </div>
 {/if}

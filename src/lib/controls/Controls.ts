@@ -75,12 +75,13 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
     step?: number,
     color?: ColorString,
     label?: string,
-    valueFn?: (v: number) => string
+    valueFn?: (v: number) => string,
+    onRelease?: (v: number) => void
   ) {
     const colors = PrimeColor.asArray();
     const sliderColor = color || colors[this.length % colors.length];
 
-    const newSlider = new Slider(dft, from, to, step, sliderColor, label, valueFn);
+    const newSlider = new Slider(dft, from, to, step, sliderColor, label, valueFn, onRelease);
 
     this.isAllowedToAddControl(newSlider);
 
@@ -105,9 +106,10 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
     step?: number,
     color: ColorString = PrimeColor.getColor(0),
     label?: string,
-    valueFn?: (v: number) => string
+    valueFn?: (v: number) => string,
+    onRelease?: (v: number) => void
   ) {
-    const newSlider = new Slider(dft, from, to, step, color, label, valueFn);
+    const newSlider = new Slider(dft, from, to, step, color, label, valueFn, onRelease);
     return new Controls([newSlider] as const, newSlider.width);
   }
 

@@ -15,6 +15,7 @@
   import Camera3D, { type Camera3DProps } from './Camera3D.svelte';
   import CustomRenderer from './CustomRenderer.svelte';
   import Confetti from '$lib/components/Confetti.svelte';
+  import { confettiState } from '$lib/stores/confetti.svelte';
 
   type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
@@ -91,8 +92,10 @@
   {formulas}
   {splitFormulas}
 >
-  <Confetti isSplit />
   <div style="width: {canvasWidth}px" class="overflow">
+    {#if confettiState.side === 'left' || confettiState.side === 'center'}
+      <Confetti isSplit={false} />
+    {/if}
     <Canvas {renderMode} toneMapping={NoToneMapping}>
       <Camera3D {cameraPosition} {cameraZoom} {enablePan} />
 
@@ -109,8 +112,10 @@
       {@render splitCanvas2DChildren()}
     </CanvasD3>
   {:else if splitCanvas3DChildren}
-    <Confetti isSplit />
     <div style="width: {canvasWidth}px" class="overflow-hidden">
+      {#if confettiState.side === 'right'}
+        <Confetti isSplit={true} />
+      {/if}
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {...splitCanvas3DProps} isSplit />
 

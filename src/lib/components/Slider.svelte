@@ -46,6 +46,7 @@
 
     clearInterval(playInterval);
     round();
+    slider.onRelease(value);
 
     if (onStopChanging) onStopChanging();
   }
@@ -69,8 +70,10 @@
   }
 
   function togglePlay() {
-    if (isPlaying) stopPlaying();
-    else startPlaying();
+    if (isPlaying) {
+      stopPlaying();
+      slider.onRelease(slider.value);
+    } else startPlaying();
   }
 
   function startChanging() {

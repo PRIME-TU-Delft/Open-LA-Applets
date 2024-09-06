@@ -8,13 +8,11 @@ class ConfettiState {
   private timeOut: number | undefined = $state(undefined);
 
   setState(side: Side, coolDown: number) {
-    console.log(this.timeOut);
     if (this.timeOut) return;
     this.side = side;
 
     this.timeOut = setTimeout(() => {
       this.side = 'none';
-      console.log('clearing timeout');
       clearTimeout(this.timeOut);
       this.timeOut = undefined;
     }, coolDown);

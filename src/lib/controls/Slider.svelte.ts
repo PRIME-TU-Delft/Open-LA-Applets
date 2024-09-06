@@ -24,6 +24,7 @@ export class Slider implements Controller<number> {
   type = 'sliders';
   label = '';
   valueFn: (v: number) => string;
+  onRelease: (v: number) => void;
 
   constructor(
     defaultValue: number,
@@ -32,7 +33,8 @@ export class Slider implements Controller<number> {
     step = 0.1,
     color: string = PrimeColor.blue,
     label: string = '',
-    valueFn: (v: number) => string = (v) => v.toString()
+    valueFn: (v: number) => string = (v) => v.toString(),
+    onRelease: (v: number) => void = () => {}
   ) {
     this.defaultValue = defaultValue;
     this.min = min;
@@ -42,6 +44,7 @@ export class Slider implements Controller<number> {
     this.color = color;
     this.label = label;
     this.valueFn = valueFn;
+    this.onRelease = onRelease;
   }
 
   static Default = new Slider(0);
