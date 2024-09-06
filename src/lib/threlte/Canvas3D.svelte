@@ -14,6 +14,7 @@
   import { NoToneMapping, Vector3 } from 'three';
   import Camera3D, { type Camera3DProps } from './Camera3D.svelte';
   import CustomRenderer from './CustomRenderer.svelte';
+  import Confetti from '$lib/components/Confetti.svelte';
 
   type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
@@ -90,6 +91,7 @@
   {formulas}
   {splitFormulas}
 >
+  <Confetti isSplit />
   <div style="width: {canvasWidth}px" class="overflow">
     <Canvas {renderMode} toneMapping={NoToneMapping}>
       <Camera3D {cameraPosition} {cameraZoom} {enablePan} />
@@ -107,6 +109,7 @@
       {@render splitCanvas2DChildren()}
     </CanvasD3>
   {:else if splitCanvas3DChildren}
+    <Confetti isSplit />
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {...splitCanvas3DProps} isSplit />

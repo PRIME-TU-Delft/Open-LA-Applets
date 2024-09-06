@@ -39,7 +39,7 @@
     select(g).attr('cursor', 'grab');
     globalState.controlsInteractive = false;
 
-    const newPoint = draggable.snapFn(draggable.value);
+    const newPoint = draggable.releaseFn(draggable.value);
     draggable.value = new Vector2(newPoint.x, newPoint.y);
 
     dragPosition = draggable.value.clone();

@@ -33,6 +33,8 @@
   import Axis from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import Confetti from '$lib/components/Confetti.svelte';
+  import { confettiState } from '$lib/stores/confetti.svelte';
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -146,6 +148,12 @@
     else cameraState.camera2D = undefined;
   });
 </script>
+
+{#if !isSplit && (confettiState.side === 'left' || confettiState.side === 'center')}
+  <Confetti isSplit={false} />
+{:else if isSplit && confettiState.side === 'right'}
+  <Confetti isSplit={true} />
+{/if}
 
 <svg {id} {width} {height} viewBox="0 0 {width} {height}">
   <g>

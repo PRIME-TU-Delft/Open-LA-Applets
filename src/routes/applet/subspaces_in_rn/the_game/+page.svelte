@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -9,20 +10,98 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { getDraggables, getSplitDraggables, values } from './draggables';
+  import {
+    snapToAxis,
+    snapToCone,
+    snapToFirstQuadrant,
+    snapToLine,
+    snapToMaxDistance,
+    values
+  } from './draggables';
+  import { confettiState, type Side } from '$lib/stores/confetti.svelte';
 
   const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, 'c', (x) =>
     round(x, 1).toString()
   ).addDropdown('', values, PrimeColor.yellow);
 
+  $inspect({ confetti: confettiState.side });
+
+  function validateDisk(v: Vector2, side: Side) {
+    const newPoint = snapToMaxDistance(v, 2.5);
+
+    console.log(side, prod.length());
+
+    if (side == 'left' && sum.length() > 2.5) {
+      confettiState.setState(side, 500);
+    } else if (side == 'right' && prod.length() >= 2.5) {
+      confettiState.setState(side, 500);
+    }
+
+    return newPoint;
+  }
+
+  function getDraggables(type: (typeof values)[number], side: Side = 'left'): Draggable[] {
+    switch (type) {
+      case 'Affine Line':
+        return [
+          new Draggable(new Vector2(2, 2), PrimeColor.darkGreen, 'u', (v) =>
+            snapToLine(v, new Vector2(1, 1))
+          ),
+          new Draggable(new Vector2(1, 1), PrimeColor.orange, 'v', (v) =>
+            snapToLine(v, new Vector2(1, 1))
+          )
+        ];
+      case 'Disc':
+        return [
+          new Draggable(
+            new Vector2(1, 1),
+            PrimeColor.darkGreen,
+            'u',
+            (v) => snapToMaxDistance(v, 2.5),
+            (v) => validateDisk(v, side)
+          ),
+          new Draggable(
+            new Vector2(1, -2),
+            PrimeColor.orange,
+            'v',
+            (v) => snapToMaxDistance(v, 2.5),
+            (v) => validateDisk(v, side)
+          )
+        ];
+      case 'Two axes':
+        return [
+          new Draggable(new Vector2(2, 0), PrimeColor.darkGreen, 'u', (v) => snapToAxis(v)),
+          new Draggable(new Vector2(1, 0), PrimeColor.orange, 'v', (v) => snapToAxis(v))
+        ];
+      case 'First quadrant':
+        return [
+          new Draggable(new Vector2(2, 1), PrimeColor.darkGreen, 'u', (v) =>
+            snapToFirstQuadrant(v)
+          ),
+          new Draggable(new Vector2(1, 2), PrimeColor.orange, 'v', (v) => snapToFirstQuadrant(v))
+        ];
+      case 'Two-sided cone':
+        return [
+          new Draggable(new Vector2(1, 3), PrimeColor.darkGreen, 'u', (v) => snapToCone(v)),
+          new Draggable(new Vector2(1, 1), PrimeColor.orange, 'v', (v) => snapToCone(v))
+        ];
+    }
+    return [];
+  }
+
+  function getSplitDraggables(type: (typeof values)[number]) {
+    return [getDraggables(type, 'right')[0].clone()];
+  }
+
   const draggables = $derived(getDraggables(controls[1]));
 
   const splitDraggables = $derived(getSplitDraggables(controls[1]));
+
+  const sum = $derived(draggables[0].value.clone().add(draggables[1].value));
+  const prod = $derived(splitDraggables[0].value.clone().multiplyScalar(controls[0]));
 </script>
 
 <Canvas2D {controls} {draggables} splitCanvas2DProps={{ draggables: splitDraggables }}>
-  {@const sum = draggables[0].value.clone().add(draggables[1].value)}
-
   {@render subspace()}
 
   <Point2D position={sum} color={PrimeColor.cyan} />
@@ -47,8 +126,6 @@
   <Latex2D position={draggables[1].value} color={PrimeColor.orange} latex={`\\mathbf{v}`} />
 
   {#snippet splitCanvas2DChildren()}
-    {@const prod = splitDraggables[0].value.clone().multiplyScalar(controls[0])}
-
     {@render subspace()}
 
     <Point2D position={prod} color={PrimeColor.raspberry} />
