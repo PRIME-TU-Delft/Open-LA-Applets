@@ -12,33 +12,38 @@
   import { Vector3 } from 'three';
 
   const slider_step = 0.5;
-  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.darkGreen, { label: 'a_1' })
-    .addSlider(3, -5, 5, slider_step, PrimeColor.darkGreen, { label: 'a_2' })
-    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow, { label: 'a_3' });
+  let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.yellow, {
+    label: 'x',
+    valueFn: (v) => round(v, 1).toString()
+  })
+    .addSlider(3, -5, 5, slider_step, PrimeColor.yellow, {
+      label: 'y',
+      valueFn: (v) => round(v, 1).toString()
+    })
+    .addSlider(6, -5, 6, slider_step, PrimeColor.yellow, {
+      label: 'z',
+      valueFn: (v) => round(v, 1).toString()
+    });
 
   const A = $derived(new Vector3(controls[1], controls[2], controls[0]));
   const Q = $derived(new Vector3(controls[1], 0, controls[0]));
   const v_p = $derived(new Vector3(controls[1], 0, 0));
 
-  const v_len = $derived(A.length());
-
   const formulas = $derived.by(() => {
-    const c0 = Q.length();
-
     const f0 = new Formula('A = ( \\$1 , \\$2 , \\$3 )')
-      .addParam(1, round(A.z), PrimeColor.darkGreen)
-      .addParam(2, round(A.x), PrimeColor.darkGreen)
+      .addParam(1, round(A.z), PrimeColor.yellow)
+      .addParam(2, round(A.x), PrimeColor.yellow)
       .addParam(3, round(A.y), PrimeColor.yellow);
-    const f1 = new Formula('OQ = \\sqrt{(\\$1)^2 + (\\$2)^2} =  \\$3')
-      .addParam(1, round(A.z), PrimeColor.darkGreen)
-      .addParam(2, round(A.x), PrimeColor.darkGreen)
-      .addParam(3, round(c0), PrimeColor.raspberry); // a.x, a.z , len oq = c0
-    const f2 = new Formula('OA = || \\mathbf{\\$1} || = \\sqrt{(\\$2)^2 + (\\$3)^2}')
-      .addParam(1, 'v', PrimeColor.blue)
-      .addParam(2, round(c0), PrimeColor.raspberry)
-      .addParam(3, round(A.y), PrimeColor.yellow);
-    const f3 = new Formula('= \\$1').addParam(1, v_len.toFixed(2), PrimeColor.blue);
-    return [f0, f1, f2, f3];
+    const f1 = new Formula('OQ = \\$', round(Q.length()), PrimeColor.raspberry);
+    const f2 = new Formula('QA = \\$', round(controls[2]), PrimeColor.yellow);
+    const f3 = new Formula(
+      `OA = || \\textcolor{${PrimeColor.blue}}{\\mathbf{v}} || = \\sqrt{\\$1^2 + \\$2^2}`
+    )
+      .addParam(1, round(Q.length()), PrimeColor.raspberry)
+      .addParam(2, round(controls[2]), PrimeColor.yellow);
+    const f4 = new Formula('OA =  \\$', A.length(), PrimeColor.blue);
+
+    return [f0, f1, f2, f3, f4];
   });
 </script>
 
@@ -57,7 +62,7 @@
   <Latex3D latex={'A'} position={A} color={PrimeColor.yellow} fontSize={1.3} />
 
   <!-- Vector v [Blue] -->
-  <Vector3D direction={A} color={PrimeColor.blue} length={v_len} />
+  <Vector3D direction={A} color={PrimeColor.blue} length={A.length()} />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={A.clone()
