@@ -23,8 +23,8 @@
     new Draggable(new Vector2(7, 4), PrimeColor.cyan, '', Draggable.snapToGrid)
   ];
 
-  const dir_L = $derived(draggables[0].value.clone().sub(draggables[1].value));
-  const ps_proj = $derived(projectPoints(points, false, true, draggables[0].value, dir_L));
+  const dir_L = $derived(draggables[0].position.clone().sub(draggables[1].position));
+  const ps_proj = $derived(projectPoints(points, false, true, draggables[0].position, dir_L));
 
   const formulas = $derived(setFormulas(ps_proj, false, true));
 </script>
@@ -32,13 +32,13 @@
 <Canvas2D {formulas} {draggables} cameraPosition={new Vector2(4, 4)} cameraZoom={0.9}>
   <!-- L -->
   <InfiniteLine2D
-    origin={draggables[0].value}
-    direction={draggables[0].value.clone().sub(draggables[1].value)}
+    origin={draggables[0].position}
+    direction={draggables[0].position.clone().sub(draggables[1].position)}
     color={PrimeColor.cyan}
   />
   <Latex2D
     latex={'\\mathcal{L} : y = ax + b'}
-    position={draggables[1].value}
+    position={draggables[1].position}
     offset={new Vector2(0, -0.28)}
     color={PrimeColor.cyan}
   />

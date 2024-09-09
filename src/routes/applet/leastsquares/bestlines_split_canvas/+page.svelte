@@ -71,13 +71,13 @@
 {#snippet LeastSquaresScene(draggables, ps_proj, showRightAngles)}
   <!-- L -->
   <InfiniteLine2D
-    origin={draggables[0].value}
-    direction={draggables[0].value.clone().sub(draggables[1].value)}
+    origin={draggables[0].position}
+    direction={draggables[0].position.clone().sub(draggables[1].position)}
     color={PrimeColor.cyan}
   />
   <Latex2D
     latex={'\\mathcal{L} : y = ax + b'}
-    position={draggables[1].value}
+    position={draggables[1].position}
     offset={new Vector2(0, -0.28)}
     color={PrimeColor.cyan}
   />

@@ -24,8 +24,8 @@
     new Draggable(new Vector2(1.5, 3), PrimeColor.darkGreen, 'w', snap_w),
     new Draggable(new Vector2(2, -1), PrimeColor.cyan, 'v', snap_v)
   ];
-  const w = $derived(draggables[0].value);
-  const v = $derived(draggables[1].value);
+  const w = $derived(draggables[0].position);
+  const v = $derived(draggables[1].position);
 
   const orthV = $derived(new Vector2(v.y, v.clone().x * -1).multiplyScalar(20)); //line orth to v
   const orthW = $derived(new Vector2(w.y, w.clone().x * -1).multiplyScalar(20)); //line orth to v
