@@ -61,10 +61,17 @@
       // Bounce the slider back and forth
       value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
 
-      if (value >= slider.max) {
-        moveRight = true;
-      } else if (value <= slider.min) {
+      if (slider.loop) {
+        // Slider moves to min val
+        if (slider.value >= slider.max) slider.value = slider.min;
         moveRight = false;
+      } else {
+        // Bounce the slider back and forth
+        if (slider.value >= slider.max) {
+          moveRight = true;
+        } else if (slider.value <= slider.min) {
+          moveRight = false;
+        }
       }
     }, playSpeed);
   }
