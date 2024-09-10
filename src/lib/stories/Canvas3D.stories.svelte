@@ -5,7 +5,28 @@
   const { Story } = defineMeta({
     title: 'Initialize/Canvas3D',
     component: Canvas3D,
-    argTypes: {}
+    argTypes: {
+      cameraPosition: {
+        description: 'The position of the camera. Default is (10, 10, 10).',
+        control: {
+          type: 'object'
+        }
+      },
+      cameraZoom: {
+        description: 'The zoom level of the camera. Default is 29. Zoom level is logarithmic scale',
+        control: {
+          type: 'number',
+          min: 0.1,
+          max: 100
+        }
+      },
+      enablePan: {
+        description: 'Whether to enable panning. Default is false.',
+        control: {
+          type: 'boolean'
+        }
+      }
+    }
   });
 </script>
 

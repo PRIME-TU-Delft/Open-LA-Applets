@@ -1,6 +1,6 @@
 <script context="module">
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Canvas2D from '../d3/Canvas2D.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { Vector2 } from 'three';
 
   const { Story } = defineMeta({
