@@ -61,7 +61,9 @@
   let enableEasterEgg = $state(false);
 
   $effect.pre(() => {
-    const searchParams = $page.url.searchParams;
+    const searchParams = $page?.url?.searchParams;
+
+    if (!searchParams) return; // No search params
 
     const urlProps = parseUrl(searchParams);
 
