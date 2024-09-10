@@ -34,7 +34,7 @@
   const draggables = [
     new Draggable(new Vector2(-3, -1), PrimeColor.raspberry, 'v', Draggable.snapToGrid)
   ];
-  const v = $derived(draggables[0].value);
+  const v = $derived(draggables[0].position);
 
   const dir_L1 = $derived(new Vector2(1, 0).rotateAround(new Vector2(0, 0), controls[0]));
   const dir_L2 = $derived(dir_L1.clone().rotateAround(new Vector2(0, 0), controls[1]));

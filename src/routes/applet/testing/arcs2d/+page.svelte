@@ -12,8 +12,8 @@
     new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'w', Draggable.snapToGrid)
   ];
 
-  const v = $derived(draggables[0].value);
-  const w = $derived(draggables[1].value);
+  const v = $derived(draggables[0].position);
+  const w = $derived(draggables[1].position);
 </script>
 
 <Canvas2D {draggables}>

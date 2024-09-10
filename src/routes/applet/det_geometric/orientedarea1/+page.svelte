@@ -15,8 +15,8 @@
     new Draggable(new Vector2(0.5, 2), PrimeColor.darkGreen, 'v')
   ];
 
-  const u = $derived(draggables[0].value);
-  const v = $derived(draggables[1].value);
+  const u = $derived(draggables[0].position);
+  const v = $derived(draggables[1].position);
 
   const C = $derived(u.clone().add(v));
 </script>

@@ -6,6 +6,7 @@
   import { drag, select } from 'd3';
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
+  import Latex2D from './Latex2D.svelte';
 
   type DraggableProps = {
     draggable: Draggable;
@@ -68,6 +69,15 @@
 <g bind:this={g}>
   <circle cx={draggable.value.x} cy={draggable.value.y} r={INTERACTIVITY_RADIUS} opacity="0" />
 </g>
+
+{#if draggable.label}
+  <Latex2D
+    latex={draggable.label}
+    position={draggable.value}
+    offset={new Vector2(0.2, 0.2)}
+    color={draggable.color}
+  />
+{/if}
 
 <style>
   .pulse {
