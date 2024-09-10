@@ -87,6 +87,35 @@
   });
 </script>
 
+<!-- @component A component that renders a 2D canvas with draggables and formulas.
+@props 
+  - title: string - The title of the scene.
+  - draggables: Draggable[] - The draggables that are in the scene.
+  - controls: boolean - Whether the controls are shown.
+  - showFormulasDefault: boolean - Whether the formulas are shown by default.
+  - formulas: string[] - The formulas that are shown.
+  - splitFormulas: boolean - Whether the formulas are split.
+  - splitCanvas2DProps: Canvas2DProps - The props for the split 2D canvas.
+  - splitCanvas3DProps: Camera3DProps - The props for the split 3D canvas.
+  - children: Snippet - The children of the scene.
+  - splitCanvas2DChildren: Snippet - The children of the split 2D canvas.
+  - splitCanvas3DChildren: Snippet - The children of the split 3D canvas.
+  - cameraPosition: Vector2 - The position of the camera.
+  - cameraZoom: number - The zoom of the camera.
+  - tickLength: number - The length of the ticks.
+  - showAxisNumbers: boolean - Whether the axis numbers are shown.
+  - enablePan: boolean - Whether the pan is enabled. 
+
+@description
+  A component that renders a 2D canvas with draggables and formulas.
+
+@example
+  <Canvas2D title="Title">
+    ...
+  </Canvas2D>
+  
+-->
+
 <Scene
   {title}
   draggables={allDraggables}
