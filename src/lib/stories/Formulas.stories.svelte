@@ -1,6 +1,6 @@
 <script context="module">
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
     title: 'Initialize/Formulas',
@@ -12,7 +12,7 @@
 <script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
-  import { Formula, Formulas } from '$lib/utils/Formulas';
+  import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
