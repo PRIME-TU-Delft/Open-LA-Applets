@@ -93,8 +93,8 @@
   - draggables: Draggable[] - The draggables that are in the scene.
   - controls: boolean - Whether the controls are shown.
   - showFormulasDefault: boolean - Whether the formulas are shown by default.
-  - formulas: string[] - The formulas that are shown.
-  - splitFormulas: boolean - Whether the formulas are split.
+  - formulas: Formula[] - The formulas that are shown.
+  - splitFormulas: Formula[] - Whether the formulas are split.
   - splitCanvas2DProps: Canvas2DProps - The props for the split 2D canvas.
   - splitCanvas3DProps: Camera3DProps - The props for the split 3D canvas.
   - children: Snippet - The children of the scene.
@@ -112,6 +112,12 @@
 @example
   <Canvas2D title="Title">
     ...
+
+{#snippet splitCanvas2DChildren()}
+{/snippet}
+
+{#snippet splitCanvas3DChildren()}
+{/snippet}
   </Canvas2D>
   
 -->
