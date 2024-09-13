@@ -1,15 +1,17 @@
 <script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
-  import { projectPoints, setFormulas } from '../formula_gen';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Line2D from '$lib/d3/Line2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { round } from '$lib/utils/MathLib';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+  import { projectPoints } from '../formula_gen';
 
   const cameraPosition = new Vector2(4, 4);
   const cameraZoom = 1.39;
@@ -33,12 +35,21 @@
     projectPoints(points, true, false, draggables_left[0].value, dir_L_left)
   );
 
-  const formulas_left = $derived(setFormulas(ps_proj_left, true, false));
+  const formulas_left = $derived.by(() => {
+    const totalDist = ps_proj_left.reduce((acc, pt) => acc + pt.dist, 0);
+
+    const f1 = new Formula('\\sum_{n=1}^{5} \\mathrm{dist}(\\$1,\\$2) = \\$3')
+      .addParam(1, '\\mathcal{P}_n', PrimeColor.orange)
+      .addParam(2, '\\mathcal{L}', PrimeColor.cyan)
+      .addParam(3, totalDist > 1e5 ? '\\infin' : round(totalDist), PrimeColor.raspberry);
+
+    return [f1];
+  });
 
   // RIGHT SCENE
   let draggables_right = [
-    new Draggable(new Vector2(-1, 5), PrimeColor.cyan, '', Draggable.snapToGrid),
-    new Draggable(new Vector2(7, 4), PrimeColor.cyan, '', Draggable.snapToGrid)
+    new Draggable(new Vector2(-1, 5), PrimeColor.cyan),
+    new Draggable(new Vector2(7, 4), PrimeColor.cyan)
   ];
 
   $effect.pre(() => {
@@ -58,7 +69,15 @@
     projectPoints(points, false, false, draggables_right[0].value, dir_L_right)
   );
 
-  const formulas_right = $derived(setFormulas(ps_proj_right, false, false));
+  const formulas_right = $derived.by(() => {
+    const sum_dist = ps_proj_right.reduce((acc, pt) => acc + pt.dist, 0);
+
+    const f1 = new Formula('\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|  = \\$1 ').addAutoParam(
+      round(sum_dist),
+      PrimeColor.raspberry
+    );
+    return [f1];
+  });
 </script>
 
 <Canvas2D

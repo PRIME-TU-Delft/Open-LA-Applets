@@ -6,9 +6,11 @@
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { projectPoints, setFormulas } from '../formula_gen';
+  import { projectPoints } from '../formula_gen';
 
   let points = [
     new Vector2(1, 3),
@@ -19,8 +21,8 @@
   ];
 
   let draggables = [
-    new Draggable(new Vector2(-1, 5), PrimeColor.cyan, '', Draggable.snapToGrid),
-    new Draggable(new Vector2(7, 4), PrimeColor.cyan, '', Draggable.snapToGrid)
+    new Draggable(new Vector2(-1, 5), PrimeColor.cyan),
+    new Draggable(new Vector2(7, 4), PrimeColor.cyan)
   ];
 
   $effect.pre(() => {
@@ -35,7 +37,15 @@
   const dir_L = $derived(draggables[0].position.clone().sub(draggables[1].position));
   const ps_proj = $derived(projectPoints(points, false, true, draggables[0].position, dir_L));
 
-  const formulas = $derived(setFormulas(ps_proj, false, true));
+  const formulas = $derived.by(() => {
+    const sum_square_dist = ps_proj.reduce((acc, pt) => acc + Math.pow(pt.dist, 2), 0);
+
+    const f1 = new Formula('\\sum_{n=1}^{5} |y_n - (ax_n + b_n)|^2  = \\$1 ').addAutoParam(
+      round(sum_square_dist),
+      PrimeColor.raspberry
+    );
+    return [f1];
+  });
 </script>
 
 <Canvas2D {formulas} {draggables} cameraPosition={new Vector2(4, 4)} cameraZoom={0.9}>
