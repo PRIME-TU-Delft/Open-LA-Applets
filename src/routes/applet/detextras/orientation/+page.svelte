@@ -18,7 +18,7 @@
     const matrix = controls[1] ? '3&1\\\\1&3' : '1&3\\\\3&1';
     const f1 = new Formula(`T(\\mathbf{x})=\\begin{bmatrix} ${matrix} \\end{bmatrix}\\mathbf{x}`);
     const f2 = new Formula(
-      `\\det A = ${controls[1] ? '-' : ''}8 ${controls[1] ? '\\gt' : '\\lt'}0`
+      `\\det A = ${controls[1] ? '' : '-'}8 ${controls[1] ? '\\gt' : '\\lt'}0`
     );
 
     return [f1, f2];
