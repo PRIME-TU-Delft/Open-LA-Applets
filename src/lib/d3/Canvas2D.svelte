@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import Scene from '$lib/components/Scene.svelte';
@@ -9,7 +10,7 @@
   import Camera3D from '$lib/threlte/Camera3D.svelte';
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
   import { hasProps } from '$lib/utils/hasProps';
-  import { parseUrl } from '$lib/utils/ParseUrl';
+  import { parseUrl } from '$lib/utils/parseUrl';
   import { Canvas } from '@threlte/core';
   import { type Snippet } from 'svelte';
   import { NoToneMapping, Vector2 } from 'three';
@@ -47,11 +48,15 @@
     draggables = []
   }: CanvasProps = $props();
 
-  const canvasWidth = $derived(
-    hasProps(splitCanvas2DProps) || hasProps(splitCanvas3DProps)
-      ? globalState.width / 2
-      : globalState.width
-  );
+  $inspect(splitCanvas3DChildren);
+
+  const canvasWidth = $derived.by(() => {
+    if (splitCanvas2DChildren || splitCanvas3DChildren) {
+      return globalState.width / 2;
+    } else {
+      return globalState.width;
+    }
+  });
 
   // Concat all draggables and pass them to the Scene component to be able to reset them
   const allDraggables = $derived([...draggables, ...(splitCanvas2DProps?.draggables ?? [])]);
@@ -110,6 +115,7 @@
       {@render splitCanvas2DChildren()}
     </CanvasD3>
   {:else if splitCanvas3DChildren}
+    <Confetti isSplit />
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {...splitCanvas3DProps} isSplit />

@@ -13,23 +13,13 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const controls = Controls.addSlider(
-    0.5,
-    0,
-    Math.PI,
-    0.1,
-    PrimeColor.cyan,
-    'Angle L_1',
-    (v) => (v / Math.PI).toFixed(2) + 'π'
-  ).addSlider(
-    0.4,
-    0,
-    Math.PI * 0.75,
-    0.1,
-    PrimeColor.blue,
-    'Angle L_2',
-    (v) => (v / Math.PI).toFixed(2) + 'π'
-  );
+  const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
+    label: 'ϕ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
+    label: 'θ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  });
 
   const draggables = [
     new Draggable(new Vector2(-3, -1), PrimeColor.raspberry, 'v', Draggable.snapToGrid)
@@ -63,7 +53,7 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} {controls}>
+<Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
   <!-- L1 -->
   <InfiniteLine2D direction={dir_L1} color={PrimeColor.cyan} />
   <Latex2D
@@ -86,13 +76,20 @@
   <Arc2D points={[new Vector2(1, 0), dir_L1]} distance={1.2} />
   <Latex2D
     latex={'\\phi / 2'}
-    position={dir_L1.clone().add(new Vector2(1, 0)).normalize().multiplyScalar(1.5)}
+    position={dir_L1.clone().normalize().add(new Vector2(1, 0)).normalize().multiplyScalar(1.75)}
+    offset={new Vector2(-0.25, 0.25)}
   />
 
   <Arc2D points={[dir_L1, dir_L2]} distance={1.5} />
   <Latex2D
     latex={'\\theta / 2'}
-    position={dir_L2.clone().add(dir_L1).normalize().multiplyScalar(1.5)}
+    position={dir_L2
+      .clone()
+      .normalize()
+      .add(dir_L1.clone().normalize())
+      .normalize()
+      .multiplyScalar(2)}
+    offset={new Vector2(-0.25, 0.25)}
   />
 
   <!-- V -->

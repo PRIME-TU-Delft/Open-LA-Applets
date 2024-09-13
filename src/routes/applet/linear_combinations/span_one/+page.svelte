@@ -19,12 +19,16 @@
 </script>
 
 <Canvas3D {controls} title="Span of a vector">
-  <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry} />
-  <Latex3D
-    latex={'\\mathbf{v}'}
-    position={v.clone().add(new Vector3(0, 0.4, 0))}
-    color={PrimeColor.raspberry}
-  />
+  <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry}>
+    {#snippet children(endPoint)}
+      <Latex3D
+        latex={'\\mathbf{v}'}
+        position={endPoint}
+        extend={0.5}
+        color={PrimeColor.raspberry}
+      />
+    {/snippet}
+  </Vector3D>
 
   <Line3D
     origin={lineDir.clone().multiplyScalar(-1)}

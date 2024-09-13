@@ -9,7 +9,7 @@
   import { Vector3 } from 'three';
 
   type CubePlaneLineProps = {
-    toggles: Controls<readonly [Toggle, Toggle, Toggle]>;
+    toggles: Controls<unknown, readonly [Toggle, Toggle, Toggle]>;
     uvw: [Vector3, Vector3, Vector3];
   };
 

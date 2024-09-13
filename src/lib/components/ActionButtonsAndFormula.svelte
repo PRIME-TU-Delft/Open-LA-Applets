@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="State">
   import LatexUI from '$lib/components/Latex.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import * as Button from '$lib/components/ui/button';
@@ -9,13 +9,13 @@
   import { Maximize, Minimize, RotateCcw, Share, SquareFunction } from 'lucide-svelte';
   import screenfull from 'screenfull';
 
-  type G = readonly Controller<number | boolean>[];
+  type G = readonly Controller<number | boolean | string | State>[];
 
   type Canvas2DProps = {
     onReset: () => void;
     formulas?: Formula[];
     splitFormulas?: Formula[];
-    controls: Controls<G> | undefined;
+    controls: Controls<State, G> | undefined;
     showFormulas: boolean;
   };
 
