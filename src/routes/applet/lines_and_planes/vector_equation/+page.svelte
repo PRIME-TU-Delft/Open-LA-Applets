@@ -9,9 +9,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, 'k', (x) =>
-    round(x).toString()
-  );
+  const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, {
+    label: 'k',
+    valueFn: (x) => round(x).toString()
+  });
 
   const u = new Vector2(-2, 1);
   const v0 = new Vector2(5, 0);

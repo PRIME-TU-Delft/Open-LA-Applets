@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import Scene from '$lib/components/Scene.svelte';
@@ -110,6 +111,7 @@
       {@render splitCanvas2DChildren()}
     </CanvasD3>
   {:else if splitCanvas3DChildren}
+    <Confetti isSplit />
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {...splitCanvas3DProps} isSplit />

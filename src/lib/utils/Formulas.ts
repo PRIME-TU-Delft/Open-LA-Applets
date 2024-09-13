@@ -46,6 +46,10 @@ export class Formula {
     );
   }
 
+  raw() {
+    return this.stringFormula;
+  }
+
   addParam(index: number, param: number | string, color?: PrimeColor) {
     const value = param;
 

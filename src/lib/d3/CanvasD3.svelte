@@ -33,6 +33,8 @@
   import Axis from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import Confetti from '$lib/components/Confetti.svelte';
+  import { confettiState } from '$lib/stores/confetti.svelte';
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -147,23 +149,31 @@
   });
 </script>
 
-<svg {id} {width} {height} viewBox="0 0 {width} {height}">
-  <g>
-    <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
-      <g
-        transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
-          (2 * width)) /
-          30})"
-      >
-        <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-          <Axis {showAxisNumbers} length={tickLength} />
-          {@render children()}
+<div>
+  {#if !isSplit && (confettiState.side === 'left' || confettiState.side === 'center')}
+    <Confetti isSplit={false} />
+  {:else if isSplit && confettiState.side === 'right'}
+    <Confetti isSplit={true} />
+  {/if}
 
-          {#each draggables as d}
-            <Draggable2D draggable={d} />
-          {/each}
+  <svg {id} {width} {height} viewBox="0 0 {width} {height}">
+    <g>
+      <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
+        <g
+          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
+            (2 * width)) /
+            30})"
+        >
+          <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
+            <Axis {showAxisNumbers} length={tickLength} />
+            {@render children()}
+
+            {#each draggables as d}
+              <Draggable2D draggable={d} />
+            {/each}
+          </g>
         </g>
       </g>
     </g>
-  </g>
-</svg>
+  </svg>
+</div>

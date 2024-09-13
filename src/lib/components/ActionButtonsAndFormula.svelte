@@ -9,7 +9,7 @@
   import { Maximize, Minimize, RotateCcw, Share, SquareFunction } from 'lucide-svelte';
   import screenfull from 'screenfull';
 
-  type G = readonly Controller<number | boolean | State>[];
+  type G = readonly Controller<number | boolean | string | State>[];
 
   type Canvas2DProps = {
     onReset: () => void;
