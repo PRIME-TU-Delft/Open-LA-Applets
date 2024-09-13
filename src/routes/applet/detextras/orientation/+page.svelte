@@ -8,7 +8,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const controls = Controls.addSlider(0, 0, 360, 10, PrimeColor.cyan).addToggle(
+  const controls = Controls.addSlider(0, 0, 360, 10, PrimeColor.cyan, { loop: true }).addToggle(
     false,
     '\\text{Reverse direction}',
     PrimeColor.raspberry
