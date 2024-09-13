@@ -41,6 +41,18 @@
     new Draggable(new Vector2(7, 4), PrimeColor.cyan, '', Draggable.snapToGrid)
   ];
 
+  $effect.pre(() => {
+    // Fallback to check if the points are on the same vertical line
+    // This is where the distances are infinite and will result in a NaN error
+    // Thus we need to move the first point slightly to the right
+    if (draggables_right[0].position.x == draggables_right[1].position.x) {
+      draggables_right[0].value = new Vector2(
+        draggables_right[0].value.x + 1,
+        draggables_right[0].value.y
+      );
+    }
+  });
+
   const dir_L_right = $derived(draggables_right[0].value.clone().sub(draggables_right[1].value));
   const ps_proj_right = $derived(
     projectPoints(points, false, false, draggables_right[0].value, dir_L_right)
