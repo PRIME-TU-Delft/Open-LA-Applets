@@ -10,18 +10,18 @@
   import { Matrix3, Vector2, Vector3 } from 'three';
 
   const defaultState = {
-    angle: 0,
+    angle: -0.35,
     avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}'
   };
 
   const steps: SlideShowSteps<typeof defaultState> = [
     (t, state) => {
-      state.angle = state.angle + 0.15 * t;
+      state.angle = state.angle + 0.5 * t;
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'First eigenvector', labelPrev: 'No eigenvector' };
+      return { state, labelNext: 'An eigenvector', labelPrev: 'No eigenvector' };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -29,7 +29,7 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'Second eigenvector', labelPrev: 'First eigenvector' };
+      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     },
     (t, state) => {
       state.angle = state.angle + 0.3 * t;
@@ -37,7 +37,7 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'Third eigenvector', labelPrev: 'Second eigenvector' };
+      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -45,7 +45,7 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'Fourth eigenvector', labelPrev: 'Third eigenvector' };
+      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     }
   ];
 
@@ -62,7 +62,7 @@
 
   const w = $derived.by(() => {
     const rotation = rotationMatrix(state.angle * Math.PI);
-    const w = new Vector3(2, 0, 0);
+    const w = new Vector3(Math.sqrt(5), 0, 0);
     w.applyMatrix3(rotation);
 
     return new Vector2(w.x, w.y);
@@ -75,12 +75,12 @@
   });
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('A = \\frac{1}{3}\\begin{bmatrix} 5 & -2 \\\\ -1 & 4 \\end{bmatrix}');
+    const f1 = new Formula('A = \\begin{bmatrix} 1 & 4 \\\\ 1 & 1 \\end{bmatrix}');
     const f2 = new Formula(
-      'A\\mathbf{w} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} \\quad \\mathbf{w} = \\begin{bmatrix} \\$3 \\\\ \\$4 \\end{bmatrix}'
+      '\\mathbf{w} = \\begin{bmatrix} \\$3 \\\\ \\$4 \\end{bmatrix} \\space A\\mathbf{w} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix}'
     )
-      .addAutoParam(round(Aw.x, 1), PrimeColor.blue)
-      .addAutoParam(round(Aw.y, 1), PrimeColor.blue)
+      .addAutoParam(round(Aw.x, 0), PrimeColor.blue)
+      .addAutoParam(round(Aw.y, 0), PrimeColor.blue)
       .addAutoParam(round(w.x, 1), PrimeColor.raspberry)
       .addAutoParam(round(w.y, 1), PrimeColor.raspberry);
 
@@ -88,7 +88,7 @@
   });
 </script>
 
-<Canvas2D {controls} {formulas}>
+<Canvas2D {controls} {formulas} cameraZoom={0.9} showFormulasDefault>
   <!-- V1 -->
   <Vector2D direction={Aw} length={Aw.length()} color={PrimeColor.blue} />
   <Latex2D
