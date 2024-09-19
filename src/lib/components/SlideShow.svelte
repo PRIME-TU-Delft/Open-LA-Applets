@@ -22,7 +22,7 @@
 </Label>
 
 {#if controller.hasPrev()}
-  <div transition:scale>
+  <div in:scale>
     <Button.Action
       class="text-white rounded-full"
       --bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
@@ -36,13 +36,15 @@
 {/if}
 
 {#if controller.hasNext()}
-  <Button.Action
-    class="text-white rounded-full"
-    --bg={PrimeColor.darkGreen}
-    tooltip="Go to next step"
-    side="top"
-    onclick={() => controller.next()}
-  >
-    <ChevronRight class="w-4 h-4" />
-  </Button.Action>
+  <div in:scale>
+    <Button.Action
+      class="text-white rounded-full"
+      --bg={PrimeColor.darkGreen}
+      tooltip="Go to next step"
+      side="top"
+      onclick={() => controller.next()}
+    >
+      <ChevronRight class="w-4 h-4" />
+    </Button.Action>
+  </div>
 {/if}
