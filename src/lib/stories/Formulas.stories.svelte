@@ -21,14 +21,14 @@
 
   const oneFormula = $derived.by(() => {
     const length = draggables[0].position.length();
-    const f1 = new Formula(`length = ${round(length)}`);
+    const f1 = new Formula(`\\text{length} = ${round(length)}`);
     return [f1];
   });
 
   const multiFormula = $derived.by(() => {
     const pos = draggables[0].position;
     const length = pos.length();
-    const f1 = new Formula(`length = ${round(length)}`);
+    const f1 = new Formula(`\\text{length} = ${round(length)}`);
     const f2 = new Formula(`A = \{x: ${round(pos.x)}, y: ${round(pos.y)}\}`);
     return [f1, f2];
   });
@@ -36,8 +36,8 @@
   const autoParamFormula = $derived.by(() => {
     const pos = draggables[0].position;
     const length = pos.length();
-    const f1 = new Formula(`length = ${round(length)}`);
-    const f2 = new Formula(`A = \{x: \\$1, y: \\$2\}`)
+    const f1 = new Formula(`\\text{length} = ${round(length)}`);
+    const f2 = new Formula(`A = \\begin{bmatrix}\\$1 \\\\ \\$2 \\end{bmatrix}`)
       .addAutoParam(round(pos.x), PrimeColor.darkGreen)
       .addAutoParam(round(pos.y), PrimeColor.orange);
     return [f1, f2];
@@ -52,7 +52,7 @@
 ```typescript
 const oneFormula = $derived.by(() => {
   const length = draggables[0].position.length();
-  const f1 = new Formula(`length = ${round(length)}`);
+  const f1 = new Formula(`\\text{length} = ${round(length)}`);
   return [f1];
 });
 ```
@@ -76,7 +76,7 @@ const oneFormula = $derived.by(() => {
 const multiFormula = $derived.by(() => {
   const pos = draggables[0].position;
   const length = pos.length();
-  const f1 = new Formula(`length = ${round(length)}`);
+  const f1 = new Formula(`\\text{length} = ${round(length)}`);
   const f2 = new Formula(`A = \{x: ${pos.x}, y: ${pos.y}\}`);
   return [f1, f2];
 });
@@ -101,8 +101,8 @@ const multiFormula = $derived.by(() => {
 const autoParamFormula = $derived.by(() => {
   const pos = draggables[0].position;
   const length = pos.length();
-  const f1 = new Formula(`length = ${round(length)}`);
-  const f2 = new Formula(`A = \{x: \\$1, y: \\$2\}`)
+  const f1 = new Formula(`\\text{length} = ${round(length)}`);
+  const f2 = new Formula(`A = \\begin{bmatrix}\\$1 \\\\ \\$2 \\end{bmatrix}`)
     .addAutoParam(round(pos.x), PrimeColor.darkGreen)
     .addAutoParam(round(pos.y), PrimeColor.orange);
   return [f1, f2];
