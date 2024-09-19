@@ -51,6 +51,14 @@ export class Draggable implements Controller<Vector2> {
     };
   }
 
+  get position() {
+    return this.value;
+  }
+
+  set position(v: Vector2) {
+    this.value = this.snapFn(v);
+  }
+
   updateBy(step: Vector2) {
     this.value = this.value.clone().sub(step);
   }
