@@ -6,21 +6,21 @@
     showFormulasDefault?: boolean;
     draggables?: Draggable[];
     title?: string;
-    children?: Snippet;
+    sceneChildren?: Snippet<[number, number]>;
   };
 </script>
 
 <script lang="ts">
+  import { dev } from '$app/environment';
   import type { Controller, Controls } from '$lib/controls/Controls';
+  import type { Draggable } from '$lib/controls/Draggables.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import { onMount, type Snippet } from 'svelte';
+  import { onMount, type Snippet, tick } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
-  import type { Draggable } from '$lib/controls/Draggables.svelte';
-  import { dev } from '$app/environment';
 
   let {
     controls = undefined,
@@ -29,7 +29,7 @@
     showFormulasDefault = false,
     draggables = [],
     title,
-    children
+    sceneChildren
   }: SceneProps = $props();
 
   let height = $state(500);
@@ -83,19 +83,7 @@
     // if and only if the global title is not set
     if (!globalState.title) globalState.title = title || '';
   });
-
-  onMount(() => {
-    globalState.height = height;
-    globalState.width = width;
-  });
 </script>
-
-<svelte:window
-  onresize={() => {
-    globalState.height = height;
-    globalState.width = width;
-  }}
-/>
 
 <div
   class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
@@ -120,8 +108,8 @@
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
     <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
-      {#if children}
-        {@render children()}
+      {#if sceneChildren}
+        {@render sceneChildren(width, height)}
       {:else}
         <p class="m-4">Please enter some content using the Canvas2D or Canvas3D components</p>
       {/if}

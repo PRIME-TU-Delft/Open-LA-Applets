@@ -47,7 +47,14 @@
 </script>
 
 <script>
+  import { onDestroy } from 'svelte';
+  import { globalState } from '$lib/stores/globalState.svelte';
+
   setTemplate(template);
+
+  onDestroy(() => {
+    globalState.title = '';
+  });
 </script>
 
 {#snippet template(args)}
