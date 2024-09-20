@@ -31,10 +31,16 @@
 </script>
 
 <script>
+  import { globalState } from '$lib/stores/globalState.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import { onDestroy } from 'svelte';
   import { Vector3 } from 'three';
 
   setTemplate(template);
+
+  onDestroy(() => {
+    globalState.title = '';
+  });
 </script>
 
 {#snippet template(args)}
