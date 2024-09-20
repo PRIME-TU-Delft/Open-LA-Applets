@@ -15,9 +15,10 @@
     new Draggable(new Vector2(5, 0), PrimeColor.raspberry, 'v0', Draggable.snapToGrid)
   ];
 
-  const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, 'k', (x) =>
-    round(x).toString()
-  );
+  const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, {
+    label: 'k',
+    valueFn: (x) => round(x).toString()
+  });
 
   const v0 = $derived(draggables[1].position);
   const u = $derived(draggables[0].position);

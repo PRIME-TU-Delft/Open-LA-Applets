@@ -16,13 +16,18 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, 'A', (v) =>
-    round(v, 1).toString()
-  );
+  const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
+    label: 'A',
+    valueFn: (v) => round(v, 1).toString()
+  });
 
-  const multiControls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, 'A x', (v) =>
-    round(v, 1).toString()
-  ).addSlider(2, 0.5, 10, 0.5, PrimeColor.blue, 'A y', (v) => round(v, 1).toString());
+  const multiControls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
+    label: 'A x',
+    valueFn: (v) => round(v, 1).toString()
+  }).addSlider(2, 0.5, 10, 0.5, PrimeColor.blue, {
+    label: 'A y',
+    valueFn: (v) => round(v, 1).toString()
+  });
 
   const toggleControls = Controls.addToggle(true, 'A', PrimeColor.blue).addToggle(
     false,

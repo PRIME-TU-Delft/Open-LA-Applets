@@ -13,7 +13,7 @@
     -5,
     5,
     0.5,
-    PrimeColor.yellow
+    PrimeColor.blue
   );
 
   const v = $derived(new Vector3(3, 2, -3).normalize().multiplyScalar(3)); // Vector v;
@@ -41,18 +41,22 @@
 
   <!-- If u & v are on the same quadrant and u is SMALLER than v -> v on top -->
   {#if controls[0] * controls[1] > 0 && Math.abs(controls[0]) > Math.abs(controls[1])}
-    <Vector3D direction={u} length={uLen} color={PrimeColor.yellow} alwaysOnTop />
+    <Vector3D direction={u} length={uLen} color={PrimeColor.blue} alwaysOnTop />
   {:else}
-    <Vector3D direction={u} length={uLen} color={PrimeColor.yellow} />
+    <Vector3D direction={u} length={uLen} color={PrimeColor.blue} />
   {/if}
   <Latex3D
     latex={'\\mathbf{u}'}
     position={u.clone().normalize().multiplyScalar(controls[1])}
     extend={0.75}
-    color={PrimeColor.yellow}
+    color={PrimeColor.blue}
   />
 
-  <Line3D origin={lineDir.clone().multiplyScalar(-1)} endPoint={lineDir} color={PrimeColor.blue} />
+  <Line3D
+    origin={lineDir.clone().multiplyScalar(-1)}
+    endPoint={lineDir}
+    color={PrimeColor.yellow}
+  />
   <Latex3D latex={'\\mathrm{Span}\\{\\mathbf{u,v}\\}'} position={lineDir} extend={0.8} />
 
   <Axis3D />

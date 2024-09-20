@@ -153,6 +153,9 @@ importers:
       svelte-check:
         specifier: ^3.8.5
         version: 3.8.5(postcss-load-config@4.0.2(postcss@8.4.41))(postcss@8.4.41)(svelte@5.0.0-next.210)
+      svelte-confetti:
+        specifier: ^2.0.0
+        version: 2.1.2(svelte@5.0.0-next.210)
       tailwindcss:
         specifier: ^3.4.7
         version: 3.4.7
@@ -3150,6 +3153,11 @@ packages:
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0 || ^4.0.0-next.0 || ^4.0.0 || ^5.0.0-next.0
+
+  svelte-confetti@2.1.2:
+    resolution: {integrity: sha512-2hZUSmogOkeoKJEuUL75tAmyQQ8J9FEcNq19yzDpL4njBOEpl+cFA97sX9i6okBIhTccsRV1M9FZOkEyTZAMnQ==}
+    peerDependencies:
+      svelte: '>=5.0.0'
 
   svelte-eslint-parser@0.41.0:
     resolution: {integrity: sha512-L6f4hOL+AbgfBIB52Z310pg1d2QjRqm7wy3kI1W6hhdhX5bvu7+f0R6w4ykp5HoDdzq+vGhIJmsisaiJDGmVfA==}
@@ -6761,6 +6769,10 @@ snapshots:
       - sass
       - stylus
       - sugarss
+
+  svelte-confetti@2.1.2(svelte@5.0.0-next.210):
+    dependencies:
+      svelte: 5.0.0-next.210
 
   svelte-eslint-parser@0.41.0(svelte@5.0.0-next.210):
     dependencies:

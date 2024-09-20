@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   export type SceneProps = {
-    controls?: Controls<any, readonly Controller<number | boolean | any>[]>;
+    controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
     splitFormulas?: Formula[];
     showFormulasDefault?: boolean;

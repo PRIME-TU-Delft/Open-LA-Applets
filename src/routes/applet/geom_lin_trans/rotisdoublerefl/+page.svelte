@@ -13,23 +13,13 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const controls = Controls.addSlider(
-    0.5,
-    0,
-    Math.PI,
-    0.1,
-    PrimeColor.cyan,
-    'ϕ/2',
-    (v) => (v / Math.PI).toFixed(2) + 'π'
-  ).addSlider(
-    0.4,
-    0,
-    Math.PI * 0.75,
-    0.1,
-    PrimeColor.blue,
-    'θ/2',
-    (v) => (v / Math.PI).toFixed(2) + 'π'
-  );
+  const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
+    label: 'ϕ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
+    label: 'θ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  });
 
   const draggables = [
     new Draggable(new Vector2(-3, -1), PrimeColor.raspberry, 'v', Draggable.snapToGrid)

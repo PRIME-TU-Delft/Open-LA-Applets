@@ -9,7 +9,9 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  const controls = Controls.addSlider(-0.6).addSlider(0.5).addSlider(1);
+  const controls = Controls.addSlider(-0.6, -1, 1, 0.1)
+    .addSlider(0.5, -1, 1, 0.1)
+    .addSlider(1, -1, 1, 0.1);
 
   const formulas = $derived.by(() => {
     const f1 = new Formula('\\$x + 1y + 1z = 0', controls[0], PrimeColor.raspberry);

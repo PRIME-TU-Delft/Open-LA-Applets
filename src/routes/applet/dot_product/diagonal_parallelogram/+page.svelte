@@ -8,7 +8,7 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
-  import StaticImg from './StaticImg.svelte';
+  import StaticImg from './staticImg.svelte';
 
   const SNAP_DISTANCE = 1;
 

@@ -22,21 +22,21 @@ export class Draggable implements Controller<Vector2> {
   type = 'draggable';
   label = '';
   snapFn: (value: Vector2) => Vector2;
-  valueFn: (v: number) => string;
+  releaseFn: (value: Vector2) => Vector2;
 
   constructor(
     defaultValue: Vector2,
     color: string = PrimeColor.blue,
     label: string = '',
     snapFn: (value: Vector2) => Vector2 = (v) => v,
-    valueFn: (v: number) => string = (v) => v.toString()
+    releaseFn: ((value: Vector2) => Vector2) | undefined = undefined
   ) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
     this.color = color;
     this.label = label;
     this.snapFn = snapFn;
-    this.valueFn = valueFn;
+    this.releaseFn = releaseFn ?? snapFn;
   }
 
   static Default = new Draggable(new Vector2(0, 0));
@@ -83,6 +83,16 @@ export class Draggable implements Controller<Vector2> {
     }, ms / timeSteps);
 
     return this;
+  }
+
+  clone() {
+    return new Draggable(
+      this.defaultValue.clone(),
+      this.color,
+      this.label,
+      this.snapFn,
+      this.releaseFn
+    );
   }
 
   toURL() {

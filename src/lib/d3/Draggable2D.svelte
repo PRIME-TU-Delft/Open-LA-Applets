@@ -17,8 +17,12 @@
 
   let g: SVGGElement;
 
+  let dragPosition: Vector2 = $state(draggable.value.clone());
+  let isDragging = $state(false);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function dragstarted(_: DragEvent) {
+    isDragging = true;
     activityState.enable();
     globalState.controlsInteractive = true;
     select(g).raise();
@@ -26,16 +30,28 @@
   }
 
   function dragged(event: DragEvent) {
-    draggable.value = new Vector2(event.x, event.y);
+    dragPosition = new Vector2(event.x, event.y);
+
+    const newPoint = draggable.snapFn(dragPosition);
+    draggable.value = new Vector2(newPoint.x, newPoint.y);
   }
 
   function dragended() {
     select(g).attr('cursor', 'grab');
     globalState.controlsInteractive = false;
 
-    const newPoint = draggable.snapFn(draggable.value);
+    const newPoint = draggable.releaseFn(draggable.value);
     draggable.value = new Vector2(newPoint.x, newPoint.y);
+
+    dragPosition = draggable.value.clone();
+    isDragging = false;
   }
+
+  $effect(() => {
+    if (!isDragging) {
+      dragPosition = draggable.value.clone();
+    }
+  });
 
   $effect(() => {
     // Setup the drag behavior
@@ -58,7 +74,7 @@
   role="button"
   tabindex="0"
   onmousedown={() => activityState.enable()}
-  style="--x:{draggable.value.x}; --y:{draggable.value.y}"
+  style="--x:{dragPosition.x}; --y:{dragPosition.y}"
 />
 <circle cx={draggable.value.x} cy={draggable.value.y} r={POINT_SIZE} fill={draggable.color} />
 
