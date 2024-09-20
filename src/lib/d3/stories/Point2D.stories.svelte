@@ -67,10 +67,14 @@
 <!-- A Point with different position defined -->
 <Story name="With position defined" source args={{ position: new Vector2(1, 1) }} />
 
+<!-- A Point with different radius defined -->
 <Story name="With radius defined" source args={{ radius: 2 }} />
 
+<!-- A Point with different shape defined -->
 <Story name="With square shape" source args={{ isSquare: true }} />
 
+<!-- A Point with pulse effect defined -->
 <Story name="With pulse effect" source args={{ pulse: true }} />
 
+<!-- A Point with opacity defined -->
 <Story name="With opacity defined" source args={{ opacity: 0.5 }} />
