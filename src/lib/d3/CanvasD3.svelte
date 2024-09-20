@@ -73,8 +73,8 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x ?? 0;
-    const y = 15 / (width / transform.y) + cameraPosition.y ?? 0;
+    const x = 15 / (width / -transform.x) + cameraPosition.x;
+    const y = 15 / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 

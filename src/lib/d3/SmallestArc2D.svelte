@@ -24,7 +24,14 @@
   }
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
-  const labelPosition = $derived(v.clone().normalize().add(w.clone().normalize()).normalize());
+  const labelPosition = $derived(
+    v
+      .clone()
+      .normalize()
+      .add(w.clone().normalize())
+      .normalize()
+      .multiplyScalar(props.distance || 1)
+  );
 </script>
 
 <!-- 
@@ -54,12 +61,12 @@
 
 {#if angle == 1}
   {@const labelPosition = v.clone().normalize()}
-  <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
   {@render props.label?.(new Vector2(-labelPosition.y, labelPosition.x))}
 {:else if angle < 0 || angle > 1}
-  <Angle2D startAngle={w.angle()} endAngle={v.angle()} />
+  <Angle2D {...props} startAngle={w.angle()} endAngle={v.angle()} />
   {@render props.label?.(labelPosition)}
 {:else}
-  <Angle2D startAngle={v.angle()} endAngle={w.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
   {@render props.label?.(labelPosition)}
 {/if}

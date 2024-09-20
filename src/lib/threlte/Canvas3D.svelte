@@ -20,8 +20,8 @@
   type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
       title?: string;
-      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width'>;
-      splitCanvas3DProps?: Camera3DProps; // Not implemented yet
+      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'isSplit'>;
+      splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
       splitCanvas2DChildren?: Snippet;
       splitCanvas3DChildren?: Snippet;
@@ -60,7 +60,9 @@
   let enableEasterEgg = $state(false);
 
   $effect.pre(() => {
-    const searchParams = $page.url.searchParams;
+    const searchParams = $page?.url?.searchParams;
+
+    if (!searchParams) return;
 
     const urlProps = parseUrl(searchParams);
 
@@ -83,6 +85,29 @@
       splitCanvas3DProps.cameraZoom = urlProps.paramsSplit3D.zoom3D;
   });
 </script>
+
+<!-- @component A component that renders a 3D canvas
+@props
+- title: The title of the canvas
+- showFormulasDefault: Whether to show the formulas by default
+- formulas: The formulas to show
+- controls: Whether to show the controls
+- splitFormulas: Whether to split the formulas
+- splitCanvas2DProps: The props for the split 2D canvas
+- splitCanvas3DProps: The props for the split 3D canvas
+- children: The children of the canvas
+- splitCanvas2DChildren: The children of the split 2D canvas
+- splitCanvas3DChildren: The children of the split 3D canvas
+- cameraPosition: The position of the camera
+- cameraZoom: The zoom of the camera
+- enablePan: Whether to enable pan
+
+@example
+<Canvas3D title={'This is a 3D canvas'}>
+  <Axis3D />
+</Canvas3D>
+
+-->
 
 <Scene
   {title}

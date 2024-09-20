@@ -15,7 +15,7 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import type { Snippet } from 'svelte';
+  import { onMount, type Snippet } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
@@ -31,6 +31,9 @@
     title,
     children
   }: SceneProps = $props();
+
+  let height = $state(500);
+  let width = $state(500);
 
   /**
    * Reset camera position, rotation and controls.
@@ -80,7 +83,19 @@
     // if and only if the global title is not set
     if (!globalState.title) globalState.title = title || '';
   });
+
+  onMount(() => {
+    globalState.height = height;
+    globalState.width = width;
+  });
 </script>
+
+<svelte:window
+  onresize={() => {
+    globalState.height = height;
+    globalState.width = width;
+  }}
+/>
 
 <div
   class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
@@ -94,8 +109,8 @@
     class:inIframe={globalState.inIframe}
     class:active={activityState.isActive}
     class:dev
-    bind:clientHeight={globalState.height}
-    bind:clientWidth={globalState.width}
+    bind:clientHeight={height}
+    bind:clientWidth={width}
     style="height: var(--canvas-height, 100%);"
     onclick={() => activityState.enable()}
     onkeydown={() => activityState.enable()}
