@@ -30,7 +30,7 @@
         </Accordion.Item>
 
         <!-- LICENCING -->
-        <Accordion.Item value="Licence">
+        <!-- <Accordion.Item value="Licence">
           <Accordion.Trigger>Licence [CC-BY v4.0 / Apache v2.0]</Accordion.Trigger>
           <Accordion.Content>
             <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
@@ -59,7 +59,7 @@
               >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
             >.
           </Accordion.Content>
-        </Accordion.Item>
+        </Accordion.Item> -->
       </Accordion.Root>
     </Dialog.Description>
   </Dialog.Header>

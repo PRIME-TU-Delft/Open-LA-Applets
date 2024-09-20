@@ -3,7 +3,7 @@
  */
 class ActivityState {
   isActive = $state(false);
-  private timeOut: number | undefined = undefined;
+  private timeOut: ReturnType<typeof setTimeout> | undefined = undefined;
 
   /**
    * Disable orbitcontroller after ms and call fn

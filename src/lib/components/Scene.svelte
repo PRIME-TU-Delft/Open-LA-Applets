@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   export type SceneProps = {
     controls?: Controls<any, readonly Controller<number | boolean | any>[]>;
     formulas?: Formula[];

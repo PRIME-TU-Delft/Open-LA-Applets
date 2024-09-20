@@ -33,11 +33,22 @@
   ];
 
   let planeNormalMesh = $state<Mesh>();
+  let planeGeometryRef = $state<PlaneGeometry>();
 
   $effect(() => {
     normal.clone().normalize();
 
     planeNormalMesh?.lookAt(position.clone().add(normal));
+  });
+
+  $effect(() => {
+    if (!planeGeometryRef) return;
+
+    for (let i = 0; i < planeSegment.segments; i++) {
+      if (i % planeSegment.interval == planeSegment.offset) {
+        planeGeometryRef.addGroup(i * 6, 6, 0);
+      }
+    }
   });
 
   onDestroy(() => {
@@ -55,16 +66,6 @@ This component is a 3D plane defined by a normal vector and a position vector.
 
 <T.Group rotation.x={Math.PI / 2} position={[position.x, position.y, position.z]}>
   <T.Mesh bind:ref={planeNormalMesh} material={materials}>
-    <T.PlaneGeometry
-      args={[size, size, planeSegment.segments, 1]}
-      oncreate={({ ref }: { ref: PlaneGeometry }) => {
-        for (let i = 0; i < planeSegment.segments; i++) {
-          if (i % planeSegment.interval == planeSegment.offset) {
-            // A rectangle consists of two triangles 6 vertices
-            ref.addGroup(i * 6, 6, 0);
-          }
-        }
-      }}
-    />
+    <T.PlaneGeometry args={[size, size, planeSegment.segments, 1]} bind:ref={planeGeometryRef} />
   </T.Mesh>
 </T.Group>

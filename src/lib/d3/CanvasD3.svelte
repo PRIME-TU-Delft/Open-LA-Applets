@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { onDestroy, type Snippet } from 'svelte';
   import { Vector2 } from 'three';
 

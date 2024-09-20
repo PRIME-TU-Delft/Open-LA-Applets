@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script lang="ts" module>
   export type Camera3DProps = {
     cameraPosition?: Vector3;
     enablePan?: boolean;
@@ -34,6 +34,8 @@
   let doReset: number | NodeJS.Timeout;
 
   function onCreate({ ref }: { ref: Camera }) {
+    if (!ref) return;
+
     ref.lookAt(0, 0, 0);
   }
 
@@ -146,7 +148,6 @@
       minZoom={Math.max(zoom / 5, 1)}
       maxPolarAngle={Math.PI * 0.6}
       onchange={() => debounceHandleCameraChange()}
-      oncreate={() => debounceHandleCameraChange()}
     />
   {/if}
 </T.OrthographicCamera>

@@ -98,7 +98,7 @@
   />
 </Canvas3D>
 
-{#snippet helperVector(origin, direction)}
+{#snippet helperVector(origin: Vector3, direction: Vector3)}
   <Vector3D
     {origin}
     {direction}

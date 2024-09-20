@@ -28,13 +28,13 @@
 
   let uuid = generateUUID();
 
-  let icon = $state(Play);
+  let icon = $state<'Play' | 'Pause'>('Play');
   let moveRight = $state(false); // direction of the slider
   let label = $derived(slider.valueFn(value));
   let isPlaying = $state(false); // is the slider playing
 
   // interval for playing the slider
-  let playInterval: number | undefined = $state();
+  let playInterval = $state<ReturnType<typeof setInterval>>();
 
   function round() {
     value = Math.round(value / slider.stepSize) * slider.stepSize;
@@ -42,7 +42,7 @@
 
   function stopPlaying() {
     isPlaying = false;
-    icon = Play;
+    icon = 'Play';
 
     clearInterval(playInterval);
     round();
@@ -52,7 +52,7 @@
 
   function startPlaying() {
     isPlaying = true;
-    icon = Pause;
+    icon = 'Pause';
     // console.log({ isPlaying });
 
     playInterval = setInterval(() => {
@@ -116,9 +116,11 @@
     side="top"
     onclick={() => togglePlay()}
   >
-    {#key icon}
-      <svelte:component this={icon} class="w-4 h-4" fill="white" strokeWidth={0} />
-    {/key}
+    {#if icon === 'Play'}
+      <Play class="w-4 h-4" fill="white" strokeWidth={0} />
+    {:else}
+      <Pause class="w-4 h-4" fill="white" strokeWidth={0} />
+    {/if}
   </Button.Action>
 
   <div class="flex flex-col gap-1">

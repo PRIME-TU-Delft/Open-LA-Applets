@@ -1,4 +1,4 @@
-<script context="module">
+<script context="module" lang="ts">
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
 
@@ -60,7 +60,7 @@
   setTemplate(template);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: any)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
       <Angle2D startAngle={0} endAngle={Math.PI / 2} color={PrimeColor.black} {...args} />

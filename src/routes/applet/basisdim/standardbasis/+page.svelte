@@ -22,7 +22,7 @@
 <Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }} title="The standard bases in 2d and 3d">
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue}>
-    {#snippet children(endPoint)}
+    {#snippet children(endPoint: Vector2)}
       <Latex2D
         latex={'\\mathbf{e_1}'}
         offset={new Vector2(-0.3, 0.4)}
@@ -34,7 +34,7 @@
 
   <!-- e2 -->
   <Vector2D direction={e2} length={e2Length} color={PrimeColor.darkGreen}>
-    {#snippet children(endPoint)}
+    {#snippet children(endPoint: Vector2)}
       <Latex2D
         latex={'\\mathbf{e_2}'}
         offset={new Vector2(0.2, -0.1)}

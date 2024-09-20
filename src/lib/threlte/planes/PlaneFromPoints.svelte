@@ -23,6 +23,7 @@
   }: PlaneFromPointsProps = $props();
 
   let planeMesh = $state<Mesh>();
+  let planeGeometryRef = $state<PlaneGeometry>();
 
   let materials = [new MeshBasicMaterial({ color, transparent: true, opacity, side: DoubleSide })];
 
@@ -34,21 +35,21 @@
     planeMesh.quaternion.setFromUnitVectors(new Vector3(0, 0, 1), plane.normal);
   });
 
+  $effect(() => {
+    if (!planeGeometryRef) return;
+
+    for (let i = 0; i < planeSegment.segments; i++) {
+      if (i % planeSegment.interval == planeSegment.offset) {
+        planeGeometryRef.addGroup(i * 6, 6, 0);
+      }
+    }
+  });
+
   onDestroy(() => {
     materials.map((m) => m.dispose());
   });
 </script>
 
 <T.Mesh material={materials} bind:ref={planeMesh}>
-  <T.PlaneGeometry
-    args={[size, size, planeSegment.segments, 1]}
-    oncreate={({ ref }: { ref: PlaneGeometry }) => {
-      for (let i = 0; i < planeSegment.segments; i++) {
-        if (i % planeSegment.interval == planeSegment.offset) {
-          // A rectangle consists of two triangles 6 vertices
-          ref.addGroup(i * 6, 6, 0);
-        }
-      }
-    }}
-  />
+  <T.PlaneGeometry args={[size, size, planeSegment.segments, 1]} bind:ref={planeGeometryRef} />
 </T.Mesh>
