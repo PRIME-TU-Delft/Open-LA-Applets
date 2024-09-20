@@ -1,7 +1,12 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, RightAngle, Vector2D } from '$lib/d3-components';
-
-  import { Angle3D, Latex3D, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
 
@@ -48,9 +53,9 @@
   </Vector2D>
 
   <!-- Arcs -->
-  <RightAngle vs={[v, v_ortho]} lineWidth={0.03} />
+  <RightAngle2D vs={[v, v_ortho]} lineWidth={0.03} />
 
-  <svelte:fragment slot="splitCanvas3d">
+  {#snippet splitCanvas3DChildren()}
     <!-- v -->
     <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.darkGreen} />
     <Latex3D latex={'V'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.darkGreen} />
@@ -65,5 +70,5 @@
     <Latex3D latex={'V^{\\bot}'} position={ve_ortho} color={PrimeColor.blue} />
 
     <Angle3D vs={[new Vector3(0, 5, 0), new Vector3(3, 0, -3)]} size={0.4} />
-  </svelte:fragment>
+  {/snippet}
 </Canvas2D>

@@ -1,59 +1,67 @@
 <script lang="ts">
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import {
-    Canvas2D,
-    Draggable2D,
-    Latex2D,
-    Line2D,
-    Point2D,
-    RightAngle,
-    Vector2D
-  } from '$lib/d3-components';
-  import { GridType } from '$lib/d3-components/grids/GridTypes';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
 
   const dir_L = new Vector2(2, 1);
   const start_L = dir_L.clone().multiplyScalar(-30);
   const end_L = dir_L.clone().multiplyScalar(30);
 
-  let u1 = new Vector2(2, 3);
+  const draggableLeft = [
+    new Draggable(new Vector2(2, 3), PrimeColor.raspberry, 'u1', Draggable.snapToGrid)
+  ];
+  const u1 = $derived(draggableLeft[0].value);
 
-  let w1 = dir_L
+  const w1 = dir_L
     .clone()
     .rotateAround(new Vector2(0, 0), (3 / 2) * Math.PI)
     .normalize();
 
-  let u2 = new Vector2(2, -1);
-  let w2 = new Vector2(2, 0);
+  const draggableRight = [
+    new Draggable(new Vector2(2, -1), PrimeColor.raspberry, 'u2', Draggable.snapToGrid),
+    new Draggable(new Vector2(1, 0), PrimeColor.yellow, 'w2', (v) => v.normalize())
+  ];
+
+  const u2 = $derived(draggableRight[0].value);
+  const w2 = $derived(draggableRight[1].value);
 
   //othogonal proj u1 onto line L
-  $: proj_u1 = dir_L.clone().multiplyScalar(dir_L.clone().dot(u1) / dir_L.clone().dot(dir_L));
+  const proj_u1 = $derived(
+    dir_L.clone().multiplyScalar(dir_L.clone().dot(u1) / dir_L.clone().dot(dir_L))
+  );
 
   //projection of u2 onto line L in direction of w2 gives proj
-  $: temp = u2.clone().addScaledVector(w2, -4);
-  $: proj_u2 = lineLineIntersection(temp, u2, start_L, end_L).clone();
+  const temp = $derived(u2.clone().addScaledVector(w2, -4));
+  const proj_u2 = $derived(lineLineIntersection(temp, u2, start_L, end_L).clone());
 
   //vector used to draw right angle to u1
-  $: v = u1.clone().sub(proj_u1);
-
-  $: w2.normalize();
+  const v = $derived(u1.clone().sub(proj_u1));
 
   //todo move this to a utils file?
   function lineLineIntersection(A: Vector2, B: Vector2, C: Vector2, D: Vector2) {
-    var xcd = D.x - C.x;
-    var ycd = D.y - C.y;
-    var xac = A.x - C.x;
-    proj_u1;
-    var yac = A.y - C.y;
-    var den = ycd * (B.x - A.x) - xcd * (B.y - A.y);
-    var u0 = (xcd * yac - ycd * xac) / den;
+    const xcd = D.x - C.x;
+    const ycd = D.y - C.y;
+    const xac = A.x - C.x;
+    const yac = A.y - C.y;
+
+    const den = ycd * (B.x - A.x) - xcd * (B.y - A.y);
+    const u0 = (xcd * yac - ycd * xac) / den;
     return new Vector2(A.x + u0 * (B.x - A.x), A.y + u0 * (B.y - A.y));
   }
 </script>
 
 <!-- LEFT PANEL : orthogonal -->
-
-<Canvas2D gridType={GridType.Square} cameraZoom={1.6}>
+<Canvas2D
+  draggables={draggableLeft}
+  splitCanvas2DProps={{ draggables: draggableRight }}
+  cameraZoom={1.6}
+>
   <!-- L1 -->
   <Line2D start={start_L} end={end_L} color={PrimeColor.blue} />
 
@@ -62,7 +70,6 @@
 
   <!-- u1 -->
   <Point2D position={u1} color={PrimeColor.raspberry} />
-  <Draggable2D id="u1" bind:position={u1} color={PrimeColor.raspberry} snap />
   <Latex2D
     latex={`\\mathbf{u}_1`}
     position={u1}
@@ -79,8 +86,8 @@
     color={PrimeColor.yellow}
   />
 
-  <RightAngle vs={[v, dir_L]} origin={proj_u1} size={0.25} />
-  <RightAngle vs={[w1, dir_L]} size={0.25} />
+  <RightAngle2D vs={[v, dir_L]} origin={proj_u1} size={0.25} />
+  <RightAngle2D vs={[w1, dir_L]} size={0.25} />
 
   <!-- T1(u1) -->
   <Point2D position={proj_u1} isSquare color={PrimeColor.blue} />
@@ -92,7 +99,7 @@
   />
 
   <!-- RIGHT PANEL : projection in driection of w2 -->
-  <svelte:fragment slot="splitCanvas">
+  {#snippet splitCanvas2DChildren()}
     <!-- L1 -->
     <Line2D start={start_L} end={end_L} color={PrimeColor.blue} width={0.03} />
 
@@ -101,7 +108,6 @@
 
     <!-- u2 -->
     <Point2D position={u2} color={PrimeColor.raspberry} />
-    <Draggable2D id="u2" bind:position={u2} color={PrimeColor.raspberry} snap />
     <Latex2D
       latex={`\\mathbf{u}_2`}
       position={u2}
@@ -111,7 +117,6 @@
 
     <!-- w2 -->
     <Vector2D direction={w2} color={PrimeColor.yellow} />
-    <Draggable2D id="w2" bind:position={w2} color={PrimeColor.yellow} snap />
     <Latex2D
       latex={`\\mathbf{w}_2`}
       position={w2}
@@ -127,5 +132,5 @@
       offset={new Vector2(-0.4, 0.5)}
       color={PrimeColor.blue}
     />
-  </svelte:fragment>
+  {/snippet}
 </Canvas2D>

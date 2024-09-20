@@ -1,12 +1,10 @@
 <script lang="ts">
-  import {
-    Canvas2D,
-    Draggable2D,
-    InfiniteLine2D,
-    Latex2D,
-    Point2D,
-    Vector2D
-  } from '$lib/d3-components';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
 
@@ -20,22 +18,24 @@
   const m = new Matrix3();
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
-  let dir_L = new Vector2(2, 2);
+  const draggables = [new Draggable(new Vector2(2, 2), PrimeColor.cyan, 'dir_L')];
+  let dir_L = $derived(draggables[0].position);
 
   function getOrthProjection(L: Vector2, p: Vector2) {
     return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
   }
 
-  $: u_ts = us.map((u) => {
-    const proj = getOrthProjection(dir_L, u);
-    const ut = proj.clone().add(proj.clone().sub(u));
-    return { u, ut };
-  });
+  const u_ts = $derived(
+    us.map((u) => {
+      const proj = getOrthProjection(dir_L, u);
+      const ut = proj.clone().add(proj.clone().sub(u));
+      return { u, ut };
+    })
+  );
 </script>
 
-<Canvas2D>
+<Canvas2D {draggables} title="Reflection of multiple points along a line">
   <!-- Line L -->
-  <Draggable2D id="dir_L" bind:position={dir_L} color={PrimeColor.cyan} />
   <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />
   <Latex2D
     latex={'\\mathcal{L}'}

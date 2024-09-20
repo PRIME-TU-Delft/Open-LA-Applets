@@ -1,6 +1,9 @@
 <script>
-  import { Canvas3D, Latex3D, PlaneFromNormal, Point3D, Vector3D } from '$lib/threlte-components';
-  import Vector from '$lib/threlte-components/Vector.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Point3D from '$lib/threlte/Point3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
@@ -31,7 +34,7 @@
   <Latex3D
     latex={String.raw`\mathbf{u}_{\mathcal{V}^{\perp}}`}
     position={new Vector3(0, u.y, 0)}
-    offset={0.3}
+    extend={0.3}
     color={PrimeColor.orange}
   />
 
@@ -46,7 +49,7 @@
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_1}}\mathbf{u}`}
     position={proj_v1}
-    offset={0.75}
+    extend={0.75}
     color={PrimeColor.raspberry}
     hasBackground
   />
@@ -61,7 +64,7 @@
   <Latex3D
     latex={String.raw`\text{proj}_{\mathbf{v_2}}\mathbf{u}`}
     position={proj_v2}
-    offset={0.75}
+    extend={0.75}
     color={PrimeColor.raspberry}
     hasBackground
   />
@@ -79,57 +82,12 @@
   />
 
   <!-- MARK: Helper vectors -->
-  <Vector3D
-    origin={proj_v1}
-    direction={proj_v2}
-    length={proj_v2.length()}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
-  <Vector3D
-    origin={proj_v1}
-    direction={proj_v2.clone().add(proj_v3)}
-    length={proj_v2.clone().add(proj_v3).length()}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
-
-  <Vector
-    origin={proj_v2}
-    direction={proj_v1}
-    length={proj_v1.length()}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
-  <Vector
-    origin={proj_v2}
-    direction={proj_v1.clone().add(proj_v3)}
-    length={proj_v1.clone().add(proj_v3).length()}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
-
-  <Vector
-    origin={new Vector3(0, u.y, 0)}
-    direction={new Vector3(u.x, 0, u.z)}
-    length={new Vector3(u.x, 0, u.z).length()}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
-
-  <Vector
-    origin={new Vector3(u.x, 0, u.z)}
-    direction={new Vector3(0, u.y, 0)}
-    length={u.y}
-    color={PrimeColor.black}
-    hideHead
-    striped
-  />
+  {@render helperVector(proj_v1, proj_v2)}
+  {@render helperVector(proj_v1, proj_v2.clone().add(proj_v3))}
+  {@render helperVector(proj_v2, proj_v1)}
+  {@render helperVector(proj_v2, proj_v1.clone().add(proj_v3))}
+  {@render helperVector(new Vector3(0, u.y, 0), new Vector3(u.x, 0, u.z))}
+  {@render helperVector(new Vector3(u.x, 0, u.z), new Vector3(0, u.y, 0))}
 
   <!-- MARK: V -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.darkGreen} />
@@ -139,3 +97,15 @@
     color={PrimeColor.darkGreen}
   />
 </Canvas3D>
+
+{#snippet helperVector(origin, direction)}
+  <Vector3D
+    {origin}
+    {direction}
+    noNormalise
+    color={PrimeColor.black}
+    radius={0.5}
+    hideHead
+    isDashed
+  />
+{/snippet}

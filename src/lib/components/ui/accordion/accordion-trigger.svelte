@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Icon from '$lib/components/Icon.svelte';
-  import { cn } from '$lib/utils.js';
-  import { mdiChevronDown } from '@mdi/js';
   import { Accordion as AccordionPrimitive } from 'bits-ui';
+  import ChevronDown from 'lucide-svelte/icons/chevron-down';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   type $$Props = AccordionPrimitive.TriggerProps;
   type $$Events = AccordionPrimitive.TriggerEvents;
@@ -15,16 +14,13 @@
 <AccordionPrimitive.Header {level} class="flex">
   <AccordionPrimitive.Trigger
     class={cn(
-      'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
+      'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
       className
     )}
     {...$$restProps}
     on:click
   >
     <slot />
-    <Icon
-      path={mdiChevronDown}
-      class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
-    />
+    <ChevronDown class="h-4 w-4 transition-transform duration-200" />
   </AccordionPrimitive.Trigger>
 </AccordionPrimitive.Header>

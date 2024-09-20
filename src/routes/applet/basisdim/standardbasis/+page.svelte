@@ -1,6 +1,10 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
-  import { Axis3D, Latex3D, Vector3D } from '$lib/threlte-components';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
 
@@ -15,28 +19,32 @@
   let te3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }}>
+<Canvas2D splitCanvas3DProps={{ cameraZoom: 100 }} title="The standard bases in 2d and 3d">
   <!-- e1 -->
-  <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue} let:endPoint>
-    <Latex2D
-      latex={'\\mathbf{e_1}'}
-      offset={new Vector2(-0.3, 0.4)}
-      position={endPoint}
-      color={PrimeColor.blue}
-    />
+  <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue}>
+    {#snippet children(endPoint)}
+      <Latex2D
+        latex={'\\mathbf{e_1}'}
+        offset={new Vector2(-0.3, 0.4)}
+        position={endPoint}
+        color={PrimeColor.blue}
+      />
+    {/snippet}
   </Vector2D>
 
   <!-- e2 -->
-  <Vector2D direction={e2} length={e2Length} color={PrimeColor.darkGreen} let:endPoint>
-    <Latex2D
-      latex={'\\mathbf{e_2}'}
-      offset={new Vector2(0.2, -0.1)}
-      position={endPoint}
-      color={PrimeColor.darkGreen}
-    />
+  <Vector2D direction={e2} length={e2Length} color={PrimeColor.darkGreen}>
+    {#snippet children(endPoint)}
+      <Latex2D
+        latex={'\\mathbf{e_2}'}
+        offset={new Vector2(0.2, -0.1)}
+        position={endPoint}
+        color={PrimeColor.darkGreen}
+      />
+    {/snippet}
   </Vector2D>
 
-  <svelte:fragment slot="splitCanvas3d">
+  {#snippet splitCanvas3DChildren()}
     <Axis3D showNumbers />
 
     <!-- e1 & e2 & e3 -->
@@ -47,5 +55,5 @@
     <Latex3D latex={'\\mathbf{e_1}'} position={te1} color={PrimeColor.blue} />
     <Latex3D latex={'\\mathbf{e_2}'} position={te2} color={PrimeColor.darkGreen} />
     <Latex3D latex={'\\mathbf{e_3}'} position={te3} color={PrimeColor.raspberry} />
-  </svelte:fragment>
+  {/snippet}
 </Canvas2D>

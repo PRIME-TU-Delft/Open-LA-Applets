@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Icon from '$lib/components/Icon.svelte';
-  import { cn } from '$lib/utils.js';
-  import { mdiChevronRight } from '@mdi/js';
   import type { HTMLLiAttributes } from 'svelte/elements';
+  import ChevronRight from 'lucide-svelte/icons/chevron-right';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   type $$Props = HTMLLiAttributes & {
     el?: HTMLLIElement;
@@ -21,8 +20,6 @@
   {...$$restProps}
 >
   <slot>
-    <div tabindex="-1">
-      <Icon path={mdiChevronRight} />
-    </div>
+    <ChevronRight />
   </slot>
 </li>

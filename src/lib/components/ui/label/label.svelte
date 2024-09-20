@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Label as LabelPrimitive } from 'bits-ui';
-  import { cn } from '$lib/utils.js';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   type $$Props = LabelPrimitive.Props;
+  type $$Events = LabelPrimitive.Events;
 
   let className: $$Props['class'] = undefined;
   export { className as class };
@@ -14,6 +15,7 @@
     className
   )}
   {...$$restProps}
+  on:mousedown
 >
   <slot />
 </LabelPrimitive.Root>

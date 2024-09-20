@@ -1,17 +1,26 @@
 <script lang="ts">
-  import Icon from '$lib/components/Icon.svelte';
   import * as Tooltip from '$lib/components/ui/tooltip';
-  import { cn } from '$lib/utils';
+  import { cn } from '$lib/utils/shadcn-utils.js';
+  import type { Snippet } from 'svelte';
 
-  export let icon = '';
-  export let tooltip = '';
-  export let side: 'top' | 'right' | 'bottom' | 'left' = 'left';
+  type ButtonActionProps = {
+    class?: string;
+    tooltip: string;
+    side?: 'top' | 'right' | 'bottom' | 'left';
+    onclick?: (e: MouseEvent) => void;
+    children?: Snippet;
+  };
 
-  let className = '';
-  export { className as class };
+  let {
+    class: className = '',
+    tooltip,
+    side = 'left',
+    onclick,
+    children
+  }: ButtonActionProps = $props();
 </script>
 
-<button on:click>
+<button onclick={(e) => onclick?.(e)}>
   <Tooltip.Root openDelay={300} closeDelay={50}>
     <Tooltip.Trigger
       class={cn(
@@ -20,9 +29,7 @@
       )}
       style="background: var(--bg)"
     >
-      <slot>
-        <Icon path={icon} />
-      </slot>
+      {@render children?.()}
     </Tooltip.Trigger>
     <Tooltip.Content {side} transitionConfig={{ x: 5, duration: 100 }}>
       <p>{tooltip}</p>

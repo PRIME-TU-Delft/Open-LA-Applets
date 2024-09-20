@@ -1,16 +1,13 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
-
-  import {
-    Angle3D,
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    PlaneFromNormal,
-    Point3D,
-    Vector3D
-  } from '$lib/threlte-components';
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Point3D from '$lib/threlte/Point3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector3 } from 'three';
 
   const normal = new Vector3(2, 4, 1);
   const normalizedNormal = normal.clone().normalize();
@@ -32,18 +29,24 @@
   <Latex3D
     latex={'\\mathbf{n}'}
     position={p.clone().add(normal.clone())}
-    offset={0.2}
+    extend={0.3}
     color={PrimeColor.orange}
   />
 
   <!-- P -->
   <Point3D position={p} color={PrimeColor.blue} />
-  <Latex3D latex={'P'} position={p} offset={-0.5} color={PrimeColor.blue} />
+  <Latex3D latex={'P'} position={p} extend={-0.5} color={PrimeColor.blue} />
 
   <!-- Q -->
   <Point3D position={q.clone().add(p)} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'Q'} position={q.clone().add(p)} offset={0.6} color={PrimeColor.darkGreen} />
-  <Vector3D origin={p} direction={q} color={PrimeColor.raspberry} length={normal.length()} />
+  <Latex3D latex={'Q'} position={q.clone().add(p)} extend={0.6} color={PrimeColor.darkGreen} />
+  <Vector3D
+    origin={p}
+    direction={q}
+    color={PrimeColor.raspberry}
+    length={normal.length()}
+    alwaysOnTop
+  />
 
   <Angle3D vs={[normal, q]} origin={p} size={0.5} />
 

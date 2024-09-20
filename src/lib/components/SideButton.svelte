@@ -1,22 +1,35 @@
 <script lang="ts">
   import * as Button from '$lib/components/ui/button';
-  import { cn } from '$lib/utils';
-  import { mdiRestart } from '@mdi/js';
+  import { cn } from '$lib/utils/shadcn-utils';
+  import type { Snippet } from 'svelte';
 
-  export let tooltip: string;
-  export let translate: string;
-  let classes: string = '';
-  export { classes as class };
+  type SideButtonProps = {
+    tooltip: string;
+    translate?: string;
+    class?: string;
+    onclick?: (e: MouseEvent) => void;
+    children: Snippet;
+  };
 
-  $: outerClasses = cn(
-    'absolute top-1/2 -translate-y-1/2 z-[-1] motion-safe:transition-all rounded-lg backdrop-blur-sm bg-blue-200/80 hover:bg-blue-300/80',
-    translate
+  let {
+    tooltip = '',
+    translate = 'left-1/2 -translate-x-1/2 top-5 scale-0',
+    class: classes = '',
+    onclick = () => {},
+    children
+  }: SideButtonProps = $props();
+
+  const outerClasses = $derived(
+    cn(
+      'absolute top-1/2 -translate-y-1/2 z-[-1] scale-100 hover:scale-105 motion-safe:transition-all rounded-lg backdrop-blur-sm bg-blue-200/80 hover:bg-blue-300/80',
+      translate
+    )
   );
-  $: innerClasses = cn('w-16 h-8 flex gap-0.5 text-blue-900', classes);
+  const innerClasses = $derived(cn('w-16 h-8 flex gap-0.5 text-blue-900', classes));
 </script>
 
 <div class={outerClasses}>
-  <Button.Action on:click class={innerClasses} icon={mdiRestart} {tooltip}>
-    <slot />
+  <Button.Action onclick={(e) => onclick(e)} class={innerClasses} {tooltip} side="top">
+    {@render children()}
   </Button.Action>
 </div>

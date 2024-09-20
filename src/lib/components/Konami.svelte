@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'; // Importing the createEventDispatcher function from Svelte.
+  type KonamiProps = {
+    debug?: boolean;
+    onKonami: () => void;
+  };
 
-  export let debug = false; // A debug flag that can be set to true to log the current keys sequence.
-
-  const dispatch = createEventDispatcher(); // Creating an event dispatcher.
+  let { debug = false, onKonami }: KonamiProps = $props();
 
   let lastKeyTime = 0; // The timestamp of the last key press.
   let konami = [
@@ -45,11 +46,11 @@
 
     if (currentKeys.length === konami.length) {
       // If the current keys sequence is the same length as the Konami Code sequence, dispatch the 'konami' event.
-      dispatch('konami');
+      onKonami();
     }
 
     lastKeyTime = e.timeStamp; // Update the timestamp of the last key press.
   }
 </script>
 
-<svelte:window on:keydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeyDown} />

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button as ButtonPrimitive } from 'bits-ui';
-  import { cn } from '$lib/utils.js';
-  import { buttonVariants, type Props, type Events } from './index.js';
+  import { type Events, type Props, buttonVariants } from './index.js';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   type $$Props = Props;
   type $$Events = Events;

@@ -1,14 +1,11 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
-  import {
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    PartialDeconstruction3D,
-    Vector3D
-  } from '$lib/threlte-components';
-
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PartialDeconstruction3D from '$lib/threlte/PartialDeconstruction3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector3 } from 'three';
 
   // Vectors
   const v1 = new Vector3(-1, 1, 2); //green vector
@@ -27,7 +24,7 @@
   <Vector3D direction={v1} color={PrimeColor.darkGreen} length={v1.length()} />
   <Latex3D
     position={v1}
-    offset={labelOffset}
+    extend={labelOffset}
     color={PrimeColor.darkGreen}
     latex={'\\begin{bmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{bmatrix}'}
   />
@@ -40,7 +37,7 @@
   <Vector3D direction={v2} color={PrimeColor.blue} length={v2.length()} />
   <Latex3D
     position={v2}
-    offset={labelOffset}
+    extend={labelOffset}
     color={PrimeColor.blue}
     latex={'\\begin{bmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{bmatrix}'}
   />
@@ -50,7 +47,7 @@
   <Vector3D direction={v3} color={PrimeColor.raspberry} length={v3.length()} />
   <Latex3D
     position={v3}
-    offset={labelOffset}
+    extend={labelOffset}
     color={PrimeColor.raspberry}
     latex={'\\begin{bmatrix} ' + v3.x + ' \\\\ ' + v3.z + ' \\\\ ' + v3.y + ' \\end{bmatrix}'}
   />

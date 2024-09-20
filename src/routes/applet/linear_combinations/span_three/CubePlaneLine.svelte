@@ -1,15 +1,19 @@
 <script lang="ts">
-  import { PlaneFromPoints } from '$lib/threlte-components';
-  import Line2 from '$lib/threlte-components/Line2.svelte';
-  import type { Controls } from '$lib/utils/Controls';
+  import type { Controls } from '$lib/controls/Controls';
+  import type { Toggle } from '$lib/controls/Toggle.svelte';
+  import Line3D from '$lib/threlte/Line3D.svelte';
+  import PlaneFromPoints from '$lib/threlte/planes/PlaneFromPoints.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Toggle } from '$lib/utils/Toggle';
   import { T } from '@threlte/core';
   import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
   import { Vector3 } from 'three';
 
-  export let toggles: Controls<readonly [Toggle, Toggle, Toggle]>;
-  export let uvw: [Vector3, Vector3, Vector3];
+  type CubePlaneLineProps = {
+    toggles: Controls<unknown, readonly [Toggle, Toggle, Toggle]>;
+    uvw: [Vector3, Vector3, Vector3];
+  };
+
+  let { toggles, uvw }: CubePlaneLineProps = $props();
 
   const CUBE_SIZE = 15;
 </script>
@@ -63,11 +67,12 @@
   <PlaneFromPoints points={[u, v, w]} color={PrimeColor.yellow} />
 {:else if toggles[0] || toggles[1] || toggles[2]}
   {#each toggles as toggle, i}
-    {#if toggle}
-      <Line2
+    {#if toggle.value}
+      <Line3D
         origin={uvw[i].clone().normalize().multiplyScalar(-10)}
         endPoint={uvw[i].clone().normalize().multiplyScalar(10)}
         color={PrimeColor.yellow}
+        radius={1.5}
       />
     {/if}
   {/each}

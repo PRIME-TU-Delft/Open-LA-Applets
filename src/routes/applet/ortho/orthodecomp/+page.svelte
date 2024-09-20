@@ -1,17 +1,10 @@
 <script lang="ts">
-  import { RightAngle, Canvas2D, Vector2D, Latex2D } from '$lib/d3-components';
-
-  import { Vector2, Vector3 } from 'three';
-  import {
-    Axis3D,
-    Canvas3D,
-    Latex3D,
-    Vector3D,
-    PlaneFromNormal,
-    Point3D
-  } from '$lib/threlte-components';
+  import { Vector3 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Vector from '$lib/d3-components/Vector.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
 
   let V = new Vector3(0, 0, 0);
   const n0 = new Vector3(0, 1, 0);
@@ -50,7 +43,7 @@
     direction={proj_v.clone().sub(v)}
     length={proj_v.clone().sub(v).length()}
     color={PrimeColor.black}
-    striped
+    isDashed
     hideHead
   />
 
@@ -60,7 +53,7 @@
     direction={w.clone().sub(v)}
     length={w.clone().sub(v).length()}
     color={PrimeColor.black}
-    striped
+    isDashed
     hideHead
   />
 

@@ -1,6 +1,17 @@
 import { Vector2, Vector3 } from 'three';
 
 /**
+ * round to a certain number of decimal places
+ * @param x - number to round
+ * @param precision - number of decimal places
+ * @returns rounded number
+ */
+export function round(x: number, precision = 2) {
+  const factor = Math.pow(10, precision);
+  return Math.round(x * factor) / factor;
+}
+
+/**
  * The snapPointToLine function calculates the smallest distance from a point to a line.
  * It then returns the closest point on that line if the actual distance is smaller than the required distance
  * @param point The point to check the distance from
@@ -27,7 +38,7 @@ export function snapPointToLine(
   if (actual_distance < distance) {
     return new Vector2(x3, y3);
   }
-  return null;
+  return point;
 }
 
 /**
@@ -60,6 +71,46 @@ export function orthogonalProjection(L: Vector2, p: Vector2) {
 }
 
 /**
+ * Orthogonally projects a point on an infinite line with a given direction and point on line (origin)
+ * @param point: point to project
+ * @param origin : point on line
+ * @param direction direction of line
+ * @returns point of projection
+ */
+export function orthogonalProjectionWithOffset(
+  point: Vector2,
+  origin: Vector2,
+  direction: Vector2
+): Vector2 {
+  // Destructure the point, origin, and direction into their components
+  const [Px, Py] = point;
+  const [Ox, Oy] = origin;
+  const [Dx, Dy] = direction;
+
+  // Step 1: Calculate the vector OP from O to P
+  const OPx = Px - Ox;
+  const OPy = Py - Oy;
+
+  // Step 2: Calculate the dot product of OP and D
+  const dotProduct = OPx * Dx + OPy * Dy;
+
+  // Step 3: Calculate the magnitude squared of D
+  const directionMagnitudeSquared = Dx * Dx + Dy * Dy;
+
+  // Step 4: Calculate the projection factor
+  const projectionFactor = dotProduct / directionMagnitudeSquared;
+
+  // Step 5: Scale the direction vector by the projection factor
+  const projectionDx = projectionFactor * Dx;
+  const projectionDy = projectionFactor * Dy;
+
+  // Step 6: Calculate the projection point by adding the scaled direction to the origin
+  const projectionPoint: Vector2 = new Vector2(Ox + projectionDx, Oy + projectionDy);
+
+  return projectionPoint;
+}
+
+/**
  * Given a time parameter t (in range -PI to PI) gives a point on a circle in 3D.
  * @param t time parameter for parametric circle
  * @param radius of circle
@@ -76,4 +127,31 @@ export function parametic_point_on_circle_3D(t: number, radius: number) {
   const y = c.y + radius * Math.cos(t) * a.y + radius * Math.sin(t) * b.y;
   const z = c.z + radius * Math.cos(t) * a.z + radius * Math.sin(t) * b.z;
   return new Vector3(x, y, z);
+}
+
+export function leastSquaresLine(points: Vector2[]) {
+  // calc x and y vals summes
+  const sumX = points
+    .map((p) => p.x)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const sumY = points
+    .map((p) => p.y)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  // cals xy summed
+  const sumXY = points
+    .map((p) => p.x * p.y)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  // calc x^2 summed
+  const sumXX = points
+    .map((p) => p.x * p.x)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const N = points.length;
+
+  const m = (N * sumXY - sumX * sumY) / (N * sumXX - sumX * sumX);
+  const b = (sumY - m * sumX) / N;
+
+  //p2 at x=5
+  const y2 = m * 5 + b;
+
+  return [new Vector2(0, b), new Vector2(5, y2)];
 }

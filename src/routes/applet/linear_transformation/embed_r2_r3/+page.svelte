@@ -1,48 +1,49 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Line2D, Vector2D } from '$lib/d3-components';
-
-  import LatexUI from '$lib/components/Latex.svelte';
-  import { Axis3D, Latex3D, Line3D, Vector3D } from '$lib/threlte-components';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import Line3D from '$lib/threlte/Line3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
 
-  let e1 = new Vector2(1, 0);
-  let e2 = new Vector2(0, 1);
+  const e1 = new Vector2(1, 0);
+  const e2 = new Vector2(0, 1);
 
-  let e1Length = 1;
-  let e2Length = 2;
+  const draggables = [new Draggable(new Vector2(1, 2), PrimeColor.blue, 'v', Draggable.snapToGrid)];
 
-  let v = e1.clone().multiplyScalar(e1Length).add(e2.clone().multiplyScalar(e2Length));
+  const v = $derived(draggables[0].position);
 
-  let te1 = new Vector3(0, 0, 1);
-  let te2 = new Vector3(1, 0, 0);
-  let tv = te1.clone().multiplyScalar(2).add(te2);
+  const te1 = new Vector3(e1.y, 0, e1.x);
+  const te2 = new Vector3(e2.y, 0, e2.x);
+  const tv = $derived(new Vector3(v.y, 0, v.x));
 
-  $: {
-    te1 = new Vector3(e1.y, 0, e1.x);
-    te2 = new Vector3(e2.y, 0, e2.x);
-    v = e1.clone().multiplyScalar(e1Length).add(e2.clone().multiplyScalar(e2Length));
-    tv = te1.clone().multiplyScalar(e1Length).add(te2.clone().multiplyScalar(e2Length));
-  }
+  const f1 = new Formula(
+    'T(\\mathbf{x})= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} \\mathbf{x}'
+  );
 </script>
 
-<!-- TODO move this to formulas -->
-<div class="absolute left-1/2 top-1/3 scale-100 -translate-x-1/2 -translate-y-1/2 z-30">
-  <LatexUI latex={'T(x)=\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x'} />
-</div>
-
 <Canvas2D
-  cameraZoom={1.5}
+  formulas={[f1]}
+  {draggables}
+  showFormulasDefault
+  cameraZoom={2}
   cameraPosition={new Vector2(1, 2)}
-  splitCanvas3DProps={{ cameraZoom: 50 }}
+  splitCanvas3DProps={{ cameraZoom: 100 }}
 >
   <!-- e1 -->
-  <Vector2D bind:direction={e1} length={1} color={PrimeColor.raspberry}>
+  <Vector2D direction={e1} length={1} color={PrimeColor.raspberry}>
     <Latex2D latex={'\\mathbf{e_1}'} position={e1} offset={new Vector2(0, -0.2)} />
   </Vector2D>
 
   <!-- e2 -->
-  <Vector2D bind:direction={e2} length={1} color={PrimeColor.yellow}>
+  <Vector2D direction={e2} length={1} color={PrimeColor.yellow}>
     <Latex2D latex={'\\mathbf{e_2}'} position={e2} offset={new Vector2(-0.2, 0)} />
   </Vector2D>
 
@@ -57,10 +58,10 @@
   </Vector2D>
 
   <!-- Helper lines -->
-  <Line2D start={e1.clone().multiplyScalar(e1Length)} end={v} width={0.05} isDashed />
-  <Line2D start={e2.clone().multiplyScalar(e2Length)} end={v} width={0.05} isDashed />
+  <Line2D start={e1.clone().multiplyScalar(v.x)} end={v} width={0.05} isDashed />
+  <Line2D start={e2.clone().multiplyScalar(v.y)} end={v} width={0.05} isDashed />
 
-  <svelte:fragment slot="splitCanvas3d">
+  {#snippet splitCanvas3DChildren()}
     <Axis3D />
 
     <!-- e1 & e2 -->
@@ -74,7 +75,15 @@
     <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.blue} />
 
     <!-- Helper lines -->
-    <Line3D points={[te1.clone().multiplyScalar(e1Length), tv.clone()]} color="black" isDashed />
-    <Line3D points={[te2.clone().multiplyScalar(e2Length), tv.clone()]} color="black" isDashed />
-  </svelte:fragment>
+    <Line3D origin={te1.clone().multiplyScalar(v.x)} endPoint={tv.clone()} color="black" isDashed />
+    <Line3D origin={te2.clone().multiplyScalar(v.y)} endPoint={tv.clone()} color="black" isDashed />
+
+    <PlaneFromNormal
+      position={new Vector3(0, 0, 0)}
+      normal={new Vector3(0, 1, 0)}
+      size={10}
+      color={PrimeColor.yellow}
+      opacity={0.2}
+    />
+  {/snippet}
 </Canvas2D>

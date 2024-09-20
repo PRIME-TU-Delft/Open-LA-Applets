@@ -1,22 +1,21 @@
 <script>
-  import { AutoPlane, PlaneFromNormal, Vector3D } from '$lib/threlte-components';
+  import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { Vector3 } from 'three';
-  import CustomRenderer from '$lib/threlte-components/CustomRenderer.svelte';
 
-  export let elevation = 0;
-  export let azimuth = 250;
-  export let grid = true;
+  let elevation = -2;
+  let azimuth = 180;
+  let grid = true;
 
   let position = new Vector3(10, 10, 7);
   let zoom = 40;
-  //the original red
-  const red = '#E03C31';
 </script>
 
-<PlaneFromNormal normal={new Vector3(1, 1, 1)} color={red} size={12} opacity={1} />
+<PlaneFromNormal normal={new Vector3(1, 1, 1)} color={PrimeColor.raspberry} size={12} opacity={1} />
 <PlaneFromNormal normal={new Vector3(3, 1, 1)} color={PrimeColor.yellow} size={11} opacity={1} />
 <PlaneFromNormal normal={new Vector3(8, 1, 1)} color={PrimeColor.darkGreen} size={10} opacity={1} />
 
@@ -25,7 +24,7 @@
   length={28}
   origin={new Vector3(0, -10, 10)}
   direction={new Vector3(0, 1, -1)}
-  radius={0.2}
+  radius={2}
   hideHead
 />
 

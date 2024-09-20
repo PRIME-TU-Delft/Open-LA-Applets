@@ -1,9 +1,8 @@
 <script lang="ts">
   import { formatString } from '$lib/utils/FormatString';
-  import { mdiArrowRight, mdiEye, mdiEyeOff } from '@mdi/js';
-  import Icon from '$lib/components/Icon.svelte';
   import { fade } from 'svelte/transition';
   import * as Button from '$lib/components/ui/button';
+  import { ArrowRight, Eye, EyeOff } from 'lucide-svelte';
 
   export let url = '';
   export let title = '';
@@ -19,11 +18,11 @@
 <div in:fade class="flex gap-2 items-center">
   {#if showUrlIframe == url}
     <Button.Root class="h-12 bg-blue-400 hover:bg-blue-900" on:click={() => toggleUrlIframe(url)}>
-      <Icon path={mdiEyeOff} />
+      <EyeOff class="w-4 h-4" />
     </Button.Root>
   {:else}
     <Button.Root class="h-12 bg-blue-900" on:click={() => toggleUrlIframe(url)}>
-      <Icon path={mdiEye} />
+      <Eye class="w-4 h-4" />
     </Button.Root>
   {/if}
   <a
@@ -38,7 +37,7 @@
         {formatString(title)}
       </span>
     </div>
-    <Icon path={mdiArrowRight} />
+    <ArrowRight />
   </a>
 </div>
 
@@ -49,5 +48,5 @@
     src={url + '?iframe=true'}
     frameborder="0"
     allowfullscreen
-  />
+  ></iframe>
 {/if}

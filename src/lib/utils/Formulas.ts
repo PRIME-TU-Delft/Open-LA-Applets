@@ -42,8 +42,12 @@ export class Formula {
 
     this.stringFormula = this.stringFormula.replaceAll(
       '\\$',
-      `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
+      `\\textcolor{${color || PrimeColor.black}}{${value}}`
     );
+  }
+
+  raw() {
+    return this.stringFormula;
   }
 
   addParam(index: number, param: number | string, color?: PrimeColor) {
@@ -52,12 +56,12 @@ export class Formula {
     if (index <= 0) {
       this.stringFormula = this.stringFormula.replaceAll(
         `\\$`,
-        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
+        `\\textcolor{${color || PrimeColor.black}}{${value}}`
       );
     } else {
       this.stringFormula = this.stringFormula.replaceAll(
         `\\$${index}`,
-        `\\htmlStyle{color: ${color || PrimeColor.black};}{${value}}`
+        `\\textcolor{${color || PrimeColor.black}}{${value}}`
       );
     }
 
@@ -84,7 +88,7 @@ export class Formula {
 
   removeColor(): this {
     // Regex that filters out the color (color is a hex value)
-    const regex = /\\htmlStyle{color: #[0-9a-fA-F]{6};}{(.+?)}/g;
+    const regex = /\\textcolor{#[0-9a-fA-F]{6}}{(.+?)}/g;
 
     // Remove the color from the formula but keep its value
     this.stringFormula = this.stringFormula.replace(regex, '$1');

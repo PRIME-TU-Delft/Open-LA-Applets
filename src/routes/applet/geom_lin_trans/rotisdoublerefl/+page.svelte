@@ -1,75 +1,59 @@
 <script lang="ts">
-  import {
-    Canvas2D,
-    Draggable2D,
-    InfiniteLine2D,
-    Latex2D,
-    Point2D,
-    Vector2D
-  } from '$lib/d3-components';
-  import Arc from '$lib/d3-components/Arc.svelte';
-  import Angle from '$lib/d3-components/Angle.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Angle2D from '$lib/d3/Angle2D.svelte';
+  import Arc2D from '$lib/d3/Arc2D.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
   import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  let dir_La = new Vector2(3, 2);
-  let dir_Lb = new Vector2(2, 3);
-  let v = new Vector2(-3, -1);
+  const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
+    label: 'ϕ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
+    label: 'θ/2',
+    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+  });
 
-  $: angle_a = dir_La.angle();
-  $: angle_b = dir_Lb.angle();
+  const draggables = [
+    new Draggable(new Vector2(-3, -1), PrimeColor.raspberry, 'v', Draggable.snapToGrid)
+  ];
+  const v = $derived(draggables[0].position);
 
-  $: dir_L1 = angle_a < angle_b ? dir_La : dir_Lb;
-  $: dir_L2 = angle_a < angle_b ? dir_Lb : dir_La;
-
-  $: angle_1 = Math.min(angle_a, angle_b);
-  $: angle_2 = Math.max(angle_a, angle_b);
-
-  function getFormulas(angle_1: number, angle_2: number) {
-    const phiDiv2 = angle_1 / Math.PI;
-    const thetaDiv2 = angle_2 / Math.PI - phiDiv2;
-
-    const f1 = new Formula('\\phi / 2 = \\$\\pi', phiDiv2.toFixed(2), PrimeColor.cyan);
-    const f2 = new Formula('\\theta / 2 = \\$\\pi', thetaDiv2.toFixed(2), PrimeColor.blue);
-
-    return new Formulas(f1, f2);
-  }
+  const dir_L1 = $derived(new Vector2(1, 0).rotateAround(new Vector2(0, 0), controls[0]));
+  const dir_L2 = $derived(dir_L1.clone().rotateAround(new Vector2(0, 0), controls[1]));
 
   function getOrthProjection(L: Vector2, p: Vector2) {
     return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));
   }
 
-  $: formulas = getFormulas(angle_1, angle_2);
+  const formulas = $derived.by(() => {
+    const phiDiv2 = controls[0] / Math.PI;
+    const thetaDiv2 = controls[1] / Math.PI;
 
-  let T_L1: Vector2;
-  let T_L2: Vector2;
+    const f1 = new Formula('\\phi / 2 = \\$\\pi', phiDiv2.toFixed(2), PrimeColor.cyan);
+    const f2 = new Formula('\\theta / 2 = \\$\\pi', thetaDiv2.toFixed(2), PrimeColor.blue);
 
-  $: {
+    return new Formulas(f1, f2);
+  });
+
+  let T_L1: Vector2 = $derived.by(() => {
     const L1_proj = getOrthProjection(dir_L1, v);
-    T_L1 = L1_proj.clone().add(L1_proj.clone().sub(v));
-  }
-
-  $: {
+    return L1_proj.clone().add(L1_proj.clone().sub(v));
+  });
+  let T_L2: Vector2 = $derived.by(() => {
     const L2_proj = getOrthProjection(dir_L2, T_L1);
-    T_L2 = L2_proj.clone().add(L2_proj.clone().sub(T_L1));
-  }
+    return L2_proj.clone().add(L2_proj.clone().sub(T_L1));
+  });
 </script>
 
-<Canvas2D {formulas}>
-  <!-- La & Lb draggables -->
-  <Draggable2D
-    id="dir_La"
-    bind:position={dir_La}
-    color={angle_a < angle_b ? PrimeColor.cyan : PrimeColor.blue}
-  />
-  <Draggable2D
-    id="dir_Lb"
-    bind:position={dir_Lb}
-    color={angle_a < angle_b ? PrimeColor.blue : PrimeColor.cyan}
-  />
-
+<Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
   <!-- L1 -->
   <InfiniteLine2D direction={dir_L1} color={PrimeColor.cyan} />
   <Latex2D
@@ -89,20 +73,26 @@
   />
 
   <!-- ARCS -->
-  <Arc points={[new Vector2(1, 0), dir_L1]} distance={1.2} />
+  <Arc2D points={[new Vector2(1, 0), dir_L1]} distance={1.2} />
   <Latex2D
     latex={'\\phi / 2'}
-    position={dir_L1.clone().add(new Vector2(1, 0)).normalize().multiplyScalar(1.5)}
+    position={dir_L1.clone().normalize().add(new Vector2(1, 0)).normalize().multiplyScalar(1.75)}
+    offset={new Vector2(-0.25, 0.25)}
   />
 
-  <Arc points={[dir_L1, dir_L2]} distance={1.5} />
+  <Arc2D points={[dir_L1, dir_L2]} distance={1.5} />
   <Latex2D
     latex={'\\theta / 2'}
-    position={dir_L2.clone().add(dir_L1).normalize().multiplyScalar(1.5)}
+    position={dir_L2
+      .clone()
+      .normalize()
+      .add(dir_L1.clone().normalize())
+      .normalize()
+      .multiplyScalar(2)}
+    offset={new Vector2(-0.25, 0.25)}
   />
 
   <!-- V -->
-  <Draggable2D id="v" snap bind:position={v} color={PrimeColor.raspberry} />
   <Latex2D latex={'\\mathbf{v}'} position={v} extend={0.5} color={PrimeColor.raspberry} />
   <Vector2D
     direction={v}
@@ -153,9 +143,9 @@
     extend={0.5}
   />
 
-  <Angle
+  <Angle2D
     startAngle={v.angle()}
-    endAngle={v.angle() + 2 * (angle_b - angle_a)}
+    endAngle={v.angle() + 2 * controls[1]}
     distance={1}
     color={PrimeColor.darkGreen}
   />

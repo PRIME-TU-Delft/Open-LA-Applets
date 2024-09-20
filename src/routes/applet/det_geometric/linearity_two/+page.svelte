@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { Canvas2D, Latex2D, Vector2D } from '$lib/d3-components';
-  import Point from '$lib/d3-components/Point.svelte';
-  import Polygon from '$lib/d3-components/Polygon.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Polygon2D from '$lib/d3/Polygon2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
   import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
-  import { Controls } from '$lib/utils/Controls';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-
-  let controls = Controls.addSlider(0, 0, 3.5, 0.1, PrimeColor.raspberry);
-
-  const clamp = (number: number, min: number, max: number) => Math.max(min, Math.min(number, max));
+  import { createControls } from './animation';
 
   // Primitives
   const o = new Vector2(0, 0);
@@ -32,56 +31,64 @@
 
   // Subtract
   const OBDA = [o, w, uw, u]; // OBDA / CGEF
+
+  let controls = createControls(u, v);
+
+  const state = $derived(controls[0]);
 </script>
 
-<Canvas2D bind:controls showAxisNumbers={false}>
+<Canvas2D {controls} showAxisNumbers={false}>
   <!-- MARK: Polygons -->
-  {#if controls[0] < 1}
-    <Polygon
+  {#if state.OAFC.visible}
+    <Polygon2D
       points={OAFC}
       color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
       strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
-  {:else if controls[0] < 2}
-    <Polygon
+  {/if}
+
+  {#if state.OAFCG.visible && state.OGC.visible}
+    <Polygon2D
       points={OAFCG}
       color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
       strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
 
-    <Polygon
+    <Polygon2D
       points={OGC}
-      offset={u.clone().multiplyScalar(clamp(controls[0] - 1, 0, 1))}
+      offset={state.OGC.offset}
       color={PrimeColor.darkGreen + PrimeColor.opacity(0.2)}
       strokeColor={PrimeColor.darkGreen}
       strokeWidth={0.75}
     />
-  {:else}
-    <Polygon
+  {/if}
+
+  {#if state.CGEF.visible && state.OAEG.visible}
+    <Polygon2D
       points={CGEF}
       color={PrimeColor.blue + PrimeColor.opacity(0.2)}
       strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
-      opacity={3 - controls[0]}
+      opacity={state.CGEF.opacity}
     />
 
-    <Polygon
+    <Polygon2D
       points={OAEG}
-      color={(controls[0] > 2 ? PrimeColor.blue : PrimeColor.darkGreen) + PrimeColor.opacity(0.1)}
+      color={PrimeColor.blue + PrimeColor.opacity(0.1)}
       strokeColor={PrimeColor.blue}
       strokeWidth={0.75}
     />
   {/if}
 
-  <Polygon
+  <Polygon2D
     points={OBDA}
-    offset={v.clone().multiplyScalar(Math.min(1, controls[0]))}
+    offset={state.OBDA.offset}
     color={PrimeColor.raspberry + PrimeColor.opacity(0.2)}
     strokeColor={PrimeColor.raspberry}
     strokeWidth={0.75}
-    opacity={3 - controls[0]}
+    opacity={state.OBDA.opacity}
   />
 
   <!-- MARK: U, V, W, V + W -->
@@ -110,7 +117,7 @@
   />
 
   <!-- MARK: VW -->
-  {#if controls[0] > 1}
+  {#if state.vPlusW.visible}
     <Vector2D direction={vw} length={vw.length()} color={PrimeColor.blue} />
     <Latex2D
       latex={String.raw`\mathbf{v+w}`}
@@ -123,14 +130,14 @@
   {/if}
 
   <!-- MARK: LABELS A-G -->
-  <Point position={uw} />
-  <Point position={uvw} />
-  <Point position={vw} />
-  <Point position={uv} radius={POINT_SIZE * 0.75} />
-  <Point position={v} radius={POINT_SIZE * 0.75} />
-  <Point position={w} radius={POINT_SIZE * 0.75} />
-  <Point position={o} radius={POINT_SIZE * 0.75} />
-  <Point position={u} radius={POINT_SIZE * 0.75} />
+  <Point2D position={uw} />
+  <Point2D position={uvw} />
+  <Point2D position={vw} />
+  <Point2D position={uv} radius={POINT_SIZE * 0.75} />
+  <Point2D position={v} radius={POINT_SIZE * 0.75} />
+  <Point2D position={w} radius={POINT_SIZE * 0.75} />
+  <Point2D position={o} radius={POINT_SIZE * 0.75} />
+  <Point2D position={u} radius={POINT_SIZE * 0.75} />
 
   <Latex2D latex={'A'} position={u} offset={new Vector2(0.15, 0.3)} />
   <Latex2D latex={'B'} position={w} offset={new Vector2(-0.1, -0.2)} />
@@ -140,33 +147,32 @@
   <Latex2D latex={'F'} position={uv} offset={new Vector2(0.1, 0.25)} />
   <Latex2D latex={'G'} position={vw} offset={new Vector2(0.1, 0.25)} />
 
-  {#if controls[0] < 2}
+  {#if state.OAFC.visible || state.OAFCG.visible}
     <Latex2D
       latex={'OAFC'}
       position={uv.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.2, -0.1)}
     />
-  {:else if controls[0] >= 2}
+
+    <Latex2D
+      latex={'OBDA'}
+      position={uw.clone().multiplyScalar(0.5)}
+      offset={state.OBDA.offset.clone().add(new Vector2(-0.25, 0.25))}
+    />
+  {/if}
+
+  {#if state.CGEF.visible || state.OAEG.visible}
     <Latex2D
       latex={'OAEG'}
       position={uvw.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.2, 0.2)}
     />
-  {/if}
 
-  {#if controls[0] < 0.25}
-    <Latex2D
-      latex={'OBDA'}
-      position={uw.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.1, 0.2)}
-      textSize={13 - 13 * controls[0]}
-    />
-  {:else if controls[0] > 0.75 && controls[0] < 2.25}
     <Latex2D
       latex={'CGEF'}
       position={new Vector2(3, 3)}
       offset={new Vector2(-0.1, 0.2)}
-      textSize={13 * Math.min(1, controls[0])}
+      fontSize={state.CGEF.opacity}
     />
   {/if}
 </Canvas2D>

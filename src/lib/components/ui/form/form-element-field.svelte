@@ -1,12 +1,15 @@
-<script lang="ts">
-  import { cn } from '$lib/utils.js';
-  import * as FormPrimitive from 'formsnap';
-  import type { HTMLAttributes } from 'svelte/elements';
-  import type { SuperForm } from 'sveltekit-superforms';
+<script lang="ts" context="module">
+  import type { FormPathLeaves, SuperForm } from 'sveltekit-superforms';
+  type T = Record<string, unknown>;
+  type U = FormPathLeaves<T>;
+</script>
 
-  type T = $$Generic<Record<string, unknown>>;
-  type U = $$Generic<FormPath<T>>;
-  type $$Props = FormPrimitive.ElementFieldProps<T, U> & HTMLAttributes<HTMLDivElement>;
+<script lang="ts" generics="T extends Record<string, unknown>, U extends FormPathLeaves<T>">
+  import type { HTMLAttributes } from 'svelte/elements';
+  import * as FormPrimitive from 'formsnap';
+  import { cn } from '$lib/utils/shadcn-utils.js';
+
+  type $$Props = FormPrimitive.ElementFieldProps<T, U> & HTMLAttributes<HTMLElement>;
 
   export let form: SuperForm<T>;
   export let name: U;

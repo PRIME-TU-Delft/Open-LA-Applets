@@ -1,58 +1,65 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import Icon from '$lib/components/Icon.svelte';
   import * as Command from '$lib/components/ui/command/index.js';
-  import { mdiArrowRight, mdiClose, mdiEye, mdiEyeOff, mdiFile, mdiFileOutline } from '@mdi/js';
+  import { ArrowRight, Cross, Eye, EyeOff, File } from 'lucide-svelte';
   import { onMount } from 'svelte';
   import { scale } from 'svelte/transition';
 
-  export let fileUrls: string[];
+  type CommandPromptProps = {
+    fileUrls: string[];
+  };
 
-  let open = false;
-  let showPreview = false;
+  let { fileUrls }: CommandPromptProps = $props();
 
-  interface File {
+  let open = $state(false);
+  let showPreview = $state(false);
+
+  interface Applet {
     file: string;
     folder: string;
     url: string;
   }
 
-  let openApplets = new Set<string>([]);
+  let openApplets = $state(new Set<string>([]));
 
-  $: folders = fileUrls
-    .map((fileUrl) => {
-      const parts = fileUrl.split('/');
-      const file = parts.pop() || '';
-      const folder = parts.join('/');
+  const folders = $derived(
+    fileUrls
+      .map((fileUrl) => {
+        const parts = fileUrl.split('/');
+        const file = parts.pop() || '';
+        const folder = parts.join('/');
 
-      return { file, folder };
-    })
-    .reduce(
-      (acc, curr) => {
-        const file = {
-          file: curr.file.replaceAll('_', ' '),
-          folder: curr.folder,
-          url: `/applet/${curr.folder}/${curr.file}`
-        };
+        return { file, folder };
+      })
+      .reduce(
+        (acc, curr) => {
+          const file = {
+            file: curr.file.replaceAll('_', ' '),
+            folder: curr.folder,
+            url: `/applet/${curr.folder}/${curr.file}`
+          };
 
-        if (curr.folder in acc) {
-          acc[curr.folder].push(file);
-        } else {
-          acc[curr.folder] = [file];
-        }
-        return acc;
-      },
-      {} as Record<string, File[]>
-    );
+          if (curr.folder in acc) {
+            acc[curr.folder].push(file);
+          } else {
+            acc[curr.folder] = [file];
+          }
+          return acc;
+        },
+        {} as Record<string, Applet[]>
+      )
+  );
 
   function reset() {
     showPreview = false;
     openApplets = new Set<string>([]);
   }
 
-  $: !open && reset();
+  $effect(() => {
+    if (!open) reset();
+  });
 
-  function selectPreviewApplet(file: File) {
+  function selectPreviewApplet(file: Applet) {
     if (openApplets.has(file.file)) {
       openApplets.delete(file.file);
     } else {
@@ -62,7 +69,7 @@
     openApplets = new Set(openApplets);
   }
 
-  function selectPreviewAppletFolder(files: File[]) {
+  function selectPreviewAppletFolder(files: Applet[]) {
     const hasAll = files.every((file) => openApplets.has(file.file));
 
     if (hasAll) {
@@ -111,13 +118,18 @@
     <Command.Empty>No results found.</Command.Empty>
 
     <Command.Item value="show hide preview" onSelect={toggleShowPreview}>
-      <Icon class="mx-2" path={showPreview ? mdiFileOutline : mdiEye} />
+      <!-- <Icon class="mx-2" path={showPreview ? mdiFileOutline : mdiEye} /> -->
+      {#if showPreview}
+        <File class="mx-2" />
+      {:else}
+        <Eye class="mx-2" />
+      {/if}
       <span>{showPreview ? 'Go to' : 'Preview'} mode</span>
     </Command.Item>
 
     {#if openApplets.size > 0}
       <Command.Item value="close all previews" onSelect={() => (openApplets = new Set([]))}>
-        <Icon class="mx-2" path={mdiClose} />
+        <Cross class="mx-2" />
         <span>Close all previews</span>
       </Command.Item>
     {/if}
@@ -134,7 +146,11 @@
             onSelect={() => selectPreviewAppletFolder(files)}
           >
             <div class="flex gap-2 justify-start w-full">
-              <Icon path={hasAllPreviewed ? mdiEyeOff : mdiEye} />
+              {#if hasAllPreviewed}
+                <EyeOff class="mx-2" />
+              {:else}
+                <Eye class="mx-2" />
+              {/if}
               <span
                 >{hasAllPreviewed ? 'Hide all previews' : 'Preview all applets'} from {folderTitle}</span
               >
@@ -151,7 +167,11 @@
               onSelect={() => selectPreviewApplet(file)}
             >
               <div class="flex gap-2 justify-start w-full">
-                <Icon path={isPreviewed ? mdiEyeOff : mdiEye} />
+                {#if isPreviewed}
+                  <EyeOff class="mx-2" />
+                {:else}
+                  <Eye class="mx-2" />
+                {/if}
                 <span>Preview {file.file}</span>
               </div>
 
@@ -163,7 +183,7 @@
                   src={file.url + '?iframe=true'}
                   frameborder="0"
                   allowfullscreen
-                />
+                ></iframe>
               {/if}
             </Command.Item>
           {:else}
@@ -173,10 +193,11 @@
               onSelect={() => goto(file.url)}
             >
               <div class="flex gap-2">
-                <Icon path={mdiFileOutline} />
+                <File class="mx-2" />
                 <span>Go to {file.file} applet</span>
               </div>
-              <Icon path={mdiArrowRight} />
+
+              <ArrowRight class="mx-2" />
             </Command.Item>
           {/if}
         {/each}
