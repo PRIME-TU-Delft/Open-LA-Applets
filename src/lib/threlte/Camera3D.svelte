@@ -92,8 +92,6 @@
   // Function that changes the camera State for 3D camera
   // Updates when the camera "changes"
   function handleCameraChange() {
-    console.log('update');
-
     const cam = $camera as OrthographicCamera;
 
     const splitCamera3D = new Camera3D(cam);

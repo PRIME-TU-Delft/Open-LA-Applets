@@ -8,6 +8,7 @@
     tickLength?: number; // TODO: move axis to separate component
     showAxisNumbers?: boolean;
     width: number;
+    height: number;
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
@@ -42,6 +43,7 @@
     tickLength,
     showAxisNumbers,
     width,
+    height,
     enablePan = true,
     draggables = [],
     isSplit = false,
@@ -49,8 +51,6 @@
   }: Canvas2DProps = $props();
 
   let id = 'canvas-' + generateUUID();
-
-  let height = $derived(globalState.height);
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -65,6 +65,8 @@
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
   function transformScene(transform: Transform2D) {
+    if (!transform.k) return;
+
     if (enablePan) {
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {

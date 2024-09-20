@@ -33,8 +33,8 @@
     formulas,
     controls,
     splitFormulas,
-    splitCanvas2DProps = {},
-    splitCanvas3DProps = {},
+    splitCanvas2DProps,
+    splitCanvas3DProps,
     children,
     splitCanvas2DChildren,
     splitCanvas3DChildren,
@@ -48,10 +48,8 @@
     draggables = []
   }: CanvasProps = $props();
 
-  const canvasWidth = $derived(
-    hasProps(splitCanvas2DProps) || hasProps(splitCanvas3DProps)
-      ? globalState.width / 2
-      : globalState.width
+  const hasSplitCanvas = $derived(
+    splitCanvas2DChildren != undefined || splitCanvas3DChildren != undefined
   );
 
   // Concat all draggables and pass them to the Scene component to be able to reset them
@@ -73,17 +71,17 @@
     if (urlProps.params2D.zoom2D) cameraZoom = urlProps.params2D.zoom2D;
 
     // 2d split props
-    if (urlProps.paramsSplit2D.position2D)
+    if (splitCanvas2DProps && urlProps.paramsSplit2D.position2D)
       splitCanvas2DProps.cameraPosition = urlProps.paramsSplit2D.position2D;
 
-    if (urlProps.paramsSplit2D.zoom2D)
+    if (splitCanvas2DProps && urlProps.paramsSplit2D.zoom2D)
       splitCanvas2DProps.cameraZoom = urlProps.paramsSplit2D.zoom2D;
 
     // 3d split props
-    if (urlProps.paramsSplit3D.position3D)
+    if (splitCanvas3DProps && urlProps.paramsSplit3D.position3D)
       splitCanvas3DProps.cameraPosition = urlProps.paramsSplit3D.position3D;
 
-    if (urlProps.paramsSplit3D.zoom3D)
+    if (splitCanvas3DProps && urlProps.paramsSplit3D.zoom3D)
       splitCanvas3DProps.cameraZoom = urlProps.paramsSplit3D.zoom3D;
   });
 </script>
@@ -131,36 +129,40 @@
   {formulas}
   {splitFormulas}
 >
-  <CanvasD3
-    width={canvasWidth}
-    {cameraPosition}
-    {cameraZoom}
-    {tickLength}
-    {showAxisNumbers}
-    {enablePan}
-    {draggables}
-  >
-    {@render children()}
-  </CanvasD3>
-
-  {#if splitCanvas2DChildren}
-    <CanvasD3 width={canvasWidth} {...splitCanvas2DProps} isSplit>
-      {@render splitCanvas2DChildren()}
+  {#snippet sceneChildren(width, height)}
+    {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
+    <CanvasD3
+      width={canvasWidth}
+      {height}
+      {cameraPosition}
+      {cameraZoom}
+      {tickLength}
+      {showAxisNumbers}
+      {enablePan}
+      {draggables}
+    >
+      {@render children()}
     </CanvasD3>
-  {:else if splitCanvas3DChildren}
-    <Confetti isSplit />
-    <div style="width: {canvasWidth}px" class="overflow-hidden">
-      <Canvas {renderMode} toneMapping={NoToneMapping}>
-        <Camera3D {...splitCanvas3DProps} isSplit />
 
-        {@render splitCanvas3DChildren()}
+    {#if splitCanvas2DChildren}
+      <CanvasD3 {height} width={canvasWidth} {...splitCanvas2DProps} isSplit>
+        {@render splitCanvas2DChildren()}
+      </CanvasD3>
+    {:else if splitCanvas3DChildren}
+      <Confetti isSplit />
+      <div style="width: {canvasWidth}px" class="overflow-hidden">
+        <Canvas {renderMode} toneMapping={NoToneMapping}>
+          <Camera3D {...splitCanvas3DProps} isSplit />
 
-        {#if enableEasterEgg}
-          <CustomRenderer />
-        {/if}
-      </Canvas>
-    </div>
-  {/if}
+          {@render splitCanvas3DChildren()}
+
+          {#if enableEasterEgg}
+            <CustomRenderer />
+          {/if}
+        </Canvas>
+      </div>
+    {/if}
+  {/snippet}
 </Scene>
 
 <Konami onKonami={() => (enableEasterEgg = !enableEasterEgg)} />
