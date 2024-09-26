@@ -7,7 +7,11 @@
   import { ArrowDownUp, Check } from 'lucide-svelte';
   import type { Dropdown } from '$lib/controls/Dropdown.svelte';
 
-  const { controller: dropdown }: { controller: Dropdown } = $props();
+  type DropdownProps = {
+    controller: Dropdown;
+  };
+
+  const { controller: dropdown }: DropdownProps = $props();
 
   let open = $state(false);
 

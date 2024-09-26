@@ -20,8 +20,8 @@
     valueFn: (x) => round(x).toString()
   });
 
-  const v0 = $derived(draggables[1].value);
-  const u = $derived(draggables[0].value);
+  const v0 = $derived(draggables[1].position);
+  const u = $derived(draggables[0].position);
 
   const v1 = $derived(v0.clone().add(u.clone().multiplyScalar(controls[0])));
   const dir_L = $derived(v1.clone().sub(v0.clone()));

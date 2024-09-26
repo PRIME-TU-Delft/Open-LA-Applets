@@ -1,13 +1,11 @@
 <script>
-  import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-
-  let controls = Controls.addSlider(0, 0, 1.5, 0.1, PrimeColor.raspberry);
+  import { createControls } from './animation';
 
   // Primitives
   const o = new Vector2(0, 0);
@@ -30,33 +28,25 @@
   const CIDE = [v, intersect, uvw, vw]; // OADE static
   const BDI = [uv, uvw, intersect]; // OADE dynamic
 
-  const tick = $derived(controls[0]);
+  const controls = createControls(u);
 </script>
 
-<Canvas2D {controls} showAxisNumbers={false}>
+<Canvas2D {controls} showAxisNumbers={false} cameraPosition={new Vector2(1.5, 1.5)}>
   <!-- MARK: Polygons -->
-  <Polygon2D
-    points={OAIC}
-    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.darkGreen}
-    opacity={0.2}
-  />
-  <Polygon2D
-    points={CIDE}
-    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.raspberry}
-    opacity={0.2}
-  />
+  <Polygon2D points={OAIC} color={controls[0].polygonColorAdd} opacity={0.2} />
+  <Polygon2D points={CIDE} color={controls[0].polygonColorSub} opacity={0.2} />
 
   <Polygon2D
-    offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
+    offset={controls[0].offset}
     points={ABI}
-    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.darkGreen}
+    color={controls[0].polygonColorAdd}
     strokeWidth={0}
     opacity={0.2}
   />
   <Polygon2D
-    offset={u.clone().multiplyScalar(Math.max(-1, -tick))}
+    offset={controls[0].offset}
     points={BDI}
-    color={tick > 0.5 ? PrimeColor.blue : PrimeColor.raspberry}
+    color={controls[0].polygonColorSub}
     strokeWidth={0}
     opacity={0.2}
   />
@@ -156,18 +146,12 @@
   <Latex2D latex={'D'} position={uvw} extend={0.35} />
   <Latex2D latex={'E'} position={vw} extend={0.35} />
 
-  {#if tick < 0.5}
-    <Latex2D
-      latex={'OABC'}
-      position={uv.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.1, 0.2)}
-    />
+  <Latex2D
+    latex={controls[0].polygonLabel}
+    position={uv.clone().multiplyScalar(0.5)}
+    offset={new Vector2(-1, 0.2)}
+  />
+  {#if controls[0].showCBDE}
     <Latex2D latex={'CBDE'} position={new Vector2(1.5, 4)} offset={new Vector2(-0.1, 0.2)} />
-  {:else}
-    <Latex2D
-      latex={'OADE'}
-      position={uvw.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.1, 0.2)}
-    />
   {/if}
 </Canvas2D>

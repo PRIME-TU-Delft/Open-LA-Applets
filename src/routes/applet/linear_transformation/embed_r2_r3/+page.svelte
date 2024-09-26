@@ -18,7 +18,7 @@
 
   const draggables = [new Draggable(new Vector2(1, 2), PrimeColor.blue, 'v', Draggable.snapToGrid)];
 
-  const v = $derived(draggables[0].value);
+  const v = $derived(draggables[0].position);
 
   const te1 = new Vector3(e1.y, 0, e1.x);
   const te2 = new Vector3(e2.y, 0, e2.x);

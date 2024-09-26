@@ -24,7 +24,14 @@
   }
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
-  const labelPosition = $derived(v.clone().normalize().add(w.clone().normalize()).normalize());
+  const labelPosition = $derived(
+    v
+      .clone()
+      .normalize()
+      .add(w.clone().normalize())
+      .normalize()
+      .multiplyScalar(props.distance || 1)
+  );
 </script>
 
 <!-- 

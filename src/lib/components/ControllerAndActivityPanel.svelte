@@ -8,12 +8,12 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
-  import SvelteDropdown from './Dropdown.svelte';
-  import SideButton from './SideButton.svelte';
-  import SvelteSlider from './Slider.svelte';
-  import SvelteSlideShow from './SlideShow.svelte';
-  import SvelteToggle from './Toggle.svelte';
-  import SvelteSwitch from './Switch.svelte';
+  import SvelteDropdown from '$lib/components/Dropdown.svelte';
+  import SideButton from '$lib/components/SideButton.svelte';
+  import SvelteSlider from '$lib/components/Slider.svelte';
+  import SvelteSlideShow from '$lib/components/SlideShow.svelte';
+  import SvelteToggle from '$lib/components/Toggle.svelte';
+  import SvelteSwitch from '$lib/components/Switch.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {

@@ -25,8 +25,8 @@
 
   const draggables = [new Draggable(new Vector2(6, -0.5), PrimeColor.raspberry, 'Q', snapFn)];
 
-  const Q = $derived(draggables[0].value);
-  const PQ = $derived(draggables[0].value.clone().sub(P));
+  const Q = $derived(draggables[0].position);
+  const PQ = $derived(draggables[0].position.clone().sub(P));
 
   const f1 = $derived(
     new Formula(

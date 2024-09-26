@@ -15,7 +15,7 @@
   ];
 
   const v = new Vector2(3, 1);
-  const w = $derived(draggables[0].value);
+  const w = $derived(draggables[0].position);
 
   const formulas = $derived.by(() => {
     const ortho = w.clone().dot(v.clone()) / (w.length() * v.length());

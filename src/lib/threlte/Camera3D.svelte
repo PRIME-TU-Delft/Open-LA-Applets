@@ -12,9 +12,10 @@
   import { Camera3D, cameraState } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
-  import { T, useTask, useThrelte } from '@threlte/core';
+  import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { onDestroy } from 'svelte';
+  import { get } from 'svelte/store';
   import { Camera, OrthographicCamera, Quaternion, Vector3 } from 'three';
 
   let {
@@ -29,8 +30,8 @@
   const INTERVALS = 20;
   const DURATION = 750;
 
-  let interval: number;
-  let doReset: number;
+  let interval: number | NodeJS.Timeout;
+  let doReset: number | NodeJS.Timeout;
 
   function onCreate({ ref }: { ref: Camera }) {
     ref.lookAt(0, 0, 0);
@@ -48,9 +49,9 @@
     const originalPosition = cameraPosition;
 
     // Values to move to in `INTERVALS` steps
-    const camera = $camera as OrthographicCamera;
-    const currentZoom = camera.zoom;
-    const currentPosition = camera.position;
+    const cameraStore = get(camera) as OrthographicCamera;
+    const currentZoom = cameraStore.zoom;
+    const currentPosition = cameraStore.position;
 
     const zoomDelta = originalZoom - currentZoom;
 
@@ -64,11 +65,11 @@
       const delta = rot.slerp(new Quaternion(), 0.85); // Slerp to the original position
       currentPosition.applyQuaternion(delta); // Apply the rotation
 
-      camera.lookAt(0, 0, 0); // Keep the camera looking at the origin
-      camera.zoom += zoomDelta / INTERVALS; // Zoom usion the interval
+      cameraStore.lookAt(0, 0, 0); // Keep the camera looking at the origin
+      cameraStore.zoom += zoomDelta / INTERVALS; // Zoom usion the interval
 
       // Update the projection matrix to reflect the changes for the camera
-      camera.updateProjectionMatrix();
+      cameraStore.updateProjectionMatrix();
 
       advance(); // Manually advance the renderer
     }, DURATION / INTERVALS);
@@ -77,10 +78,10 @@
       // After the `DURATION`, reset the camera to the original values to
       // make sure all values are correct, corrects rounding errors
 
-      camera.zoom = originalZoom;
-      camera.position.copy(originalPosition.clone());
-      camera.lookAt(0, 0, 0);
-      camera.updateProjectionMatrix();
+      cameraStore.zoom = originalZoom;
+      cameraStore.position.copy(originalPosition.clone());
+      cameraStore.lookAt(0, 0, 0);
+      cameraStore.updateProjectionMatrix();
 
       advance();
 
@@ -91,8 +92,6 @@
   // Function that changes the camera State for 3D camera
   // Updates when the camera "changes"
   function handleCameraChange() {
-    console.log('update');
-
     const cam = $camera as OrthographicCamera;
 
     const splitCamera3D = new Camera3D(cam);

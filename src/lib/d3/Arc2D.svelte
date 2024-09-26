@@ -29,7 +29,7 @@
 </script>
 
 <!-- 
-@component
+@component A component that renders an arc between two vectors.
   @name Arc2D
   @description
     A component that renders an arc between two vectors.
