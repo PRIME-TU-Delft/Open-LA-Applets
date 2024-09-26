@@ -19,7 +19,7 @@
   m.set(0, 1, 0, 1, 0, 0, 0, 0, 1);
 
   const draggables = [new Draggable(new Vector2(2, 2), PrimeColor.cyan, 'dir_L')];
-  let dir_L = $derived(draggables[0].value);
+  let dir_L = $derived(draggables[0].position);
 
   function getOrthProjection(L: Vector2, p: Vector2) {
     return L.clone().multiplyScalar(L.clone().dot(p) / L.clone().dot(L));

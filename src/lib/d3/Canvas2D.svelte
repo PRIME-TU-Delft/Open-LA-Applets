@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import Scene from '$lib/components/Scene.svelte';
@@ -9,7 +10,7 @@
   import Camera3D from '$lib/threlte/Camera3D.svelte';
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
   import { hasProps } from '$lib/utils/hasProps';
-  import { parseUrl } from '$lib/utils/ParseUrl';
+  import { parseUrl } from '$lib/utils/parseUrl';
   import { Canvas } from '@threlte/core';
   import { type Snippet } from 'svelte';
   import { NoToneMapping, Vector2 } from 'three';
@@ -32,8 +33,8 @@
     formulas,
     controls,
     splitFormulas,
-    splitCanvas2DProps = {},
-    splitCanvas3DProps = {},
+    splitCanvas2DProps,
+    splitCanvas3DProps,
     children,
     splitCanvas2DChildren,
     splitCanvas3DChildren,
@@ -47,10 +48,8 @@
     draggables = []
   }: CanvasProps = $props();
 
-  const canvasWidth = $derived(
-    hasProps(splitCanvas2DProps) || hasProps(splitCanvas3DProps)
-      ? globalState.width / 2
-      : globalState.width
+  const hasSplitCanvas = $derived(
+    splitCanvas2DChildren != undefined || splitCanvas3DChildren != undefined
   );
 
   // Concat all draggables and pass them to the Scene component to be able to reset them
@@ -61,7 +60,9 @@
   let enableEasterEgg = $state(false);
 
   $effect.pre(() => {
-    const searchParams = $page.url.searchParams;
+    const searchParams = $page?.url?.searchParams;
+
+    if (!searchParams) return; // No search params
 
     const urlProps = parseUrl(searchParams);
 
@@ -70,20 +71,55 @@
     if (urlProps.params2D.zoom2D) cameraZoom = urlProps.params2D.zoom2D;
 
     // 2d split props
-    if (urlProps.paramsSplit2D.position2D)
+    if (splitCanvas2DProps && urlProps.paramsSplit2D.position2D)
       splitCanvas2DProps.cameraPosition = urlProps.paramsSplit2D.position2D;
 
-    if (urlProps.paramsSplit2D.zoom2D)
+    if (splitCanvas2DProps && urlProps.paramsSplit2D.zoom2D)
       splitCanvas2DProps.cameraZoom = urlProps.paramsSplit2D.zoom2D;
 
     // 3d split props
-    if (urlProps.paramsSplit3D.position3D)
+    if (splitCanvas3DProps && urlProps.paramsSplit3D.position3D)
       splitCanvas3DProps.cameraPosition = urlProps.paramsSplit3D.position3D;
 
-    if (urlProps.paramsSplit3D.zoom3D)
+    if (splitCanvas3DProps && urlProps.paramsSplit3D.zoom3D)
       splitCanvas3DProps.cameraZoom = urlProps.paramsSplit3D.zoom3D;
   });
 </script>
+
+<!-- @component A component that renders a 2D canvas with draggables and formulas.
+@props 
+  - title: string - The title of the scene.
+  - draggables: Draggable[] - The draggables that are in the scene.
+  - controls: boolean - Whether the controls are shown.
+  - showFormulasDefault: boolean - Whether the formulas are shown by default.
+  - formulas: Formula[] - The formulas that are shown.
+  - splitFormulas: Formula[] - Whether the formulas are split.
+  - splitCanvas2DProps: Canvas2DProps - The props for the split 2D canvas.
+  - splitCanvas3DProps: Camera3DProps - The props for the split 3D canvas.
+  - children: Snippet - The children of the scene.
+  - splitCanvas2DChildren: Snippet - The children of the split 2D canvas.
+  - splitCanvas3DChildren: Snippet - The children of the split 3D canvas.
+  - cameraPosition: Vector2 - The position of the camera.
+  - cameraZoom: number - The zoom of the camera.
+  - tickLength: number - The length of the ticks.
+  - showAxisNumbers: boolean - Whether the axis numbers are shown.
+  - enablePan: boolean - Whether the pan is enabled. 
+
+@description
+  A component that renders a 2D canvas with draggables and formulas.
+
+@example
+  <Canvas2D title="Title">
+    ...
+
+{#snippet splitCanvas2DChildren()}
+{/snippet}
+
+{#snippet splitCanvas3DChildren()}
+{/snippet}
+  </Canvas2D>
+  
+-->
 
 <Scene
   {title}
@@ -93,35 +129,40 @@
   {formulas}
   {splitFormulas}
 >
-  <CanvasD3
-    width={canvasWidth}
-    {cameraPosition}
-    {cameraZoom}
-    {tickLength}
-    {showAxisNumbers}
-    {enablePan}
-    {draggables}
-  >
-    {@render children()}
-  </CanvasD3>
-
-  {#if splitCanvas2DChildren}
-    <CanvasD3 width={canvasWidth} {...splitCanvas2DProps} isSplit>
-      {@render splitCanvas2DChildren()}
+  {#snippet sceneChildren(width, height)}
+    {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
+    <CanvasD3
+      width={canvasWidth}
+      {height}
+      {cameraPosition}
+      {cameraZoom}
+      {tickLength}
+      {showAxisNumbers}
+      {enablePan}
+      {draggables}
+    >
+      {@render children()}
     </CanvasD3>
-  {:else if splitCanvas3DChildren}
-    <div style="width: {canvasWidth}px" class="overflow-hidden">
-      <Canvas {renderMode} toneMapping={NoToneMapping}>
-        <Camera3D {...splitCanvas3DProps} isSplit />
 
-        {@render splitCanvas3DChildren()}
+    {#if splitCanvas2DChildren}
+      <CanvasD3 {height} width={canvasWidth} {...splitCanvas2DProps} isSplit>
+        {@render splitCanvas2DChildren()}
+      </CanvasD3>
+    {:else if splitCanvas3DChildren}
+      <Confetti isSplit />
+      <div style="width: {canvasWidth}px" class="overflow-hidden">
+        <Canvas {renderMode} toneMapping={NoToneMapping}>
+          <Camera3D {...splitCanvas3DProps} isSplit />
 
-        {#if enableEasterEgg}
-          <CustomRenderer />
-        {/if}
-      </Canvas>
-    </div>
-  {/if}
+          {@render splitCanvas3DChildren()}
+
+          {#if enableEasterEgg}
+            <CustomRenderer />
+          {/if}
+        </Canvas>
+      </div>
+    {/if}
+  {/snippet}
 </Scene>
 
 <Konami onKonami={() => (enableEasterEgg = !enableEasterEgg)} />

@@ -10,7 +10,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  let controls = Controls.addSlider(0.5).addSlider(1);
+  let controls = Controls.addSlider(0.5, -1, 1, 0.1).addSlider(1, -1, 1, 0.1);
   let formulas: Formula[] = [];
 
   function setFormulas(c0: number, c1: number) {

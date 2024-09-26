@@ -130,36 +130,28 @@ export function parametic_point_on_circle_3D(t: number, radius: number) {
 }
 
 export function leastSquaresLine(points: Vector2[]) {
-  const n = points.length;
+  // calc x and y vals summes
+  const sumX = points
+    .map((p) => p.x)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const sumY = points
+    .map((p) => p.y)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  // cals xy summed
+  const sumXY = points
+    .map((p) => p.x * p.y)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  // calc x^2 summed
+  const sumXX = points
+    .map((p) => p.x * p.x)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const N = points.length;
 
-  // Calculate the means of x and y
-  let meanX = 0;
-  let meanY = 0;
-  for (const point of points) {
-    meanX += point.x;
-    meanY += point.y;
-  }
-  meanX /= n;
-  meanY /= n;
+  const m = (N * sumXY - sumX * sumY) / (N * sumXX - sumX * sumX);
+  const b = (sumY - m * sumX) / N;
 
-  // Calculate the slope (m)
-  let numerator = 0;
-  let denominator = 0;
-  for (const point of points) {
-    numerator += (point.x - meanX) * (point.y - meanY);
-    denominator += (point.x - meanX) ** 2;
-  }
-  const slope = numerator / denominator;
+  //p2 at x=5
+  const y2 = m * 5 + b;
 
-  // Calculate the y-intercept (b)
-  const intercept = meanY - slope * meanX;
-
-  // Determine two points on the line
-  // Using the min and max x-values to determine the points
-  const x1 = Math.min(...points.map((p) => p.x));
-  const x2 = Math.max(...points.map((p) => p.x));
-  const y1 = slope * x1 + intercept;
-  const y2 = slope * x2 + intercept;
-
-  return [new Vector2(x1, y1), new Vector2(x2, y2)];
+  return [new Vector2(0, b), new Vector2(5, y2)];
 }

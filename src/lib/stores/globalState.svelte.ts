@@ -36,18 +36,6 @@ class GlobalState {
   title = $state('');
 
   /**
-   * Represents the width of the application.
-   * @type {number}
-   */
-  width = $state(0);
-
-  /**
-   * Represents the height of the application.
-   * @type {number}
-   */
-  height = $state(0);
-
-  /**
    * Represents when the application should be reset.
    */
   resetKey = $state(Symbol());

@@ -18,13 +18,6 @@
     .addToggle(true, '\\mathbf{v}')
     .addToggle(true, '\\mathbf{w}');
 
-  /**
-   * Creates formulas based on the given inputs.
-   *
-   * @param {number} a - The first input number.
-   * @param {number} b - The second input number.
-   * @returns {string[]} - An array of formulas.
-   */
   const formulas = $derived.by(() => {
     const t1 = controls[0];
     const t2 = controls[1];

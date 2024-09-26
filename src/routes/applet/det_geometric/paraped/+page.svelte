@@ -11,9 +11,12 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { BackSide, FrontSide, Vector3 } from 'three';
 
-  let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, '||a||')
-    .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, '||b||')
-    .addSlider(0.5, 0, 1, 0.1, PrimeColor.darkGreen, 'θ', (v) => (v / Math.PI).toFixed(2))
+  let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, { label: '||a||' })
+    .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, { label: '||b||' })
+    .addSlider(0.5, 0, 1, 0.1, PrimeColor.darkGreen, {
+      label: 'θ',
+      valueFn: (v) => (v / Math.PI).toFixed(2)
+    })
     .addToggle(true, '\\text{Fill}');
 
   const formulas = $derived.by(() => {
