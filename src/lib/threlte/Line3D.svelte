@@ -28,7 +28,7 @@
   let lineMesh = $state<Mesh>();
 
   $effect(() => {
-    if (line && isDashed) {
+    if (line && isDashed && origin && endPoint) {
       line.computeLineDistances();
     }
   });

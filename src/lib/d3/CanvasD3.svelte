@@ -8,6 +8,7 @@
     tickLength?: number; // TODO: move axis to separate component
     showAxisNumbers?: boolean;
     width: number;
+    height: number;
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
@@ -34,6 +35,8 @@
   import Axis from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import Confetti from '$lib/components/Confetti.svelte';
+  import { confettiState } from '$lib/stores/confetti.svelte';
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -41,6 +44,7 @@
     tickLength,
     showAxisNumbers,
     width,
+    height,
     enablePan = true,
     draggables = [],
     isSplit = false,
@@ -49,8 +53,6 @@
   }: Canvas2DProps = $props();
 
   let id = 'canvas-' + generateUUID();
-
-  let height = $derived(globalState.height);
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -65,6 +67,8 @@
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
   function transformScene(transform: Transform2D) {
+    if (!transform.k) return;
+
     if (enablePan) {
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
@@ -73,8 +77,8 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x ?? 0;
-    const y = 15 / (width / transform.y) + cameraPosition.y ?? 0;
+    const x = 15 / (width / -transform.x) + cameraPosition.x;
+    const y = 15 / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
@@ -149,25 +153,34 @@
   });
 </script>
 
-<svg {id} {width} {height} viewBox="0 0 {width} {height}">
-  <g>
-    <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
-      <g
-        transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
-          (2 * width)) /
-          30})"
-      >
-        <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-          {#if !customAxis}
-            <Axis {showAxisNumbers} length={tickLength} />
-          {/if}
-          {@render children()}
+<div>
+  {#if !isSplit && (confettiState.side === 'left' || confettiState.side === 'center')}
+    <Confetti isSplit={false} />
+  {:else if isSplit && confettiState.side === 'right'}
+    <Confetti isSplit={true} />
+  {/if}
 
-          {#each draggables as d}
-            <Draggable2D draggable={d} />
-          {/each}
+  <svg {id} {width} {height} viewBox="0 0 {width} {height}">
+    <g>
+      <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
+        <g
+          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
+            (2 * width)) /
+            30})"
+        >
+          <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
+            {#if customAxis}
+              <Axis {showAxisNumbers} length={tickLength} />
+            {/if}
+
+            {@render children()}
+
+            {#each draggables as d}
+              <Draggable2D draggable={d} />
+            {/each}
+          </g>
         </g>
       </g>
     </g>
-  </g>
-</svg>
+  </svg>
+</div>

@@ -10,8 +10,11 @@
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import EllipseTrajectory from '../EllipseTrajectory.svelte';
 
-  const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen);
+  const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen, {
+    loop: true
+  });
 
   const u = $derived(parametic_point_on_circle_3D(controls[0], 5));
 
@@ -32,11 +35,11 @@
     origin={u}
     direction={u.clone().sub(u_proj).multiplyScalar(-1)}
     length={u.clone().sub(u_proj).length()}
-    color={PrimeColor.raspberry}
+    color={PrimeColor.black}
     isDashed
   />
   <Latex3D
-    latex={'proj_L(\\mathbf{u})'}
+    latex={'\\mathrm{proj}_L(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
     color={PrimeColor.raspberry}
   />
@@ -46,6 +49,9 @@
 
   <Line3D origin={lineDir.clone().multiplyScalar(-1)} endPoint={lineDir} color={PrimeColor.blue} />
   <Latex3D latex={'\\mathcal{L}'} position={lineDir} color={PrimeColor.blue} />
+
+  <!-- Helper Trajectory -->
+  <EllipseTrajectory r={5} />
 
   <Axis3D />
 </Canvas3D>

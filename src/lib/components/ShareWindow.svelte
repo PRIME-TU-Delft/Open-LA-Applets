@@ -67,7 +67,7 @@
     <img
       class="h-24 w-full object-contain"
       alt="prime-tudelft"
-      src="{$page.url?.origin || ''}/logo-black.png"
+      src="{$page?.url?.origin || ''}/logo-black.png"
     />
   </Dialog.Footer>
 </Dialog.Content>

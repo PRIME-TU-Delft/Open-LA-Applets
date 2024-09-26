@@ -5,6 +5,7 @@ import { PrimeColor } from '$lib/utils/PrimeColors';
  * The Toggle class is used to create a toggle with a default value and a range of values.
  *
  * @param defaultValue The default value for the toggle
+ * @param label The label for the toggle
  * @param color The color of the toggle default is blue
  */
 
