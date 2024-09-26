@@ -10,8 +10,9 @@
 
   const controls = Controls.addSlider(0, 0, 360, 10, PrimeColor.cyan, { loop: true }).addToggle(
     false,
-    '\\text{Reverse direction}',
-    PrimeColor.raspberry
+    '\\text{A}',
+    PrimeColor.raspberry,
+    { isSwitch: true, switchRightSide: '\\text{B}' }
   );
 
   const formulas = $derived.by(() => {
@@ -52,7 +53,7 @@
 
   <g transform="rotate({controls[0]})">
     <Vector2D direction={v1} length={v1.length()} color={PrimeColor.cyan} radius={0.04} />
-    <Vector2D direction={v2} length={v2.length()} color={PrimeColor.cyan} radius={0.04} />
+    <Vector2D direction={v2} length={v2.length()} color={PrimeColor.orange} radius={0.04} />
   </g>
 
   {#snippet splitCanvas2DChildren()}
@@ -73,7 +74,7 @@
     </g>
 
     <Vector2D direction={tv1} length={tv1.length()} color={PrimeColor.cyan} radius={0.1} />
-    <Vector2D direction={tv2} length={tv2.length()} color={PrimeColor.cyan} radius={0.1} />
+    <Vector2D direction={tv2} length={tv2.length()} color={PrimeColor.orange} radius={0.1} />
   {/snippet}
 </Canvas2D>
 
