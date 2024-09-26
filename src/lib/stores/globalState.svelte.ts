@@ -22,6 +22,12 @@ class GlobalState {
   isFullscreen = $state(false);
 
   /**
+   * Represents whether the application is in dark mode.
+   * @type {boolean}
+   */
+  dark = $state(false);
+
+  /**
    * Represents whether the application is in inset mode.
    * The application is considered to be in inset mode if it is running inside an iframe or in fullscreen mode.
    * This is a derived state.

@@ -17,7 +17,8 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import { onMount, type Snippet, tick } from 'svelte';
+  import { cn } from '$lib/utils/shadcn-utils';
+  import { type Snippet } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
@@ -88,6 +89,7 @@
 <div
   class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
   class:active={activityState.isActive}
+  class:dark={globalState.dark}
   use:initScene
 >
   <div
@@ -107,7 +109,7 @@
     onmouseleave={() => waitThenReset()}
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
-    <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
+    <div class="scene flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
       {#if sceneChildren}
         {@render sceneChildren(width, height)}
       {:else}
@@ -141,6 +143,11 @@
 </div>
 
 <style lang="postcss">
+  .outerWrapper.dark {
+    --tw-gradient-from: #121212;
+    --tw-gradient-to: #121212;
+  }
+
   .outerWrapper.active {
     @apply from-blue-400 to-blue-500;
   }
@@ -160,6 +167,10 @@
 
   .canvasWrapper.dev {
     resize: both;
+  }
+
+  .outerWrapper.dark .scene {
+    background: #181818;
   }
 
   :global(.canvasWrapper > canvas) {

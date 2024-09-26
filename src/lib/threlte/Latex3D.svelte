@@ -1,5 +1,6 @@
 <script lang="ts">
   import Latex from '$lib/components/Latex.svelte';
+  import { globalState } from '$lib/stores/globalState.svelte';
   import { cn } from '$lib/utils/shadcn-utils';
   import { HTML } from '@threlte/extras';
   import { Vector3 } from 'three';
@@ -19,7 +20,7 @@
     fontSize = 1,
     position = new Vector3(0, 0, 0),
     offset = new Vector3(0, 0, 0),
-    color = 'black',
+    color,
     extend = 0,
     hasBackground = false
   }: Latex2DProps = $props();
@@ -27,6 +28,8 @@
   const pos = $derived(
     position.clone().add(offset).add(position.clone().normalize().multiplyScalar(extend))
   );
+
+  const possibleInvertColor = $derived(color ?? (globalState.dark ? 'white' : 'black'));
 
   const classes = $derived(
     cn(
@@ -42,5 +45,5 @@
   onvisibilitychange={(vis) => vis}
   pointerEvents="none"
 >
-  <Latex class={classes} {latex} {fontSize} {color} />
+  <Latex class={classes} {latex} {fontSize} color={possibleInvertColor} />
 </HTML>

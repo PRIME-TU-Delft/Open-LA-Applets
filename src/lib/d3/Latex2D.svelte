@@ -1,5 +1,6 @@
 <script lang="ts">
   import Latex from '$lib/components/Latex.svelte';
+  import { globalState } from '$lib/stores/globalState.svelte';
   import { Vector2 } from 'three';
 
   type Latex2DProps = {
@@ -17,8 +18,10 @@
     position = new Vector2(0, 0),
     offset = new Vector2(0, 0),
     extend = 0,
-    color = 'black'
+    color
   }: Latex2DProps = $props();
+
+  const possibleInvertColor = $derived(color ?? (globalState.dark ? 'white' : 'black'));
 
   let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
 
@@ -32,9 +35,9 @@
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" />
+      <Latex {latex} color={possibleInvertColor} outputType="mathml" />
     {:else}
-      <Latex {latex} {color} outputType="html" />
+      <Latex {latex} color={possibleInvertColor} outputType="html" />
     {/if}
   </foreignObject>
 </g>
