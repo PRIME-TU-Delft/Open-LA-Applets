@@ -13,6 +13,7 @@
   import SvelteSlider from '$lib/components/Slider.svelte';
   import SvelteSlideShow from '$lib/components/SlideShow.svelte';
   import SvelteToggle from '$lib/components/Toggle.svelte';
+  import SvelteSwitch from '$lib/components/Switch.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -49,6 +50,8 @@
           onStartChanging={() => globalState.changeState({ controlsInteractive: true })}
           onStopChanging={() => globalState.changeState({ controlsInteractive: false })}
         />
+      {:else if controller instanceof Toggle && controller.isSwitch}
+        <SvelteSwitch switch={controller} />
       {:else if controller instanceof Toggle}
         <SvelteToggle bind:value={controller.value} toggle={controller} />
       {:else if controller instanceof SlideShow}
