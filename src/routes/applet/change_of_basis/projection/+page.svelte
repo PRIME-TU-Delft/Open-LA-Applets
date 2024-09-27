@@ -12,7 +12,7 @@
 
   const b1 = new MathVector3(2, 0, 1);
   const b2 = new MathVector3(1, 1, 0);
-  const b3 = new MathVector3(1, -1, -2);
+  const b3 = new MathVector3(-1, 1, 2);
 </script>
 
 <Canvas3D

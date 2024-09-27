@@ -31,8 +31,8 @@
     children
   }: VectorProps = $props();
 
-  const CONE_HEIGHT = 0.5;
-  const CONE_DIAMETER = 0.12;
+  const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
+  const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
 
   const endPoint = $derived(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
   const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);

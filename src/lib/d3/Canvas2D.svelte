@@ -5,11 +5,9 @@
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
-  import { globalState } from '$lib/stores/globalState.svelte';
   import type { Camera3DProps } from '$lib/threlte/Camera3D.svelte';
   import Camera3D from '$lib/threlte/Camera3D.svelte';
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
-  import { hasProps } from '$lib/utils/hasProps';
   import { parseUrl } from '$lib/utils/parseUrl';
   import { Canvas } from '@threlte/core';
   import { type Snippet } from 'svelte';
@@ -19,7 +17,7 @@
   type CanvasProps = SceneProps &
     Omit<Canvas2DProps, 'children' | 'width'> & {
       title?: string;
-      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width'>;
+      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Camera3DProps; // Not implemented yet
       children: Snippet;
       splitCanvas2DChildren?: Snippet;

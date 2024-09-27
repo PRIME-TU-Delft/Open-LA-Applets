@@ -1,0 +1,74 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import { PrimeColor } from '$lib/utils/PrimeColors';
+ 
+<Meta title="Colors" />
+ 
+ ## Colors
+
+The colors are adapted from the [TU Delft Prime colors](https://www.tudelft.nl/huisstijl/bouwstenen/kleur).
+When you call `PrimeColor.getRandomColor()`, it will return a random color from the palette.
+Calling `PrimeColors.asArray()` will return an array of all the colors in the following order:
+
+<ColorPalette>
+  <ColorItem
+    title="PrimeColor.raspberry"
+    subtitle="Red"
+    colors={{ raspberry: '#A50034' }}
+  />
+
+<ColorItem title="PrimeColor.yellow" subtitle="Yellow" colors={{ yellow: '#FFB81C' }} />
+
+<ColorItem title="PrimeColor.darkGreen" subtitle="Green" colors={{ darkGreen: '#009B77' }} />
+
+<ColorItem title="PrimeColor.blue" subtitle="Blue" colors={{ blue: '#0076C2' }} />
+
+<ColorItem title="PrimeColor.black" subtitle="Black" colors={{ black: '#565656' }} />
+
+<ColorItem title="PrimeColor.orange" subtitle="Orange" colors={{ orange: '#EC6842' }} />
+
+<ColorItem
+  title="PrimeColor.cyan"
+  subtitle="Cyan"
+  colors={{ cyan: '#00A6D6' }}
+/>
+</ColorPalette>
+
+### Opacity
+
+To set the opacity of a color, you can use the `opacity` function. This function takes a number between 0 and 1 and returns a string with the opacity value.
+
+```ts
+PrimeColor.opacity(0.5); // "7F"
+```
+
+This value can be appended to the end of a color string to set the opacity. For example:
+
+```ts
+PrimeColor.blue + PrimeColor.opacity(0.5); // "#0076C27F"
+```
+
+This produces the following colors:
+
+<ColorPalette>
+<ColorItem
+  title="PrimeColor.blue + PrimeColor.opacity(1)"
+    subtitle="Blue with 100% opacity (default)"
+    colors={{ blue: PrimeColor.blue + PrimeColor.opacity(1) }}
+  />
+  <ColorItem
+  title="PrimeColor.blue + PrimeColor.opacity(0.75)"
+    subtitle="Blue with 75% opacity"
+    colors={{ blue: PrimeColor.blue + PrimeColor.opacity(0.75) }}
+  />
+  <ColorItem
+  title="PrimeColor.blue + PrimeColor.opacity(0.5)"
+    subtitle="Blue with 50% opacity"
+    colors={{ blue: PrimeColor.blue + PrimeColor.opacity(0.5) }}
+  />
+<ColorItem
+  title="PrimeColor.blue + PrimeColor.opacity(0.25)"
+    subtitle="Blue with 25% opacity"
+    colors={{ blue: PrimeColor.blue + PrimeColor.opacity(0.25) }}
+  />
+
+</ColorPalette>

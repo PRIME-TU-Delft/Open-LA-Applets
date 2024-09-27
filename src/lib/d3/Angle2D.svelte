@@ -53,11 +53,7 @@
     }
   });
 
-  let triangle = $derived(
-    symbol()
-      .type(symbolTriangle)
-      .size(2 * width)()
-  );
+  let triangle = $derived(symbol().type(symbolTriangle).size(width)());
 </script>
 
 <!-- @component

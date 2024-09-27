@@ -151,8 +151,16 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
    * @param color - color for the toggle default is raspberry
    * @returns this
    */
-  addToggle(dft: boolean, title?: string, color: ColorString = PrimeColor.getColor(0)) {
-    const newToggle = new Toggle(dft, title, color);
+  addToggle(
+    dft: boolean,
+    title?: string,
+    color: ColorString = PrimeColor.getColor(0),
+    options?: {
+      isSwitch?: boolean;
+      switchRightSide?: string;
+    }
+  ) {
+    const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);
     this.isAllowedToAddControl(newToggle);
     return new Controls([...this.controls, newToggle] as const, this._width + newToggle.width);
   }
@@ -164,8 +172,16 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
    * @param color - color for the toggle default is raspberry
    * @returns
    */
-  static addToggle(dft: boolean, title?: string, color: ColorString = PrimeColor.getColor(0)) {
-    const newToggle = new Toggle(dft, title, color);
+  static addToggle(
+    dft: boolean,
+    title?: string,
+    color: ColorString = PrimeColor.getColor(0),
+    options?: {
+      isSwitch?: boolean;
+      switchRightSide?: string;
+    }
+  ) {
+    const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);
     return new Controls([newToggle] as const, newToggle.width);
   }
 
