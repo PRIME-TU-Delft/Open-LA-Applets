@@ -17,7 +17,7 @@
   const v3 = $derived(controls[2]);
 
   const span = $derived.by(() => {
-    const pre = 'Span\\{';
+    const pre = '\\mathrm{Span}\\{';
     const res = controls.values
       .map((b, i) => (b ? `\\mathbf{v_${i + 1}}` : ''))
       .filter(Boolean)

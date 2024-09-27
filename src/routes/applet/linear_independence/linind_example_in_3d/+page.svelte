@@ -1,6 +1,5 @@
 <script>
   import { Controls } from '$lib/controls/Controls';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
@@ -29,12 +28,12 @@
    * Span\{\mathbf{v_1}, \mathbf{v_2}, \mathbf{v_3}\}
    */
   const formulas = $derived.by(() => {
-    const pre = 'Span\\{';
+    const pre = '\\mathrm{Span}\\{';
     const res = [true, true, ...controls.values]
       .map((b, i) => (b ? `\\mathbf{v_${i + 1}}` : ''))
       .filter(Boolean)
       .join(', ');
-    const post = '\\} \\in ';
+    const post = '\\} \\subset ';
 
     const isIn = controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2';
 
