@@ -11,7 +11,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  const controls = Controls.addSlider(4, -5, 6, 0.5, PrimeColor.raspberry, 'a', roundString);
+  const controls = Controls.addSlider(4, -5, 6, 0.5, PrimeColor.raspberry, {
+    label: 'a',
+    valueFn: roundString
+  });
 
   const v = new MathVector3(-4, 3, 1);
 
@@ -21,11 +24,12 @@
     const minusA = round(-controls[0]);
 
     const f1 = new Formula(
-      `\\Bigg\\lbrace 
-        \\begin{bmatrix}\\$1 \\\\ \\$2 \\\\0 \\end{bmatrix} + 
+      `\\$1: \\Bigg\\lbrace 
+        \\begin{bmatrix}\\$2 \\\\ \\$3 \\\\0 \\end{bmatrix} + 
         t \\space \\begin{bmatrix}-4 \\\\ 3 \\\\ 1 \\end{bmatrix} \\space | \\space
         t \\in \\mathbb{R} \\Bigg\\rbrace`
     )
+      .addAutoParam('\\mathcal{L_2}', PrimeColor.darkGreen)
       .addAutoParam(minusA, PrimeColor.raspberry)
       .addAutoParam(round(controls[0]), PrimeColor.raspberry);
 
@@ -36,9 +40,23 @@
 <Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
   <!-- Default -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.yellow} alwaysOnTop />
-  <Latex3D latex={'\\mathbf{v}'} position={v} extend={0.5} color={PrimeColor.yellow} />
+  <Latex3D
+    latex={'\\mathbf{v}'}
+    position={v}
+    extend={0.5}
+    offset={new Vector3(0, 0, 0.5)}
+    color={PrimeColor.yellow}
+  />
 
-  <InfiniteLine3D direction={v} color={PrimeColor.blue} />
+  <InfiniteLine3D radius={0.5} direction={v} color={PrimeColor.blue} />
+
+  <Latex3D
+    latex={'\\mathcal{L_1}'}
+    position={v.clone().multiplyScalar(2)}
+    extend={0.5}
+    offset={new Vector3(0.1, 0, 0.75)}
+    color={PrimeColor.blue}
+  />
 
   <!-- Extended -->
   <Vector3D
@@ -49,18 +67,32 @@
     alwaysOnTop
   />
   <Latex3D
-    offset={v_offset}
+    offset={v_offset.clone().add(new Vector3(0, 0, 0.5))}
     latex={'\\mathbf{v}'}
     position={v}
     extend={0.5}
     color={PrimeColor.yellow}
   />
 
-  <InfiniteLine3D origin={v_offset} direction={v} color={PrimeColor.darkGreen} />
+  <InfiniteLine3D radius={0.5} origin={v_offset} direction={v} color={PrimeColor.darkGreen} />
+
+  <Latex3D
+    latex={'\\mathcal{L_2}'}
+    position={v_offset.clone().add(v.clone().multiplyScalar(2))}
+    extend={0.5}
+    offset={new Vector3(0.1, 0, 0.75)}
+    color={PrimeColor.darkGreen}
+  />
 
   <!-- R0 -->
   <Vector3D direction={v_offset} length={v_offset.length()} color={PrimeColor.raspberry} />
-  <Latex3D latex={'\\mathbf{r_0}'} position={v_offset} extend={0.5} color={PrimeColor.raspberry} />
+  <Latex3D
+    latex={'\\mathbf{r_0}'}
+    position={v_offset}
+    extend={0.5}
+    offset={new Vector3(0, 0, 0.5)}
+    color={PrimeColor.raspberry}
+  />
 
   <Axis3D />
 </Canvas3D>

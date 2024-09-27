@@ -11,7 +11,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  const controls = Controls.addSlider(4, 1, 10, 0.5, PrimeColor.raspberry, 'a', roundString);
+  const controls = Controls.addSlider(7, 1, 10, 0.5, PrimeColor.raspberry, {
+    label: 'a',
+    valueFn: roundString
+  });
 
   const v1 = new MathVector3(-3, 1, 0);
   const v2 = new MathVector3(1, 0, 1);
@@ -20,18 +23,20 @@
 
   const formulas = $derived.by(() => {
     const f1 = new Formula(
-      `\\Bigg\\lbrace 
-        \\begin{bmatrix}\\$1 \\\\ 0 \\\\0 \\end{bmatrix} + 
+      `\\$1: \\Bigg\\lbrace 
+        \\begin{bmatrix}\\$2 \\\\ 0 \\\\0 \\end{bmatrix} + 
         s \\space \\begin{bmatrix}-3 \\\\ 1 \\\\ 0 \\end{bmatrix} + 
         t \\space \\begin{bmatrix}1 \\\\ 0 \\\\ 1 \\end{bmatrix} \\space | \\space
         s, t \\in \\mathbb{R} \\Bigg\\rbrace`
-    ).addAutoParam(round(controls[0]), PrimeColor.raspberry);
+    )
+      .addAutoParam('\\mathcal{P_2}', PrimeColor.darkGreen)
+      .addAutoParam(round(controls[0], 1), PrimeColor.raspberry);
 
     return [f1];
   });
 </script>
 
-<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
+<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-8, 8, 12.5)} showFormulasDefault>
   <!-- Default -->
   <Vector3D direction={v1} length={v1.length()} color={PrimeColor.yellow} />
   <Latex3D latex={'\\mathbf{v_1}'} position={v1} extend={0.5} color={PrimeColor.yellow} />
@@ -41,7 +46,13 @@
 
   <PlaneFromPoints points={[v1, v2, new Vector3()]} color={PrimeColor.blue} opacity={0.5} />
 
-  <Vector3D direction={v3} length={v3.length()} color={PrimeColor.darkGreen} />
+  <Latex3D
+    latex={'\\mathcal{P_1}'}
+    position={new Vector3(0, 0, 0)}
+    extend={0.5}
+    offset={v2.clone().multiplyScalar(4.25)}
+    color={PrimeColor.blue}
+  />
 
   <!-- Extended -->
   <Vector3D origin={v3} direction={v1} length={v1.length()} color={PrimeColor.yellow} />
@@ -69,7 +80,17 @@
     opacity={0.5}
   />
 
+  <Latex3D
+    latex={'\\mathcal{P_2}'}
+    position={v3}
+    extend={0.5}
+    offset={v2.clone().multiplyScalar(4.5)}
+    color={PrimeColor.darkGreen}
+  />
+
+  <!-- R_0 -->
   <Vector3D direction={v3} length={v3.length()} color={PrimeColor.raspberry} />
+  <Latex3D latex={'\\mathbf{r_0}'} position={v3} extend={0.5} color={PrimeColor.raspberry} />
 
   <Axis3D />
 </Canvas3D>
