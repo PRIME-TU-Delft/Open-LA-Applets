@@ -169,7 +169,7 @@
             30})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-            {#if customAxis}
+            {#if !customAxis}
               <Axis {showAxisNumbers} length={tickLength} />
             {/if}
 
