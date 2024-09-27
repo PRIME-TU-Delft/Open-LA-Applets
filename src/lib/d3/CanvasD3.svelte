@@ -7,8 +7,8 @@
     cameraZoom?: number;
     tickLength?: number; // TODO: move axis to separate component
     showAxisNumbers?: boolean;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
@@ -42,8 +42,8 @@
     cameraZoom = 1,
     tickLength,
     showAxisNumbers,
-    width,
-    height,
+    width = 500,
+    height = 300,
     enablePan = true,
     draggables = [],
     isSplit = false,
