@@ -31,10 +31,12 @@
   });
 </script>
 
-<T.Mesh bind:ref={pointMesh} {geometry} position={[position.x, position.y, position.z]}>
-  {#if alwaysOnTop}
-    <T.MeshBasicMaterial {color} {size} transparent depthTest={false} depthWrite={false} />
-  {:else}
-    <T.MeshBasicMaterial {color} {size} />
-  {/if}
-</T.Mesh>
+<T.Group position={[position.x, position.y, position.z]}>
+  <T.Mesh bind:ref={pointMesh} {geometry}>
+    {#if alwaysOnTop}
+      <T.MeshBasicMaterial {color} {size} transparent depthTest={false} depthWrite={false} />
+    {:else}
+      <T.MeshBasicMaterial {color} {size} />
+    {/if}
+  </T.Mesh>
+</T.Group>

@@ -15,8 +15,8 @@
     new Draggable(new Vector2(2.5, 2.5), PrimeColor.darkGreen, 'w')
   ];
 
-  const v = $derived(draggables[0].value);
-  const w = $derived(draggables[1].value);
+  const v = $derived(draggables[0].position);
+  const w = $derived(draggables[1].position);
 
   const L_label = $derived(v.clone().normalize().multiplyScalar(5).add(new Vector2(-0.3, 0.3)));
   const proj_w = $derived(orthogonalProjection(v, w));

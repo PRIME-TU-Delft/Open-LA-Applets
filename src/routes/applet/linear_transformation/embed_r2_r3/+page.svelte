@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
@@ -6,6 +7,7 @@
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Line3D from '$lib/threlte/Line3D.svelte';
+  import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -14,24 +16,26 @@
   const e1 = new Vector2(1, 0);
   const e2 = new Vector2(0, 1);
 
-  const e1Length = 1;
-  const e2Length = 2;
+  const draggables = [new Draggable(new Vector2(1, 2), PrimeColor.blue, 'v', Draggable.snapToGrid)];
 
-  const v = e1.clone().multiplyScalar(e1Length).add(e2.clone().multiplyScalar(e2Length));
+  const v = $derived(draggables[0].position);
 
-  const te1 = $derived(new Vector3(e1.y, 0, e1.x));
-  const te2 = $derived(new Vector3(e2.y, 0, e2.x));
-  const tv = $derived(te2.clone().multiplyScalar(2).add(te1));
+  const te1 = new Vector3(e1.y, 0, e1.x);
+  const te2 = new Vector3(e2.y, 0, e2.x);
+  const tv = $derived(new Vector3(v.y, 0, v.x));
 
-  const f1 = new Formula('T(x)= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} x');
+  const f1 = new Formula(
+    'T(\\mathbf{x})= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} \\mathbf{x}'
+  );
 </script>
 
 <Canvas2D
   formulas={[f1]}
+  {draggables}
   showFormulasDefault
-  cameraZoom={1.5}
+  cameraZoom={2}
   cameraPosition={new Vector2(1, 2)}
-  splitCanvas3DProps={{ cameraZoom: 50 }}
+  splitCanvas3DProps={{ cameraZoom: 100 }}
 >
   <!-- e1 -->
   <Vector2D direction={e1} length={1} color={PrimeColor.raspberry}>
@@ -54,8 +58,8 @@
   </Vector2D>
 
   <!-- Helper lines -->
-  <Line2D start={e1.clone().multiplyScalar(e1Length)} end={v} width={0.05} isDashed />
-  <Line2D start={e2.clone().multiplyScalar(e2Length)} end={v} width={0.05} isDashed />
+  <Line2D start={e1.clone().multiplyScalar(v.x)} end={v} width={0.05} isDashed />
+  <Line2D start={e2.clone().multiplyScalar(v.y)} end={v} width={0.05} isDashed />
 
   {#snippet splitCanvas3DChildren()}
     <Axis3D />
@@ -71,17 +75,15 @@
     <Latex3D latex={'T(\\mathbf{v})'} position={tv} color={PrimeColor.blue} />
 
     <!-- Helper lines -->
-    <Line3D
-      origin={te1.clone().multiplyScalar(e1Length)}
-      endPoint={tv.clone()}
-      color="black"
-      isDashed
-    />
-    <Line3D
-      origin={te2.clone().multiplyScalar(e2Length)}
-      endPoint={tv.clone()}
-      color="black"
-      isDashed
+    <Line3D origin={te1.clone().multiplyScalar(v.x)} endPoint={tv.clone()} color="black" isDashed />
+    <Line3D origin={te2.clone().multiplyScalar(v.y)} endPoint={tv.clone()} color="black" isDashed />
+
+    <PlaneFromNormal
+      position={new Vector3(0, 0, 0)}
+      normal={new Vector3(0, 1, 0)}
+      size={10}
+      color={PrimeColor.yellow}
+      opacity={0.2}
     />
   {/snippet}
 </Canvas2D>

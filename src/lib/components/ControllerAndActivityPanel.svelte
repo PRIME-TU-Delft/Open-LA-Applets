@@ -1,18 +1,23 @@
-<script lang="ts">
+<script lang="ts" generics="State">
   import * as Button from '$lib/components/ui/button';
   import type { Controller, Controls } from '$lib/controls/Controls';
+  import { Dropdown } from '$lib/controls/Dropdown.svelte';
   import { Slider } from '$lib/controls/Slider.svelte';
+  import { SlideShow } from '$lib/controls/SlideShow.svelte';
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
-  import SideButton from './SideButton.svelte';
-  import SvelteSlider from './Slider.svelte';
-  import SvelteToggle from './Toggle.svelte';
+  import SvelteDropdown from '$lib/components/Dropdown.svelte';
+  import SideButton from '$lib/components/SideButton.svelte';
+  import SvelteSlider from '$lib/components/Slider.svelte';
+  import SvelteSlideShow from '$lib/components/SlideShow.svelte';
+  import SvelteToggle from '$lib/components/Toggle.svelte';
+  import SvelteSwitch from '$lib/components/Switch.svelte';
 
-  type G = readonly Controller<number | boolean>[];
+  type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
-    controls: Controls<G>;
+    controls: Controls<State, G>;
     onLock: (e: MouseEvent | CustomEvent) => void;
     onReset: () => void;
   };
@@ -45,8 +50,14 @@
           onStartChanging={() => globalState.changeState({ controlsInteractive: true })}
           onStopChanging={() => globalState.changeState({ controlsInteractive: false })}
         />
+      {:else if controller instanceof Toggle && controller.isSwitch}
+        <SvelteSwitch switch={controller} />
       {:else if controller instanceof Toggle}
         <SvelteToggle bind:value={controller.value} toggle={controller} />
+      {:else if controller instanceof SlideShow}
+        <SvelteSlideShow {controller} />
+      {:else if controller instanceof Dropdown}
+        <SvelteDropdown {controller} />
       {/if}
     {/each}
   </div>

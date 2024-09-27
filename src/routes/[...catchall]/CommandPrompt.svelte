@@ -14,7 +14,7 @@
   let open = $state(false);
   let showPreview = $state(false);
 
-  interface File {
+  interface Applet {
     file: string;
     folder: string;
     url: string;
@@ -46,7 +46,7 @@
           }
           return acc;
         },
-        {} as Record<string, File[]>
+        {} as Record<string, Applet[]>
       )
   );
 
@@ -59,7 +59,7 @@
     if (!open) reset();
   });
 
-  function selectPreviewApplet(file: File) {
+  function selectPreviewApplet(file: Applet) {
     if (openApplets.has(file.file)) {
       openApplets.delete(file.file);
     } else {
@@ -69,7 +69,7 @@
     openApplets = new Set(openApplets);
   }
 
-  function selectPreviewAppletFolder(files: File[]) {
+  function selectPreviewAppletFolder(files: Applet[]) {
     const hasAll = files.every((file) => openApplets.has(file.file));
 
     if (hasAll) {
