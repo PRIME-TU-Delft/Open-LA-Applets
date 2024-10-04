@@ -17,7 +17,7 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import { onMount, type Snippet, tick } from 'svelte';
+  import type { Snippet } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
@@ -33,7 +33,7 @@
   }: SceneProps = $props();
 
   let height = $state(500);
-  let width = $state(500);
+  let width = $state<number>(0);
 
   /**
    * Reset camera position, rotation and controls.
@@ -108,7 +108,7 @@
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
     <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
-      {#if sceneChildren}
+      {#if sceneChildren && width > 0}
         {@render sceneChildren(width, height)}
       {:else}
         <p class="m-4">Please enter some content using the Canvas2D or Canvas3D components</p>

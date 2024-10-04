@@ -119,6 +119,7 @@
       {#if confettiState.side === 'left' || confettiState.side === 'center'}
         <Confetti isSplit={false} />
       {/if}
+
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {cameraPosition} {cameraZoom} {enablePan} />
 
