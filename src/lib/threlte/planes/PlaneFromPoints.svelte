@@ -8,6 +8,7 @@
 
   type PlaneFromPointsProps = {
     points: [Vector3, Vector3, Vector3];
+    origin?: Vector3;
     color?: string;
     size?: number;
     opacity?: number;
@@ -16,6 +17,7 @@
 
   let {
     points = [new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)],
+    origin = new Vector3(),
     color = PrimeColor.getRandomColor(),
     size = 10,
     opacity = 0.8,
@@ -39,16 +41,18 @@
   });
 </script>
 
-<T.Mesh material={materials} bind:ref={planeMesh}>
-  <T.PlaneGeometry
-    args={[size, size, planeSegment.segments, 1]}
-    oncreate={({ ref }: { ref: PlaneGeometry }) => {
-      for (let i = 0; i < planeSegment.segments; i++) {
-        if (i % planeSegment.interval == planeSegment.offset) {
-          // A rectangle consists of two triangles 6 vertices
-          ref.addGroup(i * 6, 6, 0);
+<T.Group position.x={origin.x} position.y={origin.y} position.z={origin.z}>
+  <T.Mesh material={materials} bind:ref={planeMesh}>
+    <T.PlaneGeometry
+      args={[size, size, planeSegment.segments, 1]}
+      oncreate={({ ref }: { ref: PlaneGeometry }) => {
+        for (let i = 0; i < planeSegment.segments; i++) {
+          if (i % planeSegment.interval == planeSegment.offset) {
+            // A rectangle consists of two triangles 6 vertices
+            ref.addGroup(i * 6, 6, 0);
+          }
         }
-      }
-    }}
-  />
-</T.Mesh>
+      }}
+    />
+  </T.Mesh>
+</T.Group>

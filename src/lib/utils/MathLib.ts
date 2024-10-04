@@ -11,6 +11,10 @@ export function round(x: number, precision = 2) {
   return Math.round(x * factor) / factor;
 }
 
+export function roundString(x: number, precision = 2) {
+  return round(x, precision).toString();
+}
+
 /**
  * The snapPointToLine function calculates the smallest distance from a point to a line.
  * It then returns the closest point on that line if the actual distance is smaller than the required distance

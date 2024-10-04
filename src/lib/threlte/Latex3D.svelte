@@ -24,9 +24,20 @@
     hasBackground = false
   }: Latex2DProps = $props();
 
-  const pos = $derived(
-    position.clone().add(offset).add(position.clone().normalize().multiplyScalar(extend))
-  );
+  const pos = $derived.by(() => {
+    const posOffset = position.clone().add(offset);
+
+    // If extend is 0, return the position with the offset
+    if (extend == 0) return posOffset;
+
+    // If position is the origin, return the offset with the extend vector
+    // This is to avoid the 0 vector
+    if (position.length() == 0) {
+      return posOffset.add(new Vector3(1, 1, 1).normalize().multiplyScalar(extend));
+    }
+
+    return posOffset.add(position.clone().normalize().multiplyScalar(extend));
+  });
 
   const classes = $derived(
     cn(
