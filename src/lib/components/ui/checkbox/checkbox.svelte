@@ -23,6 +23,7 @@
 >
   <CheckboxPrimitive.Indicator
     class={cn('flex h-4 w-4 items-center justify-center text-current')}
+    style="background: {checked ? 'var(--bg, black)' : 'none'}"
     let:isChecked
     let:isIndeterminate
   >

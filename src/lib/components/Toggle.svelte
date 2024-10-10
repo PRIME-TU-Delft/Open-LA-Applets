@@ -14,10 +14,12 @@
   let uuid = generateUUID();
 </script>
 
-{#if toggle.label != undefined}
-  <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={toggle.label} />:
-  </Label>
-{/if}
+<div class="p-1.5 flex items-center gap-1">
+  {#if toggle.label != undefined}
+    <Label class="inline-flex items-center" for="checkbox-{uuid}">
+      <Latex latex={toggle.label} color={toggle.color} />:
+    </Label>
+  {/if}
 
-<Checkbox id="checkbox-{uuid}" bind:checked={value} />
+  <Checkbox --bg={toggle.color} id="checkbox-{uuid}" bind:checked={value} />
+</div>

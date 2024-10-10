@@ -239,7 +239,13 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
   }
 
   get values() {
-    return this._controls.map((s) => s.value);
+    // Type adapted from https://stackoverflow.com/a/51679156
+    type MaybeType<K> = K extends Controller<infer MaybeType> ? MaybeType : never;
+    type Unwrapped<Tuple extends readonly [...unknown[]]> = {
+      [Index in keyof Tuple]: MaybeType<Tuple[Index]>;
+    } & { length: Tuple['length'] };
+
+    return this._controls.map((s) => s.value) as Unwrapped<T>;
   }
 
   // Get the value of the first controller

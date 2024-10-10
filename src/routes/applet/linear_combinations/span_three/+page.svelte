@@ -4,11 +4,11 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Point3D from '$lib/threlte/Point3D.svelte';
+  import Span3D from '$lib/threlte/Span3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
-  import CubePlaneLine from './CubePlaneLine.svelte';
 
   const u = new Vector3(1, 3, 3); // Direction of vector u
   const v = new Vector3(3, 2, -3); // Direction of vector v
@@ -42,7 +42,7 @@
 </script>
 
 <Canvas3D showFormulasDefault cameraPosition={new Vector3(7.63, 6.3, 14.22)} {formulas} {controls}>
-  <CubePlaneLine toggles={controls} uvw={[u, v, w]} />
+  <Span3D toggles={controls.values} vectors={[u, v, w]} />
 
   {#if controls[0]}
     <Vector3D direction={u} length={u.length()} color={PrimeColor.raspberry} alwaysOnTop />
