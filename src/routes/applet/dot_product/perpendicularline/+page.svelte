@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
@@ -8,7 +8,19 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const draggables = [new Draggable(new Vector2(1, 2), PrimeColor.blue, '\\mathbf{n}')];
+  function lenghtAtLeast(v: Vector2, l: number) {
+    const length = v.length();
+
+    if (length < l) {
+      return v.clone().normalize().multiplyScalar(l);
+    } else {
+      return v;
+    }
+  }
+
+  const draggables = [
+    new Draggable(new Vector2(1, 2), PrimeColor.blue, '\\mathbf{n}', (v) => lenghtAtLeast(v, 1))
+  ];
 
   const lineL = $derived(new Vector2(draggables[0].position.y, -draggables[0].position.x));
 </script>
