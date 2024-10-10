@@ -1,26 +1,24 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import type { Canvas2DProps } from '$lib/d3/CanvasD3.svelte';
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
-  import { globalState } from '$lib/stores/globalState.svelte';
+  import { confettiState } from '$lib/stores/confetti.svelte';
   import { parseUrl } from '$lib/utils/parseUrl';
-  import { hasProps } from '$lib/utils/hasProps';
   import { Canvas } from '@threlte/core';
   import type { Snippet } from 'svelte';
   import { NoToneMapping, Vector3 } from 'three';
   import Camera3D, { type Camera3DProps } from './Camera3D.svelte';
   import CustomRenderer from './CustomRenderer.svelte';
-  import Confetti from '$lib/components/Confetti.svelte';
-  import { confettiState } from '$lib/stores/confetti.svelte';
 
   type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
       title?: string;
-      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'isSplit'>;
+      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
       splitCanvas2DChildren?: Snippet;
@@ -121,6 +119,7 @@
       {#if confettiState.side === 'left' || confettiState.side === 'center'}
         <Confetti isSplit={false} />
       {/if}
+
       <Canvas {renderMode} toneMapping={NoToneMapping}>
         <Camera3D {cameraPosition} {cameraZoom} {enablePan} />
 

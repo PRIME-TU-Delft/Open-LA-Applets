@@ -14,6 +14,8 @@
     .addSlider(-16, -64, -8, 8, PrimeColor.darkGreen) // a
     .addSlider(16, 8, 64, 8, PrimeColor.raspberry); // b
 
+  const m = $derived(Math.round(controls[0]));
+
   function cartesianToPolar(vec2: Vector2, offset: Vector2 = new Vector2(0, 0)) {
     const radius = offset.distanceTo(vec2);
     const angleInRadians = Math.atan2(vec2.y, vec2.x); //This takes y first
@@ -32,15 +34,14 @@
   }
 
   const radius = $derived(
-    Math.pow(Math.sqrt(controls[1] * controls[1] + controls[2] * controls[2]), 1 / controls[0])
+    Math.pow(Math.sqrt(controls[1] * controls[1] + controls[2] * controls[2]), 1 / m)
   );
   const threePhi = $derived(cartesianToPolar(new Vector2(controls[1], controls[2])).angleInRadians);
 
-  const phi = $derived(threePhi / controls[0]);
-  const deltaAngle = $derived((2 / controls[0]) * Math.PI);
+  const phi = $derived(threePhi / m);
+  const deltaAngle = $derived((2 / m) * Math.PI);
 
   const formulas = $derived.by(() => {
-    const m = round(controls[0]);
     const a = round(controls[1]);
     const b = round(controls[2]);
 
@@ -64,14 +65,14 @@
 
 <Canvas2D showAxisNumbers={false} {controls} {formulas}>
   <!-- K-th ANGLE -->
-  {#each new Array(controls[0] - 1) as _, i}
+  {#each new Array(m - 1) as _, i}
     {@const kPosition = polarToCartesian(radius, phi + deltaAngle * i)}
     {@const kNextPosition = polarToCartesian(radius, phi + deltaAngle * (i + 1))}
 
     <Line2D start={kPosition} end={kNextPosition} color={PrimeColor.cyan} />
 
     <Latex2D
-      latex={`\\frac{2}{${controls[0]}}\\pi`}
+      latex={`\\frac{2}{${m}}\\pi`}
       position={kPosition.clone().add(kNextPosition).normalize().multiplyScalar(radius)}
       fontSize={0.5}
       offset={new Vector2(-0.25, 0.1)}
@@ -93,7 +94,7 @@
   {/each}
 
   <!-- FIRST ANGLE -->
-  {@const kLast = phi + deltaAngle * (controls[0] - 1)}
+  {@const kLast = phi + deltaAngle * (m - 1)}
   {@const kLastPosition = polarToCartesian(radius, kLast)}
   <Point2D position={polarToCartesian(radius, phi)} color={PrimeColor.cyan} />
 
