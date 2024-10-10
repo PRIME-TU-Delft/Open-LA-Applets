@@ -10,34 +10,40 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
 
-  const controls = Controls.addToggle(true, '\\mathbf{v_3}', PrimeColor.raspberry).addToggle(
-    true,
-    '\\mathbf{v_4}',
+  const controls = Controls.addToggle(true, '\\mathbf{w_3}', PrimeColor.raspberry).addToggle(
+    false,
+    '\\mathbf{w_4}',
     PrimeColor.orange
   );
 
-  const v1 = new MathVector3(2, 0, 0);
-  const v2 = new MathVector3(0, 2, 0);
-  const v3 = new MathVector3(1, 2, 0);
-  const v4 = new MathVector3(1, 2, 1);
+  const w1 = new MathVector3(2, 0, 0);
+  const w2 = new MathVector3(0, 2, 0);
+  const w3 = new MathVector3(1, 2, 0);
+  const w4 = new MathVector3(1, 2, 1);
 
   /**
    * @description Create a string representation of the span of the vectors
    * The first two vectors are fixed and the third one is controlled by the user
    * @example
-   * Span\{\mathbf{v_1}, \mathbf{v_2}, \mathbf{v_3}\}
+   * Span\{\mathbf{w_1}, \mathbf{w_2}, \mathbf{w_3}\}
    */
   const formulas = $derived.by(() => {
     const pre = '\\mathrm{Span}\\{';
     const res = [true, true, ...controls.values]
-      .map((b, i) => (b ? `\\mathbf{v_${i + 1}}` : ''))
+      .map((b, i) => (b ? `\\mathbf{w_${i + 1}}` : ''))
       .filter(Boolean)
       .join(', ');
-    const post = '\\} \\subset ';
+    const post = '\\} ';
 
-    const isIn = controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2';
+    const isIn = '\\subset' + (controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2');
 
-    return [new Formula(pre + res + post + isIn)];
+    const f1 = new Formula(pre + res + post + isIn);
+
+    const f2 = new Formula(
+      '\\{' + res + post + `= \\text{linearly ${!controls[0] && controls[1] ? 'in' : ''}dependent}`
+    );
+
+    return [f1, f2];
   });
 </script>
 
@@ -48,19 +54,19 @@
   cameraZoom={50}
   cameraPosition={new Vector3(7, 6.5, 14)}
 >
-  <Vector3D direction={v1} length={2} color={PrimeColor.blue} />
+  <Vector3D direction={w1} length={2} color={PrimeColor.blue} />
   <Latex3D
-    latex={'\\mathbf{v_1}'}
-    position={v1}
+    latex={'\\mathbf{w_1}'}
+    position={w1}
     offset={new MathVector3(0, 0, 0.1)}
     color={PrimeColor.blue}
     hasBackground
   />
 
-  <Vector3D direction={v2} length={2} color={PrimeColor.darkGreen} />
+  <Vector3D direction={w2} length={2} color={PrimeColor.darkGreen} />
   <Latex3D
-    latex={'\\mathbf{v_2}'}
-    position={v2}
+    latex={'\\mathbf{w_2}'}
+    position={w2}
     offset={new MathVector3(0, 0, 0.1)}
     color={PrimeColor.darkGreen}
     hasBackground
@@ -68,13 +74,13 @@
 
   {#if controls[0]}
     <Vector3D
-      direction={v3}
-      length={v3.clone().multiplyScalar(2).length()}
+      direction={w3}
+      length={w3.clone().multiplyScalar(2).length()}
       color={PrimeColor.raspberry}
     >
       {#snippet children(endPoint)}
         <Latex3D
-          latex={'\\mathbf{v_3}'}
+          latex={'\\mathbf{w_3}'}
           position={endPoint}
           offset={new MathVector3(0, 0, 0.1)}
           color={PrimeColor.raspberry}
@@ -86,13 +92,13 @@
 
   {#if controls[1]}
     <Vector3D
-      direction={v4}
-      length={v3.clone().multiplyScalar(2).length()}
+      direction={w4}
+      length={w3.clone().multiplyScalar(2).length()}
       color={PrimeColor.orange}
     >
       {#snippet children(endPoint)}
         <Latex3D
-          latex={'\\mathbf{v_4}'}
+          latex={'\\mathbf{w_4}'}
           position={endPoint}
           offset={new MathVector3(0, 0, 0.1)}
           color={PrimeColor.orange}
@@ -102,7 +108,7 @@
     </Vector3D>
   {/if}
 
-  <Span3D toggles={[true, true, controls[1]]} vectors={[v1, v2, v4]} />
+  <Span3D toggles={[true, true, controls[1]]} vectors={[w1, w2, w4]} />
 
   <Axis3D />
 </Canvas3D>
