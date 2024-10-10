@@ -41,6 +41,15 @@
   {formulas}
   showFormulasDefault
 >
+  <image
+    transform="translate(0,1) scale(1,-1)"
+    x="0"
+    y="0"
+    width="1"
+    height="1"
+    xlink:href="/house.svg"
+  />
+
   <Vector2D direction={new Vector2(1, 0)} color={PrimeColor.darkGreen} />
   <Vector2D direction={new Vector2(0, 1)} color={PrimeColor.blue} />
 
