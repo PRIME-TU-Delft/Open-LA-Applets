@@ -8,8 +8,8 @@
   import { Vector2 } from 'three';
 
   const draggables = [
-    new Draggable(new Vector2(1, 3), PrimeColor.darkGreen, 'w'),
-    new Draggable(new Vector2(3, 0), PrimeColor.blue, 'v')
+    new Draggable(new Vector2(1, 3), PrimeColor.darkGreen),
+    new Draggable(new Vector2(3, 0), PrimeColor.blue)
   ];
 
   let w = $derived(draggables[0].position);
@@ -42,7 +42,7 @@
       <Latex2D
         position={endPoint}
         latex={'\\mathbf{v}'}
-        offset={new Vector2(-0.2, 0.2)}
+        offset={new Vector2(0.15, 0.1)}
         color={PrimeColor.blue}
       />
     {/snippet}
@@ -52,7 +52,8 @@
       <Latex2D
         position={endPoint}
         latex={'\\mathbf{w}'}
-        offset={new Vector2(-0.2, 0.2)}
+        extend={0.5}
+        offset={new Vector2(-0.15, 0.1)}
         color={PrimeColor.darkGreen}
       />
     {/snippet}
@@ -76,6 +77,14 @@
     direction={w}
     length={w.length()}
     color={PrimeColor.darkGreen}
+    isDashed
+    hideHead
+  />
+  <Vector2D
+    origin={w}
+    direction={v}
+    length={v.length()}
+    color={PrimeColor.blue}
     isDashed
     hideHead
   />
