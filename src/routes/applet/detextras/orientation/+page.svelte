@@ -3,6 +3,7 @@
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Circle2D from '$lib/d3/Circle2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -52,8 +53,17 @@
   {@render scene()}
 
   <g transform="rotate({controls[0]})">
-    <Vector2D direction={v1} length={v1.length()} color={PrimeColor.cyan} radius={0.04} />
+    <Vector2D direction={v1} length={v1.length()} color={PrimeColor.cyan} radius={0.04}></Vector2D>
+
     <Vector2D direction={v2} length={v2.length()} color={PrimeColor.orange} radius={0.04} />
+  </g>
+
+  <g transform="rotate({controls[0]}) translate({v1.x}, {v1.y}) rotate({-controls[0]})">
+    <Latex2D latex={'\\mathbf{v}_1'} offset={new Vector2(0, 0.1)} color={PrimeColor.cyan} />
+  </g>
+
+  <g transform="rotate({controls[0]}) translate({v2.x}, {v2.y}) rotate({-controls[0]})">
+    <Latex2D latex={'\\mathbf{v}_2'} offset={new Vector2(0, 0.1)} color={PrimeColor.orange} />
   </g>
 
   {#snippet splitCanvas2DChildren()}
@@ -73,8 +83,29 @@
       {@render scene()}
     </g>
 
-    <Vector2D direction={tv1} length={tv1.length()} color={PrimeColor.cyan} radius={0.1} />
-    <Vector2D direction={tv2} length={tv2.length()} color={PrimeColor.orange} radius={0.1} />
+    <Vector2D direction={tv1} length={tv1.length()} color={PrimeColor.cyan} radius={0.1}>
+      {#snippet children(endPoint)}
+        <Latex2D
+          position={endPoint}
+          latex={'T(\\mathbf{v}_1)'}
+          extend={0.5}
+          offset={new Vector2(-0.5, 0.2)}
+          color={PrimeColor.cyan}
+        />
+      {/snippet}
+    </Vector2D>
+
+    <Vector2D direction={tv2} length={tv2.length()} color={PrimeColor.orange} radius={0.1}>
+      {#snippet children(endPoint)}
+        <Latex2D
+          position={endPoint}
+          latex={'T(\\mathbf{v}_2)'}
+          extend={0.5}
+          offset={new Vector2(-0.5, 0.2)}
+          color={PrimeColor.orange}
+        />
+      {/snippet}
+    </Vector2D>
   {/snippet}
 </Canvas2D>
 
