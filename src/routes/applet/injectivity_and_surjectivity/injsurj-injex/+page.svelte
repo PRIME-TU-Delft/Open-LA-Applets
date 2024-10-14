@@ -18,7 +18,9 @@
   }
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('T(\\mathbf{v})=\\begin{bmatrix}1 & -1 \\\\ 1 & 1 \\end{bmatrix}');
+    const f1 = new Formula(
+      'T(\\mathbf{v})=\\begin{bmatrix}1 & -1 \\\\ 1 & 1 \\end{bmatrix}\\mathbf{v}'
+    );
 
     return [f1];
   });

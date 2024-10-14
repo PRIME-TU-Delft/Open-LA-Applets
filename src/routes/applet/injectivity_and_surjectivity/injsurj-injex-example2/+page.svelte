@@ -16,9 +16,21 @@
     PrimeColor.blue
   );
 
-  const draggables = [new Draggable(new Vector2(3, 2), PrimeColor.blue, '\\mathbf{v}')];
+  const draggables = $derived.by(() => {
+    let snapFn = (v: Vector2) => v;
 
-  const u = new Vector2(2, 1);
+    if (controls[0] === 'Transformation 2') {
+      const solution = new Vector2(70, 17).multiplyScalar(1 / 23);
+      snapFn = (v: Vector2) => (v.distanceTo(solution) < 0.5 ? solution : v);
+    } else if (controls[0] === 'Transformation 3') {
+      const solution = new Vector2(-3, 2);
+      snapFn = (v: Vector2) => (v.distanceTo(solution) < 0.5 ? solution : v);
+    }
+
+    return [new Draggable(new Vector2(3, 2), PrimeColor.blue, '\\mathbf{v}', snapFn)];
+  });
+
+  const u = new Vector2(3, 2);
 
   function transform(vector: Vector2) {
     switch (controls[0]) {
@@ -44,23 +56,25 @@
     switch (controls[0]) {
       case 'Transformation 1':
         const f1 = new Formula(
-          'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}'
+          'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
         );
         formulas.push(f1);
         break;
       case 'Transformation 2':
         const f2 = new Formula(
-          'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}'
+          'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
         );
         formulas.push(f2);
         break;
       case 'Transformation 3':
-        const f3 = new Formula('T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}');
+        const f3 = new Formula(
+          'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
+        );
         formulas.push(f3);
         break;
     }
 
-    const f4 = new Formula(`T(\\mathbf{v}) ${TvDistances < 0.1 ? '=' : '\\neq'} T(\\mathbf{u})`);
+    const f4 = new Formula(`T(\\mathbf{v}) ${TvDistances < 0.1 ? '=' : '\\neq'} \\mathbf{u}`);
     formulas.push(f4);
 
     return formulas;
