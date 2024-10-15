@@ -94,7 +94,7 @@
       <Latex2D
         position={draggable.position}
         offset={new Vector2(-0.2, 0.3)}
-        latex={`T(\\mathbf{v_${index + 1}})`}
+        latex={`\\mathbf{v_${index + 1}}`}
         color={draggable.color}
         extend={0.3}
       />
@@ -105,7 +105,7 @@
     <Latex2D
       position={draggables[0].position}
       offset={new Vector2(-0.5, 0.3)}
-      latex={`T(\\mathbf{v_1}) = T(\\mathbf{v_2})`}
+      latex={`\\mathbf{v_1} = T(\\mathbf{v_2})`}
       extend={0.3}
     />
   {/if}
