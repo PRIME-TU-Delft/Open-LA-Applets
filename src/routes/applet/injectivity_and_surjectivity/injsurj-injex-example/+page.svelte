@@ -16,10 +16,46 @@
     PrimeColor.blue
   );
 
-  const draggables = [
-    new Draggable(new Vector2(-1, 2), PrimeColor.blue),
-    new Draggable(new Vector2(3, 2), PrimeColor.raspberry)
-  ];
+  const draggables = $derived.by(() => {
+    const d1 = new Draggable(
+      new Vector2(-1, 2),
+      PrimeColor.blue,
+      '',
+      (v) => v,
+      (v) => snapd1(v)
+    );
+    const d2 = new Draggable(
+      new Vector2(3, 2),
+      PrimeColor.raspberry,
+      '',
+      (v) => v,
+      (v) => snapd2(v)
+    );
+
+    function snapd1(v: Vector2) {
+      const td1 = transform(d1.position);
+      const td2 = transform(d2.position);
+
+      if (Math.abs(td1.length() - td2.length()) < 1) {
+        return v.clone().multiplyScalar(td2.length() / td1.length());
+      } else {
+        return v;
+      }
+    }
+
+    function snapd2(v: Vector2) {
+      const td1 = transform(d1.position);
+      const td2 = transform(d2.position);
+
+      if (Math.abs(td1.length() - td2.length()) < 1) {
+        return v.clone().multiplyScalar(td1.length() / td2.length());
+      } else {
+        return v;
+      }
+    }
+
+    return [d1, d2];
+  });
 
   const vDistances = $derived(draggables[0].position.distanceTo(draggables[1].position));
   const TvDistances = $derived(
