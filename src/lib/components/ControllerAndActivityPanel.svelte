@@ -66,8 +66,8 @@
   <SideButton
     translate={activityState.isActive
       ? 'left-1/2 -translate-x-1/2 top-5 scale-0'
-      : 'left-1/2 -translate-x-1/2 -top-6 scale-100 motion-safe:hover:scale-105'}
-    class="w-full text-nowrap"
+      : 'left-1/2 -translate-x-1/2  -top-14 sm:-top-6 scale-100 motion-safe:hover:scale-105'}
+    class="w-full h-full text-nowrap"
     tooltip="Start the scene so you can interact"
   >
     <div
@@ -89,21 +89,27 @@
   <!-- LOCK SCENE -->
   <SideButton
     onclick={(e) => onLock(e)}
-    translate={activityState.isActive ? '-left-[4.5rem] opacity-100' : 'left-1 opacity-50'}
+    translate={activityState.isActive
+      ? '-left-12 sm:-left-[4.5rem] opacity-100'
+      : 'left-1 opacity-50'}
     tooltip="Lock the scene so you can scroll again"
+    class="w-10 sm:w-16"
   >
-    <span class="text-xs mr-0.5">Lock</span>
+    <span class="text-xs mr-0.5 hidden sm:block">Lock</span>
     <Lock class="h-4 w-4" />
   </SideButton>
 
   <!-- RESET SCENE -->
   <SideButton
     onclick={onReset}
-    translate={activityState.isActive ? '-right-[4.5rem] opacity-100' : 'right-1 opacity-50'}
+    translate={activityState.isActive
+      ? '-right-12 sm:-right-[4.5rem] opacity-100'
+      : 'right-1 opacity-50'}
     tooltip="Will reset sliders, toggles and scene"
+    class="w-10 sm:w-16"
   >
     <RotateCcw class="h-4 w-4" />
-    <span class="ml-0.5 text-xs">Reset</span>
+    <span class="ml-0.5 text-xs hidden sm:block">Reset</span>
   </SideButton>
 </div>
 
