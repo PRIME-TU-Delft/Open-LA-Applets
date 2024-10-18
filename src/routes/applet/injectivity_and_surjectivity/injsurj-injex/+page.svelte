@@ -26,7 +26,14 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} showFormulasDefault>
+<Canvas2D
+  {draggables}
+  {formulas}
+  showFormulasDefault
+  cameraZoom={1.75}
+  cameraPosition={new Vector2(0, 2)}
+  splitCanvas2DProps={{ cameraZoom: 1.75, cameraPosition: new Vector2(0, 2) }}
+>
   {#each draggables as draggable}
     <Vector2D
       direction={draggable.position}

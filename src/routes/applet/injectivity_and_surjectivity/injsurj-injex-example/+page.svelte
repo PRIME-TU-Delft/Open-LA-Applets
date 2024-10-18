@@ -37,6 +37,10 @@
       const td2 = transform(d2.position);
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
+        if (controls[0] == 'Transformation 2' && d1.position.distanceTo(d2.position) > 0.5) {
+          confettiState.center(1000);
+        }
+
         return v.clone().multiplyScalar(td2.length() / td1.length());
       } else {
         return v;
@@ -48,6 +52,10 @@
       const td2 = transform(d2.position);
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
+        if (controls[0] == 'Transformation 2' && d1.position.distanceTo(d2.position) > 0.5) {
+          confettiState.center(1000);
+        }
+
         return v.clone().multiplyScalar(td1.length() / td2.length());
       } else {
         return v;
@@ -103,18 +111,11 @@
     }
 
     const f4 = new Formula(
-      `\\mathbf{v_1} ${vDistances < 0.1 ? '=' : '\\neq'} \\mathbf{v_2} \\quad T(\\mathbf{v_1}) ${TvDistances < 0.1 ? '=' : '\\neq'} T(\\mathbf{v_2})`
+      `\\mathbf{v_1} ${vDistances < 0.5 ? '=' : '\\neq'} \\mathbf{v_2} \\quad T(\\mathbf{v_1}) ${TvDistances < 0.1 ? '=' : '\\neq'} T(\\mathbf{v_2})`
     );
     formulas.push(f4);
 
     return formulas;
-  });
-
-  $effect(() => {
-    if (vDistances >= 0.5 && TvDistances < 0.1) {
-      // Launch confetti
-      untrack(() => confettiState.center(1000));
-    }
   });
 </script>
 

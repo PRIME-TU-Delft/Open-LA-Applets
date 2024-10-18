@@ -7,7 +7,6 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { untrack } from 'svelte';
   import { Vector2 } from 'three';
 
   const controls = Controls.addDropdown(
@@ -21,13 +20,27 @@
 
     if (controls[0] === 'Transformation 1') {
       const solution = new Vector2(70, 17).multiplyScalar(1 / 23);
-      snapFn = (v: Vector2) => (v.distanceTo(solution) < 0.5 ? solution : v);
+      snapFn = (v: Vector2) => {
+        if (v.distanceTo(solution) < 0.5) {
+          confettiState.center(1000);
+          return solution;
+        } else {
+          return v;
+        }
+      };
     } else if (controls[0] === 'Transformation 3') {
       const solution = new Vector2(-3, 2);
-      snapFn = (v: Vector2) => (v.distanceTo(solution) < 0.5 ? solution : v);
+      snapFn = (v: Vector2) => {
+        if (v.distanceTo(solution) < 0.5) {
+          confettiState.center(1000);
+          return solution;
+        } else {
+          return v;
+        }
+      };
     }
 
-    return [new Draggable(new Vector2(3, 2), PrimeColor.blue, '\\mathbf{v}', snapFn)];
+    return [new Draggable(new Vector2(3, 2), PrimeColor.blue, '\\mathbf{v}', (v) => v, snapFn)];
   });
 
   const u = new Vector2(3, 2);
@@ -79,18 +92,17 @@
 
     return formulas;
   });
-
-  $effect(() => {
-    const TvDistances = transform(draggables[0].position).distanceTo(u);
-
-    if (TvDistances < 0.1) {
-      // Launch confetti
-      untrack(() => confettiState.center(1000));
-    }
-  });
 </script>
 
-<Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
+<Canvas2D
+  {draggables}
+  {formulas}
+  {controls}
+  cameraZoom={1.5}
+  cameraPosition={new Vector2(0, 2)}
+  showFormulasDefault
+  splitCanvas2DProps={{ cameraZoom: 1.5, cameraPosition: new Vector2(2, 2) }}
+>
   {#each draggables as draggable}
     <Vector2D
       direction={draggable.position}
