@@ -2,6 +2,8 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import ShadowTrail2D from '$lib/d3/ShadowTrail2D.svelte';
+  import ShadowTrail from '$lib/d3/ShadowTrail2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -40,12 +42,16 @@
       length={draggable.position.length()}
       color={draggable.color}
     />
+
+    <ShadowTrail2D currentPosition={draggable.position} color={draggable.color} />
   {/each}
 
   {#snippet splitCanvas2DChildren()}
     {#each draggables as draggable, index}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
+
+      <ShadowTrail2D currentPosition={transformed} color={draggable.color} />
 
       <Latex2D
         position={transformed}
