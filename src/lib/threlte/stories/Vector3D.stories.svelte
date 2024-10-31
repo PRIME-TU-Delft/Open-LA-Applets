@@ -73,7 +73,7 @@
   setTemplate(template);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Args<Story>)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Vector3D {...args} />
