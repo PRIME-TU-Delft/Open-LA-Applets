@@ -21,5 +21,5 @@
     {/snippet}
   </AutoPlanes>
 
-  <Axis3D withGizmo />
+  <Axis3D />
 </Canvas3D>
