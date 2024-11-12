@@ -20,14 +20,13 @@
   }: ButtonActionProps = $props();
 </script>
 
-<button onclick={(e) => onclick?.(e)}>
+<button class="button" onclick={(e) => onclick?.(e)}>
   <Tooltip.Root openDelay={300} closeDelay={50}>
     <Tooltip.Trigger
       class={cn(
         'w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center',
         className
       )}
-      style="background: var(--bg)"
     >
       {@render children?.()}
     </Tooltip.Trigger>
@@ -36,3 +35,13 @@
     </Tooltip.Content>
   </Tooltip.Root>
 </button>
+
+<style>
+  .button > :global(button) {
+    background: var(--bg);
+  }
+
+  .button > :global(button):hover {
+    background: var(--hover-bg, --bg);
+  }
+</style>
