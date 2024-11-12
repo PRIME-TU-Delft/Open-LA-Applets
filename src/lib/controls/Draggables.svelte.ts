@@ -94,15 +94,4 @@ export class Draggable implements Controller<Vector2> {
       this.releaseFn
     );
   }
-
-  toURL() {
-    return `${this.value}`;
-  }
-
-  fromURL(s: string) {
-    const [x, y] = s.split(',').map(parseFloat);
-    this.value = new Vector2(x, y);
-
-    return this;
-  }
 }

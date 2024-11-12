@@ -38,14 +38,4 @@ export class Dropdown implements Controller<string> {
 
     return this;
   }
-
-  toURL() {
-    return `${this.value}`;
-  }
-
-  fromURL(s: string) {
-    this.value = s;
-
-    return this;
-  }
 }
