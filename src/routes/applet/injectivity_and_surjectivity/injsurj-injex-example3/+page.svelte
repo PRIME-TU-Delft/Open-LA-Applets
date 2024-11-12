@@ -11,8 +11,8 @@
   import { Vector2 } from 'three';
 
   function randomVector() {
-    const x = Math.round((Math.random() * 6 - 3) * 2.5) / 2;
-    const y = Math.round((Math.random() * 6 - 3) * 2.5) / 2;
+    const x = Math.floor((Math.random() * 5 - 3) * 2) / 2;
+    const y = Math.floor((Math.random() * 5 - 3) * 2) / 2;
 
     return new Vector2(x, y);
   }
@@ -20,7 +20,7 @@
   // Target to reach
   let target = $state(randomVector());
 
-  const controls = Controls.addButton('New target', PrimeColor.blue, () => {
+  const controls = Controls.addButton('New target', PrimeColor.raspberry, () => {
     target = randomVector();
   });
 
@@ -58,7 +58,7 @@
   showFormulasDefault
   cameraZoom={1.75}
   cameraPosition={new Vector2(0, 2)}
-  splitCanvas2DProps={{ cameraZoom: 1.75, cameraPosition: new Vector2(0, 2) }}
+  splitCanvas2DProps={{ cameraZoom: 1.5, cameraPosition: new Vector2(0, 2) }}
 >
   {#each draggables as draggable}
     <Vector2D

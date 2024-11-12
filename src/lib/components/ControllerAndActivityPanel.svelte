@@ -75,12 +75,12 @@
   <SideButton
     translate={activityState.isActive
       ? 'left-1/2 -translate-x-1/2 top-5 scale-0'
-      : 'left-1/2 -translate-x-1/2  -top-14 sm:-top-6 scale-100 motion-safe:hover:scale-105'}
+      : 'left-1/2 -translate-x-1/2  -top-7 sm:-top-6 scale-100 motion-safe:hover:scale-105'}
     class="w-full h-full text-nowrap"
     tooltip="Start the scene so you can interact"
   >
     <div
-      class="px-4 py-1 relative sm:text-nowrap text-balance text-center items-center flex gap-2 text-xs"
+      class="px-4 py-1 relative sm:text-nowrap text-balance text-center items-center flex gap-2 text-xs min-w-[16rem]"
     >
       <ShadCNButton.Action class="w-6 h-6" tooltip="Lock scene">
         <Unlock class="bg-blue-200 hover:bg-blue-300 p-1 w-6 h-6 rounded-sm transition-colors" />
