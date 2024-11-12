@@ -11,7 +11,7 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { projectPoints } from '../formula_gen';
+  import { projectPoints, type UT } from '../formula_gen';
 
   const cameraPosition = new Vector2(4, 4);
   const cameraZoom = 1.39;
@@ -99,7 +99,7 @@
   {/snippet}
 </Canvas2D>
 
-{#snippet LeastSquaresScene(draggables, ps_proj, showRightAngles)}
+{#snippet LeastSquaresScene(draggables: Draggable[], ps_proj: UT[], showRightAngles: boolean)}
   <!-- L -->
   <InfiniteLine2D
     origin={draggables[0].position}

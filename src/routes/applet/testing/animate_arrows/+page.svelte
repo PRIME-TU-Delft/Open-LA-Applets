@@ -2,7 +2,6 @@
   import Axis3D from '$lib/threlte/Axis3D.svelte';
 
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
-  import Gizmo from '$lib/threlte/Gizmo.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Quaternion, Vector3 } from 'three';
@@ -37,8 +36,6 @@
   <Vector3D direction={b} color={PrimeColor.darkGreen} noNormalise />
 
   <Axis3D showNumbers />
-
-  <Gizmo></Gizmo>
 </Canvas3D>
 
 <button
