@@ -1,49 +1,25 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Arc3D from '../Arc3D.svelte';
   import { Vector3 } from 'three';
+  import Arc3D from '../Arc3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Arc3D',
-    component: Arc3D,
-    argTypes: {
-      points: {
-        description: 'The two vectors defining the arc. Required.',
-        control: {
-          type: 'object'
-        }
-      },
-      color: {
-        description: 'The color of the arc.',
-        control: {
-          type: 'color'
-        }
-      },
-      origin: {
-        description: 'The origin point of the arc.',
-        control: {
-          type: 'object'
-        }
-      },
-      pointsOnArc: {
-        description: 'The number of points to use when drawing the arc.',
-        control: {
-          type: 'number'
-        }
-      }
-    }
+    component: Arc3D
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Canvas3D from '../Canvas3D.svelte';
+  import type { Snippet } from 'svelte';
+  import type { Arc3DProps } from '../Arc3D.svelte';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Arc3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Arc3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Arc3D {...args} />

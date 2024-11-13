@@ -1,14 +1,16 @@
-<script lang="ts">
-  import { T } from '@threlte/core';
-  import { onDestroy } from 'svelte';
-  import { BufferGeometry, Vector3 } from 'three';
-
-  type Arc3DProps = {
+<script lang="ts" module>
+  export type Arc3DProps = {
     points: [Vector3, Vector3];
     color?: string;
     origin?: Vector3;
     pointsOnArc?: number;
   };
+</script>
+
+<script lang="ts">
+  import { T } from '@threlte/core';
+  import { onDestroy } from 'svelte';
+  import { BufferGeometry, Vector3 } from 'three';
 
   let {
     points,

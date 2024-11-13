@@ -1,12 +1,5 @@
-<script lang="ts">
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { T } from '@threlte/core';
-  import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
-  import Line3D from './Line3D.svelte';
-  import type { Snippet } from 'svelte';
-  import Point3D from './Point3D.svelte';
-
-  type Vector3DProps = {
+<script lang="ts" module>
+  export type Vector3DProps = {
     color?: string;
     origin?: Vector3;
     direction?: Vector3;
@@ -18,6 +11,15 @@
     noNormalise?: boolean;
     children?: Snippet<[Vector3 | undefined]>;
   };
+</script>
+
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { T } from '@threlte/core';
+  import { DoubleSide, Mesh, Quaternion, Vector3 } from 'three';
+  import Line3D from './Line3D.svelte';
+  import type { Snippet } from 'svelte';
+  import Point3D from './Point3D.svelte';
 
   let {
     color = PrimeColor.getRandomColor(),

@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
 
@@ -30,22 +30,23 @@
   });
 </script>
 
-<script>
+<script lang="ts">
   import { globalState } from '$lib/stores/globalState.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
-  import { onDestroy } from 'svelte';
+  import type { CanvasProps } from '$lib/threlte/Canvas3D.svelte';
+  import { onDestroy, type Snippet } from 'svelte';
   import { Vector3 } from 'three';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
 
   onDestroy(() => {
     globalState.title = '';
   });
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Omit<CanvasProps, 'children'>)}
   <div class="h-[300px] w-full rounded-lg overflow-hidden">
-    <Canvas3D title={'A 3D canvas'} {...args}>
+    <Canvas3D {...args}>
       <Axis3D />
     </Canvas3D>
   </div>

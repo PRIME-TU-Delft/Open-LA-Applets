@@ -1,77 +1,40 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Latex2D from '../Latex2D.svelte';
+  import Latex2D, { type Latex2DProps } from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
     title: 'D3/Latex2D',
-    component: Latex2D,
-    argTypes: {
-      latex: {
-        description: 'The LaTeX content to render. Required.',
-        control: {
-          type: 'text'
-        }
-      },
-      fontSize: {
-        description: 'The font size of the LaTeX text.',
-        control: {
-          type: 'number'
-        }
-      },
-      position: {
-        description: 'The position of the LaTeX text.',
-        control: {
-          type: 'object'
-        }
-      },
-      offset: {
-        description: 'The offset of the LaTeX text.',
-        control: {
-          type: 'object'
-        }
-      },
-      extend: {
-        description: 'The extend value for the LaTeX text.',
-        control: {
-          type: 'number'
-        }
-      },
-      color: {
-        description: 'The color of the LaTeX text.',
-        control: {
-          type: 'color'
-        }
-      }
-    }
+    component: Latex2D
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Latex2DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Latex2DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
-      <Latex2D latex="E=mc^2" {...args} />
+      <Latex2D {...args} />
     </Canvas2D>
   </div>
 {/snippet}
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" source args={{ color: PrimeColor.raspberry }} />
+<Story name="With color" args={{ latex: 'E=mc^2', color: PrimeColor.raspberry }} />
 
 <!-- A LaTeX text with different content defined -->
-<Story name="With content defined" source args={{ latex: 'a^2 + b^2 = c^2' }} />
+<Story name="With content defined" args={{ latex: 'a^2 + b^2 = c^2' }} />
 
-<Story name="With font size defined" source args={{ fontSize: 4 }} />
+<Story name="With font size defined" args={{ latex: 'E=mc^2', fontSize: 4 }} />
 
-<Story name="With position defined" source args={{ position: new Vector2(1, 1) }} />
+<Story name="With position defined" args={{ latex: 'E=mc^2', position: new Vector2(1, 1) }} />
 
-<Story name="With offset defined" source args={{ offset: new Vector2(0.5, 0.5) }} />
+<Story name="With offset defined" args={{ latex: 'E=mc^2', offset: new Vector2(0.5, 0.5) }} />
 
-<Story name="With extend defined" source args={{ extend: 2 }} />
+<Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} />

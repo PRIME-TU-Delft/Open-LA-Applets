@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import Vector2D from '../Vector2D.svelte';
   import { Vector2 } from 'three';
@@ -6,68 +6,19 @@
 
   const { Story } = defineMeta({
     title: 'D3/Vector2D',
-    component: Vector2D,
-    argTypes: {
-      color: {
-        description: 'The color of the vector.',
-        control: {
-          type: 'color'
-        }
-      },
-      origin: {
-        description: 'The origin of the vector.',
-        control: {
-          type: 'object'
-        }
-      },
-      direction: {
-        description: 'The direction of the vector.',
-        control: {
-          type: 'object'
-        }
-      },
-      length: {
-        description: 'The length of the vector.',
-        control: {
-          type: 'number'
-        }
-      },
-      radius: {
-        description: 'The width of the vector.',
-        control: {
-          type: 'number'
-        }
-      },
-      hideHead: {
-        description: 'Whether to hide the head of the vector.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      isDashed: {
-        description: 'Whether the vector is dashed or not.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      noNormalise: {
-        description: 'Whether to normalize the vector or not.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Vector2D
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
+  import type { VectorProps } from '../Vector2D.svelte';
 
   setTemplate(template);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: VectorProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
       <Vector2D {...args}>

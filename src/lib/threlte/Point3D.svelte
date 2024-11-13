@@ -1,18 +1,16 @@
-<script lang="ts">
-  /***
-   * @Component This Compoenent is a 3d Point with an optional label
-   * */
-
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { T } from '@threlte/core';
-  import { Mesh, SphereGeometry, Vector3 } from 'three';
-
-  type Point3DProps = {
+<script lang="ts" module>
+  export type Point3DProps = {
     position: Vector3;
     color?: string;
     size?: number;
     alwaysOnTop?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { T } from '@threlte/core';
+  import { Mesh, SphereGeometry, Vector3 } from 'three';
 
   let {
     position = new Vector3(0, 0, 0), // test

@@ -1,49 +1,25 @@
-<script context="module">
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Point3D from '../Point3D.svelte';
-  import { Vector3 } from 'three';
+<script module>
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { Vector3 } from 'three';
+  import Point3D from '../Point3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Point3D',
-    component: Point3D,
-    argTypes: {
-      position: {
-        description: 'The position of the point in 3D space.',
-        control: {
-          type: 'object'
-        }
-      },
-      color: {
-        description: 'The color of the point.',
-        control: {
-          type: 'color'
-        }
-      },
-      size: {
-        description: 'The size of the point.',
-        control: {
-          type: 'number'
-        }
-      },
-      alwaysOnTop: {
-        description: 'Whether the point should always render on top.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Point3D
   });
 </script>
 
-<script>
-  import Canvas3D from '../Canvas3D.svelte';
+<script lang="ts">
+  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
+  import type { Point3DProps } from '../Point3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Point3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Point3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Point3D {...args} />

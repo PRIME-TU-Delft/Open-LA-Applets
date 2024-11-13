@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type Camera3DProps = {
     cameraPosition?: Vector3;
     enablePan?: boolean;

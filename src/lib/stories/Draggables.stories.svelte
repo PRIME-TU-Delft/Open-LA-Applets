@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
 
@@ -14,6 +14,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import type { CanvasProps } from '../d3/Canvas2D.svelte';
 
   const draggables = [new Draggable(new Vector2(3, 1))];
   const multiDraggables = [new Draggable(new Vector2(3, 1)), new Draggable(new Vector2(-3, 1))];
@@ -45,17 +46,19 @@
   setTemplate(template);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Omit<CanvasProps, 'children'>)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D {...args}>
-      {#each args.draggables as draggable, i}
-        <Vector2D
-          origin={new Vector2(0, 0)}
-          direction={draggable.position}
-          length={draggable.position.length()}
-          color={PrimeColor.getColor(i)}
-        />
-      {/each}
+      {#if args.draggables}
+        {#each args.draggables as draggable, i}
+          <Vector2D
+            origin={new Vector2(0, 0)}
+            direction={draggable.position}
+            length={draggable.position.length()}
+            color={PrimeColor.getColor(i)}
+          />
+        {/each}
+      {/if}
     </Canvas2D>
   </div>
 {/snippet}
