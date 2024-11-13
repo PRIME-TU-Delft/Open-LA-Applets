@@ -7,7 +7,6 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { untrack } from 'svelte';
   import { Vector2 } from 'three';
 
   const controls = Controls.addDropdown(

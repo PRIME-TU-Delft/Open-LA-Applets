@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
@@ -98,7 +98,7 @@
   />
 </Canvas3D>
 
-{#snippet helperVector(origin, direction)}
+{#snippet helperVector(origin: Vector3, direction: Vector3)}
   <Vector3D
     {origin}
     {direction}
