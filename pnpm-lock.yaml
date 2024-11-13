@@ -20,15 +20,6 @@ importers:
       '@threlte/extras':
         specifier: 9.0.0-next.39
         version: 9.0.0-next.39(@types/three@0.170.0)(svelte@5.1.16)(three@0.170.0)
-      '@types/d3':
-        specifier: ^7.4.3
-        version: 7.4.3
-      '@types/katex':
-        specifier: ^0.16.7
-        version: 0.16.7
-      '@types/three':
-        specifier: ^0.170.0
-        version: 0.170.0
       bits-ui:
         specifier: ^0.21.16
         version: 0.21.16(svelte@5.1.16)
@@ -111,9 +102,18 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.14)
+      '@types/d3':
+        specifier: ^7.4.3
+        version: 7.4.3
       '@types/eslint':
         specifier: ^9.6.0
         version: 9.6.1
+      '@types/katex':
+        specifier: ^0.16.7
+        version: 0.16.7
+      '@types/three':
+        specifier: ^0.170.0
+        version: 0.170.0
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
