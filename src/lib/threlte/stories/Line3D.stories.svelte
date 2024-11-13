@@ -82,7 +82,8 @@
   args={{
     color: '#FF0000',
     isDashed: false,
-    alwaysOnTop: false
+    alwaysOnTop: false,
+    radius: 2
   }}
 />
 

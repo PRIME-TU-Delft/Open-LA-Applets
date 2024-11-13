@@ -39,7 +39,7 @@
     isDashed
   />
   <Latex3D
-    latex={'\\mathrm{proj}_L(\\mathbf{u})'}
+    latex={'\\mathrm{proj}_{\\mathcal{L}}(\\mathbf{u})'}
     position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
     color={PrimeColor.raspberry}
   />

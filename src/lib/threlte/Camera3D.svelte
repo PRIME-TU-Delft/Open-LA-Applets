@@ -14,9 +14,9 @@
   import { debounce } from '$lib/utils/TimingFunctions';
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { get } from 'svelte/store';
-  import { Camera, OrthographicCamera, Quaternion, Vector3 } from 'three';
+  import { OrthographicCamera, Quaternion, Vector3 } from 'three';
 
   let {
     enablePan = true,
@@ -32,10 +32,6 @@
 
   let interval: number | NodeJS.Timeout;
   let doReset: number | NodeJS.Timeout;
-
-  function onCreate({ ref }: { ref: Camera }) {
-    ref.lookAt(0, 0, 0);
-  }
 
   /**
    * Function for reseting the 3D camera to the original position and zoom
@@ -94,6 +90,8 @@
   function handleCameraChange() {
     const cam = $camera as OrthographicCamera;
 
+    cam.lookAt(0, 0, 0);
+
     const splitCamera3D = new Camera3D(cam);
 
     if (isSplit) {
@@ -111,6 +109,10 @@
     resetCamera();
 
     return () => clearInterval(interval);
+  });
+
+  onMount(() => {
+    handleCameraChange();
   });
 
   onDestroy(() => {
@@ -132,7 +134,6 @@
   position={[cameraPosition.x, cameraPosition.y, cameraPosition.z]}
   fov={15}
   {zoom}
-  oncreate={(e: { ref: Camera }) => onCreate(e)}
   near={-100}
   far={100}
 >
@@ -144,7 +145,6 @@
       minZoom={Math.max(zoom / 5, 1)}
       maxPolarAngle={Math.PI * 0.6}
       onchange={() => debounceHandleCameraChange()}
-      oncreate={() => debounceHandleCameraChange()}
     />
   {/if}
 </T.OrthographicCamera>

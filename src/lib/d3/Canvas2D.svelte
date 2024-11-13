@@ -43,6 +43,7 @@
     tickLength = 30,
     showAxisNumbers = true,
     enablePan = true,
+    customAxis = false,
     draggables = []
   }: CanvasProps = $props();
 
@@ -138,6 +139,7 @@
       {showAxisNumbers}
       {enablePan}
       {draggables}
+      {customAxis}
     >
       {@render children()}
     </CanvasD3>

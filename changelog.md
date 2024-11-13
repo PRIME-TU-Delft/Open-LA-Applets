@@ -31,7 +31,6 @@
 
 - AxisSpacing is no longer reliable on zoom level
 - No longer is origin >30x rendered
-- A gizmo can be added to the axis for orientation
 
 ### Latex3D
 

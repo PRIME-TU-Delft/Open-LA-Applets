@@ -41,12 +41,6 @@
         control: {
           type: 'boolean'
         }
-      },
-      withGizmo: {
-        description: 'Whether to show a gizmo.',
-        control: {
-          type: 'boolean'
-        }
       }
     }
   });
@@ -75,8 +69,7 @@
     axisLength: 10,
     axisSpacing: 2,
     floor: false,
-    hideOrigin: false,
-    withGizmo: false
+    hideOrigin: false
   }}
 />
 
@@ -89,8 +82,7 @@
     axisLength: 10,
     axisSpacing: 2,
     floor: false,
-    hideOrigin: false,
-    withGizmo: false
+    hideOrigin: false
   }}
 />
 
@@ -103,8 +95,7 @@
     axisLength: 15,
     axisSpacing: 3,
     floor: false,
-    hideOrigin: false,
-    withGizmo: false
+    hideOrigin: false
   }}
 />
 
@@ -117,22 +108,7 @@
     axisLength: 10,
     axisSpacing: 2,
     floor: true,
-    hideOrigin: false,
-    withGizmo: false
-  }}
-/>
-
-<!-- This story shows the Axis3D component with a gizmo. -->
-<Story
-  name="With Gizmo"
-  args={{
-    showNumbers: false,
-    hideTicks: false,
-    axisLength: 10,
-    axisSpacing: 2,
-    floor: false,
-    hideOrigin: false,
-    withGizmo: true
+    hideOrigin: false
   }}
 />
 
@@ -145,7 +121,6 @@
     axisLength: 10,
     axisSpacing: 2,
     floor: false,
-    hideOrigin: true,
-    withGizmo: false
+    hideOrigin: true
   }}
 />

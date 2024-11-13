@@ -2,7 +2,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { DoubleSide, Vector3 } from 'three';
-  import Gizmo from './Gizmo.svelte';
   import Latex3D from './Latex3D.svelte';
   import Line from './Line3D.svelte';
 
@@ -13,7 +12,6 @@
     axisSpacing?: number;
     floor?: boolean;
     hideOrigin?: boolean;
-    withGizmo?: boolean;
   };
 
   let {
@@ -22,8 +20,7 @@
     axisLength = 10,
     axisSpacing = 2,
     floor = false,
-    hideOrigin = false,
-    withGizmo = false
+    hideOrigin = false
   }: Axis3DProps = $props();
 
   const axisInterval = $derived(Math.floor(axisLength / (axisSpacing == 0 ? 1 : axisSpacing)));
@@ -133,8 +130,4 @@
 
 {#if !hideOrigin}
   <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, 0)} />
-{/if}
-
-{#if withGizmo}
-  <Gizmo />
 {/if}
