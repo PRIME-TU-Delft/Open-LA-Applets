@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { defineMeta } from '@storybook/addon-svelte-csf';
 

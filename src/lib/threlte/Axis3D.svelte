@@ -1,11 +1,5 @@
-<script lang="ts">
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { T } from '@threlte/core';
-  import { DoubleSide, Vector3 } from 'three';
-  import Latex3D from './Latex3D.svelte';
-  import Line from './Line3D.svelte';
-
-  type Axis3DProps = {
+<script lang="ts" module>
+  export type Axis3DProps = {
     showNumbers?: boolean;
     hideTicks?: boolean;
     axisLength?: number;
@@ -13,6 +7,14 @@
     floor?: boolean;
     hideOrigin?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { T } from '@threlte/core';
+  import { DoubleSide, Vector3 } from 'three';
+  import Latex3D from './Latex3D.svelte';
+  import Line from './Line3D.svelte';
 
   let {
     showNumbers = false,

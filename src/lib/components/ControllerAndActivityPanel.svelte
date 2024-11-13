@@ -113,7 +113,7 @@
   </SideButton>
 </div>
 
-<style lang="postcss">
+<style>
   .inset {
     @apply m-0;
   }

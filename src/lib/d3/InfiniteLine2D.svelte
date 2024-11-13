@@ -1,14 +1,16 @@
-<script lang="ts">
-  import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { Vector2 } from 'three';
-
-  type InfiniteLine2DProps = {
+<script lang="ts" module>
+  export type InfiniteLine2DProps = {
     origin?: Vector2;
     direction?: Vector2;
     color?: string;
     width?: number;
     isDashed?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { Vector2 } from 'three';
 
   let {
     origin = new Vector2(0, 0),

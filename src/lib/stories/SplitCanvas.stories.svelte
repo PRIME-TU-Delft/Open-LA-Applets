@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import Canvas2D from '../d3/Canvas2D.svelte';
 
@@ -8,20 +8,22 @@
   });
 </script>
 
-<script>
+<script lang="ts">
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
   import { Vector2, Vector3 } from 'three';
+  import type { CanvasProps } from '../d3/Canvas2D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Omit<CanvasProps, 'children'>)}
   <div class="h-[300px] rounded-lg overflow-hidden">
-    <Canvas2D title={'This is a split screen applet'} {...args}>
+    <Canvas2D {...args}>
       <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />
 
       {#snippet splitCanvas2DChildren()}

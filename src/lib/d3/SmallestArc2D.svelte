@@ -1,14 +1,19 @@
-<script lang="ts">
-  import type { Snippet } from 'svelte';
-  import { Vector2 } from 'three';
-  import Angle2D from './Angle2D.svelte';
-  import type { ArcProps } from './Arc2D.svelte';
+<script lang="ts" module>
+  import type { Arc2DProps } from './Arc2D.svelte';
 
   type LabelProp = {
     label?: Snippet<[Vector2]>;
   };
 
-  const props: ArcProps & LabelProp = $props();
+  export type SmallestArc2DProps = Arc2DProps & LabelProp;
+</script>
+
+<script lang="ts">
+  import type { Snippet } from 'svelte';
+  import { Vector2 } from 'three';
+  import Angle2D from './Angle2D.svelte';
+
+  const props: SmallestArc2DProps = $props();
 
   const v = $derived(props.points[0]);
   const w = $derived(props.points[1]);

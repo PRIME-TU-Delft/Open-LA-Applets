@@ -104,7 +104,7 @@
 
   <!-- ARC -->
   <SmallestArc2D points={[w, v]} distance={1.5}>
-    {#snippet label(position)}
+    {#snippet label(position: Vector2)}
       <Latex2D
         latex={'\\varphi'}
         {position}

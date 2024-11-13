@@ -1,20 +1,10 @@
-<script lang="ts">
-  import { page } from '$app/stores';
-  import Confetti from '$lib/components/Confetti.svelte';
-  import Konami from '$lib/components/Konami.svelte';
+<script lang="ts" module>
   import type { SceneProps } from '$lib/components/Scene.svelte';
-  import Scene from '$lib/components/Scene.svelte';
-  import { activityState } from '$lib/stores/activity.svelte';
   import type { Camera3DProps } from '$lib/threlte/Camera3D.svelte';
-  import Camera3D from '$lib/threlte/Camera3D.svelte';
-  import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
-  import { parseUrl } from '$lib/utils/parseUrl';
-  import { Canvas } from '@threlte/core';
-  import { type Snippet } from 'svelte';
-  import { NoToneMapping, Vector2 } from 'three';
-  import CanvasD3, { type Canvas2DProps } from './CanvasD3.svelte';
+  import type { Snippet } from 'svelte';
+  import { type Canvas2DProps } from './CanvasD3.svelte';
 
-  type CanvasProps = SceneProps &
+  export type CanvasProps = SceneProps &
     Omit<Canvas2DProps, 'children' | 'width'> & {
       title?: string;
       splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
@@ -23,6 +13,20 @@
       splitCanvas2DChildren?: Snippet;
       splitCanvas3DChildren?: Snippet;
     };
+</script>
+
+<script lang="ts">
+  import { page } from '$app/stores';
+  import Confetti from '$lib/components/Confetti.svelte';
+  import Konami from '$lib/components/Konami.svelte';
+  import Scene from '$lib/components/Scene.svelte';
+  import { activityState } from '$lib/stores/activity.svelte';
+  import Camera3D from '$lib/threlte/Camera3D.svelte';
+  import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
+  import { parseUrl } from '$lib/utils/parseUrl';
+  import { Canvas } from '@threlte/core';
+  import { NoToneMapping, Vector2 } from 'three';
+  import CanvasD3 from './CanvasD3.svelte';
 
   let {
     // General props

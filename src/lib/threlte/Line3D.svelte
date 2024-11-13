@@ -1,10 +1,5 @@
-<script lang="ts">
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { T } from '@threlte/core';
-  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
-  import { BufferGeometry, Line, Mesh, Vector3 } from 'three';
-
-  type LineProps = {
+<script lang="ts" module>
+  export type Line3DProps = {
     origin: Vector3;
     endPoint: Vector3;
     color?: string;
@@ -12,6 +7,13 @@
     radius?: number;
     alwaysOnTop?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { T } from '@threlte/core';
+  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
+  import { BufferGeometry, Line, Mesh, Vector3 } from 'three';
 
   let {
     origin = new Vector3(0, 0, 0),
@@ -20,7 +22,7 @@
     isDashed = false,
     radius = 0,
     alwaysOnTop = false
-  }: LineProps = $props();
+  }: Line3DProps = $props();
 
   const geometry = $derived(new BufferGeometry().setFromPoints([origin, endPoint]));
 

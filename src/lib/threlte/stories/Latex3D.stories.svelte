@@ -1,66 +1,24 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Latex3D from '../Latex3D.svelte';
   import { Vector3 } from 'three';
+  import Latex3D from '../Latex3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Latex3D',
-    component: Latex3D,
-    argTypes: {
-      latex: {
-        description: 'The LaTeX string to render.',
-        control: {
-          type: 'text'
-        }
-      },
-      fontSize: {
-        description: 'The font size of the LaTeX rendering.',
-        control: {
-          type: 'number'
-        }
-      },
-      position: {
-        description: 'The position of the LaTeX in 3D space.',
-        control: {
-          type: 'object'
-        }
-      },
-      offset: {
-        description: 'The offset from the position.',
-        control: {
-          type: 'object'
-        }
-      },
-      color: {
-        description: 'The color of the LaTeX text.',
-        control: {
-          type: 'color'
-        }
-      },
-      extend: {
-        description: 'The extension distance from the position.',
-        control: {
-          type: 'number'
-        }
-      },
-      hasBackground: {
-        description: 'Whether to show a background behind the LaTeX.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Latex3D
   });
 </script>
 
-<script>
-  import Canvas3D from '../Canvas3D.svelte';
+<script lang="ts">
+  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
+  import type { Latex3DProps } from '../Latex3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Latex3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Latex3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Latex3D {...args} />

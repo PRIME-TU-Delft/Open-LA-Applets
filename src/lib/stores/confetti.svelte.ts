@@ -5,7 +5,7 @@ export type Side = 'none' | 'left' | 'right' | 'center';
  */
 class ConfettiState {
   side = $state<Side>('none');
-  private timeOut: number | undefined = $state(undefined);
+  private timeOut: ReturnType<typeof setTimeout> | undefined = $state(undefined);
 
   setState(side: Side, coolDown: number) {
     if (this.timeOut) return;

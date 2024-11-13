@@ -1,58 +1,22 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import Axis3D from '../Axis3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Axis3D',
-    component: Axis3D,
-    argTypes: {
-      showNumbers: {
-        description: 'Whether to show numbers on the axis.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      hideTicks: {
-        description: 'Whether to hide tick marks on the axis.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      axisLength: {
-        description: 'The length of each axis.',
-        control: {
-          type: 'number'
-        }
-      },
-      axisSpacing: {
-        description: 'The spacing between tick marks.',
-        control: {
-          type: 'number'
-        }
-      },
-      floor: {
-        description: 'Whether to show a floor plane.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      hideOrigin: {
-        description: 'Whether to hide the origin label.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Axis3D
   });
 </script>
 
-<script>
+<script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { Axis3DProps } from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Axis3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Axis3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Axis3D {...args} />

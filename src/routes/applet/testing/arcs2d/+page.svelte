@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -34,7 +34,7 @@
   />
 
   <SmallestArc2D points={[w, v]} distance={1.5}>
-    {#snippet label(position)}
+    {#snippet label(position: Vector2)}
       <Latex2D
         latex={'\\varphi'}
         {position}
