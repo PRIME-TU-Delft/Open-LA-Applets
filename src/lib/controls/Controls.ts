@@ -1,8 +1,9 @@
 import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
-import { Slider } from './Slider.svelte';
-import { Toggle } from './Toggle.svelte';
-import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
+import { Button } from './Button.svelte';
 import { Dropdown } from './Dropdown.svelte';
+import { Slider } from './Slider.svelte';
+import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
+import { Toggle } from './Toggle.svelte';
 
 /**
  * Interface for a controller
@@ -15,11 +16,12 @@ export interface Controller<T> {
   type: string;
 
   reset(ms?: number, timeSteps?: number): Controller<T>;
-  toURL(): string;
-  fromURL(s: string): Controller<T>;
 }
 
-export class Controls<State, T extends readonly Controller<number | boolean | string | State>[]> {
+export class Controls<
+  State,
+  T extends readonly Controller<number | boolean | string | void | State>[]
+> {
   private readonly _controls: T;
   _width: number; // width of the controls
 
@@ -210,6 +212,30 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
   }
 
   /**
+   * Add a new Button to the controls array
+   * @param label - label for the button
+   * @param color - color for the button default is raspberry
+   * @param action - action for the button
+   * @returns this
+   */
+  addButton(label?: string, color?: ColorString, action?: () => void) {
+    const newButton = new Button(label, color, action);
+    return new Controls([...this.controls, newButton] as const, this._width + newButton.width);
+  }
+
+  /**
+   * Static method to create set Controls<T> to a new button
+   * @param label - label for the button
+   * @param color - color for the button default is raspberry
+   * @param action - action for the button
+   * @returns this
+   */
+  static addButton(label?: string, color?: ColorString, action?: () => void) {
+    const newButton = new Button(label, color, action);
+    return new Controls([newButton] as const, newButton.width);
+  }
+
+  /**
    * Static method to create set Controls<T> to a new animation
    * @param dft - default value for the animation
    * @param label - label for the animation
@@ -291,31 +317,5 @@ export class Controls<State, T extends readonly Controller<number | boolean | st
 
   set 4(value: T[4]['value']) {
     this.controls[4].value = value;
-  }
-
-  /**
-   * @returns a string of the slider values separated by commas
-   */
-  toURL() {
-    return 'controls=' + this._controls.map((c) => c.toURL()).join(',');
-  }
-
-  /**
-   * Convert a URL string to a set of sliders
-   * @param url string to convert
-   * @returns this
-   */
-  fromURL(url: string) {
-    if (!url) return this;
-
-    const values = url.split(',').map((v) => parseFloat(v));
-
-    const urlControls = this._controls.map((control, i) => {
-      if (i >= values.length) return control;
-
-      return control.fromURL(values[i].toString());
-    }) as unknown as T;
-
-    return new Controls(urlControls as T);
   }
 }
