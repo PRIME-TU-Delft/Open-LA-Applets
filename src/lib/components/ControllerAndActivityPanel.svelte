@@ -1,6 +1,7 @@
 <script lang="ts" generics="State">
   import SvelteButton from '$lib/components/Button.svelte';
   import SvelteDropdown from '$lib/components/Dropdown.svelte';
+  import SvelteMatrix from '$lib/components/Matrix.svelte';
   import SideButton from '$lib/components/SideButton.svelte';
   import SvelteSlider from '$lib/components/Slider.svelte';
   import SvelteSlideShow from '$lib/components/SlideShow.svelte';
@@ -10,12 +11,12 @@
   import { Button } from '$lib/controls/Button.svelte';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { Dropdown } from '$lib/controls/Dropdown.svelte';
+  import { Matrix } from '$lib/controls/Matrix.svelte';
   import { Slider } from '$lib/controls/Slider.svelte';
   import { SlideShow } from '$lib/controls/SlideShow.svelte';
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import { color } from 'd3';
   import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
@@ -67,6 +68,8 @@
           color={controller.color}
           action={controller.action}
         />
+      {:else if controller instanceof Matrix}
+        <SvelteMatrix {controller} />
       {/if}
     {/each}
   </div>
