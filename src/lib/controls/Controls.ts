@@ -5,6 +5,7 @@ import { Dropdown } from './Dropdown.svelte';
 import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
+import { SortableMatrix } from './SortableMatrix.svelte';
 import { Toggle } from './Toggle.svelte';
 
 /**
@@ -258,6 +259,11 @@ export class Controls<
   static addMatrix(value: Matrix2, label?: string) {
     const newMatrix = new Matrix(value, label);
     return new Controls([newMatrix] as const, newMatrix.width);
+  }
+
+  static addSortableMatrix(values: Matrix[]) {
+    const newSortable = new SortableMatrix(values);
+    return new Controls([newSortable] as const, newSortable.width);
   }
 
   // Reset all sliders to their default values
