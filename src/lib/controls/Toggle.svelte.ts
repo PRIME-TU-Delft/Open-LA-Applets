@@ -44,14 +44,4 @@ export class Toggle implements Controller<boolean> {
 
     return this;
   }
-
-  toURL() {
-    return `${this.value}`;
-  }
-
-  fromURL(s: string) {
-    this.value = Boolean(s);
-
-    return this;
-  }
 }
