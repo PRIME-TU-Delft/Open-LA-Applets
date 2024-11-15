@@ -1,11 +1,6 @@
-<script lang="ts">
-  import { Vector3 } from 'three';
-  import Arc3D from './Arc3D.svelte';
-  import type { Snippet } from 'svelte';
-  import Latex3D from './Latex3D.svelte';
-  import Line3D from './Line3D.svelte';
-
-  type Angle3DProps = {
+<script lang="ts" module>
+  export type Angle3DProps = {
+    /* Vectors to draw angle between */
     vs: [Vector3, Vector3];
     origin?: Vector3;
     size?: number;
@@ -16,9 +11,17 @@
     forceRoundAngle?: boolean;
     children?: Snippet<[Vector3]>;
   };
+</script>
+
+<script lang="ts">
+  import { Vector3 } from 'three';
+  import Arc3D from './Arc3D.svelte';
+  import type { Snippet } from 'svelte';
+  import Latex3D from './Latex3D.svelte';
+  import Line3D from './Line3D.svelte';
 
   let {
-    vs, // vectors to draw angle between
+    vs,
     origin = new Vector3(0, 0, 0), // common orgin of vectors
     size = 0.3, // size of drawn angle
     color = 'black', // color of used lines

@@ -52,7 +52,7 @@
 
   <Latex3D
     latex={'\\mathcal{L_1}'}
-    position={v.clone().multiplyScalar(2)}
+    position={v.clone().multiplyScalar(-0.5)}
     extend={0.5}
     offset={new Vector3(0.1, 0, 0.75)}
     color={PrimeColor.blue}
@@ -78,7 +78,7 @@
 
   <Latex3D
     latex={'\\mathcal{L_2}'}
-    position={v_offset.clone().add(v.clone().multiplyScalar(2))}
+    position={v_offset.clone().add(v.clone().multiplyScalar(-0.75))}
     extend={0.5}
     offset={new Vector3(0.1, 0, 0.75)}
     color={PrimeColor.darkGreen}

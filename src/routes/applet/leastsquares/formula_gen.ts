@@ -1,11 +1,9 @@
 // This file exsits to reduce code duplication in the applets of this section
 
-import { Formula, Formulas } from '$lib/utils/Formulas';
-import { lineLineIntersection, orthogonalProjectionWithOffset, round } from '$lib/utils/MathLib';
-import { PrimeColor } from '$lib/utils/PrimeColors';
+import { lineLineIntersection, orthogonalProjectionWithOffset } from '$lib/utils/MathLib';
 import { Vector2 } from 'three';
 
-type UT = {
+export type UT = {
   p: Vector2;
   pt: Vector2;
   dist: number;

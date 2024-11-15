@@ -32,9 +32,9 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-web:latest
 
-      - name: Build and push (docs)
-        uses: docker/build-push-action@v3
-        with:
-          file: 'Dockerfile-docs'
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-docs:latest
+      # - name: Build and push (docs)
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     file: 'Dockerfile-docs'
+      #     push: true
+      #     tags: ghcr.io/${{ env.OWNER_LOWERCASE }}/interactive-visuals-docs:latest

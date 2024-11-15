@@ -1,13 +1,5 @@
-<script lang="ts">
-  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
-  import { Vector2 } from 'three';
-  import Line2D from './Line2D.svelte';
-  import Point2D from './Point2D.svelte';
-  import Triangle2D from './Triangle2D.svelte';
-
-  type VectorProps = {
+<script lang="ts" module>
+  export type VectorProps = {
     color?: ColorString;
     origin?: Vector2;
     direction?: Vector2;
@@ -18,6 +10,16 @@
     noNormalise?: boolean;
     children?: Snippet<[Vector2]>;
   };
+</script>
+
+<script lang="ts">
+  import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
+  import { Vector2 } from 'three';
+  import Line2D from './Line2D.svelte';
+  import Point2D from './Point2D.svelte';
+  import Triangle2D from './Triangle2D.svelte';
 
   let {
     color = PrimeColor.getRandomColor(),

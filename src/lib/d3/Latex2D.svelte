@@ -1,8 +1,5 @@
-<script lang="ts">
-  import Latex from '$lib/components/Latex.svelte';
-  import { Vector2 } from 'three';
-
-  type Latex2DProps = {
+<script lang="ts" module>
+  export type Latex2DProps = {
     latex: string;
     fontSize?: number;
     position?: Vector2;
@@ -10,6 +7,11 @@
     extend?: number;
     color?: string;
   };
+</script>
+
+<script lang="ts">
+  import Latex from '$lib/components/Latex.svelte';
+  import { Vector2 } from 'three';
 
   let {
     latex,

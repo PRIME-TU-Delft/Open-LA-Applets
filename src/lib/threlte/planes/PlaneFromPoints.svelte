@@ -34,6 +34,13 @@
     const plane = new Plane().setFromCoplanarPoints(points[0], points[1], points[2]);
     plane.coplanarPoint(planeMesh.position);
     planeMesh.quaternion.setFromUnitVectors(new Vector3(0, 0, 1), plane.normal);
+
+    for (let i = 0; i < planeSegment.segments; i++) {
+      if (i % planeSegment.interval == planeSegment.offset) {
+        // A rectangle consists of two triangles 6 vertices
+        planeMesh.geometry.addGroup(i * 6, 6, 0);
+      }
+    }
   });
 
   onDestroy(() => {
@@ -43,16 +50,6 @@
 
 <T.Group position.x={origin.x} position.y={origin.y} position.z={origin.z}>
   <T.Mesh material={materials} bind:ref={planeMesh}>
-    <T.PlaneGeometry
-      args={[size, size, planeSegment.segments, 1]}
-      oncreate={({ ref }: { ref: PlaneGeometry }) => {
-        for (let i = 0; i < planeSegment.segments; i++) {
-          if (i % planeSegment.interval == planeSegment.offset) {
-            // A rectangle consists of two triangles 6 vertices
-            ref.addGroup(i * 6, 6, 0);
-          }
-        }
-      }}
-    />
+    <T.PlaneGeometry args={[size, size, planeSegment.segments, 1]} />
   </T.Mesh>
 </T.Group>

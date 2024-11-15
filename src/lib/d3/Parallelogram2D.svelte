@@ -1,14 +1,16 @@
-<script lang="ts">
-  import type { Vector2 } from 'three';
-
-  type ParallelogramProps = {
+<script lang="ts" module>
+  export type Parallelogram2DProps = {
     points: [Vector2, Vector2, Vector2];
     color?: string;
     strokeWidth?: number;
     opacity?: number;
   };
+</script>
 
-  let { points, color = 'black', strokeWidth = 1, opacity = 1 }: ParallelogramProps = $props();
+<script lang="ts">
+  import type { Vector2 } from 'three';
+
+  let { points, color = 'black', strokeWidth = 1, opacity = 1 }: Parallelogram2DProps = $props();
 
   const [a, b, c] = $derived(points.map((p) => p.toArray().join(',')));
 

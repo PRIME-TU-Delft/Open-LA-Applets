@@ -1,5 +1,5 @@
-<script context="module" lang="ts">
-  export type ArcProps = {
+<script lang="ts" module>
+  export type Arc2DProps = {
     color?: string;
     points: Vector2[];
     origin?: Vector2;
@@ -22,7 +22,7 @@
     width = LINE_WIDTH,
     distance = 0.8,
     hasHead = false
-  }: ArcProps = $props();
+  }: Arc2DProps = $props();
 
   const startAngle = $derived(points[0].angle());
   const endAngle = $derived(points[1].angle());

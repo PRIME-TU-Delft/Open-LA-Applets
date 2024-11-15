@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import RightAngle2D from '../RightAngle2D.svelte';
 
@@ -9,15 +9,16 @@
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
-  import Canvas2D from '../Canvas2D.svelte';
+  import Canvas2D, { type CanvasProps } from '../Canvas2D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: CanvasProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
       <RightAngle2D vs={[new Vector2(1, 0), new Vector2(0, 1)]} {...args} />

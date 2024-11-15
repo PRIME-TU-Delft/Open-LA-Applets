@@ -3,6 +3,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
@@ -10,7 +11,7 @@
   import { Vector2 } from 'three';
 
   const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, {
-    label: 'k',
+    label: 'r',
     valueFn: (x) => round(x).toString()
   });
 
@@ -18,7 +19,6 @@
   const v0 = new Vector2(5, 0);
 
   const v1 = $derived(v0.clone().add(u.clone().multiplyScalar(controls[0])));
-  const dir_L = $derived(v1.clone().sub(v0.clone()));
 
   const formulas = $derived.by(() => {
     const f1 = new Formula('\\mathbf{v}_1 &= \\mathbf{v}_0 + r \\mathbf{u}');
@@ -39,7 +39,7 @@
 
 <Canvas2D {controls} {formulas} showFormulasDefault title="A parametric vector of a line">
   <!-- Line L -->
-  <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
+  <InfiniteLine2D origin={v0} direction={u} color={PrimeColor.cyan} />
 
   <!-- V0 -->
   <Vector2D direction={v0} length={v0.length()} color={PrimeColor.raspberry}>
@@ -83,19 +83,26 @@
     {/snippet}
   </Vector2D>
 
-  <Vector2D
-    origin={v0}
-    direction={u}
-    length={u.length() * controls[0]}
+  {#if controls[0] > 0}
+    <Vector2D
+      origin={v0}
+      direction={u}
+      length={u.length() * controls[0]}
+      color={PrimeColor.darkGreen}
+    />
+  {:else}
+    <Point2D position={v1} color={PrimeColor.darkGreen} />
+  {/if}
+
+  <Latex2D
+    latex={'r \\cdot \\mathbf{u}'}
+    position={v0.clone().add(
+      u
+        .clone()
+        .normalize()
+        .multiplyScalar(controls[0] * u.length())
+    )}
+    offset={new Vector2(0.3, 0.4)}
     color={PrimeColor.darkGreen}
-  >
-    {#snippet children(endPoint)}
-      <Latex2D
-        latex={'r \\cdot \\mathbf{u}'}
-        position={endPoint}
-        offset={new Vector2(0.3, 0.4)}
-        color={PrimeColor.darkGreen}
-      />
-    {/snippet}
-  </Vector2D>
+  />
 </Canvas2D>

@@ -1,66 +1,23 @@
-<script context="module">
+<script module>
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
     title: 'D3/Angle2D',
-    component: Angle2D,
-    argTypes: {
-      startAngle: {
-        description: 'The start angle of the angle. Required.',
-        control: {
-          type: 'number'
-        }
-      },
-      endAngle: {
-        description: 'The end angle of the angle. Required.',
-        control: {
-          type: 'number'
-        }
-      },
-      color: {
-        description: 'The color of the angle.',
-        control: {
-          type: 'color'
-        }
-      },
-      origin: {
-        description: 'The origin of the angle.',
-        control: {
-          type: 'object'
-        }
-      },
-      width: {
-        description: 'The width of the angle.',
-        control: {
-          type: 'number'
-        }
-      },
-      distance: {
-        description: 'The distance of the angle from the origin.',
-        control: {
-          type: 'number'
-        }
-      },
-      hasHead: {
-        description: 'Whether the angle has a head.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Angle2D
   });
 </script>
 
-<script>
+<script lang="ts">
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import type { Angle2DProps } from '$lib/d3/Angle2D.svelte';
 
   setTemplate(template);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Angle2DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
       <Angle2D startAngle={0} endAngle={Math.PI / 2} color={PrimeColor.black} {...args} />

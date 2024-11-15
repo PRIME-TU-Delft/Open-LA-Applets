@@ -19,7 +19,7 @@
       state.angle = state.angle + 0.5 * t;
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
-      else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+      else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
       return { state, labelNext: 'An eigenvector', labelPrev: 'No eigenvector' };
     },
@@ -27,7 +27,7 @@
       state.angle = state.angle + 0.7 * t;
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
-      else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+      else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
       return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     },
@@ -35,7 +35,7 @@
       state.angle = state.angle + 0.3 * t;
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
-      else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+      else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
       return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     },
@@ -43,7 +43,7 @@
       state.angle = state.angle + 0.7 * t;
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
-      else 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+      else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
       return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
     }

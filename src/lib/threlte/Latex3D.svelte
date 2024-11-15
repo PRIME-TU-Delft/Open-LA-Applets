@@ -1,10 +1,5 @@
-<script lang="ts">
-  import Latex from '$lib/components/Latex.svelte';
-  import { cn } from '$lib/utils/shadcn-utils';
-  import { HTML } from '@threlte/extras';
-  import { Vector3 } from 'three';
-
-  type Latex2DProps = {
+<script lang="ts" module>
+  export type Latex3DProps = {
     latex: string;
     fontSize?: number;
     position?: Vector3;
@@ -13,6 +8,13 @@
     color?: string;
     hasBackground?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import Latex from '$lib/components/Latex.svelte';
+  import { cn } from '$lib/utils/shadcn-utils';
+  import { HTML } from '@threlte/extras';
+  import { Vector3 } from 'three';
 
   let {
     latex,
@@ -22,7 +24,7 @@
     color = 'black',
     extend = 0,
     hasBackground = false
-  }: Latex2DProps = $props();
+  }: Latex3DProps = $props();
 
   const pos = $derived.by(() => {
     const posOffset = position.clone().add(offset);

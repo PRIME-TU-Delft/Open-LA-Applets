@@ -3,7 +3,7 @@
  */
 class ActivityState {
   isActive = $state(false);
-  private timeOut: number | undefined = undefined;
+  private timeOut?: ReturnType<typeof setTimeout> = undefined;
 
   /**
    * Disable orbitcontroller after ms and call fn
@@ -11,7 +11,8 @@ class ActivityState {
    * @param fn fuction to call after ms
    */
   disableAfterAnd(ms: number, fn?: () => void) {
-    clearTimeout(this.timeOut);
+    this.removeTimeout(); // Remove the timeout
+
     this.timeOut = setTimeout(() => {
       fn?.();
       this.isActive = false;
