@@ -30,9 +30,16 @@
   const shadowM2 = $derived(mat2.disabled ? Matrix2.I : controls[2]);
   const transformation = $derived(shadowM1.multiply(shadowM2));
 
+  function transformVector(v: Vector2) {
+    return new Vector2(
+      transformation.tl * v.x + transformation.tr * v.y,
+      transformation.bl * v.x + transformation.br * v.y
+    );
+  }
+
   // Transformation string for SVG element
   const transformationStr = $derived.by(() => {
-    return `matrix(${transformation.tl} ${transformation.tr} ${transformation.bl} ${transformation.br} 0 0)`;
+    return `matrix(${transformation.tl} ${transformation.bl} ${transformation.tr} ${transformation.br} 0 0)`;
   });
 
   const formulas = $derived.by(() => {
@@ -75,8 +82,17 @@
       height="1"
       xlink:href="/house.svg"
     />
-
-    <Vector2D direction={new Vector2(1, 0)} color={PrimeColor.blue} />
-    <Vector2D direction={new Vector2(0, 1)} color={PrimeColor.raspberry} />
   </g>
+
+  <Vector2D
+    direction={transformVector(new Vector2(1, 0))}
+    length={transformVector(new Vector2(1, 0)).length()}
+    color={PrimeColor.darkGreen}
+  />
+
+  <Vector2D
+    direction={transformVector(new Vector2(0, 1))}
+    length={transformVector(new Vector2(0, 1)).length()}
+    color={PrimeColor.orange}
+  />
 </Canvas2D>

@@ -31,7 +31,10 @@ export class Matrix implements Controller<Matrix2> {
   }
 
   reset() {
-    this.value = this.defaultValue.clone();
+    this.value.bl = this.defaultValue.bl;
+    this.value.br = this.defaultValue.br;
+    this.value.tl = this.defaultValue.tl;
+    this.value.tr = this.defaultValue.tr;
     this.disabled = false;
 
     return this;
