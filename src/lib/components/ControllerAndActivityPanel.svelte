@@ -1,12 +1,6 @@
 <script lang="ts" generics="State">
   import SvelteButton from '$lib/components/Button.svelte';
-  import SvelteDropdown from '$lib/components/Dropdown.svelte';
-  import SvelteMatrix from '$lib/components/Matrix.svelte';
   import SideButton from '$lib/components/SideButton.svelte';
-  import SvelteSlider from '$lib/components/Slider.svelte';
-  import SvelteSlideShow from '$lib/components/SlideShow.svelte';
-  import SvelteSwitch from '$lib/components/Switch.svelte';
-  import SvelteToggle from '$lib/components/Toggle.svelte';
   import * as ShadCNButton from '$lib/components/ui/button';
   import { Button } from '$lib/controls/Button.svelte';
   import type { Controller, Controls } from '$lib/controls/Controls';
@@ -18,6 +12,7 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
+  import * as C from './controls';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -46,7 +41,7 @@
   >
     {#each controls.controls as controller, index}
       {#if controller instanceof Slider}
-        <SvelteSlider
+        <C.Slider
           bind:value={controller.value}
           slider={controller}
           isExpanded={sliderExpanded == index}
@@ -55,13 +50,13 @@
           onStopChanging={() => globalState.changeState({ controlsInteractive: false })}
         />
       {:else if controller instanceof Toggle && controller.isSwitch}
-        <SvelteSwitch switch={controller} />
+        <C.Switch switch={controller} />
       {:else if controller instanceof Toggle}
-        <SvelteToggle bind:value={controller.value} toggle={controller} />
+        <C.Toggle bind:value={controller.value} toggle={controller} />
       {:else if controller instanceof SlideShow}
-        <SvelteSlideShow {controller} />
+        <C.SlideShow {controller} />
       {:else if controller instanceof Dropdown}
-        <SvelteDropdown {controller} />
+        <C.Dropdown {controller} />
       {:else if controller instanceof Button}
         <SvelteButton
           label={controller.label || ''}
@@ -69,7 +64,7 @@
           action={controller.action}
         />
       {:else if controller instanceof Matrix}
-        <SvelteMatrix {controller} />
+        <C.Matrix {controller} />
       {/if}
     {/each}
   </div>
