@@ -7,7 +7,6 @@
   import SvelteSlideShow from '$lib/components/SlideShow.svelte';
   import SvelteSwitch from '$lib/components/Switch.svelte';
   import SvelteToggle from '$lib/components/Toggle.svelte';
-  import SvelteSortable from '$lib/components/Sortable.svelte';
   import * as ShadCNButton from '$lib/components/ui/button';
   import { Button } from '$lib/controls/Button.svelte';
   import type { Controller, Controls } from '$lib/controls/Controls';
@@ -15,7 +14,6 @@
   import { Matrix } from '$lib/controls/Matrix.svelte';
   import { Slider } from '$lib/controls/Slider.svelte';
   import { SlideShow } from '$lib/controls/SlideShow.svelte';
-  import { SortableMatrix } from '$lib/controls/SortableMatrix.svelte';
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
@@ -72,8 +70,6 @@
         />
       {:else if controller instanceof Matrix}
         <SvelteMatrix {controller} />
-      {:else if controller instanceof SortableMatrix}
-        <SvelteSortable {controller} />
       {/if}
     {/each}
   </div>
