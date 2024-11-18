@@ -9,7 +9,7 @@
 <div class="flex gap-1 items-center">
   <div class="flex gap-1 flex-col items-center">
     {#if controller.label}
-      <Latex latex={controller.label + ':'} />
+      <Latex latex={controller.label + ':'} color={controller.color} />
     {/if}
     <button
       class="py-1 px-2 text-center bg-gray-200 hover:bg-gray-400 transition-colors rounded-md cursor-pointer"

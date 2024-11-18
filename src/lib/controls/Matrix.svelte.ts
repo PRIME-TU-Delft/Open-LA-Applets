@@ -1,18 +1,21 @@
-import type { Controller } from './Controls';
 import Matrix2 from '$lib/utils/Matrix2.svelte';
+import { PrimeColor } from '$lib/utils/PrimeColors';
+import type { Controller } from './Controls';
 
 export class Matrix implements Controller<Matrix2> {
   defaultValue = new Matrix2(0, 0, 0, 0);
   value = $state(new Matrix2(0, 0, 0, 0));
+  color = $state(PrimeColor.black);
   width = 30;
   type = 'Matrix';
   label = '';
 
   disabled = $state(false);
 
-  constructor(defaultValue: Matrix2, label: string = '') {
+  constructor(defaultValue: Matrix2, label: string = '', color: string = PrimeColor.black) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
+    this.color = color;
 
     this.label = label;
   }
@@ -29,6 +32,7 @@ export class Matrix implements Controller<Matrix2> {
 
   reset() {
     this.value = this.defaultValue.clone();
+    this.disabled = false;
 
     return this;
   }

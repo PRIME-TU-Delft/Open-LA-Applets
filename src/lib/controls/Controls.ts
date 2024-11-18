@@ -258,14 +258,14 @@ export class Controls<
     return new Controls([newSlideShow] as const, newSlideShow.width);
   }
 
-  addMatrix(value: Matrix2, label?: string) {
-    const newMatrix = new Matrix(value, label);
+  addMatrix(value: Matrix2, label?: string, color?: string) {
+    const newMatrix = new Matrix(value, label, color);
     this.isAllowedToAddControl(newMatrix);
     return new Controls([...this.controls, newMatrix] as const, this._width + newMatrix.width);
   }
 
-  static addMatrix(value: Matrix2, label?: string) {
-    const newMatrix = new Matrix(value, label);
+  static addMatrix(value: Matrix2, label?: string, color?: string) {
+    const newMatrix = new Matrix(value, label, color);
     return new Controls([newMatrix] as const, newMatrix.width);
   }
 

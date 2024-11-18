@@ -13,6 +13,10 @@ export default class Matrix2 extends Array<number> {
     this.br = br;
   }
 
+  static get I() {
+    return new Matrix2(1, 0, 0, 1);
+  }
+
   fromIndex(index: number, value: number) {
     switch (index) {
       case 0:
