@@ -66,18 +66,21 @@
   color={PrimeColor.black}
   origin={new Vector3(indicatorMin, 0, 0)}
   endPoint={new Vector3(indicatorMax, 0, 0)}
+  radius={0.25}
 />
 <!-- z -->
 <Line
   color={PrimeColor.black}
   origin={new Vector3(0, indicatorMin, 0)}
   endPoint={new Vector3(0, indicatorMax, 0)}
+  radius={0.25}
 />
 <!-- y -->
 <Line
   color={PrimeColor.black}
   origin={new Vector3(0, 0, indicatorMin)}
   endPoint={new Vector3(0, 0, indicatorMax)}
+  radius={0.25}
 />
 
 <!-- Tick indicators -->

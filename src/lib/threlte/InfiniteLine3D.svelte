@@ -1,8 +1,6 @@
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { T } from '@threlte/core';
-  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
-  import { BufferGeometry, Line, Mesh, Vector3 } from 'three';
+  import { Vector3 } from 'three';
   import Line3D from './Line3D.svelte';
 
   type LineProps = {
@@ -27,7 +25,7 @@
 <!--@component
 @props 
 - origin: Vector3 = `new Vector3(0, 0, 0)` - The origin of the line
-- endPoint: Vector3 = `new Vector3(0, 0, 0)` - The end point of the line
+- direction: Vector3 = `new Vector3(1, 0, 0)` - The direction of the line
 - color: string = `PrimeColor.getRandomColor()` - The color of the line
 - isDashed: boolean = `false` - If the line is dashed
 - radius: number = `0` - The radius of the line (0 means thin line, >0 means a tube)

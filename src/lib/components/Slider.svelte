@@ -1,10 +1,11 @@
 <script lang="ts">
   import * as Button from '$lib/components/ui/button';
   import { Label } from '$lib/components/ui/label';
-  import { activityState } from '$lib/stores/activity.svelte';
   import type { Slider } from '$lib/controls/Slider.svelte';
-  import { generateUUID } from 'three/src/math/MathUtils.js';
+  import { activityState } from '$lib/stores/activity.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Pause, Play, Plus } from 'lucide-svelte';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
 
   type SliderProps = {
     value: number;
@@ -109,6 +110,7 @@
     <Button.Action
       class="text-white"
       --bg={slider.color}
+      --hover-bg={slider.color + PrimeColor.opacity(0.8)}
       tooltip="Expand slider"
       side="top"
       onclick={() => (onExpand ? onExpand() : {})}
@@ -121,6 +123,7 @@
   <Button.Action
     class="text-white rounded-full"
     --bg={slider.color}
+    --hover-bg={slider.color + PrimeColor.opacity(0.8)}
     tooltip="Toggle animation"
     side="top"
     onclick={() => togglePlay()}
