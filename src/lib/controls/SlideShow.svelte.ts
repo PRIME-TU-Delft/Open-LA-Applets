@@ -154,19 +154,4 @@ export class SlideShow<State> implements Controller<State> {
 
     return this;
   }
-
-  toURL() {
-    return JSON.stringify({ value: this.value, index: this.index });
-  }
-
-  fromURL(s: string) {
-    const { value, index } = JSON.parse(s);
-
-    if (!value || !index) return this;
-
-    this.value = value;
-    this.index = index;
-
-    return this;
-  }
 }

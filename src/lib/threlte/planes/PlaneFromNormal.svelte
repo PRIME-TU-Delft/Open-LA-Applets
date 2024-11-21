@@ -3,7 +3,7 @@
   import PlaneSegments from '$lib/utils/Segments';
   import { T } from '@threlte/core';
   import { onDestroy } from 'svelte';
-  import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry, Quaternion, Vector3 } from 'three';
+  import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry, Vector3 } from 'three';
 
   type PlaneFromNormalProps = {
     normal: Vector3;
@@ -32,10 +32,19 @@
     })
   ];
 
-  let planeNormalMesh = $state<Mesh>();
+  let planeNormalMesh = $state<Mesh<PlaneGeometry>>();
 
   $effect(() => {
     normal.clone().normalize();
+
+    if (!planeNormalMesh) return;
+
+    for (let i = 0; i < planeSegment.segments; i++) {
+      if (i % planeSegment.interval == planeSegment.offset) {
+        // A rectangle consists of two triangles 6 vertices
+        planeNormalMesh.geometry.addGroup(i * 6, 6, 0);
+      }
+    }
 
     planeNormalMesh?.lookAt(position.clone().add(normal));
   });
@@ -55,16 +64,6 @@ This component is a 3D plane defined by a normal vector and a position vector.
 
 <T.Group rotation.x={Math.PI / 2} position={[position.x, position.y, position.z]}>
   <T.Mesh bind:ref={planeNormalMesh} material={materials}>
-    <T.PlaneGeometry
-      args={[size, size, planeSegment.segments, 1]}
-      oncreate={({ ref }: { ref: PlaneGeometry }) => {
-        for (let i = 0; i < planeSegment.segments; i++) {
-          if (i % planeSegment.interval == planeSegment.offset) {
-            // A rectangle consists of two triangles 6 vertices
-            ref.addGroup(i * 6, 6, 0);
-          }
-        }
-      }}
-    />
+    <T.PlaneGeometry args={[size, size, planeSegment.segments, 1]} />
   </T.Mesh>
 </T.Group>

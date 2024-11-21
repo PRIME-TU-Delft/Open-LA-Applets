@@ -1,79 +1,26 @@
-<script context="module">
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+<script module>
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Vector3D from '../Vector3D.svelte';
-  import { Vector3 } from 'three';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const { Story } = defineMeta({
     title: 'Threlte/Vector3D',
-    component: Vector3D,
-    argTypes: {
-      color: {
-        description: 'The color of the vector.',
-        control: {
-          type: 'color'
-        }
-      },
-      origin: {
-        description: 'The origin point of the vector.',
-        control: {
-          type: 'object'
-        }
-      },
-      direction: {
-        description: 'The direction of the vector.',
-        control: {
-          type: 'object'
-        }
-      },
-      isDashed: {
-        description: 'Whether the vector line should be dashed.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      length: {
-        description: 'The length of the vector (optional).',
-        control: {
-          type: 'number'
-        }
-      },
-      radius: {
-        description: 'The radius (thickness) of the vector line.',
-        control: {
-          type: 'number'
-        }
-      },
-      hideHead: {
-        description: 'Whether to hide the arrowhead of the vector.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      alwaysOnTop: {
-        description: 'Whether the vector should always render on top.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      noNormalise: {
-        description: 'Whether to skip normalizing the direction vector.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Vector3D
   });
 </script>
 
-<script>
-  import Canvas3D from '../Canvas3D.svelte';
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { setTemplate } from '@storybook/addon-svelte-csf';
+  import type { Snippet } from 'svelte';
+  import { Vector3 } from 'three';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
+  import type { Vector3DProps } from '../Vector3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Vector3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Vector3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
       <Vector3D {...args} />

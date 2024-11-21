@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   export type SceneProps = {
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
@@ -140,7 +140,7 @@
   </div>
 </div>
 
-<style lang="postcss">
+<style>
   .outerWrapper.active {
     @apply from-blue-400 to-blue-500;
   }

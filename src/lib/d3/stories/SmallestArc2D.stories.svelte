@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import SmallestArc2D from '../SmallestArc2D.svelte';
   import { Vector2 } from 'three';
@@ -6,54 +6,24 @@
 
   const { Story } = defineMeta({
     title: 'D3/SmallestArc2D',
-    component: SmallestArc2D,
-    argTypes: {
-      points: {
-        description: 'The two vectors that define the arc. Required.',
-        control: {
-          type: 'object'
-        }
-      },
-      distance: {
-        description: 'The distance of the arc from the origin.',
-        control: {
-          type: 'number'
-        }
-      },
-      color: {
-        description: 'The color of the arc.',
-        control: {
-          type: 'color'
-        }
-      },
-      width: {
-        description: 'The width of the arc line.',
-        control: {
-          type: 'number'
-        }
-      },
-      hasHead: {
-        description: 'Whether to draw an arrow at the end of the arc.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: SmallestArc2D
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
+  import type { SmallestArc2DProps } from '../SmallestArc2D.svelte';
+  import type { Snippet } from 'svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<SmallestArc2DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: SmallestArc2DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas2D>
       <SmallestArc2D {...args}>
-        {#snippet label(position)}
+        {#snippet label(position: Vector2)}
           <Latex2D latex={'\\varphi'} {position} extend={0.3} color={PrimeColor.black} />
         {/snippet}
       </SmallestArc2D>
@@ -89,8 +59,7 @@
   args={{
     points: [new Vector2(1, 0), new Vector2(0, 1)],
     distance: 2.5,
-    color: PrimeColor.blue,
-    lineWidth: 0.02
+    color: PrimeColor.blue
   }}
 />
 

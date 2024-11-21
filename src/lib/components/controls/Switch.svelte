@@ -3,8 +3,7 @@
   import type { Toggle } from '$lib/controls/Toggle.svelte';
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import { Label } from '$lib/components/ui/label';
-  import { Checkbox } from '$lib/components/ui/checkbox';
-  import { Switch } from './ui/switch';
+  import { Switch } from '../ui/switch';
 
   type ToggleProps = {
     switch: Toggle;

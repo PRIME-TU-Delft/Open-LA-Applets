@@ -1,8 +1,5 @@
-<script lang="ts">
-  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
-  import type { Vector2 } from 'three';
-
-  type PointProps = {
+<script lang="ts" module>
+  export type Point2DProps = {
     position: Vector2;
     isSquare?: boolean;
     radius?: number;
@@ -10,15 +7,20 @@
     pulse?: boolean;
     opacity?: number;
   };
+</script>
+
+<script lang="ts">
+  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
+  import { Vector2 } from 'three';
 
   let {
-    position,
+    position = new Vector2(0, 0),
     isSquare = false,
     radius = POINT_SIZE,
     color = 'black',
     pulse = false,
     opacity = 1
-  }: PointProps = $props();
+  }: Point2DProps = $props();
 </script>
 
 {#if isSquare}

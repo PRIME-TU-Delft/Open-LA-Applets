@@ -1,64 +1,28 @@
-<script context="module">
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Line3D from '../Line3D.svelte';
-  import { Vector3 } from 'three';
+<script module>
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { Vector3 } from 'three';
+  import Line3D from '../Line3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Line3D',
-    component: Line3D,
-    argTypes: {
-      origin: {
-        description: 'The starting point of the line.',
-        control: {
-          type: 'object'
-        }
-      },
-      endPoint: {
-        description: 'The ending point of the line.',
-        control: {
-          type: 'object'
-        }
-      },
-      color: {
-        description: 'The color of the line.',
-        control: {
-          type: 'color'
-        }
-      },
-      isDashed: {
-        description: 'Whether the line should be dashed.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      radius: {
-        description: 'The radius of the line (thickness).',
-        control: {
-          type: 'number'
-        }
-      },
-      alwaysOnTop: {
-        description: 'Whether the line should always render on top.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Line3D
   });
 </script>
 
-<script>
-  import Canvas3D from '../Canvas3D.svelte';
+<script lang="ts">
+  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
+  import type { Line3DProps } from '../Line3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Line3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Line3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
     <Canvas3D>
-      <Line3D origin={new Vector3(-1, -1, -1)} endPoint={new Vector3(2, 0, 1)} {...args} />
+      <Line3D {...args} />
       <Axis3D hideOrigin />
     </Canvas3D>
   </div>
@@ -80,9 +44,11 @@
 <Story
   name="Custom Color and Thickness"
   args={{
+    endPoint: new Vector3(2, 0, 1),
     color: '#FF0000',
     isDashed: false,
-    alwaysOnTop: false
+    alwaysOnTop: false,
+    radius: 2
   }}
 />
 
@@ -90,6 +56,7 @@
 <Story
   name="Dashed Line"
   args={{
+    endPoint: new Vector3(2, 0, 1),
     color: '#FF0000',
     isDashed: true,
     alwaysOnTop: false
@@ -100,6 +67,7 @@
 <Story
   name="Always on Top"
   args={{
+    endPoint: new Vector3(2, 0, 1),
     color: PrimeColor.darkGreen,
     isDashed: false,
     alwaysOnTop: true

@@ -1,75 +1,27 @@
-<script context="module">
+<script module>
   import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
-  import Angle3D from '../Angle3D.svelte';
   import { Vector3 } from 'three';
+  import Angle3D from '../Angle3D.svelte';
 
   const { Story } = defineMeta({
     title: 'Threlte/Angle3D',
-    component: Angle3D,
-    argTypes: {
-      vs: {
-        description: 'The two vectors defining the angle.',
-        control: {
-          type: 'object'
-        }
-      },
-      origin: {
-        description: 'The origin point of the angle.',
-        control: {
-          type: 'object'
-        }
-      },
-      size: {
-        description: 'The size of the drawn angle.',
-        control: {
-          type: 'number'
-        }
-      },
-      color: {
-        description: 'The color of the angle.',
-        control: {
-          type: 'color'
-        }
-      },
-      title: {
-        description: 'The title or label for the angle.',
-        control: {
-          type: 'text'
-        }
-      },
-      lineWidth: {
-        description: 'The width of the lines.',
-        control: {
-          type: 'number'
-        }
-      },
-      forceRightAngle: {
-        description: 'Force a right angle representation.',
-        control: {
-          type: 'boolean'
-        }
-      },
-      forceRoundAngle: {
-        description: 'Force a round angle representation.',
-        control: {
-          type: 'boolean'
-        }
-      }
-    }
+    component: Angle3D
   });
 </script>
 
-<script>
+<script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Canvas3D from '../Canvas3D.svelte';
+  import type { Snippet } from 'svelte';
+  import type { Angle3DProps } from '../Angle3D.svelte';
   import Axis3D from '../Axis3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
 
-  setTemplate(template);
+  setTemplate(template as Snippet<[Partial<Angle3DProps>]>);
 </script>
 
-{#snippet template(args)}
+{#snippet template(args: Angle3DProps)}
   <div class="h-[300px] rounded-lg overflow-hidden">
-    <Canvas3D>
+    <Canvas3D cameraZoom={100}>
       <Angle3D {...args} />
       <Axis3D hideOrigin hideTicks />
     </Canvas3D>

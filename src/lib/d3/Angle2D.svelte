@@ -1,10 +1,5 @@
-<script lang="ts">
-  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { arc, symbol, symbolTriangle } from 'd3';
-  import { Vector2 } from 'three';
-
-  type AngleProps = {
+<script lang="ts" module>
+  export type Angle2DProps = {
     color?: string;
     startAngle?: number;
     endAngle?: number;
@@ -13,6 +8,13 @@
     distance?: number;
     hasHead?: boolean;
   };
+</script>
+
+<script lang="ts">
+  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { arc, symbol, symbolTriangle } from 'd3';
+  import { Vector2 } from 'three';
 
   let {
     color = PrimeColor.black,
@@ -22,7 +24,7 @@
     width = LINE_WIDTH,
     distance = 0.8,
     hasHead = false
-  }: AngleProps = $props();
+  }: Angle2DProps = $props();
 
   const inverted = $derived.by(() => startAngle > endAngle);
   const rotation = $derived.by(() => {

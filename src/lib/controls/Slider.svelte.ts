@@ -104,14 +104,4 @@ export class Slider implements Controller<number> {
 
     return this;
   }
-
-  toURL() {
-    return `${this.value}`;
-  }
-
-  fromURL(s: string) {
-    this.value = parseFloat(s);
-
-    return this;
-  }
 }
