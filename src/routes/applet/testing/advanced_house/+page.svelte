@@ -2,6 +2,7 @@
   import { Controls } from '$lib/controls/Controls';
   import { Matrix } from '$lib/controls/Matrix.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
@@ -68,14 +69,14 @@
       ];
     }
 
-    return [new Formula('T = I')];
+    return [new Formula('T = T_I')];
   });
 </script>
 
-<Canvas2D {controls} {formulas}>
+<Canvas2D {controls} {formulas} cameraZoom={2}>
   <g transform={transformationStr}>
     <image
-      transform="translate(0,2) scale(2,-2)"
+      transform="translate(0,1) scale(1,-1)"
       x="0"
       y="0"
       width="1"
@@ -88,11 +89,31 @@
     direction={transformVector(new Vector2(1, 0))}
     length={transformVector(new Vector2(1, 0)).length()}
     color={PrimeColor.darkGreen}
-  />
+  >
+    {#snippet children(endPoint)}
+      <Latex2D
+        position={endPoint}
+        latex={'T_{e_1}'}
+        color={PrimeColor.darkGreen}
+        offset={new Vector2(0.1, 0.3)}
+        fontSize={0.5}
+      />
+    {/snippet}
+  </Vector2D>
 
   <Vector2D
     direction={transformVector(new Vector2(0, 1))}
     length={transformVector(new Vector2(0, 1)).length()}
     color={PrimeColor.orange}
-  />
+  >
+    {#snippet children(endPoint)}
+      <Latex2D
+        position={endPoint}
+        latex={'T_{e_2}'}
+        color={PrimeColor.orange}
+        offset={new Vector2(0.15, 0)}
+        fontSize={0.5}
+      />
+    {/snippet}
+  </Vector2D>
 </Canvas2D>
