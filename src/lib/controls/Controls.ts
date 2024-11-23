@@ -1,6 +1,8 @@
+import type Matrix2 from '$lib/utils/Matrix2.svelte';
 import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
 import { Button } from './Button.svelte';
 import { Dropdown } from './Dropdown.svelte';
+import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
@@ -49,10 +51,19 @@ export class Controls<
   }
 
   getAll() {
-    return this._controls.map((c) => c);
+    return this._controls;
   }
 
-  isAllowedToAddControl(control: Controller<number | boolean | string>) {
+  static add<T>(control: Controller<T>) {
+    return new Controls([control] as const, control.width);
+  }
+
+  add<T>(control: Controller<T>) {
+    this.isAllowedToAddControl(control);
+    return new Controls([...this.controls, control] as const, this._width + control.width);
+  }
+
+  isAllowedToAddControl<T>(control: Controller<T>) {
     if (this._width + control.width > this.MAX_WIDTH) {
       throw new Error(
         `Controls width exceeded: ${this._width + control.width} > ${this.MAX_WIDTH}`
@@ -220,6 +231,7 @@ export class Controls<
    */
   addButton(label?: string, color?: ColorString, action?: () => void) {
     const newButton = new Button(label, color, action);
+    this.isAllowedToAddControl(newButton);
     return new Controls([...this.controls, newButton] as const, this._width + newButton.width);
   }
 
@@ -244,6 +256,17 @@ export class Controls<
   static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {
     const newSlideShow = new SlideShow(dft, steps, label);
     return new Controls([newSlideShow] as const, newSlideShow.width);
+  }
+
+  addMatrix(value: Matrix2, label?: string, color?: string) {
+    const newMatrix = new Matrix(value, label, color);
+    this.isAllowedToAddControl(newMatrix);
+    return new Controls([...this.controls, newMatrix] as const, this._width + newMatrix.width);
+  }
+
+  static addMatrix(value: Matrix2, label?: string, color?: string) {
+    const newMatrix = new Matrix(value, label, color);
+    return new Controls([newMatrix] as const, newMatrix.width);
   }
 
   // Reset all sliders to their default values
