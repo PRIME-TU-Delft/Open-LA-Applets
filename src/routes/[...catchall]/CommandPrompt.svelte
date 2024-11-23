@@ -1,7 +1,11 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import * as Command from '$lib/components/ui/command/index.js';
-  import { ArrowRight, Cross, Eye, EyeOff, File } from 'lucide-svelte';
+  import ArrowRight from 'lucide-svelte/icons/arrow-right';
+  import Cross from 'lucide-svelte/icons/cross';
+  import Eye from 'lucide-svelte/icons/eye';
+  import EyeOff from 'lucide-svelte/icons/eye-off';
+  import File from 'lucide-svelte/icons/file';
   import { onMount } from 'svelte';
   import { scale } from 'svelte/transition';
 
@@ -102,7 +106,7 @@
   });
 </script>
 
-<p class="text-sm text-muted-foreground">
+<p class="text-sm text-blue-950">
   Press
   <kbd
     class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"

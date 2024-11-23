@@ -3,7 +3,8 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import { Lock, Unlock } from 'lucide-svelte';
+  import Lock from 'lucide-svelte/icons/lock';
+  import Unlock from 'lucide-svelte/icons/lock-open';
 
   type ActivityPanelProps = {
     onLock: (event: MouseEvent) => void;

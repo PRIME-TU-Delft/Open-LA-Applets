@@ -30,8 +30,8 @@
   const INTERVALS = 20;
   const DURATION = 750;
 
-  let interval: number | NodeJS.Timeout;
-  let doReset: number | NodeJS.Timeout;
+  let interval: ReturnType<typeof setInterval>;
+  let doReset: ReturnType<typeof setTimeout>;
 
   /**
    * Function for reseting the 3D camera to the original position and zoom

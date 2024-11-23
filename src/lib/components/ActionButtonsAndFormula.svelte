@@ -6,7 +6,11 @@
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import { Maximize, Minimize, RotateCcw, Share, SquareFunction } from 'lucide-svelte';
+  import Maximize from 'lucide-svelte/icons/maximize';
+  import Minimize from 'lucide-svelte/icons/minimize';
+  import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
+  import Share from 'lucide-svelte/icons/share';
+  import SquareFunction from 'lucide-svelte/icons/square-function';
   import screenfull from 'screenfull';
 
   type G = readonly Controller<number | boolean | string | State>[];

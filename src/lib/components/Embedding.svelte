@@ -1,7 +1,8 @@
 <script>
   import { page } from '$app/stores';
   import { cameraState } from '$lib/stores/camera.svelte';
-  import { Copy, ExternalLink, Github } from 'lucide-svelte';
+  import Copy from 'lucide-svelte/icons/copy';
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import { fly } from 'svelte/transition';
   import Button from './ui/button/button.svelte';
   import { Checkbox } from './ui/checkbox';
@@ -85,9 +86,7 @@
 </Label>
 
 <div class="relative h-full w-full">
-  <Textarea readonly value={stateUrl}>
-    {stateUrl}
-  </Textarea>
+  <Textarea readonly value={stateUrl} />
   {#if showCopySucess}
     <div class="absolute left-1 bottom-1 text-green-700" in:fly={{ y: 20 }}>
       Copied to clipboard!
@@ -95,7 +94,7 @@
   {/if}
 </div>
 
-<div class="flex gap-2 mt-2">
+<div class="flex gap-2 mt-2 overflow-x-auto">
   <Button onclick={() => copyToClipboard()}>
     Copy to clipboard <Copy class="size-4 ml-2" />
   </Button>

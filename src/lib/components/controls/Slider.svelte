@@ -1,10 +1,13 @@
 <script lang="ts">
   import * as Button from '$lib/components/ui/button';
   import { Label } from '$lib/components/ui/label';
-  import { activityState } from '$lib/stores/activity.svelte';
   import type { Slider } from '$lib/controls/Slider.svelte';
+  import { activityState } from '$lib/stores/activity.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Pause from 'lucide-svelte/icons/pause';
+  import Play from 'lucide-svelte/icons/play';
+  import Plus from 'lucide-svelte/icons/plus';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import { Pause, Play, Plus } from 'lucide-svelte';
 
   type SliderProps = {
     value: number;
@@ -109,11 +112,12 @@
     <Button.Action
       class="text-white"
       --bg={slider.color}
+      --hover-bg={slider.color + PrimeColor.opacity(0.8)}
       tooltip="Expand slider"
       side="top"
       onclick={() => (onExpand ? onExpand() : {})}
     >
-      <Plus class="w-4 h-4" strokeWidth={4} />
+      <Plus class="w-4 h-4" strokeWidth={3} />
     </Button.Action>
   </div>
 {:else}
@@ -121,15 +125,16 @@
   <Button.Action
     class="text-white rounded-full"
     --bg={slider.color}
+    --hover-bg={slider.color + PrimeColor.opacity(0.8)}
     tooltip="Toggle animation"
     side="top"
     onclick={() => togglePlay()}
   >
     {#key icon}
       {#if icon === 'Play'}
-        <Play class="w-4 h-4" fill="white" strokeWidth={4} />
+        <Play class="w-4 h-4" fill="none" strokeWidth={3} />
       {:else}
-        <Pause class="w-4 h-4" fill="white" strokeWidth={4} />
+        <Pause class="w-4 h-4" fill="white" strokeWidth={0} />
       {/if}
     {/key}
   </Button.Action>

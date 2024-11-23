@@ -36,7 +36,7 @@
     );
 </script>
 
-<Accordion.Root class="container my-10 mx-auto">
+<Accordion.Root type="single" class="container my-10 mx-auto">
   {#each Object.entries(folders) as [folderTitle, files], index}
     <Accordion.Item value="item-{index}">
       <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>

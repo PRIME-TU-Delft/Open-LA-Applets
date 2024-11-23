@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Tooltip from '$lib/components/ui/tooltip';
-  import { cn } from '$lib/utils/shadcn-utils.js';
+  import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+  import { cn } from '$lib/utils/shadcn-utils';
   import type { Snippet } from 'svelte';
 
   type ButtonActionProps = {
@@ -21,19 +21,21 @@
 </script>
 
 <button class="button" onclick={(e) => onclick?.(e)}>
-  <Tooltip.Root openDelay={300} closeDelay={50}>
-    <Tooltip.Trigger
-      class={cn(
-        'w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center',
-        className
-      )}
-    >
-      {@render children?.()}
-    </Tooltip.Trigger>
-    <Tooltip.Content {side} transitionConfig={{ x: 5, duration: 100 }}>
-      <p>{tooltip}</p>
-    </Tooltip.Content>
-  </Tooltip.Root>
+  <Tooltip.Provider>
+    <Tooltip.Root>
+      <Tooltip.Trigger
+        class={cn(
+          'w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center',
+          className
+        )}
+      >
+        {@render children?.()}
+      </Tooltip.Trigger>
+      <Tooltip.Content {side}>
+        <p>{tooltip}</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  </Tooltip.Provider>
 </button>
 
 <style>

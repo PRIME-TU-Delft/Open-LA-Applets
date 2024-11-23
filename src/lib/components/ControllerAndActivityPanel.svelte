@@ -11,7 +11,9 @@
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import { Lock, RotateCcw, Unlock } from 'lucide-svelte';
+  import Lock from 'lucide-svelte/icons/lock';
+  import Unlock from 'lucide-svelte/icons/lock-open';
+  import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
   import * as C from './controls';
 
   type G = readonly Controller<number | boolean | string | State>[];
