@@ -3,7 +3,8 @@
   import { Label } from '$lib/components/ui/label';
   import type { SlideShow } from '$lib/controls/SlideShow.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+  import ChevronLeft from 'lucide-svelte/icons/chevron-left';
+  import ChevronRight from 'lucide-svelte/icons/chevron-right';
   import { scale } from 'svelte/transition';
   import { generateUUID } from 'three/src/math/MathUtils.js';
 

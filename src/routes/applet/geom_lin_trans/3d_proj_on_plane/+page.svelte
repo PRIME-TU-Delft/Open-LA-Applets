@@ -1,6 +1,7 @@
 <script>
   import { Controls } from '$lib/controls/Controls';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
@@ -8,7 +9,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Axis3D } from 'lucide-svelte';
   import { Vector3 } from 'three';
   import EllipseTrajectory from '../EllipseTrajectory.svelte';
 

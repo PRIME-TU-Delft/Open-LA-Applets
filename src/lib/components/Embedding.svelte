@@ -1,7 +1,8 @@
 <script>
   import { page } from '$app/stores';
   import { cameraState } from '$lib/stores/camera.svelte';
-  import { Copy, ExternalLink, Github } from 'lucide-svelte';
+  import Copy from 'lucide-svelte/icons/copy';
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import { fly } from 'svelte/transition';
   import Button from './ui/button/button.svelte';
   import { Checkbox } from './ui/checkbox';

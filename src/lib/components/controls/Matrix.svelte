@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Matrix } from '$lib/controls/Matrix.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Eye, EyeOff } from 'lucide-svelte';
+  import Eye from 'lucide-svelte/icons/eye';
+  import EyeOff from 'lucide-svelte/icons/eye-off';
   import Latex from '../Latex.svelte';
 
   const { controller }: { controller: Matrix } = $props();

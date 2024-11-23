@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { formatString } from '$lib/utils/FormatString';
-  import { fade } from 'svelte/transition';
   import * as Button from '$lib/components/ui/button';
-  import { ArrowRight, Eye, EyeOff } from 'lucide-svelte';
+  import { formatString } from '$lib/utils/FormatString';
+  import ArrowRight from 'lucide-svelte/icons/arrow-right';
+  import Eye from 'lucide-svelte/icons/eye';
+  import EyeOff from 'lucide-svelte/icons/eye-off';
+  import { fade } from 'svelte/transition';
 
   export let url = '';
   export let title = '';

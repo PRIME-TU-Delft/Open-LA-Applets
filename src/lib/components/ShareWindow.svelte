@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import * as Accordion from '$lib/components/ui/accordion';
   import * as Dialog from '$lib/components/ui/dialog';
-  import { ExternalLink } from 'lucide-svelte';
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import Embedding from './Embedding.svelte';
 </script>
 
