@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Button from '$lib/components/ui/button';
+  import * as ShadCNButton from '$lib/components/ui/button';
   import { PrimeColor } from '$lib/utils/PrimeColors';
 
   type ButtonProps = {
@@ -12,12 +12,12 @@
 </script>
 
 <div class="tooltip tooltip-top" data-tip="Action for applet">
-  <Button.Action
+  <ShadCNButton.Action
     class="text-white text-nowrap w-full p-2"
     --bg={color}
     --hover-bg={color + PrimeColor.opacity(0.8)}
     tooltip="Action for applet"
     side="top"
-    onclick={() => action()}>{label}</Button.Action
+    onclick={() => action()}>{label}</ShadCNButton.Action
   >
 </div>
