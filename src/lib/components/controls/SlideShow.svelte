@@ -25,7 +25,8 @@
   <div in:scale>
     <Button.Action
       class="text-white rounded-full"
-      --bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
+      --bg={PrimeColor.darkGreen}
+      --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
       tooltip="Go to previous step"
       side="top"
       onclick={() => controller.prev()}
@@ -40,6 +41,7 @@
     <Button.Action
       class="text-white rounded-full"
       --bg={PrimeColor.darkGreen}
+      --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
       tooltip="Go to next step"
       side="top"
       onclick={() => controller.next()}

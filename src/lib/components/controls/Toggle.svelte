@@ -1,9 +1,10 @@
 <script lang="ts">
   import Latex from '$lib/components/Latex.svelte';
-  import type { Toggle } from '$lib/controls/Toggle.svelte';
-  import { generateUUID } from 'three/src/math/MathUtils.js';
-  import { Label } from '$lib/components/ui/label';
   import { Checkbox } from '$lib/components/ui/checkbox';
+  import { Label } from '$lib/components/ui/label';
+  import type { Toggle } from '$lib/controls/Toggle.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { generateUUID } from 'three/src/math/MathUtils.js';
 
   type ToggleProps = {
     toggle: Toggle;
@@ -21,5 +22,10 @@
     </Label>
   {/if}
 
-  <Checkbox --bg={toggle.color} id="checkbox-{uuid}" bind:checked={value} />
+  <Checkbox
+    --bg={toggle.color}
+    --hover-bg={toggle.color + PrimeColor.opacity(0.8)}
+    id="checkbox-{uuid}"
+    bind:checked={value}
+  />
 </div>

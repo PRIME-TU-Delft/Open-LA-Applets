@@ -40,5 +40,16 @@ export default ts.config(
 
       'src/lib/components/ui/'
     ]
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^\\$\\$(Props|Events|Slots|Generic)$'
+        }
+      ]
+    }
   }
 );

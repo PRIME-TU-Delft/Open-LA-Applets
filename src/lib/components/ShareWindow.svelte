@@ -6,10 +6,10 @@
   import Embedding from './Embedding.svelte';
 </script>
 
-<Dialog.Content class="sm:max-w-xl">
+<Dialog.Content class="sm:max-w-xl block">
   <Dialog.Header>
     <Dialog.Title>Share and embed</Dialog.Title>
-    <Dialog.Description class="prose">
+    <Dialog.Description>
       This applet was created for the
       <a
         class="flex items-center gap-1"
@@ -20,7 +20,7 @@
       For more information about these applets, please visit
       <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
 
-      <Accordion.Root class="w-full">
+      <Accordion.Root type="single" class="w-full">
         <!-- EMBEDING -->
         <Accordion.Item value="Embed">
           <Accordion.Trigger>Embed</Accordion.Trigger>

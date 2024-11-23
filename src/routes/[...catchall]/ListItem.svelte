@@ -17,11 +17,11 @@
 
 <div in:fade class="flex gap-2 items-center">
   {#if showUrlIframe == url}
-    <Button.Root class="h-12 bg-blue-400 hover:bg-blue-900" on:click={() => toggleUrlIframe(url)}>
+    <Button.Root class="h-12 bg-blue-400 hover:bg-blue-900" onclick={() => toggleUrlIframe(url)}>
       <EyeOff class="w-4 h-4" />
     </Button.Root>
   {:else}
-    <Button.Root class="h-12 bg-blue-900" on:click={() => toggleUrlIframe(url)}>
+    <Button.Root class="h-12 bg-blue-900" onclick={() => toggleUrlIframe(url)}>
       <Eye class="w-4 h-4" />
     </Button.Root>
   {/if}
