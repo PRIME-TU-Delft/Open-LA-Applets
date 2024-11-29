@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import FolderList from './FolderList.svelte';
   import NavBar from './NavBar.svelte';
 
@@ -14,7 +15,7 @@
     { name: 'Beryl van Gelderen', title: 'Cooridinator' }
   ];
 
-  $: fileUrls = Object.keys(modules).map((rawUrl) =>
+  const fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
   );
@@ -22,7 +23,19 @@
 
 <NavBar {fileUrls} />
 
-<div class="mx-auto max-w-4xl p-10 bg-blue-50">
+<div class="mx-auto max-w-4xl p-10 bg-blue-50 my-32 rounded-xl">
+  <div class="prose">
+    <h1>PRIME applets</h1>
+    These applets were created for the
+    <a
+      class="inline-flex items-center gap-1 hover:underline"
+      href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
+    >
+      TU Delft Open Linear Algebra book <ExternalLink class="w-4 h-4" /></a
+    >. For more information about these applets, please visit
+    <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
+  </div>
+
   <FolderList {fileUrls} />
 
   <div

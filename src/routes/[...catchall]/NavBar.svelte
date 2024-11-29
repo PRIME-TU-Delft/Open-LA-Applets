@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Breadcrumb from '$lib/components/ui/breadcrumb';
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import CommandPrompt from './CommandPrompt.svelte';
 
   export let fileUrls: string[];
@@ -11,15 +12,13 @@
   <Breadcrumb.Root>
     <Breadcrumb.List>
       <Breadcrumb.Item>
-        <Breadcrumb.Link href="https://www.tudelft.nl/" class="text-blue-950">
-          TU Delft
-        </Breadcrumb.Link>
+        <Breadcrumb.Link href="https://www.tudelft.nl/" class="link">TU Delft</Breadcrumb.Link>
       </Breadcrumb.Item>
       <Breadcrumb.Separator />
       <Breadcrumb.Item>
         <Breadcrumb.Link
           href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics"
-          class="text-blue-950"
+          class="link flex gap-1"
         >
           DIAM
         </Breadcrumb.Link>
@@ -28,7 +27,7 @@
       <Breadcrumb.Item>
         <Breadcrumb.Link
           href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
-          class="text-blue-950"
+          class="link"
         >
           PRIME
         </Breadcrumb.Link>
@@ -37,7 +36,7 @@
       <Breadcrumb.Item>
         <Breadcrumb.Link
           href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
-          class="text-blue-950"
+          class="link"
         >
           Open LA book
         </Breadcrumb.Link>
@@ -55,5 +54,9 @@
 <style>
   :global(li[role='presentation'] svg) {
     @apply fill-blue-200;
+  }
+
+  nav :global(.link) {
+    @apply text-blue-100 hover:text-blue-200 hover:underline scale-100 hover:scale-110 transition-transform;
   }
 </style>
