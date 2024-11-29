@@ -149,7 +149,7 @@
             value={folderTitle}
             onSelect={() => selectPreviewAppletFolder(files)}
           >
-            <div class="flex gap-2 justify-start w-full">
+            <div class="flex w-full justify-start gap-2">
               {#if hasAllPreviewed}
                 <EyeOff class="mx-2" />
               {:else}
@@ -170,7 +170,7 @@
               value={folderTitle + ' ' + file.file}
               onSelect={() => selectPreviewApplet(file)}
             >
-              <div class="flex gap-2 justify-start w-full">
+              <div class="flex w-full justify-start gap-2">
                 {#if isPreviewed}
                   <EyeOff class="mx-2" />
                 {:else}
@@ -183,7 +183,7 @@
                 <iframe
                   in:scale
                   title={file.file}
-                  class="w-full h-96 bg-white rounded"
+                  class="h-96 w-full rounded bg-white"
                   src={file.url + '?iframe=true'}
                   frameborder="0"
                   allowfullscreen

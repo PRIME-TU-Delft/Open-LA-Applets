@@ -68,7 +68,7 @@
   }
 </script>
 
-<div class="flex items-center gap-2 mb-4">
+<div class="mb-4 flex items-center gap-2">
   <Checkbox id="include-state" bind:checked={includeState} />
   <Label
     for="include-state"
@@ -88,20 +88,20 @@
 <div class="relative h-full w-full">
   <Textarea readonly value={stateUrl} />
   {#if showCopySucess}
-    <div class="absolute left-1 bottom-1 text-green-700" in:fly={{ y: 20 }}>
+    <div class="absolute bottom-1 left-1 text-green-700" in:fly={{ y: 20 }}>
       Copied to clipboard!
     </div>
   {/if}
 </div>
 
-<div class="flex gap-2 mt-2 overflow-x-auto">
+<div class="mt-2 flex gap-2 overflow-x-auto">
   <Button onclick={() => copyToClipboard()}>
-    Copy to clipboard <Copy class="size-4 ml-2" />
+    Copy to clipboard <Copy class="ml-2 size-4" />
   </Button>
 
   <a href={stateUrl} target="_blank">
     <Button>
-      Open in new tab <ExternalLink class="size-4 ml-2" />
+      Open in new tab <ExternalLink class="ml-2 size-4" />
     </Button>
   </a>
 
@@ -110,7 +110,7 @@
       Open in GitHub
 
       <svg
-        class="size-4 ml-2"
+        class="ml-2 size-4"
         width="98"
         height="96"
         xmlns="http://www.w3.org/2000/svg"

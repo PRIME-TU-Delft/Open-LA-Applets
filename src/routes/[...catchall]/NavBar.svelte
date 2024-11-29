@@ -57,6 +57,6 @@
   }
 
   nav :global(.link) {
-    @apply text-blue-100 hover:text-blue-200 hover:underline scale-100 hover:scale-110 transition-transform;
+    @apply scale-100 text-blue-100 transition-transform hover:scale-110 hover:text-blue-200 hover:underline;
   }
 </style>

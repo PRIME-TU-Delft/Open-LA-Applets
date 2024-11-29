@@ -17,22 +17,22 @@
   }
 </script>
 
-<div in:fade class="flex gap-2 items-center">
+<div in:fade class="flex items-center gap-2">
   {#if showUrlIframe == url}
     <Button.Root class="h-12 bg-blue-400 hover:bg-blue-900" onclick={() => toggleUrlIframe(url)}>
-      <EyeOff class="w-4 h-4" />
+      <EyeOff class="h-4 w-4" />
     </Button.Root>
   {:else}
     <Button.Root class="h-12 bg-blue-900" onclick={() => toggleUrlIframe(url)}>
-      <Eye class="w-4 h-4" />
+      <Eye class="h-4 w-4" />
     </Button.Root>
   {/if}
   <a
-    class="link-hover w-full bg-slate-200 rounded p-4 flex justify-between items-center"
+    class="link-hover flex w-full items-center justify-between rounded bg-slate-200 p-4"
     href={url}
   >
     <div>
-      <span class="text-slate-500 text-sm">
+      <span class="text-sm text-slate-500">
         {formatString(subtitle)} /
       </span>
       <span>
@@ -46,7 +46,7 @@
 {#if showUrlIframe == url}
   <iframe
     {title}
-    class="w-full h-[30rem] bg-white rounded"
+    class="h-[30rem] w-full rounded bg-white"
     src={url + '?iframe=true'}
     frameborder="0"
     allowfullscreen

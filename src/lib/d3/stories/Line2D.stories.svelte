@@ -19,7 +19,7 @@
 </script>
 
 {#snippet template(args: Line2DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <Line2D {...args} />
     </Canvas2D>

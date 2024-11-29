@@ -6,7 +6,7 @@
   import Embedding from './Embedding.svelte';
 </script>
 
-<Dialog.Content class="sm:max-w-xl block">
+<Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
     <Dialog.Title>Share and embed</Dialog.Title>
     <Dialog.Description>
@@ -15,7 +15,7 @@
         class="flex items-center gap-1"
         href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
       >
-        TU Delft Open Linear Algebra book <ExternalLink class="w-4 h-4" /></a
+        TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
       >
       For more information about these applets, please visit
       <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
@@ -63,7 +63,7 @@
       </Accordion.Root>
     </Dialog.Description>
   </Dialog.Header>
-  <Dialog.Footer class="bg-slate-300/70 w-full rounded p-2 my-4">
+  <Dialog.Footer class="my-4 w-full rounded bg-slate-300/70 p-2">
     <img
       class="h-24 w-full object-contain"
       alt="prime-tudelft"

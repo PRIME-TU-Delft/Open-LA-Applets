@@ -20,7 +20,7 @@
 </script>
 
 {#snippet template(args: Angle3DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas3D cameraZoom={100}>
       <Angle3D {...args} />
       <Axis3D hideOrigin hideTicks />

@@ -13,7 +13,7 @@
 
 <div class="tooltip tooltip-top" data-tip="Action for applet">
   <ShadCNButton.Action
-    class="text-white text-nowrap w-full p-2"
+    class="w-full text-nowrap p-2 text-white"
     --bg={color}
     --hover-bg={color + PrimeColor.opacity(0.8)}
     tooltip="Action for applet"

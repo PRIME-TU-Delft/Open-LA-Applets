@@ -23,7 +23,7 @@
 
 <NavBar {fileUrls} />
 
-<div class="mx-auto max-w-4xl p-10 bg-blue-50 my-32 rounded-xl">
+<div class="mx-auto my-32 max-w-4xl rounded-xl bg-blue-50 p-10">
   <div class="prose">
     <h1>PRIME applets</h1>
     These applets were created for the
@@ -31,7 +31,7 @@
       class="inline-flex items-center gap-1 hover:underline"
       href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
     >
-      TU Delft Open Linear Algebra book <ExternalLink class="w-4 h-4" /></a
+      TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
     >. For more information about these applets, please visit
     <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
   </div>
@@ -39,7 +39,7 @@
   <FolderList {fileUrls} />
 
   <div
-    class="container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border border-base-300 bg-base-200 p-4"
+    class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"
   >
     <div class="prose">
       <h2>Credits</h2>
@@ -51,9 +51,9 @@
       </p>
 
       <h3>Contributors</h3>
-      <div class="columns-1 md:columns-2 gap-2">
+      <div class="columns-1 gap-2 md:columns-2">
         {#each contributors as { name, title }}
-          <div class="flex gap-2 mb-2">
+          <div class="mb-2 flex gap-2">
             <div class="not-prose w-24 overflow-hidden rounded">
               <img
                 class="aspect-square object-cover"

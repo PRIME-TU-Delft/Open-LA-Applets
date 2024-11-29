@@ -8,8 +8,8 @@
   const { controller }: { controller: Matrix } = $props();
 </script>
 
-<div class="flex gap-1 items-center">
-  <div class="flex gap-1 flex-col items-center">
+<div class="flex items-center gap-1">
+  <div class="flex flex-col items-center gap-1">
     {#if controller.label}
       <Latex
         latex={controller.label + ':'}
@@ -18,7 +18,7 @@
       />
     {/if}
     <button
-      class="py-1 px-2 text-center bg-gray-200 hover:bg-gray-400 transition-colors rounded-md cursor-pointer"
+      class="cursor-pointer rounded-md bg-gray-200 px-2 py-1 text-center transition-colors hover:bg-gray-400"
       onclick={() => controller.toggleAvailability()}
     >
       {#if controller.disabled}
@@ -33,28 +33,28 @@
     latex="\Bigg["
     color={controller.disabled ? PrimeColor.black + PrimeColor.opacity(0.5) : '#000'}
   />
-  <div class="grid grid-cols-2 gap-2 max-w-28 text-sm" class:disabled={controller.disabled}>
+  <div class="grid max-w-28 grid-cols-2 gap-2 text-sm" class:disabled={controller.disabled}>
     <input
       type="number"
-      class="w-full p-1 text-center bg-gray-200 rounded-md"
+      class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
       bind:value={controller.value.tl}
     />
     <input
       type="number"
-      class="w-full p-1 text-center bg-gray-200 rounded-md"
+      class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
       bind:value={controller.value.tr}
     />
     <input
       type="number"
-      class="w-full p-1 text-center bg-gray-200 rounded-md"
+      class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
       bind:value={controller.value.bl}
     />
     <input
       type="number"
-      class="w-full p-1 text-center bg-gray-200 rounded-md"
+      class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
       bind:value={controller.value.br}
     />

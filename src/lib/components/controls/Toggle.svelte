@@ -15,7 +15,7 @@
   let uuid = generateUUID();
 </script>
 
-<div class="p-1.5 flex items-center gap-1">
+<div class="flex items-center gap-1 p-1.5">
   {#if toggle.label != undefined}
     <Label class="inline-flex items-center" for="checkbox-{uuid}">
       <Latex latex={toggle.label} color={toggle.color} />:

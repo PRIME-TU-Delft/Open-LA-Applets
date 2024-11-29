@@ -25,14 +25,14 @@
 {#if controller.hasPrev()}
   <div in:scale>
     <Button.Action
-      class="text-white rounded-full"
+      class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
       tooltip="Go to previous step"
       side="top"
       onclick={() => controller.prev()}
     >
-      <ChevronLeft class="w-4 h-4" />
+      <ChevronLeft class="h-4 w-4" />
     </Button.Action>
   </div>
 {/if}
@@ -40,14 +40,14 @@
 {#if controller.hasNext()}
   <div in:scale>
     <Button.Action
-      class="text-white rounded-full"
+      class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
       tooltip="Go to next step"
       side="top"
       onclick={() => controller.next()}
     >
-      <ChevronRight class="w-4 h-4" />
+      <ChevronRight class="h-4 w-4" />
     </Button.Action>
   </div>
 {/if}

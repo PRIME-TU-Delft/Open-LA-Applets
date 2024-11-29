@@ -86,7 +86,7 @@
 </script>
 
 <div
-  class="outerWrapper overflow-hidden h-full bg-gradient-to-bl transition-all duration-500 from-white to-white p-2"
+  class="outerWrapper h-full overflow-hidden bg-gradient-to-bl from-white to-white p-2 transition-all duration-500"
   class:active={activityState.isActive}
   use:initScene
 >
@@ -107,7 +107,7 @@
     onmouseleave={() => waitThenReset()}
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
-    <div class="flex w-full h-full divide-x-2 divide-slate-400 gap-3 bg-white">
+    <div class="flex h-full w-full gap-3 divide-x-2 divide-slate-400 bg-white">
       {#if sceneChildren && width > 0}
         {@render sceneChildren(width, height)}
       {:else}
@@ -117,7 +117,7 @@
 
     <!-- MARK: TITLE PANEL (top-left) -->
     {#if globalState.title && globalState.isInset()}
-      <div class="absolute left-2 top-2 bg-blue-200 rounded p-2">
+      <div class="absolute left-2 top-2 rounded bg-blue-200 p-2">
         {globalState.title}
       </div>
     {/if}

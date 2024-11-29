@@ -25,7 +25,7 @@
     <Tooltip.Root>
       <Tooltip.Trigger
         class={cn(
-          'w-12 h-12 bg-slate-300 hover:bg-slate-400 transition-colors rounded flex justify-center items-center',
+          'flex h-12 w-12 items-center justify-center rounded bg-slate-300 transition-colors hover:bg-slate-400',
           className
         )}
       >

@@ -20,7 +20,7 @@
 </script>
 
 {#snippet template(args: SmallestArc2DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <SmallestArc2D {...args}>
         {#snippet label(position: Vector2)}

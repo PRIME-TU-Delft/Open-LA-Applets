@@ -45,7 +45,7 @@
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
-  <div class="h-[300px] w-full rounded-lg overflow-hidden">
+  <div class="h-[300px] w-full overflow-hidden rounded-lg">
     <Canvas3D {...args}>
       <Axis3D />
     </Canvas3D>

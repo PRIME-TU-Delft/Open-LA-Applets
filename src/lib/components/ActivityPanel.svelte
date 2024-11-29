@@ -14,28 +14,28 @@
 </script>
 
 <div
-  class="flex gap-1 hover:scale-105 text-blue-900 scale-100 transition-transform backdrop-blur-md bg-blue-200/70 shadow-md rounded-lg absolute bottom-2 left-1/2 -translate-x-1/2 items-center"
+  class="absolute bottom-2 left-1/2 flex -translate-x-1/2 scale-100 items-center gap-1 rounded-lg bg-blue-200/70 text-blue-900 shadow-md backdrop-blur-md transition-transform hover:scale-105"
   class:m-2={globalState.isInset()}
 >
   {#if !activityState.isActive}
-    <div class="px-4 py-1 relative sm:text-nowrap text-balance text-center items-center flex gap-2">
-      <Button.Action class="w-6 h-6" tooltip="Lock scene">
-        <Unlock class="bg-blue-200 hover:bg-blue-300 p-1 w-6 h-6 rounded-sm transition-colors" />
+    <div class="relative flex items-center gap-2 text-balance px-4 py-1 text-center sm:text-nowrap">
+      <Button.Action class="h-6 w-6" tooltip="Lock scene">
+        <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </Button.Action>
       Click anywhere in the scene to start interacting
       <span class="absolute -right-1 -top-1 flex h-3 w-3">
         <span
-          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+          class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
         ></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+        <span class="relative inline-flex h-3 w-3 rounded-full bg-blue-500"></span>
       </span>
     </div>
   {:else}
     <button class="px-1 py-1" onclick={(e) => onLock(e)}>
       <Dialog.Root>
-        <Dialog.Trigger class="rounded-sm bg-blue-200 hover:bg-blue-300 transition-colors">
-          <Button.Action class="w-6 h-6" tooltip="Lock scene">
-            <Lock class="w-4 h-4 pt-0.5" />
+        <Dialog.Trigger class="rounded-sm bg-blue-200 transition-colors hover:bg-blue-300">
+          <Button.Action class="h-6 w-6" tooltip="Lock scene">
+            <Lock class="h-4 w-4 pt-0.5" />
           </Button.Action>
         </Dialog.Trigger>
       </Dialog.Root>

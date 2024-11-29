@@ -22,7 +22,7 @@
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {...args}>
       <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />
 
@@ -55,7 +55,7 @@ The following props are available for `splitCanvas3DProps`:
 - cameraZoom?: `number`
 -->
 <Story name="With 3D on the right">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D title={'This is a split screen applet'}>
       <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />
 
@@ -84,7 +84,7 @@ The following props are available for `splitCanvas3DProps`:
 ```
  -->
 <Story name="With 3D on the left">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas3D title={'This is a split screen applet'}>
       <Vector3D direction={new Vector3(2, 1, 0)} length={2} color={PrimeColor.raspberry} />
       <Axis3D />

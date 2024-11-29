@@ -58,7 +58,7 @@ const oneFormula = $derived.by(() => {
 ```
 -->
 <Story name="One formula">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={oneFormula}>
       <Vector2D
         origin={new Vector2(0, 0)}
@@ -83,7 +83,7 @@ const multiFormula = $derived.by(() => {
 ```
 -->
 <Story name="Multi formula">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={multiFormula}>
       <Vector2D
         origin={new Vector2(0, 0)}
@@ -110,7 +110,7 @@ const autoParamFormula = $derived.by(() => {
 ```
 -->
 <Story name="Auto parameter formulas">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={autoParamFormula}>
       <Vector2D
         origin={new Vector2(0, 0)}
@@ -130,7 +130,7 @@ const formulaRight = $derived([autoParamFormula[0]]);
 ```
 -->
 <Story name="Split formulas">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={formulaLeft} splitFormulas={formulaRight}>
       <Vector2D
         origin={new Vector2(0, 0)}

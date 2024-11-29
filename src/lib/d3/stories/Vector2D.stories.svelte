@@ -19,7 +19,7 @@
 </script>
 
 {#snippet template(args: VectorProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <Vector2D {...args}>
         {#snippet children(endPoint)}
