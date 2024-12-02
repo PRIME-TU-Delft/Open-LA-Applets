@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,15 +6,17 @@
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
-  let controls = Controls.addSlider(3, -5, 5, 0.5, PrimeColor.raspberry).addSlider(
-    5,
-    -5,
-    5,
-    0.5,
-    PrimeColor.blue
-  );
+  let controls = Controls.addSlider(3, -5, 5, 0.5, PrimeColor.raspberry, {
+    label: 'v',
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+  }).addSlider(5, -5, 5, 0.5, PrimeColor.blue, {
+    label: 'u',
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+  });
 
   const v = $derived(new Vector3(3, 2, -3).normalize().multiplyScalar(3)); // Vector v;
   const u = $derived(v.clone().multiplyScalar(2)); // Vector u = 2 * v;
@@ -23,6 +25,10 @@
   const vLen = $derived(Math.abs(controls[0]) < 1 ? (controls[0] < 0 ? -1 : 1) : controls[0]);
   const uLen = $derived(Math.abs(controls[1]) < 1 ? (controls[1] < 0 ? -1 : 1) : controls[1]);
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas3D title="Span of two parallel vectors" {controls}>
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->

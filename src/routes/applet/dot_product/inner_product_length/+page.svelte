@@ -9,20 +9,22 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const slider_step = 0.5;
   let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.yellow, {
     label: 'x',
-    valueFn: (v) => round(v, 1).toString()
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
   })
     .addSlider(3, -5, 5, slider_step, PrimeColor.yellow, {
       label: 'y',
-      valueFn: (v) => round(v, 1).toString()
+      labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
     })
     .addSlider(6, -5, 6, slider_step, PrimeColor.yellow, {
       label: 'z',
-      valueFn: (v) => round(v, 1).toString()
+      labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
     });
 
   const A = $derived(new Vector3(controls[1], controls[2], controls[0]));
@@ -46,6 +48,10 @@
     return [f0, f1, f2, f3, f4];
   });
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas3D {controls} {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [raspberry] -->

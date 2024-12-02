@@ -7,8 +7,10 @@
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
-  import { round } from '$lib/utils/MathLib';
+  import { confettiState, type Side } from '$lib/stores/confetti.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
   import {
     snapToAxis,
@@ -18,11 +20,10 @@
     snapToMaxDistance,
     values
   } from './draggables';
-  import { confettiState, type Side } from '$lib/stores/confetti.svelte';
 
   const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, {
     label: 'c',
-    valueFn: (x) => round(x, 1).toString(),
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined]),
     onRelease: validateSlider
   }).addDropdown('', values, PrimeColor.yellow);
 
@@ -160,6 +161,10 @@
   const sum = $derived(draggables[0].value.clone().add(draggables[1].value));
   const prod = $derived(splitDraggables[0].value.clone().multiplyScalar(controls[0]));
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas2D {controls} {draggables} splitCanvas2DProps={{ draggables: splitDraggables }}>
   {@render subspace()}

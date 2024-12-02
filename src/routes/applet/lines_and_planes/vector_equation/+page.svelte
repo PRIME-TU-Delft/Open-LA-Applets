@@ -8,11 +8,13 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
 
   const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, {
     label: 'r',
-    valueFn: (x) => round(x).toString()
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
   });
 
   const u = new Vector2(-2, 1);
@@ -36,6 +38,10 @@
     return new Formulas(f1, f2).align();
   });
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas2D {controls} {formulas} showFormulasDefault title="A parametric vector of a line">
   <!-- Line L -->

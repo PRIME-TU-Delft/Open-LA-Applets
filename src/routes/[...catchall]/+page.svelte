@@ -12,7 +12,7 @@
     { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
     { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
     { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
-    { name: 'Beryl van Gelderen', title: 'Cooridinator' }
+    { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];
 
   const fileUrls = Object.keys(modules).map((rawUrl) =>
@@ -48,7 +48,7 @@
         class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
       >
         <span class="text-xs">⌘/Ctrl</span>K
-      </kbd> to search in through all applets.
+      </kbd> to search through all applets.
     </blockquote>
   </div>
 
