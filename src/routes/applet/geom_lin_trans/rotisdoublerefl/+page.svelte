@@ -11,14 +11,16 @@
   import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import { Vector2 } from 'three';
+  import NumberFlow from '@number-flow/svelte';
 
   const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
     label: 'ϕ/2',
-    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
   }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
     label: 'θ/2',
-    valueFn: (v) => (v / Math.PI).toFixed(2) + 'π'
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
   });
 
   const draggables = [
@@ -52,6 +54,11 @@
     return L2_proj.clone().add(L2_proj.clone().sub(T_L1));
   });
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow value={value / Math.PI} />
+  <p>π</p>
+{/snippet}
 
 <Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
   <!-- L1 -->

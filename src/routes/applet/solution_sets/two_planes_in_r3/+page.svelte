@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,14 +6,16 @@
   import PlaneFromPoints from '$lib/threlte/planes/PlaneFromPoints.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
-  import { round, roundString } from '$lib/utils/MathLib';
+  import { round } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const controls = Controls.addSlider(7, 1, 10, 0.5, PrimeColor.raspberry, {
     label: 'a',
-    valueFn: roundString
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
   });
 
   const v1 = new MathVector3(-3, 1, 0);
@@ -35,6 +37,10 @@
     return [f1];
   });
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas3D {controls} {formulas} cameraPosition={new Vector3(-8, 8, 12.5)} showFormulasDefault>
   <!-- Default -->

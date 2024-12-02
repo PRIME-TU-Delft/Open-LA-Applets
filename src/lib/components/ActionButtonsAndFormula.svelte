@@ -54,13 +54,13 @@
   );
 </script>
 
-<div class="absolute top-1 right-0 select-none">
+<div class="absolute right-0 top-1 select-none">
   <!-- FORMULAE -->
   {#if formulasShown}
     <div class="flex justify-end">
       {#if formulas && formulas.length >= 1}
         <div
-          class="mr-2 grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs border-blue-500 border-3"
+          class="border-3 mr-2 grid gap-1 rounded-md border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
           {#each formulas as formula}
             {#key formula.stringFormula}
@@ -71,7 +71,7 @@
       {/if}
 
       {#if splitFormulas && splitFormulas.length >= 1}
-        <div class="grid gap-1 bg-blue-50/80 backdrop-blur-md p-2 rounded-md shadow-sm text-xs">
+        <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
           {#each splitFormulas as formula}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
@@ -83,25 +83,25 @@
   {/if}
 
   <!-- ACTION BUTTON -->
-  <div class="float-end right-0 top-0 p-1 flex">
+  <div class="right-0 top-0 float-end flex p-1">
     {#if !controls || controls.length == 0}
       <Button.Action
         side="bottom"
-        class="!bg-blue-200/80 scale-[0.8] hover:!bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={onReset}
         tooltip="Will reset the scene to original camera positions"
       >
-        <RotateCcw class="w-5 h-5" />
+        <RotateCcw class="h-5 w-5" />
       </Button.Action>
     {/if}
 
     <!-- SHARE BUTTON -->
     <Dialog.Root>
       <Dialog.Trigger
-        class="bg-blue-200/80 scale-[0.8] hover:bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+        class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
       >
         <Button.Action side="bottom" tooltip="Share or embed applet">
-          <Share class="w-5 h-5" />
+          <Share class="h-5 w-5" />
         </Button.Action>
       </Dialog.Trigger>
       <ShareWindow />
@@ -111,14 +111,14 @@
     {#if screenfull.isEnabled && document}
       <Button.Action
         side="bottom"
-        class="!bg-blue-200/80 scale-[0.8] hover:!bg-blue-300/80 backdrop-blur-md rounded-md shadow-sm"
+        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={toggleFullscreen}
         tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
       >
         {#if isFullscreen}
-          <Minimize class="w-5 h-5" />
+          <Minimize class="h-5 w-5" />
         {:else}
-          <Maximize class="w-5 h-5" />
+          <Maximize class="h-5 w-5" />
         {/if}
       </Button.Action>
     {/if}
@@ -129,7 +129,7 @@
         side="bottom"
         class="{!formulasShown
           ? '!bg-blue-200/80 hover:!bg-blue-300/80'
-          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  backdrop-blur-md rounded-md shadow-sm border-blue-500 border-0 {showFormulas
+          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
           ? 'border-2'
           : ''}"
         tooltip="Toggle function"

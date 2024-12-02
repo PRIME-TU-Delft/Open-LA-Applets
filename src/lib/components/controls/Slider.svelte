@@ -117,13 +117,13 @@
       side="top"
       onclick={() => (onExpand ? onExpand() : {})}
     >
-      <Plus class="w-4 h-4" strokeWidth={3} />
+      <Plus class="h-4 w-4" strokeWidth={3} />
     </Button.Action>
   </div>
 {:else}
   <!-- If the slider is selected / expanded -->
   <Button.Action
-    class="text-white rounded-full"
+    class="rounded-full text-white"
     --bg={slider.color}
     --hover-bg={slider.color + PrimeColor.opacity(0.8)}
     tooltip="Toggle animation"
@@ -132,9 +132,9 @@
   >
     {#key icon}
       {#if icon === 'Play'}
-        <Play class="w-4 h-4" fill="none" strokeWidth={3} />
+        <Play class="h-4 w-4" fill="none" strokeWidth={3} />
       {:else}
-        <Pause class="w-4 h-4" fill="white" strokeWidth={0} />
+        <Pause class="h-4 w-4" fill="white" strokeWidth={0} />
       {/if}
     {/key}
   </Button.Action>
@@ -142,11 +142,15 @@
   <div class="flex flex-col gap-1">
     {#if slider.label}
       <Label
-        class="relative w-fit flex gap-1 items-center text-slate-700 text-xs pr-1"
+        class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
         >{slider.label}:
-        <p class="absolute left-full text-sm" style="color:{slider.color};">
-          {label}
+        <p class="absolute left-full flex text-sm" style="color:{slider.color};">
+          {#if slider.labelFormat}
+            {@render slider.labelFormat(value)}
+          {:else}
+            {label}
+          {/if}
         </p>
       </Label>
     {/if}

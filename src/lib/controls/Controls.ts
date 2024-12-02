@@ -1,5 +1,6 @@
 import type Matrix2 from '$lib/utils/Matrix2.svelte';
 import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
+import type { Snippet } from 'svelte';
 import { Button } from './Button.svelte';
 import { Dropdown } from './Dropdown.svelte';
 import { Matrix } from './Matrix.svelte';
@@ -95,6 +96,7 @@ export class Controls<
       label?: string;
       loop?: boolean;
       valueFn?: (v: number) => string;
+      labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
     }
   ) {
@@ -110,6 +112,7 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.labelFormat,
       options?.onRelease
     );
 
@@ -140,6 +143,7 @@ export class Controls<
       label?: string;
       loop?: boolean;
       valueFn?: (v: number) => string;
+      labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
     }
   ) {
@@ -152,6 +156,7 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.labelFormat,
       options?.onRelease
     );
     return new Controls([newSlider] as const, newSlider.width);

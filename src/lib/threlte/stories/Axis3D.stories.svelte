@@ -17,7 +17,7 @@
 </script>
 
 {#snippet template(args: Axis3DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas3D>
       <Axis3D {...args} />
     </Canvas3D>

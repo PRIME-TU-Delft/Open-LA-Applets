@@ -18,7 +18,7 @@
 </script>
 
 {#snippet template(args: Angle2DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <Angle2D startAngle={0} endAngle={Math.PI / 2} color={PrimeColor.black} {...args} />
     </Canvas2D>

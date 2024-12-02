@@ -18,7 +18,7 @@
 </script>
 
 {#snippet template(args: InfiniteLine2DProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <InfiniteLine2D direction={new Vector2(1, 1)} {...args} />
     </Canvas2D>

@@ -39,7 +39,7 @@
   class:inset={globalState.isInset()}
 >
   <div
-    class="py-2 px-3 rounded-lg flex gap-1 items-center shadow-md bg-blue-50/70 backdrop-blur-md"
+    class="flex items-center gap-1 rounded-lg bg-blue-50/70 px-3 py-2 shadow-md backdrop-blur-md"
   >
     {#each controls.controls as controller, index}
       {#if controller instanceof Slider}
@@ -76,21 +76,21 @@
     translate={activityState.isActive
       ? 'left-1/2 -translate-x-1/2 top-5 scale-0'
       : 'left-1/2 -translate-x-1/2  -top-7 sm:-top-6 scale-100 motion-safe:hover:scale-105'}
-    class="w-full h-full text-nowrap"
+    class="h-full w-full text-nowrap"
     tooltip="Start the scene so you can interact"
   >
     <div
-      class="px-4 py-1 relative sm:text-nowrap text-balance text-center items-center flex gap-2 text-xs min-w-[16rem]"
+      class="relative flex min-w-[16rem] items-center gap-2 text-balance px-4 py-1 text-center text-xs sm:text-nowrap"
     >
-      <ShadCNButton.Action class="w-6 h-6" tooltip="Lock scene">
-        <Unlock class="bg-blue-200 hover:bg-blue-300 p-1 w-6 h-6 rounded-sm transition-colors" />
+      <ShadCNButton.Action class="h-6 w-6" tooltip="Lock scene">
+        <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </ShadCNButton.Action>
       Click anywhere in the scene to start interacting
       <span class="absolute -right-1 -top-1 flex h-3 w-3">
         <span
-          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+          class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
         ></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+        <span class="relative inline-flex h-3 w-3 rounded-full bg-blue-500"></span>
       </span>
     </div>
   </SideButton>
@@ -104,7 +104,7 @@
     tooltip="Lock the scene so you can scroll again"
     class="w-10 sm:w-16"
   >
-    <span class="text-xs mr-0.5 hidden sm:block">Lock</span>
+    <span class="mr-0.5 hidden text-xs sm:block">Lock</span>
     <Lock class="h-4 w-4" />
   </SideButton>
 
@@ -118,7 +118,7 @@
     class="w-10 sm:w-16"
   >
     <RotateCcw class="h-4 w-4" />
-    <span class="ml-0.5 text-xs hidden sm:block">Reset</span>
+    <span class="ml-0.5 hidden text-xs sm:block">Reset</span>
   </SideButton>
 </div>
 

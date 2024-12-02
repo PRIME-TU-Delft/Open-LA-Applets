@@ -47,7 +47,7 @@
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {...args}>
       {#if args.draggables}
         {#each args.draggables as draggable, i}
@@ -131,7 +131,7 @@ const draggables = [
 ```
 -->
 <Story name="Custom snap">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D draggables={customSnapDraggables}>
       <circle r={2} fill={PrimeColor.yellow + PrimeColor.opacity(0.5)} />
 

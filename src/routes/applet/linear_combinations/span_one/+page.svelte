@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,17 +6,26 @@
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const vDir = new Vector3(3, 2, -3);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
-  const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry);
+  const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry, {
+    label: 'length',
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+  });
 
   // Do not allow the vector to be zero, otherwise the direction is not defined
   const vLength = $derived(Math.abs(controls[0]) <= 0.0001 ? 0.5 : controls[0]);
 
   const v = $derived(vDir.clone().normalize().multiplyScalar(vLength)); // Direction of vector v
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas3D {controls} title="Span of a vector">
   <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry}>

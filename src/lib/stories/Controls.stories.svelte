@@ -68,7 +68,7 @@ const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, 'A');
 > When a user tries to access `controls[1]`, TypeScript will throw an error because the index is out of bounds.
 -->
 <Story name="One Slider">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {controls}>
       <Vector2D
         direction={new Vector2(controls[0], 2)}
@@ -104,7 +104,7 @@ const multiControls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, 'A x'
 ```
 -->
 <Story name="Multi Slider">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={multiControls}>
       <Vector2D
         direction={new Vector2(multiControls[0], multiControls[1])}
@@ -125,7 +125,7 @@ const toggleControls = Controls.addToggle(true, 'A', PrimeColor.blue).addToggle(
 ```
  -->
 <Story name="Toggles">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={toggleControls}>
       {#if toggleControls[0]}
         <Vector2D direction={new Vector2(-2, 1)} length={3} color={PrimeColor.raspberry} />
@@ -162,7 +162,7 @@ const slideShowControl = Controls.addSlideShow(state, transitionSteps);
 ```
  -->
 <Story name="Slide show">
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={slideShowControl}>
       {@const state = slideShowControl[0]}
       {#if state.aOpacity > 0.01}

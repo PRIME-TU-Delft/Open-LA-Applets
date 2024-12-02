@@ -24,7 +24,7 @@
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {...args}>
       <Vector2D direction={new Vector2(1, 2)} color={PrimeColor.blue} length={2} />
     </Canvas2D>

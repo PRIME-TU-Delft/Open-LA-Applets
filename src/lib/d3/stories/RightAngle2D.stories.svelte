@@ -19,7 +19,7 @@
 </script>
 
 {#snippet template(args: CanvasProps)}
-  <div class="h-[300px] rounded-lg overflow-hidden">
+  <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D>
       <RightAngle2D vs={[new Vector2(1, 0), new Vector2(0, 1)]} {...args} />
     </Canvas2D>

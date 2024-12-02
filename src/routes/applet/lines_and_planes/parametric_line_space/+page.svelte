@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,19 +6,26 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);
 
-  let controls = Controls.addSlider(2, -1.5, 3, 0.1, PrimeColor.darkGreen);
+  let controls = Controls.addSlider(2, -1.5, 3, 0.1, PrimeColor.darkGreen, {
+    label: 'r',
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+  });
 
   const ru_len = $derived(controls[0] * u.length());
-  const formula = $derived(new Formula('r = \\$', controls[0], PrimeColor.darkGreen));
 </script>
 
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
+
 <Canvas3D
-  formulas={[formula]}
   cameraPosition={new Vector3(3.31, 6.55, 15.68)}
   cameraZoom={38}
   {controls}
