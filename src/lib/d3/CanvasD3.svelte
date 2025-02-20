@@ -90,8 +90,8 @@
    * @see https://observablehq.com/@d3/drag-zoom?collection=@d3/d3-drag
    */
   const zoomProtocol = $derived.by(() => {
-    const minZoom = cameraZoom / 3;
-    const maxZoom = 3 / cameraZoom;
+    const minZoom = cameraZoom / 6;
+    const maxZoom = 6 / cameraZoom;
 
     return zoom()
       .scaleExtent([minZoom, maxZoom])

@@ -36,8 +36,8 @@
 
 <Canvas2D
   cameraPosition={new Vector2(2, 1)}
-  cameraZoom={3}
-  splitCanvas2DProps={{ draggables, cameraPosition: new Vector2(2, 1), cameraZoom: 3 }}
+  cameraZoom={2}
+  splitCanvas2DProps={{ draggables, cameraPosition: new Vector2(2, 1), cameraZoom: 2 }}
   {formulas}
   showFormulasDefault
 >
