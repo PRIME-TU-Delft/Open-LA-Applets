@@ -116,6 +116,13 @@
 
   <!--  a_2-->
   <Latex3D latex={'a_2'} position={v_p} extend={0.5} />
+  <Latex3D
+    latex={'P'}
+    position={v_p}
+    extend={0.5}
+    offset={new Vector3(-0.5, -0.75, 0)}
+    color={PrimeColor.darkGreen}
+  />
 
   <!-- a_3 -->
   <Latex3D latex={'a_3'} position={new Vector3(-0.3, A.y, 0)} extend={0.5} />

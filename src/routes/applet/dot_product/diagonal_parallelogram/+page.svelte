@@ -21,8 +21,8 @@
   }
 
   const draggables = [
-    new Draggable(new Vector2(1.5, 3), PrimeColor.darkGreen, 'w', snap_w),
-    new Draggable(new Vector2(2, -1), PrimeColor.cyan, 'v', snap_v)
+    new Draggable(new Vector2(1.5, 3), PrimeColor.darkGreen, '', snap_w),
+    new Draggable(new Vector2(2, -1), PrimeColor.cyan, '', snap_v)
   ];
   const w = $derived(draggables[0].position);
   const v = $derived(draggables[1].position);

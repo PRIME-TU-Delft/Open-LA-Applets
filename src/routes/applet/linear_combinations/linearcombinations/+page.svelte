@@ -9,7 +9,7 @@
   const v1 = new Vector2(1.5, 0.5);
   const v2 = new Vector2(0.5, 2);
 
-  const draggables = [new Draggable(new Vector2(4, 5), PrimeColor.blue, 'u', Draggable.snapToGrid)];
+  const draggables = [new Draggable(new Vector2(4, 5), PrimeColor.blue, '', Draggable.snapToGrid)];
   const u = $derived(draggables[0].position);
 
   const beta = $derived((u.x + u.y * (-v1.x / v1.y)) / (v2.x - v2.y * (v1.x / v1.y)));

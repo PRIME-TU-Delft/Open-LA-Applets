@@ -11,8 +11,8 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
 
   const draggables = [
-    new Draggable(new Vector2(1, 0.5), PrimeColor.blue, 'v'),
-    new Draggable(new Vector2(2.5, 2.5), PrimeColor.darkGreen, 'w')
+    new Draggable(new Vector2(1, 0.5), PrimeColor.blue, ''),
+    new Draggable(new Vector2(2.5, 2.5), PrimeColor.darkGreen, '')
   ];
 
   const v = $derived(draggables[0].position);
