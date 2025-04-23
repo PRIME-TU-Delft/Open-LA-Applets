@@ -13,8 +13,10 @@
   function snapToStaightLine(v: Vector2) {
     if (Math.abs(v.x / v.y + 2) < snapDistance) {
       return new Vector2(v.x, v.x / -2);
-    } else if (Math.abs(v.x / v.y - 2) < snapDistance) {
+    } else if (Math.abs(v.x / v.y - 2) < snapDistance * 3) {
       return new Vector2(v.x, v.x / 2);
+    } else if (Math.abs(v.x) < 0.05 && Math.abs(v.y) < 0.05) {
+      return new Vector2(0, 0);
     }
 
     return v;
@@ -32,20 +34,21 @@
     new Draggable(
       new Vector2(3, 5),
       PrimeColor.raspberry,
-      '\\mathbf{v_1}',
+      '\\mathbf{x_0}',
       snapToStaightLine,
       releaseFn
     )
   ];
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('\\text{Wat moet hier komen Christophe?}');
-    const f2 = new Formula('A = \\begin{bmatrix} 1 & 4 \\\\ 1 & 1 \\end{bmatrix} ');
-    const f3 = new Formula('\\mathbf{v_1} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} ')
-      .addAutoParam(round(draggables[0].position.x), PrimeColor.raspberry)
-      .addAutoParam(round(draggables[0].position.y), PrimeColor.raspberry);
+    const f1 = new Formula(
+      "\\mathbf{x'}(t) = \\begin{bmatrix} 1 & 4 \\\\ 1 & 1 \\end{bmatrix} \\mathbf{x}(t) "
+    );
+    const f2 = new Formula('\\mathbf{x_0} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} ')
+      .addAutoParam(round(draggables[0].position.x, 1), PrimeColor.raspberry)
+      .addAutoParam(round(draggables[0].position.y, 1), PrimeColor.raspberry);
 
-    return [f1, f2, f3];
+    return [f1, f2];
   });
 </script>
 

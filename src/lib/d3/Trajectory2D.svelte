@@ -34,7 +34,11 @@
 
     while (iterations < maxLength) {
       // if out of bounds, break
-      if (Math.abs(currentPoint.x) > 30 || Math.abs(currentPoint.y) > 30) {
+      if (
+        Math.abs(currentPoint.x) > 30 ||
+        Math.abs(currentPoint.y) > 30 ||
+        (Math.abs(currentPoint.x) < 0.05 && Math.abs(currentPoint.y) < 0.05)
+      ) {
         break;
       }
 
