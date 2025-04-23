@@ -1,3 +1,5 @@
+import { Vector2 } from 'three';
+
 export default class Matrix2 extends Array<number> {
   tl: number = $state(0);
   tr: number = $state(0);
@@ -50,6 +52,16 @@ export default class Matrix2 extends Array<number> {
     const br = this.bl * b.tr + this.br * b.br;
 
     return new Matrix2(tl, tr, bl, br);
+  }
+
+  multiplyVector(vector: Vector2) {
+    const x = vector.x;
+    const y = vector.y;
+
+    const tl = this.tl * x + this.tr * y;
+    const tr = this.bl * x + this.br * y;
+
+    return new Vector2(tl, tr);
   }
 
   add(matrix: Matrix2) {
