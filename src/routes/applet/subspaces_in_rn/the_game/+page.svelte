@@ -34,7 +34,7 @@
     if (controls[1] == 'Disc') {
       validateDisk(new Vector2(), 'right');
     } else if (controls[1] == 'First quadrant' && (prod.x < 0 || prod.y < 0)) {
-      confettiState.setState('right', 500);
+      confettiState.rightSide();
     }
   }
 
@@ -42,9 +42,9 @@
     const newPoint = snapToMaxDistance(v, 2.5);
 
     if (side == 'left' && sum.length() > 2.5) {
-      confettiState.setState(side, 500);
+      confettiState.left();
     } else if (side == 'right' && prod.length() >= 2.5) {
-      confettiState.setState(side, 500);
+      confettiState.rightSide();
     }
 
     return newPoint;
@@ -54,7 +54,7 @@
     const newPoint = snapToMaxDistance(v, 2.5);
 
     if (side == 'left' && sum.x != 0 && sum.y != 0) {
-      confettiState.setState(side, 500);
+      confettiState.left(500);
     }
 
     return newPoint;
@@ -71,7 +71,11 @@
       (angle > Math.PI / 2 && angle < (5 * Math.PI) / 4) ||
       angle > (3 * Math.PI) / 2
     ) {
-      confettiState.setState(side, 500);
+      if (side == 'left') {
+        confettiState.left(500);
+      } else if (side == 'center') {
+        confettiState.center();
+      }
     }
 
     return newPoint;

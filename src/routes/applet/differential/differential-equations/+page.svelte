@@ -24,7 +24,7 @@
 
   function releaseFn(v: Vector2) {
     if (v.x / v.y == -2 || v.x / v.y == 2) {
-      confettiState.center(1000);
+      confettiState.center();
     }
 
     return v;
