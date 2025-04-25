@@ -58,7 +58,14 @@
     start={new Vector2(-30, 14.999)}
     color={PrimeColor.yellow}
     width={0.05}
-    stepSize={0.3}
+    stepSize={0.2}
+  />
+  <Trajectory2D start={new Vector2(30, -15.05)} color={PrimeColor.yellow} width={0.05} />
+  <Trajectory2D
+    start={new Vector2(30, -14.999)}
+    color={PrimeColor.yellow}
+    width={0.05}
+    stepSize={0.2}
   />
 
   <Trajectory2D start={draggables[0].position} color={PrimeColor.raspberry} width={0.05} />
