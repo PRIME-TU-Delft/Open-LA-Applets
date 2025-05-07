@@ -154,9 +154,9 @@
 </script>
 
 <div>
-  {#if !isSplit && (confettiState.side === 'left' || confettiState.side === 'center')}
+  {#if !isSplit && (confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center')}
     <Confetti isSplit={false} />
-  {:else if isSplit && confettiState.side === 'right'}
+  {:else if isSplit && confettiState.confettiSide === 'right'}
     <Confetti isSplit={true} />
   {/if}
 

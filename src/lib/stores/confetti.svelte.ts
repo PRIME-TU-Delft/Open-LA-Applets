@@ -1,50 +1,43 @@
-export type Side = 'none' | 'left' | 'right' | 'center';
+export type Side = 'un-set' | 'left' | 'right' | 'center';
 
 /**
  * Store for enabling/disabling confetti
  */
 class ConfettiState {
-  side = $state<Side>('none');
-  private timeOut: ReturnType<typeof setTimeout> | undefined = $state(undefined);
-
-  setState(side: Side, coolDown: number) {
-    if (this.timeOut) return;
-    this.side = side;
-
-    this.timeOut = setTimeout(() => {
-      this.side = 'none';
-      clearTimeout(this.timeOut);
-      this.timeOut = undefined;
-    }, coolDown);
-  }
+  confettiSide = $state('un-set');
+  updateState = $state(Math.random());
 
   /**
    * Enable confetti on the left side
    */
   left(coolDown = 5000) {
-    this.setState('left', coolDown);
+    this.updateState = Math.random();
+
+    this.confettiSide = 'left';
   }
 
   /**
    * Enable confetti on the right side
    */
-  right(coolDown = 5000) {
-    this.setState('right', coolDown);
+  rightSide() {
+    this.updateState += Math.random();
+    this.confettiSide = 'right';
   }
 
   /**
    * Enable confetti on center side
    */
   center(coolDown = 5000) {
-    this.setState('center', coolDown);
+    this.updateState = Math.random();
+
+    this.confettiSide = 'center';
   }
 
   /**
    * Disable confetti
    */
   none() {
-    this.side = 'none';
-    clearTimeout(this.timeOut);
+    this.confettiSide = 'un-set';
   }
 }
 

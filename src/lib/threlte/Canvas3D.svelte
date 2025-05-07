@@ -119,7 +119,7 @@
   {#snippet sceneChildren(width, height)}
     {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
     <div style="width: {canvasWidth}px" class="overflow">
-      {#if confettiState.side === 'left' || confettiState.side === 'center'}
+      {#if confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center'}
         <Confetti isSplit={false} />
       {/if}
 
@@ -140,7 +140,7 @@
       </CanvasD3>
     {:else if splitCanvas3DChildren}
       <div style="width: {canvasWidth}px" class="overflow-hidden">
-        {#if confettiState.side === 'right'}
+        {#if confettiState.confettiSide === 'right'}
           <Confetti isSplit={true} />
         {/if}
         <Canvas {renderMode} toneMapping={NoToneMapping}>
