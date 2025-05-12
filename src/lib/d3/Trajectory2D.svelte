@@ -118,6 +118,6 @@
       />
     </g>
   {/if}
-
-  <path d={smoothLine} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
 {/each}
+
+<path d={smoothLine} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
