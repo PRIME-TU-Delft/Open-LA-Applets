@@ -1,0 +1,155 @@
+<script>
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Angle2D from '$lib/d3/Angle2D.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Circle2D from '$lib/d3/Circle2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+
+  let d1 = new Draggable(new Vector2(1, 1), PrimeColor.yellow);
+
+  let v_inverse = $derived(
+    new Vector2(
+      d1.position.x / (Math.pow(d1.position.x, 2) + Math.pow(d1.position.y, 2)),
+      -d1.position.y / (Math.pow(d1.position.x, 2) + Math.pow(d1.position.y, 2))
+    )
+  );
+
+  const formulasLeft = $derived.by(() => {
+    let f1 = new Formula('z = \\$1 \\$3 \\$2 i')
+      .addAutoParam(d1.position.x.toFixed(2), PrimeColor.yellow)
+      .addAutoParam(d1.position.y.toFixed(2), PrimeColor.yellow)
+      .addAutoParam(d1.position.y > 0 ? '+' : '', PrimeColor.yellow);
+
+    let f2 = new Formula('z^{-1} = \\$1 \\$3 \\$2 i')
+      .addAutoParam(v_inverse.x.toFixed(2), PrimeColor.raspberry)
+      .addAutoParam(v_inverse.y.toFixed(2), PrimeColor.raspberry)
+      .addAutoParam(v_inverse.y > 0 ? '+' : '', PrimeColor.raspberry);
+
+    return [f1, f2];
+  });
+
+  const formulasRight = $derived.by(() => {
+    let f1 = new Formula('z = \\$1 \\cdot e^{\\$2 \\pi i}')
+      .addAutoParam(d1.position.length().toFixed(2), PrimeColor.yellow)
+      .addAutoParam((d1.position.angle()/Math.PI).toFixed(2), PrimeColor.yellow);
+
+    let f2 = new Formula('z^{-1} = \\$1 \\cdot e^{\\$2 \\pi i}')
+      .addAutoParam(v_inverse.length().toFixed(2), PrimeColor.raspberry)
+      .addAutoParam((-d1.position.angle()/Math.PI).toFixed(2), PrimeColor.raspberry);
+
+    return [f1, f2];
+  });
+
+  let z_angle = $derived.by(() => {
+    let angle = d1.position.angle();
+    if (angle > Math.PI) {
+      angle = -(2 * Math.PI - angle);
+    }
+
+    return angle;
+  });
+
+  let zinv_angle = $derived(-z_angle);
+</script>
+
+<Canvas2D
+  draggables={[d1]}
+  formulas={formulasLeft}
+  splitFormulas={formulasRight}
+  title="Inverse of a complex number: Cartesian and Polar"
+  cameraZoom={2}
+  enablePan={false}
+  splitCanvas2DProps={{
+    cameraZoom: 2,
+    enablePan: false,
+    customAxis: true,
+    draggables: [d1]
+  }}
+>
+  <Vector2D
+    direction={d1.position}
+    length={d1.position.length()}
+    color={PrimeColor.yellow}
+    hideHead={true}
+  />
+  <Latex2D position={d1.position} latex="z" color={PrimeColor.yellow} />
+
+  <Vector2D
+    direction={v_inverse}
+    length={v_inverse.length()}
+    color={PrimeColor.raspberry}
+    hideHead={true}
+  />
+  <Latex2D position={v_inverse} latex={'z^{-1}'} color={PrimeColor.raspberry} />
+
+  <Angle2D
+    endAngle={z_angle}
+    startAngle={2 * Math.PI}
+    color={PrimeColor.yellow}
+    distance={Math.min(0.8, d1.position.length() * 0.5)}
+  />
+
+  <Angle2D
+    endAngle={zinv_angle}
+    startAngle={2 * Math.PI}
+    color={PrimeColor.raspberry}
+    distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
+  />
+
+  <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 3.5)} />
+  <Latex2D latex={'\\text{Re}'} position={new Vector2(3.1, 0.5)} />
+
+  {#snippet splitCanvas2DChildren()}
+    <InfiniteLine2D direction={new Vector2(1, 0)} width={0.035} />
+    <InfiniteLine2D direction={new Vector2(0, 1)} width={0.035} />
+
+    <InfiniteLine2D direction={new Vector2(Math.sqrt(3), 1)} width={0.015} />
+    <InfiniteLine2D direction={new Vector2(1, Math.sqrt(3))} width={0.015} />
+    <InfiniteLine2D direction={new Vector2(1, -Math.sqrt(3))} width={0.015} />
+    <InfiniteLine2D direction={new Vector2(Math.sqrt(3), -1)} width={0.015} />
+
+    <Circle2D radius={1} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+    <Circle2D radius={2} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+    <Circle2D radius={3} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+    <Circle2D radius={4} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+    <Circle2D radius={5} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+
+    <Vector2D
+      direction={d1.position}
+      length={d1.position.length()}
+      color={PrimeColor.yellow}
+      hideHead={true}
+    />
+    <Latex2D position={d1.position} latex="z" color={PrimeColor.yellow} />
+
+    <Vector2D
+      direction={v_inverse}
+      length={v_inverse.length()}
+      color={PrimeColor.raspberry}
+      hideHead={true}
+    />
+    <Latex2D position={v_inverse} latex={'z^{-1}'} color={PrimeColor.raspberry} />
+
+    <Angle2D
+      endAngle={z_angle}
+      startAngle={2 * Math.PI}
+      color={PrimeColor.yellow}
+      distance={Math.min(0.8, d1.position.length() * 0.5)}
+    />
+
+    <Angle2D
+      endAngle={zinv_angle}
+      startAngle={2 * Math.PI}
+      color={PrimeColor.raspberry}
+      distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
+    />
+
+    <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 3.5)} />
+    <Latex2D latex={'\\text{Re}'} position={new Vector2(3.1, 0.5)} />
+  {/snippet}
+</Canvas2D>
