@@ -2,9 +2,8 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Circle2D from '$lib/d3/Circle2D.svelte';
-  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import PolarGrid from '$lib/d3/PolarGrid.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -36,11 +35,11 @@
   const formulasRight = $derived.by(() => {
     let f1 = new Formula('z = \\$1 \\cdot e^{\\$2 \\pi i}')
       .addAutoParam(d1.position.length().toFixed(2), PrimeColor.yellow)
-      .addAutoParam((d1.position.angle()/Math.PI).toFixed(2), PrimeColor.yellow);
+      .addAutoParam((d1.position.angle() / Math.PI).toFixed(2), PrimeColor.yellow);
 
     let f2 = new Formula('z^{-1} = \\$1 \\cdot e^{\\$2 \\pi i}')
       .addAutoParam(v_inverse.length().toFixed(2), PrimeColor.raspberry)
-      .addAutoParam((-d1.position.angle()/Math.PI).toFixed(2), PrimeColor.raspberry);
+      .addAutoParam((-d1.position.angle() / Math.PI).toFixed(2), PrimeColor.raspberry);
 
     return [f1, f2];
   });
@@ -105,19 +104,7 @@
   <Latex2D latex={'\\text{Re}'} position={new Vector2(3.1, 0.5)} />
 
   {#snippet splitCanvas2DChildren()}
-    <InfiniteLine2D direction={new Vector2(1, 0)} width={0.035} />
-    <InfiniteLine2D direction={new Vector2(0, 1)} width={0.035} />
-
-    <InfiniteLine2D direction={new Vector2(Math.sqrt(3), 1)} width={0.015} />
-    <InfiniteLine2D direction={new Vector2(1, Math.sqrt(3))} width={0.015} />
-    <InfiniteLine2D direction={new Vector2(1, -Math.sqrt(3))} width={0.015} />
-    <InfiniteLine2D direction={new Vector2(Math.sqrt(3), -1)} width={0.015} />
-
-    <Circle2D radius={1} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
-    <Circle2D radius={2} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
-    <Circle2D radius={3} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
-    <Circle2D radius={4} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
-    <Circle2D radius={5} width={0.015} color={PrimeColor.black + PrimeColor.opacity(0.5)} />
+    <PolarGrid />
 
     <Vector2D
       direction={d1.position}
