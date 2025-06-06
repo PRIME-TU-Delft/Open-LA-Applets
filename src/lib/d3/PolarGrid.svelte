@@ -1,6 +1,7 @@
 <script lang="ts" module>
   export type PolarGridProps = {
     angleStep?: number;
+    highlightRadii?: number[];
   };
 </script>
 
@@ -10,7 +11,7 @@
   import Circle2D from './Circle2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
 
-  let { angleStep = 30 }: PolarGridProps = $props();
+  let { angleStep = 30, highlightRadii=[] }: PolarGridProps = $props();
 
   let lines: Vector2[] = [];
 
@@ -23,6 +24,9 @@
   }
 
   function strokeWidth(index: number) {
+    if (highlightRadii.includes(index))
+      return 0.03;
+
     if (index % 10 == 0) return 0.02;
     if (index % 5 == 0) return 0.01;
     return 0.005;
@@ -52,9 +56,5 @@
 
 <!-- Radius grid circles -->
 {#each [...Array(numCircles).keys()] as radius}
-  <Circle2D
-    {radius}
-    width={strokeWidth(radius)}
-    color={strokeColor}
-  />
+  <Circle2D {radius} width={strokeWidth(radius)} color={strokeColor} />
 {/each}
