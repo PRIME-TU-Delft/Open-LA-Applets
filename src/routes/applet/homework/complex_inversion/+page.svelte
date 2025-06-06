@@ -3,6 +3,7 @@
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
   import PolarGrid from '$lib/d3/PolarGrid.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
@@ -61,10 +62,10 @@
   formulas={formulasLeft}
   splitFormulas={formulasRight}
   title="Inverse of a complex number: Cartesian and Polar"
-  cameraZoom={2}
+  cameraZoom={2.75}
   enablePan={false}
   splitCanvas2DProps={{
-    cameraZoom: 2,
+    cameraZoom: 2.75,
     enablePan: false,
     customAxis: true,
     draggables: [d1]
@@ -84,6 +85,7 @@
     color={PrimeColor.raspberry}
     hideHead={true}
   />
+  <Point2D position={v_inverse} color={PrimeColor.raspberry} />
   <Latex2D position={v_inverse} latex={'z^{-1}'} color={PrimeColor.raspberry} />
 
   <Angle2D
@@ -100,8 +102,8 @@
     distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
   />
 
-  <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 3.5)} />
-  <Latex2D latex={'\\text{Re}'} position={new Vector2(3.1, 0.5)} />
+  <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 2.9)} />
+  <Latex2D latex={'\\text{Re}'} position={new Vector2(2.1, 0.5)} />
 
   {#snippet splitCanvas2DChildren()}
     <PolarGrid highlightRadii={[1]} />
@@ -120,6 +122,7 @@
       color={PrimeColor.raspberry}
       hideHead={true}
     />
+    <Point2D position={v_inverse} color={PrimeColor.raspberry} />
     <Latex2D position={v_inverse} latex={'z^{-1}'} color={PrimeColor.raspberry} />
 
     <Angle2D
@@ -136,7 +139,7 @@
       distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
     />
 
-    <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 3.5)} />
-    <Latex2D latex={'\\text{Re}'} position={new Vector2(3.1, 0.5)} />
+    <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 2.9)} />
+    <Latex2D latex={'\\text{Re}'} position={new Vector2(2.1, 0.5)} />
   {/snippet}
 </Canvas2D>
