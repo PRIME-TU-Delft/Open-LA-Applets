@@ -11,10 +11,10 @@
   import InfiniteLine2D from './InfiniteLine2D.svelte';
   import Circle2D from './Circle2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-    import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
-    import Latex2D from './Latex2D.svelte';
+  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import Latex2D from './Latex2D.svelte';
 
-  let { angleStep = 30, highlightRadii=[], showTicks=true }: PolarGridProps = $props();
+  let { angleStep = 30, highlightRadii = [], showTicks = true }: PolarGridProps = $props();
 
   let lines: Vector2[] = [];
 
@@ -27,8 +27,7 @@
   }
 
   function strokeWidth(index: number) {
-    if (highlightRadii.includes(index))
-      return 0.03;
+    if (highlightRadii.includes(index)) return 0.03;
 
     if (index % 10 == 0) return 0.02;
     if (index % 5 == 0) return 0.01;
@@ -43,9 +42,11 @@
 <!--@component
 @props
 - angleStep: number - Step of the angled grid lines (in degrees)
+- highlightRadii: number[] - List of radii distances that should be highlighted
+- showTicks: boolean - Whether to show the ticks on the x-axis with radii sizes
 
 @example
-<PolarGrid angleStep={45} />
+<PolarGrid angleStep={45} showTicks={false} highlightRadii={[1]} />
 -->
 
 <!-- Main lines: e1, e2 -->
@@ -62,8 +63,8 @@
   <Circle2D {radius} width={strokeWidth(radius)} color={strokeColor} />
 
   <!-- ticks -->
-   {#if showTicks && radius > 0}
+  {#if showTicks && radius > 0}
     <line x1={radius} y1={-0.1} x2={radius} y2={0.1} stroke="black" stroke-width={0.02} />
     <Latex2D latex={radius.toLocaleString()} position={new Vector2(radius - 0.01, -0.15)} />
-   {/if}
+  {/if}
 {/each}

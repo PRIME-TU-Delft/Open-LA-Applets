@@ -29,5 +29,11 @@
 <!-- Polar grid with default parameters. This story demonstrates a polar grid with a default angle step of 30 degrees. -->
 <Story name="Default" args={{}} />
 
-<!-- Polar grid with change angleStep. This story demonstrates a polar grid with a custom angle step of 45 degrees, showcasing how you can customize the grid lines. -->
+<!-- Polar grid without ticks and radii numbers. This story demonstrates a polar grid without any ticks on the x-axis. -->
+<Story name="Without ticks" args={{ showTicks: false }} />
+
+<!-- Polar grid with changed angleStep. This story demonstrates a polar grid with a custom angle step of 45 degrees, showcasing how you can customize the grid lines. -->
 <Story name="With 45 degree step" args={{ angleStep: 45 }} />
+
+<!-- Polar grid with some highlighted radii. This story demonstrates a polar grid with some circles highlighted, showcasing how you can mark some distances as "special". -->
+<Story name="With highlighted radii" args={{ highlightRadii: [1, 3, 4, 6] }} />
