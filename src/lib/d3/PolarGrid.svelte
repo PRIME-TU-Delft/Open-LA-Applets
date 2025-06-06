@@ -1,12 +1,14 @@
+<script lang="ts" module>
+  export type PolarGridProps = {
+    angleStep?: number;
+  };
+</script>
+
 <script lang="ts">
   import { Vector2 } from 'three';
   import InfiniteLine2D from './InfiniteLine2D.svelte';
   import Circle2D from './Circle2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-
-  type PolarGridProps = {
-    angleStep?: number;
-  };
 
   let { angleStep = 30 }: PolarGridProps = $props();
 
