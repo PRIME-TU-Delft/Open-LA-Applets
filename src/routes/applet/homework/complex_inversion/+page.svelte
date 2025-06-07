@@ -34,13 +34,19 @@
   });
 
   const formulasRight = $derived.by(() => {
+
+    let angle = d1.position.angle() / Math.PI;
+    if (angle > 1) {
+      angle -= 2;
+    }
+
     let f1 = new Formula('z = \\$1 \\cdot e^{\\$2 \\pi i}')
       .addAutoParam(d1.position.length().toFixed(2), PrimeColor.yellow)
-      .addAutoParam((d1.position.angle() / Math.PI).toFixed(2), PrimeColor.yellow);
+      .addAutoParam((angle).toFixed(2), PrimeColor.yellow);
 
     let f2 = new Formula('z^{-1} = \\$1 \\cdot e^{\\$2 \\pi i}')
       .addAutoParam(v_inverse.length().toFixed(2), PrimeColor.raspberry)
-      .addAutoParam((-d1.position.angle() / Math.PI).toFixed(2), PrimeColor.raspberry);
+      .addAutoParam((-angle).toFixed(2), PrimeColor.raspberry);
 
     return [f1, f2];
   });
