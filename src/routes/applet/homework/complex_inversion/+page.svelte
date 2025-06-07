@@ -106,7 +106,7 @@
   <Latex2D latex={'\\text{Re}'} position={new Vector2(2.1, 0.5)} />
 
   {#snippet splitCanvas2DChildren()}
-    <PolarGrid highlightRadii={[1]} />
+    <PolarGrid highlightRadii={[1]} showAngleTicks={true} />
 
     <Vector2D
       direction={d1.position}

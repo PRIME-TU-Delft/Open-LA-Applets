@@ -2,7 +2,8 @@
   export type PolarGridProps = {
     angleStep?: number;
     highlightRadii?: number[];
-    showTicks?: boolean;
+    showRadiiTicks?: boolean;
+    showAngleTicks?: boolean;
   };
 </script>
 
@@ -14,17 +15,21 @@
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import Latex2D from './Latex2D.svelte';
 
-  let { angleStep = 30, highlightRadii = [], showTicks = true }: PolarGridProps = $props();
+  let { angleStep = 30, highlightRadii = [], showRadiiTicks = true, showAngleTicks = false }: PolarGridProps = $props();
 
-  let lines: Vector2[] = [];
+  let lines: { [angle: number]: Vector2 } = {};
 
   for (let angle = 0; angle < 180; angle += angleStep) {
     let rad = (angle * Math.PI) / 180.0;
 
     let x = Math.cos(rad);
-    let y = -Math.sin(rad);
-    lines.push(new Vector2(x, y));
+    let y = Math.sin(rad);
+
+    let angle_as_rad_fraction = angle > 0 ? 180.0 / angle: 0;
+
+    lines[angle_as_rad_fraction] = new Vector2(x, y);
   }
+  console.log(lines);
 
   function strokeWidth(index: number) {
     if (highlightRadii.includes(index)) return 0.03;
@@ -54,8 +59,25 @@
 <InfiniteLine2D direction={new Vector2(0, 1)} color={PrimeColor.black} width={strokeWidth(0)} />
 
 <!-- Angled grid lines -->
-{#each lines as v}
+{#each Object.entries(lines) as [angle, v]}
   <InfiniteLine2D direction={v} color={strokeColor} width={strokeWidth(5)} />
+
+  {#if showAngleTicks && Number(angle) > 0 && Number(angle) >= 2}
+    {@const position_: Vector2 = v.multiplyScalar(1.8) }
+    {@const position: Vector2 = position_.add(new Vector2(0.1, 0)) }
+    <Latex2D latex={`\\frac{\\pi}{${angle}}`} {position} fontSize={0.3} color={strokeColor} />
+
+    {@const positionOpposite: Vector2 = new Vector2(position.x-0.05, -position.y+0.2) }
+    <Latex2D latex={`-\\frac{\\pi}{${angle}}`} position={positionOpposite} fontSize={0.3} color={strokeColor} />
+
+    {#if Number(angle) > 2}
+      {@const positionLeft: Vector2 = new Vector2(-position.x-0.05, position.y) }
+      <Latex2D latex={`\\frac{${Number(angle)-1}\\pi}{${angle}}`} position={positionLeft} fontSize={0.3} color={strokeColor} />
+
+      {@const positionLeftOpposite: Vector2 = new Vector2(positionLeft.x-0.1, -positionLeft.y+0.25) }
+      <Latex2D latex={`-\\frac{${Number(angle)-1}\\pi}{${angle}}`} position={positionLeftOpposite} fontSize={0.3} color={strokeColor} />
+    {/if}
+  {/if}
 {/each}
 
 <!-- Radius grid circles -->
@@ -63,7 +85,7 @@
   <Circle2D {radius} width={strokeWidth(radius)} color={strokeColor} />
 
   <!-- ticks -->
-  {#if showTicks && radius > 0}
+  {#if showRadiiTicks && radius > 0}
     <line x1={radius} y1={-0.1} x2={radius} y2={0.1} stroke="black" stroke-width={0.02} />
     <Latex2D latex={radius.toLocaleString()} position={new Vector2(radius - 0.01, -0.15)} />
   {/if}
