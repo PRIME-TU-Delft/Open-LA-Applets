@@ -22,7 +22,8 @@
     showAngleTicks = false
   }: PolarGridProps = $props();
 
-  let lines: { [angle: number]: Vector2 } = {};
+  let lines: Vector2[] = [];
+  let angles: number[] = [];
 
   for (let angle = 0; angle < 180; angle += angleStep) {
     let rad = (angle * Math.PI) / 180.0;
@@ -32,7 +33,8 @@
 
     let angle_as_rad_fraction = angle > 0 ? 180.0 / angle : 0;
 
-    lines[angle_as_rad_fraction] = new Vector2(x, y);
+    lines.push(new Vector2(x, y));
+    angles.push(angle_as_rad_fraction);
   }
   console.log(lines);
 
@@ -65,36 +67,51 @@
 <InfiniteLine2D direction={new Vector2(0, 1)} color={PrimeColor.black} width={strokeWidth(0)} />
 
 <!-- Angled grid lines -->
-{#each Object.entries(lines) as [angle, v]}
+{#each lines as v, index}
+  {@const angle = angles[index]}
+
+  <!-- Line -->
   <InfiniteLine2D direction={v} color={strokeColor} width={strokeWidth(5)} />
 
   <!-- Angle ticks -->
-  {#if showAngleTicks && Number(angle) > 0 && Number(angle) >= 2}
-    {@const position: Vector2 = (new Vector2(v.x * 1.8, v.y * 1.8)).add(new Vector2(0.1, 0)) }
-    <Latex2D latex={`\\frac{\\pi}{${angle}}`} {position} fontSize={0.3} color={strokeColor} />
+  {#if showAngleTicks && angle > 0 && angle >= 2}
+    {@const fontSize = 0.4}
 
-    {@const positionOpposite: Vector2 = new Vector2(position.x-0.05, -position.y+0.2) }
+    {@const fracTop = Number.isInteger(angle) ? '' : index}
+    {@const fracBot = Number.isInteger(angle) ? angle : lines.length}
+
+    {@const position: Vector2 = (new Vector2(v.x * 2.4, v.y * 2.4)).add(new Vector2(0.1, 0)) }
     <Latex2D
-      latex={`-\\frac{\\pi}{${angle}}`}
-      position={positionOpposite}
-      fontSize={0.3}
+      latex={`\\frac{${fracTop}\\pi}{${fracBot}}`}
+      {position}
+      {fontSize}
       color={strokeColor}
     />
 
-    {#if Number(angle) > 2}
+    {@const positionOpposite: Vector2 = new Vector2(position.x-0.1, -position.y+0.35) }
+    <Latex2D
+      latex={`-\\frac{${fracTop}\\pi}{${fracBot}}`}
+      position={positionOpposite}
+      {fontSize}
+      color={strokeColor}
+    />
+
+    {#if angle > 2}
+      {@const fracTop = Number.isInteger(angle) ? angle - 1 : lines.length - index}
+
       {@const positionLeft: Vector2 = new Vector2(-position.x-0.05, position.y) }
       <Latex2D
-        latex={`\\frac{${Number(angle) - 1}\\pi}{${angle}}`}
+        latex={`\\frac{${fracTop}\\pi}{${fracBot}}`}
         position={positionLeft}
-        fontSize={0.3}
+        {fontSize}
         color={strokeColor}
       />
 
-      {@const positionLeftOpposite: Vector2 = new Vector2(positionLeft.x-0.1, -positionLeft.y+0.25) }
+      {@const positionLeftOpposite: Vector2 = new Vector2(positionLeft.x-0.1, -positionLeft.y+0.35) }
       <Latex2D
-        latex={`-\\frac{${Number(angle) - 1}\\pi}{${angle}}`}
+        latex={`-\\frac{${fracTop}\\pi}{${fracBot}}`}
         position={positionLeftOpposite}
-        fontSize={0.3}
+        {fontSize}
         color={strokeColor}
       />
     {/if}
