@@ -31,19 +31,21 @@
 
   const width = LINE_WIDTH;
 
-  // Remove whitespace for easier parsing
-  const funcStr = func.replace(/\s/g, '');
-
   // Detect explicit form: y=... or just an expression in x
-  let explicitExpr: string;
+  let explicitExpr: string = $derived.by(() => {
+    const funcStr = func.replace(/\s/g, '');
 
-  if (/^y=/.test(funcStr)) {
-    explicitExpr = funcStr.replace(/^y=/, '');
-  } else if (!funcStr.includes('=')) {
-    explicitExpr = funcStr;
-  } else {
-    console.error('Implicit functions are not supported in this component. Use ImplicitFunction2D instead.');
-  }
+    if (/^y=/.test(funcStr)) {
+      return funcStr.replace(/^y=/, '');
+    } else if (!funcStr.includes('=')) {
+      return funcStr;
+    } else {
+      console.error(
+        'Implicit functions are not supported in this component. Use ImplicitFunction2D instead.'
+      );
+      return '';
+    }
+  });
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
@@ -67,7 +69,7 @@
       .x((d) => d.x)
       .y((d) => d.y)
       .curve(curveCardinal.tension(tension));
-    return functionRoots.map(points => l(points));
+    return functionRoots.map((points) => l(points));
   });
 </script>
 
@@ -77,7 +79,9 @@
       {@const nextPoint = points[i + 1]}
       {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
       {@const size = (width ?? 0.5) * 2}
-      <g transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}>
+      <g
+        transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
+      >
         <Triangle2D
           points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
           {color}
@@ -88,5 +92,5 @@
 {/each}
 
 {#each smoothLines as d, idx}
-  <path d={d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+  <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
 {/each}

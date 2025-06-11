@@ -34,10 +34,13 @@
   const width = LINE_WIDTH;
 
   // Remove whitespace for easier parsing
-  const funcStr = func.replace(/\s/g, '');
-  if (!funcStr.includes('=')) {
-    console.error('Equation must be in the form "... = ...". Use ImplicitFunction2D for implicit functions.');
-  }
+  const funcStr = $derived.by(() => {
+    if (!func.includes('=')) {
+      console.error('Equation must be in the form "... = ...". Use ImplicitFunction2D for implicit functions.');
+    }
+    
+    return func.replace(/\s/g, '')
+  });
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
