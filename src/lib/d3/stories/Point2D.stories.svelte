@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Point2D from '../Point2D.svelte';
 
   const { Story } = defineMeta({
@@ -14,8 +14,6 @@
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
   import type { Point2DProps } from '../Point2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Point2DProps>]>);
 </script>
 
 {#snippet template(args: Point2DProps)}
@@ -26,19 +24,19 @@
   </div>
 {/snippet}
 
-<Story name="With color" args={{ color: PrimeColor.raspberry }} />
+<Story name="With color" args={{ color: PrimeColor.raspberry }} {template} />
 
 <!-- A Point with different position defined -->
-<Story name="With position defined" args={{ position: new Vector2(1, 1) }} />
+<Story name="With position defined" args={{ position: new Vector2(1, 1) }} {template} />
 
 <!-- A Point with different radius defined -->
-<Story name="With radius defined" args={{ radius: 2 }} />
+<Story name="With radius defined" args={{ radius: 2 }} {template} />
 
 <!-- A Point with different shape defined -->
-<Story name="With square shape" args={{ isSquare: true }} />
+<Story name="With square shape" args={{ isSquare: true }} {template} />
 
 <!-- A Point with pulse effect defined -->
-<Story name="With pulse effect" args={{ pulse: true }} />
+<Story name="With pulse effect" args={{ pulse: true }} {template} />
 
 <!-- A Point with opacity defined -->
-<Story name="With opacity defined" args={{ opacity: 0.5 }} />
+<Story name="With opacity defined" args={{ opacity: 0.5 }} {template} />

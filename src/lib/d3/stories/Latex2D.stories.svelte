@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Latex2D, { type Latex2DProps } from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
@@ -13,8 +13,6 @@
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Latex2DProps>]>);
 </script>
 
 {#snippet template(args: Latex2DProps)}
@@ -26,15 +24,23 @@
 {/snippet}
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" args={{ latex: 'E=mc^2', color: PrimeColor.raspberry }} />
+<Story name="With color" args={{ latex: 'E=mc^2', color: PrimeColor.raspberry }} {template} />
 
 <!-- A LaTeX text with different content defined -->
-<Story name="With content defined" args={{ latex: 'a^2 + b^2 = c^2' }} />
+<Story name="With content defined" args={{ latex: 'a^2 + b^2 = c^2' }} {template} />
 
-<Story name="With font size defined" args={{ latex: 'E=mc^2', fontSize: 4 }} />
+<Story name="With font size defined" args={{ latex: 'E=mc^2', fontSize: 4 }} {template} />
 
-<Story name="With position defined" args={{ latex: 'E=mc^2', position: new Vector2(1, 1) }} />
+<Story
+  name="With position defined"
+  args={{ latex: 'E=mc^2', position: new Vector2(1, 1) }}
+  {template}
+/>
 
-<Story name="With offset defined" args={{ latex: 'E=mc^2', offset: new Vector2(0.5, 0.5) }} />
+<Story
+  name="With offset defined"
+  args={{ latex: 'E=mc^2', offset: new Vector2(0.5, 0.5) }}
+  {template}
+/>
 
-<Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} />
+<Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} {template} />

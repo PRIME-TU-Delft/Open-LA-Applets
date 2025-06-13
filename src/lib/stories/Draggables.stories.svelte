@@ -1,6 +1,6 @@
 <script module>
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
     title: 'Initialize/Draggables',
@@ -42,8 +42,6 @@
   const customSnapDraggables = [
     new Draggable(new Vector2(1.5, 1), PrimeColor.raspberry, 'A', maxDistance)
   ];
-
-  setTemplate(template);
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
@@ -69,7 +67,7 @@
 const draggables = [new Draggable(new Vector2(3, 1))];
 ```
 -->
-<Story name="Default" args={{ draggables }} />
+<Story name="Default" {template} args={{ draggables }} />
 
 <!-- 
 ```typescript
@@ -79,7 +77,7 @@ const draggables = [
 ];
 ```
 -->
-<Story name="Multiple draggables" args={{ draggables: multiDraggables }} />
+<Story name="Multiple draggables" {template} args={{ draggables: multiDraggables }} />
 
 <!-- Defines the colour of the  pulsing circle. It can be useful 
  to distinguish multiple draggables apart from one another  
@@ -91,7 +89,7 @@ const draggables = [
 ];
 ```
  -->
-<Story name="With color" args={{ draggables: multiColorDraggables }} />
+<Story name="With color" {template} args={{ draggables: multiColorDraggables }} />
 
 <!-- Adds a label with latex to the end of the draggable
  
@@ -102,7 +100,7 @@ const draggables = [
 ]
 ```
 -->
-<Story name="With labels" args={{ draggables: labelDraggables }} />
+<Story name="With labels" {template} args={{ draggables: labelDraggables }} />
 
 <!-- Snaps the draggable to the grid
 
@@ -112,7 +110,7 @@ const draggables = [
 ]
 ```
 -->
-<Story name="Default snap" args={{ draggables: defaultSnapDraggables }} />
+<Story name="Default snap" {template} args={{ draggables: defaultSnapDraggables }} />
 
 <!-- Snaps the draggables in such a way that the distance from the origin is at most 2
 

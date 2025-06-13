@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Parallelogram2D from '../Parallelogram2D.svelte';
 
   const { Story } = defineMeta({
@@ -14,8 +14,6 @@
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
   import type { Parallelogram2DProps } from '../Parallelogram2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Parallelogram2DProps>]>);
 </script>
 
 {#snippet template(args: Parallelogram2DProps)}
@@ -32,17 +30,20 @@
     points: [new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1)],
     color: PrimeColor.raspberry
   }}
+  {template}
 />
 
 <!-- A Parallelogram with different points defined -->
 <Story
   name="With other points defined"
   args={{ points: [new Vector2(1, 1), new Vector2(3, 2), new Vector2(1, 2)] }}
+  {template}
 />
 
 <Story
   name="With opacity defined"
   args={{ points: [new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1)], opacity: 0.5 }}
+  {template}
 />
 
 <Story
@@ -52,4 +53,5 @@
     color: PrimeColor.raspberry,
     strokeWidth: 0
   }}
+  {template}
 />

@@ -1,5 +1,6 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import type { Vector2 } from 'three';
   import RightAngle2D from '../RightAngle2D.svelte';
 
   const { Story } = defineMeta({
@@ -7,32 +8,36 @@
     component: RightAngle2D,
     argTypes: {}
   });
+
+  type RightAngle2DProps = {
+    vs: [Vector2, Vector2];
+    origin?: Vector2;
+    size?: number;
+    color?: string;
+    lineWidth?: number;
+  };
 </script>
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
-  import { Vector2 } from 'three';
-  import Canvas2D, { type CanvasProps } from '../Canvas2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
 </script>
 
-{#snippet template(args: CanvasProps)}
+{#snippet template(args: RightAngle2DProps)}
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D>
-      <RightAngle2D vs={[new Vector2(1, 0), new Vector2(0, 1)]} {...args} />
-    </Canvas2D>
+    <svg width="100%" height="100%">
+      <!-- Custom rendering for RightAngle2D, or just use the component directly -->
+    </svg>
+    <RightAngle2D {...args} />
   </div>
 {/snippet}
 
-<Story name="Default" />
+<Story name="Default" {template} />
 
 <!-- With custom color defined -->
-<Story name="Custom color" args={{ color: PrimeColor.raspberry }} />
+<Story name="Custom color" args={{ color: PrimeColor.raspberry }} {template} />
 
 <!-- With custom size defined -->
-<Story name="Custom size" args={{ size: 0.5 }} />
+<Story name="Custom size" args={{ size: 0.5 }} {template} />
 
 <!-- With custom stroke width defined -->
-<Story name="Custom stroke width" args={{ lineWidth: 0.05 }} />
+<Story name="Custom stroke width" args={{ lineWidth: 0.05 }} {template} />
