@@ -32,7 +32,7 @@
 <!-- Polar grid without ticks and radii numbers. This story demonstrates a polar grid without any ticks on the x-axis. -->
 <Story name="Without radii ticks" args={{ showRadiiTicks: false }} />
 
-<!-- Polar grid with angle ticks enabled. This story demonstrates how to show the angle sizes next to the angled grid lines. -->
+<!-- Polar grid with angle ticks enabled. This story demonstrates how to show the angle sizes next to the angled grid lines. The angle labels will be further away from the origin based on the number of angled lines (angleStep). -->
 <Story name="With angle ticks" args={{ showAngleTicks: true }} />
 
 <!-- Polar grid with changed angleStep. This story demonstrates a polar grid with a custom angle step of 45 degrees, showcasing how you can customize the grid lines. -->

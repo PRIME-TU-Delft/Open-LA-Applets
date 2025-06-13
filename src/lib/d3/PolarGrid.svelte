@@ -23,7 +23,7 @@
   }: PolarGridProps = $props();
 
   let lines: Vector2[] = [];
-  let angles: number[] = [];
+  let angles_deg: number[] = [];
 
   for (let angle = 0; angle < 180; angle += angleStep) {
     let rad = (angle * Math.PI) / 180.0;
@@ -31,10 +31,8 @@
     let x = Math.cos(rad);
     let y = Math.sin(rad);
 
-    let angle_as_rad_fraction = angle > 0 ? 180.0 / angle : 0;
-
     lines.push(new Vector2(x, y));
-    angles.push(angle_as_rad_fraction);
+    angles_deg.push(angle);
   }
   console.log(lines);
 
@@ -68,7 +66,7 @@
 
 <!-- Angled grid lines -->
 {#each lines as v, index}
-  {@const angle = angles[index]}
+  {@const angle = angles_deg[index] > 0 ? 180.0 / angles_deg[index] : 0}
 
   <!-- Line -->
   <InfiniteLine2D direction={v} color={strokeColor} width={strokeWidth(5)} />
@@ -76,11 +74,12 @@
   <!-- Angle ticks -->
   {#if showAngleTicks && angle > 0 && angle >= 2}
     {@const fontSize = 0.4}
+    {@const distance = angles_deg.length > 6 ? 3.3 : 2.4}
 
     {@const fracTop = Number.isInteger(angle) ? '' : index}
     {@const fracBot = Number.isInteger(angle) ? angle : lines.length}
 
-    {@const position: Vector2 = (new Vector2(v.x * 2.4, v.y * 2.4)).add(new Vector2(0.1, 0)) }
+    {@const position: Vector2 = (new Vector2(v.x * distance, v.y * distance)).add(new Vector2(0.1, 0)) }
     <Latex2D
       latex={`\\frac{${fracTop}\\pi}{${fracBot}}`}
       {position}
