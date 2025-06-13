@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Canvas2D from '../d3/Canvas2D.svelte';
 
   const { Story } = defineMeta({
@@ -17,8 +17,6 @@
   import type { Snippet } from 'svelte';
   import { Vector2, Vector3 } from 'three';
   import type { CanvasProps } from '../d3/Canvas2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
@@ -44,7 +42,7 @@ The following props are available for `splitCanvas2DProps`:
 - enablePan?: `boolean`
 - draggables?: `Draggable[]`
 -->
-<Story name="Default" />
+<Story name="Default" {template} />
 
 <!-- 
 See [here](./?path=/docs/initialize-canvas3d--docs) for more information about the `Canvas3D` props.

@@ -4,6 +4,7 @@
   import * as ShadCNButton from '$lib/components/ui/button';
   import { Button } from '$lib/controls/Button.svelte';
   import type { Controller, Controls } from '$lib/controls/Controls';
+  import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
   import { Dropdown } from '$lib/controls/Dropdown.svelte';
   import { Matrix } from '$lib/controls/Matrix.svelte';
   import { Slider } from '$lib/controls/Slider.svelte';
@@ -65,6 +66,8 @@
           color={controller.color}
           action={controller.action}
         />
+      {:else if controller instanceof DiagonalMatrix}
+        <C.DiagonalMatrix {controller} />
       {:else if controller instanceof Matrix}
         <C.Matrix {controller} />
       {/if}

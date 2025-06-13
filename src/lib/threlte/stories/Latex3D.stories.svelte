@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import { Vector3 } from 'three';
   import Latex3D from '../Latex3D.svelte';
 
@@ -10,12 +10,9 @@
 </script>
 
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
   import type { Latex3DProps } from '../Latex3D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Latex3DProps>]>);
 </script>
 
 {#snippet template(args: Latex3DProps)}
@@ -39,6 +36,7 @@
     extend: 0,
     hasBackground: false
   }}
+  {template}
 />
 
 <!-- This story demonstrates the Latex3D component with a larger font size and custom position. -->
@@ -53,6 +51,7 @@
     extend: 0,
     hasBackground: false
   }}
+  {template}
 />
 
 <!-- This story shows the Latex3D component with a colored background. -->
@@ -66,6 +65,7 @@
     extend: 0,
     hasBackground: true
   }}
+  {template}
 />
 
 <!-- This story demonstrates the Latex3D component with custom color and offset. -->
@@ -80,4 +80,5 @@
     extend: 0,
     hasBackground: false
   }}
+  {template}
 />

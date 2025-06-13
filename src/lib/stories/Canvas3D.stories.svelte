@@ -1,6 +1,6 @@
 <script module>
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
     title: 'Initialize/Canvas3D',
@@ -37,8 +37,6 @@
   import { onDestroy, type Snippet } from 'svelte';
   import { Vector3 } from 'three';
 
-  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
-
   onDestroy(() => {
     globalState.title = '';
   });
@@ -52,20 +50,20 @@
   </div>
 {/snippet}
 
-<Story name="Default" />
+<Story name="Default" {template} />
 
 <!-- This canvas is zoomed in. The default is 29. Zoom with 3D is on a logarithmic scale -->
-<Story name="Zoom in" args={{ cameraZoom: 100 }} />
+<Story name="Zoom in" args={{ cameraZoom: 100 }} {template} />
 
 <!-- This canvas is zoomed out. The default is 29. Zoom with 3D is on a logarithmic scale -->
-<Story name="Zoom out" args={{ cameraZoom: 10 }} />
+<Story name="Zoom out" args={{ cameraZoom: 10 }} {template} />
 
 <!-- For this camvas, the camera is located on the x axis  -->
-<Story name="Camera on x axis" args={{ cameraPosition: new Vector3(0, 0, 10) }} />
+<Story name="Camera on x axis" args={{ cameraPosition: new Vector3(0, 0, 10) }} {template} />
 
 <!-- Canvas with pan enabled. On desktop, you can pan by dragging with 
 right mouse button pressed. On Mobile, the interaction is dragging with
 two fingers pressed to the screen. 
 
 > Warning: This interaction is not explicitly communicated to users and can lead to unexpected behavior.  -->
-<Story name="Pan enabled" args={{ enablePan: true }} />
+<Story name="Pan enabled" args={{ enablePan: true }} {template} />

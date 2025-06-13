@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import { Vector3 } from 'three';
   import Angle3D from '../Angle3D.svelte';
 
@@ -11,12 +11,9 @@
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
   import type { Angle3DProps } from '../Angle3D.svelte';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Angle3DProps>]>);
 </script>
 
 {#snippet template(args: Angle3DProps)}
@@ -40,6 +37,7 @@
     title: 'θ',
     lineWidth: 1
   }}
+  {template}
 />
 
 <!-- Colored Angle. This story demonstrates an angle with a custom color (raspberry). It shows how color
@@ -54,6 +52,7 @@
     title: 'α',
     lineWidth: 2
   }}
+  {template}
 />
 
 <!-- Right Angle. This story illustrates a right angle (90 degrees) between two vectors. It demonstrates
@@ -68,6 +67,7 @@
     title: '90°',
     lineWidth: 1.5
   }}
+  {template}
 />
 
 <!-- Forced Right Angle. This story shows a non-90-degree angle represented as a right angle using the
@@ -83,6 +83,7 @@
     lineWidth: 1,
     forceRightAngle: true
   }}
+  {template}
 />
 
 <!-- Forced Round Angle. This story demonstrates a 90-degree angle represented as a round angle using
@@ -98,6 +99,7 @@
     lineWidth: 2,
     forceRoundAngle: true
   }}
+  {template}
 />
 
 <!-- Custom Origin. This story shows an angle with a custom origin point, demonstrating how angles can
@@ -112,4 +114,5 @@
     title: 'β',
     lineWidth: 1.5
   }}
+  {template}
 />
