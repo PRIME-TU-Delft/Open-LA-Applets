@@ -8,7 +8,7 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
-  import StaticImg from './staticImg.svelte';
+  import StaticImage from './StaticImage.svelte';
 
   const SNAP_DISTANCE = 1;
 
@@ -77,7 +77,7 @@
   showFormulasDefault
 >
   <!-- MARK: STATIC -->
-  <StaticImg />
+  <StaticImage />
 
   <!-- MARK: INTERACTIVE -->
   {#snippet splitCanvas2DChildren()}
