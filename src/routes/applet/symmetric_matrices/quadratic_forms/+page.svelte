@@ -35,7 +35,7 @@
   const plane_position = $derived(new Vector3(0, k, 0));
 
   let a = 1;
-  let b = 2;
+  let b = 1;
   let c = 1;
 
   let func = $derived(`${a} x^2 + ${b} x * y + ${c} y^2`);
@@ -60,12 +60,19 @@
 
     return res;
   });
+
+  // predefined level lines
+  const level_lines: number[] = Array.from(Array(9).keys());
 </script>
 
-<Canvas3D {controls} {formulas} title="Quadratic forms">
+<Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
   <Axis3D />
 
-  <Surface3D func={(x, y) => a * x * x + b * x * y + c * y * y} color={PrimeColor.blue} opacity={0.7} />
+  <Surface3D
+    func={(x, y) => a * x * x + b * x * y + c * y * y}
+    color={PrimeColor.blue}
+    opacity={0.7}
+  />
 
   <PlaneFromNormal
     normal={new Vector3(0, 1, 0)}
@@ -74,14 +81,28 @@
   />
 
   {#snippet splitCanvas2DChildren()}
+    {@const domainSize: number = 8}
+
     <ImplicitFunction2D
-      xMin={-10}
-      xMax={10}
-      yMin={-10}
-      yMax={10}
+      xMin={-domainSize}
+      xMax={domainSize}
+      yMin={-domainSize}
+      yMax={domainSize}
       func={func_k}
       color={PrimeColor.raspberry}
+      width={0.06}
     />
+
+    {#each level_lines as z_level}
+      <ImplicitFunction2D
+        xMin={-domainSize}
+        xMax={domainSize}
+        yMin={-domainSize}
+        yMax={domainSize}
+        func={func + '=' + z_level}
+        color={PrimeColor.blue + PrimeColor.opacity(0.5)}
+      />
+    {/each}
 
     {#if show_primary}
       {#each primary_axes as pa}

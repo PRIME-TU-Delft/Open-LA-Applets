@@ -17,6 +17,7 @@
     yMin?: number;
     yMax?: number;
     showArrows?: boolean;
+    width?: number;
   };
 
   const {
@@ -28,10 +29,10 @@
     tension = 0.5,
     showArrows = false,
     yMin = -GRID_SIZE_2D,
-    yMax = GRID_SIZE_2D
+    yMax = GRID_SIZE_2D,
+    width = LINE_WIDTH
   }: ImplicitFunction2DProps = $props();
 
-  const width = LINE_WIDTH;
 
   // Remove whitespace for easier parsing
   const funcStr = $derived.by(() => {
