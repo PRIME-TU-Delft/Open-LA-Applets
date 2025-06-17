@@ -1,9 +1,7 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
-  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
@@ -11,13 +9,14 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { eigs, matrix } from 'mathjs';
   import { Vector2, Vector3 } from 'three';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 + \\$2 x_1 x_2 + \\$3 x_2^2 = \\$4')
-      .addAutoParam(1, PrimeColor.yellow)
-      .addAutoParam(1, PrimeColor.yellow)
-      .addAutoParam(1, PrimeColor.yellow)
+      .addAutoParam(a, PrimeColor.yellow)
+      .addAutoParam(b, PrimeColor.yellow)
+      .addAutoParam(c, PrimeColor.yellow)
       .addAutoParam(round(k, 1), PrimeColor.raspberry);
 
     return [f];
@@ -35,11 +34,33 @@
 
   const plane_position = $derived(new Vector3(0, k, 0));
 
-  const primary_axis1 = new Vector2(1, 1);
-  const primary_axis2 = new Vector2(1, -1);
+  let a = 1;
+  let b = 1;
+  let c = 1;
 
-  let func = $derived(`${1}x^2 + ${1}x * y + ${1}y^2`);
-  let func_k = $derived(func + '=' + k);
+  let func = $derived(`${a} x^2 + ${b} x * y + ${c} y^2`);
+  let func_k = $derived(func + '=' + round(k, 2));
+
+  // find primary axes
+  let primary_axes: Vector2[] = $derived.by(() => {
+    let A = matrix([
+      [a, b / 2],
+      [b / 2, c]
+    ]);
+    let ev_result = eigs(A).eigenvectors;
+
+    let res: Vector2[] = [];
+
+    ev_result.forEach((v) => {
+      const vec: any = v.vector;
+      console.log({ vec });
+      const x = vec._data[0];
+      const y = vec._data[1];
+      res.push(new Vector2(x, y));
+    });
+
+    return res;
+  });
 </script>
 
 <Canvas3D {controls} {formulas} title="Quadratic forms">
@@ -64,16 +85,13 @@
     />
 
     {#if show_primary}
-      <InfiniteLine2D
-        direction={primary_axis1}
-        isDashed={true}
-        color={PrimeColor.black + PrimeColor.opacity(0.5)}
-      />
-      <InfiniteLine2D
-        direction={primary_axis2}
-        isDashed={true}
-        color={PrimeColor.black + PrimeColor.opacity(0.5)}
-      />
+      {#each primary_axes as pa}
+        <InfiniteLine2D
+          direction={pa}
+          isDashed={true}
+          color={PrimeColor.black + PrimeColor.opacity(0.5)}
+        />
+      {/each}
     {/if}
   {/snippet}
 </Canvas3D>
