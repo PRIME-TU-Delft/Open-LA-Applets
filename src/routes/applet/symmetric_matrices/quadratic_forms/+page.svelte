@@ -35,7 +35,7 @@
   const plane_position = $derived(new Vector3(0, k, 0));
 
   let a = 1;
-  let b = 1;
+  let b = 2;
   let c = 1;
 
   let func = $derived(`${a} x^2 + ${b} x * y + ${c} y^2`);
@@ -53,7 +53,6 @@
 
     ev_result.forEach((v) => {
       const vec: any = v.vector;
-      console.log({ vec });
       const x = vec._data[0];
       const y = vec._data[1];
       res.push(new Vector2(x, y));
@@ -66,7 +65,7 @@
 <Canvas3D {controls} {formulas} title="Quadratic forms">
   <Axis3D />
 
-  <Surface3D func={(x, y) => x * x + x * y + y * y} color={PrimeColor.blue} opacity={0.7} />
+  <Surface3D func={(x, y) => a * x * x + b * x * y + c * y * y} color={PrimeColor.blue} opacity={0.7} />
 
   <PlaneFromNormal
     normal={new Vector3(0, 1, 0)}
@@ -76,10 +75,10 @@
 
   {#snippet splitCanvas2DChildren()}
     <ImplicitFunction2D
-      xMin={-5}
-      xMax={5}
-      yMin={-5}
-      yMax={5}
+      xMin={-10}
+      xMax={10}
+      yMin={-10}
+      yMax={10}
       func={func_k}
       color={PrimeColor.raspberry}
     />
