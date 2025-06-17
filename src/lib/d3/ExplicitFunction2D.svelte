@@ -50,11 +50,13 @@
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const parsed = math.parse(explicitExpr);
+    const compiled = parsed.compile();
+
     const points: Vector2[] = [];
     for (let x = xMin; x <= xMax; x += stepSize) {
       let y: number;
       try {
-        y = parsed.evaluate({ x });
+        y = compiled.evaluate({ x });
         if (!isFinite(y)) continue;
       } catch {
         continue;

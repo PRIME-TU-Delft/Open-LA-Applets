@@ -59,9 +59,9 @@
       const roots: number[] = [];
       try {
         let prevY = yMin;
-        let prevVal = parsed.evaluate({ x, y: prevY });
+        let prevVal = compiled.evaluate({ x, y: prevY });
         for (let y = yMin; y <= yMax; y += stepSize) {
-          let val = parsed.evaluate({ x, y });
+          let val = compiled.evaluate({ x, y });
           if (prevVal * val < 0) {
             // Root in [prevY, y]
             let a = prevY,
@@ -69,7 +69,7 @@
             let prevValBisection = prevVal;
             for (let j = 0; j < 20; j++) {
               const mid = (a + b) / 2;
-              const fmid = parsed.evaluate({ x, y: mid });
+              const fmid = compiled.evaluate({ x, y: mid });
               if (Math.abs(fmid) < 1e-3) {
                 roots.push(mid);
                 break;
