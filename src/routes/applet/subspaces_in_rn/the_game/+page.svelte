@@ -18,10 +18,11 @@
     snapToMaxDistance,
     values
   } from './draggables';
+  import NumberFlow from '@number-flow/svelte';
 
   const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, {
     label: 'c',
-    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined]),
+    labelFormat,
     onRelease: validateSlider
   }).addDropdown('', values, PrimeColor.yellow);
 
@@ -163,6 +164,10 @@
   const sum = $derived(draggables[0].value.clone().add(draggables[1].value));
   const prod = $derived(splitDraggables[0].value.clone().multiplyScalar(controls[0]));
 </script>
+
+{#snippet labelFormat(value: number)}
+  <NumberFlow {value} />
+{/snippet}
 
 <Canvas2D {controls} {draggables} splitCanvas2DProps={{ draggables: splitDraggables }}>
   {@render subspace()}

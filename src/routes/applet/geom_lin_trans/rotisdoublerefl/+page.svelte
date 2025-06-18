@@ -11,16 +11,15 @@
   import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  // import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import { Vector2 } from 'three';
   import NumberFlow from '@number-flow/svelte';
 
   const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
-    label: 'ϕ/2'
-    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    label: 'ϕ/2',
+    labelFormat
   }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
-    label: 'θ/2'
-    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    label: 'θ/2',
+    labelFormat
   });
 
   const draggables = [

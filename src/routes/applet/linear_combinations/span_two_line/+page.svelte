@@ -6,16 +6,15 @@
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  // import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   let controls = Controls.addSlider(3, -5, 5, 0.5, PrimeColor.raspberry, {
-    label: 'v'
-    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    label: 'v',
+    labelFormat
   }).addSlider(5, -5, 5, 0.5, PrimeColor.blue, {
-    label: 'u'
-    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    label: 'u',
+    labelFormat
   });
 
   const v = $derived(new Vector3(3, 2, -3).normalize().multiplyScalar(3)); // Vector v;
