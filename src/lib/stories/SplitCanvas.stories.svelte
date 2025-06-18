@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Canvas2D from '../d3/Canvas2D.svelte';
 
   const { Story } = defineMeta({
@@ -14,11 +14,8 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
   import { Vector2, Vector3 } from 'three';
-  import type { CanvasProps } from '../d3/Canvas2D.svelte';
-
-  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
+  import type { CanvasProps } from '$lib/d3/CanvasType';
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
@@ -44,7 +41,7 @@ The following props are available for `splitCanvas2DProps`:
 - enablePan?: `boolean`
 - draggables?: `Draggable[]`
 -->
-<Story name="Default" />
+<Story name="Default" {template} />
 
 <!-- 
 See [here](./?path=/docs/initialize-canvas3d--docs) for more information about the `Canvas3D` props.
@@ -56,7 +53,7 @@ The following props are available for `splitCanvas3DProps`:
 -->
 <Story name="With 3D on the right">
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D title={'This is a split screen applet'}>
+    <Canvas2D title="This is a split screen applet">
       <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />
 
       {#snippet splitCanvas3DChildren()}
@@ -85,7 +82,7 @@ The following props are available for `splitCanvas3DProps`:
  -->
 <Story name="With 3D on the left">
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas3D title={'This is a split screen applet'}>
+    <Canvas3D title="This is a split screen applet">
       <Vector3D direction={new Vector3(2, 1, 0)} length={2} color={PrimeColor.raspberry} />
       <Axis3D />
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useTask, useThrelte, watch } from '@threlte/core';
+  import { useTask, useThrelte } from '@threlte/core';
   import { Grid, Sky, Stars } from '@threlte/extras';
   import { onMount } from 'svelte';
   import { Vector2 } from 'three';

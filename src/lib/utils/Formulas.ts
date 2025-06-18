@@ -16,6 +16,8 @@ import { PrimeColor } from './PrimeColors';
  * console.log(formula.stringFormula); // The value is 10
  */
 export class Formula {
+  id = crypto.randomUUID();
+
   illegalCharacters = /&/g;
   stringFormula: string;
   invalidFormula = false;

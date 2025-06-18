@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
@@ -139,23 +138,23 @@
   <Point2D position={o} radius={POINT_SIZE * 0.75} />
   <Point2D position={u} radius={POINT_SIZE * 0.75} />
 
-  <Latex2D latex={'A'} position={u} offset={new Vector2(0.15, 0.3)} />
-  <Latex2D latex={'B'} position={w} offset={new Vector2(-0.1, -0.2)} />
-  <Latex2D latex={'C'} position={v} offset={new Vector2(0, 0.4)} />
-  <Latex2D latex={'D'} position={uw} extend={0.15} />
-  <Latex2D latex={'E'} position={uvw} extend={0.15} />
-  <Latex2D latex={'F'} position={uv} offset={new Vector2(0.1, 0.25)} />
-  <Latex2D latex={'G'} position={vw} offset={new Vector2(0.1, 0.25)} />
+  <Latex2D latex="A" position={u} offset={new Vector2(0.15, 0.3)} />
+  <Latex2D latex="B" position={w} offset={new Vector2(-0.1, -0.2)} />
+  <Latex2D latex="C" position={v} offset={new Vector2(0, 0.4)} />
+  <Latex2D latex="D" position={uw} extend={0.15} />
+  <Latex2D latex="E" position={uvw} extend={0.15} />
+  <Latex2D latex="F" position={uv} offset={new Vector2(0.1, 0.25)} />
+  <Latex2D latex="G" position={vw} offset={new Vector2(0.1, 0.25)} />
 
   {#if state.OAFC.visible || state.OAFCG.visible}
     <Latex2D
-      latex={'OAFC'}
+      latex="OAFC"
       position={uv.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.2, -0.1)}
     />
 
     <Latex2D
-      latex={'OBDA'}
+      latex="OBDA"
       position={uw.clone().multiplyScalar(0.5)}
       offset={state.OBDA.offset.clone().add(new Vector2(-0.25, 0.25))}
     />
@@ -163,13 +162,13 @@
 
   {#if state.CGEF.visible || state.OAEG.visible}
     <Latex2D
-      latex={'OAEG'}
+      latex="OAEG"
       position={uvw.clone().multiplyScalar(0.5)}
       offset={new Vector2(-0.2, 0.2)}
     />
 
     <Latex2D
-      latex={'CGEF'}
+      latex="CGEF"
       position={new Vector2(3, 3)}
       offset={new Vector2(-0.1, 0.2)}
       fontSize={state.CGEF.opacity}

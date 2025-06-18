@@ -63,27 +63,27 @@
   <!-- MARK: A -->
   <Vector3D direction={a} length={controls[0]} color={PrimeColor.blue} alwaysOnTop />
   <Latex3D
-    latex={'a'}
+    latex="a"
     position={new Vector3(0, -0.2, controls[0] * 0.5)}
     color={PrimeColor.blue}
     hasBackground
   />
-  <Latex3D latex={'P'} position={a.clone().add(new Vector3(0, -0.25, 0))} />
+  <Latex3D latex="P" position={a.clone().add(new Vector3(0, -0.25, 0))} />
 
   <!-- MARK: B -->
   <Vector3D direction={b} length={controls[1]} color={PrimeColor.cyan} alwaysOnTop />
   <Latex3D
-    latex={'b'}
+    latex="b"
     position={new Vector3(controls[1] * 0.4, 0, 0)}
     color={PrimeColor.cyan}
     hasBackground
   />
-  <Latex3D latex={'R'} position={b.clone().add(new Vector3(0, 0.25, 0))} />
+  <Latex3D latex="R" position={b.clone().add(new Vector3(0, 0.25, 0))} />
 
   <!-- MARK: C -->
   <Vector3D direction={c} length={c.length()} color={PrimeColor.darkGreen} />
   <Latex3D
-    latex={'c'}
+    latex="c"
     position={c
       .clone()
       .normalize()
@@ -93,7 +93,7 @@
     color={PrimeColor.darkGreen}
   />
   <Latex3D
-    latex={'Q'}
+    latex="Q"
     position={a
       .clone()
       .add(b)
@@ -189,7 +189,7 @@
     hideHead
   />
   <Latex3D
-    latex={'h'}
+    latex="h"
     position={new Vector3(-0.25, c.y / 2, -0.25)}
     color={PrimeColor.raspberry}
     hasBackground

@@ -29,7 +29,7 @@
     const pos = draggables[0].position;
     const length = pos.length();
     const f1 = new Formula(`\\text{length} = ${round(length)}`);
-    const f2 = new Formula(`A = \{x: ${round(pos.x)}, y: ${round(pos.y)}\}`);
+    const f2 = new Formula(`A = {x: ${round(pos.x)}, y: ${round(pos.y)}}`);
     return [f1, f2];
   });
 

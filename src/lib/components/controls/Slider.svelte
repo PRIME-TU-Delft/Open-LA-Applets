@@ -4,9 +4,9 @@
   import type { Slider } from '$lib/controls/Slider.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Pause from 'lucide-svelte/icons/pause';
-  import Play from 'lucide-svelte/icons/play';
-  import Plus from 'lucide-svelte/icons/plus';
+  import Pause from '@lucide/svelte/icons/pause';
+  import Play from '@lucide/svelte/icons/play';
+  import Plus from '@lucide/svelte/icons/plus';
   import { generateUUID } from 'three/src/math/MathUtils.js';
 
   type SliderProps = {

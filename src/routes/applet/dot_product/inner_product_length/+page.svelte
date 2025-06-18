@@ -9,22 +9,21 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const slider_step = 0.5;
   let controls = Controls.addSlider(-3, -5, 5, slider_step, PrimeColor.yellow, {
     label: 'x',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   })
     .addSlider(3, -5, 5, slider_step, PrimeColor.yellow, {
       label: 'y',
-      labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+      labelFormat
     })
     .addSlider(6, -5, 6, slider_step, PrimeColor.yellow, {
       label: 'z',
-      labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+      labelFormat
     });
 
   const A = $derived(new Vector3(controls[1], controls[2], controls[0]));
@@ -56,7 +55,7 @@
 <Canvas3D {controls} {formulas} cameraPosition={new Vector3(2.73, 13.56, 10.42)}>
   <!-- Vector q [raspberry] -->
   <Vector3D direction={Q} color={PrimeColor.raspberry} length={Q.length()} />
-  <Latex3D latex={'Q'} position={Q} color={PrimeColor.raspberry} fontSize={1.1} />
+  <Latex3D latex="Q" position={Q} color={PrimeColor.raspberry} fontSize={1.1} />
 
   <!-- Vector a [Yellow] -->
   <Vector3D
@@ -65,7 +64,7 @@
     color={PrimeColor.yellow}
     length={Math.abs(A.y)}
   />
-  <Latex3D latex={'A'} position={A} color={PrimeColor.yellow} fontSize={1.3} />
+  <Latex3D latex="A" position={A} color={PrimeColor.yellow} fontSize={1.3} />
 
   <!-- Vector v [Blue] -->
   <Vector3D direction={A} color={PrimeColor.blue} length={A.length()} />
@@ -104,7 +103,7 @@
   />
 
   <!-- a_1 -->
-  <Latex3D latex={'a_1'} position={new Vector3(0, 0, A.z)} extend={0.5} />
+  <Latex3D latex="a_1" position={new Vector3(0, 0, A.z)} extend={0.5} />
   <Point3D position={new Vector3(0, 0, A.z)} color={PrimeColor.black} />
   <Vector3D
     direction={v_p}
@@ -115,9 +114,9 @@
   />
 
   <!--  a_2-->
-  <Latex3D latex={'a_2'} position={v_p} extend={0.5} />
+  <Latex3D latex="a_2" position={v_p} extend={0.5} />
   <Latex3D
-    latex={'P'}
+    latex="P"
     position={v_p}
     extend={0.5}
     offset={new Vector3(-0.5, -0.75, 0)}
@@ -125,12 +124,12 @@
   />
 
   <!-- a_3 -->
-  <Latex3D latex={'a_3'} position={new Vector3(-0.3, A.y, 0)} extend={0.5} />
+  <Latex3D latex="a_3" position={new Vector3(-0.3, A.y, 0)} extend={0.5} />
   <Point3D position={new Vector3(0, A.y, 0)} color={PrimeColor.black} />
   <Vector3D
     direction={Q}
     origin={new Vector3(0, A.y, 0)}
-    color={'black'}
+    color="black"
     length={Q.length()}
     isDashed
   />
