@@ -23,7 +23,7 @@
 </script>
 
 <g>
-  {#each axisIndeces as index (index)}
+  {#each axisIndeces as index, idx (idx)}
     <!-- Grid Lines -->
     <line
       x1={index}
