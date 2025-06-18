@@ -9,7 +9,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { confettiState, type Side } from '$lib/stores/confetti.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  // import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
   import {
@@ -23,7 +23,7 @@
 
   const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, {
     label: 'c',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined]),
+    // labelFormat: snippetFormatter<[number]>(labelFormat, [undefined]),
     onRelease: validateSlider
   }).addDropdown('', values, PrimeColor.yellow);
 

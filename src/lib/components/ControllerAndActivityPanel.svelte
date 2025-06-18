@@ -12,10 +12,11 @@
   import { Toggle } from '$lib/controls/Toggle.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import Lock from 'lucide-svelte/icons/lock';
-  import Unlock from 'lucide-svelte/icons/lock-open';
-  import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
+  import Lock from '@lucide/svelte/icons/lock';
+  import Unlock from '@lucide/svelte/icons/lock-open';
+  import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
   import * as C from './controls';
+  import { cn } from '$lib/utils';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -36,8 +37,10 @@
 </script>
 
 <div
-  class="absolute bottom-2 left-1/2 -translate-x-1/2 transition-all"
-  class:inset={globalState.isInset()}
+  class={cn(
+    'absolute bottom-2 left-1/2 -translate-x-1/2 transition-all',
+    globalState.isInset() && 'm-0'
+  )}
 >
   <div
     class="flex items-center gap-1 rounded-lg bg-blue-50/70 px-3 py-2 shadow-md backdrop-blur-md"
@@ -83,13 +86,13 @@
     tooltip="Start the scene so you can interact"
   >
     <div
-      class="relative flex min-w-[16rem] items-center gap-2 text-balance px-4 py-1 text-center text-xs sm:text-nowrap"
+      class="relative flex min-w-[16rem] items-center gap-2 px-4 py-1 text-center text-xs text-balance sm:text-nowrap"
     >
       <ShadCNButton.Action class="h-6 w-6" tooltip="Lock scene">
         <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </ShadCNButton.Action>
       Click anywhere in the scene to start interacting
-      <span class="absolute -right-1 -top-1 flex h-3 w-3">
+      <span class="absolute -top-1 -right-1 flex h-3 w-3">
         <span
           class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
         ></span>
@@ -124,9 +127,3 @@
     <span class="ml-0.5 hidden text-xs sm:block">Reset</span>
   </SideButton>
 </div>
-
-<style>
-  .inset {
-    @apply m-0;
-  }
-</style>

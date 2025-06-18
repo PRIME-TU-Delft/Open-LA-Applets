@@ -1,33 +1,25 @@
 <script module>
   import { defineMeta } from '@storybook/addon-svelte-csf';
-  import type { Vector2 } from 'three';
   import RightAngle2D from '../RightAngle2D.svelte';
 
   const { Story } = defineMeta({
     title: 'D3/RightAngle2D',
-    component: RightAngle2D,
-    argTypes: {}
+    component: RightAngle2D
   });
-
-  type RightAngle2DProps = {
-    vs: [Vector2, Vector2];
-    origin?: Vector2;
-    size?: number;
-    color?: string;
-    lineWidth?: number;
-  };
 </script>
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Canvas2D from '../Canvas2D.svelte';
+  import type { RightAngle2DProps } from '../RightAngle2D.svelte';
+  import { Vector2 } from 'three';
 </script>
 
 {#snippet template(args: RightAngle2DProps)}
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <svg width="100%" height="100%">
-      <!-- Custom rendering for RightAngle2D, or just use the component directly -->
-    </svg>
-    <RightAngle2D {...args} />
+    <Canvas2D>
+      <RightAngle2D {...args} vs={[new Vector2(1, 0), new Vector2(0, 1)]} />
+    </Canvas2D>
   </div>
 {/snippet}
 
