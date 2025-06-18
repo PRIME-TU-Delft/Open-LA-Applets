@@ -36,7 +36,7 @@
   <SmallestArc2D points={[w, v]} distance={1.5}>
     {#snippet label(position: Vector2)}
       <Latex2D
-        latex={'\\varphi'}
+        latex="\varphi"
         {position}
         offset={new Vector2(0, 0.1)}
         extend={0.1}

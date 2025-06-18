@@ -62,7 +62,7 @@
         <div
           class="mr-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
-          {#each formulas as formula}
+          {#each formulas as formula (formula.id)}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
             {/key}
@@ -72,7 +72,7 @@
 
       {#if splitFormulas && splitFormulas.length >= 1}
         <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
-          {#each splitFormulas as formula}
+          {#each splitFormulas as formula (formula.id)}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
             {/key}

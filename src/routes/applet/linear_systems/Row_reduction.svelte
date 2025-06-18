@@ -44,7 +44,7 @@
 <Canvas3D {formulas} {controls} {cameraPosition} showFormulasDefault>
   {@const vs = controls[0]}
 
-  {#each vs as v, i}
+  {#each vs as v, i (i)}
     {@const a = v.x}
     {@const b = v.y}
     {@const c = v.z}

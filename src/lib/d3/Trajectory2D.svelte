@@ -1,9 +1,8 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { curveCardinal, curveCatmullRom, line } from 'd3';
+  import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import Point2D from './Point2D.svelte';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
   import Triangle2D from './Triangle2D.svelte';
 
   type Trajectory2DProps = {
@@ -88,7 +87,7 @@
   <Point2D position={new Vector2()} {color} radius={width ? width * 4 : undefined} />
 {/if}
 
-{#each trajectoryPoints as point, i}
+{#each trajectoryPoints as point, i (i)}
   {#if i == 0}
     <Point2D position={point} {color} radius={width ? width * 2 : undefined} />
   {:else if i == trajectoryPoints.length - 1}

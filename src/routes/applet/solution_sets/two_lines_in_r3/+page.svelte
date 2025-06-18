@@ -9,8 +9,6 @@
   import { round } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  // import { snippetFormatter } from '$lib/utils/SnippetFormatter';
-  import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const controls = Controls.addSlider(4, -5, 6, 0.5, PrimeColor.raspberry, {
@@ -38,10 +36,6 @@
     return [f1];
   });
 </script>
-
-{#snippet labelFormat(value: number)}
-  <NumberFlow {value} />
-{/snippet}
 
 <Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
   <!-- Default -->

@@ -45,7 +45,7 @@
   <div
     class="flex items-center gap-1 rounded-lg bg-blue-50/70 px-3 py-2 shadow-md backdrop-blur-md"
   >
-    {#each controls.controls as controller, index}
+    {#each controls.controls as controller, index (index)}
       {#if controller instanceof Slider}
         <C.Slider
           bind:value={controller.value}

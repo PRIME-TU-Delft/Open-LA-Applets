@@ -34,7 +34,7 @@
   import { globalState } from '$lib/stores/globalState.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import type { CanvasProps } from '$lib/threlte/Canvas3D.svelte';
-  import { onDestroy, type Snippet } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { Vector3 } from 'three';
 
   onDestroy(() => {

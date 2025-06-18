@@ -68,7 +68,7 @@
 
       <h3>Contributors</h3>
       <div class="columns-1 gap-2 md:columns-2">
-        {#each contributors as { name, title }}
+        {#each contributors as { name, title } (name)}
           <div class="mb-2 flex gap-2">
             <div class="not-prose w-24 overflow-hidden rounded">
               <img

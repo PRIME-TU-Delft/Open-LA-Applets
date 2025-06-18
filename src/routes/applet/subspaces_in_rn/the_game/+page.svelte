@@ -9,8 +9,6 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { confettiState, type Side } from '$lib/stores/confetti.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  // import { snippetFormatter } from '$lib/utils/SnippetFormatter';
-  import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
   import {
     snapToAxis,
@@ -54,7 +52,7 @@
     const newPoint = snapToMaxDistance(v, 2.5);
 
     if (side == 'left' && sum.x != 0 && sum.y != 0) {
-      confettiState.left(500);
+      confettiState.left();
     }
 
     return newPoint;
@@ -72,7 +70,7 @@
       angle > (3 * Math.PI) / 2
     ) {
       if (side == 'left') {
-        confettiState.left(500);
+        confettiState.left();
       } else if (side == 'center') {
         confettiState.center();
       }
@@ -165,10 +163,6 @@
   const sum = $derived(draggables[0].value.clone().add(draggables[1].value));
   const prod = $derived(splitDraggables[0].value.clone().multiplyScalar(controls[0]));
 </script>
-
-{#snippet labelFormat(value: number)}
-  <NumberFlow {value} />
-{/snippet}
 
 <Canvas2D {controls} {draggables} splitCanvas2DProps={{ draggables: splitDraggables }}>
   {@render subspace()}

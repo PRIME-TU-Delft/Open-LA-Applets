@@ -1,5 +1,6 @@
 <script lang="ts" module>
   export type SceneProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
     splitFormulas?: Formula[];

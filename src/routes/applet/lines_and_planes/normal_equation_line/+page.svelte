@@ -66,7 +66,7 @@
 
   <!-- Points -->
   <Point2D position={P} color={PrimeColor.yellow} />
-  <Latex2D latex={'P'} position={P} offset={new Vector2(-0.1, -0.2)} color={PrimeColor.yellow} />
+  <Latex2D latex="P" position={P} offset={new Vector2(-0.1, -0.2)} color={PrimeColor.yellow} />
 
-  <Latex2D latex={'Q'} position={Q} offset={new Vector2(-0.1, -0.2)} color={PrimeColor.raspberry} />
+  <Latex2D latex="Q" position={Q} offset={new Vector2(-0.1, -0.2)} color={PrimeColor.raspberry} />
 </Canvas2D>

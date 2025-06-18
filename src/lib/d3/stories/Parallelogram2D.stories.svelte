@@ -10,7 +10,6 @@
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
   import type { Parallelogram2DProps } from '../Parallelogram2D.svelte';

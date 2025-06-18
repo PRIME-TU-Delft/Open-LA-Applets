@@ -138,7 +138,7 @@
       </Command.Item>
     {/if}
 
-    {#each Object.entries(folders) as [folderTitle, files]}
+    {#each Object.entries(folders) as [folderTitle, files] (folderTitle)}
       {@const hasAllPreviewed = files.every((file) => openApplets.has(file.file))}
       <Command.Separator />
 
@@ -162,7 +162,7 @@
           </Command.Item>
         {/if}
 
-        {#each files as file}
+        {#each files as file (file.url)}
           {#if showPreview}
             {@const isPreviewed = openApplets.has(file.file)}
             <Command.Item

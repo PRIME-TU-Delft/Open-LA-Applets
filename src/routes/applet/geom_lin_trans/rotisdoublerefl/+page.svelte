@@ -82,14 +82,14 @@
   <!-- ARCS -->
   <Arc2D points={[new Vector2(1, 0), dir_L1]} distance={1.2} />
   <Latex2D
-    latex={'\\phi / 2'}
+    latex="\phi / 2"
     position={dir_L1.clone().normalize().add(new Vector2(1, 0)).normalize().multiplyScalar(1.75)}
     offset={new Vector2(-0.25, 0.25)}
   />
 
   <Arc2D points={[dir_L1, dir_L2]} distance={1.5} />
   <Latex2D
-    latex={'\\theta / 2'}
+    latex="\theta / 2"
     position={dir_L2
       .clone()
       .normalize()

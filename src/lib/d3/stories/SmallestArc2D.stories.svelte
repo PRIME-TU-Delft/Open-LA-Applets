@@ -14,7 +14,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
   import type { SmallestArc2DProps } from '../SmallestArc2D.svelte';
-  import type { Snippet } from 'svelte';
 </script>
 
 {#snippet template(args: SmallestArc2DProps)}
@@ -22,7 +21,7 @@
     <Canvas2D>
       <SmallestArc2D {...args}>
         {#snippet label(position: Vector2)}
-          <Latex2D latex={'\\varphi'} {position} extend={0.3} color={PrimeColor.black} />
+          <Latex2D latex="\varphi" {position} extend={0.3} color={PrimeColor.black} />
         {/snippet}
       </SmallestArc2D>
     </Canvas2D>

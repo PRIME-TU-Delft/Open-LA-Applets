@@ -175,7 +175,7 @@
 
             {@render children()}
 
-            {#each draggables as d}
+            {#each draggables as d (d.id)}
               <Draggable2D draggable={d} />
             {/each}
           </g>

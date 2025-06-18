@@ -14,7 +14,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import type { CanvasProps } from '../d3/Canvas2D.svelte';
+  import type { CanvasProps } from '$lib/d3/CanvasType';
 
   const draggables = [new Draggable(new Vector2(3, 1))];
   const multiDraggables = [new Draggable(new Vector2(3, 1)), new Draggable(new Vector2(-3, 1))];
@@ -48,7 +48,7 @@
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {...args}>
       {#if args.draggables}
-        {#each args.draggables as draggable, i}
+        {#each args.draggables as draggable, i (draggable.id)}
           <Vector2D
             origin={new Vector2(0, 0)}
             direction={draggable.position}
@@ -133,7 +133,7 @@ const draggables = [
     <Canvas2D draggables={customSnapDraggables}>
       <circle r={2} fill={PrimeColor.yellow + PrimeColor.opacity(0.5)} />
 
-      {#each customSnapDraggables as draggable, i}
+      {#each customSnapDraggables as draggable, i (draggable.id)}
         <Vector2D
           origin={new Vector2(0, 0)}
           direction={draggable.position}

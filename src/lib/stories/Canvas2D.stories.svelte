@@ -14,7 +14,7 @@
   import { globalState } from '$lib/stores/globalState.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { onDestroy } from 'svelte';
-  import type { CanvasProps } from '../d3/Canvas2D.svelte';
+  import type { CanvasProps } from '$lib/d3/CanvasType';
 
   onDestroy(() => {
     globalState.title = '';
