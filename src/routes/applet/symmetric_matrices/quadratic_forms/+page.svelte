@@ -12,6 +12,8 @@
   import { eigs, matrix } from 'mathjs';
   import { Vector2, Vector3 } from 'three';
   import { parameterizeConic } from './conic';
+  import Matrix2 from '$lib/utils/Matrix2.svelte';
+  import { Matrix } from '$lib/controls/Matrix.svelte';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 + \\$2 x_1 x_2 + \\$3 x_2^2 = \\$4')
@@ -23,21 +25,25 @@
     return [f];
   });
 
+  const mat = new Matrix(new Matrix2(1, 0.5, -100, 1), 'A', PrimeColor.yellow);
+
   const controls = $derived.by(() => {
-    return Controls.addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
+    return Controls.add(mat)
+    .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
       label: 'k',
       valueFn: (v) => round(v, 1).toString()
-    }).addToggle(true, '\\text{Primary axes}', PrimeColor.darkGreen);
+    })
+    .addToggle(true, '\\text{Primary axes}', PrimeColor.darkGreen);
   });
 
-  const k = $derived(controls[0]);
-  const show_primary = $derived(controls[1]);
+  const k = $derived(controls[1]);
+  const show_primary = $derived(controls[2]);
 
   const plane_position = $derived(new Vector3(0, k, 0));
 
-  let a = 1;
-  let b = 1;
-  let c = 1;
+  let a = $derived(mat.value.tl);
+  let b = $derived(2 * mat.value.tr);
+  let c = $derived(mat.value.br);
 
   let func_k = $derived(parameterizeConic(a, b, c, k));
 
