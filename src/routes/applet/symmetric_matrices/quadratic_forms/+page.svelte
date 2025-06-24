@@ -14,12 +14,13 @@
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { Matrix } from '$lib/controls/Matrix.svelte';
+  import { withSign } from '$lib/utils/FormatString';
 
   const formulas = $derived.by(() => {
-    let f = new Formula('\\$1 x_1^2 + \\$2 x_1 x_2 + \\$3 x_2^2 = \\$4')
+    let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
       .addAutoParam(a, PrimeColor.yellow)
-      .addAutoParam(b, PrimeColor.yellow)
-      .addAutoParam(c, PrimeColor.yellow)
+      .addAutoParam(withSign(b), PrimeColor.yellow)
+      .addAutoParam(withSign(c), PrimeColor.yellow)
       .addAutoParam(round(k, 1), PrimeColor.raspberry);
 
     return [f];
@@ -29,11 +30,11 @@
 
   const controls = $derived.by(() => {
     return Controls.add(mat)
-    .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
-      label: 'k',
-      valueFn: (v) => round(v, 1).toString()
-    })
-    .addToggle(true, '\\text{Primary axes}', PrimeColor.darkGreen);
+      .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
+        label: 'k',
+        valueFn: (v) => round(v, 1).toString()
+      })
+      .addToggle(true, '\\text{Primary axes}', PrimeColor.darkGreen);
   });
 
   const k = $derived(controls[1]);
