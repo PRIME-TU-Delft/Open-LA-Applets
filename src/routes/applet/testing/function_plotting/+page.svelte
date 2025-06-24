@@ -5,6 +5,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import { Vector2 } from 'three';
+  import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
 
   const draggables = [new Draggable(new Vector2(1, 1), PrimeColor.raspberry)];
 
@@ -24,4 +25,6 @@
     showArrows
   />
   <ImplicitFunction2D func={movableCircle} color={PrimeColor.raspberry} />
+
+  <ParameterizedFunction2D xFunc={'sin(t)'} yFunc={'cos(t)'} color={PrimeColor.yellow} />
 </Canvas2D>
