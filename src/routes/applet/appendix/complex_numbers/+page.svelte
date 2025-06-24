@@ -65,7 +65,7 @@
 
 <Canvas2D showAxisNumbers={false} {controls} {formulas}>
   <!-- K-th ANGLE -->
-  {#each new Array(m - 1) as _, i}
+  {#each new Array(m - 1) as _, i (i)}
     {@const kPosition = polarToCartesian(radius, phi + deltaAngle * i)}
     {@const kNextPosition = polarToCartesian(radius, phi + deltaAngle * (i + 1))}
 

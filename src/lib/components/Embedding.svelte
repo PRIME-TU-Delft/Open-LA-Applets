@@ -1,8 +1,8 @@
 <script>
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { cameraState } from '$lib/stores/camera.svelte';
-  import Copy from 'lucide-svelte/icons/copy';
-  import ExternalLink from 'lucide-svelte/icons/external-link';
+  import Copy from '@lucide/svelte/icons/copy';
+  import ExternalLink from '@lucide/svelte/icons/external-link';
   import { fly } from 'svelte/transition';
   import Button from './ui/button/button.svelte';
   import { Checkbox } from './ui/checkbox';
@@ -13,7 +13,7 @@
   let showCopySucess = $state(false);
 
   const stateUrl = $derived.by(() => {
-    const url = new URL($page.url.origin + $page.url.pathname);
+    const url = new URL(page.url.origin + page.url.pathname);
 
     if (!includeState) {
       return url.toString();
@@ -43,7 +43,7 @@
   });
 
   const githubLink = $derived.by(() => {
-    const refUrl = $page?.url?.pathname.replace('/applet/', '');
+    const refUrl = page?.url?.pathname.replace('/applet/', '');
     const lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
 
     // %28 = (, %29 = )
@@ -72,7 +72,7 @@
   <Checkbox id="include-state" bind:checked={includeState} />
   <Label
     for="include-state"
-    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
   >
     <span>Include current state (camera position) in url</span>
   </Label>
@@ -80,7 +80,7 @@
 
 <Label
   for="url-state"
-  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+  class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 >
   Url to this applet:
 </Label>

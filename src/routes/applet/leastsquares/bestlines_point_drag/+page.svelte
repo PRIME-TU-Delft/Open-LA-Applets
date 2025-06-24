@@ -55,10 +55,10 @@
   {@const p1 = draggables[0].position}
   <Line2D start={new Vector2(p1.x, 0)} end={p1} isDashed />
   <Line2D start={new Vector2(0, p1.y)} end={p1} isDashed />
-  <Latex2D position={new Vector2(p1.x, p1.clone().multiplyScalar(0.5).y)} latex={'x_1'} />
-  <Latex2D position={new Vector2(p1.clone().multiplyScalar(0.5).x, p1.y)} latex={'y_1'} />
+  <Latex2D position={new Vector2(p1.x, p1.clone().multiplyScalar(0.5).y)} latex="x_1" />
+  <Latex2D position={new Vector2(p1.clone().multiplyScalar(0.5).x, p1.y)} latex="y_1" />
 
-  {#each ps_proj as pt}
+  {#each ps_proj as pt (pt.p.toString())}
     <!-- distances -->
     <Vector2D
       origin={pt.p}

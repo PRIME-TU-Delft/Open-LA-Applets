@@ -31,7 +31,7 @@
 
   function releaseFunction(vector: Vector2) {
     if (vector.distanceTo(target) < 0.5) {
-      confettiState.center(1000);
+      confettiState.center();
       vector = target.clone();
     }
 
@@ -60,7 +60,7 @@
   cameraPosition={new Vector2(0, 2)}
   splitCanvas2DProps={{ cameraZoom: 1.5, cameraPosition: new Vector2(0, 2) }}
 >
-  {#each draggables as draggable}
+  {#each draggables as draggable (draggable.id)}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}
@@ -77,7 +77,7 @@
       extend={0.3}
     />
 
-    {#each draggables as draggable, index}
+    {#each draggables as draggable, index (draggable.id)}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
 

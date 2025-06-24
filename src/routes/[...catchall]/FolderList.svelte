@@ -37,10 +37,10 @@
 </script>
 
 <Accordion.Root type="single" class="container mx-auto my-10">
-  {#each Object.entries(folders) as [folderTitle, files], index}
+  {#each Object.entries(folders) as [folderTitle, files], index (folderTitle)}
     <Accordion.Item value="item-{index}">
       <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
-      {#each files as { title, url }}
+      {#each files as { title, url } (url)}
         <Accordion.Content>
           <ListItem {title} {url} />
         </Accordion.Content>

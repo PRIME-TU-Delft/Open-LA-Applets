@@ -58,7 +58,7 @@
   <!-- Plane span -->
   <PlaneFromPoints points={[new Vector3(0, 0, 0), b1, b2]} color={PrimeColor.yellow} size={10} />
   <Latex3D
-    latex={'V'}
+    latex="V"
     position={b2.clone().multiplyScalar(-4)}
     offset={new Vector3(0, 0.2, 0)}
     color={PrimeColor.yellow}

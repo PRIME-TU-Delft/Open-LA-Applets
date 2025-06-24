@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Controls } from '$lib/controls/Controls';
   import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -37,7 +36,7 @@
         position={endPoint.clone().multiplyScalar(0.5)}
         color={PrimeColor.raspberry}
       />
-      <Latex2D latex={'A'} extend={0.2} position={endPoint} />
+      <Latex2D latex="A" extend={0.2} position={endPoint} />
     {/snippet}
   </Vector2D>
 
@@ -49,7 +48,7 @@
         position={endPoint.clone().multiplyScalar(0.5)}
         color={PrimeColor.darkGreen}
       />
-      <Latex2D latex={'B'} extend={0.4} offset={new Vector2(-0.2, 0)} position={endPoint} />
+      <Latex2D latex="B" extend={0.4} offset={new Vector2(-0.2, 0)} position={endPoint} />
     {/snippet}
   </Vector2D>
 
@@ -67,7 +66,7 @@
     {/snippet}
   </Vector2D>
 
-  <Latex2D latex={`C`} offset={new Vector2(0.1, 0.2)} position={C} />
+  <Latex2D latex="C" offset={new Vector2(0.1, 0.2)} position={C} />
 
   <Arc2D points={[u, v]} />
 

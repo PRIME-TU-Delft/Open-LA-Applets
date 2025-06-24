@@ -6,11 +6,11 @@
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
-  import Maximize from 'lucide-svelte/icons/maximize';
-  import Minimize from 'lucide-svelte/icons/minimize';
-  import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
-  import Share from 'lucide-svelte/icons/share';
-  import SquareFunction from 'lucide-svelte/icons/square-function';
+  import Maximize from '@lucide/svelte/icons/maximize';
+  import Minimize from '@lucide/svelte/icons/minimize';
+  import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
+  import Share from '@lucide/svelte/icons/share';
+  import SquareFunction from '@lucide/svelte/icons/square-function';
   import screenfull from 'screenfull';
 
   type G = readonly Controller<number | boolean | string | State>[];
@@ -54,15 +54,15 @@
   );
 </script>
 
-<div class="absolute right-0 top-1 select-none">
+<div class="absolute top-1 right-0 select-none">
   <!-- FORMULAE -->
   {#if formulasShown}
     <div class="flex justify-end">
       {#if formulas && formulas.length >= 1}
         <div
-          class="border-3 mr-2 grid gap-1 rounded-md border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
+          class="mr-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
-          {#each formulas as formula}
+          {#each formulas as formula (formula.id)}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
             {/key}
@@ -72,7 +72,7 @@
 
       {#if splitFormulas && splitFormulas.length >= 1}
         <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
-          {#each splitFormulas as formula}
+          {#each splitFormulas as formula (formula.id)}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
             {/key}
@@ -83,7 +83,7 @@
   {/if}
 
   <!-- ACTION BUTTON -->
-  <div class="right-0 top-0 float-end flex p-1">
+  <div class="top-0 right-0 float-end flex p-1">
     {#if !controls || controls.length == 0}
       <Button.Action
         side="bottom"

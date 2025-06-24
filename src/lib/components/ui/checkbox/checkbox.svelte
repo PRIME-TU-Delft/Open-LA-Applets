@@ -1,46 +1,36 @@
 <script lang="ts">
-  import { Checkbox as CheckboxPrimitive, type WithoutChildrenOrChild } from 'bits-ui';
-  import Check from 'lucide-svelte/icons/check';
-  import Minus from 'lucide-svelte/icons/minus';
-  import { cn } from '$lib/utils/shadcn-utils.js';
+  import { Checkbox as CheckboxPrimitive } from 'bits-ui';
+  import CheckIcon from '@lucide/svelte/icons/check';
+  import MinusIcon from '@lucide/svelte/icons/minus';
+  import { cn, type WithoutChildrenOrChild } from '$lib/utils.js';
 
   let {
     ref = $bindable(null),
-    class: className,
     checked = $bindable(false),
     indeterminate = $bindable(false),
+    class: className,
     ...restProps
   }: WithoutChildrenOrChild<CheckboxPrimitive.RootProps> = $props();
 </script>
 
 <CheckboxPrimitive.Root
+  bind:ref
+  data-slot="checkbox"
   class={cn(
-    'peer box-content size-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[disabled=true]:cursor-not-allowed data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[disabled=true]:opacity-50',
+    'border-input dark:bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-primary data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive peer flex size-4 shrink-0 items-center justify-center rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
     className
   )}
   bind:checked
-  bind:ref
   bind:indeterminate
   {...restProps}
 >
   {#snippet children({ checked, indeterminate })}
-    <span class="checkbox flex items-center justify-center text-current">
-      {#if indeterminate}
-        <Minus class="size-4" />
-      {:else}
-        <Check class={cn('size-4', !checked && 'text-transparent')} />
+    <div data-slot="checkbox-indicator" class="text-current transition-none">
+      {#if checked}
+        <CheckIcon class="size-3.5" />
+      {:else if indeterminate}
+        <MinusIcon class="size-3.5" />
       {/if}
-    </span>
+    </div>
   {/snippet}
 </CheckboxPrimitive.Root>
-
-<style>
-  .checkbox :global(svg) {
-    background: var(--bg);
-    border-radius: 3px;
-  }
-
-  .checkbox :global(svg:hover) {
-    background: var(--hover-bg);
-  }
-</style>

@@ -7,7 +7,8 @@
   const { renderMode } = useThrelte();
   renderMode.set('manual');
 
-  function handleCameraChange(e: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleCameraChange(e: any): void {
     const cam = e?.target?.object as OrthographicCamera;
 
     if (!cam) return;

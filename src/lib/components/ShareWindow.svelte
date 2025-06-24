@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import * as Accordion from '$lib/components/ui/accordion';
   import * as Dialog from '$lib/components/ui/dialog';
-  import ExternalLink from 'lucide-svelte/icons/external-link';
+  import ExternalLink from '@lucide/svelte/icons/external-link';
   import Embedding from './Embedding.svelte';
 </script>
 
@@ -67,7 +67,7 @@
     <img
       class="h-24 w-full object-contain"
       alt="prime-tudelft"
-      src="{$page?.url?.origin || ''}/logo-black.png"
+      src="{page?.url?.origin || ''}/logo-black.png"
     />
   </Dialog.Footer>
 </Dialog.Content>

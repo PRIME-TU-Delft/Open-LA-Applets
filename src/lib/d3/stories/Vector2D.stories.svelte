@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Vector2D from '../Vector2D.svelte';
   import { Vector2 } from 'three';
   import Latex2D from '../Latex2D.svelte';
@@ -14,8 +14,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
   import type { VectorProps } from '../Vector2D.svelte';
-
-  setTemplate(template);
 </script>
 
 {#snippet template(args: VectorProps)}
@@ -41,6 +39,7 @@
     length: 1,
     radius: 0.02
   }}
+  {template}
 />
 
 <!-- Colored Vector. This story demonstrates a vector with a custom color (raspberry). The vector starts at the origin
@@ -55,6 +54,7 @@ distinguish different vectors. -->
     length: 1.5,
     radius: 0.02
   }}
+  {template}
 />
 
 <!-- Vector with Custom Origin.  This story illustrates a vector with a custom origin point (-1, -1). It shows how vectors can be
@@ -69,6 +69,7 @@ distinguish different vectors. -->
     length: 2,
     radius: 0.02
   }}
+  {template}
 />
 
 <!-- Thick Vector.This story presents a vector with increased thickness. The radius is set to 0.05, making the
@@ -83,6 +84,7 @@ distinguish different vectors. -->
     length: 1,
     radius: 0.05
   }}
+  {template}
 />
 
 <!-- Dashed Vector.This story shows a dashed vector. The dashed appearance can be useful for representing temporary
@@ -97,6 +99,7 @@ distinguish different vectors. -->
     radius: 0.02,
     isDashed: true
   }}
+  {template}
 />
 
 <!-- Vector without Head. This story displays a vector without an arrowhead. This representation can be useful when you want
@@ -111,6 +114,7 @@ distinguish different vectors. -->
     radius: 0.02,
     hideHead: true
   }}
+  {template}
 />
 
 <!-- Non-normalized Vector. This story demonstrates a non-normalized vector. By setting noNormalise to true, the direction (3,
@@ -126,4 +130,5 @@ distinguish different vectors. -->
     radius: 0.02,
     noNormalise: true
   }}
+  {template}
 />

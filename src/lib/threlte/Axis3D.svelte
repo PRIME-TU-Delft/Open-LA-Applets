@@ -82,7 +82,7 @@
 
 <!-- Tick indicators -->
 {#if !hideTicks}
-  {#each indicators as indicator}
+  {#each indicators as indicator (indicator)}
     <Line color={PrimeColor.black} {...getPoints(indicator, TICK_SIZES[1])} />
     <Line color={PrimeColor.black} {...getPoints(indicator, TICK_SIZES[1], 1)} />
     <Line color={PrimeColor.black} {...getPoints(indicator, TICK_SIZES[1], 2)} />
@@ -91,7 +91,7 @@
 
 <!-- Number indicators -->
 {#if showNumbers}
-  {#each labeledIndicators as indicator}
+  {#each labeledIndicators as indicator (indicator)}
     {@const indicatorFixed = indicator.toFixed(2).replace('.00', '')}
     <!-- Y -->
     <Latex3D
@@ -131,5 +131,5 @@
 {/if}
 
 {#if !hideOrigin}
-  <Latex3D latex={'O'} position={new Vector3(-0.3, -0.3, 0)} />
+  <Latex3D latex="O" position={new Vector3(-0.3, -0.3, 0)} />
 {/if}

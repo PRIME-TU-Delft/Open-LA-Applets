@@ -26,16 +26,16 @@
 
   <!-- P -->
   <Point3D position={p} color={PrimeColor.cyan} alwaysOnTop />
-  <Latex3D latex={'P'} position={p} extend={0.5} color={PrimeColor.cyan} />
+  <Latex3D latex="P" position={p} extend={0.5} color={PrimeColor.cyan} />
 
   <!-- Q -->
   <Point3D position={q} color={PrimeColor.darkGreen} alwaysOnTop />
-  <Latex3D latex={'Q'} position={q} extend={0.5} color={PrimeColor.darkGreen} />
+  <Latex3D latex="Q" position={q} extend={0.5} color={PrimeColor.darkGreen} />
   <Vector3D direction={pq} origin={p} color={PrimeColor.raspberry} noNormalise alwaysOnTop />
 
   <!-- R -->
   <Point3D position={r} color={PrimeColor.blue} alwaysOnTop />
-  <Latex3D latex={'R'} position={r} extend={1} color={PrimeColor.blue} />
+  <Latex3D latex="R" position={r} extend={1} color={PrimeColor.blue} />
   <Vector3D direction={pr} origin={p} color={PrimeColor.orange} noNormalise alwaysOnTop />
 
   <Axis3D axisLength={7} showNumbers />

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import ExternalLink from 'lucide-svelte/icons/external-link';
+  import ExternalLink from '@lucide/svelte/icons/external-link';
   import FolderList from './FolderList.svelte';
   import NavBar from './NavBar.svelte';
 
-  const modules = import.meta.glob('$routes/applet/**/+page.svelte');
+  const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
 
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Lead-developer' },
@@ -45,7 +45,7 @@
       <span class="font-bold">Hint:</span>
       Press
       <kbd
-        class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
+        class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none"
       >
         <span class="text-xs">⌘/Ctrl</span>K
       </kbd> to search through all applets.
@@ -68,7 +68,7 @@
 
       <h3>Contributors</h3>
       <div class="columns-1 gap-2 md:columns-2">
-        {#each contributors as { name, title }}
+        {#each contributors as { name, title } (name)}
           <div class="mb-2 flex gap-2">
             <div class="not-prose w-24 overflow-hidden rounded">
               <img

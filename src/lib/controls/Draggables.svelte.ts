@@ -15,6 +15,8 @@ import { Vector2 } from 'three';
  */
 
 export class Draggable implements Controller<Vector2> {
+  id = crypto.randomUUID();
+
   defaultValue = new Vector2(0, 0);
   value = $state(new Vector2(0, 0));
   color: string = PrimeColor.blue;

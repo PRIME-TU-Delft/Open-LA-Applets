@@ -34,7 +34,7 @@
   cameraPosition={new Vector2(0, 2)}
   splitCanvas2DProps={{ cameraZoom: 1.75, cameraPosition: new Vector2(0, 2) }}
 >
-  {#each draggables as draggable}
+  {#each draggables as draggable (draggable.id)}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}
@@ -43,7 +43,7 @@
   {/each}
 
   {#snippet splitCanvas2DChildren()}
-    {#each draggables as draggable, index}
+    {#each draggables as draggable, index (draggable.id)}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
 

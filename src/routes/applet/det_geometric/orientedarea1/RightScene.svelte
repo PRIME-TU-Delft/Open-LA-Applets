@@ -34,7 +34,7 @@
 <Vector3D direction={tu} length={tu.length()} color={PrimeColor.raspberry}>
   {#snippet children(endPoint)}
     <Latex3D latex={'\\tilde{\\mathbf{u}}'} position={endPoint?.clone().multiplyScalar(0.5)} />
-    <Latex3D latex={'A'} extend={0.2} position={endPoint} />
+    <Latex3D latex="A" extend={0.2} position={endPoint} />
     <Point3D position={endPoint || new Vector3()} color={PrimeColor.raspberry} />
   {/snippet}
 </Vector3D>
@@ -42,12 +42,12 @@
 <Vector3D direction={tv} length={tv.length()} color={PrimeColor.darkGreen}>
   {#snippet children(endPoint)}
     <Latex3D latex={'\\tilde{\\mathbf{v}}'} position={endPoint?.clone().multiplyScalar(0.5)} />
-    <Latex3D latex={'B'} extend={0.2} position={endPoint} />
+    <Latex3D latex="B" extend={0.2} position={endPoint} />
     <Point3D position={endPoint || new Vector3()} color={PrimeColor.darkGreen} />
   {/snippet}
 </Vector3D>
 
-<Latex3D latex={'C'} extend={0.2} position={C} />
+<Latex3D latex="C" extend={0.2} position={C} />
 
 <Vector3D isDashed direction={uxv} length={uxv.length()} color={PrimeColor.blue}>
   {#snippet children(endPoint)}

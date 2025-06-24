@@ -1,15 +1,17 @@
-<script lang="ts">
-  import { Vector2 } from 'three';
-  import Line from './Line2D.svelte';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-
-  type RightAngle2DProps = {
+<script lang="ts" module>
+  export type RightAngle2DProps = {
     vs: [Vector2, Vector2];
     origin?: Vector2;
     size?: number;
     color?: string;
     lineWidth?: number;
   };
+</script>
+
+<script lang="ts">
+  import { Vector2 } from 'three';
+  import Line from './Line2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   let {
     vs,
