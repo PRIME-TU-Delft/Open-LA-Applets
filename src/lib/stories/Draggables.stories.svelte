@@ -129,6 +129,7 @@ const draggables = [
 ```
 -->
 <Story name="Custom snap">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D draggables={customSnapDraggables}>
       <circle r={2} fill={PrimeColor.yellow + PrimeColor.opacity(0.5)} />
@@ -143,4 +144,5 @@ const draggables = [
       {/each}
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>
