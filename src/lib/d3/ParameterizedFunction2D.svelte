@@ -16,6 +16,7 @@
     tEnd?: number;
     tension?: number;
     showArrows?: boolean;
+    width?: number;
   };
 
   const {
@@ -26,10 +27,9 @@
     tStart = -GRID_SIZE_2D,
     tEnd = GRID_SIZE_2D,
     tension = 0.5,
-    showArrows = false
+    showArrows = false,
+    width = LINE_WIDTH
   }: ParameterizedFunction2DProps = $props();
-
-  const width = LINE_WIDTH;
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
