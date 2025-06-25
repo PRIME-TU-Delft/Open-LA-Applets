@@ -88,8 +88,6 @@
   />
 
   {#snippet splitCanvas2DChildren()}
-    {@const domainSize: number = 2}
-
     {#if func_k?.xFunc}
       <ParameterizedFunction2D
         xFunc={func_k?.xFunc}
