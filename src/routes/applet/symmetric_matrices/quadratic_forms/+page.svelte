@@ -18,15 +18,15 @@
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
-      .addAutoParam(a, PrimeColor.yellow)
-      .addAutoParam(withSign(b), PrimeColor.yellow)
-      .addAutoParam(withSign(c), PrimeColor.yellow)
+      .addAutoParam(a, PrimeColor.orange)
+      .addAutoParam(withSign(b), PrimeColor.orange)
+      .addAutoParam(withSign(c), PrimeColor.orange)
       .addAutoParam(round(k, 1), PrimeColor.raspberry);
 
     return [f];
   });
 
-  const mat = new Matrix(new Matrix2(1, 0.5, -100, 1), 'A', PrimeColor.yellow);
+  const mat = new Matrix(new Matrix2(1, 0.5, -100, 1), 'A', PrimeColor.orange);
 
   const controls = $derived.by(() => {
     return Controls.add(mat)
