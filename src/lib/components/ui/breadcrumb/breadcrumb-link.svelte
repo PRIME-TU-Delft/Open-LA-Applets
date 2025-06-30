@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { HTMLAnchorAttributes } from 'svelte/elements';
   import type { Snippet } from 'svelte';
-  import { cn, type WithElementRef } from '$lib/utils.js';
+  import type { WithElementRef } from 'bits-ui';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   let {
     ref = $bindable(null),
@@ -15,7 +16,6 @@
   } = $props();
 
   const attrs = $derived({
-    'data-slot': 'breadcrumb-link',
     class: cn('hover:text-foreground transition-colors', className),
     href,
     ...restProps

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
+  import { T } from '@threlte/core';
+  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
+  import { BufferGeometry, Line, Mesh, Vector3 } from 'three';
   import Line3D from './Line3D.svelte';
 
   type LineProps = {

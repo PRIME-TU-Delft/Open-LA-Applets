@@ -1,4 +1,5 @@
 <script>
+  import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';

@@ -1,22 +1,21 @@
 <script lang="ts">
   import { Command as CommandPrimitive } from 'bits-ui';
-  import { cn } from '$lib/utils.js';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   let {
-    ref = $bindable(null),
     value = $bindable(''),
+    ref = $bindable(null),
     class: className,
     ...restProps
   }: CommandPrimitive.RootProps = $props();
 </script>
 
 <CommandPrimitive.Root
-  bind:value
-  bind:ref
-  data-slot="command"
   class={cn(
-    'bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md',
+    'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
     className
   )}
+  bind:ref
+  bind:value
   {...restProps}
 />

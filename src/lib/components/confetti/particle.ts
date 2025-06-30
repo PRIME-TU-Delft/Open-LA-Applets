@@ -31,13 +31,14 @@ export const createParticle = (
   angle: number,
   spread: number
 ) => {
-  const color = PrimeColor.getRandomColor();
-
   let dir,
     x,
     y,
     vx,
     vy,
+    dx,
+    dy,
+    color = PrimeColor.getRandomColor(),
     da = random(90, -90);
 
   if (origin) {
@@ -57,10 +58,10 @@ export const createParticle = (
     dir = random(180) * DEG_TO_RAD;
   }
 
-  const dx = Math.cos(dir);
-  const dy = Math.sin(dir);
+  dx = Math.cos(dir);
+  dy = Math.sin(dir);
 
-  const particle: Particle = {
+  let particle: Particle = {
     dead: false,
     life: 0,
     delay: 0,

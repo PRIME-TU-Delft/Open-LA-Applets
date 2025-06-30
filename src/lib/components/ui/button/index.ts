@@ -1,5 +1,4 @@
 import Action from './action-button.svelte';
-
 import Root, {
   type ButtonProps,
   type ButtonSize,
@@ -9,12 +8,12 @@ import Root, {
 
 export {
   Action,
-  Root,
-  type ButtonProps as Props,
   //
   Root as Button,
   buttonVariants,
+  Root,
   type ButtonProps,
   type ButtonSize,
-  type ButtonVariant
+  type ButtonVariant,
+  type ButtonProps as Props
 };

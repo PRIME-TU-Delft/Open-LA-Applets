@@ -1,6 +1,5 @@
 <script lang="ts" module>
   export type SceneProps = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
     splitFormulas?: Formula[];
@@ -22,7 +21,6 @@
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
-  import { cn } from '$lib/utils';
 
   let {
     controls = undefined,
@@ -88,20 +86,16 @@
 </script>
 
 <div
-  class={cn(
-    'outerWrapper h-full overflow-hidden bg-gradient-to-bl from-white to-white p-2 transition-all duration-500',
-    activityState.isActive && 'from-blue-400 to-blue-500'
-  )}
+  class="outerWrapper h-full overflow-hidden bg-gradient-to-bl from-white to-white p-2 transition-all duration-500"
+  class:active={activityState.isActive}
   use:initScene
 >
   <div
     role="button"
     tabindex="0"
-    class={cn(
-      'canvasWrapper h-full rounded-lg shadow-md motion-safe:scale-[0.97] motion-safe:transition-transform',
-      activityState.isActive && 'motion-safe:scale-100'
-    )}
+    class="canvasWrapper h-full rounded-lg motion-safe:scale-[0.97] motion-safe:transition-transform"
     class:inIframe={globalState.inIframe}
+    class:active={activityState.isActive}
     class:dev
     bind:clientHeight={height}
     bind:clientWidth={width}
@@ -123,7 +117,7 @@
 
     <!-- MARK: TITLE PANEL (top-left) -->
     {#if globalState.title && globalState.isInset()}
-      <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+      <div class="absolute left-2 top-2 rounded bg-blue-200 p-2">
         {globalState.title}
       </div>
     {/if}
@@ -147,12 +141,21 @@
 </div>
 
 <style>
+  .outerWrapper.active {
+    @apply from-blue-400 to-blue-500;
+  }
+
+  .canvasWrapper.active {
+    @apply scale-100;
+  }
+
   .canvasWrapper {
     position: relative;
     width: var(--width, 100%);
     height: var(--canvas-height, 100%);
     overflow: hidden;
     margin: auto;
+    @apply shadow-md;
   }
 
   .canvasWrapper.dev {

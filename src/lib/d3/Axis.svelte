@@ -23,7 +23,7 @@
 </script>
 
 <g>
-  {#each axisIndeces as index, idx (idx)}
+  {#each axisIndeces as index}
     <!-- Grid Lines -->
     <line
       x1={index}
@@ -65,6 +65,6 @@
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D latex="O" offset={new Vector2(-0.28, -0.11)} />
+    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
   {/if}
 </g>

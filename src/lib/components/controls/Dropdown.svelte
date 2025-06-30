@@ -18,7 +18,7 @@
       {#if dropdown.label}
         <Select.GroupHeading>{dropdown.label}</Select.GroupHeading>
       {/if}
-      {#each dropdown.values as item (item)}
+      {#each dropdown.values as item}
         <Select.Item value={item} label={item}>
           {item}
         </Select.Item>

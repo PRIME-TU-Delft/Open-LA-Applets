@@ -4,6 +4,7 @@
 
   const { Story } = defineMeta({
     title: 'Initialize/Controls',
+    component: Canvas2D,
     argTypes: {}
   });
 </script>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Breadcrumb from '$lib/components/ui/breadcrumb';
+  import ExternalLink from 'lucide-svelte/icons/external-link';
   import CommandPrompt from './CommandPrompt.svelte';
 
   export let fileUrls: string[];
@@ -52,18 +53,10 @@
 
 <style>
   :global(li[role='presentation'] svg) {
-    fill: #bfdbfe;
+    @apply fill-blue-200;
   }
 
   nav :global(.link) {
-    scale: 1;
-    color: #dbeafe;
-    transition: scale 0.2s;
-
-    &:hover {
-      scale: 1.1;
-      color: #bfdbfe;
-      text-decoration: underline;
-    }
+    @apply scale-100 text-blue-100 transition-transform hover:scale-110 hover:text-blue-200 hover:underline;
   }
 </style>

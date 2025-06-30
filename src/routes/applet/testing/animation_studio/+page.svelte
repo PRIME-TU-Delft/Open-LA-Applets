@@ -51,6 +51,8 @@
   ];
 
   let controls = Controls.addSlideShow(state, transitionSteps);
+
+  $inspect('zoom', controls[0].fadeInThridVector);
 </script>
 
 <Canvas2D {controls}>

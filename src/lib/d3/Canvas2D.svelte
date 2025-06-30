@@ -1,5 +1,22 @@
+<script lang="ts" module>
+  import type { SceneProps } from '$lib/components/Scene.svelte';
+  import type { Camera3DProps } from '$lib/threlte/Camera3D.svelte';
+  import type { Snippet } from 'svelte';
+  import { type Canvas2DProps } from './CanvasD3.svelte';
+
+  export type CanvasProps = SceneProps &
+    Omit<Canvas2DProps, 'children' | 'width'> & {
+      title?: string;
+      splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
+      splitCanvas3DProps?: Camera3DProps; // Not implemented yet
+      children: Snippet;
+      splitCanvas2DChildren?: Snippet;
+      splitCanvas3DChildren?: Snippet;
+    };
+</script>
+
 <script lang="ts">
-  import { page } from '$app/state';
+  import { page } from '$app/stores';
   import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import Scene from '$lib/components/Scene.svelte';
@@ -10,10 +27,9 @@
   import { Canvas } from '@threlte/core';
   import { NoToneMapping, Vector2 } from 'three';
   import CanvasD3 from './CanvasD3.svelte';
-  import type { CanvasProps } from './CanvasType';
 
-  // eslint-disable-next-line svelte/no-unused-props
   let {
+    // General props
     title,
     showFormulasDefault,
     formulas,
@@ -47,7 +63,7 @@
   let enableEasterEgg = $state(false);
 
   $effect.pre(() => {
-    const searchParams = page?.url?.searchParams;
+    const searchParams = $page?.url?.searchParams;
 
     if (!searchParams) return; // No search params
 
@@ -116,7 +132,7 @@
   {formulas}
   {splitFormulas}
 >
-  {#snippet sceneChildren(width: number, height: number)}
+  {#snippet sceneChildren(width, height)}
     {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
     <CanvasD3
       width={canvasWidth}

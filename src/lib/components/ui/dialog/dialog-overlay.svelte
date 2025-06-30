@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Dialog as DialogPrimitive } from 'bits-ui';
-  import { cn } from '$lib/utils.js';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   let {
     ref = $bindable(null),
@@ -11,9 +11,8 @@
 
 <DialogPrimitive.Overlay
   bind:ref
-  data-slot="dialog-overlay"
   class={cn(
-    'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50',
+    'fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
     className
   )}
   {...restProps}

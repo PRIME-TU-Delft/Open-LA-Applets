@@ -37,6 +37,6 @@
   const zipValueSegments = $derived(values.map((v, i) => [v, planeSegments[i]] as const));
 </script>
 
-{#each zipValueSegments as [value, planeSegment], index (index)}
+{#each zipValueSegments as [value, planeSegment], index}
   {@render children(value, index, planeSegment, PrimeColor.getColor(index))}
 {/each}

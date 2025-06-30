@@ -10,7 +10,7 @@ class ConfettiState {
   /**
    * Enable confetti on the left side
    */
-  left() {
+  left(coolDown = 5000) {
     this.updateState = Math.random();
 
     this.confettiSide = 'left';
@@ -27,7 +27,7 @@ class ConfettiState {
   /**
    * Enable confetti on center side
    */
-  center() {
+  center(coolDown = 5000) {
     this.updateState = Math.random();
 
     this.confettiSide = 'center';

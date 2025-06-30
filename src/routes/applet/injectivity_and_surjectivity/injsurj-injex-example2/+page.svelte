@@ -22,7 +22,7 @@
       const solution = new Vector2(70, 17).multiplyScalar(1 / 23);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
-          confettiState.center();
+          confettiState.center(1000);
           return solution;
         } else {
           return v;
@@ -32,7 +32,7 @@
       const solution = new Vector2(-3, 2);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
-          confettiState.center();
+          confettiState.center(1000);
           return solution;
         } else {
           return v;
@@ -66,21 +66,25 @@
 
     const TvDistances = transform(draggables[0].position).distanceTo(u);
 
-    if (controls[0] === 'Transformation 1') {
-      const f2 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
-      );
-      formulas.push(f2);
-    } else if (controls[0] === 'Transformation 2') {
-      const f1 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
-      );
-      formulas.push(f1);
-    } else if (controls[0] === 'Transformation 3') {
-      const f3 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
-      );
-      formulas.push(f3);
+    switch (controls[0]) {
+      case 'Transformation 1':
+        const f2 = new Formula(
+          'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
+        );
+        formulas.push(f2);
+        break;
+      case 'Transformation 2':
+        const f1 = new Formula(
+          'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
+        );
+        formulas.push(f1);
+        break;
+      case 'Transformation 3':
+        const f3 = new Formula(
+          'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
+        );
+        formulas.push(f3);
+        break;
     }
 
     const f4 = new Formula(`T(\\mathbf{v}) ${TvDistances < 0.1 ? '=' : '\\neq'} \\mathbf{u}`);
@@ -99,7 +103,7 @@
   showFormulasDefault
   splitCanvas2DProps={{ cameraZoom: 1.5, cameraPosition: new Vector2(2, 2) }}
 >
-  {#each draggables as draggable (draggable.id)}
+  {#each draggables as draggable}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}
@@ -111,7 +115,7 @@
     <Vector2D direction={u} length={u.length()} color={PrimeColor.raspberry} />
     <Latex2D position={u} color={PrimeColor.raspberry} latex={'\\mathbf{u}'} />
 
-    {#each draggables as draggable (draggable.id)}
+    {#each draggables as draggable}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
 

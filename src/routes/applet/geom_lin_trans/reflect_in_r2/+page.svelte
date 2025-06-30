@@ -44,7 +44,7 @@
     color={PrimeColor.cyan}
   />
 
-  {#each u_ts as ut, index (index)}
+  {#each u_ts as ut, index}
     <Vector2D
       origin={ut.u}
       direction={ut.ut.clone().sub(ut.u)}

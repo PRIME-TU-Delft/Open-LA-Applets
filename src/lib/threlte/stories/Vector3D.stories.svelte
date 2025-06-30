@@ -10,10 +10,14 @@
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { setTemplate } from '@storybook/addon-svelte-csf';
+  import type { Snippet } from 'svelte';
   import { Vector3 } from 'three';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
   import type { Vector3DProps } from '../Vector3D.svelte';
+
+  setTemplate(template as Snippet<[Partial<Vector3DProps>]>);
 </script>
 
 {#snippet template(args: Vector3DProps)}
@@ -34,7 +38,6 @@
     direction: new Vector3(1, 1, 0),
     length: 1
   }}
-  {template}
 />
 
 <!-- This story demonstrates a Vector3D with a custom origin and direction. -->
@@ -45,7 +48,6 @@
     origin: new Vector3(-1, -1, -1),
     direction: new Vector3(2, 2, 2)
   }}
-  {template}
 />
 
 <!-- This story shows a dashed Vector3D. -->
@@ -55,9 +57,9 @@
     color: PrimeColor.blue,
     origin: new Vector3(0, 0, 0),
     direction: new Vector3(0, 5, 0),
-    isDashed: true
+    isDashed: true,
+    length: 5
   }}
-  {template}
 />
 
 <!-- This story demonstrates a Vector3D with a specified length. -->
@@ -69,7 +71,6 @@
     direction: new Vector3(1, 1, 0),
     length: 2
   }}
-  {template}
 />
 
 <!-- This story shows a Vector3D without an arrowhead. -->
@@ -81,5 +82,4 @@
     direction: new Vector3(1, 0, 1),
     hideHead: true
   }}
-  {template}
 />

@@ -1,6 +1,6 @@
 <script module>
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import { Vector3 } from 'three';
   import Line3D from '../Line3D.svelte';
 
@@ -11,9 +11,12 @@
 </script>
 
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
   import type { Line3DProps } from '../Line3D.svelte';
+
+  setTemplate(template as Snippet<[Partial<Line3DProps>]>);
 </script>
 
 {#snippet template(args: Line3DProps)}
@@ -35,7 +38,6 @@
     isDashed: false,
     alwaysOnTop: false
   }}
-  {template}
 />
 
 <!-- This story demonstrates the Line3D component with a custom color and thickness. -->
@@ -48,7 +50,6 @@
     alwaysOnTop: false,
     radius: 2
   }}
-  {template}
 />
 
 <!-- This story shows the Line3D component with dashed lines. -->
@@ -60,7 +61,6 @@
     isDashed: true,
     alwaysOnTop: false
   }}
-  {template}
 />
 
 <!-- This story demonstrates the Line3D component always rendering on top. -->
@@ -72,5 +72,4 @@
     isDashed: false,
     alwaysOnTop: true
   }}
-  {template}
 />

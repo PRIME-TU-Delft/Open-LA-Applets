@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import InfiniteLine2D from '../InfiniteLine2D.svelte';
 
   const { Story } = defineMeta({
@@ -13,6 +13,8 @@
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
   import type { InfiniteLine2DProps } from '../InfiniteLine2D.svelte';
+
+  setTemplate(template);
 </script>
 
 {#snippet template(args: InfiniteLine2DProps)}
@@ -24,11 +26,11 @@
 {/snippet}
 
 <!-- Dynamic snippet should be disabled for this story -->
-<Story name="With color" args={{ color: PrimeColor.raspberry }} {template} />
+<Story name="With color" args={{ color: PrimeColor.raspberry }} />
 
 <!-- An InfiniteLine with different origin defined -->
-<Story name="With origin defined" args={{ origin: new Vector2(0, 1) }} {template} />
+<Story name="With origin defined" args={{ origin: new Vector2(0, 1) }} />
 
-<Story name="With width defined" args={{ width: 0.1 }} {template} />
+<Story name="With width defined" args={{ width: 0.1 }} />
 
-<Story name="With dashed line" args={{ isDashed: true }} {template} />
+<Story name="With dashed line" args={{ isDashed: true }} />

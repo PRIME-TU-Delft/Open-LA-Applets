@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { cn, type WithElementRef } from '$lib/utils.js';
+  import type { WithElementRef } from 'bits-ui';
   import type { HTMLAttributes } from 'svelte/elements';
+  import { cn } from '$lib/utils/shadcn-utils.js';
 
   let {
     ref = $bindable(null),
@@ -11,10 +12,9 @@
 </script>
 
 <span
-  bind:this={ref}
-  data-slot="command-shortcut"
-  class={cn('text-muted-foreground ml-auto text-xs tracking-widest', className)}
+  class={cn('ml-auto text-xs tracking-widest text-muted-foreground', className)}
   {...restProps}
+  bind:this={ref}
 >
   {@render children?.()}
 </span>

@@ -9,6 +9,8 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { confettiState, type Side } from '$lib/stores/confetti.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
+  import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
   import {
     snapToAxis,
@@ -18,11 +20,10 @@
     snapToMaxDistance,
     values
   } from './draggables';
-  import NumberFlow from '@number-flow/svelte';
 
   const controls = Controls.addSlider(1.5, -5, 5, 0.5, PrimeColor.raspberry, {
     label: 'c',
-    labelFormat,
+    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined]),
     onRelease: validateSlider
   }).addDropdown('', values, PrimeColor.yellow);
 
@@ -53,7 +54,7 @@
     const newPoint = snapToMaxDistance(v, 2.5);
 
     if (side == 'left' && sum.x != 0 && sum.y != 0) {
-      confettiState.left();
+      confettiState.left(500);
     }
 
     return newPoint;
@@ -71,7 +72,7 @@
       angle > (3 * Math.PI) / 2
     ) {
       if (side == 'left') {
-        confettiState.left();
+        confettiState.left(500);
       } else if (side == 'center') {
         confettiState.center();
       }

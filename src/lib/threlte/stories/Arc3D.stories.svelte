@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta } from '@storybook/addon-svelte-csf';
+  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
   import { Vector3 } from 'three';
   import Arc3D from '../Arc3D.svelte';
 
@@ -11,9 +11,12 @@
 
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import type { Snippet } from 'svelte';
   import type { Arc3DProps } from '../Arc3D.svelte';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
+
+  setTemplate(template as Snippet<[Partial<Arc3DProps>]>);
 </script>
 
 {#snippet template(args: Arc3DProps)}
@@ -35,7 +38,6 @@
     origin: new Vector3(0, 0, 0),
     pointsOnArc: 15
   }}
-  {template}
 />
 
 <!-- Colored Arc. This story demonstrates an arc with a custom color (raspberry). It shows how color
@@ -48,7 +50,6 @@
     origin: new Vector3(0, 0, 0),
     pointsOnArc: 20
   }}
-  {template}
 />
 
 <!-- Custom Origin. This story shows an arc with a custom origin point, demonstrating how arcs can
@@ -57,11 +58,10 @@
   name="Custom Origin"
   args={{
     points: [new Vector3(1, 1, 0), new Vector3(-1, 2, 0)],
-    color: PrimeColor.blue,
+    color: PrimeColor.darkGreen,
     origin: new Vector3(1, 1, 1),
-    pointsOnArc: 10
+    pointsOnArc: 25
   }}
-  {template}
 />
 
 <!-- Custom Resolution. This story demonstrates an arc with a custom resolution, showcasing how the
@@ -74,5 +74,4 @@
     origin: new Vector3(0, 0, 0),
     pointsOnArc: 100
   }}
-  {template}
 />
