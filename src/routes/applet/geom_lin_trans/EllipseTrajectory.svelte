@@ -23,7 +23,7 @@
 </script>
 
 <!--Trail trajectory-->
-{#each ts as [i, t]}
+{#each ts as [i, t] (i)}
   {#if i == 0}
     <Line3D
       origin={getPoint(0, r)}
@@ -40,7 +40,7 @@
 {/each}
 
 {#if reverse_in_red}
-  {#each ts as [i, t]}
+  {#each ts as [i, t] (i)}
     {#if i == 0}
       <Line3D
         origin={getPoint(0, r).multiply(new Vector3(1, -1, 1))}
@@ -58,7 +58,7 @@
 {/if}
 
 {#if trajectory_on_plane}
-  {#each ts as [i, t]}
+  {#each ts as [i, t] (i)}
     {#if i == 0}
       <Line3D
         origin={proj_t_plane(ts[0][1])}

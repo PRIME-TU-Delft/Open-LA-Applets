@@ -32,7 +32,7 @@
     origin={v.clone().multiplyScalar(-1)}
   >
     <Latex2D
-      latex={'V'}
+      latex="V"
       position={v.clone().add(new Vector2(-0.3, -0.1))}
       color={PrimeColor.darkGreen}
     />
@@ -58,7 +58,7 @@
   {#snippet splitCanvas3DChildren()}
     <!-- v -->
     <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.darkGreen} />
-    <Latex3D latex={'V'} position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.darkGreen} />
+    <Latex3D latex="V" position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.darkGreen} />
 
     <!-- v_ortho -->
     <Vector3D

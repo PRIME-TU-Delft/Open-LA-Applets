@@ -9,13 +9,12 @@
   import { round } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
   const controls = Controls.addSlider(7, 1, 10, 0.5, PrimeColor.raspberry, {
     label: 'a',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   });
 
   const v1 = new MathVector3(-3, 1, 0);

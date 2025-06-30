@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
   import Scene from '$lib/components/Scene.svelte';
@@ -59,7 +59,7 @@
   let enableEasterEgg = $state(false);
 
   $effect.pre(() => {
-    const searchParams = $page?.url?.searchParams;
+    const searchParams = page?.url?.searchParams;
 
     if (!searchParams) return;
 

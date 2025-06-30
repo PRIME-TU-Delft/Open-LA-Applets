@@ -6,7 +6,6 @@
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
@@ -14,7 +13,7 @@
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
   const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry, {
     label: 'length',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   });
 
   // Do not allow the vector to be zero, otherwise the direction is not defined

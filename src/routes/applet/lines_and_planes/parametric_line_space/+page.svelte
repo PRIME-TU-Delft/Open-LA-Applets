@@ -4,9 +4,7 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
 
@@ -15,7 +13,7 @@
 
   let controls = Controls.addSlider(2, -1.5, 3, 0.1, PrimeColor.darkGreen, {
     label: 'r',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   });
 
   const ru_len = $derived(controls[0] * u.length());

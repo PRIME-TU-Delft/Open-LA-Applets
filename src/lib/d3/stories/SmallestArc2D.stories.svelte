@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import SmallestArc2D from '../SmallestArc2D.svelte';
   import { Vector2 } from 'three';
   import Latex2D from '../Latex2D.svelte';
@@ -14,9 +14,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
   import type { SmallestArc2DProps } from '../SmallestArc2D.svelte';
-  import type { Snippet } from 'svelte';
-
-  setTemplate(template as Snippet<[Partial<SmallestArc2DProps>]>);
 </script>
 
 {#snippet template(args: SmallestArc2DProps)}
@@ -24,7 +21,7 @@
     <Canvas2D>
       <SmallestArc2D {...args}>
         {#snippet label(position: Vector2)}
-          <Latex2D latex={'\\varphi'} {position} extend={0.3} color={PrimeColor.black} />
+          <Latex2D latex="\varphi" {position} extend={0.3} color={PrimeColor.black} />
         {/snippet}
       </SmallestArc2D>
     </Canvas2D>
@@ -41,6 +38,7 @@
     width: 0.02,
     hasHead: false
   }}
+  {template}
 />
 
 <!-- With different vectors -->
@@ -51,6 +49,7 @@
     distance: 1.5,
     color: PrimeColor.raspberry
   }}
+  {template}
 />
 
 <!-- With larger distance -->
@@ -58,9 +57,9 @@
   name="With larger distance"
   args={{
     points: [new Vector2(1, 0), new Vector2(0, 1)],
-    distance: 2.5,
-    color: PrimeColor.blue
+    distance: 2.5
   }}
+  {template}
 />
 
 <!-- With thicker line -->
@@ -72,6 +71,7 @@
     color: PrimeColor.darkGreen,
     width: 0.05
   }}
+  {template}
 />
 
 <!-- With custom arrow defined -->
@@ -83,4 +83,5 @@
     color: PrimeColor.darkGreen,
     hasHead: true
   }}
+  {template}
 />

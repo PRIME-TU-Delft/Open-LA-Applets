@@ -1,6 +1,6 @@
 <script module>
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import { Vector3 } from 'three';
   import Point3D from '../Point3D.svelte';
 
@@ -11,12 +11,9 @@
 </script>
 
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import Axis3D from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
   import type { Point3DProps } from '../Point3D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Point3DProps>]>);
 </script>
 
 {#snippet template(args: Point3DProps)}
@@ -36,6 +33,7 @@
     color: PrimeColor.darkGreen,
     size: 0.125
   }}
+  {template}
 />
 
 <!-- This story demonstrates a Point3D with a custom position and color. -->
@@ -46,6 +44,7 @@
     color: PrimeColor.raspberry,
     size: 0.125
   }}
+  {template}
 />
 
 <!-- This story shows a larger Point3D. -->
@@ -56,6 +55,7 @@
     color: PrimeColor.blue,
     size: 0.25
   }}
+  {template}
 />
 
 <!-- This story demonstrates a Point3D that is not always on top. -->
@@ -67,4 +67,5 @@
     size: 0.125,
     alwaysOnTop: true
   }}
+  {template}
 />

@@ -1,5 +1,5 @@
 <script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Axis3D from '../Axis3D.svelte';
 
   const { Story } = defineMeta({
@@ -9,11 +9,8 @@
 </script>
 
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import type { Axis3DProps } from '../Axis3D.svelte';
   import Canvas3D from '../Canvas3D.svelte';
-
-  setTemplate(template as Snippet<[Partial<Axis3DProps>]>);
 </script>
 
 {#snippet template(args: Axis3DProps)}
@@ -35,6 +32,7 @@
     floor: false,
     hideOrigin: false
   }}
+  {template}
 />
 
 <!-- This story demonstrates the Axis3D component with numbers shown on the axis. -->
@@ -48,6 +46,7 @@
     floor: false,
     hideOrigin: false
   }}
+  {template}
 />
 
 <!-- This story shows the Axis3D component with custom axis length and spacing. -->
@@ -61,6 +60,7 @@
     floor: false,
     hideOrigin: false
   }}
+  {template}
 />
 
 <!-- This story demonstrates the Axis3D component with a floor plane. -->
@@ -74,6 +74,7 @@
     floor: true,
     hideOrigin: false
   }}
+  {template}
 />
 
 <!-- This story demonstrates the Axis3D component with hidden ticks and origin. -->
@@ -87,4 +88,5 @@
     floor: false,
     hideOrigin: true
   }}
+  {template}
 />
