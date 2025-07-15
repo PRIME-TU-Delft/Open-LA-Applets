@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
   import { defineMeta } from '@storybook/addon-svelte-csf';
   import Latex2D, { type Latex2DProps } from '../Latex2D.svelte';
 
