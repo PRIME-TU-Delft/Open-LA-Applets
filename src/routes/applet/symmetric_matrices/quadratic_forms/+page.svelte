@@ -13,8 +13,8 @@
   import { Vector2, Vector3 } from 'three';
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
-  import { Matrix } from '$lib/controls/Matrix.svelte';
   import { withSign } from '$lib/utils/FormatString';
+  import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
@@ -26,7 +26,7 @@
     return [f];
   });
 
-  const mat = new Matrix(new Matrix2(1, 0.5, -100, 1), 'A', PrimeColor.orange);
+  const mat = new DiagonalMatrix(new Matrix2(1, 0.5, 0.5, 1), 'A', PrimeColor.orange);
 
   const controls = $derived.by(() => {
     return Controls.add(mat)
