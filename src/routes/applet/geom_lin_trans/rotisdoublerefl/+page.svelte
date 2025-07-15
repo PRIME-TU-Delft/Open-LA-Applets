@@ -11,16 +11,15 @@
   import { VECTOR_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { snippetFormatter } from '$lib/utils/SnippetFormatter';
   import { Vector2 } from 'three';
   import NumberFlow from '@number-flow/svelte';
 
   const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
     label: 'ϕ/2',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
     label: 'θ/2',
-    labelFormat: snippetFormatter<[number]>(labelFormat, [undefined])
+    labelFormat
   });
 
   const draggables = [
@@ -82,14 +81,14 @@
   <!-- ARCS -->
   <Arc2D points={[new Vector2(1, 0), dir_L1]} distance={1.2} />
   <Latex2D
-    latex={'\\phi / 2'}
+    latex="\phi / 2"
     position={dir_L1.clone().normalize().add(new Vector2(1, 0)).normalize().multiplyScalar(1.75)}
     offset={new Vector2(-0.25, 0.25)}
   />
 
   <Arc2D points={[dir_L1, dir_L2]} distance={1.5} />
   <Latex2D
-    latex={'\\theta / 2'}
+    latex="\theta / 2"
     position={dir_L2
       .clone()
       .normalize()

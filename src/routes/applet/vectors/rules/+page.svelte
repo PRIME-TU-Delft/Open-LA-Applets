@@ -67,7 +67,6 @@
         return [draggables[0]];
       case 'Rule 3 - Commutativity':
       case 'Rule 6 - Distributivity':
-      case 'Rule 7 - Multiplication':
         return [draggables[0], draggables[1]];
       case 'Rule 2 - Associativity':
         return draggables;
@@ -170,7 +169,7 @@
 </script>
 
 <Canvas2D {controls} {draggables} {formulas}>
-  {#each draggables as draggable}
+  {#each draggables as draggable (draggable.id)}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}

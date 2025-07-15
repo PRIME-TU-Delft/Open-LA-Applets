@@ -59,5 +59,5 @@
 
   <!-- V -->
   <PlaneFromNormal position={V} normal={n0} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'V'} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.darkGreen} />
+  <Latex3D latex="V" position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.darkGreen} />
 </Canvas3D>

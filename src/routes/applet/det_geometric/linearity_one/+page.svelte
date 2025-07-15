@@ -140,11 +140,11 @@
   />
 
   <!-- MARK: A, B, C, D, E Labels -->
-  <Latex2D latex={'A'} position={u} />
-  <Latex2D latex={'B'} position={uv} offset={new Vector2(0.1, 0.2)} />
-  <Latex2D latex={'C'} position={v} offset={new Vector2(0, 0.4)} />
-  <Latex2D latex={'D'} position={uvw} extend={0.35} />
-  <Latex2D latex={'E'} position={vw} extend={0.35} />
+  <Latex2D latex="A" position={u} />
+  <Latex2D latex="B" position={uv} offset={new Vector2(0.1, 0.2)} />
+  <Latex2D latex="C" position={v} offset={new Vector2(0, 0.4)} />
+  <Latex2D latex="D" position={uvw} extend={0.35} />
+  <Latex2D latex="E" position={vw} extend={0.35} />
 
   <Latex2D
     latex={controls[0].polygonLabel}
@@ -152,6 +152,6 @@
     offset={new Vector2(-1, 0.2)}
   />
   {#if controls[0].showCBDE}
-    <Latex2D latex={'CBDE'} position={new Vector2(1.5, 4)} offset={new Vector2(-0.1, 0.2)} />
+    <Latex2D latex="CBDE" position={new Vector2(1.5, 4)} offset={new Vector2(-0.1, 0.2)} />
   {/if}
 </Canvas2D>

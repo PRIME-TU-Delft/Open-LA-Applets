@@ -53,7 +53,7 @@
     stroke-width={0.04}
   />
 
-  {#each axisIndeces as index}
+  {#each axisIndeces as index (index)}
     <!-- Grid Lines -->
     <line
       transform="rotate({yRotation}) scale({basis[1].length()})"
@@ -97,6 +97,6 @@
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D latex={'O'} offset={new Vector2(-0.28, -0.11)} />
+    <Latex2D latex="O" offset={new Vector2(-0.28, -0.11)} />
   {/if}
 </g>

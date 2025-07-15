@@ -1,11 +1,11 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import * as Command from '$lib/components/ui/command/index.js';
-  import ArrowRight from 'lucide-svelte/icons/arrow-right';
-  import Cross from 'lucide-svelte/icons/cross';
-  import Eye from 'lucide-svelte/icons/eye';
-  import EyeOff from 'lucide-svelte/icons/eye-off';
-  import File from 'lucide-svelte/icons/file';
+  import ArrowRight from '@lucide/svelte/icons/arrow-right';
+  import Cross from '@lucide/svelte/icons/cross';
+  import Eye from '@lucide/svelte/icons/eye';
+  import EyeOff from '@lucide/svelte/icons/eye-off';
+  import File from '@lucide/svelte/icons/file';
   import { onMount } from 'svelte';
   import { scale } from 'svelte/transition';
 
@@ -109,7 +109,7 @@
 <p class="text-sm text-blue-950">
   Press
   <kbd
-    class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
+    class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none"
   >
     <span class="text-xs">⌘/Ctrl</span>K
   </kbd>
@@ -138,7 +138,7 @@
       </Command.Item>
     {/if}
 
-    {#each Object.entries(folders) as [folderTitle, files]}
+    {#each Object.entries(folders) as [folderTitle, files] (folderTitle)}
       {@const hasAllPreviewed = files.every((file) => openApplets.has(file.file))}
       <Command.Separator />
 
@@ -162,7 +162,7 @@
           </Command.Item>
         {/if}
 
-        {#each files as file}
+        {#each files as file (file.url)}
           {#if showPreview}
             {@const isPreviewed = openApplets.has(file.file)}
             <Command.Item

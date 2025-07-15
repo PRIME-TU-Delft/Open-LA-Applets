@@ -37,7 +37,7 @@
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
         if (controls[0] == 'Transformation 2' && d1.position.distanceTo(d2.position) > 0.5) {
-          confettiState.center(1000);
+          confettiState.center();
         }
 
         return v.clone().multiplyScalar(td2.length() / td1.length());
@@ -52,7 +52,7 @@
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
         if (controls[0] == 'Transformation 2' && d1.position.distanceTo(d2.position) > 0.5) {
-          confettiState.center(1000);
+          confettiState.center();
         }
 
         return v.clone().multiplyScalar(td1.length() / td2.length());
@@ -88,25 +88,21 @@
   const formulas = $derived.by(() => {
     let formulas = [];
 
-    switch (controls[0]) {
-      case 'Transformation 1':
-        const f2 = new Formula(
-          'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
-        );
-        formulas.push(f2);
-        break;
-      case 'Transformation 2':
-        const f1 = new Formula(
-          'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
-        );
-        formulas.push(f1);
-        break;
-      case 'Transformation 3':
-        const f3 = new Formula(
-          'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
-        );
-        formulas.push(f3);
-        break;
+    if (controls[0] === 'Transformation 1') {
+      const f2 = new Formula(
+        'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
+      );
+      formulas.push(f2);
+    } else if (controls[0] === 'Transformation 2') {
+      const f1 = new Formula(
+        'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
+      );
+      formulas.push(f1);
+    } else if (controls[0] === 'Transformation 3') {
+      const f3 = new Formula(
+        'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
+      );
+      formulas.push(f3);
     }
 
     const f4 = new Formula(
@@ -119,7 +115,7 @@
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
-  {#each draggables as draggable, index}
+  {#each draggables as draggable, index (draggable.id)}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}
@@ -147,7 +143,7 @@
   {/if}
 
   {#snippet splitCanvas2DChildren()}
-    {#each draggables as draggable, index}
+    {#each draggables as draggable, index (draggable.id)}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
 

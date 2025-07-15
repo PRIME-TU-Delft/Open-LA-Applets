@@ -3,8 +3,8 @@
   import * as Dialog from '$lib/components/ui/dialog';
   import { activityState } from '$lib/stores/activity.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import Lock from 'lucide-svelte/icons/lock';
-  import Unlock from 'lucide-svelte/icons/lock-open';
+  import Lock from '@lucide/svelte/icons/lock';
+  import Unlock from '@lucide/svelte/icons/lock-open';
 
   type ActivityPanelProps = {
     onLock: (event: MouseEvent) => void;
@@ -18,12 +18,12 @@
   class:m-2={globalState.isInset()}
 >
   {#if !activityState.isActive}
-    <div class="relative flex items-center gap-2 text-balance px-4 py-1 text-center sm:text-nowrap">
+    <div class="relative flex items-center gap-2 px-4 py-1 text-center text-balance sm:text-nowrap">
       <Button.Action class="h-6 w-6" tooltip="Lock scene">
         <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </Button.Action>
       Click anywhere in the scene to start interacting
-      <span class="absolute -right-1 -top-1 flex h-3 w-3">
+      <span class="absolute -top-1 -right-1 flex h-3 w-3">
         <span
           class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
         ></span>

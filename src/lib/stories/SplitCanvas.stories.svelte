@@ -1,24 +1,20 @@
-<script module>
-  import { defineMeta, setTemplate } from '@storybook/addon-svelte-csf';
+<script module lang="ts">
+  import { defineMeta } from '@storybook/addon-svelte-csf';
   import Canvas2D from '../d3/Canvas2D.svelte';
 
-  const { Story } = defineMeta({
-    title: 'Initialize/SplitCanvas2D',
-    component: Canvas2D
-  });
-</script>
-
-<script lang="ts">
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import type { Snippet } from 'svelte';
   import { Vector2, Vector3 } from 'three';
-  import type { CanvasProps } from '../d3/Canvas2D.svelte';
+  import type { CanvasProps } from '$lib/d3/CanvasType';
 
-  setTemplate(template as Snippet<[Partial<CanvasProps>]>);
+  const { Story } = defineMeta({
+    title: 'Initialize/SplitCanvas2D',
+    component: Canvas2D,
+    render: template
+  });
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
@@ -55,8 +51,9 @@ The following props are available for `splitCanvas3DProps`:
 - cameraZoom?: `number`
 -->
 <Story name="With 3D on the right">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D title={'This is a split screen applet'}>
+    <Canvas2D title="This is a split screen applet">
       <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />
 
       {#snippet splitCanvas3DChildren()}
@@ -65,6 +62,7 @@ The following props are available for `splitCanvas3DProps`:
       {/snippet}
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>
 
 <!-- The same can be done with 3D on the left and 2D on the right. 
@@ -84,8 +82,9 @@ The following props are available for `splitCanvas3DProps`:
 ```
  -->
 <Story name="With 3D on the left">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas3D title={'This is a split screen applet'}>
+    <Canvas3D title="This is a split screen applet">
       <Vector3D direction={new Vector3(2, 1, 0)} length={2} color={PrimeColor.raspberry} />
       <Axis3D />
 
@@ -94,4 +93,5 @@ The following props are available for `splitCanvas3DProps`:
       {/snippet}
     </Canvas3D>
   </div>
+  {/snippet}
 </Story>

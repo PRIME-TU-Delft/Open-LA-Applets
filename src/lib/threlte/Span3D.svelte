@@ -72,7 +72,7 @@
   {@const w = toggles[2] ? vectors[2] : new Vector3()}
   <PlaneFromPoints points={[u, v, w]} {color} />
 {:else if toggles[0] || toggles[1] || toggles[2]}
-  {#each toggles as toggle, i}
+  {#each toggles as toggle, i (i)}
     {#if toggle}
       <Line3D
         origin={vectors[i].clone().normalize().multiplyScalar(-10)}

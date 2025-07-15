@@ -31,7 +31,7 @@
   {formulas}
   showFormulasDefault
 >
-  {#each draggables as draggable}
+  {#each draggables as draggable (draggable.id)}
     <Vector2D
       direction={draggable.position}
       length={draggable.position.length()}
@@ -42,7 +42,7 @@
   {#snippet splitCanvas2DChildren()}
     <InfiniteLine2D direction={new Vector2(1, -1)} color={PrimeColor.darkGreen} />
 
-    {#each draggables as draggable}
+    {#each draggables as draggable (draggable.id)}
       {@const transformed = transform(draggable.position)}
       <Vector2D direction={transformed} length={transformed.length()} color={draggable.color} />
 

@@ -35,11 +35,11 @@
 
   <!-- P -->
   <Point3D position={p} color={PrimeColor.blue} />
-  <Latex3D latex={'P'} position={p} extend={-0.5} color={PrimeColor.blue} />
+  <Latex3D latex="P" position={p} extend={-0.5} color={PrimeColor.blue} />
 
   <!-- Q -->
   <Point3D position={q.clone().add(p)} color={PrimeColor.darkGreen} />
-  <Latex3D latex={'Q'} position={q.clone().add(p)} extend={0.6} color={PrimeColor.darkGreen} />
+  <Latex3D latex="Q" position={q.clone().add(p)} extend={0.6} color={PrimeColor.darkGreen} />
   <Vector3D
     origin={p}
     direction={q}

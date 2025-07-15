@@ -29,7 +29,7 @@
     const pos = draggables[0].position;
     const length = pos.length();
     const f1 = new Formula(`\\text{length} = ${round(length)}`);
-    const f2 = new Formula(`A = \{x: ${round(pos.x)}, y: ${round(pos.y)}\}`);
+    const f2 = new Formula(`A = {x: ${round(pos.x)}, y: ${round(pos.y)}}`);
     return [f1, f2];
   });
 
@@ -58,6 +58,7 @@ const oneFormula = $derived.by(() => {
 ```
 -->
 <Story name="One formula">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={oneFormula}>
       <Vector2D
@@ -68,6 +69,7 @@ const oneFormula = $derived.by(() => {
       />
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>
 
 <!-- Multi formulas 
@@ -83,6 +85,7 @@ const multiFormula = $derived.by(() => {
 ```
 -->
 <Story name="Multi formula">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={multiFormula}>
       <Vector2D
@@ -93,6 +96,7 @@ const multiFormula = $derived.by(() => {
       />
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>
 
 <!-- add auto parameter
@@ -110,6 +114,7 @@ const autoParamFormula = $derived.by(() => {
 ```
 -->
 <Story name="Auto parameter formulas">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={autoParamFormula}>
       <Vector2D
@@ -120,6 +125,7 @@ const autoParamFormula = $derived.by(() => {
       />
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>
 
 <!-- Split formulas
@@ -130,6 +136,7 @@ const formulaRight = $derived([autoParamFormula[0]]);
 ```
 -->
 <Story name="Split formulas">
+  {#snippet template(args)}
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D {draggables} formulas={formulaLeft} splitFormulas={formulaRight}>
       <Vector2D
@@ -149,4 +156,5 @@ const formulaRight = $derived([autoParamFormula[0]]);
       {/snippet}
     </Canvas2D>
   </div>
+  {/snippet}
 </Story>

@@ -20,7 +20,7 @@
   <Point3D position={new Vector3()} size={0.25} color="rgb(47,73,74)" />
   <Latex3D latex={'\\mathbf{C}'} hasBackground />
 
-  {#each hAtoms as atom}
+  {#each hAtoms as atom (atom.x + '_' + atom.y + '_' + atom.z)}
     <!-- H atoms -->
     <Point3D position={atom} size={0.25} color="#ccc" />
     <Vector3D direction={atom} noNormalise color={PrimeColor.black} hideHead />
