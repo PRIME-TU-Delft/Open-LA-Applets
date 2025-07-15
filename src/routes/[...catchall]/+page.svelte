@@ -9,6 +9,8 @@
     { name: 'Abel de Bruijn', title: 'Lead-developer' },
     { name: 'Pauline Hengst', title: 'Frontend-developer' },
     { name: 'Julia van der Kris', title: 'Backend-developer' },
+    { name: 'Bartek Włodarczyk', title: 'Developer' },
+    { name: 'Zhenghan Zhong', title: 'Developer' },
     { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
     { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
     { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
