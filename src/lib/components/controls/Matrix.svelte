@@ -38,24 +38,28 @@
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.tl}
     />
     <input
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.tr}
     />
     <input
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.bl}
     />
     <input
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.br}
     />
   </div>

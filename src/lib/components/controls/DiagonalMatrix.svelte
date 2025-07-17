@@ -38,12 +38,14 @@
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.tl}
     />
     <input
       type="number"
       class="w-full rounded-md bg-red-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={
         () => controller.value.tr,
         (v) => {
@@ -56,6 +58,7 @@
       type="number"
       class="w-full rounded-md bg-red-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={
         () => controller.value.bl,
         (v) => {
@@ -68,6 +71,7 @@
       type="number"
       class="w-full rounded-md bg-gray-200 p-1 text-center"
       disabled={controller.disabled}
+      step={controller.step}
       bind:value={controller.value.br}
     />
   </div>
