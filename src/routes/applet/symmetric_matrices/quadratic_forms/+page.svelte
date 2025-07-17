@@ -46,7 +46,7 @@
   let b = $derived(2 * mat.value.tr);
   let c = $derived(mat.value.br);
 
-  let func_k = $derived(parameterizeConic(a, b, c, k));
+  let func_k = $derived(parameterizeConic(a, b, c, round(k, 1)));
 
   // find primary axes
   let primary_axes: Vector2[] = $derived.by(() => {
@@ -92,6 +92,8 @@
       <ParameterizedFunction2D
         xFunc={func_k?.xFunc}
         yFunc={func_k?.yFunc}
+        tStart={func_k?.line ? -30 : -4}
+        tEnd={func_k?.line ? 30 : 4}
         color={PrimeColor.raspberry}
         width={0.06}
       />
@@ -101,6 +103,8 @@
       <ParameterizedFunction2D
         xFunc={func_k?.xFunc2}
         yFunc={func_k?.yFunc2}
+        tStart={func_k?.line ? -30 : -4}
+        tEnd={func_k?.line ? 30 : 4}
         color={PrimeColor.raspberry}
         width={0.06}
       />
@@ -113,6 +117,8 @@
         <ParameterizedFunction2D
           xFunc={func?.xFunc}
           yFunc={func?.yFunc}
+          tStart={func?.line ? -30 : -4}
+          tEnd={func?.line ? 30 : 4}
           color={PrimeColor.blue + PrimeColor.opacity(0.5)}
         />
       {/if}
@@ -121,6 +127,8 @@
         <ParameterizedFunction2D
           xFunc={func?.xFunc2}
           yFunc={func?.yFunc2}
+          tStart={func?.line ? -30 : -4}
+          tEnd={func?.line ? 30 : 4}
           color={PrimeColor.blue + PrimeColor.opacity(0.5)}
         />
       {/if}

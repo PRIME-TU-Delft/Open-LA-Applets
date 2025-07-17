@@ -24,8 +24,8 @@
     yFunc,
     color = 'black',
     stepSize = 0.05,
-    tStart = -GRID_SIZE_2D,
-    tEnd = GRID_SIZE_2D,
+    tStart = -3,
+    tEnd = 3,
     tension = 0.5,
     showArrows = false,
     width = LINE_WIDTH

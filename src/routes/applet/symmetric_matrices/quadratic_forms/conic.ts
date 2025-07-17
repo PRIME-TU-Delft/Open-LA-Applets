@@ -16,6 +16,7 @@ function parameterizeConic(
     yFunc: string;
     xFunc2?: string;
     yFunc2?: string;
+    line?: boolean;
 } | null {
     const delta = b * b - 4 * a * c;
     const angle = 0.5 * Math.atan2(b, a - c);
@@ -60,7 +61,7 @@ function parameterizeConic(
             const xFunc2 = `(${uExpr2}) * ${cos} - (${vExpr2}) * ${sin}`;
             const yFunc2 = `(${uExpr2}) * ${sin} + (${vExpr2}) * ${cos}`;
 
-            return { xFunc, yFunc, xFunc2, yFunc2 };
+            return { xFunc, yFunc, xFunc2, yFunc2, line: true };
         }
 
         if (d < 0) {
@@ -109,7 +110,8 @@ function parameterizeConic(
 
             return {
                 xFunc: `(${uExpr}) * ${cos} - (${vExpr}) * ${sin}`,
-                yFunc: `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`
+                yFunc: `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`,
+                line: true
             };
         }
 
@@ -134,7 +136,7 @@ function parameterizeConic(
         const xFunc2 = `(${uExpr2}) * ${cos} - (${vExpr2}) * ${sin}`;
         const yFunc2 = `(${uExpr2}) * ${sin} + (${vExpr2}) * ${cos}`;
 
-        return { xFunc, yFunc, xFunc2, yFunc2 };
+        return { xFunc, yFunc, xFunc2, yFunc2, line: true };
     }
 }
 
