@@ -1,4 +1,4 @@
-name: Build storybooks for documentation
+name: Build documentation
 on:
   push:
 
@@ -22,4 +22,4 @@ jobs:
     - name: Install dependencies
       run: pnpm install
     - name: Run storybooks build
-      run: pnpm storybook build
+      run: pnpm build-storybook
