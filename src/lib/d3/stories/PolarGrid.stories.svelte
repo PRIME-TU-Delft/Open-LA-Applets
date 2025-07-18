@@ -9,7 +9,6 @@
 </script>
 
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import Canvas2D from '../Canvas2D.svelte';
   import type { PolarGridProps } from '../PolarGrid.svelte';
 

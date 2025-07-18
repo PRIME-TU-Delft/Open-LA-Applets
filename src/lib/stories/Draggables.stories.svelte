@@ -129,20 +129,20 @@ const draggables = [
 ```
 -->
 <Story name="Custom snap">
-  {#snippet template(args)}
-  <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D draggables={customSnapDraggables}>
-      <circle r={2} fill={PrimeColor.yellow + PrimeColor.opacity(0.5)} />
+  {#snippet template()}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D draggables={customSnapDraggables}>
+        <circle r={2} fill={PrimeColor.yellow + PrimeColor.opacity(0.5)} />
 
-      {#each customSnapDraggables as draggable, i (draggable.id)}
-        <Vector2D
-          origin={new Vector2(0, 0)}
-          direction={draggable.position}
-          length={draggable.position.length()}
-          color={PrimeColor.getColor(i)}
-        />
-      {/each}
-    </Canvas2D>
-  </div>
+        {#each customSnapDraggables as draggable, i (draggable.id)}
+          <Vector2D
+            origin={new Vector2(0, 0)}
+            direction={draggable.position}
+            length={draggable.position.length()}
+            color={PrimeColor.getColor(i)}
+          />
+        {/each}
+      </Canvas2D>
+    </div>
   {/snippet}
 </Story>
