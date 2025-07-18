@@ -59,16 +59,16 @@ const oneFormula = $derived.by(() => {
 -->
 <Story name="One formula">
   {#snippet template(args)}
-  <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D {draggables} formulas={oneFormula}>
-      <Vector2D
-        origin={new Vector2(0, 0)}
-        direction={draggables[0].position}
-        length={draggables[0].position.length()}
-        color={PrimeColor.blue}
-      />
-    </Canvas2D>
-  </div>
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D {draggables} formulas={oneFormula}>
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={draggables[0].position}
+          length={draggables[0].position.length()}
+          color={PrimeColor.blue}
+        />
+      </Canvas2D>
+    </div>
   {/snippet}
 </Story>
 
@@ -86,16 +86,16 @@ const multiFormula = $derived.by(() => {
 -->
 <Story name="Multi formula">
   {#snippet template(args)}
-  <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D {draggables} formulas={multiFormula}>
-      <Vector2D
-        origin={new Vector2(0, 0)}
-        direction={draggables[0].position}
-        length={draggables[0].position.length()}
-        color={PrimeColor.blue}
-      />
-    </Canvas2D>
-  </div>
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D {draggables} formulas={multiFormula}>
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={draggables[0].position}
+          length={draggables[0].position.length()}
+          color={PrimeColor.blue}
+        />
+      </Canvas2D>
+    </div>
   {/snippet}
 </Story>
 
@@ -115,16 +115,16 @@ const autoParamFormula = $derived.by(() => {
 -->
 <Story name="Auto parameter formulas">
   {#snippet template(args)}
-  <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D {draggables} formulas={autoParamFormula}>
-      <Vector2D
-        origin={new Vector2(0, 0)}
-        direction={draggables[0].position}
-        length={draggables[0].position.length()}
-        color={PrimeColor.blue}
-      />
-    </Canvas2D>
-  </div>
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D {draggables} formulas={autoParamFormula}>
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={draggables[0].position}
+          length={draggables[0].position.length()}
+          color={PrimeColor.blue}
+        />
+      </Canvas2D>
+    </div>
   {/snippet}
 </Story>
 
@@ -137,24 +137,24 @@ const formulaRight = $derived([autoParamFormula[0]]);
 -->
 <Story name="Split formulas">
   {#snippet template(args)}
-  <div class="h-[300px] overflow-hidden rounded-lg">
-    <Canvas2D {draggables} formulas={formulaLeft} splitFormulas={formulaRight}>
-      <Vector2D
-        origin={new Vector2(0, 0)}
-        direction={draggables[0].position}
-        length={draggables[0].position.length()}
-        color={PrimeColor.blue}
-      />
-
-      {#snippet splitCanvas2DChildren()}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D {draggables} formulas={formulaLeft} splitFormulas={formulaRight}>
         <Vector2D
           origin={new Vector2(0, 0)}
           direction={draggables[0].position}
           length={draggables[0].position.length()}
           color={PrimeColor.blue}
         />
-      {/snippet}
-    </Canvas2D>
-  </div>
+
+        {#snippet splitCanvas2DChildren()}
+          <Vector2D
+            origin={new Vector2(0, 0)}
+            direction={draggables[0].position}
+            length={draggables[0].position.length()}
+            color={PrimeColor.blue}
+          />
+        {/snippet}
+      </Canvas2D>
+    </div>
   {/snippet}
 </Story>
