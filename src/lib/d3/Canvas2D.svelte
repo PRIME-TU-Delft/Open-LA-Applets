@@ -6,7 +6,7 @@
   import { activityState } from '$lib/stores/activity.svelte';
   import Camera3D from '$lib/threlte/Camera3D.svelte';
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
-  import { parseUrl } from '$lib/utils/parseUrl';
+  import { parseUrl } from '$lib/utils/URLParsing';
   import { Canvas } from '@threlte/core';
   import { NoToneMapping, Vector2 } from 'three';
   import CanvasD3 from './CanvasD3.svelte';

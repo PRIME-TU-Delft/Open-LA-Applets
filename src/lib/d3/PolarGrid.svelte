@@ -65,7 +65,7 @@
 <InfiniteLine2D direction={new Vector2(0, 1)} color={PrimeColor.black} width={strokeWidth(0)} />
 
 <!-- Angled grid lines -->
-{#each lines as v, index}
+{#each lines as v, index (index)}
   {@const angle = angles_deg[index] > 0 ? 180.0 / angles_deg[index] : 0}
 
   <!-- Line -->
@@ -118,7 +118,7 @@
 {/each}
 
 <!-- Radius grid circles -->
-{#each [...Array(numCircles).keys()] as radius}
+{#each [...Array(numCircles).keys()] as radius (radius)}
   <Circle2D {radius} width={strokeWidth(radius)} color={strokeColor} />
 
   <!-- Radii ticks -->

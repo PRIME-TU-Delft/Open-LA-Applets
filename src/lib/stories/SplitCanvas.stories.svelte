@@ -51,7 +51,7 @@ The following props are available for `splitCanvas3DProps`:
 - cameraZoom?: `number`
 -->
 <Story name="With 3D on the right">
-  {#snippet template(args)}
+  {#snippet template()}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D title="This is a split screen applet">
         <Vector2D direction={new Vector2(1, 2)} length={2} color={PrimeColor.blue} />

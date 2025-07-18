@@ -85,7 +85,7 @@ const multiFormula = $derived.by(() => {
 ```
 -->
 <Story name="Multi formula">
-  {#snippet template(args)}
+  {#snippet template()}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D {draggables} formulas={multiFormula}>
         <Vector2D
@@ -114,7 +114,7 @@ const autoParamFormula = $derived.by(() => {
 ```
 -->
 <Story name="Auto parameter formulas">
-  {#snippet template(args)}
+  {#snippet template()}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D {draggables} formulas={autoParamFormula}>
         <Vector2D
@@ -136,7 +136,7 @@ const formulaRight = $derived([autoParamFormula[0]]);
 ```
 -->
 <Story name="Split formulas">
-  {#snippet template(args)}
+  {#snippet template()}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D {draggables} formulas={formulaLeft} splitFormulas={formulaRight}>
         <Vector2D
