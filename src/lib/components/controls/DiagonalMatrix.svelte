@@ -43,7 +43,8 @@
     />
     <input
       type="number"
-      class="w-full rounded-md bg-red-200 p-1 text-center"
+      class="w-full rounded-md p-1 text-center"
+      style="background-color: {controller.color + PrimeColor.opacity(0.4)}"
       disabled={controller.disabled}
       step={controller.step}
       bind:value={
@@ -56,7 +57,8 @@
     />
     <input
       type="number"
-      class="w-full rounded-md bg-red-200 p-1 text-center"
+      class="w-full rounded-md p-1 text-center"
+      style="background-color: {controller.color + PrimeColor.opacity(0.4)}"
       disabled={controller.disabled}
       step={controller.step}
       bind:value={
