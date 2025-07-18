@@ -7,7 +7,8 @@
     parameters: {
       docs: {
         description: {
-          component: 'There are 3 components for creating functions in 2D: ExplicitFunction2D, ImplicitFunction2D, and ParameterizedFunction2D, shown below.'
+          component:
+            'There are 3 components for creating functions in 2D: ExplicitFunction2D, ImplicitFunction2D, and ParameterizedFunction2D, shown below.'
         }
       }
     }
@@ -52,7 +53,14 @@
 <!-- y = sin(x) explicit function with restricted domain [-pi, pi] and with arrows shown -->
 <Story
   name="Explicit sin(x)"
-  args={{ func: 'y=sin(x)', color: PrimeColor.yellow, xMin: -3.14, xMax:3.14, width: 0.02, showArrows: true }}
+  args={{
+    func: 'y=sin(x)',
+    color: PrimeColor.yellow,
+    xMin: -3.14,
+    xMax: 3.14,
+    width: 0.02,
+    showArrows: true
+  }}
   {template}
 />
 
@@ -66,6 +74,14 @@
 <!-- x^2 + y^2 = 1 implicit relation -->
 <Story
   name="Implicit"
-  args={{ func: 'x^2 + y^2 = 1', yMin: -1.1, yMax: 1.1, xMin: -1.1, xMax: 1.1, color: PrimeColor.darkGreen, showArrows: false }}
+  args={{
+    func: 'x^2 + y^2 = 1',
+    yMin: -1.1,
+    yMax: 1.1,
+    xMin: -1.1,
+    xMax: 1.1,
+    color: PrimeColor.darkGreen,
+    showArrows: false
+  }}
   {template}
 />
