@@ -4,6 +4,7 @@
   import type { Slider } from '$lib/controls/Slider.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Minimize2 from '@lucide/svelte/icons/minimize-2';
   import Pause from '@lucide/svelte/icons/pause';
   import Play from '@lucide/svelte/icons/play';
   import Plus from '@lucide/svelte/icons/plus';
@@ -17,6 +18,7 @@
     onStopChanging?: () => void;
     onStartChanging?: () => void;
     onExpand?: () => void;
+    onMinimize?: () => void;
   };
 
   let {
@@ -26,7 +28,8 @@
     playSpeed = 1000 / 16,
     onStopChanging,
     onStartChanging,
-    onExpand
+    onExpand,
+    onMinimize
   }: SliderProps = $props();
 
   let uuid = generateUUID();
@@ -139,7 +142,16 @@
     {/key}
   </Button.Action>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1 relative">
+
+    <Button.Action      
+      class="absolute -top-{slider.label ? 4: 7} -right-2 -z-10 group"
+      tooltip="Minimize slider"
+      onclick={() => (onMinimize ? onMinimize() : {})}>
+      
+      <Minimize2 class="h-4 w-4 group-hover:h-5 group-hover:w-5" fill="white" strokeWidth={2} />
+    </Button.Action>
+
     {#if slider.label}
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
