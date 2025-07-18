@@ -7,16 +7,15 @@
 
   const math = create(all);
 
-  type ExplicitFunction2DProps = {
-    func: string; // function as string, e.g. "y = sin(x)" or "x^2 + y^2 = 1"
+  export type ExplicitFunction2DProps = {
+    func: string; // function as string, e.g. "y = sin(x)"
     color?: string;
     stepSize?: number;
     xMin?: number;
     xMax?: number;
     tension?: number;
-    yMin?: number;
-    yMax?: number;
     showArrows?: boolean;
+    width?: number;
   };
 
   const {
@@ -26,10 +25,9 @@
     xMin = -GRID_SIZE_2D,
     xMax = GRID_SIZE_2D,
     tension = 0.5,
-    showArrows = false
+    showArrows = false,
+    width = LINE_WIDTH
   }: ExplicitFunction2DProps = $props();
-
-  const width = LINE_WIDTH;
 
   // Detect explicit form: y=... or just an expression in x
   let explicitExpr: string = $derived.by(() => {

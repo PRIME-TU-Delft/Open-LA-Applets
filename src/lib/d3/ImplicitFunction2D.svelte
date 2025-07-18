@@ -7,7 +7,7 @@
 
   const math = create(all);
 
-  type ImplicitFunction2DProps = {
+  export type ImplicitFunction2DProps = {
     func: string; // function as string, e.g. "x^2 + y^2 = 1"
     color?: string;
     stepSize?: number;

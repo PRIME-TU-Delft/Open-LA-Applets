@@ -7,7 +7,7 @@
 
   const math = create(all);
 
-  type ParameterizedFunction2DProps = {
+  export type ParameterizedFunction2DProps = {
     xFunc: string; // function of x(t) as string, e.g. "x = sin(t)"
     yFunc: string; // function of y(t) as string, e.g. "y = sin(t)"
     color?: string;
