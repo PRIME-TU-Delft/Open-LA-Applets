@@ -9,15 +9,17 @@ export class Matrix implements Controller<Matrix2> {
   width = 30;
   type = 'Matrix';
   label = '';
+  step = 1;
 
   disabled = $state(false);
 
-  constructor(defaultValue: Matrix2, label: string = '', color: string = PrimeColor.black) {
+  constructor(defaultValue: Matrix2, label: string = '', color: string = PrimeColor.black, step: number = 1) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
     this.color = color;
 
     this.label = label;
+    this.step = step;
   }
 
   static Default = new Matrix2(0, 0, 0, 0);
