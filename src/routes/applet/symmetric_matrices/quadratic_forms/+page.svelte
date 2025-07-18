@@ -33,12 +33,10 @@
       .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
         label: 'k',
         valueFn: (v) => round(v, 1).toString()
-      })
-      .addToggle(true, '\\text{Primary axes}', PrimeColor.darkGreen);
+      });
   });
 
   const k = $derived(controls[1]);
-  const show_primary = $derived(controls[2]);
 
   const plane_position = $derived(new Vector3(0, k, 0));
 
@@ -134,14 +132,12 @@
       {/if}
     {/each}
 
-    {#if show_primary}
-      {#each primary_axes as pa}
-        <InfiniteLine2D
-          direction={pa}
-          isDashed={true}
-          color={PrimeColor.black + PrimeColor.opacity(0.5)}
-        />
-      {/each}
-    {/if}
+    {#each primary_axes as pa}
+      <InfiniteLine2D
+        direction={pa}
+        isDashed={true}
+        color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
+      />
+    {/each}
   {/snippet}
 </Canvas3D>
