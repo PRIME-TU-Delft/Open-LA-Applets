@@ -21,7 +21,7 @@
       .addAutoParam(a, PrimeColor.orange)
       .addAutoParam(withSign(b), PrimeColor.orange)
       .addAutoParam(withSign(c), PrimeColor.orange)
-      .addAutoParam(round(k, 1), PrimeColor.raspberry);
+      .addAutoParam(round(k, 2), PrimeColor.raspberry);
 
     return [f];
   });
@@ -32,7 +32,7 @@
     return Controls.add(mat)
       .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
         label: 'k',
-        valueFn: (v) => round(v, 1).toString()
+        valueFn: (v) => round(v, 2).toString()
       });
   });
 
