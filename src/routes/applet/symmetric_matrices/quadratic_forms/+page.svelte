@@ -44,7 +44,7 @@
   let b = $derived(2 * mat.value.tr);
   let c = $derived(mat.value.br);
 
-  let func_k = $derived(parameterizeConic(a, b, c, round(k, 1)));
+  let func_k = $derived(parameterizeConic(a, b, c, round(k, 2)));
 
   // find primary axes
   let primary_axes: Vector2[] = $derived.by(() => {
@@ -68,6 +68,13 @@
 
   // predefined level lines
   const level_lines: number[] = [-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+  let level_line_functions = $derived(
+    level_lines.map(z_level => ({
+      z_level,
+      func: parameterizeConic(a, b, c, z_level)
+    }))
+  );
 </script>
 
 <Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
@@ -106,6 +113,7 @@
         yFunc={func_k?.yFunc}
         tStart={func_k?.line ? -30 : -4}
         tEnd={func_k?.line ? 30 : 4}
+        stepSize={0.1}
         color={PrimeColor.raspberry}
         width={0.06}
       />
@@ -117,14 +125,13 @@
         yFunc={func_k?.yFunc2}
         tStart={func_k?.line ? -30 : -4}
         tEnd={func_k?.line ? 30 : 4}
+        stepSize={0.1}
         color={PrimeColor.raspberry}
         width={0.06}
       />
     {/if}
 
-    {#each level_lines as z_level}
-      {@const func = parameterizeConic(a, b, c, z_level)}
-
+    {#each level_line_functions as { func }}
       {#if func?.xFunc}
         <ParameterizedFunction2D
           xFunc={func?.xFunc}

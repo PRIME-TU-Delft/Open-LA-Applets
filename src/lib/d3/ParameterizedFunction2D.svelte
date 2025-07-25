@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
+  import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { create, all } from 'mathjs';
   import { Vector2 } from 'three';
