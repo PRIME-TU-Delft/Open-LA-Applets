@@ -33,7 +33,6 @@
     width = LINE_WIDTH
   }: ImplicitFunction2DProps = $props();
 
-
   // Remove whitespace for easier parsing
   const funcStr = $derived.by(() => {
     if (!func.includes('=')) {
@@ -109,8 +108,8 @@
 </script>
 
 {#if showArrows}
-  {#each functionRoots as points, rootIdx}
-    {#each points as point, i}
+  {#each functionRoots as points, rootIdx (rootIdx)}
+    {#each points as point, i (i)}
       {#if i > 0 && i < points.length - 1}
         {@const nextPoint = points[i + 1]}
         {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
@@ -128,6 +127,6 @@
   {/each}
 {/if}
 
-{#each smoothLines as d, idx}
+{#each smoothLines as d, idx (idx)}
   <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
 {/each}

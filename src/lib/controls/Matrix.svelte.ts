@@ -13,7 +13,12 @@ export class Matrix implements Controller<Matrix2> {
 
   disabled = $state(false);
 
-  constructor(defaultValue: Matrix2, label: string = '', color: string = PrimeColor.black, step: number = 1) {
+  constructor(
+    defaultValue: Matrix2,
+    label: string = '',
+    color: string = PrimeColor.black,
+    step: number = 1
+  ) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
     this.color = color;

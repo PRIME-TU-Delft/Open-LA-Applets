@@ -5,7 +5,12 @@ import { Matrix } from './Matrix.svelte';
 export class DiagonalMatrix extends Matrix {
   type = 'DiagonalMatrix';
 
-  constructor(defaultValue: Matrix2, label: string = '', color: string = PrimeColor.black, step: number = 1) {
+  constructor(
+    defaultValue: Matrix2,
+    label: string = '',
+    color: string = PrimeColor.black,
+    step: number = 1
+  ) {
     if (defaultValue.tr !== defaultValue.bl) {
       throw new Error(
         'DiagonalMatrix requires a matrix with equal top right and bottom left elements.'

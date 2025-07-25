@@ -9,7 +9,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { eigs, matrix } from 'mathjs';
+  import { eigs, matrix, type MathCollection } from 'mathjs';
   import { Vector2, Vector3 } from 'three';
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
@@ -70,7 +70,7 @@
   const level_lines: number[] = [-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   let level_line_functions = $derived(
-    level_lines.map(z_level => ({
+    level_lines.map((z_level) => ({
       z_level,
       func: parameterizeConic(a, b, c, z_level)
     }))
@@ -131,7 +131,7 @@
       />
     {/if}
 
-    {#each level_line_functions as { func }}
+    {#each level_line_functions as { func } (func)}
       {#if func?.xFunc}
         <ParameterizedFunction2D
           xFunc={func?.xFunc}
@@ -153,7 +153,7 @@
       {/if}
     {/each}
 
-    {#each primary_axes as pa}
+    {#each primary_axes as pa (pa.toArray().toString())}
       <InfiniteLine2D
         direction={pa}
         isDashed={true}

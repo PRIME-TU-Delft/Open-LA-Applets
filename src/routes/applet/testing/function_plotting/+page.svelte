@@ -26,5 +26,5 @@
   />
   <ImplicitFunction2D func={movableCircle} color={PrimeColor.raspberry} />
 
-  <ParameterizedFunction2D xFunc={'sin(t)'} yFunc={'cos(t)'} color={PrimeColor.yellow} />
+  <ParameterizedFunction2D xFunc="sin(t)" yFunc="cos(t)" color={PrimeColor.yellow} />
 </Canvas2D>

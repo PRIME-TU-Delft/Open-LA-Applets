@@ -15,8 +15,8 @@ export function withSign(number: number) {
   const abs = Math.abs(number);
 
   if (number < 0) {
-    return "- " + abs;
+    return '- ' + abs;
   } else {
-    return "+ " + abs;
+    return '+ ' + abs;
   }
 }
