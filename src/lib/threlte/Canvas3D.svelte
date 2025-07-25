@@ -22,7 +22,7 @@
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
-  import { parseUrl } from '$lib/utils/parseUrl';
+  import { parseUrl } from '$lib/utils/URLParsing';
   import { Canvas } from '@threlte/core';
   import { NoToneMapping, Vector3 } from 'three';
   import Camera3D, { type Camera3DProps } from './Camera3D.svelte';
