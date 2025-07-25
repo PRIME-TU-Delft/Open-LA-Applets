@@ -41,7 +41,7 @@
 
 <div
   class={cn(
-    'absolute bottom-2 left-1/2 -translate-x-1/2 transition-all max-w-4/5 w-max',
+    'absolute bottom-2 left-1/2 w-max max-w-4/5 -translate-x-1/2 transition-all',
     globalState.isInset() && 'm-0'
   )}
 >

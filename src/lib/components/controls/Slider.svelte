@@ -143,8 +143,8 @@
 
     <Button.Action
       class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
-      --bg={'color-mix(in oklab, var(--color-blue-200) 95%, transparent)'}
-      --hover-bg={'var(--color-blue-100)'}
+      --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
+      --hover-bg="var(--color-blue-100)"
       tooltip="Minimize slider"
       onclick={onMinimize}
     >
