@@ -15,6 +15,7 @@
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { withSign } from '$lib/utils/FormatString';
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
+  import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
@@ -29,11 +30,10 @@
   const mat = new DiagonalMatrix(new Matrix2(1, 0.5, 0.5, 1), 'A', PrimeColor.orange, 0.5);
 
   const controls = $derived.by(() => {
-    return Controls.add(mat)
-      .addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
-        label: 'k',
-        valueFn: (v) => round(v, 2).toString()
-      });
+    return Controls.add(mat).addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
+      label: 'k',
+      valueFn: (v) => round(v, 2).toString()
+    });
   });
 
   const k = $derived(controls[1]);
@@ -73,17 +73,31 @@
 <Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
   <Axis3D />
 
-  <Surface3D
-    func={(x, y) => a * x * x + b * x * y + c * y * y}
-    color={PrimeColor.blue}
-    opacity={0.7}
-  />
+  {#if a == 0 && b == 0 && c == 0 && k == 0}
+    <AutoPlanes values={[0, 0]}>
+      {#snippet children(value, index, planeSegment, _)}
+        {@const color = index == 0 ? PrimeColor.raspberry : PrimeColor.blue}
+        <PlaneFromNormal
+          position={new Vector3(0, value, 0)}
+          normal={new Vector3(0, 1, 0)}
+          {planeSegment}
+          {color}
+        />
+      {/snippet}
+    </AutoPlanes>
+  {:else}
+    <Surface3D
+      func={(x, y) => a * x * x + b * x * y + c * y * y}
+      color={PrimeColor.blue}
+      opacity={0.7}
+    />
 
-  <PlaneFromNormal
-    normal={new Vector3(0, 1, 0)}
-    position={plane_position}
-    color={PrimeColor.raspberry}
-  />
+    <PlaneFromNormal
+      normal={new Vector3(0, 1, 0)}
+      position={plane_position}
+      color={PrimeColor.raspberry}
+    />
+  {/if}
 
   {#snippet splitCanvas2DChildren()}
     {#if func_k?.xFunc}
