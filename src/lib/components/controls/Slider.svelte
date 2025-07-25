@@ -4,9 +4,10 @@
   import type { Slider } from '$lib/controls/Slider.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import ChevronsLeftRight from '@lucide/svelte/icons/chevrons-left-right';
+  import ChevronsRightLeft from '@lucide/svelte/icons/chevrons-right-left';
   import Pause from '@lucide/svelte/icons/pause';
   import Play from '@lucide/svelte/icons/play';
-  import Plus from '@lucide/svelte/icons/plus';
   import { generateUUID } from 'three/src/math/MathUtils.js';
 
   type SliderProps = {
@@ -17,6 +18,7 @@
     onStopChanging?: () => void;
     onStartChanging?: () => void;
     onExpand?: () => void;
+    onMinimize?: () => void;
   };
 
   let {
@@ -26,7 +28,8 @@
     playSpeed = 1000 / 16,
     onStopChanging,
     onStartChanging,
-    onExpand
+    onExpand = () => {},
+    onMinimize = () => {}
   }: SliderProps = $props();
 
   let uuid = generateUUID();
@@ -115,20 +118,20 @@
       --hover-bg={slider.color + PrimeColor.opacity(0.8)}
       tooltip="Expand slider"
       side="top"
-      onclick={() => (onExpand ? onExpand() : {})}
+      onclick={onExpand}
     >
-      <Plus class="h-4 w-4" strokeWidth={3} />
+      <ChevronsLeftRight class="h-4 w-4" strokeWidth={3} />
     </Button.Action>
   </div>
 {:else}
   <!-- If the slider is selected / expanded -->
   <Button.Action
-    class="rounded-full text-white"
+    class="relative rounded-full text-white"
     --bg={slider.color}
     --hover-bg={slider.color + PrimeColor.opacity(0.8)}
     tooltip="Toggle animation"
     side="top"
-    onclick={() => togglePlay()}
+    onclick={togglePlay}
   >
     {#key icon}
       {#if icon === 'Play'}
@@ -137,35 +140,43 @@
         <Pause class="h-4 w-4" fill="white" strokeWidth={0} />
       {/if}
     {/key}
+
+    <Button.Action
+      class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
+      --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
+      --hover-bg="var(--color-blue-100)"
+      tooltip="Minimize slider"
+      onclick={onMinimize}
+    >
+      <ChevronsRightLeft class="size-4 group-hover:size-4" />
+    </Button.Action>
   </Button.Action>
 
-  <div class="flex flex-col gap-1">
-    {#if slider.label}
-      <Label
-        class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
-        for="range-{uuid}"
-        >{slider.label}:
-        <p class="absolute left-full flex text-sm" style="color:{slider.color};">
-          {#if slider.labelFormat}
-            {@render slider.labelFormat(value)}
-          {:else}
-            {label}
-          {/if}
-        </p>
-      </Label>
-    {/if}
+  {#if slider.label}
+    <Label
+      class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
+      for="range-{uuid}"
+      >{slider.label}:
+      <p class="absolute left-full flex text-sm" style="color:{slider.color};">
+        {#if slider.labelFormat}
+          {@render slider.labelFormat(value)}
+        {:else}
+          {label}
+        {/if}
+      </p>
+    </Label>
+  {/if}
 
-    <input
-      type="range"
-      id="range-{uuid}"
-      min={slider.min}
-      max={slider.max}
-      step={slider.stepSize}
-      bind:value
-      onchange={stopPlaying}
-      onmousedown={startChanging}
-      ontouchstart={startChanging}
-      style="accent-color: {slider.color}"
-    />
-  </div>
+  <input
+    type="range"
+    id="range-{uuid}"
+    min={slider.min}
+    max={slider.max}
+    step={slider.stepSize}
+    bind:value
+    onchange={stopPlaying}
+    onmousedown={startChanging}
+    ontouchstart={startChanging}
+    style="accent-color: {slider.color}"
+  />
 {/if}

@@ -34,11 +34,14 @@
   function expandIndex(index: number) {
     sliderExpanded = index;
   }
+  function minimizeSlider() {
+    sliderExpanded = -1;
+  }
 </script>
 
 <div
   class={cn(
-    'absolute bottom-2 left-1/2 -translate-x-1/2 transition-all',
+    'absolute bottom-2 left-1/2 w-max max-w-4/5 -translate-x-1/2 transition-all',
     globalState.isInset() && 'm-0'
   )}
 >
@@ -52,6 +55,7 @@
           slider={controller}
           isExpanded={sliderExpanded == index}
           onExpand={() => expandIndex(index)}
+          onMinimize={() => minimizeSlider()}
           onStartChanging={() => globalState.changeState({ controlsInteractive: true })}
           onStopChanging={() => globalState.changeState({ controlsInteractive: false })}
         />
