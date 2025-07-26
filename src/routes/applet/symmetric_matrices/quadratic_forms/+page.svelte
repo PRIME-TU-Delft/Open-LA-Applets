@@ -9,7 +9,6 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { eigs, matrix, type MathCollection } from 'mathjs';
   import { Vector2, Vector3 } from 'three';
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
@@ -48,22 +47,9 @@
 
   // find primary axes
   let primary_axes: Vector2[] = $derived.by(() => {
-    let A = matrix([
-      [a, b / 2],
-      [b / 2, c]
-    ]);
-    let ev_result = eigs(A).eigenvectors;
+    let A = new Matrix2(a, b / 2, b / 2, c);
 
-    let res: Vector2[] = [];
-
-    ev_result.forEach((v) => {
-      const vec: any = v.vector;
-      const x = vec._data[0];
-      const y = vec._data[1];
-      res.push(new Vector2(x, y));
-    });
-
-    return res;
+    return A.getEigenVectors();
   });
 
   // predefined level lines
