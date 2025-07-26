@@ -82,7 +82,7 @@ The following props are available for `splitCanvas3DProps`:
 ```
  -->
 <Story name="With 3D on the left">
-  {#snippet template()}
+  {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas3D title="This is a split screen applet">
         <Vector3D direction={new Vector3(2, 1, 0)} length={2} color={PrimeColor.raspberry} />
