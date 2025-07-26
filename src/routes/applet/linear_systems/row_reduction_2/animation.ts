@@ -6,7 +6,7 @@ const state = [new Vector4(2, -1, -1, 2), new Vector4(1, 2, 4, 4), new Vector4(4
 type S = typeof state;
 
 const transitionSteps: SlideShowSteps<S> = [
-  (t, state) => {
+  (_t, state) => {
     // STEP 1
     const temp = state[1].clone(); // R2
 
@@ -42,7 +42,7 @@ const transitionSteps: SlideShowSteps<S> = [
 
     return { state, labelNext: 'R3 = -1/10*R3', labelPrev: 'R3 = -10*R3' };
   },
-  (t, state) => {
+  (_t, state) => {
     // STEP 4
     const temp = state[2].clone(); // R3
 
