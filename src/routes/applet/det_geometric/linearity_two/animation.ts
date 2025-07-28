@@ -54,7 +54,7 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return { state, labelNext: 'Translate OGC along u', labelPrev: 'Translate AEF along u' };
     },
-    (t, state) => {
+    (_t, state) => {
       // Replace OAFCG & OGC with CGEF & OAEG
       state.OAFCG.visible = false;
       state.OGC.visible = false;
