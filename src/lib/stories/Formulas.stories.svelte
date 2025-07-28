@@ -58,7 +58,7 @@ const oneFormula = $derived.by(() => {
 ```
 -->
 <Story name="One formula">
-  {#snippet template(args)}
+  {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D {draggables} formulas={oneFormula}>
         <Vector2D

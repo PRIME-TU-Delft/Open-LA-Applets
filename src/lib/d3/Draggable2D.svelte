@@ -20,7 +20,6 @@
   let dragPosition: Vector2 = $state(draggable.value.clone());
   let isDragging = $state(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function dragstarted(_: DragEvent) {
     isDragging = true;
     activityState.enable();
