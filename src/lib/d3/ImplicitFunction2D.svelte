@@ -1,14 +1,12 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
-  import { create, all } from 'mathjs';
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
 
-  const math = create(all);
-
   export type ImplicitFunction2DProps = {
-    func: string; // function as string, e.g. "x^2 + y^2 = 1"
+    // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
+    zeroFunc: (x: number, y: number) => number;
     color?: string;
     stepSize?: number;
     xMin?: number;
@@ -21,7 +19,7 @@
   };
 
   const {
-    func,
+    zeroFunc,
     color = 'black',
     stepSize = 0.05,
     xMin = -GRID_SIZE_2D,
@@ -33,35 +31,18 @@
     width = LINE_WIDTH
   }: ImplicitFunction2DProps = $props();
 
-  // Remove whitespace for easier parsing
-  const funcStr = $derived.by(() => {
-    if (!func.includes('=')) {
-      console.error(
-        'Equation must be in the form "... = ...". Use ImplicitFunction2D for implicit functions.'
-      );
-    }
-
-    return func.replace(/\s/g, '');
-  });
-
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     // Implicit form: find roots for each x
-    const [lhs, rhs] = funcStr.split('=');
-    if (!lhs || !rhs) return [];
-    const zeroExpr = `${lhs}-(${rhs})`;
-
-    const parsed = math.parse(zeroExpr);
-    const compiled = parsed.compile();
 
     const rootArrays: Vector2[][] = [];
     for (let x = xMin; x <= xMax; x += stepSize) {
       const roots: number[] = [];
       try {
         let prevY = yMin;
-        let prevVal = compiled.evaluate({ x, y: prevY });
+        let prevVal = zeroFunc(x, prevY);
         for (let y = yMin; y <= yMax; y += stepSize) {
-          let val = compiled.evaluate({ x, y });
+          let val = zeroFunc(x, y);
           if (prevVal * val < 0) {
             // Root in [prevY, y]
             let a = prevY,
@@ -69,7 +50,7 @@
             let prevValBisection = prevVal;
             for (let j = 0; j < 20; j++) {
               const mid = (a + b) / 2;
-              const fmid = compiled.evaluate({ x, y: mid });
+              const fmid = zeroFunc(x, mid);
               if (Math.abs(fmid) < 1e-3) {
                 roots.push(mid);
                 break;

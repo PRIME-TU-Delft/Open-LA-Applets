@@ -1,15 +1,12 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
-  import { create, all } from 'mathjs';
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
 
-  const math = create(all);
-
   export type ParameterizedFunction2DProps = {
-    xFunc: string; // function of x(t) as string, e.g. "x = sin(t)"
-    yFunc: string; // function of y(t) as string, e.g. "y = sin(t)"
+    xFunc: (t: number) => number;
+    yFunc: (t: number) => number;
     color?: string;
     stepSize?: number;
     tStart?: number;
@@ -33,17 +30,14 @@
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
-    const x_compiled = math.parse(xFunc).compile();
-    const y_compiled = math.parse(yFunc).compile();
-
     const points: Vector2[] = [];
     for (let t = tStart; t <= tEnd; t += stepSize) {
       let x: number;
       let y: number;
 
       try {
-        x = x_compiled.evaluate({ t });
-        y = y_compiled.evaluate({ t });
+        x = xFunc(t);
+        y = yFunc(t);
         if (!isFinite(x)) continue;
         if (!isFinite(y)) continue;
       } catch {

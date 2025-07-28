@@ -12,16 +12,16 @@ function parameterizeConic(
   c: number,
   d: number
 ): {
-  xFunc: string;
-  yFunc: string;
-  xFunc2?: string;
-  yFunc2?: string;
+  xFunc: (t: number) => number;
+  yFunc: (t: number) => number;
+  xFunc2?: (t: number) => number;
+  yFunc2?: (t: number) => number;
   line?: boolean;
 } | null {
   const delta = b * b - 4 * a * c;
   const angle = 0.5 * Math.atan2(b, a - c);
-  const cos = `cos(${angle.toFixed(6)})`;
-  const sin = `sin(${angle.toFixed(6)})`;
+  const cos_angle = Math.cos(angle);
+  const sin_angle = Math.sin(angle);
 
   const trace = a + c;
   const det = a * c - (b / 2) ** 2;
@@ -30,58 +30,65 @@ function parameterizeConic(
 
   if (delta < 0) {
     // Ellipse case
-    const uExpr = `sqrt(${d / eigenVal1}) * cos(t)`;
-    const vExpr = `sqrt(${d / eigenVal2}) * sin(t)`;
-
     if (d === 0) {
       // A single point at the origin
-      return { xFunc: '0', yFunc: '0' };
+      return { xFunc: (_t) => 0, yFunc: (_t) => 0 };
     }
 
+    const u_coeff = Math.sqrt(d / eigenVal1);
+    const v_coeff = Math.sqrt(d / eigenVal2);
+
+    const uFunc = (t: number) => u_coeff * Math.cos(t);
+    const vFunc = (t: number) => v_coeff * Math.sin(t);
+
     return {
-      xFunc: `(${uExpr}) * ${cos} - (${vExpr}) * ${sin}`,
-      yFunc: `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`
+      xFunc: (t) => uFunc(t) * cos_angle - vFunc(t) * sin_angle,
+      yFunc: (t) => uFunc(t) * sin_angle + vFunc(t) * cos_angle
     };
   } else if (delta > 0) {
     // Hyperbola case
-    const uExpr = `sqrt(${d / eigenVal1}) * cosh(t)`;
-    const vExpr = `sqrt(${Math.abs(d / eigenVal2)}) * sinh(t)`;
-
     if (d === 0) {
       // Degenerate hyperbola: two intersecting lines.
       // eigenVal1 > 0, eigenVal2 < 0
-      const slope = `sqrt(${-eigenVal2 / eigenVal1})`;
-      const uExpr1 = `${slope} * t`;
-      const vExpr1 = 't';
-      const uExpr2 = `-${slope} * t`;
-      const vExpr2 = 't';
+      const slope = Math.sqrt(-eigenVal2 / eigenVal1);
+      const uFunc1 = (t: number) => slope * t;
+      const vFunc1 = (t: number) => t;
+      const uFunc2 = (t: number) => -slope * t;
+      const vFunc2 = (t: number) => t;
 
-      const xFunc = `(${uExpr1}) * ${cos} - (${vExpr1}) * ${sin}`;
-      const yFunc = `(${uExpr1}) * ${sin} + (${vExpr1}) * ${cos}`;
-      const xFunc2 = `(${uExpr2}) * ${cos} - (${vExpr2}) * ${sin}`;
-      const yFunc2 = `(${uExpr2}) * ${sin} + (${vExpr2}) * ${cos}`;
+      const xFunc = (t: number) => uFunc1(t) * cos_angle - vFunc1(t) * sin_angle;
+      const yFunc = (t: number) => uFunc1(t) * sin_angle + vFunc1(t) * cos_angle;
+      const xFunc2 = (t: number) => uFunc2(t) * cos_angle - vFunc2(t) * sin_angle;
+      const yFunc2 = (t: number) => uFunc2(t) * sin_angle + vFunc2(t) * cos_angle;
 
       return { xFunc, yFunc, xFunc2, yFunc2, line: true };
     }
 
     if (d < 0) {
       // d < 0. Case corresponding to v^2/B^2 - u^2/A^2 = 1
-      const uExpr = `sqrt(${-d / eigenVal1}) * sinh(t)`;
-      const vExpr = `sqrt(${d / eigenVal2}) * cosh(t)`;
+      const u_coeff = Math.sqrt(-d / eigenVal1);
+      const v_coeff = Math.sqrt(d / eigenVal2);
+      const uFunc = (t: number) => u_coeff * Math.sinh(t);
+      const vFunc = (t: number) => v_coeff * Math.cosh(t);
 
-      const xFunc = `(${uExpr}) * ${cos} - (${vExpr}) * ${sin}`;
-      const yFunc = `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`;
-      const xFunc2 = `(${uExpr}) * ${cos} + (${vExpr}) * ${sin}`;
-      const yFunc2 = `(${uExpr}) * ${sin} - (${vExpr}) * ${cos}`;
+      const xFunc = (t: number) => uFunc(t) * cos_angle - vFunc(t) * sin_angle;
+      const yFunc = (t: number) => uFunc(t) * sin_angle + vFunc(t) * cos_angle;
+      const xFunc2 = (t: number) => uFunc(t) * cos_angle + vFunc(t) * sin_angle;
+      const yFunc2 = (t: number) => uFunc(t) * sin_angle - vFunc(t) * cos_angle;
 
       return { xFunc, yFunc, xFunc2, yFunc2 };
     }
 
+    const u_coeff = Math.sqrt(d / eigenVal1);
+    const v_coeff = Math.sqrt(Math.abs(d / eigenVal2));
+    const uFunc = (t: number) => u_coeff * Math.cosh(t);
+    const vFunc = (t: number) => v_coeff * Math.sinh(t);
+
     return {
-      xFunc: `(${uExpr}) * ${cos} - (${vExpr}) * ${sin}`,
-      yFunc: `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`,
-      xFunc2: `(-${uExpr}) * ${cos} - (${vExpr}) * ${sin}`,
-      yFunc2: `(-${uExpr}) * ${sin} + (${vExpr}) * ${cos}`
+      xFunc: (t) => uFunc(t) * cos_angle - vFunc(t) * sin_angle,
+      yFunc: (t) => uFunc(t) * sin_angle + vFunc(t) * cos_angle,
+      xFunc2: (t) => -uFunc(t) * cos_angle - vFunc(t) * sin_angle,
+      yFunc2: (t) => -uFunc(t) * sin_angle + vFunc(t) * cos_angle
     };
   } else {
     // delta = 0, Parabolic case (degenerate)
@@ -99,42 +106,42 @@ function parameterizeConic(
 
     if (d_div_trace === 0) {
       // d = 0, degenerate conic: a single line
-      let uExpr = 't';
-      let vExpr = '0';
+      let uFunc = (t: number) => t;
+      let vFunc = (_t: number) => 0;
       if (trace > 0) {
         // eigenVal1 = trace, eigenVal2 = 0. Equation: trace * u^2 = 0 -> u=0
-        uExpr = '0';
-        vExpr = 't';
+        uFunc = (_t: number) => 0;
+        vFunc = (t: number) => t;
       }
       // else trace < 0, eigenVal1 = 0, eigenVal2 = trace. Equation: trace * v^2 = 0 -> v=0
 
       return {
-        xFunc: `(${uExpr}) * ${cos} - (${vExpr}) * ${sin}`,
-        yFunc: `(${uExpr}) * ${sin} + (${vExpr}) * ${cos}`,
+        xFunc: (t) => uFunc(t) * cos_angle - vFunc(t) * sin_angle,
+        yFunc: (t) => uFunc(t) * sin_angle + vFunc(t) * cos_angle,
         line: true
       };
     }
 
     // Two parallel lines
-    const const_val = `sqrt(${d_div_trace})`;
-    let uExpr1 = 't';
-    let vExpr1 = const_val;
-    let uExpr2 = 't';
-    let vExpr2 = `-${const_val}`;
+    const const_val = Math.sqrt(d_div_trace);
+    let uFunc1 = (t: number) => t;
+    let vFunc1 = (_t: number) => const_val;
+    let uFunc2 = (t: number) => t;
+    let vFunc2 = (_t: number) => -const_val;
 
     if (trace > 0) {
       // u = +/- const_val, v = t
-      uExpr1 = const_val;
-      vExpr1 = 't';
-      uExpr2 = `-${const_val}`;
-      vExpr2 = 't';
+      uFunc1 = (_t: number) => const_val;
+      vFunc1 = (t: number) => t;
+      uFunc2 = (_t: number) => -const_val;
+      vFunc2 = (t: number) => t;
     }
     // else trace < 0, v = +/- const_val, u = t, which is the default
 
-    const xFunc = `(${uExpr1}) * ${cos} - (${vExpr1}) * ${sin}`;
-    const yFunc = `(${uExpr1}) * ${sin} + (${vExpr1}) * ${cos}`;
-    const xFunc2 = `(${uExpr2}) * ${cos} - (${vExpr2}) * ${sin}`;
-    const yFunc2 = `(${uExpr2}) * ${sin} + (${vExpr2}) * ${cos}`;
+    const xFunc = (t: number) => uFunc1(t) * cos_angle - vFunc1(t) * sin_angle;
+    const yFunc = (t: number) => uFunc1(t) * sin_angle + vFunc1(t) * cos_angle;
+    const xFunc2 = (t: number) => uFunc2(t) * cos_angle - vFunc2(t) * sin_angle;
+    const yFunc2 = (t: number) => uFunc2(t) * sin_angle + vFunc2(t) * cos_angle;
 
     return { xFunc, yFunc, xFunc2, yFunc2, line: true };
   }

@@ -34,7 +34,7 @@
     <Canvas2D {...canvasProps}>
       {#if 'xFunc' in args}
         <ParameterizedFunction2D {...args} />
-      {:else if 'yMin' in args && 'yMax' in args}
+      {:else if 'zeroFunc' in args}
         <ImplicitFunction2D {...args} />
       {:else}
         <ExplicitFunction2D {...args} />
@@ -46,7 +46,7 @@
 <!-- y = x^2 explicit function with increased width -->
 <Story
   name="Explicit"
-  args={{ func: 'y=x^2', color: PrimeColor.raspberry, width: 0.06, showArrows: false }}
+  args={{ func: (x) => x * x, color: PrimeColor.raspberry, width: 0.06, showArrows: false }}
   {template}
 />
 
@@ -54,7 +54,7 @@
 <Story
   name="Explicit sin(x)"
   args={{
-    func: 'y=sin(x)',
+    func: (x) => Math.sin(x),
     color: PrimeColor.yellow,
     xMin: -3.14,
     xMax: 3.14,
@@ -67,7 +67,13 @@
 <!-- x = cost(t); y = sin(t) parameterized function -->
 <Story
   name="Parameterized"
-  args={{ xFunc: 'cos(t)', yFunc: 'sin(t)', tEnd: 4, color: PrimeColor.cyan, showArrows: false }}
+  args={{
+    xFunc: (t) => Math.cos(t),
+    yFunc: (t) => Math.sin(t),
+    tEnd: 4,
+    color: PrimeColor.cyan,
+    showArrows: false
+  }}
   {template}
 />
 
@@ -75,7 +81,7 @@
 <Story
   name="Implicit"
   args={{
-    func: 'x^2 + y^2 = 1',
+    zeroFunc: (x, y) => x * x + y * y - 1,
     yMin: -1.1,
     yMax: 1.1,
     xMin: -1.1,

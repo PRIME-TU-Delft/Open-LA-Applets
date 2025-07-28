@@ -1,14 +1,11 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
-  import { create, all } from 'mathjs';
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
 
-  const math = create(all);
-
   export type ExplicitFunction2DProps = {
-    func: string; // function as string, e.g. "y = sin(x)"
+    func: (x: number) => number;
     color?: string;
     stepSize?: number;
     xMin?: number;
@@ -29,32 +26,13 @@
     width = LINE_WIDTH
   }: ExplicitFunction2DProps = $props();
 
-  // Detect explicit form: y=... or just an expression in x
-  let explicitExpr: string = $derived.by(() => {
-    const funcStr = func.replace(/\s/g, '');
-
-    if (/^y=/.test(funcStr)) {
-      return funcStr.replace(/^y=/, '');
-    } else if (!funcStr.includes('=')) {
-      return funcStr;
-    } else {
-      console.error(
-        'Implicit functions are not supported in this component. Use ImplicitFunction2D instead.'
-      );
-      return '';
-    }
-  });
-
   // Generate points for the function
   const functionRoots = $derived.by(() => {
-    const parsed = math.parse(explicitExpr);
-    const compiled = parsed.compile();
-
     const points: Vector2[] = [];
     for (let x = xMin; x <= xMax; x += stepSize) {
       let y: number;
       try {
-        y = compiled.evaluate({ x });
+        y = func(x);
         if (!isFinite(y)) continue;
       } catch {
         continue;
