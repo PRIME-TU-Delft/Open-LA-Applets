@@ -72,7 +72,7 @@
           if (!rootArrays[idx]) rootArrays[idx] = [];
           rootArrays[idx].push(new Vector2(x, y));
         });
-      } catch (e) {
+      } catch (_e) {
         // Ignore
       }
     }
