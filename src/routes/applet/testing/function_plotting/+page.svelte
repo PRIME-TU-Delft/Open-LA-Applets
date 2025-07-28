@@ -9,22 +9,36 @@
 
   const draggables = [new Draggable(new Vector2(1, 1), PrimeColor.raspberry)];
 
-  let movableX3 = $derived(`y=(x-${draggables[0].position.x})^3+${draggables[0].position.y}`);
+  const movableX3 = (x: number) => (x - draggables[0].position.x) ** 3 + draggables[0].position.y;
 
-  let movableCircle = $derived(`x^2+y^2=${draggables[0].position.lengthSq()}`);
+  const movableCircle = (x: number, y: number) =>
+    x ** 2 + y ** 2 - draggables[0].position.lengthSq();
 </script>
 
 <Canvas2D {draggables}>
-  <ExplicitFunction2D func="y=log(x)" color={PrimeColor.darkGreen} showArrows stepSize={0.15} />
-  <ExplicitFunction2D func="y=sqrt(x^2)" color={PrimeColor.darkGreen} />
+  <ExplicitFunction2D
+    func={(x) => Math.log(x)}
+    color={PrimeColor.darkGreen}
+    showArrows
+    stepSize={0.15}
+  />
+  <ExplicitFunction2D func={(x) => Math.sqrt(x ** 2)} color={PrimeColor.darkGreen} />
   <ExplicitFunction2D func={movableX3} color={PrimeColor.raspberry} />
   <ImplicitFunction2D
-    func="x^2/3^2 + y^2/2^2 - (2*x*y*cos(2.2))/(3*2) = (sin(2.2))^2"
+    zeroFunc={(x, y) =>
+      x ** 2 / 3 ** 2 +
+      y ** 2 / 2 ** 2 -
+      (2 * x * y * Math.cos(2.2)) / (3 * 2) -
+      Math.sin(2.2) ** 2}
     color={PrimeColor.blue}
     stepSize={0.1}
     showArrows
   />
-  <ImplicitFunction2D func={movableCircle} color={PrimeColor.raspberry} />
+  <ImplicitFunction2D zeroFunc={movableCircle} color={PrimeColor.raspberry} />
 
-  <ParameterizedFunction2D xFunc="sin(t)" yFunc="cos(t)" color={PrimeColor.yellow} />
+  <ParameterizedFunction2D
+    xFunc={(t) => Math.sin(t)}
+    yFunc={(t) => Math.cos(t)}
+    color={PrimeColor.yellow}
+  />
 </Canvas2D>
