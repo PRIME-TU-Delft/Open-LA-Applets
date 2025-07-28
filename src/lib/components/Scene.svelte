@@ -22,6 +22,7 @@
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
+  import FpsCounter from './FpsCounter.svelte';
   import { cn } from '$lib/utils';
 
   let {
@@ -126,6 +127,10 @@
       <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
         {globalState.title}
       </div>
+    {/if}
+
+    {#if dev}
+      <FpsCounter />
     {/if}
 
     <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
