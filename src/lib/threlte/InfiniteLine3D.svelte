@@ -3,7 +3,7 @@
   import { Vector3 } from 'three';
   import Line3D from './Line3D.svelte';
 
-  type LineProps = {
+  export type InfiniteLine3DProps = {
     origin?: Vector3;
     direction: Vector3;
     color?: string;
@@ -19,7 +19,7 @@
     isDashed = false,
     radius = 0,
     alwaysOnTop = false
-  }: LineProps = $props();
+  }: InfiniteLine3DProps = $props();
 </script>
 
 <!--@component

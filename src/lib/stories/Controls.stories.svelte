@@ -126,10 +126,10 @@ const toggleControls = Controls.addToggle(true, 'A', PrimeColor.blue).addToggle(
 <Story name="Toggles">
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={toggleControls}>
-      {#if toggleControls[0]}
+      {#if toggleControls[1]}
         <Vector2D direction={new Vector2(-2, 1)} length={3} color={PrimeColor.raspberry} />
       {/if}
-      {#if toggleControls[1]}
+      {#if toggleControls[0]}
         <Vector2D direction={new Vector2(2, 1)} length={3} color={PrimeColor.blue} />
       {/if}
     </Canvas2D>

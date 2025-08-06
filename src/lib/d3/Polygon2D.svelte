@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Vector2 } from 'three';
 
-  type Polygon2DProps = {
+  export type Polygon2DProps = {
     points: Vector2[];
     color?: string;
     strokeColor?: string;

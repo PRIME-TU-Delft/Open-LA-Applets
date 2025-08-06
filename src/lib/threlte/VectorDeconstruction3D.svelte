@@ -3,13 +3,9 @@
   import Line3D from './Line3D.svelte';
   import Point3D from './Point3D.svelte';
 
-  // export let p: Vector3;
-  // export let color = 'black'; //color of used lines
-  // export let showAxisPoints = false;
-  // export let pointSize = 0.05;
-  type PartialDeconstruction3DProps = {
+  export type VectorDeconstruction3DProps = {
     p: Vector3;
-    color?: string;
+    color?: string; //color of used lines
     showAxisPoints?: boolean;
     pointSize?: number;
   };
@@ -19,7 +15,7 @@
     color = 'black',
     showAxisPoints = false,
     pointSize = 0.05
-  }: PartialDeconstruction3DProps = $props();
+  }: VectorDeconstruction3DProps = $props();
 
   //points on each axis
   let xAx = $derived(new Vector3(p.x, 0, 0));

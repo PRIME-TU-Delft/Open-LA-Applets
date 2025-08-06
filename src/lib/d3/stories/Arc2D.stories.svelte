@@ -23,7 +23,7 @@
   </div>
 {/snippet}
 
-<!-- Dynamic snippet should be disabled for this story -->
+<!-- An arc with color defined -->
 <Story
   name="With color"
   args={{ points: [new Vector2(1, 0), new Vector2(0, 1)], color: PrimeColor.raspberry }}

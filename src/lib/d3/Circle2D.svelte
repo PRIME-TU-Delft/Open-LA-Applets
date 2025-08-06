@@ -2,7 +2,7 @@
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
 
-  type Line2DProps = {
+  export type Circle2DProps = {
     position?: Vector2;
     radius?: number;
     color?: string;
@@ -18,7 +18,7 @@
     width = LINE_WIDTH,
     isDashed = false,
     fill = 'none'
-  }: Line2DProps = $props();
+  }: Circle2DProps = $props();
 </script>
 
 <!-- @component
