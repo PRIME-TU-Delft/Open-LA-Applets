@@ -24,6 +24,7 @@
   />
   <ExplicitFunction2D func={(x) => Math.sqrt(x ** 2)} color={PrimeColor.darkGreen} />
   <ExplicitFunction2D func={movableX3} color={PrimeColor.raspberry} />
+
   <ImplicitFunction2D
     zeroFunc={(x, y) =>
       x ** 2 / 3 ** 2 +
@@ -35,6 +36,15 @@
     showArrows
   />
   <ImplicitFunction2D zeroFunc={movableCircle} color={PrimeColor.raspberry} />
+
+  <ImplicitFunction2D
+    zeroFunc={(x, y) => x * x + y * y - 4}
+    yMin={-2.1}
+    yMax={2.1}
+    xMin={-2.1}
+    xMax={2.1}
+    color={PrimeColor.darkGreen}
+  />
 
   <ParameterizedFunction2D
     xFunc={(t) => Math.sin(t)}
