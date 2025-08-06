@@ -31,52 +31,90 @@
     width = LINE_WIDTH
   }: ImplicitFunction2DProps = $props();
 
-  // Generate points for the function
-  const functionRoots = $derived.by(() => {
-    // Implicit form: find roots for each x
+  
+  function interpolate(p1: Vector2, p2: Vector2, v1: number, v2: number): Vector2 {
+    if (Math.abs(v1 - v2) < 1e-10) return p1.clone();
+    const t = -v1 / (v2 - v1);
+    return p1.clone().lerp(p2, t);
+  }
 
-    const rootArrays: Vector2[][] = [];
-    for (let x = xMin; x <= xMax; x += stepSize) {
-      const roots: number[] = [];
-      try {
-        let prevY = yMin;
-        let prevVal = zeroFunc(x, prevY);
-        for (let y = yMin; y <= yMax; y += stepSize) {
-          let val = zeroFunc(x, y);
-          if (prevVal * val < 0) {
-            // Root in [prevY, y]
-            let a = prevY,
-              b = y;
-            let prevValBisection = prevVal;
-            for (let j = 0; j < 20; j++) {
-              const mid = (a + b) / 2;
-              const fmid = zeroFunc(x, mid);
-              if (Math.abs(fmid) < 1e-3) {
-                roots.push(mid);
-                break;
-              }
-              if (prevValBisection * fmid < 0) {
-                b = mid;
-                val = fmid;
-              } else {
-                a = mid;
-                prevValBisection = fmid;
-              }
-            }
-          }
-          prevY = y;
-          prevVal = val;
+  // Marching squares algorithm to find contour lines
+  const contourLines = $derived.by(() => {
+    const lines: Vector2[][] = [];
+    
+    const gridWidth = Math.ceil((xMax - xMin) / stepSize);
+    const gridHeight = Math.ceil((yMax - yMin) / stepSize);
+    
+    const values: number[][] = [];
+    for (let i = 0; i <= gridWidth; i++) {
+      values[i] = [];
+      for (let j = 0; j <= gridHeight; j++) {
+        const x = xMin + i * stepSize;
+        const y = yMin + j * stepSize;
+        try {
+          const val = zeroFunc(x, y);
+          values[i][j] = isFinite(val) ? val : 0;
+        } catch {
+          values[i][j] = 0;
         }
-        roots.forEach((y, idx) => {
-          if (!isFinite(y)) return;
-          if (!rootArrays[idx]) rootArrays[idx] = [];
-          rootArrays[idx].push(new Vector2(x, y));
-        });
-      } catch (_e) {
-        // Ignore
       }
     }
-    return rootArrays.filter((arr) => arr && arr.length > 0);
+    
+    
+    for (let i = 0; i < gridWidth; i++) {
+      for (let j = 0; j < gridHeight; j++) {
+        const x = xMin + i * stepSize;
+        const y = yMin + j * stepSize;
+        
+        // Get the four corner values
+        const v00 = values[i][j];
+        const v10 = values[i + 1][j];
+        const v01 = values[i][j + 1];
+        const v11 = values[i + 1][j + 1];
+        
+        // Create marching squares case
+        let caseIndex = 0;
+        if (v00 > 0) caseIndex |= 1;
+        if (v10 > 0) caseIndex |= 2;
+        if (v11 > 0) caseIndex |= 4;
+        if (v01 > 0) caseIndex |= 8;
+        
+        // Skip if all same sign or zero
+        if (caseIndex === 0 || caseIndex === 15) continue;
+        
+        // Corner points
+        const p00 = new Vector2(x, y);
+        const p10 = new Vector2(x + stepSize, y);
+        const p01 = new Vector2(x, y + stepSize);
+        const p11 = new Vector2(x + stepSize, y + stepSize);
+        
+        // Edge midpoints (interpolated)
+        const edges: Vector2[] = [];
+        edges[0] = interpolate(p00, p10, v00, v10); // bottom edge
+        edges[1] = interpolate(p10, p11, v10, v11); // right edge
+        edges[2] = interpolate(p01, p11, v01, v11); // top edge
+        edges[3] = interpolate(p00, p01, v00, v01); // left edge
+        
+        // Determine line segments based on case
+        const segments: [number, number][] = [];
+        switch (caseIndex) {
+          case 1: case 14: segments.push([3, 0]); break;
+          case 2: case 13: segments.push([0, 1]); break;
+          case 3: case 12: segments.push([3, 1]); break;
+          case 4: case 11: segments.push([1, 2]); break;
+          case 5: segments.push([3, 0], [1, 2]); break;
+          case 6: case 9: segments.push([0, 2]); break;
+          case 7: case 8: segments.push([3, 2]); break;
+          case 10: segments.push([3, 1], [0, 2]); break;
+        }
+        
+        for (const [start, end] of segments) {
+          lines.push([edges[start], edges[end]]);
+        }
+      }
+    }
+    
+    return lines;
   });
 
   const smoothLines = $derived.by(() => {
@@ -84,30 +122,34 @@
       .x((d) => d.x)
       .y((d) => d.y)
       .curve(curveCardinal.tension(tension));
-    return functionRoots.map((points) => l(points));
+    
+    return contourLines.map((points) => l(points));
   });
+
 </script>
 
 {#if showArrows}
-  {#each functionRoots as points, rootIdx (rootIdx)}
-    {#each points as point, i (i)}
-      {#if i > 0 && i < points.length - 1}
-        {@const nextPoint = points[i + 1]}
-        {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
-        {@const size = (width ?? 0.5) * 2}
-        <g
-          transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-        >
-          <Triangle2D
-            points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-            {color}
-          />
-        </g>
-      {/if}
-    {/each}
+  {#each contourLines as points, lineIdx (lineIdx)}
+    {#if points.length >= 2}
+      {@const midIdx = Math.floor(points.length / 2)}
+      {@const point = points[midIdx]}
+      {@const nextPoint = points[Math.min(midIdx + 1, points.length - 1)]}
+      {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
+      {@const size = (width ?? 0.5) * 2}
+      <g
+        transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
+      >
+        <Triangle2D
+          points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
+          {color}
+        />
+      </g>
+    {/if}
   {/each}
 {/if}
 
 {#each smoothLines as d, idx (idx)}
-  <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+  {#if d}
+    <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+  {/if}
 {/each}
