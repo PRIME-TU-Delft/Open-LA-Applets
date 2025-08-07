@@ -13,7 +13,7 @@
       This applet was created for the
       <a
         class="flex items-center gap-1"
-        href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
+        href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
       >
         TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
       >

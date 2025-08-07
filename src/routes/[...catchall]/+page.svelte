@@ -31,7 +31,7 @@
     These applets were created for the
     <a
       class="inline-flex items-center gap-1 hover:underline"
-      href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
+      href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
     >
       TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
     >. Abstract linear algebra concepts are visualized in an interactive way to help students
@@ -63,7 +63,7 @@
       <h2>Credits</h2>
       <p>
         These applets were created for the
-        <a href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html">
+        <a href="https://interactivetextbooks.tudelft.nl/linear-algebra/">
           TU Delft Open Linear Algebra book
         </a> by these wonderful contributors.
       </p>

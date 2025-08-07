@@ -34,7 +34,7 @@
       <Breadcrumb.Separator />
       <Breadcrumb.Item>
         <Breadcrumb.Link
-          href="https://prime.pages.ewi.tudelft.nl/openlabook-published/index.html"
+          href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
           class="link"
         >
           Open LA book
