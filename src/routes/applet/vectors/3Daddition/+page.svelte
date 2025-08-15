@@ -2,7 +2,7 @@
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
-  import PartialDeconstruction3D from '$lib/threlte/PartialDeconstruction3D.svelte';
+  import VectorDeconstruction3D from '$lib/threlte/VectorDeconstruction3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
@@ -28,7 +28,7 @@
     color={PrimeColor.darkGreen}
     latex={'\\begin{bmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v1} color={PrimeColor.darkGreen} showAxisPoints />
+  <VectorDeconstruction3D p={v1} color={PrimeColor.darkGreen} showAxisPoints />
 
   <!-- upper green vector -->
   <Vector3D direction={v1} origin={v2} color={PrimeColor.darkGreen} length={v1.length()} />
@@ -41,7 +41,7 @@
     color={PrimeColor.blue}
     latex={'\\begin{bmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
+  <VectorDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
 
   <!-- red vector -->
   <Vector3D direction={v3} color={PrimeColor.raspberry} length={v3.length()} />
@@ -51,7 +51,7 @@
     color={PrimeColor.raspberry}
     latex={'\\begin{bmatrix} ' + v3.x + ' \\\\ ' + v3.z + ' \\\\ ' + v3.y + ' \\end{bmatrix}'}
   />
-  <PartialDeconstruction3D p={v3} color={PrimeColor.raspberry} showAxisPoints />
+  <VectorDeconstruction3D p={v3} color={PrimeColor.raspberry} showAxisPoints />
 
   <Axis3D showNumbers axisLength={10} floor />
 </Canvas3D>

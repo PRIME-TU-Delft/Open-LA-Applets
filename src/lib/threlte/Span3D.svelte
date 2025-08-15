@@ -7,7 +7,7 @@
   import { Vector3 } from 'three';
   import Point3D from './Point3D.svelte';
 
-  type CubePlaneLineProps = {
+  export type CubePlaneLineProps = {
     toggles: readonly [boolean, boolean, boolean];
     vectors: [Vector3, Vector3, Vector3];
     cubeSize?: number;
