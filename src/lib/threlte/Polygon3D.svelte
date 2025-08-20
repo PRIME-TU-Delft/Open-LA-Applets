@@ -10,7 +10,7 @@
     type FrontSide
   } from 'three';
 
-  type Polygon3DProps = {
+  export type Polygon3DProps = {
     points: Vector3[];
     offset?: Vector3;
     color?: string;
