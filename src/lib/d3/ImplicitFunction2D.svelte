@@ -1,7 +1,13 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { curveCardinal, line } from 'd3';
-  import { Vector2 } from 'three';
+  import {
+    curveCardinal,
+    curveCardinalClosed,
+    curveCatmullRomClosed,
+    curveCatmullRomOpen,
+    line
+  } from 'd3';
+  import { CatmullRomCurve3, Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
 
   export type ImplicitFunction2DProps = {
@@ -18,13 +24,90 @@
     width?: number;
   };
 
+  class StartEndLine {
+    start: Vector2;
+    end: Vector2;
+    points: Vector2[];
+
+    constructor(start: Vector2, end: Vector2) {
+      this.start = start;
+      this.end = end;
+      this.points = [start, end];
+    }
+
+    private startDistance(other: Vector2): number {
+      return this.start.distanceTo(other);
+    }
+
+    private endDistance(other: Vector2): number {
+      return this.end.distanceTo(other);
+    }
+
+    addEdge([start, end]: [Vector2, Vector2]): boolean {
+      if (this.startDistance(start) < 0.001) {
+        // prepend to start
+        this.points.unshift(end);
+        this.start = end;
+        return true;
+      } else if (this.startDistance(end) < 0.001) {
+        // prepend to start
+        this.points.unshift(start);
+        this.start = start;
+        return true;
+      } else if (this.endDistance(start) < 0.001) {
+        // append to end
+        this.points.push(end);
+        this.end = end;
+        return true;
+      } else if (this.endDistance(end) < 0.001) {
+        // append to end
+        this.points.push(start);
+        this.end = start;
+        return true;
+      }
+
+      return false;
+    }
+
+    canMerge(other: StartEndLine): boolean {
+      // Check if the start or end points are close enough
+      return (
+        this.startDistance(other.start) < 0.001 ||
+        this.startDistance(other.end) < 0.001 ||
+        this.endDistance(other.start) < 0.001 ||
+        this.endDistance(other.end) < 0.001
+      );
+    }
+
+    merge(other: StartEndLine): void {
+      // Merge points from the other line
+      if (this.startDistance(other.start) < 0.001) {
+        this.points.unshift(...other.points);
+        this.start = other.start;
+      } else if (this.startDistance(other.end) < 0.001) {
+        this.points.unshift(...other.points.reverse());
+        this.start = other.end;
+      } else if (this.endDistance(other.start) < 0.001) {
+        this.points.push(...other.points);
+        this.end = other.start;
+      } else if (this.endDistance(other.end) < 0.001) {
+        this.points.push(...other.points.reverse());
+        this.end = other.end;
+      }
+    }
+
+    get length(): number {
+      return this.start.distanceTo(this.end);
+    }
+  }
+
   const {
     zeroFunc,
     color = 'black',
-    stepSize = 0.05,
+    stepSize = 0.5,
     xMin = -GRID_SIZE_2D,
     xMax = GRID_SIZE_2D,
-    tension = 0.5,
+    tension = -0.5,
     showArrows = false,
     yMin = -GRID_SIZE_2D,
     yMax = GRID_SIZE_2D,
@@ -39,7 +122,7 @@
 
   // Marching squares algorithm to find contour lines
   const contourLines = $derived.by(() => {
-    const lines: Vector2[][] = [];
+    const lines: StartEndLine[] = [];
 
     const gridWidth = Math.ceil((xMax - xMin) / stepSize);
     const gridHeight = Math.ceil((yMax - yMin) / stepSize);
@@ -129,10 +212,40 @@
         }
 
         for (const [start, end] of segments) {
-          lines.push([edges[start], edges[end]]);
+          // Check if it can be added to any StartEndLine
+          let canBeAdded = false;
+          const s = edges[start];
+          const e = edges[end];
+          for (const line of lines) {
+            if (line.addEdge([s, e])) {
+              canBeAdded = true;
+              break;
+            }
+          }
+
+          if (!canBeAdded) {
+            // Create a new StartEndLine if it cannot be added
+            const newLine = new StartEndLine(s, e);
+            lines.push(newLine);
+          }
         }
       }
     }
+
+    // Merge lines if possible
+    for (const line of lines) {
+      // Check if the line can be merged with any existing line
+      for (const other of lines) {
+        if (line !== other && line.canMerge(other)) {
+          line.merge(other);
+          // remove other from the list of lines
+          lines.splice(lines.indexOf(other), 1);
+          break;
+        }
+      }
+    }
+
+    console.log({ lines });
 
     return lines;
   });
@@ -143,16 +256,16 @@
       .y((d) => d.y)
       .curve(curveCardinal.tension(tension));
 
-    return contourLines.map((points) => l(points));
+    return contourLines.map((line) => l(line.points));
   });
 </script>
 
 {#if showArrows}
-  {#each contourLines as points, lineIdx (lineIdx)}
-    {#if points.length >= 2}
-      {@const midIdx = Math.floor(points.length / 2)}
-      {@const point = points[midIdx]}
-      {@const nextPoint = points[Math.min(midIdx + 1, points.length - 1)]}
+  {#each contourLines as line, lineIdx (lineIdx)}
+    {#if line.length >= 2}
+      {@const midIdx = Math.floor(line.points.length / 2)}
+      {@const point = line.points[midIdx]}
+      {@const nextPoint = line.points[Math.min(midIdx + 1, line.points.length - 1)]}
       {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
       {@const size = (width ?? 0.5) * 2}
       <g
