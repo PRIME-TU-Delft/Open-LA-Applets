@@ -1,14 +1,7 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import {
-    curveCardinal,
-    curveCardinalClosed,
-    curveCatmullRomClosed,
-    curveCatmullRomOpen,
-    line
-  } from 'd3';
-  import { CatmullRomCurve3, Vector2 } from 'three';
-  import Triangle2D from './Triangle2D.svelte';
+  import { curveCardinal, line } from 'd3';
+  import { Vector2 } from 'three';
 
   export type ImplicitFunction2DProps = {
     // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
@@ -20,7 +13,6 @@
     tension?: number;
     yMin?: number;
     yMax?: number;
-    showArrows?: boolean;
     width?: number;
   };
 
@@ -82,17 +74,17 @@
     merge(other: StartEndLine): void {
       // Merge points from the other line
       if (this.startDistance(other.start) < 0.001) {
-        this.points.unshift(...other.points);
-        this.start = other.start;
-      } else if (this.startDistance(other.end) < 0.001) {
-        this.points.unshift(...other.points.reverse());
+        this.points.unshift(...other.points.reverse().slice(0, -1));
         this.start = other.end;
+      } else if (this.startDistance(other.end) < 0.001) {
+        this.points.unshift(...other.points.slice(0, -1));
+        this.start = other.start;
       } else if (this.endDistance(other.start) < 0.001) {
-        this.points.push(...other.points);
-        this.end = other.start;
-      } else if (this.endDistance(other.end) < 0.001) {
-        this.points.push(...other.points.reverse());
+        this.points = [...this.points.slice(0, -1), ...other.points];
         this.end = other.end;
+      } else if (this.endDistance(other.end) < 0.001) {
+        this.points = [...this.points.slice(0, -1), ...other.points.reverse()];
+        this.end = other.start;
       }
     }
 
@@ -104,11 +96,10 @@
   const {
     zeroFunc,
     color = 'black',
-    stepSize = 0.5,
+    stepSize = 0.15,
     xMin = -GRID_SIZE_2D,
     xMax = GRID_SIZE_2D,
     tension = -0.5,
-    showArrows = false,
     yMin = -GRID_SIZE_2D,
     yMax = GRID_SIZE_2D,
     width = LINE_WIDTH
@@ -232,16 +223,19 @@
       }
     }
 
-    // Merge lines if possible
-    for (const line of lines) {
-      // Check if the line can be merged with any existing line
-      for (const other of lines) {
-        if (line !== other && line.canMerge(other)) {
-          line.merge(other);
-          // remove other from the list of lines
-          lines.splice(lines.indexOf(other), 1);
-          break;
+    let merged = true;
+    while (merged) {
+      merged = false;
+      for (let i = 0; i < lines.length; i++) {
+        for (let j = i + 1; j < lines.length; j++) {
+          if (lines[i].canMerge(lines[j])) {
+            lines[i].merge(lines[j]);
+            lines.splice(j, 1);
+            merged = true;
+            break;
+          }
         }
+        if (merged) break;
       }
     }
 
@@ -260,28 +254,19 @@
   });
 </script>
 
-{#if showArrows}
-  {#each contourLines as line, lineIdx (lineIdx)}
-    {#if line.length >= 2}
-      {@const midIdx = Math.floor(line.points.length / 2)}
-      {@const point = line.points[midIdx]}
-      {@const nextPoint = line.points[Math.min(midIdx + 1, line.points.length - 1)]}
-      {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
-      {@const size = (width ?? 0.5) * 2}
-      <g
-        transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-      >
-        <Triangle2D
-          points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-          {color}
-        />
-      </g>
-    {/if}
-  {/each}
-{/if}
-
 {#each smoothLines as d, idx (idx)}
   {#if d}
-    <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+    <path {d} stroke={color} stroke-width={width ?? LINE_WIDTH} fill="none" />
   {/if}
 {/each}
+
+<!-- debug: show all points
+{#each contourLines as line, lineIdx (lineIdx)}
+  {#each line.points as point, pointIdx (pointIdx)}
+    <Point2D
+      position={new Vector2(point.x, point.y)}
+      color={PrimeColor.black}
+      radius={0.03}
+    />
+  {/each}
+{/each} -->

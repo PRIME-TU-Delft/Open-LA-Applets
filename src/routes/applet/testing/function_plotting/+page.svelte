@@ -33,9 +33,12 @@
       Math.sin(2.2) ** 2}
     color={PrimeColor.blue}
     stepSize={0.1}
-    showArrows
   />
   <ImplicitFunction2D zeroFunc={movableCircle} color={PrimeColor.raspberry} />
+  <ImplicitFunction2D
+    zeroFunc={(x, y) => x ** 2 - 4 * x * y + y ** 2 - 3}
+    color={PrimeColor.black}
+  />
 
   <ImplicitFunction2D
     zeroFunc={(x, y) => x * x + y * y - 4}
