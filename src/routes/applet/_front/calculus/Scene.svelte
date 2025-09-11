@@ -85,7 +85,13 @@
   function toPoints(equation: { t: number[]; x: number[]; y: number[] }) {
     const points = [];
     for (let i = 0; i < equation.t.length; i += 100) {
-      points.push(new Vector3(equation.x[i] * 5 - 6, equation.y[i], 0).multiplyScalar(2.0));
+      points.push(
+        new Vector3(
+          equation.x[i] * 5 - 6,
+          equation.y[i],
+          Math.sin(equation.t[i] * 5) * 3
+        ).multiplyScalar(2.0)
+      );
     }
 
     return points;
