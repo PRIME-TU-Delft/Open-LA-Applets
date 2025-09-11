@@ -57,7 +57,7 @@
 
 {#if grid}
   <Grid
-    position.y={-0.001}
+    position.y={-15.001}
     cellColor="#c084fc"
     sectionColor="#e9d5ff"
     fadeDistance={50}

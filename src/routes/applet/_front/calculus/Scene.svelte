@@ -3,8 +3,8 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
-  import { OrbitControls } from '@threlte/extras';
-  import { BufferGeometry, Vector3 } from 'three';
+  import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras';
+  import { Vector3 } from 'three';
   import vectorField from './vector_field.json';
 
   let elevation = -2;
@@ -12,7 +12,7 @@
   let grid = true;
 
   let position = new Vector3(10, 3, 7);
-  let zoom = 40;
+  let zoom = 30;
 
   const points = vectorField as { x: number; y: number; u: number; v: number }[];
 
@@ -84,13 +84,13 @@
 
   function toPoints(equation: { t: number[]; x: number[]; y: number[] }) {
     const points = [];
-    for (let i = 0; i < equation.t.length; i += 100) {
+    for (let i = 0; i < equation.t.length; i += 50) {
       points.push(
         new Vector3(
           equation.x[i] * 5 - 6,
           equation.y[i],
           Math.sin(equation.t[i] * 5) * 3
-        ).multiplyScalar(2.0)
+        ).multiplyScalar(1.5)
       );
     }
 
@@ -98,30 +98,36 @@
   }
 
   const equation = Van_der_Pol_like_equation(2, 0.67, 2, 0, 4, 7);
-
-  const geometry = $derived(new BufferGeometry().setFromPoints(toPoints(equation)));
 </script>
 
 {#each points as { x, y, u, v }}
   <Vector3D
     color={PrimeColor.raspberry}
     length={new Vector3(u, v, 0).length() / 2}
-    origin={new Vector3(x * 5 - 6, y, 0).multiplyScalar(2.0)}
+    origin={new Vector3(x * 5 - 6, y, 0).multiplyScalar(1.5)}
     direction={new Vector3(u, v, 0)}
     radius={0.75}
   />
 {/each}
 
-<T.Line {geometry}>
-  <T.LineBasicMaterial color={PrimeColor.blue} />
-</T.Line>
+<T.Mesh>
+  <MeshLineGeometry points={toPoints(equation)} />
+  <MeshLineMaterial
+    depthTest={true}
+    width={0.01}
+    color={PrimeColor.blue}
+    dashOffset={0.1}
+    dashArray={0.1 * 0.01}
+  />
+</T.Mesh>
 
 <T.OrthographicCamera makeDefault position={[position.x, position.y, position.z]} fov={10} {zoom}>
   <OrbitControls
     enableZoom
     maxZoom={zoom * 10}
-    minZoom={Math.max(zoom - 10, 1)}
+    minZoom={0.01}
     maxPolarAngle={Math.PI * 0.6}
+    autoRotate={true}
     autoRotateSpeed={0.3}
   />
 </T.OrthographicCamera>
