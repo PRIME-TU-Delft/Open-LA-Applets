@@ -1,0 +1,32 @@
+{
+  "server": {
+    "port": 4173,
+    "startTimeout": 30000
+  },
+  "screenshots": {
+    "outputDir": "static/screenshots",
+    "viewport": {
+      "width": 1200,
+      "height": 800
+    },
+    "format": "png",
+    "quality": 80,
+    "fullPage": false,
+    "waitForSelector": "canvas, svg",
+    "waitTime": 2000,
+    "timeout": 10000
+  },
+  "browser": {
+    "headless": true,
+    "reducedMotion": true,
+    "args": [
+      "--disable-web-security",
+      "--disable-features=TranslateUI",
+      "--disable-ipc-flooding-protection"
+    ]
+  },
+  "parallel": {
+    "enabled": true,
+    "maxConcurrent": 3
+  }
+}
