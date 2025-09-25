@@ -10,7 +10,6 @@
       "height": 800
     },
     "format": "png",
-    "quality": 80,
     "fullPage": false,
     "waitForSelector": "canvas, svg",
     "waitTime": 2000,

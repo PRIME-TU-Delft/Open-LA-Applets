@@ -144,7 +144,6 @@ async function screenshotRoute(page, route) {
     await page.screenshot({
       path: screenshotPath,
       type: CONFIG.screenshots.format,
-      quality: CONFIG.screenshots.quality,
       fullPage: CONFIG.screenshots.fullPage
     });
     
