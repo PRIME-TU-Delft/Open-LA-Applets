@@ -6,8 +6,8 @@
   "screenshots": {
     "outputDir": "static/screenshots",
     "viewport": {
-      "width": 1200,
-      "height": 800
+      "width": 1920,
+      "height": 1080
     },
     "format": "png",
     "fullPage": false,
@@ -26,6 +26,6 @@
   },
   "parallel": {
     "enabled": true,
-    "maxConcurrent": 3
+    "maxConcurrent": 8
   }
 }

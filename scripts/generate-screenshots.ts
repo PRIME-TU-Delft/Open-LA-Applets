@@ -50,7 +50,7 @@ interface GenerationResult {
   results: ScreenshotResult[];
 }
 
-const configPath = path.join(process.cwd(), 'screenshot.config.json');
+const configPath = path.join(process.cwd(), 'scripts/screenshot.config.json');
 let CONFIG: ScreenshotConfig = {} as ScreenshotConfig;
 
 try {
