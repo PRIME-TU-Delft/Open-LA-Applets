@@ -110,7 +110,6 @@ function startServer(): Promise<ChildProcess> {
     });
 
     let serverReady = false;
-    let timeoutId: NodeJS.Timeout;
 
     const cleanup = () => {
       if (timeoutId) clearTimeout(timeoutId);
@@ -129,8 +128,8 @@ function startServer(): Promise<ChildProcess> {
 
     server.stderr?.on('data', (data: Buffer) => {
       const errorOutput = data.toString();
-        cleanup();
-        console.error('Server error:', errorOutput);
+      cleanup();
+      console.error('Server error:', errorOutput);
     });
 
     server.on('error', (error) => {
@@ -146,7 +145,7 @@ function startServer(): Promise<ChildProcess> {
     });
 
     // Timeout fallback
-    timeoutId = setTimeout(() => {
+    const timeoutId: NodeJS.Timeout = setTimeout(() => {
       if (!serverReady) {
         cleanup();
         server.kill('SIGTERM');
