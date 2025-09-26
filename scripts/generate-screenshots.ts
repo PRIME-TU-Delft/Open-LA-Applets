@@ -90,7 +90,7 @@ async function getAppletRoutes(): Promise<string[]> {
     .map((file) => {
       return file.replace('src/routes', '').replace('/+page.svelte', '').replace(/\\/g, '/');
     })
-    .filter((s) => s !== "/applet/[...applet]/static")
+    .filter((s) => s !== '/applet/[...applet]/static')
     .sort();
 
   console.log(`Found ${routes.length} applet routes`);
@@ -181,7 +181,10 @@ async function screenshotRoute(page: Page, route: string): Promise<ScreenshotRes
  * @param routes list of applet routes to process
  * @returns results of the processes
  */
-async function processRoutesInBatches(browser: Browser, routes: string[]): Promise<ScreenshotResult[]> {
+async function processRoutesInBatches(
+  browser: Browser,
+  routes: string[]
+): Promise<ScreenshotResult[]> {
   const results: ScreenshotResult[] = [];
   const batchSize = CONFIG.parallel.enabled ? CONFIG.parallel.maxConcurrent : 1;
 

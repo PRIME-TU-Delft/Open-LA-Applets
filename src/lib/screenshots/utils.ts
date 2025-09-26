@@ -4,5 +4,5 @@
  * @returns Screenshot file name for the applet on this route
  */
 export function getScreenshotName(route: string) {
-   return route.replace('/applet/', '').replace(/\//g, '_') + '.png';
+  return route.replace('/applet/', '').replace(/\//g, '_') + '.png';
 }

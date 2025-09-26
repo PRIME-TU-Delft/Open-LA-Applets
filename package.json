@@ -22,6 +22,7 @@
     "@chromatic-com/storybook": "^4.0.0",
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",
+    "@types/node": "^22.0.0",
     "@internationalized/date": "^3.8.2",
     "@lucide/svelte": "^0.515.0",
     "@storybook/addon-a11y": "^9.0.11",
