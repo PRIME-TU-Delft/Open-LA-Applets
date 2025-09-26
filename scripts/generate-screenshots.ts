@@ -44,21 +44,6 @@ interface ScreenshotResult {
   error?: string;
 }
 
-interface ManifestScreenshot {
-  route: string;
-  path: string;
-  filename: string;
-  url: string;
-}
-
-interface Manifest {
-  generated: string;
-  total: number;
-  successful: number;
-  failed: number;
-  screenshots: ManifestScreenshot[];
-}
-
 interface GenerationResult {
   successful: number;
   total: number;
@@ -319,28 +304,6 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
       console.log('\nFailed routes:');
       results.filter((r) => !r.success).forEach((r) => console.log(`   - ${r.route}: ${r.error}`));
     }
-
-    // Generate manifest
-    const manifest: Manifest = {
-      generated: new Date().toISOString(),
-      total: routes.length,
-      successful,
-      failed: results.length - successful,
-      screenshots: results
-        .filter((r) => r.success)
-        .map((r) => ({
-          route: r.route,
-          path: path.relative(process.cwd(), r.path!),
-          filename: r.filename!,
-          url: `/screenshots/${r.filename!}`
-        }))
-    };
-
-    await fs.writeFile(
-      path.join(CONFIG.screenshots.outputDir, 'manifest.json'),
-      JSON.stringify(manifest, null, 2)
-    );
-    console.log('Generated manifest.json');
 
     return { successful, total: results.length, results };
   } catch (error) {
