@@ -1,61 +1,85 @@
 #!/usr/bin/env node
 
-import { chromium } from 'playwright';
+import { chromium, Browser, BrowserContext, Page } from 'playwright';
 import fs from 'fs/promises';
 import path from 'path';
 import { glob } from 'glob';
-import { spawn } from 'child_process';
+import { spawn, ChildProcess } from 'child_process';
+import { fileURLToPath } from 'url';
+import { getScreenshotName } from '../src/lib/screenshots/utils';
 
-// Load configuration
+interface ScreenshotConfig {
+  server: {
+    port: number;
+    startTimeout: number;
+  };
+  screenshots: {
+    timeout: number;
+    waitForSelector: string;
+    waitTime: number;
+    outputDir: string;
+    format: 'png' | 'jpeg';
+    fullPage: boolean;
+    viewport: {
+      width: number;
+      height: number;
+    };
+  };
+  browser: {
+    headless: boolean;
+    args: string[];
+    reducedMotion: boolean;
+  };
+  parallel: {
+    enabled: boolean;
+    maxConcurrent: number;
+  };
+}
+
+interface ScreenshotResult {
+  route: string;
+  success: boolean;
+  path?: string;
+  filename?: string;
+  error?: string;
+}
+
+interface ManifestScreenshot {
+  route: string;
+  path: string;
+  filename: string;
+  url: string;
+}
+
+interface Manifest {
+  generated: string;
+  total: number;
+  successful: number;
+  failed: number;
+  screenshots: ManifestScreenshot[];
+}
+
+interface GenerationResult {
+  successful: number;
+  total: number;
+  results: ScreenshotResult[];
+}
+
 const configPath = path.join(process.cwd(), 'screenshot.config.json');
-let userConfig = {};
+let CONFIG: ScreenshotConfig = {} as ScreenshotConfig;
 
 try {
   const configFile = await fs.readFile(configPath, 'utf-8');
-  userConfig = JSON.parse(configFile);
+  CONFIG = JSON.parse(configFile) as ScreenshotConfig;
 } catch (_e) {
-  console.log('No screenshot.config.json found, using defaults');
+  console.log('No screenshot.config.json found!');
 }
 
-// Configuration with defaults
-const CONFIG = {
-  server: {
-    port: 4173,
-    startTimeout: 30000,
-    ...userConfig.server
-  },
-  screenshots: {
-    outputDir: 'static/screenshots',
-    viewport: { width: 1200, height: 800 },
-    format: 'png',
-    quality: 80,
-    fullPage: false,
-    waitForSelector: 'canvas, svg',
-    waitTime: 2000,
-    timeout: 10000,
-    ...userConfig.screenshots
-  },
-  browser: {
-    headless: true,
-    reducedMotion: true,
-    args: [
-      '--disable-web-security',
-      '--disable-features=TranslateUI',
-      '--disable-ipc-flooding-protection'
-    ],
-    ...userConfig.browser
-  },
-  parallel: {
-    enabled: true,
-    maxConcurrent: 3,
-    ...userConfig.parallel
-  }
-};
-
 /**
- * Get all applet routes from the file system
+ * Get all applet routes
+ * @returns a list of all applet routes
  */
-async function getAppletRoutes() {
+async function getAppletRoutes(): Promise<string[]> {
   console.log('Discovering applet routes...');
 
   const files = await glob('src/routes/applet/**/+page.svelte', {
@@ -64,10 +88,9 @@ async function getAppletRoutes() {
 
   const routes = files
     .map((file) => {
-      // Convert file path to route
-      // src/routes/applet/vectors/rules/+page.svelte -> /applet/vectors/rules
-      return file.replace('src/routes', '').replace('/+page.svelte', '').replace(/\\/g, '/'); // Normalize path separators
+      return file.replace('src/routes', '').replace('/+page.svelte', '').replace(/\\/g, '/');
     })
+    .filter((s) => s !== "/applet/[...applet]/static")
     .sort();
 
   console.log(`Found ${routes.length} applet routes`);
@@ -77,7 +100,7 @@ async function getAppletRoutes() {
 /**
  * Start the preview server
  */
-function startServer() {
+function startServer(): Promise<ChildProcess> {
   return new Promise((resolve, reject) => {
     console.log('Starting preview server...');
 
@@ -87,7 +110,7 @@ function startServer() {
 
     let serverReady = false;
 
-    server.stdout.on('data', (data) => {
+    server.stdout?.on('data', (data: Buffer) => {
       const output = data.toString();
       if (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`)) {
         console.log(`Server running at http://localhost:${CONFIG.server.port}`);
@@ -96,7 +119,7 @@ function startServer() {
       }
     });
 
-    server.stderr.on('data', (data) => {
+    server.stderr?.on('data', (data: Buffer) => {
       console.error('Server error:', data.toString());
     });
 
@@ -114,13 +137,15 @@ function startServer() {
 
 /**
  * Take screenshot of a specific route
+ * @param page Playwright page object
+ * @param route route to the applet, e.g. /applet/complex_basics/complex_addition
+ * @returns status of the page capture
  */
-async function screenshotRoute(page, route) {
+async function screenshotRoute(page: Page, route: string): Promise<ScreenshotResult> {
   try {
     const url = `http://localhost:${CONFIG.server.port}${route}`;
     console.log(`Capturing: ${route}`);
 
-    // Navigate to the page
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.screenshots.timeout });
 
     // Wait for main visual elements
@@ -130,14 +155,11 @@ async function screenshotRoute(page, route) {
       console.log(`   No canvas/svg found for ${route}, proceeding anyway`);
     }
 
-    // Additional wait for animations/dynamic content
     await page.waitForTimeout(CONFIG.screenshots.waitTime);
 
-    // Prepare screenshot path
-    const screenshotName = route.replace('/applet/', '').replace(/\//g, '_') + '.png';
+    const screenshotName = getScreenshotName(route);
     const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
 
-    // Take screenshot
     await page.screenshot({
       path: screenshotPath,
       type: CONFIG.screenshots.format,
@@ -147,16 +169,20 @@ async function screenshotRoute(page, route) {
     console.log(`   Saved: ${screenshotName}`);
     return { route, success: true, path: screenshotPath, filename: screenshotName };
   } catch (error) {
-    console.error(`   Failed to capture ${route}:`, error.message);
-    return { route, success: false, error: error.message };
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`   Failed to capture ${route}:`, errorMessage);
+    return { route, success: false, error: errorMessage };
   }
 }
 
 /**
  * Process routes in parallel batches
+ * @param browser Playwright browser object
+ * @param routes list of applet routes to process
+ * @returns results of the processes
  */
-async function processRoutesInBatches(browser, routes) {
-  const results = [];
+async function processRoutesInBatches(browser: Browser, routes: string[]): Promise<ScreenshotResult[]> {
+  const results: ScreenshotResult[] = [];
   const batchSize = CONFIG.parallel.enabled ? CONFIG.parallel.maxConcurrent : 1;
 
   console.log(`Processing ${routes.length} routes in batches of ${batchSize}...`);
@@ -168,13 +194,13 @@ async function processRoutesInBatches(browser, routes) {
     );
 
     // Create pages for parallel processing
-    const batchPromises = batch.map(async (route) => {
-      const context = await browser.newContext({
+    const batchPromises = batch.map(async (route: string): Promise<ScreenshotResult> => {
+      const context: BrowserContext = await browser.newContext({
         viewport: CONFIG.screenshots.viewport,
         reducedMotion: CONFIG.browser.reducedMotion ? 'reduce' : 'no-preference'
       });
 
-      const page = await context.newPage();
+      const page: Page = await context.newPage();
       page.setDefaultTimeout(CONFIG.screenshots.timeout);
 
       try {
@@ -188,7 +214,6 @@ async function processRoutesInBatches(browser, routes) {
     const batchResults = await Promise.all(batchPromises);
     results.push(...batchResults);
 
-    // Progress update
     const successful = results.filter((r) => r.success).length;
     console.log(`   Progress: ${results.length}/${routes.length} (${successful} successful)`);
   }
@@ -199,16 +224,14 @@ async function processRoutesInBatches(browser, routes) {
 /**
  * Generate all screenshots
  */
-async function generateScreenshots() {
-  let server = null;
-  let browser = null;
+async function generateScreenshots(): Promise<GenerationResult | undefined> {
+  let server: ChildProcess | null = null;
+  let browser: Browser | null = null;
 
   try {
-    // Ensure screenshot directory exists
     await fs.mkdir(CONFIG.screenshots.outputDir, { recursive: true });
     console.log(`Screenshot directory: ${CONFIG.screenshots.outputDir}`);
 
-    // Get all applet routes
     const routes = await getAppletRoutes();
 
     if (routes.length === 0) {
@@ -216,21 +239,17 @@ async function generateScreenshots() {
       return;
     }
 
-    // Start server
     server = await startServer();
 
-    // Launch browser
     console.log('Launching browser...');
     browser = await chromium.launch({
       headless: CONFIG.browser.headless,
       args: CONFIG.browser.args
     });
 
-    // Process all routes (with parallel processing if enabled)
     const results = await processRoutesInBatches(browser, routes);
     const successful = results.filter((r) => r.success).length;
 
-    // Summary
     console.log('\nScreenshot generation completed!');
     console.log(`   Successful: ${successful}`);
     console.log(`   Failed: ${results.length - successful}`);
@@ -241,9 +260,8 @@ async function generateScreenshots() {
     }
 
     // Generate manifest
-    const manifest = {
+    const manifest: Manifest = {
       generated: new Date().toISOString(),
-      config: CONFIG,
       total: routes.length,
       successful,
       failed: results.length - successful,
@@ -251,9 +269,9 @@ async function generateScreenshots() {
         .filter((r) => r.success)
         .map((r) => ({
           route: r.route,
-          path: path.relative(process.cwd(), r.path),
-          filename: r.filename,
-          url: `/screenshots/${r.filename}`
+          path: path.relative(process.cwd(), r.path!),
+          filename: r.filename!,
+          url: `/screenshots/${r.filename!}`
         }))
     };
 
@@ -268,7 +286,6 @@ async function generateScreenshots() {
     console.error('Fatal error:', error);
     process.exit(1);
   } finally {
-    // Cleanup
     if (browser) {
       await browser.close();
       console.log('Browser closed');
@@ -281,7 +298,6 @@ async function generateScreenshots() {
   }
 }
 
-// Handle process signals
 process.on('SIGINT', () => {
   console.log('\nReceived SIGINT, cleaning up...');
   process.exit(0);
@@ -292,12 +308,10 @@ process.on('SIGTERM', () => {
   process.exit(0);
 });
 
-// Run the script
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run the script from shell
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
   generateScreenshots().catch((error) => {
     console.error('Unhandled error:', error);
     process.exit(1);
   });
 }
-
-export { generateScreenshots, getAppletRoutes };
