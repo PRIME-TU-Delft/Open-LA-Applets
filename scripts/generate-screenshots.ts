@@ -105,30 +105,51 @@ function startServer(): Promise<ChildProcess> {
     console.log('Starting preview server...');
 
     const server = spawn('pnpm', ['preview', '--port', CONFIG.server.port.toString()], {
-      stdio: ['ignore', 'pipe', 'pipe']
+      stdio: ['ignore', 'pipe', 'pipe'],
+      detached: false
     });
 
     let serverReady = false;
+    let timeoutId: NodeJS.Timeout;
+
+    const cleanup = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      server.removeAllListeners();
+    };
 
     server.stdout?.on('data', (data: Buffer) => {
       const output = data.toString();
       if (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`)) {
         console.log(`Server running at http://localhost:${CONFIG.server.port}`);
         serverReady = true;
+        cleanup();
         resolve(server);
       }
     });
 
     server.stderr?.on('data', (data: Buffer) => {
-      console.error('Server error:', data.toString());
+      const errorOutput = data.toString();
+        cleanup();
+        console.error('Server error:', errorOutput);
     });
 
-    server.on('error', reject);
+    server.on('error', (error) => {
+      cleanup();
+      reject(error);
+    });
+
+    server.on('exit', (code) => {
+      if (!serverReady) {
+        cleanup();
+        reject(new Error(`Server exited with code ${code} before becoming ready`));
+      }
+    });
 
     // Timeout fallback
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       if (!serverReady) {
-        server.kill();
+        cleanup();
+        server.kill('SIGTERM');
         reject(new Error('Server start timeout'));
       }
     }, CONFIG.server.startTimeout);
@@ -225,11 +246,49 @@ async function processRoutesInBatches(
 }
 
 /**
+ * Cleanup function to properly close resources
+ */
+async function cleanup(browser: Browser | null, server: ChildProcess | null): Promise<void> {
+  if (browser) {
+    try {
+      await browser.close();
+      console.log('Browser closed');
+    } catch (error) {
+      console.error('Error closing browser:', error);
+    }
+  }
+
+  if (server) {
+    try {
+      server.kill('SIGTERM');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!server.killed) {
+        server.kill('SIGKILL');
+      }
+      console.log('Server stopped');
+    } catch (error) {
+      console.error('Error stopping server:', error);
+    }
+  }
+}
+
+/**
  * Generate all screenshots
  */
 async function generateScreenshots(): Promise<GenerationResult | undefined> {
   let server: ChildProcess | null = null;
   let browser: Browser | null = null;
+
+  const handleExit = async () => {
+    console.log('\nCleaning up resources...');
+    await cleanup(browser, server);
+    process.exit(0);
+  };
+
+  process.removeAllListeners('SIGINT');
+  process.removeAllListeners('SIGTERM');
+  process.on('SIGINT', handleExit);
+  process.on('SIGTERM', handleExit);
 
   try {
     await fs.mkdir(CONFIG.screenshots.outputDir, { recursive: true });
@@ -287,34 +346,26 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
     return { successful, total: results.length, results };
   } catch (error) {
     console.error('Fatal error:', error);
+    await cleanup(browser, server);
     process.exit(1);
   } finally {
-    if (browser) {
-      await browser.close();
-      console.log('Browser closed');
-    }
-
-    if (server) {
-      server.kill();
-      console.log('Server stopped');
-    }
+    await cleanup(browser, server);
+    setTimeout(() => {
+      console.log('Force exiting...');
+      process.exit(0);
+    }, 2000);
   }
 }
 
-process.on('SIGINT', () => {
-  console.log('\nReceived SIGINT, cleaning up...');
-  process.exit(0);
-});
-
-process.on('SIGTERM', () => {
-  console.log('\nReceived SIGTERM, cleaning up...');
-  process.exit(0);
-});
-
 // Run the script from shell
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
-  generateScreenshots().catch((error) => {
-    console.error('Unhandled error:', error);
-    process.exit(1);
-  });
+  generateScreenshots()
+    .then(() => {
+      console.log('Screenshot generation completed successfully');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error('Unhandled error:', error);
+      process.exit(1);
+    });
 }
