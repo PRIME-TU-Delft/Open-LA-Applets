@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 RUN echo "$(date)" > /app/static/version.txt
-RUN pnpm build
+RUN pnpm build:with-screenshots
 
 
 
