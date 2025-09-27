@@ -288,7 +288,7 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
 
     server = await startServer();
 
-    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
     await delay(2 * CONFIG.screenshots.waitTime); // wait for server to fully start
 
     console.log('Launching browser...');
