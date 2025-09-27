@@ -43,7 +43,12 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} showFormulasDefault title="A parametric vector of a line">
+<Canvas2D
+  {draggables}
+  {formulas}
+  showFormulasDefault
+  title={{ en: 'A parametric vector of a line', nl: 'Een parametrische vector van een lijn' }}
+>
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />
 

@@ -54,7 +54,14 @@
   const enabledVectors = $derived([u, v, w].filter((_, i) => controls[i as 0 | 1 | 2]));
 </script>
 
-<Canvas3D title="Span of three vectors lying in the same plane" {formulas} {controls}>
+<Canvas3D
+  title={{
+    en: 'Span of three vectors lying in the same plane',
+    nl: 'Spanwijdte van drie vectoren die in hetzelfde vlak liggen'
+  }}
+  {formulas}
+  {controls}
+>
   {#if controls[0]}
     <!-- Vector u -->
     <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />

@@ -34,7 +34,13 @@
   );
 </script>
 
-<Canvas2D {draggables} title="Reflection of multiple points along a line">
+<Canvas2D
+  {draggables}
+  title={{
+    en: 'Reflection of multiple points along a line',
+    nl: 'Weerspiegeling van meerdere punten langs een lijn'
+  }}
+>
   <!-- Line L -->
   <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />
   <Latex2D

@@ -19,7 +19,11 @@
   });
 </script>
 
-<Canvas3D {controls} {formulas} title="Two planes with a line of intersection.">
+<Canvas3D
+  {controls}
+  {formulas}
+  title={{ en: 'Two planes with a line of intersection.', nl: 'Twee vlakken met een snijlijn.' }}
+>
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}
       <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />

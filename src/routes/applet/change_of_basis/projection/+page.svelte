@@ -18,7 +18,10 @@
 <Canvas3D
   cameraPosition={new Vector3(12.25, 6.74, 9.53)}
   cameraZoom={40}
-  title="Projection with respect to a suitable basis"
+  title={{
+    en: 'Projection with respect to a suitable basis',
+    nl: 'Projectie met betrekking tot een geschikte basis'
+  }}
 >
   <!-- Vector b1 -->
   <Vector3D direction={b1} length={b1.length()} color={PrimeColor.blue} />

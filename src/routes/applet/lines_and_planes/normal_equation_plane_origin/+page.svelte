@@ -16,7 +16,7 @@
 <Canvas3D
   cameraPosition={new Vector3(-10, 3.8, 13.6)}
   cameraZoom={46}
-  title="A plane through the origin."
+  title={{ en: 'A plane through the origin.', nl: 'Een vlak door de oorsprong.' }}
 >
   <PlaneFromNormal normal={n} color={PrimeColor.yellow} />
 

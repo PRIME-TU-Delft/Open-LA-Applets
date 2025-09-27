@@ -29,7 +29,10 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D title="Span of two parallel vectors" {controls}>
+<Canvas3D
+  title={{ en: 'Span of two parallel vectors', nl: 'Spanwijdte van twee parallelle vectoren' }}
+  {controls}
+>
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->
   {#if controls[0] * controls[1] >= 0 && Math.abs(controls[0]) <= Math.abs(controls[1])}
     <Vector3D direction={v} length={vLen} color={PrimeColor.raspberry} alwaysOnTop />

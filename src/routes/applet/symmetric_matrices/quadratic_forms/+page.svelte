@@ -63,7 +63,12 @@
   );
 </script>
 
-<Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
+<Canvas3D
+  {controls}
+  {formulas}
+  title={{ en: 'Quadratic forms', nl: 'Kwadratische vormen' }}
+  splitCanvas2DProps={{ cameraZoom: 2 }}
+>
   <Axis3D />
 
   {#if a == 0 && b == 0 && c == 0 && k == 0}

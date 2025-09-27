@@ -31,7 +31,10 @@
   {formulas}
   cameraPosition={new Vector3(11.63, 3.66, 12.3)}
   {controls}
-  title="Two planes without a point in common."
+  title={{
+    en: 'Two planes without a point in common.',
+    nl: 'Twee vliegtuigen zonder een gemeenschappelijk punt.'
+  }}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}

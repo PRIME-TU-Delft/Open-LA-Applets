@@ -29,7 +29,7 @@
   {formulas}
   cameraZoom={41}
   {controls}
-  title="Two planes with a line of intersection."
+  title={{ en: 'Two planes with a line of intersection.', nl: 'Twee vlakken met een snijlijn.' }}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}

@@ -34,7 +34,11 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} title="Complex numbers addition">
+<Canvas2D
+  {draggables}
+  {formulas}
+  title={{ en: 'Complex numbers addition', nl: 'Optellen van complexe getallen' }}
+>
   <Vector2D direction={d1.position} length={d1.position.length()} color={PrimeColor.blue} />
   <Vector2D direction={d2.position} length={d2.position.length()} color={PrimeColor.darkGreen} />
   <Vector2D direction={v_result} length={v_result.length()} color={PrimeColor.raspberry} />

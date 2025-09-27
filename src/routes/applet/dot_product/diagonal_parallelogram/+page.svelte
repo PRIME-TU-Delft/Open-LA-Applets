@@ -62,7 +62,10 @@
 </script>
 
 <Canvas2D
-  title="Addition and subtraction of 2 vectors"
+  title={{
+    en: 'Addition and subtraction of 2 vectors',
+    nl: 'Optellen en aftrekken van 2 vectoren'
+  }}
   cameraZoom={1.5}
   cameraPosition={new Vector2(2, 1)}
   splitCanvas2DProps={{

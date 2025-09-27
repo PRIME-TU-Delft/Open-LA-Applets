@@ -14,7 +14,14 @@
   ];
 </script>
 
-<Canvas3D {formulas} showFormulasDefault title="Two planes with a point in common.">
+<Canvas3D
+  {formulas}
+  showFormulasDefault
+  title={{
+    en: 'Two planes with a point in common.',
+    nl: 'Twee vliegtuigen met een gemeenschappelijk punt.'
+  }}
+>
   <AutoPlanes values={[0, 0]}>
     {#snippet children(value, _, planeSegment, color)}
       <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />
