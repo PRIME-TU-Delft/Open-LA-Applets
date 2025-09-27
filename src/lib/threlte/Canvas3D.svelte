@@ -2,10 +2,11 @@
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import type { Canvas2DProps } from '$lib/d3/CanvasD3.svelte';
   import type { Snippet } from 'svelte';
+  import type { LocalizedString } from '$lib/utils';
 
   export type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
-      title?: string;
+      title?: LocalizedString;
       splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
@@ -102,7 +103,7 @@
 - enablePan: Whether to enable pan
 
 @example
-<Canvas3D title={'This is a 3D canvas'}>
+<Canvas3D title={'en':'This is a 3D canvas'}>
   <Axis3D />
 </Canvas3D>
 
