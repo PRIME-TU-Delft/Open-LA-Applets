@@ -103,6 +103,7 @@ function startServer(): Promise<ChildProcess> {
 
     server.stdout?.on('data', (data: Buffer) => {
       const output = data.toString();
+      console.log('Server:', output.trim());
       if (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`)) {
         console.log(`Server running at http://localhost:${CONFIG.server.port}`);
         serverReady = true;
@@ -113,8 +114,8 @@ function startServer(): Promise<ChildProcess> {
 
     server.stderr?.on('data', (data: Buffer) => {
       const errorOutput = data.toString();
+      console.error('Server error:', errorOutput.trim());
       cleanup();
-      console.error('Server error:', errorOutput);
     });
 
     server.on('error', (error) => {
@@ -286,6 +287,9 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
     }
 
     server = await startServer();
+
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+    await delay(2 * CONFIG.screenshots.waitTime); // wait for server to fully start
 
     console.log('Launching browser...');
     browser = await chromium.launch({
