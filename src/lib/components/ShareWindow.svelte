@@ -23,9 +23,17 @@
       <Accordion.Root type="single" class="w-full">
         <!-- EMBEDING -->
         <Accordion.Item value="Embed">
-          <Accordion.Trigger>Embed</Accordion.Trigger>
+          <Accordion.Trigger>Embed interactively</Accordion.Trigger>
           <Accordion.Content>
             <Embedding />
+          </Accordion.Content>
+        </Accordion.Item>
+
+        <!-- STATIC IMAGE -->
+        <Accordion.Item value="Static image">
+          <Accordion.Trigger>Static image</Accordion.Trigger>
+          <Accordion.Content>
+            <Embedding staticImage={true} />
           </Accordion.Content>
         </Accordion.Item>
 

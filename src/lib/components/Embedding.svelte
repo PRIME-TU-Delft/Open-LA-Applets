@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { page } from '$app/state';
   import { cameraState } from '$lib/stores/camera.svelte';
   import Copy from '@lucide/svelte/icons/copy';
@@ -12,8 +12,17 @@
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
   let showCopySucess = $state(false);
 
+  export type EmbeddingProps = {
+    staticImage?: boolean;
+  };
+  let { staticImage }: EmbeddingProps = $props();
+
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
+
+    if (staticImage) {
+      return new URL(page.url.origin + page.url.pathname + '/static').toString();
+    }
 
     if (!includeState) {
       return url.toString();
@@ -68,22 +77,31 @@
   }
 </script>
 
-<div class="mb-4 flex items-center gap-2">
-  <Checkbox id="include-state" bind:checked={includeState} />
+{#if !staticImage}
+  <div class="mb-4 flex items-center gap-2">
+    <Checkbox id="include-state" bind:checked={includeState} />
+    <Label
+      for="include-state"
+      class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    >
+      <span>Include current state (camera position) in url</span>
+    </Label>
+  </div>
+
   <Label
-    for="include-state"
+    for="url-state"
     class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
   >
-    <span>Include current state (camera position) in url</span>
+    Url to this applet:
   </Label>
-</div>
-
-<Label
-  for="url-state"
-  class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
->
-  Url to this applet:
-</Label>
+{:else}
+  <Label
+    for="url-state"
+    class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+  >
+    Url to a static image of this applet:
+  </Label>
+{/if}
 
 <div class="relative h-full w-full">
   <Textarea readonly value={stateUrl} />
