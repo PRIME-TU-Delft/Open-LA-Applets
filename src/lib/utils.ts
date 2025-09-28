@@ -25,3 +25,9 @@ export function getLocalizedString(
 
   return localizedString[lang] || localizedString.en;
 }
+
+export function getLanguages(localizedString: LocalizedString | undefined): string[] {
+  if (!localizedString) return ['en'];
+
+  return Object.keys(localizedString);
+}

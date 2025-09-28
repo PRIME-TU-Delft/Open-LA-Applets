@@ -8,19 +8,22 @@
   import type { Formula } from '$lib/utils/Formulas';
   import Maximize from '@lucide/svelte/icons/maximize';
   import Minimize from '@lucide/svelte/icons/minimize';
+  import Languages from '@lucide/svelte/icons/languages';
   import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
   import Share from '@lucide/svelte/icons/share';
   import SquareFunction from '@lucide/svelte/icons/square-function';
   import screenfull from 'screenfull';
+  import LanguageWindow from './LanguageWindow.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
-  type Canvas2DProps = {
+  type ActionButtonsAndFormulaProps = {
     onReset: () => void;
     formulas?: Formula[];
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
+    languages: string[];
   };
 
   let {
@@ -28,8 +31,9 @@
     formulas = [],
     splitFormulas = [],
     controls = undefined,
-    showFormulas = false
-  }: Canvas2DProps = $props();
+    showFormulas = false,
+    languages
+  }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
 
@@ -106,6 +110,20 @@
       </Dialog.Trigger>
       <ShareWindow />
     </Dialog.Root>
+
+    <!-- LANGUAGE BUTTON -->
+    {#if languages.length > 1}
+      <Dialog.Root>
+        <Dialog.Trigger
+          class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+        >
+          <Button.Action tooltip="Change language" side="bottom">
+            <Languages class="h-5 w-5" />
+          </Button.Action>
+        </Dialog.Trigger>
+        <LanguageWindow {languages} />
+      </Dialog.Root>
+    {/if}
 
     <!-- FULLSCREEN BUTTON -->
     {#if screenfull.isEnabled && document}

@@ -23,7 +23,7 @@
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
-  import { cn, getLocalizedString, type LocalizedString } from '$lib/utils';
+  import { cn, getLanguages, getLocalizedString, type LocalizedString } from '$lib/utils';
   import { page } from '$app/state';
 
   let {
@@ -84,6 +84,7 @@
 
   const searchParams = new URLSearchParams(page?.url?.searchParams);
   const lang = searchParams.get('lang') || 'en';
+  const languages = getLanguages(title);
 
   $effect(() => {
     // Override the global title if a title is provided
@@ -150,6 +151,7 @@
       {formulas}
       {splitFormulas}
       {controls}
+      {languages}
       onReset={() => reset()}
     />
   </div>
