@@ -16,8 +16,7 @@
     const url = new URL(page.url.origin + page.url.pathname);
 
     const lang = page.url.searchParams.get('lang');
-    if (lang)
-      url.searchParams.set('lang', lang);
+    if (lang) url.searchParams.set('lang', lang);
 
     if (!includeState) {
       return url.toString();
