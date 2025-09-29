@@ -3,7 +3,7 @@
   import RightAngle2D from '../RightAngle2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/RightAngle2D',
+    title: '2D Components/RightAngle2D',
     component: RightAngle2D
   });
 </script>

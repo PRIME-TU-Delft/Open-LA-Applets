@@ -3,7 +3,7 @@
   import Vector3D from '../Vector3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Vector3D',
+    title: '3D Components/Vector3D',
     component: Vector3D
   });
 </script>

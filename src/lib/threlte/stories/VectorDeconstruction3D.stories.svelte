@@ -4,7 +4,7 @@
   import VectorDeconstruction3D from '../VectorDeconstruction3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/VectorDeconstruction3D',
+    title: '3D Components/VectorDeconstruction3D',
     component: VectorDeconstruction3D
   });
 </script>

@@ -3,7 +3,7 @@
   import Line2D from '../Line2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Line2D',
+    title: '2D Components/Line2D',
     component: Line2D
   });
 </script>

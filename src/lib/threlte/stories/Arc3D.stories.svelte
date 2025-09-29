@@ -4,7 +4,7 @@
   import Arc3D from '../Arc3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Arc3D',
+    title: '3D Components/Arc3D',
     component: Arc3D
   });
 </script>

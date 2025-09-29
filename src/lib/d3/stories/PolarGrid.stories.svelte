@@ -3,7 +3,7 @@
   import PolarGrid from '../PolarGrid.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/PolarGrid',
+    title: '2D Components/PolarGrid',
     component: PolarGrid
   });
 </script>

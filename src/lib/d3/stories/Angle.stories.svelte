@@ -3,7 +3,7 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
-    title: 'D3/Angle2D',
+    title: '2D Components/Angle2D',
     component: Angle2D
   });
 </script>

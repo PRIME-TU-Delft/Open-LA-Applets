@@ -3,7 +3,7 @@
   import Parallelogram2D from '../Parallelogram2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Parallelogram2D',
+    title: '2D Components/Parallelogram2D',
     component: Parallelogram2D
   });
 </script>
