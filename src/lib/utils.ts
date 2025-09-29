@@ -27,7 +27,7 @@ export function getLocalizedString(
 }
 
 export function getLanguages(localizedString: LocalizedString | undefined): string[] {
-  if (!localizedString) return ['en'];
+  if (!localizedString) return ['en', 'nl'];
 
   return Object.keys(localizedString);
 }

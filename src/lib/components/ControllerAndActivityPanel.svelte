@@ -17,6 +17,7 @@
   import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
   import * as C from './controls';
   import { cn } from '$lib/utils';
+  import { _ } from 'svelte-i18n'
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -114,7 +115,7 @@
     tooltip="Lock the scene so you can scroll again"
     class="w-10 sm:w-16"
   >
-    <span class="mr-0.5 hidden text-xs sm:block">Lock</span>
+    <span class="mr-0.5 hidden text-xs sm:block">{$_("lock")}</span>
     <Lock class="h-4 w-4" />
   </SideButton>
 

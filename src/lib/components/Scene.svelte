@@ -82,9 +82,22 @@
     }
   }
 
+  // Localization
   const searchParams = new URLSearchParams(page?.url?.searchParams);
   const lang = searchParams.get('lang') || 'en';
   const languages = getLanguages(title);
+
+  import { addMessages, init } from "svelte-i18n";
+  import { locale } from "svelte-i18n";
+
+  import en from "./../../lang/en.json";
+  import nl from "./../../lang/nl.json";
+  addMessages("en", en);
+  addMessages("nl", nl);
+  init({
+    fallbackLocale: 'en',
+  });
+  locale.set(lang);
 
   $effect(() => {
     // Override the global title if a title is provided
