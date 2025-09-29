@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import { getScreenshotName } from '$lib/screenshots/utils';
   import { qr } from '@svelte-put/qr/svg';
+  import { error } from '@sveltejs/kit';
 
   const queryParams = new URLSearchParams(page.url.searchParams);
   const showQR = queryParams.get('qr') === 'true';
@@ -11,7 +12,7 @@
   let found: boolean = $state(true);
 </script>
 
-<div class="h-full w-full content-center justify-center">
+<div class="h-full w-full content-center justify-center text-center">
   <div class="relative h-auto w-full">
     {#if found}
       <img
@@ -20,6 +21,7 @@
         class="w-full"
         onerror={() => {
           found = false;
+          throw error(404, 'Static image for this applet not found');
         }}
       />
       {#if showQR}
