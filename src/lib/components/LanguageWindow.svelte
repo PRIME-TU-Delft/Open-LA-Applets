@@ -20,6 +20,25 @@
     // force a refresh to update language
     window.location.href = url;
   }
+
+  function getEmoji(lang: string) {
+    if (lang === "en") lang = "gb";
+
+    const regionalIndicatorEmoji: { [key: string]: string } = {
+      "a": "🇦", "b": "🇧", "c": "🇨", "d": "🇩", "e": "🇪", "f": "🇫",
+      "g": "🇬", "h": "🇭", "i": "🇮", "j": "🇯", "k": "🇰", "l": "🇱",
+      "m": "🇲", "n": "🇳", "o": "🇴", "p": "🇵", "q": "🇶", "r": "🇷",
+      "s": "🇸", "t": "🇹", "u": "🇺", "v": "🇻", "w": "🇼", "x": "🇽",
+      "y": "🇾", "z": "🇿"
+    };
+
+    let res = "";
+    for (let char of lang) {
+      res += regionalIndicatorEmoji[char];
+    }
+
+    return res;
+  }
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
@@ -37,7 +56,7 @@
                 handleLanguageClick(langUrls[i]);
               }}
             >
-              {lang.toUpperCase()}
+              {getEmoji(lang)} {lang.toUpperCase()}
             </a>
           </li>
         {/each}
