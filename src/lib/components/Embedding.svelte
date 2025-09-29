@@ -11,6 +11,7 @@
 
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
   let showCopySucess = $state(false);
+  let includeQR = $state(false);
 
   export type EmbeddingProps = {
     staticImage?: boolean;
@@ -21,7 +22,13 @@
     const url = new URL(page.url.origin + page.url.pathname);
 
     if (staticImage) {
-      return new URL(page.url.origin + page.url.pathname + '/static').toString();
+      const url = new URL(page.url.origin + page.url.pathname + '/static');
+
+      if (includeQR) {
+        url.searchParams.set('qr', 'true');
+      }
+
+      return url.toString();
     }
 
     if (!includeState) {
@@ -95,6 +102,16 @@
     Url to this applet:
   </Label>
 {:else}
+  <div class="mb-4 flex items-center gap-2">
+    <Checkbox id="include-qr" bind:checked={includeQR} />
+    <Label
+      for="include-qr"
+      class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    >
+      <span>Include a QR code to the applet in the image</span>
+    </Label>
+  </div>
+
   <Label
     for="url-state"
     class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
