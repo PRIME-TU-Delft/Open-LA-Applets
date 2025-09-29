@@ -22,17 +22,38 @@
   }
 
   function getEmoji(lang: string) {
-    if (lang === "en") lang = "gb";
+    if (lang === 'en') lang = 'gb';
 
     const regionalIndicatorEmoji: { [key: string]: string } = {
-      "a": "🇦", "b": "🇧", "c": "🇨", "d": "🇩", "e": "🇪", "f": "🇫",
-      "g": "🇬", "h": "🇭", "i": "🇮", "j": "🇯", "k": "🇰", "l": "🇱",
-      "m": "🇲", "n": "🇳", "o": "🇴", "p": "🇵", "q": "🇶", "r": "🇷",
-      "s": "🇸", "t": "🇹", "u": "🇺", "v": "🇻", "w": "🇼", "x": "🇽",
-      "y": "🇾", "z": "🇿"
+      a: '🇦',
+      b: '🇧',
+      c: '🇨',
+      d: '🇩',
+      e: '🇪',
+      f: '🇫',
+      g: '🇬',
+      h: '🇭',
+      i: '🇮',
+      j: '🇯',
+      k: '🇰',
+      l: '🇱',
+      m: '🇲',
+      n: '🇳',
+      o: '🇴',
+      p: '🇵',
+      q: '🇶',
+      r: '🇷',
+      s: '🇸',
+      t: '🇹',
+      u: '🇺',
+      v: '🇻',
+      w: '🇼',
+      x: '🇽',
+      y: '🇾',
+      z: '🇿'
     };
 
-    let res = "";
+    let res = '';
     for (let char of lang) {
       res += regionalIndicatorEmoji[char];
     }
@@ -56,7 +77,8 @@
                 handleLanguageClick(langUrls[i]);
               }}
             >
-              {getEmoji(lang)} {lang.toUpperCase()}
+              {getEmoji(lang)}
+              {lang.toUpperCase()}
             </a>
           </li>
         {/each}
