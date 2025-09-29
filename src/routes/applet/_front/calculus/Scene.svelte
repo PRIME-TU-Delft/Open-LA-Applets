@@ -103,7 +103,7 @@
 {#each points as { x, y, u, v }}
   <Vector3D
     color={PrimeColor.raspberry}
-    length={new Vector3(u, v, 0).length() / 2}
+    length={1.5}
     origin={new Vector3(x * 5 - 6, y, 0).multiplyScalar(1.5)}
     direction={new Vector3(u, v, 0)}
     radius={0.75}
