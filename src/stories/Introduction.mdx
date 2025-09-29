@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# Introduction
+
+This is the documentation for the applets in the [Open Linear Algebra Book](https://interactivetextbooks.tudelft.nl/linear-algebra/)
+by the Delft University of Technology. The applets are hosted here: [https://openla.ewi.tudelft.nl](https://openla.ewi.tudelft.nl).
+
+<iframe
+  src="https://openla.ewi.tudelft.nl"
+  width="100%"
+  height="600px"
+  style={{ border: '1px solid #ccc', borderRadius: '4px' }}
+></iframe>
+
+<br />
+
+## Authoring applets
+
+The applets are created using [Svelte](https://svelte.dev/) and [Threlte](https://threlte.xyz/) for 3D graphics.
+You can find the source code for the applets in the [GitHub repository](https://github.com/PRIME-TU-Delft/Open-LA-Applets).
+
+Create a new file in the `src/routes/applet/` folder with the convension of `SECTION_NAME_IN_THE_BOOK/APPLET_NAME/+page.svelte`.
+Once created, run the following scripts:
+
+```bash
+pnpm install
+pnpm dev # to run the app locally
+```
+
+Next, open `http://localhost:5173/` in your browser to see all the applets. Scroll through the applets to find your applet.
+Alternatively, press `Command/Ctrl + K` to open the search window and find your applet.
+
+Creating a new applet starts directly by making a tri-fold decision. First, do you want to make a 2D or 3D applet or both by using the
+split view? A [2D applets](http://localhost:6006/?path=/docs/initialize-canvas2d--docs) uses SVG and D3.js to render the
+graphics, while a [3D applet](http://localhost:6006/?path=/docs/initialize-canvas3d--docs) uses WebGL via Threlte. Second,
+do you want to use controls like sliders and toggles? If so, you can read up on using these controls in the
+[Controls](?path=/docs/initialize-controls--docs) and [Draggables](?path=/docs/initialize-draggables--docs) sections. Lastly,
+do you want to use formulas to display mathematical notation? If so, you can use the
+[Formula](?path=/docs/initialize-formula--docs) docs as a reference.
+
+## Uploading applets
+
+Once you are happy with your applet, you can make a pull request to the main branch. The applet will be automatically
+deployed to `https://deploy-preview-[PR_NUMBER]--playful-otter-9e0500.netlify.app/`. Here you can test the applet in a production
+environment, or share it with others for feedback. Once the pull request is merged, the applet will be automatically
+deployed to `https://openla.ewi.tudelft.nl`.
+
+## Embedding applets in the book
+
+In the book of choice, you can embed the applet using an iframe. You can find more information on how to do this in the
+[Shinx PRIME applet documentation](https://github.com/TeachBooks/Sphinx-PRIME-applets). Your applet should be available with the following snippet:
+
+````
+```{applet}
+:url: SECTION_NAME_IN_THE_BOOK/APPLET_NAME
+:fig: Images/image_shown_in_print_version.svg
+:name: name_that_is_used_to_refer_to_this_figure
+:class: dark-light
+:title: This title is shown when you full-screen the applet
+
+A plane through the point $P$.
+```
+````
