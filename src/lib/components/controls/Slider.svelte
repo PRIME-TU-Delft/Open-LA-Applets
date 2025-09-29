@@ -153,7 +153,7 @@
   </Button.Action>
 
   {#if slider.label}
-    <div class="flex flex-col ml-4 mr-2">
+    <div class="mr-2 ml-4 flex flex-col">
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
