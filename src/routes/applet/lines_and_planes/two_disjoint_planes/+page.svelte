@@ -33,7 +33,7 @@
   {controls}
   title={{
     en: 'Two planes without a point in common.',
-    nl: 'Twee vliegtuigen zonder een gemeenschappelijk punt.'
+    nl: 'Twee vlakken zonder een gemeenschappelijk punt.'
   }}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>

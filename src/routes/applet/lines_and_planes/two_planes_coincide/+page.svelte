@@ -19,7 +19,7 @@
   showFormulasDefault
   title={{
     en: 'Two planes with a point in common.',
-    nl: 'Twee vliegtuigen met een gemeenschappelijk punt.'
+    nl: 'Twee vlakken met een gemeenschappelijk punt.'
   }}
 >
   <AutoPlanes values={[0, 0]}>
