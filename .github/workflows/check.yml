@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
@@ -55,3 +55,15 @@ jobs:
 
       - name: Run ESLint
         run: pnpm eslint .
+
+  tests-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Playwright Tests
+        run: tsx scripts/generate-screenshots.ts
+
+      # - name: Deploy to Netlify
+      #   run: netlify deploy --prod
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

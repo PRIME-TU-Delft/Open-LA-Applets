@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "build-netlify": "BUILD_ENV=netlify vite build && tsx scripts/generate-screenshots.ts",
+    "build-netlify": "BUILD_ENV=netlify vite build",
     "build:with-screenshots": "vite build && tsx scripts/generate-screenshots.ts",
     "preview": "vite preview",
     "screenshots": "tsx scripts/generate-screenshots.ts",
