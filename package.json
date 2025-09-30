@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "dev:fps": "VITE_SHOW_FPS=true vite dev",
     "build": "vite build",
     "build-netlify": "BUILD_ENV=netlify vite build",
     "preview": "vite preview",

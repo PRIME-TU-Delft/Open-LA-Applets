@@ -33,6 +33,8 @@ This repo has some additional tools already set-up for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
+When debugging for performance, you can run the app with `pnpm dev:fps` to include an FPS counter in the corner of the scene.
+
 ## Url parameters
 
 <!-- Autocomplete makes a mess out of this table :( -->
