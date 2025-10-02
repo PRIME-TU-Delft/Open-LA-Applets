@@ -57,7 +57,7 @@
 <Canvas3D
   title={{
     en: 'Span of three vectors lying in the same plane',
-    nl: 'Spanwijdte van drie vectoren die in hetzelfde vlak liggen'
+    nl: 'De span van drie vectoren die in hetzelfde vlak liggen'
   }}
   {formulas}
   {controls}

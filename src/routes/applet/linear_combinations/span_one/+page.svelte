@@ -26,7 +26,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D {controls} title={{ en: 'Span of a vector', nl: 'Spanwijdte van een vector' }}>
+<Canvas3D {controls} title={{ en: 'Span of a vector', nl: 'De span van een vector' }}>
   <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry}>
     {#snippet children(endPoint)}
       <Latex3D

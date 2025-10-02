@@ -30,7 +30,7 @@
 {/snippet}
 
 <Canvas3D
-  title={{ en: 'Span of two parallel vectors', nl: 'Spanwijdte van twee parallelle vectoren' }}
+  title={{ en: 'Span of two parallel vectors', nl: 'De span van twee parallelle vectoren' }}
   {controls}
 >
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->
