@@ -21,6 +21,13 @@ Alternatively, press `Command/Ctrl + K` to open the search window and find your 
 Creating a new applet starts directly by making a tri-fold decision. First, do you want to make a 2D or 3D applet or both by using the split view? A [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-canvas2d--docs) uses SVG and D3.js to render the graphics, while a [3D applet](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-canvas3d--docs) uses WebGL via Threlte or a [hybrid view](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-splitcanvas2d--docs). Second, do you want to use controls like sliders and toggles? If so, you can read up on using these controls in the
 [Controls](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-controls--docs) and [Draggables](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-draggables--docs) sections. Lastly, do you want to use formulas to display mathematical notation? If so, you can use the [Formulas](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-formulas--docs) docs as a reference.
 
+## Tutorials
+
+You can find tutorials for creating 2D, 3D and split view applets here:
+
+- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-2d--docs)
+- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-3d--docs)
+
 ## Uploading applets
 
 Once you are happy with your applet, you can make a pull request to the main branch. The applet will be automatically
