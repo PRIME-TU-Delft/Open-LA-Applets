@@ -81,9 +81,9 @@
           action={controller.action}
         />
       {:else if controller instanceof DiagonalMatrix}
-        <C.DiagonalMatrix {controller} />
+        <C.DiagonalMatrix {controller} {hideButtons} />
       {:else if controller instanceof Matrix}
-        <C.Matrix {controller} />
+        <C.Matrix {controller} {hideButtons} />
       {/if}
     {/each}
   </div>

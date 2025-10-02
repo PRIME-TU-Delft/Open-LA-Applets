@@ -21,7 +21,7 @@
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
-    hideControls?: boolean;
+    hideButtons?: boolean;
   };
 
   let {
@@ -30,7 +30,7 @@
     splitFormulas = [],
     controls = undefined,
     showFormulas = false,
-    hideControls = false
+    hideButtons = false
   }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
@@ -84,7 +84,7 @@
     </div>
   {/if}
 
-  {#if !hideControls}
+  {#if !hideButtons}
     <!-- ACTION BUTTON -->
     <div class="top-0 right-0 float-end flex p-1">
       {#if !controls || controls.length == 0}

@@ -83,7 +83,7 @@
   }
 
   const searchParams = new URLSearchParams(page?.url?.searchParams);
-  const hideControls = searchParams.get('hideControls') === 'true' || false;
+  const hideButtons = searchParams.get('hideButtons') === 'true' || false;
 
   $effect(() => {
     // Override the global title if a title is provided
@@ -140,12 +140,12 @@
     <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0 && controls._width > 0}
       <ControllerAndActivityPanel
-        hideButtons={hideControls}
+        {hideButtons}
         {controls}
         onLock={(e) => lock(e)}
         onReset={() => reset()}
       />
-    {:else if !hideControls}
+    {:else if !hideButtons}
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
@@ -155,7 +155,7 @@
       {formulas}
       {splitFormulas}
       {controls}
-      {hideControls}
+      {hideButtons}
       onReset={() => reset()}
     />
   </div>
