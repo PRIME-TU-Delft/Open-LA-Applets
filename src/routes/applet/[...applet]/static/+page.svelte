@@ -33,7 +33,7 @@
             <svg
               use:qr={{
                 data: 'https://openla.ewi.tudelft.nl/applet/' + applet,
-                logo: '/primeLogo-black.svg',
+                logo: '/primeLogo-narrow.png',
                 shape: 'circle'
               }}
             />
