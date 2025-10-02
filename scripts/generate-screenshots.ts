@@ -149,7 +149,7 @@ function startServer(): Promise<ChildProcess> {
  */
 async function screenshotRoute(page: Page, route: string): Promise<ScreenshotResult> {
   try {
-    const url = `http://localhost:${CONFIG.server.port}${route}`;
+    const url = `http://localhost:${CONFIG.server.port}${route}?hideControls=true`;
     console.log(`Capturing: ${route}`);
 
     await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.screenshots.timeout });

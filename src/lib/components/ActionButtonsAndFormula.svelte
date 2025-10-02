@@ -15,12 +15,13 @@
 
   type G = readonly Controller<number | boolean | string | State>[];
 
-  type Canvas2DProps = {
+  type ActionButtonsAndFormulaProps = {
     onReset: () => void;
     formulas?: Formula[];
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
+    hideControls?: boolean;
   };
 
   let {
@@ -28,8 +29,9 @@
     formulas = [],
     splitFormulas = [],
     controls = undefined,
-    showFormulas = false
-  }: Canvas2DProps = $props();
+    showFormulas = false,
+    hideControls = false
+  }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
 
@@ -82,61 +84,63 @@
     </div>
   {/if}
 
-  <!-- ACTION BUTTON -->
-  <div class="top-0 right-0 float-end flex p-1">
-    {#if !controls || controls.length == 0}
-      <Button.Action
-        side="bottom"
-        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-        onclick={onReset}
-        tooltip="Will reset the scene to original camera positions"
-      >
-        <RotateCcw class="h-5 w-5" />
-      </Button.Action>
-    {/if}
-
-    <!-- SHARE BUTTON -->
-    <Dialog.Root>
-      <Dialog.Trigger
-        class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
-      >
-        <Button.Action side="bottom" tooltip="Share or embed applet">
-          <Share class="h-5 w-5" />
+  {#if !hideControls}
+    <!-- ACTION BUTTON -->
+    <div class="top-0 right-0 float-end flex p-1">
+      {#if !controls || controls.length == 0}
+        <Button.Action
+          side="bottom"
+          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+          onclick={onReset}
+          tooltip="Will reset the scene to original camera positions"
+        >
+          <RotateCcw class="h-5 w-5" />
         </Button.Action>
-      </Dialog.Trigger>
-      <ShareWindow />
-    </Dialog.Root>
+      {/if}
 
-    <!-- FULLSCREEN BUTTON -->
-    {#if screenfull.isEnabled && document}
-      <Button.Action
-        side="bottom"
-        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-        onclick={toggleFullscreen}
-        tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
-      >
-        {#if isFullscreen}
-          <Minimize class="h-5 w-5" />
-        {:else}
-          <Maximize class="h-5 w-5" />
-        {/if}
-      </Button.Action>
-    {/if}
+      <!-- SHARE BUTTON -->
+      <Dialog.Root>
+        <Dialog.Trigger
+          class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+        >
+          <Button.Action side="bottom" tooltip="Share or embed applet">
+            <Share class="h-5 w-5" />
+          </Button.Action>
+        </Dialog.Trigger>
+        <ShareWindow />
+      </Dialog.Root>
 
-    <!-- TOGGLE FORMULAE BUTTON -->
-    {#if !globalState.isInset() && formulas && formulas.length >= 1}
-      <Button.Action
-        side="bottom"
-        class="{!formulasShown
-          ? '!bg-blue-200/80 hover:!bg-blue-300/80'
-          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
-          ? 'border-2'
-          : ''}"
-        tooltip="Toggle function"
-        onclick={() => (showFormulas = !showFormulas)}
-      >
-        <SquareFunction />
-      </Button.Action>
-    {/if}
-  </div>
+      <!-- FULLSCREEN BUTTON -->
+      {#if screenfull.isEnabled && document}
+        <Button.Action
+          side="bottom"
+          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+          onclick={toggleFullscreen}
+          tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
+        >
+          {#if isFullscreen}
+            <Minimize class="h-5 w-5" />
+          {:else}
+            <Maximize class="h-5 w-5" />
+          {/if}
+        </Button.Action>
+      {/if}
+
+      <!-- TOGGLE FORMULAE BUTTON -->
+      {#if !globalState.isInset() && formulas && formulas.length >= 1}
+        <Button.Action
+          side="bottom"
+          class="{!formulasShown
+            ? '!bg-blue-200/80 hover:!bg-blue-300/80'
+            : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
+            ? 'border-2'
+            : ''}"
+          tooltip="Toggle function"
+          onclick={() => (showFormulas = !showFormulas)}
+        >
+          <SquareFunction />
+        </Button.Action>
+      {/if}
+    </div>
+  {/if}
 </div>
