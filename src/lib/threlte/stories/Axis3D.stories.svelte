@@ -3,7 +3,7 @@
   import Axis3D from '../Axis3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Axis3D',
+    title: '3D Components/Axis3D',
     component: Axis3D
   });
 </script>
