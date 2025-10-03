@@ -4,3 +4,6 @@ publish = "build-netlify/"
 
 [build.environment]
 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "false"
+
+[[plugins]]
+package = "netlify-plugin-playwright-cache"
