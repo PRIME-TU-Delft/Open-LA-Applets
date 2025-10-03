@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/sveltekit';
 
 import '../src/app.css';
+import 'katex/dist/katex.min.css';
 
 const preview: Preview = {
   parameters: {
