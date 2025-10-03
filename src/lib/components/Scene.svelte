@@ -24,6 +24,7 @@
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
   import { cn } from '$lib/utils';
+  import { page } from '$app/state';
 
   let {
     controls = undefined,
@@ -81,6 +82,9 @@
     }
   }
 
+  const searchParams = new URLSearchParams(page?.url?.searchParams);
+  const hideButtons = searchParams.get('hideButtons') === 'true' || false;
+
   $effect(() => {
     // Override the global title if a title is provided
     // if and only if the global title is not set
@@ -135,8 +139,13 @@
 
     <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0 && controls._width > 0}
-      <ControllerAndActivityPanel {controls} onLock={(e) => lock(e)} onReset={() => reset()} />
-    {:else}
+      <ControllerAndActivityPanel
+        {hideButtons}
+        {controls}
+        onLock={(e) => lock(e)}
+        onReset={() => reset()}
+      />
+    {:else if !hideButtons}
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
@@ -146,6 +155,7 @@
       {formulas}
       {splitFormulas}
       {controls}
+      {hideButtons}
       onReset={() => reset()}
     />
   </div>

@@ -5,7 +5,8 @@
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import Latex from '../Latex.svelte';
 
-  const { controller }: { controller: Matrix } = $props();
+  const { controller, hideButtons = false }: { controller: Matrix; hideButtons?: boolean } =
+    $props();
 </script>
 
 <div class="flex items-center gap-1">
@@ -17,16 +18,18 @@
           (controller.disabled ? PrimeColor.opacity(0.5) : PrimeColor.opacity(1))}
       />
     {/if}
-    <button
-      class="cursor-pointer rounded-md bg-gray-200 px-2 py-1 text-center transition-colors hover:bg-gray-400"
-      onclick={() => controller.toggleAvailability()}
-    >
-      {#if controller.disabled}
-        <Eye class="size-3" />
-      {:else}
-        <EyeOff class="size-3" />
-      {/if}
-    </button>
+    {#if !hideButtons}
+      <button
+        class="cursor-pointer rounded-md bg-gray-200 px-2 py-1 text-center transition-colors hover:bg-gray-400"
+        onclick={() => controller.toggleAvailability()}
+      >
+        {#if controller.disabled}
+          <Eye class="size-3" />
+        {:else}
+          <EyeOff class="size-3" />
+        {/if}
+      </button>
+    {/if}
   </div>
 
   <Latex

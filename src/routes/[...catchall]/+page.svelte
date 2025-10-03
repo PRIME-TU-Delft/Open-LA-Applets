@@ -17,10 +17,12 @@
     { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];
 
-  const fileUrls = Object.keys(modules).map((rawUrl) =>
-    // Remove head of path and extension
-    rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
-  );
+  const fileUrls = Object.keys(modules)
+    .map((rawUrl) =>
+      // Remove head of path and extension
+      rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
+    )
+    .filter((s) => s !== '[...applet]/static');
 </script>
 
 <NavBar {fileUrls} />
