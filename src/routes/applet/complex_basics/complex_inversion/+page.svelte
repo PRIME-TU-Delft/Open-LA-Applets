@@ -66,7 +66,10 @@
   draggables={[d1]}
   formulas={formulasLeft}
   splitFormulas={formulasRight}
-  title="Inverse of a complex number: Cartesian and Polar"
+  title={{
+    en: 'Inverse of a complex number: Cartesian and Polar',
+    nl: 'Omgekeerde van een complex getal: Cartesisch en polair'
+  }}
   cameraZoom={2.75}
   enablePan={false}
   splitCanvas2DProps={{

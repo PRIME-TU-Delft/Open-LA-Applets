@@ -18,7 +18,10 @@
 <Canvas3D
   cameraPosition={new Vector3(3.59, 1.83, 13.8)}
   cameraZoom={60}
-  title="Geometrical interpretation of addition for three-dimensional vectors."
+  title={{
+    en: 'Geometrical interpretation of addition for three-dimensional vectors.',
+    nl: 'Geometrische interpretatie van optelling voor driedimensionale vectoren.'
+  }}
 >
   <!-- lower green vector -->
   <Vector3D direction={v1} color={PrimeColor.darkGreen} length={v1.length()} />

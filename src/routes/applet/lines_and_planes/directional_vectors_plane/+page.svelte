@@ -20,7 +20,10 @@
 <Canvas3D
   cameraPosition={new Vector3(7.7, 7.7, 13.47)}
   cameraZoom={41}
-  title="A parametric vector equation of a plane."
+  title={{
+    en: 'A parametric vector equation of a plane.',
+    nl: 'Een parametrische vectorvergelijking van een vlak.'
+  }}
 >
   <PlaneFromPoints points={[p, q, r]} color={PrimeColor.yellow} />
 

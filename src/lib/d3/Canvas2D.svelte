@@ -96,7 +96,7 @@
   A component that renders a 2D canvas with draggables and formulas.
 
 @example
-  <Canvas2D title="Title">
+  <Canvas2D title={"en":"Title"}>
     ...
 
 {#snippet splitCanvas2DChildren()}

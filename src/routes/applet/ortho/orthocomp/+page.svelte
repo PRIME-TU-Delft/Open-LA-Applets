@@ -22,7 +22,10 @@
 <Canvas2D
   splitCanvas3DProps={{ cameraPosition: new Vector3(10, 10, 13), cameraZoom: 50 }}
   cameraZoom={1.5}
-  title="The orthogonal complement of a line (left) and a plane (right)"
+  title={{
+    en: 'The orthogonal complement of a line (left) and a plane (right)',
+    nl: 'Het orthogonale complement van een lijn (links) en een vlak (rechts)'
+  }}
 >
   <!-- v -->
   <Vector2D

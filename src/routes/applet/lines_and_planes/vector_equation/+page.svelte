@@ -42,7 +42,12 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas2D {controls} {formulas} showFormulasDefault title="A parametric vector of a line">
+<Canvas2D
+  {controls}
+  {formulas}
+  showFormulasDefault
+  title={{ en: 'A parametric vector of a line', nl: 'Een parametrische vector van een lijn' }}
+>
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={u} color={PrimeColor.cyan} />
 

@@ -35,7 +35,11 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} title="The triangle inequality">
+<Canvas2D
+  {draggables}
+  {formulas}
+  title={{ en: 'The triangle inequality', nl: 'De driehoeksongelijkheid' }}
+>
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
     {#snippet children(endPoint)}

@@ -20,7 +20,10 @@
 <Canvas3D
   cameraPosition={new Vector3(11.77, 9.96, 7.89)}
   {controls}
-  title="Three planes without a point in common."
+  title={{
+    en: 'Three planes without a point in common.',
+    nl: 'Drie vlakken zonder gemeenschappelijk punt.'
+  }}
   formulas={[f1, f2, f3]}
 >
   <PlaneFromNormal position={new Vector3(0, 1, 0)} normal={n0} color={PrimeColor.yellow} />
