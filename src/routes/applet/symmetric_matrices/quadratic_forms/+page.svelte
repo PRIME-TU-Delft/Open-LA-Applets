@@ -26,7 +26,7 @@
     return [f];
   });
 
-  const mat = new DiagonalMatrix(new Matrix2(1, 0.5, 0.5, 1), 'A', PrimeColor.orange, 0.5);
+  const mat = new DiagonalMatrix(new Matrix2(3, 2, 2, 6), 'A', PrimeColor.orange, 0.5);
 
   const controls = $derived.by(() => {
     return Controls.add(mat).addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
