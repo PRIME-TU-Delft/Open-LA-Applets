@@ -1,7 +1,7 @@
 {
   "server": {
     "port": 4173,
-    "startTimeout": 60000
+    "startTimeout": 10000
   },
   "screenshots": {
     "outputDir": "static/screenshots",
