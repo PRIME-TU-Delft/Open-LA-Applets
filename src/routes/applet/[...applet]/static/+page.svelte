@@ -12,13 +12,13 @@
   let found: boolean = $state(true);
 </script>
 
-<div class="h-full w-full content-center justify-center text-center">
-  <div class="relative h-auto w-full">
+<div class="flex h-full w-full items-center justify-center text-center">
+  <div class="relative inline-block">
     {#if found}
       <img
         src={'/screenshots/' + getScreenshotName(applet)}
         alt={applet}
-        class="w-full"
+        class="block max-h-screen max-w-screen object-contain"
         onerror={() => {
           found = false;
           throw error(404, 'Static image for this applet not found');
@@ -26,11 +26,12 @@
       />
       {#if showQR}
         <div
-          class="absolute right-0 bottom-0 h-auto w-48 rounded-lg bg-gradient-to-bl from-blue-400 to-blue-500 p-2 transition-all duration-500"
+          class="absolute right-0 bottom-0 h-auto w-24 rounded-lg bg-gradient-to-bl from-blue-400 to-blue-500 p-2 transition-all duration-500 md:w-32 lg:w-48"
         >
-          <div class="rounded-lg bg-white">
-            <span class="ml-1">Use interactively:</span>
+          <div class="rounded-lg bg-white text-left">
+            <div class="ml-2 text-xs lg:text-base">Use interactively:</div>
             <svg
+              class="p-1 pt-0"
               use:qr={{
                 data: 'https://openla.ewi.tudelft.nl/applet/' + applet,
                 logo: '/primeLogo-narrow.png',
