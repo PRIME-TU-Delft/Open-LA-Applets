@@ -63,6 +63,17 @@
   {template}
 />
 
+<!-- This story shows the Axis3D component with custom axis labels. -->
+<Story
+  name="Custom Axis Labels"
+  args={{
+    x1: "x_1",
+    x2: "x_2",
+    x3: "x_3",
+  }}
+  {template}
+/>
+
 <!-- This story demonstrates the Axis3D component with a floor plane. -->
 <Story
   name="With Floor"
