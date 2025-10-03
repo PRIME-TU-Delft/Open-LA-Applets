@@ -67,9 +67,9 @@
 <Story
   name="Custom Axis Labels"
   args={{
-    x1: "x_1",
-    x2: "x_2",
-    x3: "x_3",
+    x1: 'x_1',
+    x2: 'x_2',
+    x3: 'x_3'
   }}
   {template}
 />
