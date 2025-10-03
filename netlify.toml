@@ -1,3 +1,6 @@
 [build]
-command = "pnpm build-netlify"
+command = "pnpm build-netlify:with-screenshots"
 publish = "build-netlify/"
+
+[build.environment]
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "false"
