@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "build-netlify": "BUILD_ENV=netlify vite build",
-    "build-netlify:with-screenshots": "BUILD_ENV=netlify vite build && tsx scripts/generate-screenshots.ts",
+    "build-netlify:with-screenshots": "BUILD_ENV=netlify vite build && pnpm exec playwright install --with-deps chromium && tsx scripts/generate-screenshots.ts",
     "build:with-screenshots": "vite build && tsx scripts/generate-screenshots.ts",
     "preview": "vite preview",
     "screenshots": "tsx scripts/generate-screenshots.ts",
