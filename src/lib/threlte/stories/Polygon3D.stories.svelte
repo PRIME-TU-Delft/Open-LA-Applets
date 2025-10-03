@@ -4,7 +4,7 @@
   import Polygon3D from '../Polygon3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Polygon3D',
+    title: '3D Components/Polygon3D',
     component: Polygon3D
   });
 </script>

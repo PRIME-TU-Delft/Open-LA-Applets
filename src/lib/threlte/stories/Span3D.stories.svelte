@@ -4,7 +4,7 @@
   import Span3D from '../Span3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Span3D',
+    title: '3D Components/Span3D',
     component: Span3D,
     parameters: {
       docs: {

@@ -4,7 +4,7 @@
   import Circle2D from '../Circle2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Circle2D',
+    title: '2D Components/Circle2D',
     component: Circle2D
   });
 </script>

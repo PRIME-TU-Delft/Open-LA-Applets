@@ -3,7 +3,7 @@
   import Arc2D from '../Arc2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Arc2D',
+    title: '2D Components/Arc2D',
     component: Arc2D
   });
 </script>

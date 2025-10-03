@@ -3,7 +3,7 @@
   import Point2D from '../Point2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Point2D',
+    title: '2D Components/Point2D',
     component: Point2D
   });
 </script>

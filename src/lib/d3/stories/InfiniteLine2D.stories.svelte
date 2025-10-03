@@ -3,7 +3,7 @@
   import InfiniteLine2D from '../InfiniteLine2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/InfiniteLine2D',
+    title: '2D Components/InfiniteLine2D',
     component: InfiniteLine2D
   });
 </script>
