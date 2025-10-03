@@ -98,13 +98,14 @@ function startServer(): Promise<ChildProcess> {
 
     const cleanup = () => {
       if (timeoutId) clearTimeout(timeoutId);
+      server.removeAllListeners();
     };
 
     server.stdout?.on('data', (data: Buffer) => {
       const output = data.toString();
       console.log('Server:', output.trim());
-      if (!serverReady && (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`))) {
-        console.log(`Server confirmed running at http://localhost:${CONFIG.server.port}`);
+      if (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`)) {
+        console.log(`Server running at http://localhost:${CONFIG.server.port}`);
         serverReady = true;
         cleanup();
         resolve(server);
@@ -114,21 +115,27 @@ function startServer(): Promise<ChildProcess> {
     server.stderr?.on('data', (data: Buffer) => {
       const errorOutput = data.toString();
       console.error('Server error:', errorOutput.trim());
+      cleanup();
     });
 
     server.on('error', (error) => {
+      cleanup();
+      reject(error);
+    });
+
+    server.on('exit', (code) => {
       if (!serverReady) {
         cleanup();
-        reject(error);
+        reject(new Error(`Server exited with code ${code} before becoming ready`));
       }
     });
 
-    // Timeout fallback - assume server is ready
+    // Timeout fallback
     const timeoutId: NodeJS.Timeout = setTimeout(() => {
       if (!serverReady) {
-        console.log(`Server detection timeout reached, assuming server is ready at http://localhost:${CONFIG.server.port}`);
-        serverReady = true;
-        resolve(server);
+        cleanup();
+        server.kill('SIGTERM');
+        reject(new Error('Server start timeout'));
       }
     }, CONFIG.server.startTimeout);
   });

@@ -1,7 +1,7 @@
 {
   "server": {
     "port": 4173,
-    "startTimeout": 10000
+    "startTimeout": 30000
   },
   "screenshots": {
     "outputDir": "static/screenshots",
@@ -21,19 +21,11 @@
     "args": [
       "--disable-web-security",
       "--disable-features=TranslateUI",
-      "--disable-ipc-flooding-protection",
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-extensions",
-      "--disable-gpu",
-      "--no-first-run",
-      "--no-zygote",
-      "--single-process"
+      "--disable-ipc-flooding-protection"
     ]
   },
   "parallel": {
     "enabled": true,
-    "maxConcurrent": 4
+    "maxConcurrent": 8
   }
 }

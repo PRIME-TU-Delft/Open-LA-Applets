@@ -126,9 +126,6 @@ importers:
       globals:
         specifier: ^16.0.0
         version: 16.2.0
-      netlify-plugin-playwright-cache:
-        specifier: ^0.0.1
-        version: 0.0.1
       playwright:
         specifier: ^1.53.0
         version: 1.53.0
@@ -2258,9 +2255,6 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
-
-  netlify-plugin-playwright-cache@0.0.1:
-    resolution: {integrity: sha512-FECC4DtoYKpGGUNevxXVTE0GdD5LYSWwTPJpHv/WW4VlviTle8QlKBvF3Exfm48TDvZCUR3ofX1Zz+cJWOWBWA==}
 
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
@@ -5116,8 +5110,6 @@ snapshots:
   nanoid@5.1.5: {}
 
   natural-compare@1.4.0: {}
-
-  netlify-plugin-playwright-cache@0.0.1: {}
 
   no-case@3.0.4:
     dependencies:

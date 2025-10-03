@@ -1,9 +1,3 @@
 [build]
-command = "pnpm build-netlify:with-screenshots"
+command = "pnpm build-netlify"
 publish = "build-netlify/"
-
-[build.environment]
-PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "false"
-
-[[plugins]]
-package = "netlify-plugin-playwright-cache"
