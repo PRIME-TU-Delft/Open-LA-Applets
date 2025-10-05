@@ -9,22 +9,22 @@
 
 <Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
-    <Dialog.Title>{$_("share_title")}</Dialog.Title>
+    <Dialog.Title>{$_('share_title')}</Dialog.Title>
     <Dialog.Description>
-      {$_("share_intro_text")}
+      {$_('share_intro_text')}
       <a
         class="flex items-center gap-1"
         href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
       >
-        {$_("share_book_link_text")} <ExternalLink class="h-4 w-4" /></a
+        {$_('share_book_link_text')} <ExternalLink class="h-4 w-4" /></a
       >
-      {$_("share_more_info")}
+      {$_('share_more_info')}
       <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
 
       <Accordion.Root type="single" class="w-full">
         <!-- EMBEDING -->
         <Accordion.Item value="Embed">
-          <Accordion.Trigger>{$_("share_accordion_embed")}</Accordion.Trigger>
+          <Accordion.Trigger>{$_('share_accordion_embed')}</Accordion.Trigger>
           <Accordion.Content>
             <Embedding />
           </Accordion.Content>
@@ -32,7 +32,7 @@
 
         <!-- LICENCING -->
         <Accordion.Item value="Licence">
-          <Accordion.Trigger>{$_("share_accordion_licence")}</Accordion.Trigger>
+          <Accordion.Trigger>{$_('share_accordion_licence')}</Accordion.Trigger>
           <Accordion.Content>
             <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
               ><img
@@ -40,20 +40,20 @@
                 style="border-width:0"
                 src="https://i.creativecommons.org/l/by/4.0/88x31.png"
               /></a
-            ><br /><span>{$_("share_licence_title")}</span>
-            {$_("share_licence_by")}
+            ><br /><span>{$_('share_licence_title')}</span>
+            {$_('share_licence_by')}
             <a
               href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
               property="cc:attributionName"
               rel="cc:attributionURL">PRIME, TU Delft</a
             >
-            {$_("share_licence_text")}
+            {$_('share_licence_text')}
             <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-              >{$_("share_licence_link_text")}</a
-            >.<br />{$_("share_licence_based_on")}
+              >{$_('share_licence_link_text')}</a
+            >.<br />{$_('share_licence_based_on')}
             <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
               >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
-            >.<br />{$_("share_licence_permissions")}
+            >.<br />{$_('share_licence_permissions')}
             <a
               href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
               rel="cc:morePermissions"

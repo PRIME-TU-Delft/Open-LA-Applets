@@ -47,20 +47,16 @@
   )}
 >
   <div class="flex items-center justify-center gap-2">
-    
     <!-- LOCK SCENE -->
     <div
       class={cn(
         'transition-all duration-300',
         activityState.isActive
           ? 'translate-x-0 opacity-100'
-          : 'translate-x-16 sm:translate-x-20 opacity-0'
+          : 'translate-x-16 opacity-0 sm:translate-x-20'
       )}
     >
-      <SideButton
-        onclick={(e) => onLock(e)}
-        tooltip={$_('lock_tooltip')}
-      >
+      <SideButton onclick={(e) => onLock(e)} tooltip={$_('lock_tooltip')}>
         <span class="mr-0.5 hidden text-xs sm:block">{$_('lock')}</span>
         <Lock class="h-4 w-4" />
       </SideButton>
@@ -68,7 +64,7 @@
 
     <!-- CONTROLS PANEL -->
     <div
-      class="flex items-center gap-1 rounded-lg bg-blue-50/70 px-3 py-2 shadow-md backdrop-blur-md z-10"
+      class="z-10 flex items-center gap-1 rounded-lg bg-blue-50/70 px-3 py-2 shadow-md backdrop-blur-md"
     >
       {#each controls.controls as controller, index (index)}
         {#if controller instanceof Slider}
@@ -109,13 +105,10 @@
         'transition-all duration-300',
         activityState.isActive
           ? 'translate-x-0 opacity-100'
-          : '-translate-x-16 sm:-translate-x-20 opacity-0'
+          : '-translate-x-16 opacity-0 sm:-translate-x-20'
       )}
     >
-      <SideButton
-        onclick={onReset}
-        tooltip={$_('reset_tooltip')}
-      >
+      <SideButton onclick={onReset} tooltip={$_('reset_tooltip')}>
         <RotateCcw class="h-4 w-4" />
         <span class="ml-0.5 hidden text-xs sm:block">{$_('reset')}</span>
       </SideButton>
@@ -128,7 +121,7 @@
       'absolute left-1/2 -translate-x-1/2 transition-all',
       activityState.isActive
         ? 'top-5 scale-0'
-        : '-top-10 sm:-top-12 scale-100 motion-safe:hover:scale-105'
+        : '-top-10 scale-100 motion-safe:hover:scale-105 sm:-top-12'
     )}
   >
     <SideButton class="h-full w-full text-nowrap" tooltip={$_('notify_tooltip')}>

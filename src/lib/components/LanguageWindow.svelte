@@ -65,9 +65,9 @@
 
 <Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
-    <Dialog.Title>{$_("language_window_title")}</Dialog.Title>
+    <Dialog.Title>{$_('language_window_title')}</Dialog.Title>
     <Dialog.Description>
-      {$_("language_window_available")}
+      {$_('language_window_available')}
       <ul class="list-disc">
         {#each languages as lang, i (lang)}
           <li class="ml-4">
