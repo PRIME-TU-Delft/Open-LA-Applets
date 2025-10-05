@@ -14,6 +14,7 @@
   import SquareFunction from '@lucide/svelte/icons/square-function';
   import screenfull from 'screenfull';
   import LanguageWindow from './LanguageWindow.svelte';
+  import { _ } from 'svelte-i18n';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
@@ -93,7 +94,7 @@
         side="bottom"
         class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={onReset}
-        tooltip="Will reset the scene to original camera positions"
+        tooltip={$_("reset_scene_tooltip")}
       >
         <RotateCcw class="h-5 w-5" />
       </Button.Action>
@@ -104,7 +105,7 @@
       <Dialog.Trigger
         class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
       >
-        <Button.Action side="bottom" tooltip="Share or embed applet">
+        <Button.Action side="bottom" tooltip={$_("share_tooltip")}>
           <Share class="h-5 w-5" />
         </Button.Action>
       </Dialog.Trigger>
@@ -117,7 +118,7 @@
         <Dialog.Trigger
           class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
         >
-          <Button.Action tooltip="Change language" side="bottom">
+          <Button.Action tooltip={$_("change_language")} side="bottom">
             <Languages class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
@@ -131,7 +132,7 @@
         side="bottom"
         class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={toggleFullscreen}
-        tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
+        tooltip={isFullscreen ? $_("exit_fullscreen") : $_("enter_fullscreen")}
       >
         {#if isFullscreen}
           <Minimize class="h-5 w-5" />
@@ -150,7 +151,7 @@
           : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
           ? 'border-2'
           : ''}"
-        tooltip="Toggle function"
+        tooltip={$_("toggle_function")}
         onclick={() => (showFormulas = !showFormulas)}
       >
         <SquareFunction />

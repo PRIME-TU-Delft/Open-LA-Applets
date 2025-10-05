@@ -59,7 +59,7 @@
     >
       <SideButton
         onclick={(e) => onLock(e)}
-        tooltip="Lock the scene so you can scroll again"
+        tooltip={$_('lock_tooltip')}
       >
         <span class="mr-0.5 hidden text-xs sm:block">{$_('lock')}</span>
         <Lock class="h-4 w-4" />
@@ -114,10 +114,10 @@
     >
       <SideButton
         onclick={onReset}
-        tooltip="Will reset sliders, toggles and scene"
+        tooltip={$_('reset_tooltip')}
       >
         <RotateCcw class="h-4 w-4" />
-        <span class="ml-0.5 hidden text-xs sm:block">Reset</span>
+        <span class="ml-0.5 hidden text-xs sm:block">{$_('reset')}</span>
       </SideButton>
     </div>
   </div>
@@ -131,14 +131,14 @@
         : '-top-10 sm:-top-12 scale-100 motion-safe:hover:scale-105'
     )}
   >
-    <SideButton class="h-full w-full text-nowrap" tooltip="Start the scene so you can interact">
+    <SideButton class="h-full w-full text-nowrap" tooltip={$_('notify_tooltip')}>
       <div
         class="relative flex min-w-[16rem] items-center gap-2 px-4 py-1 text-center text-xs text-balance sm:text-nowrap"
       >
-        <ShadCNButton.Action class="h-6 w-6" tooltip="Lock scene">
+        <ShadCNButton.Action class="h-6 w-6" tooltip={$_('lock')}>
           <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
         </ShadCNButton.Action>
-        Click anywhere in the scene to start interacting
+        {$_('notify_click_anywhere')}
         <span class="absolute -top-1 -right-1 flex h-3 w-3">
           <span
             class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
