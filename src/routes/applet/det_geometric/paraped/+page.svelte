@@ -17,7 +17,7 @@
       label: 'θ',
       valueFn: (v) => (v / Math.PI).toFixed(2)
     })
-    .addToggle(true, '\\text{Fill}');
+    .addToggle(true, { en: '\\text{Fill}', nl: '\\text{Vullen}' });
 
   const formulas = $derived.by(() => {
     const height = c.y;

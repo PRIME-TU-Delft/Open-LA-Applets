@@ -172,11 +172,11 @@ export class Controls<
    */
   addToggle(
     dft: boolean,
-    title?: string,
+    title?: LocalizedString | string,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
       isSwitch?: boolean;
-      switchRightSide?: string;
+      switchRightSide?: LocalizedString | string;
     }
   ) {
     const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);
@@ -193,11 +193,11 @@ export class Controls<
    */
   static addToggle(
     dft: boolean,
-    title?: string,
+    title?: LocalizedString | string,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
       isSwitch?: boolean;
-      switchRightSide?: string;
+      switchRightSide?: LocalizedString | string;
     }
   ) {
     const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);

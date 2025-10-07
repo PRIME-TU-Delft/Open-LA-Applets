@@ -4,6 +4,8 @@
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import { Label } from '$lib/components/ui/label';
   import { Switch } from '../ui/switch';
+  import { getLocalizedString } from '$lib/utils';
+  import { locale } from 'svelte-i18n';
 
   type ToggleProps = {
     switch: Toggle;
@@ -15,7 +17,7 @@
 
 {#if toggle.label != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={toggle.label} />:
+    <Latex latex={getLocalizedString(toggle.label, $locale) || ''} />:
   </Label>
 {/if}
 
@@ -23,6 +25,6 @@
 
 {#if toggle.switchRightSide != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={toggle.switchRightSide} />:
+    <Latex latex={getLocalizedString(toggle.switchRightSide, $locale) || ''} />:
   </Label>
 {/if}
