@@ -28,5 +28,7 @@
   "slider_expand": "Schuifregelaar uitbreiden",
   "slider_toggle_animation": "Animatie schakelen",
   "slider_minimize": "Schuifregelaar minimaliseren",
-  "dropdown_select_item": "Item selecteren"
+  "dropdown_select_item": "Item selecteren",
+  "slideshow_prev": "Ga naar de vorige stap",
+  "slideshow_next": "Ga naar de volgende stap"
 }

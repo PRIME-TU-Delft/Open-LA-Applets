@@ -21,7 +21,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'No eigenvector' };
+      return {
+        state,
+        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
+        labelPrev: { en: 'No eigenvector', nl: 'Geen eigenvector' }
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -29,7 +33,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
+        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.3 * t;
@@ -37,7 +45,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
+        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -45,11 +57,18 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
+        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+      };
     }
   ];
 
-  const controls = Controls.addSlideShow(defaultState, steps, 'No eigenvector');
+  const controls = Controls.addSlideShow(defaultState, steps, {
+    en: 'No eigenvector',
+    nl: 'Geen eigenvector'
+  });
   const state = $derived(controls[0]);
 
   const A = new Matrix3(1, 4, 0, 1, 1, 0, 0, 0, 0);

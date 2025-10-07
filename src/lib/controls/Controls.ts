@@ -259,7 +259,7 @@ export class Controls<
    * @param label - label for the animation
    * @returns
    */
-  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {
+  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: LocalizedString) {
     const newSlideShow = new SlideShow(dft, steps, label);
     return new Controls([newSlideShow] as const, newSlideShow.width);
   }

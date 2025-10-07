@@ -25,14 +25,22 @@
 
       state.displayAs = t > 0.9 ? 'line' : 'image';
 
-      return { state, labelNext: 'Project on x1', labelPrev: 'Original state' };
+      return {
+        state,
+        labelNext: { en: 'Project on x1', nl: 'Projecteer op x1' },
+        labelPrev: { en: 'Original state', nl: 'Oorspronkelijke staat' }
+      };
     },
     (t: number, state: S) => {
       state.transformType = 'rotate';
 
       state.rotate = state.rotate - 90 * t;
 
-      return { state, labelNext: 'Rotate 90 degrees', labelPrev: 'Rotate 90 degrees' };
+      return {
+        state,
+        labelNext: { en: 'Rotate 90 degrees', nl: 'Roteer 90 graden' },
+        labelPrev: { en: 'Rotate 90 degrees', nl: 'Roteer 90 graden' }
+      };
     },
     (t: number, state: S) => {
       state.transformType = 'scale';
@@ -41,7 +49,11 @@
 
       state.displayAs = t > 0.9 ? 'dot' : 'line';
 
-      return { state, labelNext: 'Project on x1', labelPrev: 'Expand on x1' };
+      return {
+        state,
+        labelNext: { en: 'Project on x1', nl: 'Projecteer op x1' },
+        labelPrev: { en: 'Expand on x1', nl: 'Uitbreiden op x1' }
+      };
     }
   ];
 

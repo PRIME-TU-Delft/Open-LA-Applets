@@ -28,5 +28,7 @@
   "slider_expand": "Expand slider",
   "slider_toggle_animation": "Toggle animation",
   "slider_minimize": "Minimize slider",
-  "dropdown_select_item": "Select item"
+  "dropdown_select_item": "Select item",
+  "slideshow_prev": "Go to previous step",
+  "slideshow_next": "Go to next step"
 }

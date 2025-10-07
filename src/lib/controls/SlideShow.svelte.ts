@@ -1,14 +1,15 @@
 import { Object3D } from 'three';
 import type { Controller } from './Controls';
+import type { LocalizedString } from '$lib/utils';
 
 export type SlideShowSteps<State> = ((
   t: number,
   state: State
-) => { state: State; labelNext: string; labelPrev: string })[];
+) => { state: State; labelNext: LocalizedString; labelPrev: LocalizedString })[];
 
 export class SlideShow<State> implements Controller<State> {
   defaultValue: State;
-  defaultLabel = '';
+  defaultLabel: LocalizedString = { en: '' };
 
   value = $state() as State;
   index = $state(0);
@@ -23,10 +24,14 @@ export class SlideShow<State> implements Controller<State> {
   inTransition = $state(false);
 
   type = 'animation';
-  label = $state('');
+  label = $state({ en: '' }) as LocalizedString;
   width = 100;
 
-  constructor(defaultValue: State, steps: SlideShowSteps<State>, label: string = 'original state') {
+  constructor(
+    defaultValue: State,
+    steps: SlideShowSteps<State>,
+    label: LocalizedString = { en: 'Original state', nl: 'Oorspronkelijke staat' }
+  ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;
 
