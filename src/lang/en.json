@@ -27,5 +27,6 @@
   "language_window_available": "Languages available for this applet:",
   "slider_expand": "Expand slider",
   "slider_toggle_animation": "Toggle animation",
-  "slider_minimize": "Minimize slider"
+  "slider_minimize": "Minimize slider",
+  "dropdown_select_item": "Select item"
 }

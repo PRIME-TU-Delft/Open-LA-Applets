@@ -1,5 +1,6 @@
 import type { Controller } from './Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
+import { type LocalizedString } from '$lib/utils';
 
 /**
  * The Dropdown class is used to create a dropdown with a default value and a range of values.
@@ -10,18 +11,18 @@ import { PrimeColor } from '$lib/utils/PrimeColors';
  * @param color The color of the dropdown default is blue
  */
 
-export class Dropdown implements Controller<string> {
-  defaultValue: (typeof this.values)[number] = '';
-  value = $state<(typeof this.values)[number]>('');
+export class Dropdown implements Controller<LocalizedString> {
+  defaultValue: LocalizedString;
+  value: LocalizedString;
   label = '';
   color: string = PrimeColor.blue;
   width = 30;
-  values: readonly string[] = [];
+  values: readonly LocalizedString[] = [];
   type = 'toggle';
 
   constructor(
-    defaultValue: string,
-    values: readonly string[],
+    defaultValue: LocalizedString,
+    values: readonly LocalizedString[],
     color: string = PrimeColor.blue,
     label = ''
   ) {
@@ -30,14 +31,14 @@ export class Dropdown implements Controller<string> {
     }
 
     // Check if the default value is in the labels
-    if (!values.includes(defaultValue) || defaultValue === '') {
+    if (!values.includes(defaultValue) || defaultValue === undefined) {
       this.defaultValue = values[0];
     } else {
       this.defaultValue = defaultValue;
     }
 
     this.label = label;
-    this.value = this.defaultValue;
+    this.value = $state(this.defaultValue);
     this.values = values;
     this.color = color;
   }

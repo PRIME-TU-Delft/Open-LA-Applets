@@ -10,18 +10,21 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { type LocalizedString } from '$lib/utils';
   import { Vector2 } from 'three';
 
-  const d = new Dropdown('Rule 1 - Plus Identity', [
-    'Rule 1 - Plus Identity',
-    'Rule 2 - Associativity',
-    'Rule 3 - Commutativity',
-    'Rule 4 - Negation',
-    'Rule 5 - Identity',
-    'Rule 6 - Distributivity',
-    'Rule 7 - Multiplication',
-    'Rule 8 - Multiplication'
-  ]);
+  const rules: LocalizedString[] = [
+    { en: 'Rule 1 - Plus Identity', nl: 'Regel 1 - Plus Identiteit' },
+    { en: 'Rule 2 - Associativity', nl: 'Regel 2 - Associativiteit' },
+    { en: 'Rule 3 - Commutativity', nl: 'Regel 3 - Commutativiteit' },
+    { en: 'Rule 4 - Negation', nl: 'Regel 4 - Negatie' },
+    { en: 'Rule 5 - Identity', nl: 'Regel 5 - Identiteit' },
+    { en: 'Rule 6 - Distributivity', nl: 'Regel 6 - Distributiviteit' },
+    { en: 'Rule 7 - Multiplication', nl: 'Regel 7 - Vermenigvuldiging' },
+    { en: 'Rule 8 - Multiplication', nl: 'Regel 8 - Vermenigvuldiging' }
+  ];
+
+  const d = new Dropdown(rules[0], rules);
   const s1 = new Slider(1.5, -5, 5, 0.5, PrimeColor.blue, 'c1', false, (x) =>
     round(x, 1).toString()
   );
@@ -30,11 +33,11 @@
   );
 
   const controls = $derived.by(() => {
-    if (d.value == 'Rule 6 - Distributivity') {
+    if (d.value.en == 'Rule 6 - Distributivity') {
       return Controls.add(d).add(s1);
     }
 
-    if (d.value == 'Rule 7 - Multiplication' || d.value == 'Rule 8 - Multiplication') {
+    if (d.value.en == 'Rule 7 - Multiplication' || d.value.en == 'Rule 8 - Multiplication') {
       return Controls.add(d).add(s1).add(s2);
     }
 
@@ -58,7 +61,7 @@
       )
     ];
 
-    switch (dropdown) {
+    switch (dropdown.en) {
       case 'Rule 1 - Plus Identity':
       case 'Rule 4 - Negation':
       case 'Rule 5 - Identity':
@@ -89,7 +92,7 @@
     const v2 = draggables[1] ? toMatrix(draggables[1].position) : '';
     const v3 = draggables[2] ? toMatrix(draggables[2].position) : '';
 
-    switch (dropdown) {
+    switch (dropdown.en) {
       case 'Rule 1 - Plus Identity':
         return [
           new Formula(`\\$1 + ${zeroVec} = \\$1 = ${zeroVec} + \\$1`).addAutoParam(
@@ -177,7 +180,7 @@
     />
   {/each}
 
-  {#if dropdown == 'Rule 2 - Associativity'}
+  {#if dropdown.en == 'Rule 2 - Associativity'}
     {@const v1Plusv2 = draggables[0].position.clone().add(draggables[1].position)}
     {@const v2Plusv3 = draggables[1].position.clone().add(draggables[2].position)}
     {@const v1Plusv2Plusv3 = v1Plusv2.clone().add(draggables[2].position)}
@@ -232,7 +235,7 @@
       color={PrimeColor.black}
       latex={`\\mathbf{v_1} + \\mathbf{v_2} + \\mathbf{v_3}`}
     />
-  {:else if dropdown == 'Rule 3 - Commutativity'}
+  {:else if dropdown.en == 'Rule 3 - Commutativity'}
     {@const v1Plusv2 = draggables[0].position.clone().add(draggables[1].position)}
 
     <Vector2D
@@ -263,7 +266,7 @@
       color={PrimeColor.black}
       latex={`\\mathbf{v_1} + \\mathbf{v_2} = \\mathbf{v_2} + \\mathbf{v_1}`}
     />
-  {:else if dropdown == 'Rule 4 - Negation'}
+  {:else if dropdown.en == 'Rule 4 - Negation'}
     <Latex2D
       position={new Vector2(0.5, 0.5)}
       color={PrimeColor.black}
@@ -275,7 +278,7 @@
       length={draggables[0].position.length()}
       color={PrimeColor.raspberry}
     />
-  {:else if dropdown == 'Rule 6 - Distributivity'}
+  {:else if dropdown.en == 'Rule 6 - Distributivity'}
     {@const c1v1 = draggables[0].position.clone().multiplyScalar(slider1)}
     {@const c1v2 = draggables[1].position.clone().multiplyScalar(slider1)}
     {@const position = draggables[0].position.clone().add(draggables[1].position)}
@@ -356,7 +359,7 @@
       position={c1v1Plusc1v2}
       color={PrimeColor.black}
     />
-  {:else if dropdown == 'Rule 7 - Multiplication'}
+  {:else if dropdown.en == 'Rule 7 - Multiplication'}
     <Vector2D
       direction={draggables[0].position.clone().multiplyScalar(slider1)}
       length={draggables[0].position.length() * Math.abs(slider1)}
@@ -395,7 +398,7 @@
         latex={`${toColor('c_1', PrimeColor.blue)} \\mathbf{v_1} + ${toColor('c_2', PrimeColor.cyan)} \\mathbf{v_1}`}
       />
     {/if}
-  {:else if dropdown == 'Rule 8 - Multiplication'}
+  {:else if dropdown.en == 'Rule 8 - Multiplication'}
     {@const position = draggables[0].position.clone().multiplyScalar(slider1 * slider2)}
 
     <Vector2D
@@ -412,7 +415,7 @@
   {/if}
 
   <!-- add black point if the zero vector is part of the formula -->
-  {#if dropdown == 'Rule 1 - Plus Identity' || dropdown == 'Rule 4 - Negation'}
+  {#if dropdown.en == 'Rule 1 - Plus Identity' || dropdown.en == 'Rule 4 - Negation'}
     <Point2D position={new Vector2(0, 0)} color={PrimeColor.black} />
   {/if}
 </Canvas2D>

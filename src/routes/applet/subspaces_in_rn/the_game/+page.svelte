@@ -24,15 +24,15 @@
     label: 'c',
     labelFormat,
     onRelease: validateSlider
-  }).addDropdown('', values, PrimeColor.yellow);
+  }).addDropdown({ en: '' }, values, PrimeColor.yellow);
 
   /**
    * Check if conffetti should be shown when the slider is changed
    */
   function validateSlider() {
-    if (controls[1] == 'Disc') {
+    if (controls[1].en == 'Disc') {
       validateDisk(new Vector2(), 'right');
-    } else if (controls[1] == 'First quadrant' && (prod.x < 0 || prod.y < 0)) {
+    } else if (controls[1].en == 'First quadrant' && (prod.x < 0 || prod.y < 0)) {
       confettiState.rightSide();
     }
   }
@@ -81,7 +81,7 @@
   }
 
   function getDraggables(type: (typeof values)[number], side: Side = 'left'): Draggable[] {
-    switch (type) {
+    switch (type.en) {
       case 'Affine Line':
         return [
           new Draggable(new Vector2(2, 2), PrimeColor.darkGreen, 'u', (v) =>
@@ -217,20 +217,20 @@
 </Canvas2D>
 
 {#snippet subspace()}
-  {#if controls[1] == 'Affine Line'}
+  {#if controls[1].en == 'Affine Line'}
     <InfiniteLine2D direction={new Vector2(1, 1)} color={PrimeColor.yellow} />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{L}`} />
-  {:else if controls[1] == 'Disc'}
+  {:else if controls[1].en == 'Disc'}
     <circle cx={0} cy={0} r={2.5} fill={PrimeColor.yellow} opacity="0.2" />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{A}`} />
-  {:else if controls[1] == 'Two axes'}
+  {:else if controls[1].en == 'Two axes'}
     <InfiniteLine2D direction={new Vector2(1, 0)} color={PrimeColor.yellow} />
     <InfiniteLine2D direction={new Vector2(0, 1)} color={PrimeColor.yellow} />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{L}`} />
-  {:else if controls[1] == 'First quadrant'}
+  {:else if controls[1].en == 'First quadrant'}
     <rect x={0} y={0} width={30} height={30} fill={PrimeColor.yellow} opacity="0.2" />
     <Latex2D position={new Vector2(4, 0.5)} color={PrimeColor.yellow} latex={`\\mathcal{A}`} />
-  {:else if controls[1] == 'Two-sided cone'}
+  {:else if controls[1].en == 'Two-sided cone'}
     <Polygon2D
       points={[
         new Vector2(0, 0),

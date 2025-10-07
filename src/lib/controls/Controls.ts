@@ -7,6 +7,7 @@ import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
+import type { LocalizedString } from '$lib/utils';
 
 /**
  * Interface for a controller
@@ -209,7 +210,7 @@ export class Controls<
    * @param dft - default value for the dropdown
    * @param color - color for the dropdown default is raspberry
    */
-  addDropdown(dft: string, values: string[], color?: ColorString) {
+  addDropdown(dft: LocalizedString, values: LocalizedString[], color?: ColorString) {
     const newDropdown = new Dropdown(dft, values, color);
     this.isAllowedToAddControl(newDropdown);
     return new Controls([...this.controls, newDropdown] as const, this._width + newDropdown.width);
@@ -222,7 +223,7 @@ export class Controls<
    * @param color - color for the dropdown default is raspberry
    * @returns
    */
-  static addDropdown(dft: string, values: string[], color?: ColorString) {
+  static addDropdown(dft: LocalizedString, values: LocalizedString[], color?: ColorString) {
     const newDropdown = new Dropdown(dft, values, color);
     return new Controls([newDropdown] as const, newDropdown.width);
   }

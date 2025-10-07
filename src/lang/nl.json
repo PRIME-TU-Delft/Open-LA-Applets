@@ -27,5 +27,6 @@
   "language_window_available": "Beschikbare talen voor deze applet:",
   "slider_expand": "Schuifregelaar uitbreiden",
   "slider_toggle_animation": "Animatie schakelen",
-  "slider_minimize": "Schuifregelaar minimaliseren"
+  "slider_minimize": "Schuifregelaar minimaliseren",
+  "dropdown_select_item": "Item selecteren"
 }
