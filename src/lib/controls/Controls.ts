@@ -94,7 +94,7 @@ export class Controls<
     step: number,
     color?: ColorString,
     options?: {
-      label?: string;
+      label?: LocalizedString | string;
       loop?: boolean;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
@@ -141,7 +141,7 @@ export class Controls<
     step: number,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
-      label?: string;
+      label?: LocalizedString | string;
       loop?: boolean;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;

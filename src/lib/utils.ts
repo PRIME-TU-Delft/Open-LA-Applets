@@ -18,12 +18,13 @@ export type LocalizedString = {
 };
 
 export function getLocalizedString(
-  localizedString: LocalizedString | undefined,
-  lang: string
+  localizedString: LocalizedString | string | undefined,
+  lang: string | null | undefined
 ): string | undefined {
   if (localizedString === undefined) return undefined;
+  if (typeof localizedString == 'string') return localizedString;
 
-  return localizedString[lang] || localizedString.en;
+  return localizedString[lang || 'en'] || localizedString.en;
 }
 
 export function getLanguages(localizedString: LocalizedString | undefined): string[] {

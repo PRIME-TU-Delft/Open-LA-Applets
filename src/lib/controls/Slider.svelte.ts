@@ -1,6 +1,7 @@
 import type { Controller } from './Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import type { Snippet } from 'svelte';
+import type { LocalizedString } from '$lib/utils';
 
 /**
  * The Slider class is used to create a slider with a default value and a range of values.
@@ -23,7 +24,7 @@ export class Slider implements Controller<number> {
   color: string = PrimeColor.blue;
   width = 30;
   type = 'sliders';
-  label = '';
+  label: LocalizedString | string = '';
   loop = false;
   valueFn: (v: number) => string;
   labelFormat?: (v: number) => ReturnType<Snippet>;
@@ -35,7 +36,7 @@ export class Slider implements Controller<number> {
     max = 1,
     step = 0.1,
     color: string = PrimeColor.blue,
-    label: string = '',
+    label: LocalizedString | string = '',
     loop: boolean = false,
     valueFn: (v: number) => string = (v) => v.toString(),
     valueFormat: ((v: number) => ReturnType<Snippet>) | undefined = undefined,

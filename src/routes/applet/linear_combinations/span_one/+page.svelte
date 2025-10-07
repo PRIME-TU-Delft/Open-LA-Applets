@@ -12,7 +12,7 @@
   const vDir = new Vector3(3, 2, -3);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
   const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry, {
-    label: 'length',
+    label: { en: 'length', nl: 'lengte' },
     labelFormat
   });
 
