@@ -24,5 +24,8 @@
   "share_licence_based_on": "Based on a work at",
   "share_licence_permissions": "Permissions beyond the scope of this license may be available at",
   "language_window_title": "Change language",
-  "language_window_available": "Languages available for this applet:"
+  "language_window_available": "Languages available for this applet:",
+  "slider_expand": "Expand slider",
+  "slider_toggle_animation": "Toggle animation",
+  "slider_minimize": "Minimize slider"
 }
