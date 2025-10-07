@@ -5,7 +5,7 @@
   import Point3D from '../Point3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Point3D',
+    title: '3D Components/Point3D',
     component: Point3D
   });
 </script>

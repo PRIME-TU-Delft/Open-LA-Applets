@@ -3,7 +3,7 @@
   import Latex2D, { type Latex2DProps } from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Latex2D',
+    title: '2D Components/Latex2D',
     component: Latex2D
   });
 </script>

@@ -5,7 +5,7 @@
   import Latex2D from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Vector2D',
+    title: '2D Components/Vector2D',
     component: Vector2D
   });
 </script>

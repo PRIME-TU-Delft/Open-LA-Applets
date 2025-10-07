@@ -4,7 +4,7 @@
   import Polygon2D from '../Polygon2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Polygon2D',
+    title: '2D Components/Polygon2D',
     component: Polygon2D
   });
 </script>

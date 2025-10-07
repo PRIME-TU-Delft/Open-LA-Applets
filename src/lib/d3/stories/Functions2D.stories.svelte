@@ -2,7 +2,7 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
-    title: 'D3/Functions2D',
+    title: '2D Components/Functions2D',
     subcomponents: { ExplicitFunction2D, ImplicitFunction2D, ParameterizedFunction2D },
     parameters: {
       docs: {

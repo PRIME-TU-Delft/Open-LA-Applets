@@ -155,30 +155,44 @@
   </Button.Action>
 
   {#if slider.label}
-    <Label
-      class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
-      for="range-{uuid}"
-      >{getLocalizedString(slider.label, $locale)}:
-      <p class="absolute left-full flex text-sm" style="color:{slider.color};">
-        {#if slider.labelFormat}
-          {@render slider.labelFormat(value)}
-        {:else}
-          {label}
-        {/if}
-      </p>
-    </Label>
+    <div class="mr-2 ml-4 flex flex-col">
+      <Label
+        class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
+        for="range-{uuid}"
+        >{getLocalizedString(slider.label, $locale)}:
+        <p class="absolute left-full flex text-sm" style="color:{slider.color};">
+          {#if slider.labelFormat}
+            {@render slider.labelFormat(value)}
+          {:else}
+            {label}
+          {/if}
+        </p>
+      </Label>
+      <input
+        type="range"
+        id="range-{uuid}"
+        min={slider.min}
+        max={slider.max}
+        step={slider.stepSize}
+        bind:value
+        onchange={stopPlaying}
+        onmousedown={startChanging}
+        ontouchstart={startChanging}
+        style="accent-color: {slider.color}"
+      />
+    </div>
+  {:else}
+    <input
+      type="range"
+      id="range-{uuid}"
+      min={slider.min}
+      max={slider.max}
+      step={slider.stepSize}
+      bind:value
+      onchange={stopPlaying}
+      onmousedown={startChanging}
+      ontouchstart={startChanging}
+      style="accent-color: {slider.color}"
+    />
   {/if}
-
-  <input
-    type="range"
-    id="range-{uuid}"
-    min={slider.min}
-    max={slider.max}
-    step={slider.stepSize}
-    bind:value
-    onchange={stopPlaying}
-    onmousedown={startChanging}
-    ontouchstart={startChanging}
-    style="accent-color: {slider.color}"
-  />
 {/if}

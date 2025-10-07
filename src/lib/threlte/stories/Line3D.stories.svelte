@@ -5,7 +5,7 @@
   import Line3D from '../Line3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Line3D',
+    title: '3D Components/Line3D',
     component: Line3D
   });
 </script>

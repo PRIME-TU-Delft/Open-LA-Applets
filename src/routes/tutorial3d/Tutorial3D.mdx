@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+export const host = 'https://openla.ewi.tudelft.nl';
+
+<Meta title="Tutorial 3d" />
+
+# Tutorial 3D
+
+> For this tutorial, it is recommended to have completed the [2D tutorial](./?path=/docs/tutorial-2d--docs) first.
+
+This 3D tutorial will guide you through the processes of creating a simple 3D applet that demonstrates basic 3D shapes and interactions.
+By the end of this tutorial, you will have a functional 3D applet that can be embedded in web pages. Here is a preview of the final applet:
+
+<iframe src={host + '/tutorial3d/final?iframe=true'} width="100%" height="600px"></iframe>
+
+The code for this applet can be found here: [View Code](https://github.com/Open-LA-Applets/Open-LA-Applets/tree/main/src/routes/tutorial3d/final/%2Bpage.svelte)
+
+<br />
+
+## Step 1: Initialize a 3D canvas
+
+Each 3D applet starts with a 3D canvas. You can initialize a 3D canvas by following the code snippet below:
+
+```html
+<script lang="ts">
+  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import Canvas3D from '$lib/threlte/Canvas3D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector3 } from 'three';
+
+  let tv1 = new Vector3(0, 0, 1);
+  let tv2 = new Vector3(1, 0, 0);
+  let tv3 = new Vector3(0, 1, 0);
+</script>
+
+<Canvas3D cameraZoom={100} title="The vectors in 2d and 3d">
+  <Axis3D showNumbers />
+
+  <!-- e1 & e2 & e3 -->
+  <Vector3D direction={tv1} length={1} color={PrimeColor.blue} />
+  <Vector3D direction={tv2} length={1} color={PrimeColor.darkGreen} />
+  <Vector3D direction={tv3} length={1} color={PrimeColor.raspberry} />
+
+  <Latex3D
+    latex={'\\mathbf{v_1}'}
+    position={tv1.normalize().multiplyScalar(1.2)}
+    color={PrimeColor.blue}
+  />
+  <Latex3D
+    latex={'\\mathbf{v_2}'}
+    position={tv2.normalize().multiplyScalar(1.2)}
+    color={PrimeColor.darkGreen}
+  />
+  <Latex3D
+    latex={'\\mathbf{v_3}'}
+    position={tv3.normalize().multiplyScalar(1.2)}
+    color={PrimeColor.raspberry}
+  />
+</Canvas3D>
+```
+
+The above code initializes a 3D canvas with a camera zoom level of 100 and includes a 3D axis with numbers.
+It also defines three vectors in 3D space and labels them using LaTeX.
+
+<iframe src={host + '/tutorial3d/create-canvas?iframe=true'} width="100%" height="600px"></iframe>
+
+### Adding 2D Interaction
+
+We will first create the 2D elements by defining the draggable vectors in 2D space.
+
+```typescript
+import { Draggable } from '$lib/controls/Draggables.svelte';
+import { Vector2 } from 'three';
+// ... Other imports
+
+let v1 = new Draggable(new Vector2(1, 0), PrimeColor.blue, '\\mathbf{v_1}');
+let v2 = new Draggable(new Vector2(0, 1), PrimeColor.darkGreen, '\\mathbf{v_2}');
+
+// Convert 2D positions to 3D positions
+let tv1 = $derived(new Vector3(v1.position.y, 0, v1.position.x));
+let tv2 = $derived(new Vector3(v2.position.y, 0, v2.position.x));
+let tv3 = new Vector3(0, 1, 0);
+```
+
+To add 2D interaction to your 3D applet, you can use the `splitCanvas2DChildren` slot of the `Canvas3D` component.
+This allows you to include 2D elements that can interact with the 3D scene. Below is an example of how to implement this:
+
+```html
+<Canvas3D
+  cameraZoom={100}
+  splitCanvas2DProps={{ cameraZoom: 3, draggables: [v1, v2] }}
+  title="The vectors in 2d and 3d"
+>
+  <!-- ... 3D Components ... -->
+
+  {#snippet splitCanvas2DChildren()}
+    <!-- v1, v2 -->
+    <Vector2D direction={v1.position} length={1} color={PrimeColor.blue} />
+    <Vector2D direction={v2.position} length={1} color={PrimeColor.darkGreen} />
+  {/snippet}
+</Canvas3D>
+```
+
+Note how the draggables are added to the `splitCanvas2DProps` and how the 2D vectors are rendered within the `splitCanvas2DChildren` slot.
+With this setup, you can drag the 2D vectors, and their positions will be reflected in the 3D scene. This can be seen in the final applet below:
+
+<iframe src={host + '/tutorial3d/final?iframe=true'} width="100%" height="600px"></iframe>

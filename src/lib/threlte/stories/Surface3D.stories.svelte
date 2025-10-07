@@ -4,7 +4,7 @@
   import Surface3D from '../Surface3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Surface3D',
+    title: '3D Components/Surface3D',
     component: Surface3D
   });
 </script>
