@@ -24,6 +24,7 @@
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
   import { cn, getLanguages, getLocalizedString, type LocalizedString } from '$lib/utils';
+  import { browser } from '$app/environment';
   import { locale } from 'svelte-i18n';
 
   let {
@@ -38,6 +39,8 @@
 
   let height = $state(500);
   let width = $state<number>(0);
+
+  const showFps = dev && browser && import.meta.env.VITE_SHOW_FPS === 'true';
 
   /**
    * Reset camera position, rotation and controls.
@@ -132,7 +135,7 @@
       </div>
     {/if}
 
-    {#if dev}
+    {#if showFps}
       <FpsCounter />
     {/if}
 

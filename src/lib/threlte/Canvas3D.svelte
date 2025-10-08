@@ -119,7 +119,7 @@
 >
   {#snippet sceneChildren(width, height)}
     {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
-    <div style="width: {canvasWidth}px" class="overflow">
+    <div style="width: {canvasWidth}px" class="overflow-hidden">
       {#if confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center'}
         <Confetti isSplit={false} />
       {/if}

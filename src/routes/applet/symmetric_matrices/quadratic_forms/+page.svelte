@@ -69,7 +69,7 @@
   title={{ en: 'Quadratic forms', nl: 'Kwadratische vormen' }}
   splitCanvas2DProps={{ cameraZoom: 2 }}
 >
-  <Axis3D />
+  <Axis3D x1="x_1" x2="x_2" x3="x_3" />
 
   {#if a == 0 && b == 0 && c == 0 && k == 0}
     <AutoPlanes values={[0, 0]}>
