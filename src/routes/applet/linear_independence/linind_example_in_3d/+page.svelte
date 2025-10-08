@@ -40,8 +40,11 @@
     const f1 = new Formula(pre + res + post + isIn);
 
     const f2 = new Formula(
-      '\\{' + res + post + `= \\text{linearly ${!controls[0] && controls[1] ? 'in' : ''}dependent}`
-    );
+      '\\{' + res + post + `= \\text{\\$1 ${!controls[0] && controls[1] ? '\\$2' : ''}\\$3}`
+    )
+      .addAutoParam({ en: 'linearly', nl: 'lineair' })
+      .addAutoParam({ en: 'in', nl: 'on' })
+      .addAutoParam({ en: 'dependent', nl: 'afhankelijk' });
 
     return [f1, f2];
   });

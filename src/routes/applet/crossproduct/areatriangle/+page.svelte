@@ -34,8 +34,8 @@
           PrimeColor.orange
         ),
       new Formula(
-        `\\text{Area}(\\Delta \\mathbf{PQR}) = \\frac{1}{2} ||\\mathbf{n}|| = ${round(area, 1)}`
-      )
+        `\\text{\\$1}(\\Delta \\mathbf{PQR}) = \\frac{1}{2} ||\\mathbf{n}|| = ${round(area, 1)}`
+      ).addAutoParam({ en: 'Area', nl: 'Oppervlakte' })
     ];
   });
 </script>
