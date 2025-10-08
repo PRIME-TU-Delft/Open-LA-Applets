@@ -1,3 +1,9 @@
+<!--
+ TODO:
+ - riemann mode selection (dropdown?)
+ - logarithmic slider (should we have?) for numRectangles
+-->
+
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -11,7 +17,8 @@
 
   const controls = Controls
       .addSlider(-1, -4, 0, 0.1, PrimeColor.darkGreen) // b
-      .addSlider(1, 0, 4, 0.1, PrimeColor.raspberry); // a
+      .addSlider(1, 0, 4, 0.1, PrimeColor.raspberry)   // a
+      .addSlider(10, 1, 50, 1, PrimeColor.blue);       // numRectangles
       
   const func = (x: number) => Math.cos((2 * Math.PI * x) / 4);
   const func_display = '\\int_{\\$1}^{\\$2} (\\cos(\\frac{2\\pi x}{4})) dx~~=~~\\$3';
@@ -19,6 +26,8 @@
   const formulas = $derived.by(() => {
     const a = round(controls[0]);
     const b = round(controls[1]);
+    const numRectangles = round(controls[2]);
+    const dx = (b - a) / numRectangles;
     const result = integrate(func, a, b);
 
     const f1 = new Formula(func_display)
@@ -26,16 +35,24 @@
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(result, PrimeColor.blue);
 
-    return new Formulas(f1);
+    const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
+    const riemann_display = '\\sum_{i=1}^{n} f(x_i^*) \\Delta x~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
+
+    const f2 = new Formula(riemann_display)
+      .addAutoParam(riemannSum, PrimeColor.orange)
+      .addAutoParam(numRectangles, PrimeColor.blue)
+      .addAutoParam(round(dx, 4), PrimeColor.purple);
+
+    return new Formulas(f1, f2);
   });
 
-  const numRectangles = 10; // Number of rectangles for the Riemann sum
-  let method: 'left' | 'right' | 'middle' | 'random' = 'random';
+  let method: 'left' | 'right' | 'middle' | 'random' | 'min' | 'max' = 'random';
   const showHeights = true;
 
   const rects = $derived.by(() => {
     const a = controls[0];
     const b = controls[1];
+    const numRectangles = controls[2];
     const dx = (b - a) / numRectangles;
     const newRects = [];
     for (let i = 0; i < numRectangles; i++) {
@@ -48,6 +65,10 @@
         x = a + (i + 0.5) * dx;
       } else if (method === 'random') {
         x = a + i * dx + Math.random() * dx;
+      } else if (method === 'min') {
+        x = func(a + i * dx) < func(a + (i + 1) * dx) ? a + i * dx : a + (i + 1) * dx;
+      } else if (method === 'max') {
+        x = func(a + i * dx) > func(a + (i + 1) * dx) ? a + i * dx : a + (i + 1) * dx;
       } else {
         x = a + i * dx; // fallback to left method
       }
