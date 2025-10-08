@@ -5,6 +5,7 @@
   "reset_tooltip": "Will reset sliders, toggles and scene",
   "reset_scene_tooltip": "Will reset the scene to original camera positions",
   "notify_click_anywhere": "Click anywhere in the scene to start interacting",
+  "lock_disable_zoom": "Lock the scene to disable zoom",
   "notify_tooltip": "Start the scene so you can interact",
   "share_tooltip": "Share or embed applet",
   "change_language": "Change language",
