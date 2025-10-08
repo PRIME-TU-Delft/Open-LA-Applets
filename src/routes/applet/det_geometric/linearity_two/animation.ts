@@ -41,8 +41,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Translate OBDA along v', nl: 'Verschuif OBDA langs v' },
-        labelPrev: { en: 'Translate OBDA along v', nl: 'Verschuif OBDA langs v' }
+        labelNext: { en: 'Translate OBDA along v', nl: 'Verplaats OBDA langs v' },
+        labelPrev: { en: 'Translate OBDA along v', nl: 'Verplaats OBDA langs v' }
       };
     },
     (t, state) => {
@@ -58,8 +58,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Translate OGC along u', nl: 'Verschuif OGC langs u' },
-        labelPrev: { en: 'Translate AEF along u', nl: 'Verschuif AEF langs u' }
+        labelNext: { en: 'Translate OGC along u', nl: 'Verplaats OGC langs u' },
+        labelPrev: { en: 'Translate AEF along u', nl: 'Verplaats AEF langs u' }
       };
     },
     (_t, state) => {

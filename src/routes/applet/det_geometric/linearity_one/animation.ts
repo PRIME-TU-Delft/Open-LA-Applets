@@ -34,8 +34,8 @@ function createTranstionStep(u: Vector2): SlideShowSteps<S> {
 
       return {
         state,
-        labelNext: { en: 'Translate ABD', nl: 'Verschuif ABD' },
-        labelPrev: { en: 'Translate ABD', nl: 'Verschuif ABD' }
+        labelNext: { en: 'Translate ABD', nl: 'Verplaats ABD' },
+        labelPrev: { en: 'Translate ABD', nl: 'Verplaats ABD' }
       };
     }
   ];
