@@ -19,7 +19,7 @@
 <Canvas3D
   cameraZoom={100}
   splitCanvas2DProps={{ cameraZoom: 3, draggables: [v1, v2] }}
-  title="The vectors in 2d and 3d"
+  title={{ en: 'The vectors in 2d and 3d', nl: 'De vectoren in 2D en 3D' }}
 >
   <Axis3D showNumbers />
 

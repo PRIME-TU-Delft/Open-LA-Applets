@@ -26,7 +26,11 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas2D {controls} draggables={[direction1]} title="Complex numbers addition">
+<Canvas2D
+  {controls}
+  draggables={[direction1]}
+  title={{ en: 'Complex numbers addition', nl: 'Optellen van complexe getallen' }}
+>
   <Vector2D
     direction={direction1.position}
     length={direction1.position.length()}

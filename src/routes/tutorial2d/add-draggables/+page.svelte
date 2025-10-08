@@ -15,7 +15,10 @@
   let v_result = $derived(direction1.position.clone().add(direction2.clone()));
 </script>
 
-<Canvas2D draggables={[direction1]} title="Complex numbers addition">
+<Canvas2D
+  draggables={[direction1]}
+  title={{ en: 'Complex numbers addition', nl: 'Optellen van complexe getallen' }}
+>
   <Vector2D
     direction={direction1.position}
     length={direction1.position.length()}

@@ -11,7 +11,10 @@
   let tv3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas3D cameraZoom={100} title="The vectors in 2d and 3d">
+<Canvas3D
+  cameraZoom={100}
+  title={{ en: 'The vectors in 2d and 3d', nl: 'De vectoren in 2D en 3D' }}
+>
   <Axis3D showNumbers />
 
   <!-- e1 & e2 & e3 -->
