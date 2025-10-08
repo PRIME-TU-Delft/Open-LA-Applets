@@ -1,6 +1,5 @@
 import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
-import { en } from '$lib/utils';
 import { Vector4 } from 'three';
 
 const state = [new Vector4(2, -1, -1, 2), new Vector4(1, 2, 4, 4), new Vector4(4, -2, -4, 6)];
