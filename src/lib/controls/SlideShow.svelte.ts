@@ -1,11 +1,11 @@
 import { Object3D } from 'three';
 import type { Controller } from './Controls';
-import type { LocalizedString } from '$lib/utils';
+import { en, type LocalizedString } from '$lib/utils';
 
 export type SlideShowSteps<State> = ((
   t: number,
   state: State
-) => { state: State; labelNext: LocalizedString; labelPrev: LocalizedString })[];
+) => { state: State; labelNext: string | LocalizedString; labelPrev: string | LocalizedString })[];
 
 export class SlideShow<State> implements Controller<State> {
   defaultValue: State;
@@ -92,13 +92,15 @@ export class SlideShow<State> implements Controller<State> {
     const interval = setInterval(() => {
       const result = this.steps[this.index](i / timeSteps, this.clone(current_value));
       this.value = result.state;
-      this.label = result.labelNext;
+      if (typeof result.labelNext == 'string') this.label = en(result.labelNext);
+      else this.label = result.labelNext;
 
       if (i++ >= timeSteps - 1) {
         clearInterval(interval);
         const result = this.steps[this.index](1, this.clone(current_value));
         this.value = result.state;
-        this.label = result.labelNext;
+        if (typeof result.labelNext == 'string') this.label = en(result.labelNext);
+        else this.label = result.labelNext;
         this.index++;
         this.inTransition = false;
 
@@ -123,7 +125,8 @@ export class SlideShow<State> implements Controller<State> {
     const interval = setInterval(() => {
       const result = this.steps[this.index - 1](1 - i / timeSteps, this.clone(current_value));
       this.value = result.state;
-      this.label = result.labelPrev;
+      if (typeof result.labelPrev === 'string') this.label = en(result.labelPrev);
+      else this.label = result.labelPrev;
 
       if (i++ >= timeSteps - 1) {
         clearInterval(interval);

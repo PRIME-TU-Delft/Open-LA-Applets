@@ -16,7 +16,11 @@ const transitionSteps: SlideShowSteps<S> = [
     // R1 = R2
     state[0] = temp;
 
-    return { state, labelNext: 'R1 ⇔ R2', labelPrev: 'Original state' };
+    return {
+      state,
+      labelNext: 'R1 ⇔ R2',
+      labelPrev: { en: 'Original state', nl: 'Oorspronkelijke staat' }
+    };
   },
   (t, state) => {
     // STEP 2

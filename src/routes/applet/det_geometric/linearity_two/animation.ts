@@ -39,7 +39,11 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
       state.OBDA.offset = v.clone().multiplyScalar(t);
       state.vPlusW.visible = false;
 
-      return { state, labelNext: 'Translate OBDA along v', labelPrev: 'Translate OBDA along v' };
+      return {
+        state,
+        labelNext: { en: 'Translate OBDA along v', nl: 'Verschuif OBDA langs v' },
+        labelPrev: { en: 'Translate OBDA along v', nl: 'Verschuif OBDA langs v' }
+      };
     },
     (t, state) => {
       state.vPlusW.visible = true;
@@ -52,7 +56,11 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
       // Translate OGC along u
       state.OGC.offset = u.clone().multiplyScalar(t);
 
-      return { state, labelNext: 'Translate OGC along u', labelPrev: 'Translate AEF along u' };
+      return {
+        state,
+        labelNext: { en: 'Translate OGC along u', nl: 'Verschuif OGC langs u' },
+        labelPrev: { en: 'Translate AEF along u', nl: 'Verschuif AEF langs u' }
+      };
     },
     (_t, state) => {
       // Replace OAFCG & OGC with CGEF & OAEG
@@ -64,15 +72,19 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: 'Rename OAFC = OAEG + CGEF',
-        labelPrev: 'Rename OAEG + CGEF = OAFC'
+        labelNext: { en: 'Rename OAFC = OAEG + CGEF', nl: 'Hernoem OAFC = OAEG + CGEF' },
+        labelPrev: { en: 'Rename OAEG + CGEF = OAFC', nl: 'Hernoem OAEG + CGEF = OAFC' }
       };
     },
     (t, state) => {
       state.CGEF.opacity = 1 - t;
       state.OBDA.opacity = 1 - t;
 
-      return { state, labelNext: 'Substract CGEF ', labelPrev: 'Add CGEF' };
+      return {
+        state,
+        labelNext: { en: 'Substract CGEF ', nl: 'Trek CGEF af' },
+        labelPrev: { en: 'Add CGEF', nl: 'Tel CGEF op' }
+      };
     }
   ];
 }

@@ -17,6 +17,10 @@ export type LocalizedString = {
   [languageCode: string]: string;
 };
 
+export function en(text: string) {
+  return { en: text };
+}
+
 export function getLocalizedString(
   localizedString: LocalizedString | string | undefined,
   lang: string | null | undefined
