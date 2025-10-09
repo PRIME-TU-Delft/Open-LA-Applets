@@ -9,6 +9,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
   import Rect2D from '$lib/d3/Rect2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { integrate, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -16,16 +17,16 @@
 
   const methods = ['left', 'right', 'middle', 'random', 'min', 'max'];
 
-  const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
-    .addSlider(0, -2, 3, 0.1, PrimeColor.raspberry) // b
+  const controls = Controls
+    .addDropdown('', methods, PrimeColor.yellow)
+    .addSlider(2, -4, 4, 0.1, PrimeColor.raspberry) // b
     .addSlider(10, 1, 50, 1, PrimeColor.blue); // numRectangles
-
-  const a = 1;
 
   const func = (x: number) => Math.cos((2 * Math.PI * x) / 4);
   const func_display = '\\int_{\\$1}^{\\$2} (\\cos(\\frac{2\\pi x}{4})) dx~~=~~\\$3';
 
   const formulas = $derived.by(() => {
+    const a = -round(controls[1]);
     const b = round(controls[1]);
     const numRectangles = round(controls[2]);
     const dx = (b - a) / numRectangles;
@@ -51,6 +52,7 @@
   const showHeights = true;
 
   const rects = $derived.by(() => {
+    const a = -controls[1];
     const b = controls[1];
     const numRectangles = controls[2];
     const dx = (b - a) / numRectangles;
@@ -66,22 +68,53 @@
       } else if (method === 'random') {
         x = a + i * dx + Math.random() * dx;
       } else if (method === 'min') {
-        x = func(a + i * dx) < func(a + (i + 1) * dx) ? a + i * dx : a + (i + 1) * dx;
+        // Find the minimum value of func in [x1, x2] by sampling
+        const x1 = a + i * dx;
+        const x2 = x1 + dx;
+        const samples = 10;
+        let minX = x1;
+        let minY = func(x1);
+        for (let s = 1; s <= samples; s++) {
+          const xs = x1 + (s * (x2 - x1)) / samples;
+          const ys = func(xs);
+          if (ys < minY) {
+        minY = ys;
+        minX = xs;
+          }
+        }
+        x = minX;
       } else if (method === 'max') {
-        x = func(a + i * dx) > func(a + (i + 1) * dx) ? a + i * dx : a + (i + 1) * dx;
+        // Find the maximum value of func in [x1, x2] by sampling
+        const x1 = a + i * dx;
+        const x2 = x1 + dx;
+        const samples = 10;
+        let maxX = x1;
+        let maxY = func(x1);
+        for (let s = 1; s <= samples; s++) {
+          const xs = x1 + (s * (x2 - x1)) / samples;
+          const ys = func(xs);
+          if (ys > maxY) {
+        maxY = ys;
+        maxX = xs;
+          }
+        }
+        x = maxX;
       } else {
         x = a + i * dx; // fallback to left method
       }
+      const samplePosition = new Vector2(x, func(x));
       const x1 = a + i * dx;
       const x2 = x1 + dx;
       const y = func(x);
+      const color = b > a ? (y >= 0 ? PrimeColor.darkGreen : PrimeColor.raspberry) : (y < 0 ? PrimeColor.darkGreen : PrimeColor.raspberry);
       newRects.push({
         points: [new Vector2(x1, Math.min(0, y)), new Vector2(x2, Math.max(0, y))] as [
           Vector2,
           Vector2
         ],
-        height: y, // store the height for the label
-        labelPosition: new Vector2((x1 + x2) / 2, y + 0.2) // calculate label position
+        height: y,
+        samplePosition: samplePosition,
+        color
       });
     }
     return newRects;
@@ -101,8 +134,18 @@
     {#each rects as rect}
       <Rect2D
         points={rect.points}
-        color={PrimeColor.blue + '90'}
-        hoverText={`h=${round(rect.height, 2)}`}
+        color={rect.color + '90'}
+      />
+    {/each}
+    {#each rects as rect}
+      <Point2D
+        position={rect.samplePosition}
+        color={PrimeColor.black}
+        radius={0.04}
+        hoverText={`${round(rect.height, 2)}`}
+        fontSize={0.5}
+        offset={Math.max(rect.points[0].y, rect.points[1].y) > 0 ? new Vector2(0, 0.3) : new Vector2(0, -0.1)}
+        pulse={showHeights}
       />
     {/each}
   </g>
