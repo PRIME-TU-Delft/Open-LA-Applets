@@ -19,7 +19,7 @@
       .addSlider(-1, -4, 0, 0.1, PrimeColor.darkGreen) // b
       .addSlider(1, 0, 4, 0.1, PrimeColor.raspberry)   // a
       .addSlider(10, 1, 50, 1, PrimeColor.blue);       // numRectangles
-      
+
   const func = (x: number) => Math.cos((2 * Math.PI * x) / 4);
   const func_display = '\\int_{\\$1}^{\\$2} (\\cos(\\frac{2\\pi x}{4})) dx~~=~~\\$3';
 
@@ -41,7 +41,7 @@
     const f2 = new Formula(riemann_display)
       .addAutoParam(riemannSum, PrimeColor.orange)
       .addAutoParam(numRectangles, PrimeColor.blue)
-      .addAutoParam(round(dx, 4), PrimeColor.purple);
+      .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
     return new Formulas(f1, f2);
   });
