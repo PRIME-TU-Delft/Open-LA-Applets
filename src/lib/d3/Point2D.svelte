@@ -6,12 +6,17 @@
     color?: string;
     pulse?: boolean;
     opacity?: number;
+    hoverText?: string;
+    fontSize?: number;
+    offset?: Vector2;
   };
 </script>
 
 <script lang="ts">
   import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import Latex2D from './Latex2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   let {
     position = new Vector2(0, 0),
@@ -19,10 +24,14 @@
     radius = POINT_SIZE,
     color = 'black',
     pulse = false,
-    opacity = 1
+    opacity = 1,
+    hoverText = '',
+    fontSize = 1,
+    offset = new Vector2(0, 0)
   }: Point2DProps = $props();
 </script>
 
+<g class="point2d">
 {#if isSquare}
   <rect
     x={position.x - radius}
@@ -54,6 +63,18 @@
       fill={color}
     />
   {/if}
+{/if}
+</g>
+{#if hoverText}
+  <g class="hoverText">
+    <Latex2D
+      latex={hoverText}
+      position={position}
+      offset={offset}
+      fontSize={fontSize}
+      color={PrimeColor.black}
+    />
+  </g>
 {/if}
 
 <style>
@@ -103,5 +124,14 @@
       y: calc(var(--posY) - var(--r-large) / 2);
       opacity: 0.5;
     }
+  }
+
+  .hoverText {
+    display: none;
+    pointer-events: none;
+  }
+  
+  .point2d:hover + .hoverText {
+    display: block;
   }
 </style>
