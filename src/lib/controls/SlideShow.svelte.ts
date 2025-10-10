@@ -8,7 +8,7 @@ export type SlideShowSteps<State> = ((
 
 export class SlideShow<State> implements Controller<State> {
   defaultValue: State;
-  defaultLabel = '';
+  defaultLabel: string = '';
 
   value = $state() as State;
   index = $state(0);
@@ -23,10 +23,14 @@ export class SlideShow<State> implements Controller<State> {
   inTransition = $state(false);
 
   type = 'animation';
-  label = $state('');
+  label = $state('') as string;
   width = 100;
 
-  constructor(defaultValue: State, steps: SlideShowSteps<State>, label: string = 'original state') {
+  constructor(
+    defaultValue: State,
+    steps: SlideShowSteps<State>,
+    label: string = 'ui.slideshow_original_state'
+  ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;
 

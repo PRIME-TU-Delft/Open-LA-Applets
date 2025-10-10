@@ -20,7 +20,7 @@ The code for this applet can be found here: [View Code](https://github.com/PRIME
 
 Each 2D applet starts of with a 2D canvas. You can initialize a 2D canvas by importing the `Canvas2D` component from
 `$lib/d3/Canvas2D.svelte`. This component sets up a SVG canvas with a grid and axes. You can give the canvas a title
-by passing a `title` prop. We will also import a `Vector2D` component to show a simple arrow on the canvas. You can
+by passing a `title` prop, which has to be `LocalizedString`. We will also import a `Vector2D` component to show a simple arrow on the canvas. You can
 read more about the `Canvas2D` component in the [documentation](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-canvas2d--docs).
 And about the `Vector2D` component in the [documentation](https://docs.openla.ewi.tudelft.nl/?path=/docs/2d-components-vector2d--docs).
 
@@ -32,7 +32,7 @@ And about the `Vector2D` component in the [documentation](https://docs.openla.ew
 </script>
 
 <!-- We give the Canvas2D component a title prop -->
-<Canvas2D title="Complex numbers addition">
+<Canvas2D title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}} >
   <Vector2D />
 </Canvas2D>
 ```
@@ -65,7 +65,7 @@ is specified by the `length` prop. The length of the vector can be calculated by
   //
 </script>
 
-<Canvas2D title="Complex numbers addition">
+<Canvas2D title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}}>
   <!-- Define the two vectors with direction, length and color -->
   <Vector2D direction="{direction1}" length="{direction1.length()}" color="{PrimeColor.blue}" />
   <Vector2D
@@ -100,7 +100,7 @@ let v_result = direction1.clone().add(direction2.clone());
 </script>
 
 <!-- We give the Canvas2D component a title prop -->
-<Canvas2D title="Complex numbers addition">
+<Canvas2D title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}}>
   <!-- ... Existing code -->
 
   <!-- Sum vector (the addition of direction1 and direction2) -->
@@ -187,7 +187,7 @@ let v_result = $derived(direction1.position.clone().add(direction2.clone()));
 
 </script>
 
-<Canvas2D draggables={[direction1]} title="Complex numbers addition">
+<Canvas2D draggables={[direction1]} title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}} >
   <Vector2D
     direction={direction1.position}
     length={direction1.position.length()}
@@ -269,7 +269,7 @@ const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
 <NumberFlow {value} />
 {/snippet}
 
-<Canvas2D {controls} draggables="{[direction1]}" title="Complex numbers addition">
+<Canvas2D {controls} draggables="{[direction1]}" title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}}>
   <!-- Components -->
 </Canvas2D>
 ```
@@ -299,7 +299,7 @@ const formulas = $derived.by(() => {
   draggables="{[direction1]}"
   formulas="{formulas}"
   {showFormulasDefault}
-  title="Complex numbers addition"
+  title={{"en": "Complex numbers addition", "nl": "Optellen van complexe getallen"}}
 >
   <!-- Components -->
 </Canvas2D>

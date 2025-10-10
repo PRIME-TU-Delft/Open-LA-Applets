@@ -83,6 +83,7 @@ When debugging for performance, you can run the app with `pnpm dev:fps` to inclu
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `iframe`  | This parameter is added by default and set to true for each applet in this book. Therefore, this parameter is not configurable for this book. When using an applet in a different context will change the bahaviour. | false   |
 | `title`   | A string that will be shown as the title of the applet when the applet is in fullscreen mode                                                                                                                         | ""      |
+| `lang`    | Language code to use for text in the applet (like `en` or `nl`)                                                                                                                                                      | en      |
 
 ### Control parameters
 

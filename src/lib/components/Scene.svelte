@@ -23,8 +23,8 @@
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
-  import { cn } from '$lib/utils';
   import { browser } from '$app/environment';
+  import { cn } from '$lib/utils';
 
   let {
     controls = undefined,
@@ -83,6 +83,8 @@
       activityState.enable();
     }
   }
+
+  const languages = ['en', 'nl']; // TODO: don't hardcode
 
   $effect(() => {
     // Override the global title if a title is provided
@@ -149,6 +151,7 @@
       {formulas}
       {splitFormulas}
       {controls}
+      {languages}
       onReset={() => reset()}
     />
   </div>

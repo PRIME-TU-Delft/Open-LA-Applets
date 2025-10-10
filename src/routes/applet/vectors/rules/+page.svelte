@@ -12,16 +12,18 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const d = new Dropdown('Rule 1 - Plus Identity', [
-    'Rule 1 - Plus Identity',
-    'Rule 2 - Associativity',
-    'Rule 3 - Commutativity',
-    'Rule 4 - Negation',
-    'Rule 5 - Identity',
-    'Rule 6 - Distributivity',
-    'Rule 7 - Multiplication',
-    'Rule 8 - Multiplication'
-  ]);
+  const rules: string[] = [
+    'applets.vectors.rules.rule_1',
+    'applets.vectors.rules.rule_2',
+    'applets.vectors.rules.rule_3',
+    'applets.vectors.rules.rule_4',
+    'applets.vectors.rules.rule_5',
+    'applets.vectors.rules.rule_6',
+    'applets.vectors.rules.rule_7',
+    'applets.vectors.rules.rule_8'
+  ];
+
+  const d = new Dropdown(rules[0], rules);
   const s1 = new Slider(1.5, -5, 5, 0.5, PrimeColor.blue, 'c1', false, (x) =>
     round(x, 1).toString()
   );
@@ -30,11 +32,11 @@
   );
 
   const controls = $derived.by(() => {
-    if (d.value == 'Rule 6 - Distributivity') {
+    if (d.value == 'applets.vectors.rules.rule_6') {
       return Controls.add(d).add(s1);
     }
 
-    if (d.value == 'Rule 7 - Multiplication' || d.value == 'Rule 8 - Multiplication') {
+    if (d.value == 'applets.vectors.rules.rule_7' || d.value == 'applets.vectors.rules.rule_8') {
       return Controls.add(d).add(s1).add(s2);
     }
 
@@ -59,16 +61,16 @@
     ];
 
     switch (dropdown) {
-      case 'Rule 1 - Plus Identity':
-      case 'Rule 4 - Negation':
-      case 'Rule 5 - Identity':
-      case 'Rule 7 - Multiplication':
-      case 'Rule 8 - Multiplication':
+      case 'applets.vectors.rules.rule_1':
+      case 'applets.vectors.rules.rule_4':
+      case 'applets.vectors.rules.rule_5':
+      case 'applets.vectors.rules.rule_7':
+      case 'applets.vectors.rules.rule_8':
         return [draggables[0]];
-      case 'Rule 3 - Commutativity':
-      case 'Rule 6 - Distributivity':
+      case 'applets.vectors.rules.rule_3':
+      case 'applets.vectors.rules.rule_6':
         return [draggables[0], draggables[1]];
-      case 'Rule 2 - Associativity':
+      case 'applets.vectors.rules.rule_2':
         return draggables;
       default:
         return draggables;
@@ -90,14 +92,14 @@
     const v3 = draggables[2] ? toMatrix(draggables[2].position) : '';
 
     switch (dropdown) {
-      case 'Rule 1 - Plus Identity':
+      case 'applets.vectors.rules.rule_1':
         return [
           new Formula(`\\$1 + ${zeroVec} = \\$1 = ${zeroVec} + \\$1`).addAutoParam(
             v1,
             PrimeColor.raspberry
           )
         ];
-      case 'Rule 2 - Associativity':
+      case 'applets.vectors.rules.rule_2':
         return [
           new Formula('( \\$1 + \\$2 ) + \\$3 = \\$1 + ( \\$2 + \\$3 ) = \\$4')
             .addAutoParam(v1, PrimeColor.raspberry)
@@ -113,7 +115,7 @@
               PrimeColor.black
             )
         ];
-      case 'Rule 3 - Commutativity':
+      case 'applets.vectors.rules.rule_3':
         return [
           new Formula(`\\$1 + \\$2 = \\$2 + \\$1 = \\$3`)
             .addAutoParam(v1, PrimeColor.raspberry)
@@ -123,11 +125,11 @@
               PrimeColor.black
             )
         ];
-      case 'Rule 4 - Negation':
+      case 'applets.vectors.rules.rule_4':
         return [new Formula(`\\$1 + (-\\$1) = ${zeroVec}`).addAutoParam(v1, PrimeColor.raspberry)];
-      case 'Rule 5 - Identity':
+      case 'applets.vectors.rules.rule_5':
         return [new Formula(`1\\$1 = \\$1`).addAutoParam(v1, PrimeColor.raspberry)];
-      case 'Rule 6 - Distributivity':
+      case 'applets.vectors.rules.rule_6':
         return [
           new Formula(`\\$3 \\cdot (\\$1 + \\$2) = \\$3 \\$1 + \\$3 \\$2 = \\$4`)
             .addAutoParam(v1, PrimeColor.raspberry)
@@ -140,7 +142,7 @@
               PrimeColor.black
             )
         ];
-      case 'Rule 7 - Multiplication':
+      case 'applets.vectors.rules.rule_7':
         return [
           new Formula(`(\\$2 + \\$3) \\$1 = \\$2 \\$1 + \\$3 \\$1 = \\$4`)
             .addAutoParam(v1, PrimeColor.raspberry)
@@ -151,7 +153,7 @@
               PrimeColor.black
             )
         ];
-      case 'Rule 8 - Multiplication':
+      case 'applets.vectors.rules.rule_8':
         return [
           new Formula(`\\$2(\\$3) \\$1 = (\\$2*\\$3)\\$1 = \\$4`)
             .addAutoParam(v1, PrimeColor.raspberry)
@@ -177,7 +179,7 @@
     />
   {/each}
 
-  {#if dropdown == 'Rule 2 - Associativity'}
+  {#if dropdown == 'applets.vectors.rules.rule_2'}
     {@const v1Plusv2 = draggables[0].position.clone().add(draggables[1].position)}
     {@const v2Plusv3 = draggables[1].position.clone().add(draggables[2].position)}
     {@const v1Plusv2Plusv3 = v1Plusv2.clone().add(draggables[2].position)}
@@ -232,7 +234,7 @@
       color={PrimeColor.black}
       latex={`\\mathbf{v_1} + \\mathbf{v_2} + \\mathbf{v_3}`}
     />
-  {:else if dropdown == 'Rule 3 - Commutativity'}
+  {:else if dropdown == 'applets.vectors.rules.rule_3'}
     {@const v1Plusv2 = draggables[0].position.clone().add(draggables[1].position)}
 
     <Vector2D
@@ -263,7 +265,7 @@
       color={PrimeColor.black}
       latex={`\\mathbf{v_1} + \\mathbf{v_2} = \\mathbf{v_2} + \\mathbf{v_1}`}
     />
-  {:else if dropdown == 'Rule 4 - Negation'}
+  {:else if dropdown == 'applets.vectors.rules.rule_4'}
     <Latex2D
       position={new Vector2(0.5, 0.5)}
       color={PrimeColor.black}
@@ -275,7 +277,7 @@
       length={draggables[0].position.length()}
       color={PrimeColor.raspberry}
     />
-  {:else if dropdown == 'Rule 6 - Distributivity'}
+  {:else if dropdown == 'applets.vectors.rules.rule_6'}
     {@const c1v1 = draggables[0].position.clone().multiplyScalar(slider1)}
     {@const c1v2 = draggables[1].position.clone().multiplyScalar(slider1)}
     {@const position = draggables[0].position.clone().add(draggables[1].position)}
@@ -356,7 +358,7 @@
       position={c1v1Plusc1v2}
       color={PrimeColor.black}
     />
-  {:else if dropdown == 'Rule 7 - Multiplication'}
+  {:else if dropdown == 'applets.vectors.rules.rule_7'}
     <Vector2D
       direction={draggables[0].position.clone().multiplyScalar(slider1)}
       length={draggables[0].position.length() * Math.abs(slider1)}
@@ -395,7 +397,7 @@
         latex={`${toColor('c_1', PrimeColor.blue)} \\mathbf{v_1} + ${toColor('c_2', PrimeColor.cyan)} \\mathbf{v_1}`}
       />
     {/if}
-  {:else if dropdown == 'Rule 8 - Multiplication'}
+  {:else if dropdown == 'applets.vectors.rules.rule_8'}
     {@const position = draggables[0].position.clone().multiplyScalar(slider1 * slider2)}
 
     <Vector2D
@@ -412,7 +414,7 @@
   {/if}
 
   <!-- add black point if the zero vector is part of the formula -->
-  {#if dropdown == 'Rule 1 - Plus Identity' || dropdown == 'Rule 4 - Negation'}
+  {#if dropdown == 'applets.vectors.rules.rule_1' || dropdown == 'applets.vectors.rules.rule_4'}
     <Point2D position={new Vector2(0, 0)} color={PrimeColor.black} />
   {/if}
 </Canvas2D>

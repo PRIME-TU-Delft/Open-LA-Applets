@@ -9,6 +9,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const u = new Vector3(1, 2, -2); // Vector U;
   const v = new Vector3(3, 1, 0); // Vector V;
@@ -49,7 +50,7 @@
   const enabledVectors = $derived([u, v].filter((_, i) => controls[i as 0 | 1 | 2]));
 </script>
 
-<Canvas3D title="Span of three vectors lying in the same plane" {formulas} {controls}>
+<Canvas3D title={$_('applets.linear_combinations.span_two_plane.title')} {formulas} {controls}>
   {#if controls[0]}
     <!-- Vector u -->
     <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} alwaysOnTop />

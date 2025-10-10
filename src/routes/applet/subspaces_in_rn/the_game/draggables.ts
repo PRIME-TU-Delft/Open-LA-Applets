@@ -43,4 +43,10 @@ export function snapToCone(v: Vector2) {
   }
 }
 
-export const values = ['Disc', 'Affine Line', 'Two axes', 'First quadrant', 'Two-sided cone'];
+export const values: string[] = [
+  'applets.subspaces_in_rn.the_game.disc',
+  'applets.subspaces_in_rn.the_game.affine_line',
+  'applets.subspaces_in_rn.the_game.two_axes',
+  'applets.subspaces_in_rn.the_game.first_quadrant',
+  'applets.subspaces_in_rn.the_game.two_sided_cone'
+];

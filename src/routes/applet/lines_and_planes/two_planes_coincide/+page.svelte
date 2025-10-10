@@ -6,6 +6,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const normal = new Vector3(1, 3, 1).normalize();
   let formulas: Formula[] = [
@@ -14,7 +15,11 @@
   ];
 </script>
 
-<Canvas3D {formulas} showFormulasDefault title="Two planes with a point in common.">
+<Canvas3D
+  {formulas}
+  showFormulasDefault
+  title={$_('applets.lines_and_planes.two_planes_coincide.title')}
+>
   <AutoPlanes values={[0, 0]}>
     {#snippet children(value, _, planeSegment, color)}
       <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />

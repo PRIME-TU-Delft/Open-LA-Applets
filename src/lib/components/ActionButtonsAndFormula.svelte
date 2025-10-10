@@ -8,19 +8,23 @@
   import type { Formula } from '$lib/utils/Formulas';
   import Maximize from '@lucide/svelte/icons/maximize';
   import Minimize from '@lucide/svelte/icons/minimize';
+  import Languages from '@lucide/svelte/icons/languages';
   import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
   import Share from '@lucide/svelte/icons/share';
   import SquareFunction from '@lucide/svelte/icons/square-function';
   import screenfull from 'screenfull';
+  import LanguageWindow from './LanguageWindow.svelte';
+  import { _ } from 'svelte-i18n';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
-  type Canvas2DProps = {
+  type ActionButtonsAndFormulaProps = {
     onReset: () => void;
     formulas?: Formula[];
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
+    languages: string[];
   };
 
   let {
@@ -28,8 +32,9 @@
     formulas = [],
     splitFormulas = [],
     controls = undefined,
-    showFormulas = false
-  }: Canvas2DProps = $props();
+    showFormulas = false,
+    languages
+  }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
 
@@ -89,7 +94,7 @@
         side="bottom"
         class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={onReset}
-        tooltip="Will reset the scene to original camera positions"
+        tooltip={$_('reset_scene_tooltip')}
       >
         <RotateCcw class="h-5 w-5" />
       </Button.Action>
@@ -100,12 +105,26 @@
       <Dialog.Trigger
         class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
       >
-        <Button.Action side="bottom" tooltip="Share or embed applet">
+        <Button.Action side="bottom" tooltip={$_('share_tooltip')}>
           <Share class="h-5 w-5" />
         </Button.Action>
       </Dialog.Trigger>
       <ShareWindow />
     </Dialog.Root>
+
+    <!-- LANGUAGE BUTTON -->
+    {#if languages.length > 1}
+      <Dialog.Root>
+        <Dialog.Trigger
+          class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+        >
+          <Button.Action tooltip={$_('change_language')} side="bottom">
+            <Languages class="h-5 w-5" />
+          </Button.Action>
+        </Dialog.Trigger>
+        <LanguageWindow {languages} />
+      </Dialog.Root>
+    {/if}
 
     <!-- FULLSCREEN BUTTON -->
     {#if screenfull.isEnabled && document}
@@ -113,7 +132,7 @@
         side="bottom"
         class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
         onclick={toggleFullscreen}
-        tooltip="{isFullscreen ? 'Exit' : 'Enter'} fullscreen"
+        tooltip={isFullscreen ? $_('exit_fullscreen') : $_('enter_fullscreen')}
       >
         {#if isFullscreen}
           <Minimize class="h-5 w-5" />
@@ -132,7 +151,7 @@
           : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
           ? 'border-2'
           : ''}"
-        tooltip="Toggle function"
+        tooltip={$_('toggle_function')}
         onclick={() => (showFormulas = !showFormulas)}
       >
         <SquareFunction />

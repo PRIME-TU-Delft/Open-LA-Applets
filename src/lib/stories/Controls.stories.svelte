@@ -44,12 +44,20 @@
   const transitionSteps = [
     (t: number, state: S) => {
       state.aOpacity = state.aOpacity - 1 * t;
-      return { state, labelNext: 'fade out a', labelPrev: 'Original state' };
+      return {
+        state,
+        labelNext: 'applets.testing.controls_stories.fade_out_a',
+        labelPrev: 'applets.testing.controls_stories.original_state'
+      };
     },
     (t: number, state: S) => {
       state.bPosition = state.bPosition.add(new Vector2(-3, 1).multiplyScalar(t));
 
-      return { state, labelNext: 'Move b to (-1,2)', labelPrev: 'Move b to (2,-1)' };
+      return {
+        state,
+        labelNext: 'applets.testing.controls_stories.move_b_to',
+        labelPrev: 'applets.testing.controls_stories.move_b_from'
+      };
     }
   ];
 

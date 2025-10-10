@@ -2,6 +2,8 @@ import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import { Vector2 } from 'three';
+import { get } from 'svelte/store';
+import { _ } from 'svelte-i18n';
 
 // Animation
 const state = {
@@ -39,7 +41,11 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
       state.OBDA.offset = v.clone().multiplyScalar(t);
       state.vPlusW.visible = false;
 
-      return { state, labelNext: 'Translate OBDA along v', labelPrev: 'Translate OBDA along v' };
+      return {
+        state,
+        labelNext: get(_)('applets.det_geometric.linearity_two.translate_obda_along_v'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.translate_obda_along_v')
+      };
     },
     (t, state) => {
       state.vPlusW.visible = true;
@@ -52,7 +58,11 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
       // Translate OGC along u
       state.OGC.offset = u.clone().multiplyScalar(t);
 
-      return { state, labelNext: 'Translate OGC along u', labelPrev: 'Translate AEF along u' };
+      return {
+        state,
+        labelNext: get(_)('applets.det_geometric.linearity_two.translate_ogc_along_u'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.translate_aef_along_u')
+      };
     },
     (_t, state) => {
       // Replace OAFCG & OGC with CGEF & OAEG
@@ -64,15 +74,19 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: 'Rename OAFC = OAEG + CGEF',
-        labelPrev: 'Rename OAEG + CGEF = OAFC'
+        labelNext: get(_)('applets.det_geometric.linearity_two.rename_oafc_oaeg_cgef'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.rename_oaeg_cgef_oafc')
       };
     },
     (t, state) => {
       state.CGEF.opacity = 1 - t;
       state.OBDA.opacity = 1 - t;
 
-      return { state, labelNext: 'Substract CGEF ', labelPrev: 'Add CGEF' };
+      return {
+        state,
+        labelNext: get(_)('applets.det_geometric.linearity_two.substract_cgef'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.add_cgef')
+      };
     }
   ];
 }
