@@ -10,9 +10,17 @@
       "title": "The standard bases in 2d and 3d"
     }
   },
+  "change_of_basis": {
+    "projection": {
+      "title": "Projection with respect to a suitable basis"
+    }
+  },
   "complex_basics": {
     "complex_addition": {
       "title": "Complex numbers addition"
+    },
+    "complex_inversion": {
+      "title": "Inverse of a complex number: Cartesian and Polar"
     }
   },
   "crossproduct": {
@@ -44,6 +52,9 @@
     },
     "triangle_inequality": {
       "title": "The triangle inequality"
+    },
+    "innerproduct_projectionvectorline": {
+      "title": "Projection of a vector onto a non-zero vector"
     }
   },
   "eigenvalue_eigenvector": {
@@ -55,6 +66,9 @@
   "geom_lin_trans": {
     "proj_on_line_3d": {
       "title": "Projection of a vector on a line"
+    },
+    "reflect_in_r2": {
+      "title": "Reflection of multiple points along a line"
     }
   },
   "injectivity_and_surjectivity": {
@@ -71,6 +85,12 @@
     },
     "span_two_line": {
       "title": "Span of two parallel vectors"
+    },
+    "span_two_plane": {
+      "title": "Span of three vectors lying in the same plane"
+    },
+    "span_three_plane": {
+      "title": "Span of three vectors lying in the same plane"
     }
   },
   "linear_independence": {
@@ -97,6 +117,21 @@
     },
     "normal_equation_plane_origin": {
       "title": "A plane through the origin."
+    },
+    "two_disjoint_planes": {
+      "title": "Two planes without a point in common."
+    },
+    "directional_vectors_plane": {
+      "title": "A parametric vector equation of a plane."
+    },
+    "disjoint_planes": {
+      "title": "Three planes without a point in common."
+    },
+    "two_planes_coincide": {
+      "title": "Two planes with a point in common."
+    },
+    "parametric_line_space": {
+      "title": "A parametric vector of a line in 3D space"
     }
   },
   "matrix_operations": {
@@ -113,6 +148,11 @@
       "two_axes": "Two axes",
       "first_quadrant": "First quadrant",
       "two_sided_cone": "Two-sided cone"
+    }
+  },
+  "ortho": {
+    "orthocomp": {
+      "title": "The orthogonal complement of a line (left) and a plane (right)"
     }
   },
   "symmetric_matrices": {
@@ -144,6 +184,9 @@
       "rule_6": "Rule 6 - Distributivity",
       "rule_7": "Rule 7 - Multiplication",
       "rule_8": "Rule 8 - Multiplication"
+    },
+    "3Daddition": {
+      "title": "Geometrical interpretation of addition for three-dimensional vectors."
     }
   },
   "tutorials": {

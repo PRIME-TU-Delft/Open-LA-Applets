@@ -6,6 +6,7 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import { _ } from 'svelte-i18n';
 
   const n0 = new Vector3(1, 1, 1).normalize();
   let controls = Controls.addSlider(0, -2, 0.5, 0.5, PrimeColor.darkGreen);
@@ -20,10 +21,7 @@
 <Canvas3D
   cameraPosition={new Vector3(11.77, 9.96, 7.89)}
   {controls}
-  title={{
-    en: 'Three planes without a point in common.',
-    nl: 'Drie vlakken zonder gemeenschappelijk punt.'
-  }}
+  title={$_('applets.lines_and_planes.disjoint_planes.title')}
   formulas={[f1, f2, f3]}
 >
   <PlaneFromNormal position={new Vector3(0, 1, 0)} normal={n0} color={PrimeColor.yellow} />

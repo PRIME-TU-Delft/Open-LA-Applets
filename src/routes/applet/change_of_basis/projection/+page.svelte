@@ -9,6 +9,7 @@
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const b1 = new MathVector3(2, 0, 1);
   const b2 = new MathVector3(1, 1, 0);
@@ -18,10 +19,7 @@
 <Canvas3D
   cameraPosition={new Vector3(12.25, 6.74, 9.53)}
   cameraZoom={40}
-  title={{
-    en: 'Projection with respect to a suitable basis',
-    nl: 'Projectie met betrekking tot een geschikte basis'
-  }}
+  title={$_('applets.change_of_basis.projection.title')}
 >
   <!-- Vector b1 -->
   <Vector3D direction={b1} length={b1.length()} color={PrimeColor.blue} />

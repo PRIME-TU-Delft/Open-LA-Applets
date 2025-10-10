@@ -7,6 +7,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const normal = new Vector3(1, 3, 1).normalize();
   const controls = Controls.addSlider(1, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
@@ -31,10 +32,7 @@
   {formulas}
   cameraPosition={new Vector3(11.63, 3.66, 12.3)}
   {controls}
-  title={{
-    en: 'Two planes without a point in common.',
-    nl: 'Twee vlakken zonder een gemeenschappelijk punt.'
-  }}
+  title={$_('applets.lines_and_planes.two_disjoint_planes.title')}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}

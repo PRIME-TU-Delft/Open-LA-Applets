@@ -9,6 +9,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
+  import { _ } from 'svelte-i18n';
 
   const draggables = [
     new Draggable(new Vector2(1, 0.5), PrimeColor.blue, ''),
@@ -27,10 +28,7 @@
 
 <Canvas2D
   {draggables}
-  title={{
-    en: 'Projection of a vector onto a non-zero vector',
-    nl: 'Projectie van een vector op een vector die niet nul is'
-  }}
+  title={$_('applets.dot_product.innerproduct_projectionvectorline.title')}
 >
   <!-- L /-->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />

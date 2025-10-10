@@ -7,6 +7,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const us = [
     new Vector2(2, 3.5),
@@ -36,10 +37,7 @@
 
 <Canvas2D
   {draggables}
-  title={{
-    en: 'Reflection of multiple points along a line',
-    nl: 'Weerspiegeling van meerdere punten langs een lijn'
-  }}
+  title={$_('applets.geom_lin_trans.reflect_in_r2.title')}
 >
   <!-- Line L -->
   <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />

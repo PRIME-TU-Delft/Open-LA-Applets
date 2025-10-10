@@ -9,6 +9,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const u = new Vector3(1, 2, -2); // Vector U;
   const v = new Vector3(3, 1, 0); // Vector V;
@@ -50,10 +51,7 @@
 </script>
 
 <Canvas3D
-  title={{
-    en: 'Span of three vectors lying in the same plane',
-    nl: 'De span van drie vectoren die in hetzelfde vlak liggen'
-  }}
+  title={$_('applets.linear_combinations.span_two_plane.title')}
   {formulas}
   {controls}
 >

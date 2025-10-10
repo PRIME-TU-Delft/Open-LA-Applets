@@ -9,6 +9,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let v = new Vector2(3, -3);
   let v_ortho = new Vector2(3, 3);
@@ -22,10 +23,7 @@
 <Canvas2D
   splitCanvas3DProps={{ cameraPosition: new Vector3(10, 10, 13), cameraZoom: 50 }}
   cameraZoom={1.5}
-  title={{
-    en: 'The orthogonal complement of a line (left) and a plane (right)',
-    nl: 'Het orthogonale complement van een lijn (links) en een vlak (rechts)'
-  }}
+  title={$_('applets.ortho.orthocomp.title')}
 >
   <!-- v -->
   <Vector2D

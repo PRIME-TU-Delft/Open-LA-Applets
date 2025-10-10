@@ -10,9 +10,17 @@
       "title": "De standaardbasissen in 2D en 3D"
     }
   },
+  "change_of_basis": {
+    "projection": {
+      "title": "Projectie met betrekking tot een geschikte basis"
+    }
+  },
   "complex_basics": {
     "complex_addition": {
       "title": "Optellen van complexe getallen"
+    },
+    "complex_inversion": {
+      "title": "Omgekeerde van een complex getal: Cartesisch en polair"
     }
   },
   "crossproduct": {
@@ -44,6 +52,9 @@
     },
     "triangle_inequality": {
       "title": "De driehoeksongelijkheid"
+    },
+    "innerproduct_projectionvectorline": {
+      "title": "Projectie van een vector op een vector die niet nul is"
     }
   },
   "eigenvalue_eigenvector": {
@@ -55,6 +66,9 @@
   "geom_lin_trans": {
     "proj_on_line_3d": {
       "title": "Projectie van een vector op een lijn"
+    },
+    "reflect_in_r2": {
+      "title": "Weerspiegeling van meerdere punten langs een lijn"
     }
   },
   "injectivity_and_surjectivity": {
@@ -71,6 +85,12 @@
     },
     "span_two_line": {
       "title": "De span van twee parallelle vectoren"
+    },
+    "span_two_plane": {
+      "title": "De span van drie vectoren die in hetzelfde vlak liggen"
+    },
+    "span_three_plane": {
+      "title": "De span van drie vectoren die in hetzelfde vlak liggen"
     }
   },
   "linear_independence": {
@@ -97,6 +117,21 @@
     },
     "normal_equation_plane_origin": {
       "title": "Een vlak door de oorsprong."
+    },
+    "two_disjoint_planes": {
+      "title": "Twee vlakken zonder een gemeenschappelijk punt."
+    },
+    "directional_vectors_plane": {
+      "title": "Een parametrische vectorvergelijking van een vlak."
+    },
+    "disjoint_planes": {
+      "title": "Drie vlakken zonder gemeenschappelijk punt."
+    },
+    "two_planes_coincide": {
+      "title": "Twee vlakken met een gemeenschappelijk punt."
+    },
+    "parametric_line_space": {
+      "title": "Een parametrische vector van een lijn in een 3D-ruimte"
     }
   },
   "matrix_operations": {
@@ -113,6 +148,11 @@
       "two_axes": "Twee assen",
       "first_quadrant": "Eerste kwadrant",
       "two_sided_cone": "Tweezijdige kegel"
+    }
+  },
+  "ortho": {
+    "orthocomp": {
+      "title": "Het orthogonale complement van een lijn (links) en een vlak (rechts)"
     }
   },
   "symmetric_matrices": {
@@ -144,6 +184,9 @@
       "rule_6": "Regel 6 - Distributiviteit",
       "rule_7": "Regel 7 - Vermenigvuldiging",
       "rule_8": "Regel 8 - Vermenigvuldiging"
+    },
+    "3Daddition": {
+      "title": "Geometrische interpretatie van optelling voor driedimensionale vectoren."
     }
   },
   "tutorials": {
