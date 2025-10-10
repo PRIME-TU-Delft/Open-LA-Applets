@@ -6,7 +6,7 @@
     splitFormulas?: Formula[];
     showFormulasDefault?: boolean;
     draggables?: Draggable[];
-    title?: LocalizedString | string;
+    title?: string;
     sceneChildren?: Snippet<[number, number]>;
   };
 </script>
@@ -23,9 +23,8 @@
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
-  import { cn, getLanguages, getLocalizedString, type LocalizedString } from '$lib/utils';
   import { browser } from '$app/environment';
-  import { locale } from 'svelte-i18n';
+  import { cn } from '$lib/utils';
 
   let {
     controls = undefined,
@@ -85,12 +84,12 @@
     }
   }
 
-  const languages = getLanguages(title);
+  const languages = ["en", "nl"]; // TODO: don't hardcode
 
   $effect(() => {
     // Override the global title if a title is provided
     // if and only if the global title is not set
-    if (!globalState.title) globalState.title = getLocalizedString(title, $locale) || '';
+    if (!globalState.title) globalState.title = title || "";
   });
 </script>
 
