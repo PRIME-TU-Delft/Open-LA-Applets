@@ -10,6 +10,7 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { BackSide, FrontSide, Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, { label: '||a||' })
     .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, { label: '||b||' })
@@ -17,7 +18,7 @@
       label: 'θ',
       valueFn: (v) => (v / Math.PI).toFixed(2)
     })
-    .addToggle(true, { en: '\\text{Fill}', nl: '\\text{Vullen}' });
+    .addToggle(true, $_('applets.det_geometric.paraped.fill'));
 
   const formulas = $derived.by(() => {
     const height = c.y;
@@ -33,7 +34,7 @@
       .addAutoParam('b', PrimeColor.cyan)
       .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
       .addAutoParam('A', PrimeColor.blue)
-      .addAutoParam({ en: 'area', nl: 'oppervlakte' });
+      .addAutoParam($_('applets.det_geometric.paraped.area'));
     const f3 = new Formula(
       '\\mathcal{\\$4} &= \\$5 \\cdot \\mathcal{\\$6} = \\$1 \\cdot \\$2 = \\$3'
     )

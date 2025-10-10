@@ -1,0 +1,141 @@
+{
+  "common": {
+    "original_state": "Original state",
+    "fill": "Fill",
+    "area": "area",
+    "Area": "Area"
+  },
+  "basisdim": {
+    "standardbasis": {
+      "title": "The standard bases in 2d and 3d"
+    }
+  },
+  "complex_basics": {
+    "complex_addition": {
+      "title": "Complex numbers addition"
+    }
+  },
+  "crossproduct": {
+    "areatriangle": {
+      "area_label": "Area"
+    }
+  },
+  "det_geometric": {
+    "paraped": {
+      "fill": "\\text{Fill}",
+      "area": "area"
+    },
+    "linearity_one": {
+      "translate_abd": "Translate ABD"
+    },
+    "linearity_two": {
+      "translate_obda_along_v": "Translate OBDA along v",
+      "translate_ogc_along_u": "Translate OGC along u",
+      "translate_aef_along_u": "Translate AEF along u",
+      "rename_oafc_oaeg_cgef": "Rename OAFC = OAEG + CGEF",
+      "rename_oaeg_cgef_oafc": "Rename OAEG + CGEF = OAFC",
+      "substract_cgef": "Substract CGEF ",
+      "add_cgef": "Add CGEF"
+    }
+  },
+  "dot_product": {
+    "diagonal_parallelogram": {
+      "title": "Addition and subtraction of 2 vectors"
+    },
+    "triangle_inequality": {
+      "title": "The triangle inequality"
+    }
+  },
+  "eigenvalue_eigenvector": {
+    "no_eigenvector": {
+      "an_eigenvector": "An eigenvector",
+      "no_eigenvector": "No eigenvector"
+    }
+  },
+  "geom_lin_trans": {
+    "proj_on_line_3d": {
+      "title": "Projection of a vector on a line"
+    }
+  },
+  "injectivity_and_surjectivity": {
+    "injsurj_injex_example": {
+      "transformation_1": "Transformation 1",
+      "transformation_2": "Transformation 2",
+      "transformation_3": "Transformation 3"
+    }
+  },
+  "linear_combinations": {
+    "span_one": {
+      "title": "Span of a vector",
+      "length": "length"
+    },
+    "span_two_line": {
+      "title": "Span of two parallel vectors"
+    }
+  },
+  "linear_independence": {
+    "linind_example_in_3d": {
+      "linearly": "linearly",
+      "in": "in",
+      "dependent": "dependent"
+    }
+  },
+  "linear_systems": {
+    "row_reduction": {
+      "original_state": "Original state"
+    }
+  },
+  "lines_and_planes": {
+    "plane_line_intersection": {
+      "title": "Two planes with a line of intersection."
+    },
+    "parametric_vector_equation": {
+      "title": "A parametric vector of a line"
+    },
+    "normal_equation_plane": {
+      "title": "A plane through the point P."
+    },
+    "normal_equation_plane_origin": {
+      "title": "A plane through the origin."
+    }
+  },
+  "matrix_operations": {
+    "nilpotent": {
+      "project_on_x1": "Project on x1",
+      "rotate_90_degrees": "Rotate 90 degrees",
+      "expand_on_x1": "Expand on x1"
+    }
+  },
+  "subspaces_in_rn": {
+    "the_game": {
+      "disc": "Disc",
+      "affine_line": "Affine Line",
+      "two_axes": "Two axes",
+      "first_quadrant": "First quadrant",
+      "two_sided_cone": "Two-sided cone"
+    }
+  },
+  "symmetric_matrices": {
+    "quadratic_forms": {
+      "title": "Quadratic forms"
+    }
+  },
+  "testing": {
+    "animation_studio": {
+      "extended_length": "Extended length",
+      "translated": "Translated"
+    }
+  },
+  "vectors": {
+    "rules": {
+      "rule_1": "Rule 1 - Plus Identity",
+      "rule_2": "Rule 2 - Associativity",
+      "rule_3": "Rule 3 - Commutativity",
+      "rule_4": "Rule 4 - Negation",
+      "rule_5": "Rule 5 - Identity",
+      "rule_6": "Rule 6 - Distributivity",
+      "rule_7": "Rule 7 - Multiplication",
+      "rule_8": "Rule 8 - Multiplication"
+    }
+  }
+}

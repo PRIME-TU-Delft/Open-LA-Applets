@@ -6,6 +6,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const draggables = [
     new Draggable(new Vector2(1, 3), PrimeColor.darkGreen),
@@ -38,7 +39,7 @@
 <Canvas2D
   {draggables}
   {formulas}
-  title={{ en: 'The triangle inequality', nl: 'De driehoeksongelijkheid' }}
+  title={$_('applets.dot_product.triangle_inequality.title')}
 >
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>

@@ -9,6 +9,7 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const draggables = [
     new Draggable(new Vector2(-2, 1), PrimeColor.darkGreen, 'u', Draggable.snapToGrid),
@@ -47,7 +48,7 @@
   {draggables}
   {formulas}
   showFormulasDefault
-  title={{ en: 'A parametric vector of a line', nl: 'Een parametrische vector van een lijn' }}
+  title={$_('applets.lines_and_planes.parametric_vector_equation.title')}
 >
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={dir_L} color={PrimeColor.cyan} />

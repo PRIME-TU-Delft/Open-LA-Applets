@@ -7,6 +7,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2, Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let e1 = new Vector2(1, 0);
   let e2 = new Vector2(0, 1);
@@ -21,7 +22,7 @@
 
 <Canvas2D
   splitCanvas3DProps={{ cameraZoom: 100 }}
-  title={{ en: 'The standard bases in 2d and 3d', nl: 'De standaardbasissen in 2D en 3D' }}
+  title={$_('applets.basisdim.standardbasis.title')}
 >
   <!-- e1 -->
   <Vector2D direction={e1} length={e1Length} color={PrimeColor.blue}>

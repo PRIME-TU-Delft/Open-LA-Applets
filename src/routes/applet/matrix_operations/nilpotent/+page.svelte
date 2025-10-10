@@ -6,6 +6,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const state = {
     scaleX: 1,
@@ -27,8 +28,8 @@
 
       return {
         state,
-        labelNext: { en: 'Project on x1', nl: 'Projecteer op x1' },
-        labelPrev: { en: 'Original state', nl: 'Oorspronkelijke staat' }
+        labelNext: $_('applets.matrix_operations.nilpotent.project_on_x1'),
+        labelPrev: $_('applets.common.original_state')
       };
     },
     (t: number, state: S) => {
@@ -38,8 +39,8 @@
 
       return {
         state,
-        labelNext: { en: 'Rotate 90 degrees', nl: 'Roteer 90 graden' },
-        labelPrev: { en: 'Rotate 90 degrees', nl: 'Roteer 90 graden' }
+        labelNext: $_('applets.matrix_operations.nilpotent.rotate_90_degrees'),
+        labelPrev: $_('applets.matrix_operations.nilpotent.rotate_90_degrees')
       };
     },
     (t: number, state: S) => {
@@ -51,8 +52,8 @@
 
       return {
         state,
-        labelNext: { en: 'Project on x1', nl: 'Projecteer op x1' },
-        labelPrev: { en: 'Expand on x1', nl: 'Uitbreiden op x1' }
+        labelNext: $_('applets.matrix_operations.nilpotent.project_on_x1'),
+        labelPrev: $_('applets.matrix_operations.nilpotent.expand_on_x1')
       };
     }
   ];

@@ -8,10 +8,18 @@
   const searchParams = new URLSearchParams(page?.url?.searchParams);
   const lang = searchParams.get('lang') || 'en';
 
-  import en from './../lang/en.json';
-  import nl from './../lang/nl.json';
-  addMessages('en', en);
-  addMessages('nl', nl);
+  // Import UI translations
+  import enUI from './../lang/en/ui.json';
+  import nlUI from './../lang/nl/ui.json';
+  
+  // Import applet translations
+  import enApplets from './../lang/en/applets.json';
+  import nlApplets from './../lang/nl/applets.json';
+
+  // Merge translations for each language
+  addMessages('en', { ...enUI, applets: enApplets });
+  addMessages('nl', { ...nlUI, applets: nlApplets });
+  
   init({
     fallbackLocale: 'en'
   });

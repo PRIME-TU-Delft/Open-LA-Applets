@@ -8,6 +8,7 @@
   import Point3D from '$lib/threlte/Point3D.svelte';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
+  import { _ } from 'svelte-i18n';
   const n = new Vector3(1, 3, 2);
   const _q = new Vector3(1, 1, -((n.x + n.y) / n.z));
   const q = _q.cross(n).normalize().multiplyScalar(n.length());
@@ -16,7 +17,7 @@
 <Canvas3D
   cameraPosition={new Vector3(-10, 3.8, 13.6)}
   cameraZoom={46}
-  title={{ en: 'A plane through the origin.', nl: 'Een vlak door de oorsprong.' }}
+  title={$_('applets.lines_and_planes.normal_equation_plane_origin.title')}
 >
   <PlaneFromNormal normal={n} color={PrimeColor.yellow} />
 

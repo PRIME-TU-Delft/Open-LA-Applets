@@ -11,6 +11,6 @@ export type SceneProps = {
   splitFormulas?: Formula[];
   showFormulasDefault?: boolean;
   draggables?: Draggable[];
-  title?: LocalizedString;
+  title?: LocalizedString | string;
   sceneChildren?: Snippet<[number, number]>;
 };

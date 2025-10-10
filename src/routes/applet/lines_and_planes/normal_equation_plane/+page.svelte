@@ -8,6 +8,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const normal = new Vector3(2, 4, 1);
   const normalizedNormal = normal.clone().normalize();
@@ -20,7 +21,7 @@
 <Canvas3D
   cameraPosition={new Vector3(-11, 5.4, 12.4)}
   cameraZoom={46}
-  title={{ en: 'A plane through the point P.', nl: 'Een vlak door het punt P.' }}
+  title={$_('applets.lines_and_planes.normal_equation_plane.title')}
 >
   <PlaneFromNormal {normal} position={p} color={PrimeColor.yellow} />
 

@@ -10,6 +10,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addSlider(1, -5, 5, 0.5, PrimeColor.darkGreen, {
     label: 'r',
@@ -46,7 +47,7 @@
   {controls}
   {formulas}
   showFormulasDefault
-  title={{ en: 'A parametric vector of a line', nl: 'Een parametrische vector van een lijn' }}
+  title={$_('applets.lines_and_planes.parametric_vector_equation.title')}
 >
   <!-- Line L -->
   <InfiniteLine2D origin={v0} direction={u} color={PrimeColor.cyan} />

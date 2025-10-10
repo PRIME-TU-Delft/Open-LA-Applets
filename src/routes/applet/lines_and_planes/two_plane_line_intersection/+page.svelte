@@ -8,6 +8,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addSlider(0, -10, 0, 0.5).addSlider(1, 1, 10, 0.5);
 
@@ -22,7 +23,7 @@
 <Canvas3D
   {controls}
   {formulas}
-  title={{ en: 'Two planes with a line of intersection.', nl: 'Twee vlakken met een snijlijn.' }}
+  title={$_('applets.lines_and_planes.plane_line_intersection.title')}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}

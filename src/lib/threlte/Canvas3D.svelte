@@ -6,7 +6,6 @@
 
   export type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
-      title?: LocalizedString;
       splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
