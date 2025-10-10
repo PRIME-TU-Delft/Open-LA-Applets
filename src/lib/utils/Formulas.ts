@@ -1,6 +1,4 @@
 import { PrimeColor } from './PrimeColors';
-import { _ } from 'svelte-i18n';
-import { get } from 'svelte/store';
 
 /**
  * @description
