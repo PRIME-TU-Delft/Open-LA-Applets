@@ -5,6 +5,8 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { get } from 'svelte/store';
+  import { _ } from 'svelte-i18n';
 
   const state = {
     position: new Vector2(1, 1),
@@ -25,8 +27,8 @@
       state.zoom = state.zoom + t;
       return {
         state,
-        labelNext: { en: 'Extended length', nl: 'Uitgebreide lengte' },
-        labelPrev: { en: 'Original state', nl: 'Oorspronkelijke staat' }
+        labelNext: get(_)('applets.testing.animation_studio.extended_length'),
+        labelPrev: get(_)('applets.common.original_state')
       };
     },
     (t, state) => {
@@ -39,8 +41,8 @@
 
       return {
         state,
-        labelNext: { en: 'Translated', nl: 'Verschoven' },
-        labelPrev: { en: 'Translated', nl: 'Verschoven' }
+        labelNext: get(_)('applets.testing.animation_studio.translated'),
+        labelPrev: get(_)('applets.testing.animation_studio.translated')
       };
     },
     (t, state) => {
@@ -52,14 +54,8 @@
 
       return {
         state,
-        labelNext: {
-          en: 'Show 2nd vector and fade in 3e vector',
-          nl: 'Toon 2e vector en fade in 3e vector'
-        },
-        labelPrev: {
-          en: 'Hide 2nd vector and fade out 3e vector',
-          nl: 'Verberg 2e vector en fade out 3e vector'
-        }
+        labelNext: get(_)('applets.testing.animation_studio.show_2nd_and_fade_3rd_next'),
+        labelPrev: get(_)('applets.testing.animation_studio.show_2nd_and_fade_3rd_prev')
       };
     }
   ];

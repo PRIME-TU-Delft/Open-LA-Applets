@@ -46,8 +46,8 @@
       state.aOpacity = state.aOpacity - 1 * t;
       return {
         state,
-        labelNext: { en: 'fade out a', nl: 'vervagen a' },
-        labelPrev: { en: 'Original state', nl: 'Oorspronkelijke staat' }
+        labelNext: 'applets.testing.controls_stories.fade_out_a',
+        labelPrev: 'applets.testing.controls_stories.original_state'
       };
     },
     (t: number, state: S) => {
@@ -55,8 +55,8 @@
 
       return {
         state,
-        labelNext: { en: 'Move b to (-1,2)', nl: 'Verplaats b naar (-1,2)' },
-        labelPrev: { en: 'Move b to (2,-1)', nl: 'Verplaats b naar (2,-1)' }
+        labelNext: 'applets.testing.controls_stories.move_b_to',
+        labelPrev: 'applets.testing.controls_stories.move_b_from'
       };
     }
   ];

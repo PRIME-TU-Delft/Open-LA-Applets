@@ -2,6 +2,8 @@ import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import { Vector2 } from 'three';
+import { get } from 'svelte/store';
+import { _ } from 'svelte-i18n';
 
 // Animation
 const state = {
@@ -41,8 +43,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Translate OBDA along v', nl: 'Verplaats OBDA langs v' },
-        labelPrev: { en: 'Translate OBDA along v', nl: 'Verplaats OBDA langs v' }
+        labelNext: get(_)('applets.det_geometric.linearity_two.translate_obda_along_v'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.translate_obda_along_v')
       };
     },
     (t, state) => {
@@ -58,8 +60,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Translate OGC along u', nl: 'Verplaats OGC langs u' },
-        labelPrev: { en: 'Translate AEF along u', nl: 'Verplaats AEF langs u' }
+        labelNext: get(_)('applets.det_geometric.linearity_two.translate_ogc_along_u'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.translate_aef_along_u')
       };
     },
     (_t, state) => {
@@ -72,8 +74,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Rename OAFC = OAEG + CGEF', nl: 'Hernoem OAFC = OAEG + CGEF' },
-        labelPrev: { en: 'Rename OAEG + CGEF = OAFC', nl: 'Hernoem OAEG + CGEF = OAFC' }
+        labelNext: get(_)('applets.det_geometric.linearity_two.rename_oafc_oaeg_cgef'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.rename_oaeg_cgef_oafc')
       };
     },
     (t, state) => {
@@ -82,8 +84,8 @@ function createTranstionStep(u: Vector2, v: Vector2): SlideShowSteps<typeof stat
 
       return {
         state,
-        labelNext: { en: 'Substract CGEF ', nl: 'Trek CGEF af' },
-        labelPrev: { en: 'Add CGEF', nl: 'Tel CGEF op' }
+        labelNext: get(_)('applets.det_geometric.linearity_two.substract_cgef'),
+        labelPrev: get(_)('applets.det_geometric.linearity_two.add_cgef')
       };
     }
   ];

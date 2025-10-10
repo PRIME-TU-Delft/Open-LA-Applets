@@ -7,8 +7,7 @@
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import { scale } from 'svelte/transition';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import { locale, _ } from 'svelte-i18n';
-  import { getLocalizedString } from '$lib/utils';
+  import { _ } from 'svelte-i18n';
 
   type SlideShowProps = {
     controller: SlideShow<State>;
@@ -20,7 +19,7 @@
 
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
   {#if controller.label != undefined}
-    <span>{getLocalizedString(controller.label, $locale)}</span>
+    <span>{$_(controller.label)}</span>
   {/if}
 </Label>
 

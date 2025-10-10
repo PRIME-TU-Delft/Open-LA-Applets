@@ -8,11 +8,12 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const vDir = new Vector3(3, 2, -3);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
   const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry, {
-    label: { en: 'length', nl: 'lengte' },
+    label: $_('applets.linear_combinations.span_one.length'),
     labelFormat
   });
 
@@ -26,7 +27,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D {controls} title={{ en: 'Span of a vector', nl: 'De span van een vector' }}>
+<Canvas3D {controls} title={$_('applets.linear_combinations.span_one.title')}>
   <Vector3D alwaysOnTop direction={v} length={v.length()} color={PrimeColor.raspberry}>
     {#snippet children(endPoint)}
       <Latex3D

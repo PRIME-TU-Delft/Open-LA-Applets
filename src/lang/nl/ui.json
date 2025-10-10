@@ -31,5 +31,6 @@
   "slider_minimize": "Schuifregelaar minimaliseren",
   "dropdown_select_item": "Item selecteren",
   "slideshow_prev": "Ga naar de vorige stap",
-  "slideshow_next": "Ga naar de volgende stap"
+  "slideshow_next": "Ga naar de volgende stap",
+  "slideshow_original_state": "Oorspronkelijke staat"
 }

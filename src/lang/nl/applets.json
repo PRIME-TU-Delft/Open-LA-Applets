@@ -123,7 +123,15 @@
   "testing": {
     "animation_studio": {
       "extended_length": "Uitgebreide lengte",
-      "translated": "Verschoven"
+      "translated": "Verschoven",
+      "show_2nd_and_fade_3rd_next": "Toon 2e vector en fade in 3e vector",
+      "show_2nd_and_fade_3rd_prev": "Verberg 2e vector en fade out 3e vector"
+    },
+    "controls_stories": {
+      "fade_out_a": "vervagen a",
+      "original_state": "Oorspronkelijke staat",
+      "move_b_to": "Verplaats b naar (-1,2)",
+      "move_b_from": "Verplaats b naar (2,-1)"
     }
   },
   "vectors": {

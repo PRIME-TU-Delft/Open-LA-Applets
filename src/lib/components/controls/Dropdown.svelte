@@ -1,8 +1,7 @@
 <script lang="ts">
   import * as Select from '$lib/components/ui/select/index.js';
   import type { Dropdown } from '$lib/controls/Dropdown.svelte';
-  import { getLocalizedString } from '$lib/utils';
-  import { locale, _ } from 'svelte-i18n';
+  import { _ } from 'svelte-i18n';
 
   type DropdownProps = {
     controller: Dropdown;
@@ -10,21 +9,16 @@
 
   const { controller: dropdown }: DropdownProps = $props();
 
-  let selectedKey = $state(dropdown.value.en);
+  let selectedKey = $state(dropdown.value);
 
   $effect(() => {
-    const matchingValue = dropdown.values.find((v) => v.en === selectedKey);
-    if (matchingValue) {
-      dropdown.value = matchingValue;
-    }
+    dropdown.value = selectedKey;
   });
 
-  const localizedValue = $derived(
-    getLocalizedString(dropdown.value, $locale || 'en') || $_('dropdown_select_item')
-  );
+  const localizedValue = $derived($_( dropdown.value) || $_('dropdown_select_item'));
 
   const localizedValues = $derived(
-    dropdown.values.map((v) => getLocalizedString(v, $locale || 'en') || '')
+    dropdown.values.map((v) => $_(v) || '')
   );
 </script>
 
@@ -37,8 +31,8 @@
       {#if dropdown.label}
         <Select.GroupHeading>{dropdown.label}</Select.GroupHeading>
       {/if}
-      {#each dropdown.values as item, index (item.en)}
-        <Select.Item value={item.en} label={localizedValues[index]}>
+      {#each dropdown.values as item, index (item)}
+        <Select.Item value={item} label={localizedValues[index]}>
           {localizedValues[index]}
         </Select.Item>
       {/each}

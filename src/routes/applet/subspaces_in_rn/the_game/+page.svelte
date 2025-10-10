@@ -24,15 +24,15 @@
     label: 'c',
     labelFormat,
     onRelease: validateSlider
-  }).addDropdown({ en: '' }, values, PrimeColor.yellow);
+  }).addDropdown(values[0], values, PrimeColor.yellow);
 
   /**
    * Check if conffetti should be shown when the slider is changed
    */
   function validateSlider() {
-    if (controls[1].en == 'Disc') {
+    if (controls[1] == 'applets.subspaces_in_rn.the_game.disc') {
       validateDisk(new Vector2(), 'right');
-    } else if (controls[1].en == 'First quadrant' && (prod.x < 0 || prod.y < 0)) {
+    } else if (controls[1] == 'applets.subspaces_in_rn.the_game.first_quadrant' && (prod.x < 0 || prod.y < 0)) {
       confettiState.rightSide();
     }
   }
@@ -81,8 +81,8 @@
   }
 
   function getDraggables(type: (typeof values)[number], side: Side = 'left'): Draggable[] {
-    switch (type.en) {
-      case 'Affine Line':
+    switch (type) {
+      case 'applets.subspaces_in_rn.the_game.affine_line':
         return [
           new Draggable(new Vector2(2, 2), PrimeColor.darkGreen, 'u', (v) =>
             snapToLine(v, new Vector2(1, 1))
@@ -91,7 +91,7 @@
             snapToLine(v, new Vector2(1, 1))
           )
         ];
-      case 'Disc':
+      case 'applets.subspaces_in_rn.the_game.disc':
         return [
           new Draggable(
             new Vector2(1, 1),
@@ -108,7 +108,7 @@
             (v) => validateDisk(v, side)
           )
         ];
-      case 'Two axes':
+      case 'applets.subspaces_in_rn.the_game.two_axes':
         return [
           new Draggable(
             new Vector2(2, 0),
@@ -125,14 +125,14 @@
             (v) => validateAxis(v, side)
           )
         ];
-      case 'First quadrant':
+      case 'applets.subspaces_in_rn.the_game.first_quadrant':
         return [
           new Draggable(new Vector2(2, 1), PrimeColor.darkGreen, 'u', (v) =>
             snapToFirstQuadrant(v)
           ),
           new Draggable(new Vector2(1, 2), PrimeColor.orange, 'v', (v) => snapToFirstQuadrant(v))
         ];
-      case 'Two-sided cone':
+      case 'applets.subspaces_in_rn.the_game.two_sided_cone':
         return [
           new Draggable(
             new Vector2(1, 3),
@@ -217,20 +217,20 @@
 </Canvas2D>
 
 {#snippet subspace()}
-  {#if controls[1].en == 'Affine Line'}
+  {#if controls[1] == 'applets.subspaces_in_rn.the_game.affine_line'}
     <InfiniteLine2D direction={new Vector2(1, 1)} color={PrimeColor.yellow} />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{L}`} />
-  {:else if controls[1].en == 'Disc'}
+  {:else if controls[1] == 'applets.subspaces_in_rn.the_game.disc'}
     <circle cx={0} cy={0} r={2.5} fill={PrimeColor.yellow} opacity="0.2" />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{A}`} />
-  {:else if controls[1].en == 'Two axes'}
+  {:else if controls[1] == 'applets.subspaces_in_rn.the_game.two_axes'}
     <InfiniteLine2D direction={new Vector2(1, 0)} color={PrimeColor.yellow} />
     <InfiniteLine2D direction={new Vector2(0, 1)} color={PrimeColor.yellow} />
     <Latex2D position={new Vector2(-1, -1)} color={PrimeColor.yellow} latex={`\\mathcal{L}`} />
-  {:else if controls[1].en == 'First quadrant'}
+  {:else if controls[1] == 'applets.subspaces_in_rn.the_game.first_quadrant'}
     <rect x={0} y={0} width={30} height={30} fill={PrimeColor.yellow} opacity="0.2" />
     <Latex2D position={new Vector2(4, 0.5)} color={PrimeColor.yellow} latex={`\\mathcal{A}`} />
-  {:else if controls[1].en == 'Two-sided cone'}
+  {:else if controls[1] == 'applets.subspaces_in_rn.the_game.two_sided_cone'}
     <Polygon2D
       points={[
         new Vector2(0, 0),

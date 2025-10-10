@@ -123,7 +123,15 @@
   "testing": {
     "animation_studio": {
       "extended_length": "Extended length",
-      "translated": "Translated"
+      "translated": "Translated",
+      "show_2nd_and_fade_3rd_next": "Show 2nd vector and fade in 3e vector",
+      "show_2nd_and_fade_3rd_prev": "Hide 2nd vector and fade out 3e vector"
+    },
+    "controls_stories": {
+      "fade_out_a": "fade out a",
+      "original_state": "Original state",
+      "move_b_to": "Move b to (-1,2)",
+      "move_b_from": "Move b to (2,-1)"
     }
   },
   "vectors": {

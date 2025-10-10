@@ -1,5 +1,4 @@
 import { Vector2 } from 'three';
-import type { LocalizedString } from '$lib/utils';
 
 export function snapToLine(v: Vector2, direction: Vector2) {
   const dot = v.dot(direction.normalize());
@@ -44,10 +43,10 @@ export function snapToCone(v: Vector2) {
   }
 }
 
-export const values: LocalizedString[] = [
-  { en: 'Disc', nl: 'Schijf' },
-  { en: 'Affine Line', nl: 'Affiene Lijn' },
-  { en: 'Two axes', nl: 'Twee assen' },
-  { en: 'First quadrant', nl: 'Eerste kwadrant' },
-  { en: 'Two-sided cone', nl: 'Tweezijdige kegel' }
+export const values: string[] = [
+  'applets.subspaces_in_rn.the_game.disc',
+  'applets.subspaces_in_rn.the_game.affine_line',
+  'applets.subspaces_in_rn.the_game.two_axes',
+  'applets.subspaces_in_rn.the_game.first_quadrant',
+  'applets.subspaces_in_rn.the_game.two_sided_cone'
 ];

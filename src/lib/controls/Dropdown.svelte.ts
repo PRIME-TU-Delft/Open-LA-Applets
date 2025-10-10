@@ -1,28 +1,27 @@
 import type { Controller } from './Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
-import { type LocalizedString } from '$lib/utils';
 
 /**
  * The Dropdown class is used to create a dropdown with a default value and a range of values.
  *
- * @param defaultValue The default value for the dropdown
- * @param values The range of values for the dropdown
+ * @param defaultValue The default value for the dropdown (translation key)
+ * @param values The range of values for the dropdown (translation keys)
  * @param title The title of the dropdown
  * @param color The color of the dropdown default is blue
  */
 
-export class Dropdown implements Controller<LocalizedString> {
-  defaultValue: LocalizedString;
-  value: LocalizedString;
+export class Dropdown implements Controller<string> {
+  defaultValue: string;
+  value: string;
   label = '';
   color: string = PrimeColor.blue;
   width = 30;
-  values: readonly LocalizedString[] = [];
+  values: readonly string[] = [];
   type = 'toggle';
 
   constructor(
-    defaultValue: LocalizedString,
-    values: readonly LocalizedString[],
+    defaultValue: string,
+    values: readonly string[],
     color: string = PrimeColor.blue,
     label = ''
   ) {

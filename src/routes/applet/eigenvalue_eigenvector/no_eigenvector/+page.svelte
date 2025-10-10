@@ -8,6 +8,8 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2, Vector3 } from 'three';
+  import { get } from 'svelte/store';
+  import { _ } from 'svelte-i18n';
 
   const defaultState = {
     angle: -0.35,
@@ -23,8 +25,8 @@
 
       return {
         state,
-        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
-        labelPrev: { en: 'No eigenvector', nl: 'Geen eigenvector' }
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.no_eigenvector')
       };
     },
     (t, state) => {
@@ -35,8 +37,8 @@
 
       return {
         state,
-        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
-        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
       };
     },
     (t, state) => {
@@ -47,8 +49,8 @@
 
       return {
         state,
-        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
-        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
       };
     },
     (t, state) => {
@@ -59,16 +61,15 @@
 
       return {
         state,
-        labelNext: { en: 'An eigenvector', nl: 'Een eigenvector' },
-        labelPrev: { en: 'An eigenvector', nl: 'Een eigenvector' }
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
       };
     }
   ];
 
-  const controls = Controls.addSlideShow(defaultState, steps, {
-    en: 'No eigenvector',
-    nl: 'Geen eigenvector'
-  });
+  const controls = Controls.addSlideShow(defaultState, steps, 
+    get(_)('applets.eigenvalue_eigenvector.no_eigenvector.no_eigenvector')
+  );
   const state = $derived(controls[0]);
 
   const A = new Matrix3(1, 4, 0, 1, 1, 0, 0, 0, 0);

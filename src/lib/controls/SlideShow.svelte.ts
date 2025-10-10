@@ -1,15 +1,14 @@
 import { Object3D } from 'three';
 import type { Controller } from './Controls';
-import { en, type LocalizedString } from '$lib/utils';
 
 export type SlideShowSteps<State> = ((
   t: number,
   state: State
-) => { state: State; labelNext: string | LocalizedString; labelPrev: string | LocalizedString })[];
+) => { state: State; labelNext: string; labelPrev: string })[];
 
 export class SlideShow<State> implements Controller<State> {
   defaultValue: State;
-  defaultLabel: LocalizedString = { en: '' };
+  defaultLabel: string = '';
 
   value = $state() as State;
   index = $state(0);
@@ -24,13 +23,13 @@ export class SlideShow<State> implements Controller<State> {
   inTransition = $state(false);
 
   type = 'animation';
-  label = $state({ en: '' }) as LocalizedString;
+  label = $state('') as string;
   width = 100;
 
   constructor(
     defaultValue: State,
     steps: SlideShowSteps<State>,
-    label: LocalizedString = { en: 'Original state', nl: 'Oorspronkelijke staat' }
+    label: string = 'ui.slideshow_original_state'
   ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;
@@ -92,15 +91,13 @@ export class SlideShow<State> implements Controller<State> {
     const interval = setInterval(() => {
       const result = this.steps[this.index](i / timeSteps, this.clone(current_value));
       this.value = result.state;
-      if (typeof result.labelNext == 'string') this.label = en(result.labelNext);
-      else this.label = result.labelNext;
+      this.label = result.labelNext;
 
       if (i++ >= timeSteps - 1) {
         clearInterval(interval);
         const result = this.steps[this.index](1, this.clone(current_value));
         this.value = result.state;
-        if (typeof result.labelNext == 'string') this.label = en(result.labelNext);
-        else this.label = result.labelNext;
+        this.label = result.labelNext;
         this.index++;
         this.inTransition = false;
 
@@ -125,8 +122,7 @@ export class SlideShow<State> implements Controller<State> {
     const interval = setInterval(() => {
       const result = this.steps[this.index - 1](1 - i / timeSteps, this.clone(current_value));
       this.value = result.state;
-      if (typeof result.labelPrev === 'string') this.label = en(result.labelPrev);
-      else this.label = result.labelPrev;
+      this.label = result.labelPrev;
 
       if (i++ >= timeSteps - 1) {
         clearInterval(interval);

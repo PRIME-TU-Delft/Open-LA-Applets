@@ -9,6 +9,7 @@
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addToggle(true, '\\mathbf{w_3}', PrimeColor.raspberry).addToggle(
     false,
@@ -42,9 +43,9 @@
     const f2 = new Formula(
       '\\{' + res + post + `= \\text{\\$1 ${!controls[0] && controls[1] ? '\\$2' : ''}\\$3}`
     )
-      .addAutoParam({ en: 'linearly', nl: 'lineair' })
-      .addAutoParam({ en: 'in', nl: 'on' })
-      .addAutoParam({ en: 'dependent', nl: 'afhankelijk' });
+      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.linearly'))
+      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.in'))
+      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.dependent'));
 
     return [f1, f2];
   });

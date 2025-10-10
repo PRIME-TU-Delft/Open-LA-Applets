@@ -207,10 +207,11 @@ export class Controls<
   /**
    * Add a new Dropdown to the controls array
    * @param labels - labels for the dropdown
-   * @param dft - default value for the dropdown
+   * @param dft - default value for the dropdown (translation key)
+   * @param values - array of translation keys
    * @param color - color for the dropdown default is raspberry
    */
-  addDropdown(dft: LocalizedString, values: LocalizedString[], color?: ColorString) {
+  addDropdown(dft: string, values: string[], color?: ColorString) {
     const newDropdown = new Dropdown(dft, values, color);
     this.isAllowedToAddControl(newDropdown);
     return new Controls([...this.controls, newDropdown] as const, this._width + newDropdown.width);
@@ -218,12 +219,12 @@ export class Controls<
 
   /**
    * Static method to create set Controls<T> to a new dropdown
-   * @param labels - labels for the dropdown
-   * @param dft - default value for the dropdown
+   * @param dft - default value for the dropdown (translation key)
+   * @param values - array of translation keys
    * @param color - color for the dropdown default is raspberry
    * @returns
    */
-  static addDropdown(dft: LocalizedString, values: LocalizedString[], color?: ColorString) {
+  static addDropdown(dft: string, values: string[], color?: ColorString) {
     const newDropdown = new Dropdown(dft, values, color);
     return new Controls([newDropdown] as const, newDropdown.width);
   }
@@ -256,10 +257,10 @@ export class Controls<
   /**
    * Static method to create set Controls<T> to a new animation
    * @param dft - default value for the animation
-   * @param label - label for the animation
+   * @param label - label for the animation (translation key)
    * @returns
    */
-  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: LocalizedString) {
+  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {
     const newSlideShow = new SlideShow(dft, steps, label);
     return new Controls([newSlideShow] as const, newSlideShow.width);
   }

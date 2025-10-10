@@ -10,6 +10,7 @@
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let P = new MathVector3(2, 1, 0);
   let Q = new MathVector3(2, 2, 2);
@@ -35,7 +36,7 @@
         ),
       new Formula(
         `\\text{\\$1}(\\Delta \\mathbf{PQR}) = \\frac{1}{2} ||\\mathbf{n}|| = ${round(area, 1)}`
-      ).addAutoParam({ en: 'Area', nl: 'Oppervlakte' })
+      ).addAutoParam($_('applets.crossproduct.areatriangle.area_label'))
     ];
   });
 </script>
