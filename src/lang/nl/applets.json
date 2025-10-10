@@ -145,5 +145,9 @@
       "rule_7": "Regel 7 - Vermenigvuldiging",
       "rule_8": "Regel 8 - Vermenigvuldiging"
     }
+  },
+  "tutorials": {
+    "complex_numbers_addition": "Optellen van complexe getallen",
+    "vectors_in_2d_and_3d": "De vectoren in 2D en 3D"
   }
 }

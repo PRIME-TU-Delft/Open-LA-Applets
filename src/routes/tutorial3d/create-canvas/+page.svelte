@@ -13,7 +13,7 @@
 
 <Canvas3D
   cameraZoom={100}
-  title={{ en: 'The vectors in 2d and 3d', nl: 'De vectoren in 2D en 3D' }}
+  title="applets.tutorials.vectors_in_2d_and_3d"
 >
   <Axis3D showNumbers />
 

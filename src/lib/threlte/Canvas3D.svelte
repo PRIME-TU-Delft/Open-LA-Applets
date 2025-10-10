@@ -2,7 +2,6 @@
   import type { SceneProps } from '$lib/components/Scene.svelte';
   import type { Canvas2DProps } from '$lib/d3/CanvasD3.svelte';
   import type { Snippet } from 'svelte';
-  import type { LocalizedString } from '$lib/utils';
 
   export type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {

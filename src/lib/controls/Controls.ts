@@ -7,7 +7,6 @@ import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
-import type { LocalizedString } from '$lib/utils';
 
 /**
  * Interface for a controller
@@ -94,7 +93,7 @@ export class Controls<
     step: number,
     color?: ColorString,
     options?: {
-      label?: LocalizedString | string;
+      label?: string;
       loop?: boolean;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
@@ -141,7 +140,7 @@ export class Controls<
     step: number,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
-      label?: LocalizedString | string;
+      label?: string;
       loop?: boolean;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
@@ -172,11 +171,11 @@ export class Controls<
    */
   addToggle(
     dft: boolean,
-    title?: LocalizedString | string,
+    title?: string,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
       isSwitch?: boolean;
-      switchRightSide?: LocalizedString | string;
+      switchRightSide?: string;
     }
   ) {
     const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);
@@ -193,11 +192,11 @@ export class Controls<
    */
   static addToggle(
     dft: boolean,
-    title?: LocalizedString | string,
+    title?: string,
     color: ColorString = PrimeColor.getColor(0),
     options?: {
       isSwitch?: boolean;
-      switchRightSide?: LocalizedString | string;
+      switchRightSide?: string;
     }
   ) {
     const newToggle = new Toggle(dft, title, color, options?.isSwitch, options?.switchRightSide);

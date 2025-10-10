@@ -1,6 +1,5 @@
 import type { Controller, Controls } from '$lib/controls/Controls';
 import type { Draggable } from '$lib/controls/Draggables.svelte';
-import type { LocalizedString } from '$lib/utils';
 import type { Formula } from '$lib/utils/Formulas';
 import type { Snippet } from 'svelte';
 
@@ -11,6 +10,6 @@ export type SceneProps = {
   splitFormulas?: Formula[];
   showFormulasDefault?: boolean;
   draggables?: Draggable[];
-  title?: LocalizedString | string;
+  title?: string;
   sceneChildren?: Snippet<[number, number]>;
 };

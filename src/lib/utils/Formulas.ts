@@ -1,6 +1,5 @@
-import { getLocalizedString, type LocalizedString } from '$lib/utils';
 import { PrimeColor } from './PrimeColors';
-import { locale } from 'svelte-i18n';
+import { _ } from 'svelte-i18n';
 import { get } from 'svelte/store';
 
 /**
@@ -55,14 +54,8 @@ export class Formula {
     return this.stringFormula;
   }
 
-  addParam(index: number, param: number | string | LocalizedString, color?: PrimeColor) {
-    let value: string | number;
-    if (typeof param === 'object' && param !== null) {
-      // param is a LocalizedString
-      value = getLocalizedString(param, get(locale)) || '';
-    } else {
-      value = param;
-    }
+  addParam(index: number, param: number | string, color?: PrimeColor) {
+    const value = param;
 
     if (index <= 0) {
       this.stringFormula = this.stringFormula.replaceAll(
@@ -85,7 +78,7 @@ export class Formula {
    * @param color color of the param
    * @returns this
    */
-  addAutoParam(param: number | string | LocalizedString, color?: PrimeColor) {
+  addAutoParam(param: number | string, color?: PrimeColor) {
     this.autoIndex += 1;
 
     const index = this.autoIndex;

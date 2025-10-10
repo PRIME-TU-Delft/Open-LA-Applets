@@ -9,8 +9,7 @@
   import Pause from '@lucide/svelte/icons/pause';
   import Play from '@lucide/svelte/icons/play';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import { locale, _ } from 'svelte-i18n';
-  import { getLocalizedString } from '$lib/utils';
+  import {  _ } from 'svelte-i18n';
 
   type SliderProps = {
     value: number;
@@ -159,7 +158,7 @@
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
-        >{getLocalizedString(slider.label, $locale)}:
+        >{$_(slider.label)}:
         <p class="absolute left-full flex text-sm" style="color:{slider.color};">
           {#if slider.labelFormat}
             {@render slider.labelFormat(value)}

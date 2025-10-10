@@ -1,6 +1,5 @@
 import type { Controller } from './Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
-import type { LocalizedString } from '$lib/utils';
 
 /**
  * The Toggle class is used to create a toggle with a default value and a range of values.
@@ -15,17 +14,17 @@ export class Toggle implements Controller<boolean> {
   value = $state(false);
   color: string = PrimeColor.blue;
   width = 10;
-  label: LocalizedString | string | undefined = undefined;
+  label: string | undefined = undefined;
   type = 'toggle';
   isSwitch: boolean = false;
-  switchRightSide: LocalizedString | string | undefined = undefined;
+  switchRightSide: string | undefined = undefined;
 
   constructor(
     defaultValue: boolean,
-    label: LocalizedString | string | undefined = undefined,
+    label: string | undefined = undefined,
     color: string = PrimeColor.blue,
     isSwitch: boolean = false,
-    switchRightSide: LocalizedString | string | undefined = undefined
+    switchRightSide: string | undefined = undefined
   ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;

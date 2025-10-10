@@ -14,7 +14,7 @@
 </script>
 
 <!-- We give the Canvas2D component a title prop -->
-<Canvas2D title={{ en: 'Complex numbers addition', nl: 'Optellen van complexe getallen' }}>
+<Canvas2D title="applets.tutorials.complex_numbers_addition">
   <Vector2D direction={direction1} length={direction1.length()} color={PrimeColor.blue} />
   <Vector2D direction={direction2} length={direction2.length()} color={PrimeColor.darkGreen} />
 

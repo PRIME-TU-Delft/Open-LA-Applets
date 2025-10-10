@@ -145,5 +145,9 @@
       "rule_7": "Rule 7 - Multiplication",
       "rule_8": "Rule 8 - Multiplication"
     }
+  },
+  "tutorials": {
+    "complex_numbers_addition": "Complex numbers addition",
+    "vectors_in_2d_and_3d": "The vectors in 2d and 3d"
   }
 }

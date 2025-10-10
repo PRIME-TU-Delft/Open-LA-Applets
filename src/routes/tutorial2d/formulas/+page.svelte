@@ -51,7 +51,7 @@
   {formulas}
   showFormulasDefault
   draggables={[direction1]}
-  title={{ en: 'Complex numbers addition', nl: 'Optellen van complexe getallen' }}
+  title="applets.tutorials.complex_numbers_addition"
 >
   <Vector2D
     direction={direction1.position}
