@@ -9,7 +9,7 @@
   import Pause from '@lucide/svelte/icons/pause';
   import Play from '@lucide/svelte/icons/play';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import {  _ } from 'svelte-i18n';
+  import { _ } from 'svelte-i18n';
 
   type SliderProps = {
     value: number;

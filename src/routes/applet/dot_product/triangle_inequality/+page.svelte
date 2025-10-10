@@ -36,11 +36,7 @@
   });
 </script>
 
-<Canvas2D
-  {draggables}
-  {formulas}
-  title={$_('applets.dot_product.triangle_inequality.title')}
->
+<Canvas2D {draggables} {formulas} title={$_('applets.dot_product.triangle_inequality.title')}>
   <!-- Bases -->
   <Vector2D direction={v} length={v.length()} color={PrimeColor.blue}>
     {#snippet children(endPoint)}

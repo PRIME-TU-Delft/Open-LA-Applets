@@ -11,10 +11,7 @@
   let tv3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas3D
-  cameraZoom={100}
-  title="applets.tutorials.vectors_in_2d_and_3d"
->
+<Canvas3D cameraZoom={100} title="applets.tutorials.vectors_in_2d_and_3d">
   <Axis3D showNumbers />
 
   <!-- e1 & e2 & e3 -->

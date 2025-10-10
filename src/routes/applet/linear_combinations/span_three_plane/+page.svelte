@@ -55,11 +55,7 @@
   const enabledVectors = $derived([u, v, w].filter((_, i) => controls[i as 0 | 1 | 2]));
 </script>
 
-<Canvas3D
-  title={$_('applets.linear_combinations.span_three_plane.title')}
-  {formulas}
-  {controls}
->
+<Canvas3D title={$_('applets.linear_combinations.span_three_plane.title')} {formulas} {controls}>
   {#if controls[0]}
     <!-- Vector u -->
     <Vector3D direction={u} length={u.length()} color={PrimeColor.blue} />

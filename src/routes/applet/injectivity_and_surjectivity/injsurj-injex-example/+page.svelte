@@ -40,7 +40,11 @@
       const td2 = transform(d2.position);
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
-        if (controls[0] == 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2' && d1.position.distanceTo(d2.position) > 0.5) {
+        if (
+          controls[0] ==
+            'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2' &&
+          d1.position.distanceTo(d2.position) > 0.5
+        ) {
           confettiState.center();
         }
 
@@ -55,7 +59,11 @@
       const td2 = transform(d2.position);
 
       if (Math.abs(td1.length() - td2.length()) < 1) {
-        if (controls[0] == 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2' && d1.position.distanceTo(d2.position) > 0.5) {
+        if (
+          controls[0] ==
+            'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2' &&
+          d1.position.distanceTo(d2.position) > 0.5
+        ) {
           confettiState.center();
         }
 
@@ -92,17 +100,23 @@
   const formulas = $derived.by(() => {
     let formulas = [];
 
-    if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1') {
+    if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
+    ) {
       const f2 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f2);
-    } else if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2'
+    ) {
       const f1 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f1);
-    } else if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ) {
       const f3 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
       );

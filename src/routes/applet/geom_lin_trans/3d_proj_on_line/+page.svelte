@@ -25,10 +25,7 @@
   const u_proj = $derived(u.clone().projectOnVector(lineL.clone()));
 </script>
 
-<Canvas3D
-  {controls}
-  title={$_('applets.geom_lin_trans.proj_on_line_3d.title')}
->
+<Canvas3D {controls} title={$_('applets.geom_lin_trans.proj_on_line_3d.title')}>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />

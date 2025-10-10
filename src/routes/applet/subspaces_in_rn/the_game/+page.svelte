@@ -32,7 +32,10 @@
   function validateSlider() {
     if (controls[1] == 'applets.subspaces_in_rn.the_game.disc') {
       validateDisk(new Vector2(), 'right');
-    } else if (controls[1] == 'applets.subspaces_in_rn.the_game.first_quadrant' && (prod.x < 0 || prod.y < 0)) {
+    } else if (
+      controls[1] == 'applets.subspaces_in_rn.the_game.first_quadrant' &&
+      (prod.x < 0 || prod.y < 0)
+    ) {
       confettiState.rightSide();
     }
   }

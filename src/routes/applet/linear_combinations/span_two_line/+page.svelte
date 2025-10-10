@@ -30,10 +30,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D
-  title={$_('applets.linear_combinations.span_two_line.title')}
-  {controls}
->
+<Canvas3D title={$_('applets.linear_combinations.span_two_line.title')} {controls}>
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->
   {#if controls[0] * controls[1] >= 0 && Math.abs(controls[0]) <= Math.abs(controls[1])}
     <Vector3D direction={v} length={vLen} color={PrimeColor.raspberry} alwaysOnTop />

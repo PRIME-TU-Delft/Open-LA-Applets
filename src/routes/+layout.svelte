@@ -11,7 +11,7 @@
   // Import UI translations
   import enUI from './../lang/en/ui.json';
   import nlUI from './../lang/nl/ui.json';
-  
+
   // Import applet translations
   import enApplets from './../lang/en/applets.json';
   import nlApplets from './../lang/nl/applets.json';
@@ -19,7 +19,7 @@
   // Merge translations for each language
   addMessages('en', { ...enUI, applets: enApplets });
   addMessages('nl', { ...nlUI, applets: nlApplets });
-  
+
   init({
     fallbackLocale: 'en'
   });

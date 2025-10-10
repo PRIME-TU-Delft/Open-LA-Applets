@@ -26,11 +26,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas2D
-  {controls}
-  draggables={[direction1]}
-  title="applets.tutorials.complex_numbers_addition"
->
+<Canvas2D {controls} draggables={[direction1]} title="applets.tutorials.complex_numbers_addition">
   <Vector2D
     direction={direction1.position}
     length={direction1.position.length()}

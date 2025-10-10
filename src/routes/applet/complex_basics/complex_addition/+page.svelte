@@ -35,11 +35,7 @@
   });
 </script>
 
-<Canvas2D
-  {draggables}
-  {formulas}
-  title={$_('applets.complex_basics.complex_addition.title')}
->
+<Canvas2D {draggables} {formulas} title={$_('applets.complex_basics.complex_addition.title')}>
   <Vector2D direction={d1.position} length={d1.position.length()} color={PrimeColor.blue} />
   <Vector2D direction={d2.position} length={d2.position.length()} color={PrimeColor.darkGreen} />
   <Vector2D direction={v_result} length={v_result.length()} color={PrimeColor.raspberry} />

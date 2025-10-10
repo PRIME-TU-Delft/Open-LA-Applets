@@ -35,10 +35,7 @@
   );
 </script>
 
-<Canvas2D
-  {draggables}
-  title={$_('applets.geom_lin_trans.reflect_in_r2.title')}
->
+<Canvas2D {draggables} title={$_('applets.geom_lin_trans.reflect_in_r2.title')}>
   <!-- Line L -->
   <InfiniteLine2D direction={dir_L} color={PrimeColor.cyan} />
   <Latex2D

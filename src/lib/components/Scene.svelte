@@ -84,12 +84,12 @@
     }
   }
 
-  const languages = ["en", "nl"]; // TODO: don't hardcode
+  const languages = ['en', 'nl']; // TODO: don't hardcode
 
   $effect(() => {
     // Override the global title if a title is provided
     // if and only if the global title is not set
-    if (!globalState.title) globalState.title = title || "";
+    if (!globalState.title) globalState.title = title || '';
   });
 </script>
 

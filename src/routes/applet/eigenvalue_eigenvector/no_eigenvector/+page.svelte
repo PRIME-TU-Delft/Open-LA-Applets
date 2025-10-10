@@ -67,7 +67,9 @@
     }
   ];
 
-  const controls = Controls.addSlideShow(defaultState, steps, 
+  const controls = Controls.addSlideShow(
+    defaultState,
+    steps,
     get(_)('applets.eigenvalue_eigenvector.no_eigenvector.no_eigenvector')
   );
   const state = $derived(controls[0]);

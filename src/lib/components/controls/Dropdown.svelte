@@ -15,11 +15,9 @@
     dropdown.value = selectedKey;
   });
 
-  const localizedValue = $derived($_( dropdown.value) || $_('dropdown_select_item'));
+  const localizedValue = $derived($_(dropdown.value) || $_('dropdown_select_item'));
 
-  const localizedValues = $derived(
-    dropdown.values.map((v) => $_(v) || '')
-  );
+  const localizedValues = $derived(dropdown.values.map((v) => $_(v) || ''));
 </script>
 
 <Select.Root type="single" name="favoriteFruit" bind:value={selectedKey}>

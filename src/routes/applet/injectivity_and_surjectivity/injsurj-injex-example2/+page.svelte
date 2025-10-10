@@ -22,7 +22,9 @@
   const draggables = $derived.by(() => {
     let snapFn = (v: Vector2) => v;
 
-    if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1') {
+    if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
+    ) {
       const solution = new Vector2(70, 17).multiplyScalar(1 / 23);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
@@ -32,7 +34,9 @@
           return v;
         }
       };
-    } else if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ) {
       const solution = new Vector2(-3, 2);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
@@ -70,17 +74,23 @@
 
     const TvDistances = transform(draggables[0].position).distanceTo(u);
 
-    if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1') {
+    if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
+    ) {
       const f2 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f2);
-    } else if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2'
+    ) {
       const f1 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f1);
-    } else if (controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ) {
       const f3 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
       );
