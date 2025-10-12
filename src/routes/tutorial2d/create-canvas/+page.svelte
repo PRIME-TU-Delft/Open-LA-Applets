@@ -4,6 +4,6 @@
 </script>
 
 <!-- We give the Canvas2D component a title prop -->
-<Canvas2D title="applets.tutorials.complex_numbers_addition">
+<Canvas2D title="Complex numbers addition">
   <Vector2D />
 </Canvas2D>

@@ -35,7 +35,7 @@ Each 3D applet starts with a 3D canvas. You can initialize a 3D canvas by follow
   let tv3 = new Vector3(0, 1, 0);
 </script>
 
-<Canvas3D cameraZoom={100} title={{"en": "The vectors in 2d and 3d", "nl": "De vectoren in 2D en 3D"}}>
+<Canvas3D cameraZoom={100} title="The vectors in 2d and 3d">
   <Axis3D showNumbers />
 
   <!-- e1 & e2 & e3 -->
@@ -91,7 +91,7 @@ This allows you to include 2D elements that can interact with the 3D scene. Belo
 <Canvas3D
   cameraZoom={100}
   splitCanvas2DProps={{ cameraZoom: 3, draggables: [v1, v2] }}
-  title={{"en": "The vectors in 2d and 3d", "nl": "De vectoren in 2D en 3D"}}
+  title="The vectors in 2d and 3d"
 >
   <!-- ... 3D Components ... -->
 

@@ -19,7 +19,7 @@
 <Canvas3D
   cameraZoom={100}
   splitCanvas2DProps={{ cameraZoom: 3, draggables: [v1, v2] }}
-  title="applets.tutorials.vectors_in_2d_and_3d"
+  title="The vectors in 2d and 3d"
 >
   <Axis3D showNumbers />
 
