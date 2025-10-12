@@ -19,7 +19,7 @@
 <div class="flex items-center gap-1 p-1.5">
   {#if toggle.label != undefined}
     <Label class="inline-flex items-center" for="checkbox-{uuid}">
-      <Latex latex={$_(toggle.label) || ''} color={toggle.color} />:
+      <Latex latex={toggle.label || ''} color={toggle.color} />:
     </Label>
   {/if}
 

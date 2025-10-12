@@ -158,7 +158,7 @@
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
-        >{$_(slider.label)}:
+        >{slider.label}:
         <p class="absolute left-full flex text-sm" style="color:{slider.color};">
           {#if slider.labelFormat}
             {@render slider.labelFormat(value)}

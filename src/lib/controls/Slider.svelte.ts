@@ -23,7 +23,7 @@ export class Slider implements Controller<number> {
   color: string = PrimeColor.blue;
   width = 30;
   type = 'sliders';
-  label: string = '';
+  label = $state('');
   loop = false;
   valueFn: (v: number) => string;
   labelFormat?: (v: number) => ReturnType<Snippet>;

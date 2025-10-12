@@ -16,7 +16,7 @@
 
 {#if toggle.label != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={$_(toggle.label) || ''} />:
+    <Latex latex={toggle.label || ''} />:
   </Label>
 {/if}
 
@@ -24,6 +24,6 @@
 
 {#if toggle.switchRightSide != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={$_(toggle.switchRightSide) || ''} />:
+    <Latex latex={toggle.switchRightSide || ''} />:
   </Label>
 {/if}
