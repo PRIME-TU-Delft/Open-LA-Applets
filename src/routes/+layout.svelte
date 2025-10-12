@@ -12,21 +12,21 @@
       key.includes(`/${lang}/applets.json`)
     );
 
-    if (!uiKey || !appletKey) {
-      console.warn(`Missing translations for language: ${lang}`, { uiKey, appletKey });
-      return;
+    if (uiKey) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const ui = uiModules[uiKey] as any;
+      if (ui?.default) {
+        addMessages(lang, ui.default);
+      }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ui = uiModules[uiKey] as any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const applets = appletModules[appletKey] as any;
+    if (appletKey) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const applets = appletModules[appletKey] as any;
 
-    if (ui?.default) {
-      addMessages(lang, ui.default);
-    }
-    if (applets?.default) {
-      addMessages(lang, { applets: applets.default });
+      if (applets?.default) {
+        addMessages(lang, { applets: applets.default });
+      }
     }
   });
 

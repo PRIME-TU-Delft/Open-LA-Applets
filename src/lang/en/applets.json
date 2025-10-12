@@ -173,6 +173,10 @@
       "original_state": "Original state",
       "move_b_to": "Move b to (-1,2)",
       "move_b_from": "Move b to (2,-1)"
+    },
+    "more_languages": {
+      "title": "Multiple languages test",
+      "formula": "This is a test on having more applet languages than UI languages"
     }
   },
   "vectors": {

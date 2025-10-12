@@ -22,5 +22,40 @@ function getAvailableLanguages(): string[] {
   return allLanguages.sort();
 }
 
+/**
+ * Get available languages for a specific applet category
+ * Returns languages that have UI translations + languages that have translations for the category
+ *
+ * @param category - The applet category (e.g., "basisdim", "crossproduct")
+ * @returns Array of language codes that support this category
+ */
+export function getAvailableLanguagesForApplet(category: string): string[] {
+  const supportedLanguages = new Set<string>();
+
+  Object.keys(appletModules).forEach((key) => {
+    const langMatch = key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1];
+    if (!langMatch) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const module = appletModules[key] as any;
+    const translations = module?.default;
+
+    // Check if this language has any translations for the category
+    if (translations?.[category]) {
+      supportedLanguages.add(langMatch);
+    }
+  });
+
+  // Always include languages that have UI translations (for the general UI)
+  Object.keys(uiModules).forEach((key) => {
+    const langMatch = key.match(/\.\.\/\.\.\/lang\/(.+?)\/ui\.json/)?.[1];
+    if (langMatch) {
+      supportedLanguages.add(langMatch);
+    }
+  });
+
+  return Array.from(supportedLanguages).sort();
+}
+
 export { uiModules, appletModules };
 export const availableLanguages = getAvailableLanguages();
