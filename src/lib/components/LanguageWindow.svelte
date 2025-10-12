@@ -99,7 +99,6 @@
         >
           {getEmoji(lang)}
           {lang.toUpperCase()}
-          {activeLang}
         </Button>
       {/each}
     </Dialog.Description>
