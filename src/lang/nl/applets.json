@@ -75,7 +75,8 @@
     "injsurj_injex_example": {
       "transformation_1": "Transformatie 1",
       "transformation_2": "Transformatie 2",
-      "transformation_3": "Transformatie 3"
+      "transformation_3": "Transformatie 3",
+      "new_target": "Nieuw doel"
     }
   },
   "linear_combinations": {

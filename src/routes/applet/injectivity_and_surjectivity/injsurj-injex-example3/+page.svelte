@@ -8,6 +8,7 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
   function randomVector() {
@@ -20,9 +21,13 @@
   // Target to reach
   let target = $state(randomVector());
 
-  const controls = Controls.addButton('New target', PrimeColor.raspberry, () => {
-    target = randomVector();
-  });
+  const controls = Controls.addButton(
+    $_('applets.injectivity_and_surjectivity.injsurj_injex_example.new_target'),
+    PrimeColor.raspberry,
+    () => {
+      target = randomVector();
+    }
+  );
 
   function transform(vector: Vector2) {
     // Transform with the matrix [1 -1; 1 1]

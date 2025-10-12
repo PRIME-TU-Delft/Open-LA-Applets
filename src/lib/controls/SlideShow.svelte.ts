@@ -29,7 +29,7 @@ export class SlideShow<State> implements Controller<State> {
   constructor(
     defaultValue: State,
     steps: SlideShowSteps<State>,
-    label: string = 'ui.slideshow_original_state'
+    label: string = 'slideshow_original_state'
   ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;
