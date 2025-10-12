@@ -25,6 +25,7 @@
   import FpsCounter from './FpsCounter.svelte';
   import { browser } from '$app/environment';
   import { cn } from '$lib/utils';
+  import { availableLanguages } from '$lib/utils/languages';
 
   let {
     controls = undefined,
@@ -83,8 +84,6 @@
       activityState.enable();
     }
   }
-
-  const languages = ['en', 'nl']; // TODO: don't hardcode
 
   $effect(() => {
     // Override the global title if a title is provided
@@ -151,7 +150,7 @@
       {formulas}
       {splitFormulas}
       {controls}
-      {languages}
+      languages={availableLanguages}
       onReset={() => reset()}
     />
   </div>
