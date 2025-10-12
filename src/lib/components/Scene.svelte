@@ -109,9 +109,10 @@
   }
 
   $effect(() => {
-    // Override the global title if a title is provided
-    // if and only if the global title is not set
-    if (!globalState.title) globalState.title = title || '';
+    // Override title if and only if the title was not set from a URL parameter
+    if (title && !globalState.titleFromUrl) {
+      globalState.title = title;
+    }
   });
 </script>
 

@@ -23,6 +23,7 @@ export function handleGlobalState(searchParams: URLSearchParams) {
 
   if (searchParams.has('title')) {
     globalState.title = searchParams.get('title') ?? '';
+    globalState.titleFromUrl = true;
   }
 
   if (searchParams.has('lang')) {

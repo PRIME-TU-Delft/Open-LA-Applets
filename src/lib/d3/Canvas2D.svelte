@@ -75,7 +75,7 @@
 
 <!-- @component A component that renders a 2D canvas with draggables and formulas.
 @props 
-  - title: LocalizedString - The title of the scene.
+  - title: string - The title of the scene.
   - draggables: Draggable[] - The draggables that are in the scene.
   - controls: boolean - Whether the controls are shown.
   - showFormulasDefault: boolean - Whether the formulas are shown by default.
@@ -96,7 +96,7 @@
   A component that renders a 2D canvas with draggables and formulas.
 
 @example
-  <Canvas2D title={"en":"Title"}>
+  <Canvas2D title="Title">
     ...
 
 {#snippet splitCanvas2DChildren()}
