@@ -25,9 +25,9 @@ Creating a new applet starts directly by making a tri-fold decision. First, do y
 
 You can find tutorials for creating 2D, 3D and split view applets here:
 
-- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-2d--docs)
-- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-3d--docs)
-- [Translating applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-translation--docs)
+- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-2d--docs)
+- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-3d--docs)
+- [Translating applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-translation--docs)
 
 ## Uploading applets
 
