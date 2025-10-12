@@ -1,8 +1,6 @@
 <script lang="ts">
   import '../app.css';
-  import { page } from '$app/state';
   import { addMessages, init } from 'svelte-i18n';
-  import { locale } from 'svelte-i18n';
   import { availableLanguages, uiModules, appletModules } from '$lib/utils/languages';
 
   // Load translations for all languages
@@ -31,13 +29,9 @@
   });
 
   // Localization
-  const searchParams = new URLSearchParams(page?.url?.searchParams);
-  const lang = searchParams.get('lang') || 'en';
-
   init({
     fallbackLocale: 'en'
   });
-  locale.set(lang);
 
   let { children } = $props();
 </script>

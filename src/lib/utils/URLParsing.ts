@@ -1,4 +1,5 @@
 import { globalState } from '$lib/stores/globalState.svelte';
+import { locale } from 'svelte-i18n';
 import { Vector2, Vector3 } from 'three';
 
 type Params2D = {
@@ -22,6 +23,10 @@ export function handleGlobalState(searchParams: URLSearchParams) {
 
   if (searchParams.has('title')) {
     globalState.title = searchParams.get('title') ?? '';
+  }
+
+  if (searchParams.has('lang')) {
+    locale.set(searchParams.get('lang'));
   }
 }
 
