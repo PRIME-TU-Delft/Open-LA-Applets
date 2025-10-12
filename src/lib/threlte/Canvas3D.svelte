@@ -101,7 +101,7 @@
 - enablePan: Whether to enable pan
 
 @example
-<Canvas3D title={'en':'This is a 3D canvas'}>
+<Canvas3D title='This is a 3D canvas'>
   <Axis3D />
 </Canvas3D>
 

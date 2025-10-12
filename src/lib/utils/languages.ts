@@ -59,3 +59,4 @@ export function getAvailableLanguagesForApplet(category: string): string[] {
 
 export { uiModules, appletModules };
 export const availableLanguages = getAvailableLanguages();
+export const DEFAULT_LANGUAGE = 'en';

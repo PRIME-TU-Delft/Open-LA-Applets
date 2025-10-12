@@ -1,7 +1,12 @@
 <script lang="ts">
   import '../app.css';
   import { addMessages, init } from 'svelte-i18n';
-  import { availableLanguages, uiModules, appletModules } from '$lib/utils/languages';
+  import {
+    availableLanguages,
+    uiModules,
+    appletModules,
+    DEFAULT_LANGUAGE
+  } from '$lib/utils/languages';
 
   // Load translations for all languages
   availableLanguages.forEach((lang) => {
@@ -30,7 +35,7 @@
 
   // Localization
   init({
-    fallbackLocale: 'en'
+    fallbackLocale: DEFAULT_LANGUAGE
   });
 
   let { children } = $props();

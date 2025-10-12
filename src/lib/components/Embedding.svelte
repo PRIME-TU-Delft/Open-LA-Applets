@@ -8,6 +8,7 @@
   import { Checkbox } from './ui/checkbox';
   import { Label } from './ui/label';
   import Textarea from './ui/textarea/textarea.svelte';
+  import { locale } from 'svelte-i18n';
 
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
   let showCopySucess = $state(false);
@@ -15,8 +16,7 @@
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 
-    const lang = page.url.searchParams.get('lang');
-    if (lang) url.searchParams.set('lang', lang);
+    if ($locale) url.searchParams.set('lang', $locale);
 
     if (!includeState) {
       return url.toString();
