@@ -16,6 +16,7 @@ Each language has its own directory inside `src/lang`, named with the language c
 ### File Structure
 
 Both files follow a nested JSON structure where:
+
 - **Top-level keys** are categories (e.g., `common`, `vectors`, `complex_basics`, `testing`) - they are the names of applet folders
 - **Second-level keys** are applet names used to group the translations related to specific applets within each category
 - **Nested keys** are specific translation keys within each category and applet
@@ -52,8 +53,8 @@ import { _ } from 'svelte-i18n';
 Then reference translations using dot notation:
 
 ```ts
-$_('applets.tutorials.magnitude_z2')  // For applet translations
-$_('lock')                             // For UI translations
+$_('applets.tutorials.magnitude_z2'); // For applet translations
+$_('lock'); // For UI translations
 ```
 
 ### Dropdown control
@@ -124,6 +125,7 @@ const formulas = $derived.by(() => {
 A language appears in the language selector of an applet when the language has translations for that specific applet category in `applets.json` **OR** has `ui.json` file (for general UI elements).
 
 This means that:
+
 - If a language has `ui.json` but no translations for a specific applet, it will still appear in the selector (the applet will fall back to English for missing translations)
 - If a language has applet-specific translations in `applets.json` but no `ui.json`, it will appear in the selector for that applet (UI elements will fall back to English)
 
@@ -136,4 +138,4 @@ Users can change the language in two ways:
 1. **Using the language button** - Click the language icon in the top right corner of any applet
 2. **Using URL parameter** - Add `?lang=nl` (or any other language code) to the URL
 
-For more information on how to add translations to an applet, see the [Translation Tutorial](./?path=/docs/tutorials-tutorial-translation--docs). 
+For more information on how to add translations to an applet, see the [Translation Tutorial](./?path=/docs/tutorials-tutorial-translation--docs).

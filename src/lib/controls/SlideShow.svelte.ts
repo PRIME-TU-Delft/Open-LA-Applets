@@ -1,7 +1,5 @@
 import { Object3D } from 'three';
 import type { Controller } from './Controls';
-import { _ } from 'svelte-i18n';
-import { get } from 'svelte/store';
 
 export type SlideShowSteps<State> = ((
   t: number,

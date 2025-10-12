@@ -13,7 +13,16 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Introduction', 'Colors', 'Localization', 'Tutorials', 'Initialize', '2D Components', '3D Components', '*']
+        order: [
+          'Introduction',
+          'Colors',
+          'Localization',
+          'Tutorials',
+          'Initialize',
+          '2D Components',
+          '3D Components',
+          '*'
+        ]
       }
     },
 
