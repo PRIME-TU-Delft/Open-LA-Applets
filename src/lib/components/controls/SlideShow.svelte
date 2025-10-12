@@ -20,6 +20,8 @@
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
   {#if controller.label != undefined}
     <span>{controller.label}</span>
+  {:else if controller.label == null}
+    <span>{$_('slideshow_original_state')}</span>
   {/if}
 </Label>
 
