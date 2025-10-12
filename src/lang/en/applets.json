@@ -1,9 +1,7 @@
 {
   "common": {
-    "original_state": "Original state",
     "fill": "Fill",
-    "area": "area",
-    "Area": "Area"
+    "area": "Area"
   },
   "basisdim": {
     "standardbasis": {
@@ -23,16 +21,7 @@
       "title": "Inverse of a complex number: Cartesian and Polar"
     }
   },
-  "crossproduct": {
-    "areatriangle": {
-      "area_label": "Area"
-    }
-  },
   "det_geometric": {
-    "paraped": {
-      "fill": "\\text{Fill}",
-      "area": "area"
-    },
     "linearity_one": {
       "translate_abd": "Translate ABD"
     },
@@ -101,11 +90,6 @@
       "dependent": "dependent"
     }
   },
-  "linear_systems": {
-    "row_reduction": {
-      "original_state": "Original state"
-    }
-  },
   "lines_and_planes": {
     "plane_line_intersection": {
       "title": "Two planes with a line of intersection."
@@ -170,7 +154,6 @@
     },
     "controls_stories": {
       "fade_out_a": "fade out a",
-      "original_state": "Original state",
       "move_b_to": "Move b to (-1,2)",
       "move_b_from": "Move b to (2,-1)"
     },

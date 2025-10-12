@@ -29,7 +29,7 @@
       return {
         state,
         labelNext: $_('applets.matrix_operations.nilpotent.project_on_x1'),
-        labelPrev: $_('applets.common.original_state')
+        labelPrev: $_('slideshow_original_state')
       };
     },
     (t: number, state: S) => {

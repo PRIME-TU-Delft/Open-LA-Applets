@@ -14,6 +14,7 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
     label: 'A',
@@ -46,8 +47,8 @@
       state.aOpacity = state.aOpacity - 1 * t;
       return {
         state,
-        labelNext: 'applets.testing.controls_stories.fade_out_a',
-        labelPrev: 'applets.testing.controls_stories.original_state'
+        labelNext: $_('applets.testing.controls_stories.fade_out_a'),
+        labelPrev: $_('slideshow_original_state')
       };
     },
     (t: number, state: S) => {
@@ -55,8 +56,8 @@
 
       return {
         state,
-        labelNext: 'applets.testing.controls_stories.move_b_to',
-        labelPrev: 'applets.testing.controls_stories.move_b_from'
+        labelNext: $_('applets.testing.controls_stories.move_b_to'),
+        labelPrev: $_('applets.testing.controls_stories.move_b_from')
       };
     }
   ];

@@ -1,5 +1,7 @@
 import { Object3D } from 'three';
 import type { Controller } from './Controls';
+import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
 
 export type SlideShowSteps<State> = ((
   t: number,
@@ -29,7 +31,7 @@ export class SlideShow<State> implements Controller<State> {
   constructor(
     defaultValue: State,
     steps: SlideShowSteps<State>,
-    label: string = 'slideshow_original_state'
+    label: string = get(_)('slideshow_original_state')
   ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;

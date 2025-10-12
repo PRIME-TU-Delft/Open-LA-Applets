@@ -28,7 +28,7 @@
       return {
         state,
         labelNext: get(_)('applets.testing.animation_studio.extended_length'),
-        labelPrev: get(_)('applets.common.original_state')
+        labelPrev: get(_)('slideshow_original_state')
       };
     },
     (t, state) => {

@@ -19,7 +19,7 @@
 
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
   {#if controller.label != undefined}
-    <span>{$_(controller.label)}</span>
+    <span>{controller.label}</span>
   {/if}
 </Label>
 

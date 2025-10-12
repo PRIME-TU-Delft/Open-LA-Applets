@@ -1,9 +1,7 @@
 {
   "common": {
-    "original_state": "Oorspronkelijke staat",
     "fill": "Vullen",
-    "area": "oppervlakte",
-    "Area": "Oppervlakte"
+    "area": "Oppervlakte"
   },
   "basisdim": {
     "standardbasis": {
@@ -23,16 +21,7 @@
       "title": "Omgekeerde van een complex getal: Cartesisch en polair"
     }
   },
-  "crossproduct": {
-    "areatriangle": {
-      "area_label": "Oppervlakte"
-    }
-  },
   "det_geometric": {
-    "paraped": {
-      "fill": "\\text{Vullen}",
-      "area": "oppervlakte"
-    },
     "linearity_one": {
       "translate_abd": "Verplaats ABD"
     },
@@ -101,11 +90,6 @@
       "dependent": "afhankelijk"
     }
   },
-  "linear_systems": {
-    "row_reduction": {
-      "original_state": "Oorspronkelijke staat"
-    }
-  },
   "lines_and_planes": {
     "plane_line_intersection": {
       "title": "Twee vlakken met een snijlijn."
@@ -170,7 +154,6 @@
     },
     "controls_stories": {
       "fade_out_a": "vervagen a",
-      "original_state": "Oorspronkelijke staat",
       "move_b_to": "Verplaats b naar (-1,2)",
       "move_b_from": "Verplaats b naar (2,-1)"
     }

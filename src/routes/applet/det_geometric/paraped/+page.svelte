@@ -18,7 +18,7 @@
       label: 'θ',
       valueFn: (v) => (v / Math.PI).toFixed(2)
     })
-    .addToggle(true, $_('applets.det_geometric.paraped.fill'));
+    .addToggle(true, '\\text{' + $_('applets.common.fill') + '}');
 
   const formulas = $derived.by(() => {
     const height = c.y;
@@ -34,7 +34,7 @@
       .addAutoParam('b', PrimeColor.cyan)
       .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
       .addAutoParam('A', PrimeColor.blue)
-      .addAutoParam($_('applets.det_geometric.paraped.area'));
+      .addAutoParam($_('applets.common.area'));
     const f3 = new Formula(
       '\\mathcal{\\$4} &= \\$5 \\cdot \\mathcal{\\$6} = \\$1 \\cdot \\$2 = \\$3'
     )

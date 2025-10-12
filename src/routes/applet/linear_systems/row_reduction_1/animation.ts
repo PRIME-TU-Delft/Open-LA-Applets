@@ -1,8 +1,8 @@
 import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
-import { Vector4 } from 'three';
-import { get } from 'svelte/store';
 import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
+import { Vector4 } from 'three';
 
 const state = [new Vector4(2, -1, -1, 2), new Vector4(1, 2, 4, 4), new Vector4(4, -2, -4, 6)];
 type S = typeof state;
@@ -15,7 +15,7 @@ const transitionSteps: SlideShowSteps<S> = [
     return {
       state,
       labelNext: 'R2 = 2*R2',
-      labelPrev: get(_)('applets.common.original_state')
+      labelPrev: get(_)('slideshow_original_state')
     };
   },
   (t, state) => {
