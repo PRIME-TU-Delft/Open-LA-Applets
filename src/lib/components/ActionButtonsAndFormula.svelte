@@ -6,15 +6,15 @@
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
+  import Languages from '@lucide/svelte/icons/languages';
   import Maximize from '@lucide/svelte/icons/maximize';
   import Minimize from '@lucide/svelte/icons/minimize';
-  import Languages from '@lucide/svelte/icons/languages';
   import RotateCcw from '@lucide/svelte/icons/rotate-ccw';
   import Share from '@lucide/svelte/icons/share';
   import SquareFunction from '@lucide/svelte/icons/square-function';
   import screenfull from 'screenfull';
-  import LanguageWindow from './LanguageWindow.svelte';
   import { _ } from 'svelte-i18n';
+  import LanguageWindow from './LanguageWindow.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
@@ -37,6 +37,7 @@
   }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
+  let languageModalOpen = $state(false); // Is the language modal open?
 
   $effect(() => {
     if (screenfull.isEnabled) {
@@ -114,7 +115,7 @@
 
     <!-- LANGUAGE BUTTON -->
     {#if languages.length > 1}
-      <Dialog.Root>
+      <Dialog.Root bind:open={languageModalOpen}>
         <Dialog.Trigger
           class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
         >
@@ -122,7 +123,7 @@
             <Languages class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
-        <LanguageWindow {languages} />
+        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
       </Dialog.Root>
     {/if}
 

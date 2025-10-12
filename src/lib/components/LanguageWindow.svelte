@@ -2,25 +2,29 @@
   import { page } from '$app/state';
   import * as Dialog from '$lib/components/ui/dialog';
   import { _ } from 'svelte-i18n';
+  import { Button } from './ui/button';
+  import { cn } from '$lib/utils';
 
   export type LanguageWindowProps = {
     languages: string[];
+    onclose: () => void;
   };
 
-  const { languages }: LanguageWindowProps = $props();
+  const { languages, onclose }: LanguageWindowProps = $props();
 
-  let langUrls: string[] = [];
-
-  languages.forEach((l) => {
-    const langUrl = page.url;
-    langUrl.searchParams.set('lang', l);
-    langUrls.push(langUrl.toString());
+  const defaultLangUrl = $derived.by(() => {
+    const langUrl = new URL(page.url); // If this is not done here, searchParams.set will modify the original URL
+    langUrl.searchParams.delete('lang');
+    return langUrl.toString();
   });
 
-  function handleLanguageClick(url: string) {
-    // force a refresh to update language
-    window.location.href = url;
-  }
+  let langUrls: string[] = $derived.by(() => {
+    return languages.map((l) => {
+      const langUrl = new URL(page.url); // If this is not done here, searchParams.set will modify the original URL
+      langUrl.searchParams.set('lang', l);
+      return langUrl.toString();
+    });
+  });
 
   function getEmoji(lang: string) {
     if (lang === 'en') lang = 'gb';
@@ -61,29 +65,43 @@
 
     return res;
   }
+
+  const activeLang = $derived(page.url.searchParams.get('lang') || 'default');
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
     <Dialog.Title>{$_('language_window_title')}</Dialog.Title>
-    <Dialog.Description>
+    <Dialog.Description class="flex flex-col gap-2">
       {$_('language_window_available')}
-      <ul class="list-disc">
-        {#each languages as lang, i (lang)}
-          <li class="ml-4">
-            <a
-              href={langUrls[i]}
-              onclick={(e) => {
-                e.preventDefault();
-                handleLanguageClick(langUrls[i]);
-              }}
-            >
-              {getEmoji(lang)}
-              {lang.toUpperCase()}
-            </a>
-          </li>
-        {/each}
-      </ul>
+
+      <Button
+        href={defaultLangUrl}
+        onclick={onclose}
+        variant="link"
+        class={cn(
+          'block bg-blue-300/20 hover:bg-blue-300/60',
+          activeLang === 'default' && 'border-2 border-blue-500 font-bold hover:bg-blue-500/20'
+        )}
+      >
+        🌍 Default
+      </Button>
+
+      {#each languages as lang, i (lang)}
+        <Button
+          href={langUrls[i]}
+          onclick={onclose}
+          variant="link"
+          class={cn(
+            'block bg-blue-300/20 hover:bg-blue-300/60',
+            activeLang === lang && 'border-2 border-blue-500 font-bold hover:bg-blue-500/20'
+          )}
+        >
+          {getEmoji(lang)}
+          {lang.toUpperCase()}
+          {activeLang}
+        </Button>
+      {/each}
     </Dialog.Description>
   </Dialog.Header>
 </Dialog.Content>
