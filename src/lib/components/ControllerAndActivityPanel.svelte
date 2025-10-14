@@ -54,20 +54,22 @@
   )}
 >
   <div class="flex items-center justify-center gap-2">
-    <!-- LOCK SCENE -->
-    <div
-      class={cn(
-        'transition-all duration-300',
-        activityState.isActive
-          ? 'translate-x-0 opacity-100'
-          : 'translate-x-16 opacity-0 sm:translate-x-20'
-      )}
-    >
-      <SideButton onclick={(e) => onLock(e)} tooltip={$_('lock_tooltip')}>
-        <span class="mr-0.5 hidden text-xs sm:block">{$_('lock')}</span>
-        <Lock class="h-4 w-4" />
-      </SideButton>
-    </div>
+    {#if !hideButtons}
+      <!-- LOCK SCENE -->
+      <div
+        class={cn(
+          'transition-all duration-300',
+          activityState.isActive
+            ? 'translate-x-0 opacity-100'
+            : 'translate-x-16 opacity-0 sm:translate-x-20'
+        )}
+      >
+        <SideButton onclick={(e) => onLock(e)} tooltip={$_('lock_tooltip')}>
+          <span class="mr-0.5 hidden text-xs sm:block">{$_('lock')}</span>
+          <Lock class="h-4 w-4" />
+        </SideButton>
+      </div>
+    {/if}
 
     <!-- CONTROLS PANEL -->
     <div
@@ -106,46 +108,52 @@
       {/each}
     </div>
 
-    <!-- RESET SCENE -->
-    <div
-      class={cn(
-        'transition-all duration-300',
-        activityState.isActive
-          ? 'translate-x-0 opacity-100'
-          : '-translate-x-16 opacity-0 sm:-translate-x-20'
-      )}
-    >
-      <SideButton onclick={onReset} tooltip={$_('reset_tooltip')}>
-        <RotateCcw class="h-4 w-4" />
-        <span class="ml-0.5 hidden text-xs sm:block">{$_('reset')}</span>
-      </SideButton>
-    </div>
+    {#if !hideButtons}
+      <!-- RESET SCENE -->
+      <div
+        class={cn(
+          'transition-all duration-300',
+          activityState.isActive
+            ? 'translate-x-0 opacity-100'
+            : '-translate-x-16 opacity-0 sm:-translate-x-20'
+        )}
+      >
+        <SideButton onclick={onReset} tooltip={$_('reset_tooltip')}>
+          <RotateCcw class="h-4 w-4" />
+          <span class="ml-0.5 hidden text-xs sm:block">{$_('reset')}</span>
+        </SideButton>
+      </div>
+    {/if}
   </div>
 
-  <!-- NOTIFY -->
-  <div
-    class={cn(
-      'absolute left-1/2 -translate-x-1/2 transition-all',
-      activityState.isActive
-        ? 'top-5 scale-0'
-        : '-top-10 scale-100 motion-safe:hover:scale-105 sm:-top-12'
-    )}
-  >
-    <SideButton class="h-full w-full text-nowrap" tooltip={$_('notify_tooltip')}>
-      <div
-        class="relative flex min-w-[16rem] items-center gap-2 px-4 py-1 text-center text-xs text-balance sm:text-nowrap"
-      >
-        <ShadCNButton.Action class="h-6 w-6" tooltip={$_('lock')}>
-          <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
-        </ShadCNButton.Action>
-        {$_('notify_click_anywhere')}
-        <span class="absolute -top-1 -right-1 flex h-3 w-3">
-          <span
-            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
-          ></span>
-          <span class="relative inline-flex h-3 w-3 rounded-full bg-blue-500"></span>
-        </span>
-      </div>
-    </SideButton>
-  </div>
+  {#if !hideButtons}
+    <!-- NOTIFY -->
+    <div
+      class={cn(
+        'absolute left-1/2 -translate-x-1/2 transition-all',
+        activityState.isActive
+          ? 'top-5 scale-0'
+          : '-top-10 scale-100 motion-safe:hover:scale-105 sm:-top-12'
+      )}
+    >
+      <SideButton class="h-full w-full text-nowrap" tooltip={$_('notify_tooltip')}>
+        <div
+          class="relative flex min-w-[16rem] items-center gap-2 px-4 py-1 text-center text-xs text-balance sm:text-nowrap"
+        >
+          <ShadCNButton.Action class="h-6 w-6" tooltip={$_('lock')}>
+            <Unlock
+              class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300"
+            />
+          </ShadCNButton.Action>
+          {$_('notify_click_anywhere')}
+          <span class="absolute -top-1 -right-1 flex h-3 w-3">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
+            ></span>
+            <span class="relative inline-flex h-3 w-3 rounded-full bg-blue-500"></span>
+          </span>
+        </div>
+      </SideButton>
+    </div>
+  {/if}
 </div>

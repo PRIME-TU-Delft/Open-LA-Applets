@@ -116,19 +116,19 @@
         <ShareWindow />
       </Dialog.Root>
 
-    <!-- LANGUAGE BUTTON -->
-    {#if languages.length > 1}
-      <Dialog.Root bind:open={languageModalOpen}>
-        <Dialog.Trigger
-          class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
-        >
-          <Button.Action tooltip={$_('change_language')} side="bottom">
-            <Languages class="h-5 w-5" />
-          </Button.Action>
-        </Dialog.Trigger>
-        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
-      </Dialog.Root>
-    {/if}
+      <!-- LANGUAGE BUTTON -->
+      {#if languages.length > 1}
+        <Dialog.Root bind:open={languageModalOpen}>
+          <Dialog.Trigger
+            class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+          >
+            <Button.Action tooltip={$_('change_language')} side="bottom">
+              <Languages class="h-5 w-5" />
+            </Button.Action>
+          </Dialog.Trigger>
+          <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
+        </Dialog.Root>
+      {/if}
 
       <!-- FULLSCREEN BUTTON -->
       {#if screenfull.isEnabled && document}

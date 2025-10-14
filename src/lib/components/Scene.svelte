@@ -13,7 +13,6 @@
 
 <script lang="ts">
   import { dev } from '$app/environment';
-  import { page } from '$app/state';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import type { Draggable } from '$lib/controls/Draggables.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
