@@ -16,7 +16,8 @@
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 
-    if ($locale) url.searchParams.set('lang', $locale);
+    const lang = fromStore($locale)
+    if (lang.current) url.searchParams.set('lang', lang.current);
 
     if (!includeState) {
       return url.toString();
