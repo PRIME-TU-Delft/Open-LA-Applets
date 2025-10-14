@@ -27,5 +27,5 @@
   <span class="truncate">
     {@render children?.()}
   </span>
-  <ChevronDownIcon class="size-4 opacity-50 shrink-0" />
+  <ChevronDownIcon class="size-4 shrink-0 opacity-50" />
 </SelectPrimitive.Trigger>
