@@ -9,6 +9,7 @@
   import { Label } from './ui/label';
   import Textarea from './ui/textarea/textarea.svelte';
   import { locale } from 'svelte-i18n';
+  import { fromStore } from 'svelte/store';
 
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
   let showCopySucess = $state(false);
@@ -16,7 +17,7 @@
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 
-    const lang = fromStore($locale)
+    const lang = fromStore(locale);
     if (lang.current) url.searchParams.set('lang', lang.current);
 
     if (!includeState) {
