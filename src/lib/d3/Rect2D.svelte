@@ -4,8 +4,6 @@
   export type Rectangle2DProps = {
     points: [Vector2, Vector2];
     color?: string;
-    hoverText?: string;
-    fontSize?: number;
   };
 
   let { points, color = 'black' }: Rectangle2DProps = $props();
