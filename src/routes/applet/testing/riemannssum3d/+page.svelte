@@ -6,7 +6,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
   import Cuboid3D from '$lib/threlte/Cuboid3D.svelte';
-  import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector3 } from 'three';
     import Point3D from '$lib/threlte/Point3D.svelte';
@@ -150,13 +149,13 @@
     color={PrimeColor.blue}
     opacity={0.2}
   />
-  {#each rects as rect}
+  {#each rects as rect, index (index)}
     <Cuboid3D
       corners={rect.points}
       color={rect.color}
     />
   {/each}
-  {#each rects as rect}
+  {#each rects as rect, index (index)}
     <Point3D
       position={rect.samplePosition}
       color={PrimeColor.blue}

@@ -125,13 +125,13 @@
     stepSize={0.1}
   />
   <g>
-    {#each rects as rect}
+    {#each rects as rect, index (index)}
       <Rect2D
         points={rect.points}
         color={rect.color + '90'}
       />
     {/each}
-    {#each rects as rect}
+    {#each rects as rect, index (index)}
       <Point2D
         position={rect.samplePosition}
         color={PrimeColor.black}
