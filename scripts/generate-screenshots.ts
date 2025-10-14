@@ -4,7 +4,7 @@
  * Screenshot Generation Script
  *
  * Generates screenshots for all applet routes using puppeteer-cluster.
- * 
+ *
  * Features:
  * - Parallel screenshot capture using puppeteer-cluster
  * - Works with system Chromium in Docker or bundled Chromium locally
