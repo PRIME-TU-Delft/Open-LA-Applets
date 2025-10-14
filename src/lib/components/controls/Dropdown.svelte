@@ -9,18 +9,12 @@
 
   const { controller: dropdown }: DropdownProps = $props();
 
-  let selectedKey = $state(dropdown.value);
-
-  $effect(() => {
-    dropdown.value = selectedKey;
-  });
-
   const localizedValue = $derived($_(dropdown.value) || $_('dropdown_select_item'));
 
   const localizedValues = $derived(dropdown.values.map((v) => $_(v) || ''));
 </script>
 
-<Select.Root type="single" name="favoriteFruit" bind:value={selectedKey}>
+<Select.Root type="single" name="favoriteFruit" bind:value={dropdown.value}>
   <Select.Trigger class="w-[180px]">
     {localizedValue}
   </Select.Trigger>
