@@ -10,15 +10,21 @@
   import { Vector2 } from 'three';
 
   const controls = Controls.addDropdown(
-    'Transformation 1',
-    ['Transformation 1', 'Transformation 2', 'Transformation 3'],
+    'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1',
+    [
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1',
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2',
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ],
     PrimeColor.blue
   );
 
   const draggables = $derived.by(() => {
     let snapFn = (v: Vector2) => v;
 
-    if (controls[0] === 'Transformation 1') {
+    if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
+    ) {
       const solution = new Vector2(70, 17).multiplyScalar(1 / 23);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
@@ -28,7 +34,9 @@
           return v;
         }
       };
-    } else if (controls[0] === 'Transformation 3') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ) {
       const solution = new Vector2(-3, 2);
       snapFn = (v: Vector2) => {
         if (v.distanceTo(solution) < 0.5) {
@@ -47,13 +55,13 @@
 
   function transform(vector: Vector2) {
     switch (controls[0]) {
-      case 'Transformation 1':
+      case 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1':
         // Transform 2 - with the matrix [0.5 2; 0.9 -1]
         return new Vector2(0.5 * vector.x + 2 * vector.y, 0.9 * vector.x - vector.y);
-      case 'Transformation 2':
+      case 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2':
         // Transform 1 - with the matrix [0.8 -2; -0.6 1.5]
         return new Vector2(0.8 * vector.x - 2 * vector.y, -0.6 * vector.x + 1.5 * vector.y);
-      case 'Transformation 3':
+      case 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3':
         // Transform 3 - with the matrix [1 3; 2 4]
         return new Vector2(vector.x + 3 * vector.y, 2 * vector.x + 4 * vector.y);
       default:
@@ -66,17 +74,23 @@
 
     const TvDistances = transform(draggables[0].position).distanceTo(u);
 
-    if (controls[0] === 'Transformation 1') {
+    if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
+    ) {
       const f2 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f2);
-    } else if (controls[0] === 'Transformation 2') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2'
+    ) {
       const f1 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
       );
       formulas.push(f1);
-    } else if (controls[0] === 'Transformation 3') {
+    } else if (
+      controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ) {
       const f3 = new Formula(
         'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
       );

@@ -6,6 +6,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let d1 = new Draggable(new Vector2(1, 2), PrimeColor.blue, 'z_1', Draggable.snapToGrid);
   let d2 = new Draggable(new Vector2(2, 0), PrimeColor.darkGreen, 'z_2', Draggable.snapToGrid);
@@ -34,7 +35,7 @@
   });
 </script>
 
-<Canvas2D {draggables} {formulas} title="Complex numbers addition">
+<Canvas2D {draggables} {formulas} title={$_('applets.complex_basics.complex_addition.title')}>
   <Vector2D direction={d1.position} length={d1.position.length()} color={PrimeColor.blue} />
   <Vector2D direction={d2.position} length={d2.position.length()} color={PrimeColor.darkGreen} />
   <Vector2D direction={v_result} length={v_result.length()} color={PrimeColor.raspberry} />

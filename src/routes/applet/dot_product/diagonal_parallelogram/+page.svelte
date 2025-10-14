@@ -9,6 +9,7 @@
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import StaticImage from './StaticImage.svelte';
+  import { _ } from 'svelte-i18n';
 
   const SNAP_DISTANCE = 1;
 
@@ -62,7 +63,7 @@
 </script>
 
 <Canvas2D
-  title="Addition and subtraction of 2 vectors"
+  title={$_('applets.dot_product.diagonal_parallelogram.title')}
   cameraZoom={1.5}
   cameraPosition={new Vector2(2, 1)}
   splitCanvas2DProps={{

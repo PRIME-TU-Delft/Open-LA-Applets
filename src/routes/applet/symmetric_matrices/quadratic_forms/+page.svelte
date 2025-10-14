@@ -15,6 +15,7 @@
   import { withSign } from '$lib/utils/FormatString';
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
   import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
+  import { _ } from 'svelte-i18n';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
@@ -63,7 +64,12 @@
   );
 </script>
 
-<Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
+<Canvas3D
+  {controls}
+  {formulas}
+  title={$_('applets.symmetric_matrices.quadratic_forms.title')}
+  splitCanvas2DProps={{ cameraZoom: 2 }}
+>
   <Axis3D x1="x_1" x2="x_2" x3="x_3" />
 
   {#if a == 0 && b == 0 && c == 0 && k == 0}

@@ -8,6 +8,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let controls = Controls.addSlider(3, -5, 5, 0.5, PrimeColor.raspberry, {
     label: 'v',
@@ -29,7 +30,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D title="Span of two parallel vectors" {controls}>
+<Canvas3D title={$_('applets.linear_combinations.span_two_line.title')} {controls}>
   <!-- If u & v are on the same quadrant and v is SMALLER OR EQUAL TO than u -> u on top -->
   {#if controls[0] * controls[1] >= 0 && Math.abs(controls[0]) <= Math.abs(controls[1])}
     <Vector3D direction={v} length={vLen} color={PrimeColor.raspberry} alwaysOnTop />

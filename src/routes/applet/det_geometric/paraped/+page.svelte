@@ -10,6 +10,7 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { BackSide, FrontSide, Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, { label: '||a||' })
     .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, { label: '||b||' })
@@ -17,7 +18,7 @@
       label: 'θ',
       valueFn: (v) => (v / Math.PI).toFixed(2)
     })
-    .addToggle(true, '\\text{Fill}');
+    .addToggle(true, '\\text{' + $_('applets.common.fill') + '}');
 
   const formulas = $derived.by(() => {
     const height = c.y;
@@ -27,12 +28,13 @@
       .addAutoParam((controls[2] / Math.PI).toFixed(2), PrimeColor.darkGreen)
       .addAutoParam(height.toFixed(2), PrimeColor.raspberry);
     const f2 = new Formula(
-      '\\mathcal{\\$4}&= \\text{area}(OP\\thinspace QR) \\\\ &= ||\\$1 \\times \\$2|| = \\$3'
+      '\\mathcal{\\$4}&= \\text{\\$5}(OP\\thinspace QR) \\\\ &= ||\\$1 \\times \\$2|| = \\$3'
     )
       .addAutoParam('a', PrimeColor.blue)
       .addAutoParam('b', PrimeColor.cyan)
       .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
-      .addAutoParam('A', PrimeColor.blue);
+      .addAutoParam('A', PrimeColor.blue)
+      .addAutoParam($_('applets.common.area'));
     const f3 = new Formula(
       '\\mathcal{\\$4} &= \\$5 \\cdot \\mathcal{\\$6} = \\$1 \\cdot \\$2 = \\$3'
     )

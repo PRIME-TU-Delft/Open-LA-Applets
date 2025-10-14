@@ -2,6 +2,8 @@ import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import { Vector2 } from 'three';
+import { get } from 'svelte/store';
+import { _ } from 'svelte-i18n';
 
 // Animation
 const state = {
@@ -34,8 +36,8 @@ function createTranstionStep(u: Vector2): SlideShowSteps<S> {
 
       return {
         state,
-        labelNext: 'Translate ABD',
-        labelPrev: 'Translate ABD'
+        labelNext: get(_)('applets.det_geometric.linearity_one.translate_abd'),
+        labelPrev: get(_)('applets.det_geometric.linearity_one.translate_abd')
       };
     }
   ];

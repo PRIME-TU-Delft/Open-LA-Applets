@@ -5,7 +5,6 @@
 
   export type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
-      title?: string;
       splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
@@ -102,7 +101,7 @@
 - enablePan: Whether to enable pan
 
 @example
-<Canvas3D title={'This is a 3D canvas'}>
+<Canvas3D title='This is a 3D canvas'>
   <Axis3D />
 </Canvas3D>
 

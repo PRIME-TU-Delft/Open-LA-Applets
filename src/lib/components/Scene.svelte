@@ -13,6 +13,7 @@
 
 <script lang="ts">
   import { dev } from '$app/environment';
+  import { page } from '$app/state';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import type { Draggable } from '$lib/controls/Draggables.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
@@ -23,8 +24,9 @@
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
-  import { cn } from '$lib/utils';
   import { browser } from '$app/environment';
+  import { cn } from '$lib/utils';
+  import { availableLanguages, getAvailableLanguagesForApplet } from '$lib/utils/languages';
 
   let {
     controls = undefined,
@@ -40,6 +42,28 @@
   let width = $state<number>(0);
 
   const showFps = dev && browser && import.meta.env.VITE_SHOW_FPS === 'true';
+
+  /**
+   * Get languages available for this applet
+   */
+  const appletCategory = $derived.by(() => {
+    const pathname = page.url?.pathname || '';
+    const match = pathname.match(/\/applet\/([^/]+)\/([^/]+)/);
+
+    if (match) {
+      return match[1];
+    }
+
+    return null;
+  });
+
+  const languages = $derived.by(() => {
+    if (appletCategory) {
+      return getAvailableLanguagesForApplet(appletCategory);
+    }
+
+    return availableLanguages;
+  });
 
   /**
    * Reset camera position, rotation and controls.
@@ -85,9 +109,10 @@
   }
 
   $effect(() => {
-    // Override the global title if a title is provided
-    // if and only if the global title is not set
-    if (!globalState.title) globalState.title = title || '';
+    // Override title if and only if the title was not set from a URL parameter
+    if (title && !globalState.titleFromUrl) {
+      globalState.title = title;
+    }
   });
 </script>
 
@@ -149,6 +174,7 @@
       {formulas}
       {splitFormulas}
       {controls}
+      {languages}
       onReset={() => reset()}
     />
   </div>

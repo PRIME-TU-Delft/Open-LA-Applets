@@ -5,6 +5,7 @@
   import { globalState } from '$lib/stores/globalState.svelte';
   import Lock from '@lucide/svelte/icons/lock';
   import Unlock from '@lucide/svelte/icons/lock-open';
+  import { _ } from 'svelte-i18n';
 
   type ActivityPanelProps = {
     onLock: (event: MouseEvent) => void;
@@ -22,7 +23,7 @@
       <Button.Action class="h-6 w-6" tooltip="Lock scene">
         <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </Button.Action>
-      Click anywhere in the scene to start interacting
+      {$_('notify_click_anywhere')}
       <span class="absolute -top-1 -right-1 flex h-3 w-3">
         <span
           class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
@@ -40,7 +41,7 @@
         </Dialog.Trigger>
       </Dialog.Root>
 
-      Lock the scene to disable zoom
+      {$_('lock_disable_zoom')}
     </button>
   {/if}
 </div>

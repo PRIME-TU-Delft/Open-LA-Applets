@@ -1,0 +1,8 @@
+{
+  "testing": {
+    "more_languages": {
+      "title": "Test na wiele języków",
+      "formula": "Ten test sprawdza działanie kiedy jest więcej tłumaczeń appletów niż UI."
+    }
+  }
+}

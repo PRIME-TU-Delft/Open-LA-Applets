@@ -4,6 +4,7 @@
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import { Label } from '$lib/components/ui/label';
   import { Switch } from '../ui/switch';
+  import { _ } from 'svelte-i18n';
 
   type ToggleProps = {
     switch: Toggle;
@@ -15,7 +16,7 @@
 
 {#if toggle.label != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={toggle.label} />:
+    <Latex latex={toggle.label || ''} />:
   </Label>
 {/if}
 
@@ -23,6 +24,6 @@
 
 {#if toggle.switchRightSide != undefined}
   <Label class="inline-flex items-center" for="checkbox-{uuid}">
-    <Latex latex={toggle.switchRightSide} />:
+    <Latex latex={toggle.switchRightSide || ''} />:
   </Label>
 {/if}
