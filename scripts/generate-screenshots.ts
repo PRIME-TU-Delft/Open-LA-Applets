@@ -247,7 +247,7 @@ async function cleanup(server: ChildProcess | null): Promise<void> {
         try {
           // Kill the entire process group (negative PID)
           process.kill(-server.pid, 'SIGTERM');
-        } catch (e) {
+        } catch (_e) {
           server.kill('SIGTERM');
         }
       } else {
@@ -260,11 +260,11 @@ async function cleanup(server: ChildProcess | null): Promise<void> {
       if (server.pid && !server.killed) {
         try {
           process.kill(-server.pid, 'SIGKILL');
-        } catch (e) {
+        } catch (_e) {
           server.kill('SIGKILL');
         }
       }
-    } catch (error) {
+    } catch (_e) {
       // Ignore cleanup errors
     }
   }
