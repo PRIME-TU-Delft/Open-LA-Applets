@@ -37,7 +37,7 @@
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(result.toFixed(3), PrimeColor.blue);
 
-    const riemannSum = rects.reduce((sum, rect) => sum + Math.max(rect.points[0].z, rect.points[1].z) * dx * dy, 0);
+    const riemannSum = rects.reduce((sum, rect) => sum + rect.samplePosition.y * dx * dy, 0);
     const riemann_display = '\\sum_{i=1}^{n} \\sum_{j=1}^{n} f(x_i^*, y_j^*) \\Delta x \\Delta y~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
 
     const f2 = new Formula(riemann_display)
@@ -123,8 +123,7 @@
         }
 
         const z = func(x, y);
-        const color = z >= 0 && b >= a ? PrimeColor.darkGreen : PrimeColor.raspberry;
-
+        const color = z >= 0 ? PrimeColor.darkGreen : PrimeColor.raspberry;
         newRects.push({
           points: [
             new Vector3(y_j, 0, x_i),
