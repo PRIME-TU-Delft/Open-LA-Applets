@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/sveltekit';
 
 import '../src/app.css';
+import 'katex/dist/katex.min.css';
 
 const preview: Preview = {
   parameters: {
@@ -12,7 +13,16 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Introduction', 'Colors', 'Initialize', '2D Components', '3D Components', '*']
+        order: [
+          'Introduction',
+          'Colors',
+          'Localization',
+          'Tutorials',
+          'Initialize',
+          '2D Components',
+          '3D Components',
+          '*'
+        ]
       }
     },
 

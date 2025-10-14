@@ -1,0 +1,90 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+export const host = 'https://openla.ewi.tudelft.nl';
+
+<Meta title="Tutorials/Tutorial Translation" />
+
+# Tutorial Translation
+
+> For this tutorial, it is recommended to have completed the [2D tutorial](./?path=/docs/tutorials-tutorial-2d--docs) first.
+
+For this Translation tutorial, we will modify the 2D tutorial applet to include Dutch translations.
+Here is a preview of the final applet (the preview in this tutorial is different from the one in the 2D tutorial, since we also want to show the title). You can change the language by using the button in the top right corner.
+
+<iframe src={host + '/tutorial_translation/translated'} width="100%" height="600px"></iframe>
+
+The code for this applet can be found here: [View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/tutorial_translation/translated/%2Bpage.svelte)
+
+<br />
+
+## Step 0: Deciding what to translate
+
+Before we start adding translations, we need to decide what we want to translate. In this case, we will translate the label of the slider for the magnitude of `z_2`. We will change the label from "z_2" to "Magnitude of z_2" in English and "Modulus van z_2" in Dutch. We will also add a Dutch translation of the title: "Optellen van complexe getallen".
+
+## Step 1: Translation files
+
+To add translations of the applet, we need to create translation files in the `src/lang` directory. We will create two files: `en/applets.json` for English and `nl/applets.json` for Dutch. `ui.json` files are used for translation of the UI elements, like the "Lock" button, so we don't need to touch them.
+
+We add our translations to the `tutorials` section of the `applets.json` files. If the section does not exist, you can create it. The files should look like this:
+
+```json
+// src/lang/en/applets.json
+{
+  // ...
+  "tutorials": {
+    "complex_numbers_addition": "Complex numbers addition",
+    "magnitude_z2": "Magnitude of z_2"
+  }
+}
+```
+
+```json
+// src/lang/nl/applets.json
+{
+  // ...
+  "tutorials": {
+    "complex_numbers_addition": "Optellen van complexe getallen",
+    "magnitude_z2": "Modulus van z_2"
+  }
+}
+```
+
+The files are structured as a nested JSON object, where the top keys are categories and the nested keys are the translation keys. In this case, we have a category called `tutorials` and a key called `complex_numbers_addition` with the value "Complex numbers addition". In case you have multiple applets under the same category, you can nest them further.
+
+If you would not add the key, the applet will first fallback to English, and if it is not available in English, it will show the key itself.
+
+## Step 2: Using translations in the applet
+
+Now that we have our translations, we can use them in the applet. We will use the `_` function from [svelte-i18n](https://github.com/kaisermann/svelte-i18n/) to get the translations. First, we need to import the function in the script of the page:
+
+```ts
+import { _ } from 'svelte-i18n';
+```
+
+Then, we can use the function to get the translations. We will replace the label of the slider for the magnitude of `z_2` with the translation key `magnitude_z2` (since we put the key in the category `tutorials`, its key will be `applets.tutorials.magnitude_z2`).
+
+```html
+<script lang="ts">
+  // ...
+
+  const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
+    label: $_('applets.tutorials.magnitude_z2'), // instead of 'z_2'
+    labelFormat
+  });
+</script>
+```
+
+We also need to change the title of the applet. We can do this by changing the title property in the Canvas2D component:
+
+```ts
+<Canvas2D
+  title={$_("applets.tutorials.complex_numbers_addition")} // instead of 'Complex numbers addition'
+  ...
+/>
+```
+
+Now, when we run the applet, we should see the translations in action. You can switch between English and Dutch using the language button in the top right corner of the applet. Language can also be set by adding setting the `lang` query parameter in the URL, e.g., `?lang=nl` for Dutch.
+
+## Wrap up
+
+In this tutorial, we have learned how to add translations to an applet using the `svelte-i18n` library. We created translation files in the `src/lang` directory and used the `_` function to get the translations in the applet. You can use this method to add translations to any applet in the Open-LA-Applets repository.

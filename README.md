@@ -25,8 +25,9 @@ Creating a new applet starts directly by making a tri-fold decision. First, do y
 
 You can find tutorials for creating 2D, 3D and split view applets here:
 
-- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-2d--docs)
-- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-3d--docs)
+- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-2d--docs)
+- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-3d--docs)
+- [Translating applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-translation--docs)
 
 ## Uploading applets
 
@@ -73,6 +74,8 @@ This repo has some additional tools already set-up for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
+When debugging for performance, you can run the app with `pnpm dev:fps` to include an FPS counter in the corner of the scene.
+
 ## Url parameters
 
 <!-- Autocomplete makes a mess out of this table :( -->
@@ -81,6 +84,7 @@ This repo has some additional tools already set-up for you:
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `iframe`  | This parameter is added by default and set to true for each applet in this book. Therefore, this parameter is not configurable for this book. When using an applet in a different context will change the bahaviour. | false   |
 | `title`   | A string that will be shown as the title of the applet when the applet is in fullscreen mode                                                                                                                         | ""      |
+| `lang`    | Language code to use for text in the applet (like `en` or `nl`)                                                                                                                                                      | en      |
 
 ### Control parameters
 

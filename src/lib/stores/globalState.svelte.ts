@@ -36,6 +36,13 @@ class GlobalState {
   title = $state('');
 
   /**
+   * Represents whether the title was set from a URL parameter.
+   * If true, the title should not be overridden by component props.
+   * @type {boolean}
+   */
+  titleFromUrl = $state(false);
+
+  /**
    * Represents when the application should be reset.
    */
   resetKey = $state(Symbol());

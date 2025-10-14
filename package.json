@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "dev:fps": "VITE_SHOW_FPS=true vite dev",
     "build": "vite build",
     "build-netlify": "BUILD_ENV=netlify vite build",
     "build:with-screenshots": "vite build && tsx scripts/generate-screenshots.ts",
@@ -81,6 +82,7 @@
     "glob": "^11.0.3",
     "katex": "^0.16.22",
     "screenfull": "^6.0.2",
+    "svelte-i18n": "^4.0.1",
     "three": "^0.177.0"
   }
 }

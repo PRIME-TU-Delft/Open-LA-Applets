@@ -6,6 +6,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   // Vectors
   const v1 = new Vector3(-1, 1, 2); //green vector
@@ -18,7 +19,7 @@
 <Canvas3D
   cameraPosition={new Vector3(3.59, 1.83, 13.8)}
   cameraZoom={60}
-  title="Geometrical interpretation of addition for three-dimensional vectors."
+  title={$_('applets.vectors.3Daddition.title')}
 >
   <!-- lower green vector -->
   <Vector3D direction={v1} color={PrimeColor.darkGreen} length={v1.length()} />
