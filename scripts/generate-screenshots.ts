@@ -101,7 +101,7 @@ function startServer(): Promise<ChildProcess> {
 
     const server = spawn('pnpm', ['preview', '--port', CONFIG.server.port.toString()], {
       stdio: ['ignore', 'pipe', 'pipe'],
-      detached: false
+      detached: true // Create new process group so we can kill all child processes
     });
 
     let serverReady = false;
@@ -242,14 +242,30 @@ async function cleanup(server: ChildProcess | null): Promise<void> {
       server.stdout?.removeAllListeners();
       server.stderr?.removeAllListeners();
 
-      server.kill('SIGTERM');
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Kill the process and its children
+      if (server.pid) {
+        try {
+          // Kill the entire process group (negative PID)
+          process.kill(-server.pid, 'SIGTERM');
+        } catch (e) {
+          server.kill('SIGTERM');
+        }
+      } else {
+        server.kill('SIGTERM');
+      }
 
-      if (!server.killed) {
-        server.kill('SIGKILL');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Force kill if still running
+      if (server.pid && !server.killed) {
+        try {
+          process.kill(-server.pid, 'SIGKILL');
+        } catch (e) {
+          server.kill('SIGKILL');
+        }
       }
     } catch (error) {
-      console.error('Error stopping server:', error);
+      // Ignore cleanup errors
     }
   }
 }
