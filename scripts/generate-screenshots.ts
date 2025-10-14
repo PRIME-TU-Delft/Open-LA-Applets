@@ -104,6 +104,27 @@ function startServer(): Promise<ChildProcess> {
       detached: true // Create new process group so we can kill all child processes
     });
 
+    const isNetlify = process.env.BUILD_ENV === 'netlify';
+    
+    if (isNetlify) {
+      console.log('Running on Netlify - using fixed wait time for server startup');
+      
+      server.stdout?.on('data', (data: Buffer) => {
+        console.log('Server:', data.toString().trim());
+      });
+      
+      server.stderr?.on('data', (data: Buffer) => {
+        console.error('Server error:', data.toString().trim());
+      });
+      
+      setTimeout(() => {
+        console.log(`Assuming server is ready at http://localhost:${CONFIG.server.port}`);
+        resolve(server);
+      }, 5000);
+      
+      return;
+    }
+
     let serverReady = false;
 
     const cleanup = () => {
