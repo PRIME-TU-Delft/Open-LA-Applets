@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "dev:fps": "VITE_SHOW_FPS=true vite dev",
     "build": "vite build",
-    "build-netlify": "BUILD_ENV=netlify vite build",
+    "build-netlify": "pnpx puppeteer browsers install chrome && BUILD_ENV=netlify vite build && tsx scripts/generate-screenshots.ts",
     "build:with-screenshots": "vite build && tsx scripts/generate-screenshots.ts",
     "preview": "vite preview",
     "screenshots": "tsx scripts/generate-screenshots.ts",
