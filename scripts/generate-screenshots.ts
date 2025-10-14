@@ -70,6 +70,13 @@ try {
   console.log('No screenshot.config.json found!');
 }
 
+// Override output directory if running on Netlify
+const isNetlify = process.env.BUILD_ENV === 'netlify';
+if (isNetlify) {
+  CONFIG.screenshots.outputDir = 'build-netlify/screenshots';
+  console.log('Running on Netlify - output directory set to:', CONFIG.screenshots.outputDir);
+}
+
 /**
  * Get all applet routes
  * @returns a list of all applet routes
@@ -93,6 +100,14 @@ async function getAppletRoutes(): Promise<string[]> {
 }
 
 /**
+ * Strip ANSI escape codes from text (colors, bold, etc.)
+ */
+function stripAnsi(text: string): string {
+  // eslint-disable-next-line no-control-regex
+  return text.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
+}
+
+/**
  * Start the preview server
  */
 function startServer(): Promise<ChildProcess> {
@@ -104,26 +119,24 @@ function startServer(): Promise<ChildProcess> {
       detached: true // Create new process group so we can kill all child processes
     });
 
-    const isNetlify = process.env.BUILD_ENV === 'netlify';
-    
-    if (isNetlify) {
-      console.log('Running on Netlify - using fixed wait time for server startup');
-      
-      server.stdout?.on('data', (data: Buffer) => {
-        console.log('Server:', data.toString().trim());
-      });
-      
-      server.stderr?.on('data', (data: Buffer) => {
-        console.error('Server error:', data.toString().trim());
-      });
-      
-      setTimeout(() => {
-        console.log(`Assuming server is ready at http://localhost:${CONFIG.server.port}`);
-        resolve(server);
-      }, 5000);
-      
-      return;
-    }
+    // if (isNetlify) {
+    //   console.log('Running on Netlify - using fixed wait time for server startup');
+
+    //   server.stdout?.on('data', (data: Buffer) => {
+    //     console.log('Server:', data.toString().trim());
+    //   });
+
+    //   server.stderr?.on('data', (data: Buffer) => {
+    //     console.error('Server error:', data.toString().trim());
+    //   });
+
+    //   setTimeout(() => {
+    //     console.log(`Assuming server is ready at http://localhost:${CONFIG.server.port}`);
+    //     resolve(server);
+    //   }, 5000);
+
+    //   return;
+    // }
 
     let serverReady = false;
 
@@ -135,7 +148,12 @@ function startServer(): Promise<ChildProcess> {
     server.stdout?.on('data', (data: Buffer) => {
       const output = data.toString();
       console.log('Server:', output.trim());
-      if (output.includes('Local:') || output.includes(`localhost:${CONFIG.server.port}`)) {
+
+      const cleanOutput = stripAnsi(output);
+      if (
+        cleanOutput.includes('Local:') ||
+        cleanOutput.includes(`localhost:${CONFIG.server.port}`)
+      ) {
         console.log(`Server running at http://localhost:${CONFIG.server.port}`);
         serverReady = true;
         cleanup();
