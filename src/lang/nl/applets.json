@@ -77,7 +77,7 @@
       "title": "De span van twee parallelle vectoren"
     },
     "span_two_plane": {
-      "title": "De span van drie vectoren die in hetzelfde vlak liggen"
+      "title": "De span van twee vectoren die in hetzelfde vlak liggen"
     },
     "span_three_plane": {
       "title": "De span van drie vectoren die in hetzelfde vlak liggen"
@@ -129,7 +129,7 @@
   "subspaces_in_rn": {
     "the_game": {
       "disc": "Schijf",
-      "affine_line": "Affiene Lijn",
+      "affine_line": "Affine Lijn",
       "two_axes": "Twee assen",
       "first_quadrant": "Eerste kwadrant",
       "two_sided_cone": "Tweezijdige kegel"
