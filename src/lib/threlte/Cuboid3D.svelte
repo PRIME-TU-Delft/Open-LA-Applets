@@ -6,27 +6,23 @@
     BufferGeometry,
     DoubleSide,
     Vector3,
-    type BackSide,
-    type FrontSide
+    EdgesGeometry
   } from 'three';
 
   export type Cuboid3DProps = {
     corners: [Vector3, Vector3];
     color?: string;
-    opacity?: number;
-    side?: typeof FrontSide | typeof BackSide | typeof DoubleSide;
+    toggleEdges?: boolean;
   };
 
   let {
     corners,
     color = PrimeColor.black,
-    opacity = 1,
-    side = DoubleSide
+    toggleEdges = true
   }: Cuboid3DProps = $props();
 
-  const [c1, c2] = corners;
-
   const geometry = $derived.by(() => {
+    const [c1, c2] = corners;
     const geom = new BufferGeometry();
 
     const vertices = [
@@ -64,8 +60,19 @@
     geom.computeVertexNormals();
     return geom;
   });
+
+  // add: derive edges geometry from the cuboid geometry (parameterless outline)
+  const edges = $derived.by(() => {
+    return new EdgesGeometry(geometry);
+  });
 </script>
 
 <T.Mesh {geometry}>
-  <T.MeshBasicMaterial {side} {color} transparent={opacity < 1} {opacity} />
+  <T.MeshBasicMaterial side={DoubleSide} {color} />
 </T.Mesh>
+
+{#if toggleEdges}
+  <T.LineSegments geometry={edges}>
+    <T.LineBasicMaterial color={PrimeColor.black} />
+  </T.LineSegments>
+{/if}

@@ -1,9 +1,3 @@
-<!--
- TODO:
- - riemann mode selection (dropdown?)
- - logarithmic slider (should we have?) for numRectangles
--->
-
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -33,7 +27,7 @@
     const result = integrate(func, a, b);
 
     const f1 = new Formula(func_display)
-      .addAutoParam(a, PrimeColor.darkGreen)
+      .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(result.toFixed(3), PrimeColor.blue);
 
@@ -71,7 +65,7 @@
         // Find the minimum value of func in [x1, x2] by sampling
         const x1 = a + i * dx;
         const x2 = x1 + dx;
-        const samples = 10;
+        const samples = 100;
         let minX = x1;
         let minY = func(x1);
         for (let s = 1; s <= samples; s++) {

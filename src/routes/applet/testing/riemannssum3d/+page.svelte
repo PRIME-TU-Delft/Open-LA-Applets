@@ -9,37 +9,48 @@
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector3 } from 'three';
+    import Point3D from '$lib/threlte/Point3D.svelte';
 
-  const controls = Controls.addSlider(-3, -5, 0, 0.1, PrimeColor.darkGreen) // b
-    .addSlider(3, 0, 5, 0.1, PrimeColor.raspberry) // a
-    .addSlider(10, 1, 10, 1, PrimeColor.blue); // numRectangles
+  const methods = ['center', 'random', 'min', 'max'];
 
-  const func = (x: number, y: number) => 5 - (1 / 5) * (x ** 2 + y ** 2);
+  const controls = Controls
+    .addDropdown('', methods, PrimeColor.yellow)
+    .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry) // b
+    .addSlider(10, 1, 20, 1, PrimeColor.blue); // numRectangles
+  
+  const func = (x: number, y: number) => 4 - (1 / 4) * (x ** 2 + y ** 2);
   const func_display =
-    '\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} \\left(5 - \\frac{1}{5}(x^2 + y^2)\\right)~dx~dy~~=~~\\$5';
+  '\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} \\left(4 - \\frac{1}{4}(x^2 + y^2)\\right)~dx~dy~~=~~\\$5';
 
   const formulas = $derived.by(() => {
-    const a = round(controls[0]);
+    const a = -round(controls[1]);
     const b = round(controls[1]);
     const numRectangles = round(controls[2]);
     const dx = (b - a) / numRectangles;
     const dy = dx;
+
     const result = integrate((x) => integrate((y) => func(x, y), a, b), a, b);
 
     const f1 = new Formula(func_display)
-      .addAutoParam(a, PrimeColor.darkGreen)
+      .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(a, PrimeColor.darkGreen)
+      .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(result, PrimeColor.blue);
+      .addAutoParam(result.toFixed(3), PrimeColor.blue);
 
-    return new Formulas(f1);
+    const riemannSum = rects.reduce((sum, rect) => sum + Math.max(rect.points[0].z, rect.points[1].z) * dx * dy, 0);
+    const riemann_display = '\\sum_{i=1}^{n} \\sum_{j=1}^{n} f(x_i^*, y_j^*) \\Delta x \\Delta y~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
+
+    const f2 = new Formula(riemann_display)
+      .addAutoParam(riemannSum.toFixed(3), PrimeColor.orange)
+      .addAutoParam(numRectangles, PrimeColor.blue)
+      .addAutoParam(round(dx, 4), PrimeColor.raspberry);
+
+    return new Formulas(f1, f2);
   });
 
-  let method: 'center' | 'random' = 'center';
-
   const rects = $derived.by(() => {
-    const a = controls[0];
+    const a = -controls[1];
     const b = controls[1];
     const numRectangles = controls[2];
     const dx = (b - a) / numRectangles;
@@ -47,11 +58,81 @@
     const newRects = [];
     for (let i = 0; i < numRectangles; i++) {
       for (let j = 0; j < numRectangles; j++) {
-        let x = a + i * dx + (method === 'random' ? Math.random() * dx : dx / 2);
-        let y = a + j * dy + (method === 'random' ? Math.random() * dy : dy / 2);
+        let x: number;
+        let y: number;
+
+        const x_i = a + i * dx;
+        const y_j = a + j * dy;
+
+        if (controls[0] === 'center') {
+          x = x_i + 0.5 * dx;
+          y = y_j + 0.5 * dy;
+        } else if (controls[0] === 'random') {
+          x = x_i + Math.random() * dx;
+          y = y_j + Math.random() * dy;
+        } else if (controls[0] === 'min') {
+          // Find the minimum value of func in [(x1, y1), (x2, y2)] by sampling
+          const x1 = x_i;
+          const x2 = x1 + dx;
+          const y1 = y_j;
+          const y2 = y1 + dy;
+          const samples_one_axis = 10;
+          let minX = x1;
+          let minY = y1;
+          let minZ = func(x1, y1);
+          for (let sx = 0; sx <= samples_one_axis; sx++) {
+            for (let sy = 0; sy <= samples_one_axis; sy++) {
+              const xs = x1 + (sx * (x2 - x1)) / samples_one_axis;
+              const ys = y1 + (sy * (y2 - y1)) / samples_one_axis;
+              const zs = func(xs, ys);
+              if (zs < minZ) {
+                minZ = zs;
+                minX = xs;
+                minY = ys;
+              }
+            }
+          }
+          x = minX;
+          y = minY;
+        } else if (controls[0] === 'max') {
+          // Find the maximum value of func in [(x1, y1), (x2, y2)] by sampling
+          const x1 = x_i;
+          const x2 = x1 + dx;
+          const y1 = y_j;
+          const y2 = y1 + dy;
+          const samples_one_axis = 10;
+          let maxX = x1;
+          let maxY = y1;
+          let maxZ = func(x1, y1);
+          for (let sx = 0; sx <= samples_one_axis; sx++) {
+            for (let sy = 0; sy <= samples_one_axis; sy++) {
+              const xs = x1 + (sx * (x2 - x1)) / samples_one_axis;
+              const ys = y1 + (sy * (y2 - y1)) / samples_one_axis;
+              const zs = func(xs, ys);
+              if (zs > maxZ) {
+                maxZ = zs;
+                maxX = xs;
+                maxY = ys;
+              }
+            }
+          }
+          x = maxX;
+          y = maxY;
+        } else {
+          x = x_i + 0.5 * dx;
+          y = y_j + 0.5 * dy;
+        }
+
         const z = func(x, y);
+        const color = z >= 0 && b >= a ? PrimeColor.darkGreen : PrimeColor.raspberry;
+
         newRects.push({
-          points: [new Vector3(x, y, 0), new Vector3(x + dx, y + dy, z)] as [Vector3, Vector3]
+          points: [
+            new Vector3(y_j, 0, x_i),
+            new Vector3(y_j + dy, z, x_i + dx)
+          ] as [Vector3, Vector3],
+          samplePosition: new Vector3(y, z, x),
+          color // Add color to the rect object
         });
       }
     }
@@ -67,47 +148,20 @@
     yRange={[-5, 5]}
     resolution={50}
     color={PrimeColor.blue}
-    opacity={0.3}
+    opacity={0.2}
   />
-
-  <!-- DEBUG -->
-  <!-- <Cuboid3D
-    corners={[new Vector3(0, 0, 0), new Vector3(1, 2, 3)]}
-    color={PrimeColor.raspberry}
-
-  /> -->
   {#each rects as rect}
-    <!-- HOTFIXED BELOW -->
-    <!-- <Cuboid3D
-      corners={rect.points}
-      color={PrimeColor.raspberry}
-    />
-    <Latex3D
-      latex={`h=${round(rect.points[1].z, 2)}`}
-      fontSize={0.5}
-      position={new Vector3(
-        (rect.points[0].x + rect.points[1].x) / 2,
-        (rect.points[0].y + rect.points[1].y) / 2,
-        rect.points[1].z + (rect.points[1].z > 0 ? 0.2 : -0.2)
-      )}
-      color="black"
-    /> -->
     <Cuboid3D
-      corners={[
-        new Vector3(rect.points[0].y, rect.points[0].z, rect.points[0].x),
-        new Vector3(rect.points[1].y, rect.points[1].z, rect.points[1].x)
-      ]}
-      color={PrimeColor.blue}
+      corners={rect.points}
+      color={rect.color}
     />
-    <Latex3D
-      latex={`h=${round(rect.points[1].z, 2)}`}
-      fontSize={0.5}
-      position={new Vector3(
-        (rect.points[0].y + rect.points[1].y) / 2,
-        rect.points[1].z + (rect.points[1].z > 0 ? 0.2 : -0.2),
-        (rect.points[0].x + rect.points[1].x) / 2
-      )}
-      color="black"
+  {/each}
+  {#each rects as rect}
+    <Point3D
+      position={rect.samplePosition}
+      color={PrimeColor.blue}
+      size={0.05}
+      alwaysOnTop={true}
     />
   {/each}
 </Canvas3D>
