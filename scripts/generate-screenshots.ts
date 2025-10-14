@@ -1,6 +1,16 @@
 #!/usr/bin/env node
 
-import { chromium, Browser, BrowserContext, Page } from 'playwright';
+/**
+ * Screenshot Generation Script
+ *
+ * Generates screenshots for all applet routes using puppeteer-cluster.
+ * 
+ * Features:
+ * - Parallel screenshot capture using puppeteer-cluster
+ * - Works with system Chromium in Docker or bundled Chromium locally
+ */
+
+import { Cluster } from 'puppeteer-cluster';
 import fs from 'fs/promises';
 import path from 'path';
 import { glob } from 'glob';
@@ -142,115 +152,102 @@ function startServer(): Promise<ChildProcess> {
 }
 
 /**
- * Take screenshot of a specific route
- * @param page Playwright page object
- * @param route route to the applet, e.g. /applet/complex_basics/complex_addition
- * @returns status of the page capture
- */
-async function screenshotRoute(page: Page, route: string): Promise<ScreenshotResult> {
-  try {
-    const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
-    console.log(`Capturing: ${route}`);
-
-    await page.goto(url, { waitUntil: 'networkidle', timeout: CONFIG.screenshots.timeout });
-
-    // Wait for main visual elements
-    try {
-      await page.waitForSelector(CONFIG.screenshots.waitForSelector, { timeout: 5000 });
-    } catch (_e) {
-      console.log(`   No canvas/svg found for ${route}, proceeding anyway`);
-    }
-
-    await page.waitForTimeout(CONFIG.screenshots.waitTime);
-
-    const screenshotName = getScreenshotName(route);
-    const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
-
-    await page.screenshot({
-      path: screenshotPath,
-      type: CONFIG.screenshots.format,
-      fullPage: CONFIG.screenshots.fullPage
-    });
-
-    console.log(`   Saved: ${screenshotName}`);
-    return { route, success: true, path: screenshotPath, filename: screenshotName };
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`   Failed to capture ${route}:`, errorMessage);
-    return { route, success: false, error: errorMessage };
-  }
-}
-
-/**
- * Process routes in parallel batches
- * @param browser Playwright browser object
+ * Process routes using puppeteer-cluster
  * @param routes list of applet routes to process
  * @returns results of the processes
  */
-async function processRoutesInBatches(
-  browser: Browser,
-  routes: string[]
-): Promise<ScreenshotResult[]> {
+async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotResult[]> {
   const results: ScreenshotResult[] = [];
-  const batchSize = CONFIG.parallel.enabled ? CONFIG.parallel.maxConcurrent : 1;
 
-  console.log(`Processing ${routes.length} routes in batches of ${batchSize}...`);
+  const concurrency = CONFIG.parallel.enabled ? CONFIG.parallel.maxConcurrent : 1;
+  console.log(`Processing ${routes.length} routes with ${concurrency} concurrent worker(s)...`);
 
-  for (let i = 0; i < routes.length; i += batchSize) {
-    const batch = routes.slice(i, i + batchSize);
-    console.log(
-      `\nProcessing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(routes.length / batchSize)}`
-    );
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || undefined;
 
-    // Create pages for parallel processing
-    const batchPromises = batch.map(async (route: string): Promise<ScreenshotResult> => {
-      const context: BrowserContext = await browser.newContext({
-        viewport: CONFIG.screenshots.viewport,
-        reducedMotion: CONFIG.browser.reducedMotion ? 'reduce' : 'no-preference'
+  const cluster = await Cluster.launch({
+    concurrency: Cluster.CONCURRENCY_CONTEXT,
+    maxConcurrency: concurrency,
+    puppeteerOptions: {
+      headless: CONFIG.browser.headless,
+      args: CONFIG.browser.args,
+      executablePath: executablePath
+    },
+    timeout: CONFIG.screenshots.timeout * 2,
+    retryLimit: 0
+  });
+
+  // Define task to capture screenshots
+  await cluster.task(async ({ page, data: route }) => {
+    try {
+      await page.setViewport(CONFIG.screenshots.viewport);
+
+      if (CONFIG.browser.reducedMotion) {
+        await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+      }
+
+      const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
+      console.log(`Capturing: ${route}`);
+
+      await page.goto(url, { waitUntil: 'networkidle0', timeout: CONFIG.screenshots.timeout });
+
+      // Wait for main visual elements
+      try {
+        await page.waitForSelector(CONFIG.screenshots.waitForSelector, { timeout: 5000 });
+      } catch (_e) {
+        console.log(`   No canvas/svg found for ${route}, proceeding anyway`);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, CONFIG.screenshots.waitTime));
+
+      const screenshotName = getScreenshotName(route);
+      const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
+
+      await page.screenshot({
+        path: screenshotPath as `${string}.png` | `${string}.jpeg`,
+        type: CONFIG.screenshots.format,
+        fullPage: CONFIG.screenshots.fullPage
       });
 
-      const page: Page = await context.newPage();
-      page.setDefaultTimeout(CONFIG.screenshots.timeout);
-
-      try {
-        const result = await screenshotRoute(page, route);
-        return result;
-      } finally {
-        await context.close();
-      }
-    });
-
-    const batchResults = await Promise.all(batchPromises);
-    results.push(...batchResults);
+      console.log(`   Saved: ${screenshotName}`);
+      results.push({ route, success: true, path: screenshotPath, filename: screenshotName });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`   Failed to capture ${route}:`, errorMessage);
+      results.push({ route, success: false, error: errorMessage });
+    }
 
     const successful = results.filter((r) => r.success).length;
-    console.log(`   Progress: ${results.length}/${routes.length} (${successful} successful)`);
+    console.log(`Progress: ${results.length}/${routes.length} (${successful} successful)`);
+  });
+
+  // Queue all routes and wait for completion
+  for (const route of routes) {
+    cluster.queue(route);
   }
+
+  await cluster.idle();
+  await cluster.close();
 
   return results;
 }
 
 /**
- * Cleanup function to properly close resources
+ * Cleanup function
  */
-async function cleanup(browser: Browser | null, server: ChildProcess | null): Promise<void> {
-  if (browser) {
+async function cleanup(server: ChildProcess | null): Promise<void> {
+  if (server && !server.killed) {
     try {
-      await browser.close();
-      console.log('Browser closed');
-    } catch (error) {
-      console.error('Error closing browser:', error);
-    }
-  }
+      // Remove listeners to prevent error messages
+      server.removeAllListeners();
+      server.stdout?.removeAllListeners();
+      server.stderr?.removeAllListeners();
 
-  if (server) {
-    try {
       server.kill('SIGTERM');
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       if (!server.killed) {
         server.kill('SIGKILL');
       }
-      console.log('Server stopped');
     } catch (error) {
       console.error('Error stopping server:', error);
     }
@@ -262,11 +259,10 @@ async function cleanup(browser: Browser | null, server: ChildProcess | null): Pr
  */
 async function generateScreenshots(): Promise<GenerationResult | undefined> {
   let server: ChildProcess | null = null;
-  let browser: Browser | null = null;
 
   const handleExit = async () => {
     console.log('\nCleaning up resources...');
-    await cleanup(browser, server);
+    await cleanup(server);
     process.exit(0);
   };
 
@@ -291,14 +287,8 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
     const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
     await delay(2 * CONFIG.screenshots.waitTime); // wait for server to fully start
 
-    console.log('Launching browser...');
-    browser = await chromium.launch({
-      headless: CONFIG.browser.headless,
-      args: CONFIG.browser.args
-    });
-
-    const results = await processRoutesInBatches(browser, routes);
-    const successful = results.filter((r) => r.success).length;
+    const results = await processRoutesWithCluster(routes);
+    const successful = results.filter((r: ScreenshotResult) => r.success).length;
 
     console.log('\nScreenshot generation completed!');
     console.log(`   Successful: ${successful}`);
@@ -306,20 +296,18 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
 
     if (successful < results.length) {
       console.log('\nFailed routes:');
-      results.filter((r) => !r.success).forEach((r) => console.log(`   - ${r.route}: ${r.error}`));
+      results
+        .filter((r: ScreenshotResult) => !r.success)
+        .forEach((r: ScreenshotResult) => console.log(`   - ${r.route}: ${r.error}`));
     }
 
     return { successful, total: results.length, results };
   } catch (error) {
     console.error('Fatal error:', error);
-    await cleanup(browser, server);
+    await cleanup(server);
     process.exit(1);
   } finally {
-    await cleanup(browser, server);
-    setTimeout(() => {
-      console.log('Force exiting...');
-      process.exit(0);
-    }, 2000);
+    await cleanup(server);
   }
 }
 

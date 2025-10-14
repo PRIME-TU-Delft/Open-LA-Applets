@@ -1,6 +1,6 @@
 {
   "server": {
-    "port": 4173,
+    "port": 4185,
     "startTimeout": 30000
   },
   "screenshots": {
@@ -19,6 +19,8 @@
     "headless": true,
     "reducedMotion": true,
     "args": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
       "--disable-web-security",
       "--disable-features=TranslateUI",
       "--disable-ipc-flooding-protection"
