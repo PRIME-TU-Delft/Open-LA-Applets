@@ -41,5 +41,6 @@
   "clipboard_copied": "Gekopieerd naar clipboard!",
   "clipboard_copy": "Kopieer",
   "open_new_tab": "Openen in nieuw tabblad",
-  "open_github": "Openen in GitHub"
+  "open_github": "Openen in GitHub",
+  "download_image": "Downloaden"
 }
