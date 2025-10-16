@@ -154,9 +154,9 @@
   {#each rects as rect, index (index)}
     <Point3D
       position={rect.samplePosition}
-      color={PrimeColor.blue}
+      color={PrimeColor.orange}
       size={0.05}
-      alwaysOnTop={true}
+      alwaysOnTop={false}
     />
   {/each}
 </Canvas3D>
