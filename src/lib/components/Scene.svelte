@@ -26,11 +26,7 @@
   import FpsCounter from './FpsCounter.svelte';
   import { browser } from '$app/environment';
   import { cn } from '$lib/utils';
-  import {
-    getAvailableLanguagesForApplet,
-    getAllLanguagesInfo,
-    type LanguageInfo
-  } from '$lib/utils/languages';
+  import { getAvailableLanguagesForApplet, getAllLanguagesInfo } from '$lib/utils/languages';
 
   let {
     controls = undefined,
@@ -50,26 +46,15 @@
   /**
    * Get languages available for this applet
    */
-  const appletCategory = $derived.by(() => {
+  const [appletCategory, appletName] = $derived.by(() => {
     const pathname = page.url?.pathname || '';
     const match = pathname.match(/\/applet\/([^/]+)\/([^/]+)/);
 
     if (match) {
-      return match[1];
+      return [match[1], match[2]];
     }
 
-    return null;
-  });
-
-  const appletName = $derived.by(() => {
-    const pathname = page.url?.pathname || '';
-    const match = pathname.match(/\/applet\/([^/]+)\/([^/]+)/);
-
-    if (match) {
-      return match[2];
-    }
-
-    return null;
+    return [null, null];
   });
 
   const languages = $derived.by(() => {
@@ -77,7 +62,7 @@
       return getAvailableLanguagesForApplet(appletCategory, appletName);
     }
 
-    return getAllLanguagesInfo();
+    return getAllLanguagesInfo(); // fallback
   });
 
   /**
