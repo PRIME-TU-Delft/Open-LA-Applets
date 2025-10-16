@@ -32,48 +32,42 @@
 </script>
 
 <g class="point2d">
-{#if isSquare}
-  <rect
-    x={position.x - radius}
-    y={position.y - radius}
-    height={radius * 2}
-    width={radius * 2}
-    fill={color}
-    {opacity}
-  />
-
-  {#if pulse}
+  {#if isSquare}
     <rect
-      class="pulse"
-      style="--r-small: {radius * 4}px; --r-large: {radius *
-        8}px; --posX: {position.x}px; --posY: {position.y}px;"
+      x={position.x - radius}
+      y={position.y - radius}
+      height={radius * 2}
+      width={radius * 2}
       fill={color}
+      {opacity}
     />
-  {/if}
-{:else}
-  <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
 
-  {#if pulse}
-    <circle
-      class="pulse"
-      style="--r-small: {radius * 2}; --r-large: {radius * 4};"
-      cx={position.x}
-      cy={position.y}
-      r={radius * 2}
-      fill={color}
-    />
+    {#if pulse}
+      <rect
+        class="pulse"
+        style="--r-small: {radius * 4}px; --r-large: {radius *
+          8}px; --posX: {position.x}px; --posY: {position.y}px;"
+        fill={color}
+      />
+    {/if}
+  {:else}
+    <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
+
+    {#if pulse}
+      <circle
+        class="pulse"
+        style="--r-small: {radius * 2}; --r-large: {radius * 4};"
+        cx={position.x}
+        cy={position.y}
+        r={radius * 2}
+        fill={color}
+      />
+    {/if}
   {/if}
-{/if}
 </g>
 {#if hoverText}
   <g class="hoverText">
-    <Latex2D
-      latex={hoverText}
-      position={position}
-      offset={offset}
-      fontSize={fontSize}
-      color={PrimeColor.black}
-    />
+    <Latex2D latex={hoverText} {position} {offset} {fontSize} color={PrimeColor.black} />
   </g>
 {/if}
 
@@ -130,7 +124,7 @@
     display: none;
     pointer-events: none;
   }
-  
+
   .point2d:hover + .hoverText {
     display: block;
   }

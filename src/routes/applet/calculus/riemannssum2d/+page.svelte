@@ -11,8 +11,7 @@
 
   const methods = ['left', 'right', 'middle', 'random', 'min', 'max'];
 
-  const controls = Controls
-    .addDropdown('', methods, PrimeColor.yellow)
+  const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
     .addSlider(2, -4, 4, 0.1, PrimeColor.raspberry) // b
     .addSlider(10, 1, 50, 1, PrimeColor.blue); // numRectangles
 
@@ -43,7 +42,6 @@
   });
 
   const method = $derived(controls[0]);
-  const showHeights = true;
 
   const rects = $derived.by(() => {
     const a = -controls[1];
@@ -72,8 +70,8 @@
           const xs = x1 + (s * (x2 - x1)) / samples;
           const ys = func(xs);
           if (ys < minY) {
-        minY = ys;
-        minX = xs;
+            minY = ys;
+            minX = xs;
           }
         }
         x = minX;
@@ -88,8 +86,8 @@
           const xs = x1 + (s * (x2 - x1)) / samples;
           const ys = func(xs);
           if (ys > maxY) {
-        maxY = ys;
-        maxX = xs;
+            maxY = ys;
+            maxX = xs;
           }
         }
         x = maxX;
@@ -100,7 +98,14 @@
       const x1 = a + i * dx;
       const x2 = x1 + dx;
       const y = func(x);
-      const color = b > a ? (y >= 0 ? PrimeColor.darkGreen : PrimeColor.raspberry) : (y < 0 ? PrimeColor.darkGreen : PrimeColor.raspberry);
+      const color =
+        b > a
+          ? y >= 0
+            ? PrimeColor.darkGreen
+            : PrimeColor.raspberry
+          : y < 0
+            ? PrimeColor.darkGreen
+            : PrimeColor.raspberry;
       newRects.push({
         points: [new Vector2(x1, Math.min(0, y)), new Vector2(x2, Math.max(0, y))] as [
           Vector2,
@@ -126,10 +131,7 @@
   />
   <g>
     {#each rects as rect, index (index)}
-      <Rect2D
-        points={rect.points}
-        color={rect.color + '90'}
-      />
+      <Rect2D points={rect.points} color={rect.color + '90'} />
     {/each}
     {#each rects as rect, index (index)}
       <Point2D
@@ -138,8 +140,9 @@
         radius={0.04}
         hoverText={`${round(rect.height, 2)}`}
         fontSize={0.5}
-        offset={Math.max(rect.points[0].y, rect.points[1].y) > 0 ? new Vector2(0, 0.3) : new Vector2(0, -0.1)}
-        pulse={showHeights}
+        offset={Math.max(rect.points[0].y, rect.points[1].y) > 0
+          ? new Vector2(0, 0.3)
+          : new Vector2(0, -0.1)}
       />
     {/each}
   </g>

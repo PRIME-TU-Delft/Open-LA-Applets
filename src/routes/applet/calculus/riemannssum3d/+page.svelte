@@ -8,18 +8,17 @@
   import Cuboid3D from '$lib/threlte/Cuboid3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector3 } from 'three';
-    import Point3D from '$lib/threlte/Point3D.svelte';
+  import Point3D from '$lib/threlte/Point3D.svelte';
 
   const methods = ['center', 'random', 'min', 'max'];
 
-  const controls = Controls
-    .addDropdown('', methods, PrimeColor.yellow)
+  const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
     .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry) // b
     .addSlider(10, 1, 20, 1, PrimeColor.blue); // numRectangles
-  
+
   const func = (x: number, y: number) => 4 - (1 / 4) * (x ** 2 + y ** 2);
   const func_display =
-  '\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} \\left(4 - \\frac{1}{4}(x^2 + y^2)\\right)~dx~dy~~=~~\\$5';
+    '\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} \\left(4 - \\frac{1}{4}(x^2 + y^2)\\right)~dx~dy~~=~~\\$5';
 
   const formulas = $derived.by(() => {
     const a = -round(controls[1]);
@@ -38,7 +37,8 @@
       .addAutoParam(result.toFixed(3), PrimeColor.blue);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.samplePosition.y * dx * dy, 0);
-    const riemann_display = '\\sum_{i=1}^{n} \\sum_{j=1}^{n} f(x_i^*, y_j^*) \\Delta x \\Delta y~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
+    const riemann_display =
+      '\\sum_{i=1}^{n} \\sum_{j=1}^{n} f(x_i^*, y_j^*) \\Delta x \\Delta y~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
 
     const f2 = new Formula(riemann_display)
       .addAutoParam(riemannSum.toFixed(3), PrimeColor.orange)
@@ -125,10 +125,10 @@
         const z = func(x, y);
         const color = z >= 0 ? PrimeColor.darkGreen : PrimeColor.raspberry;
         newRects.push({
-          points: [
-            new Vector3(y_j, 0, x_i),
-            new Vector3(y_j + dy, z, x_i + dx)
-          ] as [Vector3, Vector3],
+          points: [new Vector3(y_j, 0, x_i), new Vector3(y_j + dy, z, x_i + dx)] as [
+            Vector3,
+            Vector3
+          ],
           samplePosition: new Vector3(y, z, x),
           color // Add color to the rect object
         });
@@ -145,14 +145,11 @@
     xRange={[-5, 5]}
     yRange={[-5, 5]}
     resolution={50}
-    color={PrimeColor.blue}
-    opacity={0.2}
+    color={PrimeColor.orange}
+    opacity={0.5}
   />
   {#each rects as rect, index (index)}
-    <Cuboid3D
-      corners={rect.points}
-      color={rect.color}
-    />
+    <Cuboid3D corners={rect.points} color={rect.color} />
   {/each}
   {#each rects as rect, index (index)}
     <Point3D

@@ -1,13 +1,7 @@
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
-  import {
-    BufferAttribute,
-    BufferGeometry,
-    DoubleSide,
-    Vector3,
-    EdgesGeometry
-  } from 'three';
+  import { BufferAttribute, BufferGeometry, DoubleSide, Vector3, EdgesGeometry } from 'three';
 
   export type Cuboid3DProps = {
     corners: [Vector3, Vector3];
@@ -15,11 +9,7 @@
     toggleEdges?: boolean;
   };
 
-  let {
-    corners,
-    color = PrimeColor.black,
-    toggleEdges = true
-  }: Cuboid3DProps = $props();
+  let { corners, color = PrimeColor.black, toggleEdges = true }: Cuboid3DProps = $props();
 
   const geometry = $derived.by(() => {
     const [c1, c2] = corners;

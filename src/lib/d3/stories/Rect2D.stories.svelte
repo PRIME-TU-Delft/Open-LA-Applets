@@ -12,7 +12,7 @@
   import { Vector2 } from 'three';
   import Canvas2D from '../Canvas2D.svelte';
   import type { Rectangle2DProps } from '../Rect2D.svelte';
-    import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 </script>
 
 {#snippet template(args: Rectangle2DProps)}
