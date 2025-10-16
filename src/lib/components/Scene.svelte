@@ -108,8 +108,7 @@
     }
   }
 
-  const searchParams = new URLSearchParams(page?.url?.searchParams);
-  const hideButtons = searchParams.get('hideButtons') === 'true' || false;
+  const hideButtons = globalState.hideButtons;
 
   $effect(() => {
     // Override title if and only if the title was not set from a URL parameter
