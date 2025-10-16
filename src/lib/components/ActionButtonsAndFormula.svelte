@@ -6,6 +6,7 @@
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
+  import type { LanguageInfo } from '$lib/utils/languages';
   import Languages from '@lucide/svelte/icons/languages';
   import Maximize from '@lucide/svelte/icons/maximize';
   import Minimize from '@lucide/svelte/icons/minimize';
@@ -24,7 +25,7 @@
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
-    languages: string[];
+    languages: LanguageInfo[];
   };
 
   let {
