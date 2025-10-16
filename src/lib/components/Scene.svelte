@@ -57,9 +57,20 @@
     return null;
   });
 
+  const appletName = $derived.by(() => {
+    const pathname = page.url?.pathname || '';
+    const match = pathname.match(/\/applet\/([^/]+)\/([^/]+)/);
+
+    if (match) {
+      return match[2];
+    }
+
+    return null;
+  });
+
   const languages = $derived.by(() => {
-    if (appletCategory) {
-      return getAvailableLanguagesForApplet(appletCategory);
+    if (appletCategory && appletName) {
+      return getAvailableLanguagesForApplet(appletCategory, appletName);
     }
 
     return availableLanguages;
@@ -176,6 +187,7 @@
       {controls}
       {languages}
       {appletCategory}
+      {appletName}
       onReset={() => reset()}
     />
   </div>

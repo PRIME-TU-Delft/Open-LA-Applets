@@ -4,15 +4,17 @@
   import { _ } from 'svelte-i18n';
   import { Button } from './ui/button';
   import { cn } from '$lib/utils';
-  import { hasUITranslation, hasAppletCategoryTranslation } from '$lib/utils/languages';
+  import { hasUITranslation, hasAppletTranslation } from '$lib/utils/languages';
 
   export type LanguageWindowProps = {
     languages: string[];
     onclose: () => void;
     appletCategory?: string | null;
+    appletName?: string | null;
   };
 
-  const { languages, onclose, appletCategory = null }: LanguageWindowProps = $props();
+  const { languages, onclose, appletCategory = null, appletName = null }: LanguageWindowProps =
+    $props();
 
   const defaultLangUrl = $derived.by(() => {
     const langUrl = new URL(page.url); // If this is not done here, searchParams.set will modify the original URL
@@ -76,7 +78,10 @@
    */
   function getTranslationNote(lang: string): string {
     const hasUI = hasUITranslation(lang);
-    const hasApplet = appletCategory ? hasAppletCategoryTranslation(lang, appletCategory) : true;
+    const hasApplet =
+      appletCategory && appletName
+        ? hasAppletTranslation(lang, appletCategory, appletName)
+        : true;
 
     if (hasUI && hasApplet) {
       return '';

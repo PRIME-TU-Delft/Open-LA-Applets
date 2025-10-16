@@ -23,13 +23,17 @@ function getAvailableLanguages(): string[] {
 }
 
 /**
- * Get available languages for a specific applet category
- * Returns languages that have UI translations + languages that have translations for the category
+ * Get available languages for a specific applet
+ * Returns languages that have UI translations + languages that have translations for the specific applet
  *
  * @param category - The applet category (e.g., "basisdim", "crossproduct")
- * @returns Array of language codes that support this category
+ * @param appletName - The specific applet name (e.g., "more_languages")
+ * @returns Array of language codes that support this specific applet
  */
-export function getAvailableLanguagesForApplet(category: string): string[] {
+export function getAvailableLanguagesForApplet(
+  category: string,
+  appletName: string
+): string[] {
   const supportedLanguages = new Set<string>();
 
   Object.keys(appletModules).forEach((key) => {
@@ -40,8 +44,8 @@ export function getAvailableLanguagesForApplet(category: string): string[] {
     const module = appletModules[key] as any;
     const translations = module?.default;
 
-    // Check if this language has any translations for the category
-    if (translations?.[category]) {
+    // Check if this language has translations for the specific applet
+    if (translations?.[category]?.[appletName]) {
       supportedLanguages.add(langMatch);
     }
   });
@@ -67,9 +71,13 @@ export function hasUITranslation(lang: string): boolean {
 }
 
 /**
- * Check if a language has translations for a specific applet category
+ * Check if a language has translations for a specific applet
  */
-export function hasAppletCategoryTranslation(lang: string, category: string): boolean {
+export function hasAppletTranslation(
+  lang: string,
+  category: string,
+  appletName: string
+): boolean {
   const moduleKey = Object.keys(appletModules).find(
     (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1] === lang
   );
@@ -80,7 +88,7 @@ export function hasAppletCategoryTranslation(lang: string, category: string): bo
   const module = appletModules[moduleKey] as any;
   const translations = module?.default;
 
-  return !!translations?.[category];
+  return !!translations?.[category]?.[appletName];
 }
 
 export { uiModules, appletModules };
