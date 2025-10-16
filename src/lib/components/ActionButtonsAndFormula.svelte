@@ -25,6 +25,7 @@
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
     languages: string[];
+    appletCategory?: string | null;
   };
 
   let {
@@ -33,7 +34,8 @@
     splitFormulas = [],
     controls = undefined,
     showFormulas = false,
-    languages
+    languages,
+    appletCategory = null
   }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
@@ -123,7 +125,7 @@
             <Languages class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
-        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
+        <LanguageWindow {languages} {appletCategory} onclose={() => (languageModalOpen = false)} />
       </Dialog.Root>
     {/if}
 

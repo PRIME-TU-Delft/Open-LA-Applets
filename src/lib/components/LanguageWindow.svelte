@@ -4,13 +4,15 @@
   import { _ } from 'svelte-i18n';
   import { Button } from './ui/button';
   import { cn } from '$lib/utils';
+  import { hasUITranslation, hasAppletCategoryTranslation } from '$lib/utils/languages';
 
   export type LanguageWindowProps = {
     languages: string[];
     onclose: () => void;
+    appletCategory?: string | null;
   };
 
-  const { languages, onclose }: LanguageWindowProps = $props();
+  const { languages, onclose, appletCategory = null }: LanguageWindowProps = $props();
 
   const defaultLangUrl = $derived.by(() => {
     const langUrl = new URL(page.url); // If this is not done here, searchParams.set will modify the original URL
@@ -67,6 +69,25 @@
   }
 
   const activeLang = $derived(page.url.searchParams.get('lang') || 'default');
+
+  /**
+   * Get the translation note for a language
+   * Returns empty string if both UI and applet are translated
+   */
+  function getTranslationNote(lang: string): string {
+    const hasUI = hasUITranslation(lang);
+    const hasApplet = appletCategory ? hasAppletCategoryTranslation(lang, appletCategory) : true;
+
+    if (hasUI && hasApplet) {
+      return '';
+    } else if (hasUI && !hasApplet) {
+      return $_('language_ui_only');
+    } else if (!hasUI && hasApplet) {
+      return $_('language_applet_only');
+    }
+
+    return '';
+  }
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
@@ -99,6 +120,9 @@
         >
           {getEmoji(lang)}
           {lang.toUpperCase()}
+          {#if getTranslationNote(lang)}
+            <span class="ml-1 text-xs opacity-70">{getTranslationNote(lang)}</span>
+          {/if}
         </Button>
       {/each}
     </Dialog.Description>

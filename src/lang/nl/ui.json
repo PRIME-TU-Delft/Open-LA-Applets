@@ -26,6 +26,8 @@
   "share_licence_permissions": "Toestemmingen buiten het bereik van deze licentie zijn mogelijk beschikbaar op",
   "language_window_title": "Taal wijzigen",
   "language_window_available": "Beschikbare talen voor deze applet:",
+  "language_ui_only": "(Alleen UI)",
+  "language_applet_only": "(Alleen applet)",
   "slider_expand": "Schuifregelaar uitbreiden",
   "slider_toggle_animation": "Animatie schakelen",
   "slider_minimize": "Schuifregelaar minimaliseren",

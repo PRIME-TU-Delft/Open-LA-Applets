@@ -175,6 +175,7 @@
       {splitFormulas}
       {controls}
       {languages}
+      {appletCategory}
       onReset={() => reset()}
     />
   </div>

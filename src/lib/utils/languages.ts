@@ -57,6 +57,32 @@ export function getAvailableLanguagesForApplet(category: string): string[] {
   return Array.from(supportedLanguages).sort();
 }
 
+/**
+ * Check if a language has UI translations
+ */
+export function hasUITranslation(lang: string): boolean {
+  return Object.keys(uiModules).some(
+    (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/ui\.json/)?.[1] === lang
+  );
+}
+
+/**
+ * Check if a language has translations for a specific applet category
+ */
+export function hasAppletCategoryTranslation(lang: string, category: string): boolean {
+  const moduleKey = Object.keys(appletModules).find(
+    (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1] === lang
+  );
+
+  if (!moduleKey) return false;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const module = appletModules[moduleKey] as any;
+  const translations = module?.default;
+
+  return !!translations?.[category];
+}
+
 export { uiModules, appletModules };
 export const availableLanguages = getAvailableLanguages();
 export const DEFAULT_LANGUAGE = 'en';
