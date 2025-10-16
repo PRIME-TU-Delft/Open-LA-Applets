@@ -26,7 +26,11 @@
   import FpsCounter from './FpsCounter.svelte';
   import { browser } from '$app/environment';
   import { cn } from '$lib/utils';
-  import { availableLanguages, getAvailableLanguagesForApplet } from '$lib/utils/languages';
+  import {
+    getAvailableLanguagesForApplet,
+    getAllLanguagesInfo,
+    type LanguageInfo
+  } from '$lib/utils/languages';
 
   let {
     controls = undefined,
@@ -73,7 +77,7 @@
       return getAvailableLanguagesForApplet(appletCategory, appletName);
     }
 
-    return availableLanguages;
+    return getAllLanguagesInfo();
   });
 
   /**
@@ -186,8 +190,6 @@
       {splitFormulas}
       {controls}
       {languages}
-      {appletCategory}
-      {appletName}
       onReset={() => reset()}
     />
   </div>

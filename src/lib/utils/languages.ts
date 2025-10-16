@@ -2,6 +2,12 @@
 const uiModules = import.meta.glob('../../lang/*/ui.json', { eager: true });
 const appletModules = import.meta.glob('../../lang/*/applets.json', { eager: true });
 
+export type LanguageInfo = {
+  code: string;
+  hasUI: boolean;
+  hasApplet: boolean;
+};
+
 /**
  * Dynamically discover available languages from the lang directory
  * by checking both ui.json and applets.json files
@@ -23,16 +29,33 @@ function getAvailableLanguages(): string[] {
 }
 
 /**
- * Get available languages for a specific applet
+ * Get all available languages with both their translation status set to true
+ *
+ * @returns Array of all language info objects
+ */
+export function getAllLanguagesInfo(): LanguageInfo[] {
+  return availableLanguages.map((code) => ({
+    code,
+    hasUI: true,
+    hasApplet: true
+  }));
+}
+
+/**
+ * Get available languages for a specific applet with translation status
  * Returns languages that have UI translations + languages that have translations for the specific applet
  *
  * @param category - The applet category (e.g., "basisdim", "crossproduct")
  * @param appletName - The specific applet name (e.g., "more_languages")
- * @returns Array of language codes that support this specific applet
+ * @returns Array of language info objects with translation status
  */
-export function getAvailableLanguagesForApplet(category: string, appletName: string): string[] {
-  const supportedLanguages = new Set<string>();
+export function getAvailableLanguagesForApplet(
+  category: string,
+  appletName: string
+): LanguageInfo[] {
+  const languageMap = new Map<string, LanguageInfo>();
 
+  // Check for applet translations
   Object.keys(appletModules).forEach((key) => {
     const langMatch = key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1];
     if (!langMatch) return;
@@ -43,45 +66,32 @@ export function getAvailableLanguagesForApplet(category: string, appletName: str
 
     // Check if this language has translations for the specific applet
     if (translations?.[category]?.[appletName]) {
-      supportedLanguages.add(langMatch);
+      languageMap.set(langMatch, {
+        code: langMatch,
+        hasUI: false, // Will be updated below
+        hasApplet: true
+      });
     }
   });
 
-  // Always include languages that have UI translations (for the general UI)
+  // Check for UI translations and update existing entries
   Object.keys(uiModules).forEach((key) => {
     const langMatch = key.match(/\.\.\/\.\.\/lang\/(.+?)\/ui\.json/)?.[1];
-    if (langMatch) {
-      supportedLanguages.add(langMatch);
+    if (!langMatch) return;
+
+    const existing = languageMap.get(langMatch);
+    if (existing) {
+      existing.hasUI = true;
+    } else {
+      languageMap.set(langMatch, {
+        code: langMatch,
+        hasUI: true,
+        hasApplet: false
+      });
     }
   });
 
-  return Array.from(supportedLanguages).sort();
-}
-
-/**
- * Check if a language has UI translations
- */
-export function hasUITranslation(lang: string): boolean {
-  return Object.keys(uiModules).some(
-    (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/ui\.json/)?.[1] === lang
-  );
-}
-
-/**
- * Check if a language has translations for a specific applet
- */
-export function hasAppletTranslation(lang: string, category: string, appletName: string): boolean {
-  const moduleKey = Object.keys(appletModules).find(
-    (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1] === lang
-  );
-
-  if (!moduleKey) return false;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const module = appletModules[moduleKey] as any;
-  const translations = module?.default;
-
-  return !!translations?.[category]?.[appletName];
+  return Array.from(languageMap.values()).sort((a, b) => a.code.localeCompare(b.code));
 }
 
 export { uiModules, appletModules };

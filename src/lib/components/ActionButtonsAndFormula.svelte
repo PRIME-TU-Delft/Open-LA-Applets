@@ -6,6 +6,7 @@
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
   import type { Formula } from '$lib/utils/Formulas';
+  import type { LanguageInfo } from '$lib/utils/languages';
   import Languages from '@lucide/svelte/icons/languages';
   import Maximize from '@lucide/svelte/icons/maximize';
   import Minimize from '@lucide/svelte/icons/minimize';
@@ -24,9 +25,7 @@
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
-    languages: string[];
-    appletCategory?: string | null;
-    appletName?: string | null;
+    languages: LanguageInfo[];
   };
 
   let {
@@ -35,9 +34,7 @@
     splitFormulas = [],
     controls = undefined,
     showFormulas = false,
-    languages,
-    appletCategory = null,
-    appletName = null
+    languages
   }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
@@ -127,12 +124,7 @@
             <Languages class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
-        <LanguageWindow
-          {languages}
-          {appletCategory}
-          {appletName}
-          onclose={() => (languageModalOpen = false)}
-        />
+        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
       </Dialog.Root>
     {/if}
 
