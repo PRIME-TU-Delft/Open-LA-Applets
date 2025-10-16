@@ -30,10 +30,7 @@ function getAvailableLanguages(): string[] {
  * @param appletName - The specific applet name (e.g., "more_languages")
  * @returns Array of language codes that support this specific applet
  */
-export function getAvailableLanguagesForApplet(
-  category: string,
-  appletName: string
-): string[] {
+export function getAvailableLanguagesForApplet(category: string, appletName: string): string[] {
   const supportedLanguages = new Set<string>();
 
   Object.keys(appletModules).forEach((key) => {
@@ -73,11 +70,7 @@ export function hasUITranslation(lang: string): boolean {
 /**
  * Check if a language has translations for a specific applet
  */
-export function hasAppletTranslation(
-  lang: string,
-  category: string,
-  appletName: string
-): boolean {
+export function hasAppletTranslation(lang: string, category: string, appletName: string): boolean {
   const moduleKey = Object.keys(appletModules).find(
     (key) => key.match(/\.\.\/\.\.\/lang\/(.+?)\/applets\.json/)?.[1] === lang
   );
