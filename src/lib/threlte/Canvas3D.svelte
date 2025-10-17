@@ -17,6 +17,7 @@
   import { page } from '$app/state';
   import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
+  import ResizableDivider from '$lib/components/ResizableDivider.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
@@ -56,6 +57,8 @@
   const renderMode = $derived(activityState.isActive ? 'on-demand' : 'manual');
 
   let enableEasterEgg = $state(false);
+
+  let leftCanvasWidth = $state<number | null>(null);
 
   $effect.pre(() => {
     const searchParams = page?.url?.searchParams;
@@ -116,7 +119,10 @@
   {splitFormulas}
 >
   {#snippet sceneChildren(width, height)}
-    {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
+    {@const defaultCanvasWidth = width / 2}
+    {@const leftWidth = leftCanvasWidth ?? defaultCanvasWidth}
+    {@const rightWidth = width - leftWidth}
+    {@const canvasWidth = hasSplitCanvas ? leftWidth : width}
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       {#if confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center'}
         <Confetti isSplit={false} />
@@ -133,12 +139,16 @@
       </Canvas>
     </div>
 
+    {#if hasSplitCanvas}
+      <ResizableDivider onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)} />
+    {/if}
+
     {#if splitCanvas2DChildren}
-      <CanvasD3 {height} width={canvasWidth} {...splitCanvas2DProps}>
+      <CanvasD3 {height} width={rightWidth} {...splitCanvas2DProps}>
         {@render splitCanvas2DChildren()}
       </CanvasD3>
     {:else if splitCanvas3DChildren}
-      <div style="width: {canvasWidth}px" class="overflow-hidden">
+      <div style="width: {rightWidth}px" class="overflow-hidden">
         {#if confettiState.confettiSide === 'right'}
           <Confetti isSplit={true} />
         {/if}
