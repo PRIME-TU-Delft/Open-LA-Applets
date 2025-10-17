@@ -24,9 +24,17 @@
       <Accordion.Root type="single" class="w-full">
         <!-- EMBEDING -->
         <Accordion.Item value="Embed">
-          <Accordion.Trigger>{$_('share_accordion_embed')}</Accordion.Trigger>
+          <Accordion.Trigger>{$_('share_accordion_embed_interactive')}</Accordion.Trigger>
           <Accordion.Content>
             <Embedding />
+          </Accordion.Content>
+        </Accordion.Item>
+
+        <!-- STATIC IMAGE -->
+        <Accordion.Item value="Static image">
+          <Accordion.Trigger>{$_('share_accordion_static_image')}</Accordion.Trigger>
+          <Accordion.Content>
+            <Embedding staticImage={true} />
           </Accordion.Content>
         </Accordion.Item>
 

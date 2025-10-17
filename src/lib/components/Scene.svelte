@@ -13,7 +13,6 @@
 
 <script lang="ts">
   import { dev } from '$app/environment';
-  import { page } from '$app/state';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import type { Draggable } from '$lib/controls/Draggables.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
@@ -26,6 +25,7 @@
   import FpsCounter from './FpsCounter.svelte';
   import { browser } from '$app/environment';
   import { cn } from '$lib/utils';
+  import { page } from '$app/state';
   import { getAvailableLanguagesForApplet, getAllLanguagesInfo } from '$lib/utils/languages';
 
   let {
@@ -108,6 +108,8 @@
     }
   }
 
+  const hideButtons = globalState.hideButtons;
+
   $effect(() => {
     // Override title if and only if the title was not set from a URL parameter
     if (title && !globalState.titleFromUrl) {
@@ -163,8 +165,13 @@
 
     <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0 && controls._width > 0}
-      <ControllerAndActivityPanel {controls} onLock={(e) => lock(e)} onReset={() => reset()} />
-    {:else}
+      <ControllerAndActivityPanel
+        {hideButtons}
+        {controls}
+        onLock={(e) => lock(e)}
+        onReset={() => reset()}
+      />
+    {:else if !hideButtons}
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
@@ -174,6 +181,7 @@
       {formulas}
       {splitFormulas}
       {controls}
+      {hideButtons}
       {languages}
       onReset={() => reset()}
     />
