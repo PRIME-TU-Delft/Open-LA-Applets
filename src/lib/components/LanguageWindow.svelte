@@ -4,9 +4,10 @@
   import { _ } from 'svelte-i18n';
   import { Button } from './ui/button';
   import { cn } from '$lib/utils';
+  import type { LanguageInfo } from '$lib/utils/languages';
 
   export type LanguageWindowProps = {
-    languages: string[];
+    languages: LanguageInfo[];
     onclose: () => void;
   };
 
@@ -21,7 +22,7 @@
   let langUrls: string[] = $derived.by(() => {
     return languages.map((l) => {
       const langUrl = new URL(page.url); // If this is not done here, searchParams.set will modify the original URL
-      langUrl.searchParams.set('lang', l);
+      langUrl.searchParams.set('lang', l.code);
       return langUrl.toString();
     });
   });
@@ -67,6 +68,22 @@
   }
 
   const activeLang = $derived(page.url.searchParams.get('lang') || 'default');
+
+  /**
+   * Get the translation note for a language
+   * Returns empty string if both UI and applet are translated
+   */
+  function getTranslationNote(langInfo: LanguageInfo): string {
+    if (langInfo.hasUI && langInfo.hasApplet) {
+      return '';
+    } else if (langInfo.hasUI && !langInfo.hasApplet) {
+      return $_('language_ui_only');
+    } else if (!langInfo.hasUI && langInfo.hasApplet) {
+      return $_('language_applet_only');
+    }
+
+    return '';
+  }
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
@@ -87,18 +104,22 @@
         🌍 Default
       </Button>
 
-      {#each languages as lang, i (lang)}
+      {#each languages as langInfo, i (langInfo.code)}
         <Button
           href={langUrls[i]}
           onclick={onclose}
           variant="link"
           class={cn(
             'block bg-blue-300/20 hover:bg-blue-300/60',
-            activeLang === lang && 'border-2 border-blue-500 font-bold hover:bg-blue-500/20'
+            activeLang === langInfo.code &&
+              'border-2 border-blue-500 font-bold hover:bg-blue-500/20'
           )}
         >
-          {getEmoji(lang)}
-          {lang.toUpperCase()}
+          {getEmoji(langInfo.code)}
+          {langInfo.code.toUpperCase()}
+          {#if getTranslationNote(langInfo)}
+            <span class="ml-1 text-xs opacity-70">{getTranslationNote(langInfo)}</span>
+          {/if}
         </Button>
       {/each}
     </Dialog.Description>

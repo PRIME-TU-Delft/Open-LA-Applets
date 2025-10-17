@@ -31,6 +31,8 @@
   "share_licence_permissions": "Permissions beyond the scope of this license may be available at",
   "language_window_title": "Change language",
   "language_window_available": "Languages available for this applet:",
+  "language_ui_only": "(UI only)",
+  "language_applet_only": "(Applet only)",
   "slider_expand": "Expand slider",
   "slider_toggle_animation": "Toggle animation",
   "slider_minimize": "Minimize slider",
