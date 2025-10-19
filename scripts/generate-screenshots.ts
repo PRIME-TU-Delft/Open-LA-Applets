@@ -66,8 +66,9 @@ let CONFIG: ScreenshotConfig = {} as ScreenshotConfig;
 try {
   const configFile = await fs.readFile(configPath, 'utf-8');
   CONFIG = JSON.parse(configFile) as ScreenshotConfig;
-} catch (_e) {
-  console.log('No screenshot.config.json found!');
+} catch (error) {
+  console.error('Failed to load screenshot.config.json:', error);
+  process.exit(1);
 }
 
 // Override output directory if running on Netlify
@@ -82,8 +83,6 @@ if (isNetlify) {
  * @returns a list of all applet routes
  */
 async function getAppletRoutes(): Promise<string[]> {
-  console.log('Discovering applet routes...');
-
   const files = await glob('src/routes/applet/**/+page.svelte', {
     cwd: process.cwd()
   });
@@ -196,7 +195,6 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
     retryLimit: 0
   });
 
-  // Define task to capture screenshots
   await cluster.task(async ({ page, data: route }) => {
     try {
       await page.setViewport(CONFIG.screenshots.viewport);
@@ -210,7 +208,6 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
 
       await page.goto(url, { waitUntil: 'networkidle0', timeout: CONFIG.screenshots.timeout });
 
-      // Wait for main visual elements
       try {
         await page.waitForSelector(CONFIG.screenshots.waitForSelector, { timeout: 5000 });
       } catch (_e) {
@@ -240,7 +237,6 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
     console.log(`Progress: ${results.length}/${routes.length} (${successful} successful)`);
   });
 
-  // Queue all routes and wait for completion
   for (const route of routes) {
     cluster.queue(route);
   }
@@ -257,12 +253,10 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
 async function cleanup(server: ChildProcess | null): Promise<void> {
   if (server && !server.killed) {
     try {
-      // Remove listeners to prevent error messages
       server.removeAllListeners();
       server.stdout?.removeAllListeners();
       server.stderr?.removeAllListeners();
 
-      // Kill the process and its children
       if (server.pid) {
         try {
           // Kill the entire process group (negative PID)
@@ -321,7 +315,7 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
     server = await startServer();
 
     const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-    await delay(2 * CONFIG.screenshots.waitTime); // wait for server to fully start
+    await delay(2 * CONFIG.screenshots.waitTime);
 
     const results = await processRoutesWithCluster(routes);
     const successful = results.filter((r: ScreenshotResult) => r.success).length;

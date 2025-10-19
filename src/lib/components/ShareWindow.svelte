@@ -5,6 +5,7 @@
   import ExternalLink from '@lucide/svelte/icons/external-link';
   import { _ } from 'svelte-i18n';
   import Embedding from './Embedding.svelte';
+  import EmbeddingStatic from './EmbeddingStatic.svelte';
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
@@ -34,7 +35,7 @@
         <Accordion.Item value="Static image">
           <Accordion.Trigger>{$_('share_accordion_static_image')}</Accordion.Trigger>
           <Accordion.Content>
-            <Embedding staticImage={true} />
+            <EmbeddingStatic />
           </Accordion.Content>
         </Accordion.Item>
 
