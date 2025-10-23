@@ -31,18 +31,52 @@
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
-    const points: Vector2[] = [];
+    const segments: Vector2[][] = [];
+    let currentSegment: Vector2[] = [];
+    let prevY: number | null = null;
+
+    const maxSlopeThreshold = 100;
+
     for (let x = xMin; x <= xMax; x += stepSize) {
       let y: number;
       try {
         y = func(x);
-        if (!isFinite(y)) continue;
+        if (!isFinite(y)) {
+          if (currentSegment.length > 0) {
+            segments.push(currentSegment);
+            currentSegment = [];
+          }
+          prevY = null;
+          continue;
+        }
       } catch {
+        if (currentSegment.length > 0) {
+          segments.push(currentSegment);
+          currentSegment = [];
+        }
+        prevY = null;
         continue;
       }
-      points.push(new Vector2(x, y));
+
+      if (prevY !== null) {
+        const slope = Math.abs((y - prevY) / stepSize);
+        if (slope > maxSlopeThreshold) {
+          if (currentSegment.length > 0) {
+            segments.push(currentSegment);
+            currentSegment = [];
+          }
+        }
+      }
+
+      currentSegment.push(new Vector2(x, y));
+      prevY = y;
     }
-    return [points];
+
+    if (currentSegment.length > 0) {
+      segments.push(currentSegment);
+    }
+
+    return segments;
   });
 
   const smoothLines = $derived.by(() => {

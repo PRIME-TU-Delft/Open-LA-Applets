@@ -7,8 +7,9 @@
   import { Vector2 } from 'three';
 
   let func = (x: number) => {
-    return -Math.log(x / 3 + 1) + 3;
+    return 4 / Math.sqrt(x + 1);
   };
+
   let xlSnapFunc = (p: Vector2) => {
     let x = Math.min(p.x, xR);
     return new Vector2(x, func(x));
