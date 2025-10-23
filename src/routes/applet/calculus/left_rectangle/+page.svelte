@@ -3,11 +3,17 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
+  import { Formula } from '$lib/utils/Formulas';
+  import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
   let func = (x: number) => {
     return 4 / Math.sqrt(x + 1);
+  };
+  let intFunc = (x: number) => {
+    return 8 * Math.sqrt(x + 1);
   };
 
   let xlSnapFunc = (p: Vector2) => {
@@ -26,9 +32,19 @@
 
   const xL = $derived(draggables[0].position.x);
   const xR = $derived(draggables[1].position.x);
+
+  const formulas = $derived.by(() => [
+    new Formula('\\int_{\\$1}^{\\$2} f(x) = \\$3')
+      .addAutoParam(round(xL), PrimeColor.orange)
+      .addAutoParam(round(xR), PrimeColor.orange)
+      .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
+    new Formula('\\text{\\$1} = \\$2')
+      .addAutoParam($_('applets.common.area'))
+      .addAutoParam(round(func(xL) * (xR - xL)), PrimeColor.orange)
+  ]);
 </script>
 
-<Canvas2D {draggables} cameraPosition={new Vector2(4, 2)} title="Left rectangle rule">
+<Canvas2D {draggables} {formulas} cameraPosition={new Vector2(4, 2)} title="Left rectangle rule">
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
