@@ -3,6 +3,7 @@
     points: [Vector2, Vector2, Vector2];
     color?: string;
     strokeWidth?: number;
+    strokeColor?: string;
     opacity?: number;
   };
 </script>
@@ -10,7 +11,13 @@
 <script lang="ts">
   import type { Vector2 } from 'three';
 
-  let { points, color = 'black', strokeWidth = 1, opacity = 1 }: Parallelogram2DProps = $props();
+  let {
+    points,
+    color = 'black',
+    strokeColor = 'black',
+    strokeWidth = 1,
+    opacity = 1
+  }: Parallelogram2DProps = $props();
 
   const [a, b, c] = $derived(points.map((p) => p.toArray().join(',')));
 
@@ -23,7 +30,7 @@
 
 <polygon
   fill={color}
-  stroke="black"
+  stroke={strokeColor}
   stroke-width={strokeWidth * 0.05}
   {opacity}
   points="{a} {b} {d} {c} "
