@@ -27,7 +27,7 @@
   const xR = $derived(draggables[1].position.x);
 </script>
 
-<Canvas2D {draggables} cameraPosition={new Vector2(4, 2)} title={'Left rectangle rule'}>
+<Canvas2D {draggables} cameraPosition={new Vector2(4, 2)} title="Left rectangle rule">
   <ExplicitFunction2D {func} color={PrimeColor.blue} />
 
   <Parallelogram2D
