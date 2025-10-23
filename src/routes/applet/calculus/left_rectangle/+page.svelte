@@ -28,7 +28,14 @@
 </script>
 
 <Canvas2D {draggables} cameraPosition={new Vector2(4, 2)} title="Left rectangle rule">
-  <ExplicitFunction2D {func} color={PrimeColor.blue} />
+  <ExplicitFunction2D
+    {func}
+    color={PrimeColor.blue}
+    integral={{
+      xLeft: xL,
+      xRight: xR
+    }}
+  />
 
   <Parallelogram2D
     points={[new Vector2(xL, 0), new Vector2(xR, 0), new Vector2(xL, func(xL))]}

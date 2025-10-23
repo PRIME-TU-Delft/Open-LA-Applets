@@ -64,6 +64,20 @@
   {template}
 />
 
+<!-- y = 4/sqrt(x+1) explicit function with integral coloring shown in [2,5] -->
+<Story
+  name="Explicit with integral coloring"
+  args={{
+    func: (x) => 4 / Math.sqrt(x + 1),
+    color: PrimeColor.yellow,
+    integral: {
+      xLeft: 2,
+      xRight: 5
+    }
+  }}
+  {template}
+/>
+
 <!-- x = cost(t); y = sin(t) parameterized function -->
 <Story
   name="Parameterized"
