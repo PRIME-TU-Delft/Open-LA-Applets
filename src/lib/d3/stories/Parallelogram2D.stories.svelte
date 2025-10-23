@@ -64,3 +64,13 @@
   }}
   {template}
 />
+
+<Story
+  name="With dashed fill"
+  args={{
+    points: [new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1)],
+    color: PrimeColor.raspberry,
+    fillStyle: 'dashed'
+  }}
+  {template}
+/>

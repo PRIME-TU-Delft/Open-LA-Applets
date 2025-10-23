@@ -35,10 +35,6 @@
     color={PrimeColor.orange + PrimeColor.opacity(0.6)}
     strokeColor={PrimeColor.orange}
     strokeWidth={1}
+    fillStyle="dashed"
   />
-
-  <!-- <Point2D position={new Vector2(xL, func(xL))} color={PrimeColor.orange} />  -->
-
-  <!-- <Latex2D position={new Vector2(xL, 0)} latex={"x_L"} />
-    <Latex2D position={new Vector2(xR, 0)} latex={"x_R"} /> -->
 </Canvas2D>
