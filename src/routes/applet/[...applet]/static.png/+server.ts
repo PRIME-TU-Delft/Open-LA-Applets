@@ -23,7 +23,7 @@ export const GET = async ({ params }: RequestEvent) => {
         'Cache-Control': 'public, max-age=3600'
       }
     });
-  } catch (err) {
+  } catch (_e) {
     throw error(404, {
       message: `Static image not found for applet: ${appletPath}`
     });
