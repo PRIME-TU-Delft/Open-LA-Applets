@@ -4,7 +4,7 @@
     "startTimeout": 30000
   },
   "screenshots": {
-    "outputDir": "static/applet",
+    "outputDir": "static/static",
     "viewport": {
       "width": 1920,
       "height": 1080

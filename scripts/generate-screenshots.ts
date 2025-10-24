@@ -74,7 +74,7 @@ try {
 // Override output directory if running on Netlify
 const isNetlify = process.env.BUILD_ENV === 'netlify';
 if (isNetlify) {
-  CONFIG.screenshots.outputDir = 'build-netlify/screenshots';
+  CONFIG.screenshots.outputDir = 'build-netlify/' + CONFIG.screenshots.outputDir;
   console.log('Running on Netlify - output directory set to:', CONFIG.screenshots.outputDir);
 }
 
@@ -219,7 +219,7 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const screenshotName = getScreenshotName(route);
       const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
 
-      await fs.mkdir(screenshotPath.replace('static.png', ''), { recursive: true });
+      await fs.mkdir(screenshotPath.replace('image.png', ''), { recursive: true });
 
       await page.screenshot({
         path: screenshotPath as `${string}.png` | `${string}.jpeg`,
