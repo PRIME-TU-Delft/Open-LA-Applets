@@ -14,7 +14,7 @@
   let showCopySucess = $state(false);
   let includeQR = $state(true);
 
-  const screenshotImage = $derived('/screenshots/' + getScreenshotName(page.url.pathname));
+  const screenshotImage = $derived('/applet/' + getScreenshotName(page.url.pathname));
 
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname + '/static');

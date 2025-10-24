@@ -16,7 +16,7 @@
   <div class="relative inline-block">
     {#if found}
       <img
-        src={'/screenshots/' + getScreenshotName(applet)}
+        src={'/applet/' + getScreenshotName(applet)}
         alt={applet}
         class="block max-h-screen max-w-screen object-contain"
         onerror={() => {

@@ -219,6 +219,8 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const screenshotName = getScreenshotName(route);
       const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
 
+      await fs.mkdir(screenshotPath.replace('static.png', ''), { recursive: true });
+
       await page.screenshot({
         path: screenshotPath as `${string}.png` | `${string}.jpeg`,
         type: CONFIG.screenshots.format,

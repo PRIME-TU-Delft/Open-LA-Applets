@@ -29,5 +29,4 @@ chromatic.log
 *storybook.log
 
 # Screenshots
-static/screenshots/
-!static/screenshots/.gitkeep
+static/applet/
