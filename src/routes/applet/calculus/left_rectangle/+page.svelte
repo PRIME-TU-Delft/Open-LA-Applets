@@ -18,9 +18,17 @@
     return 8 * Math.sqrt(x + 1);
   };
 
-  let xlSnapFunc = (p: Vector2) => {
-    let x = Math.max(Math.min(p.x, xR), -0.75);
+  let xL = $state(2);
+
+  let fxlSnapFunc = (p: Vector2) => {
+    let x = Math.max(Math.min(p.x, xR), -0.99);
+    xL = x;
     return new Vector2(x, func(x));
+  };
+  let xlSnapFunc = (p: Vector2) => {
+    let x = Math.max(Math.min(p.x, xR), -0.99);
+    xL = x;
+    return new Vector2(x, 0);
   };
   let xrSnapFunc = (p: Vector2) => {
     let x = Math.max(p.x, xL);
@@ -32,15 +40,20 @@
       new Vector2(2, func(2)),
       PrimeColor.orange,
       'f(x_L)',
-      xlSnapFunc,
+      fxlSnapFunc,
       undefined,
       'top'
     ),
-    new Draggable(new Vector2(5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom')
+    new Draggable(new Vector2(5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom'),
+    new Draggable(new Vector2(2, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
   ];
 
-  const xL = $derived(draggables[0].position.x);
   const xR = $derived(draggables[1].position.x);
+
+  $effect(() => {
+    draggables[0].value = new Vector2(xL, func(xL));
+    draggables[2].value = new Vector2(xL, 0);
+  });
 
   const formulas = $derived.by(() => [
     new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
@@ -70,7 +83,4 @@
     strokeWidth={1}
     fillStyle="dashed"
   />
-
-  <Point2D color={PrimeColor.orange} position={new Vector2(xL, 0)} />
-  <Latex2D position={new Vector2(xL - 0.1, -0.05)} latex="x_L" color={PrimeColor.orange} />
 </Canvas2D>
