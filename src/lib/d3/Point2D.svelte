@@ -6,12 +6,17 @@
     color?: string;
     pulse?: boolean;
     opacity?: number;
+    hoverText?: string;
+    fontSize?: number;
+    offset?: Vector2;
   };
 </script>
 
 <script lang="ts">
   import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import Latex2D from './Latex2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   let {
     position = new Vector2(0, 0),
@@ -19,41 +24,51 @@
     radius = POINT_SIZE,
     color = 'black',
     pulse = false,
-    opacity = 1
+    opacity = 1,
+    hoverText = '',
+    fontSize = 1,
+    offset = new Vector2(0, 0)
   }: Point2DProps = $props();
 </script>
 
-{#if isSquare}
-  <rect
-    x={position.x - radius}
-    y={position.y - radius}
-    height={radius * 2}
-    width={radius * 2}
-    fill={color}
-    {opacity}
-  />
-
-  {#if pulse}
+<g class="point2d">
+  {#if isSquare}
     <rect
-      class="pulse"
-      style="--r-small: {radius * 4}px; --r-large: {radius *
-        8}px; --posX: {position.x}px; --posY: {position.y}px;"
+      x={position.x - radius}
+      y={position.y - radius}
+      height={radius * 2}
+      width={radius * 2}
       fill={color}
+      {opacity}
     />
-  {/if}
-{:else}
-  <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
 
-  {#if pulse}
-    <circle
-      class="pulse"
-      style="--r-small: {radius * 2}; --r-large: {radius * 4};"
-      cx={position.x}
-      cy={position.y}
-      r={radius * 2}
-      fill={color}
-    />
+    {#if pulse}
+      <rect
+        class="pulse"
+        style="--r-small: {radius * 4}px; --r-large: {radius *
+          8}px; --posX: {position.x}px; --posY: {position.y}px;"
+        fill={color}
+      />
+    {/if}
+  {:else}
+    <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
+
+    {#if pulse}
+      <circle
+        class="pulse"
+        style="--r-small: {radius * 2}; --r-large: {radius * 4};"
+        cx={position.x}
+        cy={position.y}
+        r={radius * 2}
+        fill={color}
+      />
+    {/if}
   {/if}
+</g>
+{#if hoverText}
+  <g class="hoverText">
+    <Latex2D latex={hoverText} {position} {offset} {fontSize} color={PrimeColor.black} />
+  </g>
 {/if}
 
 <style>
@@ -103,5 +118,14 @@
       y: calc(var(--posY) - var(--r-large) / 2);
       opacity: 0.5;
     }
+  }
+
+  .hoverText {
+    display: none;
+    pointer-events: none;
+  }
+
+  .point2d:hover + .hoverText {
+    display: block;
   }
 </style>
