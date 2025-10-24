@@ -85,6 +85,7 @@
             onMinimize={() => minimizeSlider()}
             onStartChanging={() => globalState.changeState({ controlsInteractive: true })}
             onStopChanging={() => globalState.changeState({ controlsInteractive: false })}
+            {hideButtons}
           />
         {:else if controller instanceof Toggle && controller.isSwitch}
           <C.Switch switch={controller} />
