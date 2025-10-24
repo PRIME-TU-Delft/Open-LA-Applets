@@ -25,6 +25,7 @@
     splitFormulas?: Formula[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
+    hideButtons?: boolean;
     languages: LanguageInfo[];
   };
 
@@ -34,7 +35,8 @@
     splitFormulas = [],
     controls = undefined,
     showFormulas = false,
-    languages
+    languages,
+    hideButtons = false
   }: ActionButtonsAndFormulaProps = $props();
 
   let isFullscreen = $state(false); // Is the scene fullscreen?
@@ -89,75 +91,77 @@
     </div>
   {/if}
 
-  <!-- ACTION BUTTON -->
-  <div class="top-0 right-0 float-end flex p-1">
-    {#if !controls || controls.length == 0}
-      <Button.Action
-        side="bottom"
-        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-        onclick={onReset}
-        tooltip={$_('reset_scene_tooltip')}
-      >
-        <RotateCcw class="h-5 w-5" />
-      </Button.Action>
-    {/if}
-
-    <!-- SHARE BUTTON -->
-    <Dialog.Root>
-      <Dialog.Trigger
-        class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
-      >
-        <Button.Action side="bottom" tooltip={$_('share_tooltip')}>
-          <Share class="h-5 w-5" />
+  {#if !hideButtons}
+    <!-- ACTION BUTTON -->
+    <div class="top-0 right-0 float-end flex p-1">
+      {#if !controls || controls.length == 0}
+        <Button.Action
+          side="bottom"
+          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+          onclick={onReset}
+          tooltip={$_('reset_scene_tooltip')}
+        >
+          <RotateCcw class="h-5 w-5" />
         </Button.Action>
-      </Dialog.Trigger>
-      <ShareWindow />
-    </Dialog.Root>
+      {/if}
 
-    <!-- LANGUAGE BUTTON -->
-    {#if languages.length > 1}
-      <Dialog.Root bind:open={languageModalOpen}>
+      <!-- SHARE BUTTON -->
+      <Dialog.Root>
         <Dialog.Trigger
           class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
         >
-          <Button.Action tooltip={$_('change_language')} side="bottom">
-            <Languages class="h-5 w-5" />
+          <Button.Action side="bottom" tooltip={$_('share_tooltip')}>
+            <Share class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
-        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
+        <ShareWindow />
       </Dialog.Root>
-    {/if}
 
-    <!-- FULLSCREEN BUTTON -->
-    {#if screenfull.isEnabled && document}
-      <Button.Action
-        side="bottom"
-        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-        onclick={toggleFullscreen}
-        tooltip={isFullscreen ? $_('exit_fullscreen') : $_('enter_fullscreen')}
-      >
-        {#if isFullscreen}
-          <Minimize class="h-5 w-5" />
-        {:else}
-          <Maximize class="h-5 w-5" />
-        {/if}
-      </Button.Action>
-    {/if}
+      <!-- LANGUAGE BUTTON -->
+      {#if languages.length > 1}
+        <Dialog.Root bind:open={languageModalOpen}>
+          <Dialog.Trigger
+            class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+          >
+            <Button.Action tooltip={$_('change_language')} side="bottom">
+              <Languages class="h-5 w-5" />
+            </Button.Action>
+          </Dialog.Trigger>
+          <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
+        </Dialog.Root>
+      {/if}
 
-    <!-- TOGGLE FORMULAE BUTTON -->
-    {#if !globalState.isInset() && formulas && formulas.length >= 1}
-      <Button.Action
-        side="bottom"
-        class="{!formulasShown
-          ? '!bg-blue-200/80 hover:!bg-blue-300/80'
-          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
-          ? 'border-2'
-          : ''}"
-        tooltip={$_('toggle_function')}
-        onclick={() => (showFormulas = !showFormulas)}
-      >
-        <SquareFunction />
-      </Button.Action>
-    {/if}
-  </div>
+      <!-- FULLSCREEN BUTTON -->
+      {#if screenfull.isEnabled && document}
+        <Button.Action
+          side="bottom"
+          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+          onclick={toggleFullscreen}
+          tooltip={isFullscreen ? $_('exit_fullscreen') : $_('enter_fullscreen')}
+        >
+          {#if isFullscreen}
+            <Minimize class="h-5 w-5" />
+          {:else}
+            <Maximize class="h-5 w-5" />
+          {/if}
+        </Button.Action>
+      {/if}
+
+      <!-- TOGGLE FORMULAE BUTTON -->
+      {#if !globalState.isInset() && formulas && formulas.length >= 1}
+        <Button.Action
+          side="bottom"
+          class="{!formulasShown
+            ? '!bg-blue-200/80 hover:!bg-blue-300/80'
+            : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
+            ? 'border-2'
+            : ''}"
+          tooltip={$_('toggle_function')}
+          onclick={() => (showFormulas = !showFormulas)}
+        >
+          <SquareFunction />
+        </Button.Action>
+      {/if}
+    </div>
+  {/if}
 </div>
