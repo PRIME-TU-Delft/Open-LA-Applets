@@ -8,6 +8,11 @@
       "title": "The standard bases in 2d and 3d"
     }
   },
+  "calculus": {
+    "left_rectangle": {
+      "title": "Left rectangle rule"
+    }
+  },
   "change_of_basis": {
     "projection": {
       "title": "Projection with respect to a suitable basis"

@@ -46,7 +46,12 @@
   ]);
 </script>
 
-<Canvas2D {draggables} {formulas} cameraPosition={new Vector2(4, 2)} title="Left rectangle rule">
+<Canvas2D
+  {draggables}
+  {formulas}
+  cameraPosition={new Vector2(4, 2)}
+  title={$_('applets.calculus.left_rectangle.title')}
+>
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
