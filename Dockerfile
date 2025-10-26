@@ -8,6 +8,9 @@ RUN corepack prepare pnpm@latest --activate
 RUN apt-get update && apt-get install -y \
     chromium \
     fonts-liberation \
+    fonts-noto-core \
+    fonts-noto-ui-core \
+    fonts-freefont-ttf \
     libnss3 \
     libxss1 \
     libasound2 \
