@@ -71,11 +71,13 @@ try {
   process.exit(1);
 }
 
-// Override output directory if running on Netlify
 const isNetlify = process.env.BUILD_ENV === 'netlify';
 if (isNetlify) {
   CONFIG.screenshots.outputDir = 'build-netlify/' + CONFIG.screenshots.outputDir;
   console.log('Running on Netlify - output directory set to:', CONFIG.screenshots.outputDir);
+} else {
+  CONFIG.screenshots.outputDir = 'build/client/' + CONFIG.screenshots.outputDir;
+  console.log('Output directory set to:', CONFIG.screenshots.outputDir);
 }
 
 /**
@@ -208,15 +210,40 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
 
       await page.goto(url, { waitUntil: 'networkidle0', timeout: CONFIG.screenshots.timeout });
 
+      let has3DContent = false;
       try {
         await page.waitForSelector(CONFIG.screenshots.waitForSelector, { timeout: 5000 });
+
+        has3DContent = await page.evaluate(() => {
+          return document.querySelectorAll('canvas').length != 0;
+        });
       } catch (_e) {
         console.log(`   No canvas/svg found for ${route}, proceeding anyway`);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, CONFIG.screenshots.waitTime));
+      await page.evaluate(() => {
+        // wait for 1 frame
+        return new Promise((resolve) => {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve(undefined));
+          });
+        });
+      });
 
-      const screenshotName = getScreenshotName(route);
+      if (has3DContent) {
+        for (let i = 0; i < 10; i++) {
+          // wait for 10 frames
+          await page.evaluate(() => {
+            return new Promise((resolve) => {
+              requestAnimationFrame(() => resolve(undefined));
+            });
+          });
+        }
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, CONFIG.screenshots.waitTime)); // to be sure
+
+      const screenshotName = getScreenshotName(route, false);
       const screenshotPath = path.join(CONFIG.screenshots.outputDir, screenshotName);
 
       await fs.mkdir(screenshotPath.replace('image.png', ''), { recursive: true });

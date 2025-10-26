@@ -4,7 +4,7 @@
     "startTimeout": 30000
   },
   "screenshots": {
-    "outputDir": "static/static",
+    "outputDir": "applet",
     "viewport": {
       "width": 1920,
       "height": 1080
@@ -12,7 +12,7 @@
     "format": "png",
     "fullPage": false,
     "waitForSelector": "canvas, svg",
-    "waitTime": 2000,
+    "waitTime": 1000,
     "timeout": 10000
   },
   "browser": {
