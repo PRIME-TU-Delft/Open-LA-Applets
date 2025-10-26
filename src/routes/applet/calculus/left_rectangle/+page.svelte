@@ -2,9 +2,7 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
-  import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
