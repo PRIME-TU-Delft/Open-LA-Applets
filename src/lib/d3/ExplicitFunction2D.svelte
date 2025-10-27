@@ -3,6 +3,7 @@
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   export type ExplicitFunction2DProps = {
     func: (x: number) => number;
@@ -13,6 +14,7 @@
     tension?: number;
     showArrows?: boolean;
     width?: number;
+    integral?: { xLeft: number; xRight: number };
   };
 
   const {
@@ -23,23 +25,58 @@
     xMax = GRID_SIZE_2D,
     tension = 0.5,
     showArrows = false,
-    width = LINE_WIDTH
+    width = LINE_WIDTH,
+    integral
   }: ExplicitFunction2DProps = $props();
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
-    const points: Vector2[] = [];
+    const segments: Vector2[][] = [];
+    let currentSegment: Vector2[] = [];
+    let prevY: number | null = null;
+
+    const maxSlopeThreshold = 100;
+
     for (let x = xMin; x <= xMax; x += stepSize) {
       let y: number;
       try {
         y = func(x);
-        if (!isFinite(y)) continue;
+        if (!isFinite(y)) {
+          if (currentSegment.length > 0) {
+            segments.push(currentSegment);
+            currentSegment = [];
+          }
+          prevY = null;
+          continue;
+        }
       } catch {
+        if (currentSegment.length > 0) {
+          segments.push(currentSegment);
+          currentSegment = [];
+        }
+        prevY = null;
         continue;
       }
-      points.push(new Vector2(x, y));
+
+      if (prevY !== null) {
+        const slope = Math.abs((y - prevY) / stepSize);
+        if (slope > maxSlopeThreshold) {
+          if (currentSegment.length > 0) {
+            segments.push(currentSegment);
+            currentSegment = [];
+          }
+        }
+      }
+
+      currentSegment.push(new Vector2(x, y));
+      prevY = y;
     }
-    return [points];
+
+    if (currentSegment.length > 0) {
+      segments.push(currentSegment);
+    }
+
+    return segments;
   });
 
   const smoothLines = $derived.by(() => {
@@ -49,7 +86,64 @@
       .curve(curveCardinal.tension(tension));
     return functionRoots.map((points) => l(points));
   });
+
+  // Generate points for the integral region
+  const integralPath = $derived.by(() => {
+    if (!integral) return null;
+
+    const points: Vector2[] = [];
+    const { xLeft, xRight } = integral;
+
+    try {
+      const yLeft = func(xLeft);
+      if (isFinite(yLeft)) {
+        points.push(new Vector2(xLeft, yLeft));
+      }
+    } catch {
+      // continue
+    }
+
+    for (let x = xLeft + stepSize; x < xRight; x += stepSize) {
+      let y: number;
+      try {
+        y = func(x);
+        if (!isFinite(y)) continue;
+      } catch {
+        continue;
+      }
+      points.push(new Vector2(x, y));
+    }
+
+    try {
+      const yRight = func(xRight);
+      if (isFinite(yRight)) {
+        points.push(new Vector2(xRight, yRight));
+      }
+    } catch {
+      // continue
+    }
+
+    if (points.length === 0) return null;
+
+    // Create smooth curve for the function part
+    const l = line<Vector2>()
+      .x((d) => d.x)
+      .y((d) => d.y)
+      .curve(curveCardinal.tension(tension));
+
+    const curvePath = l(points);
+
+    const lastPoint = points[points.length - 1];
+    const firstPoint = points[0];
+
+    return `${curvePath} L ${lastPoint.x},0 L ${firstPoint.x},0 Z`;
+  });
 </script>
+
+<!-- Integral region -->
+{#if integralPath}
+  <path d={integralPath} fill={color + PrimeColor.opacity(0.5)} stroke="none" />
+{/if}
 
 {#if showArrows}
   {#each functionRoots as points, rootIdx (rootIdx)}

@@ -8,6 +8,11 @@
       "title": "De standaardbasissen in 2D en 3D"
     }
   },
+  "calculus": {
+    "left_rectangle": {
+      "title": "linker Rechthoekregel"
+    }
+  },
   "change_of_basis": {
     "projection": {
       "title": "Projectie met betrekking tot een geschikte basis"
