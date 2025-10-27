@@ -20,6 +20,7 @@
     onStartChanging?: () => void;
     onExpand?: () => void;
     onMinimize?: () => void;
+    hideButtons?: boolean;
   };
 
   let {
@@ -30,7 +31,8 @@
     onStopChanging,
     onStartChanging,
     onExpand = () => {},
-    onMinimize = () => {}
+    onMinimize = () => {},
+    hideButtons = false
   }: SliderProps = $props();
 
   let uuid = generateUUID();
@@ -142,15 +144,17 @@
       {/if}
     {/key}
 
-    <Button.Action
-      class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
-      --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
-      --hover-bg="var(--color-blue-100)"
-      tooltip={$_('slider_minimize')}
-      onclick={onMinimize}
-    >
-      <ChevronsRightLeft class="size-4 group-hover:size-4" />
-    </Button.Action>
+    {#if !hideButtons}
+      <Button.Action
+        class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
+        --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
+        --hover-bg="var(--color-blue-100)"
+        tooltip={$_('slider_minimize')}
+        onclick={onMinimize}
+      >
+        <ChevronsRightLeft class="size-4 group-hover:size-4" />
+      </Button.Action>
+    {/if}
   </Button.Action>
 
   {#if slider.label}

@@ -43,6 +43,12 @@ class GlobalState {
   titleFromUrl = $state(false);
 
   /**
+   * Represents whether to hide UI buttons in the Scene
+   * @type {boolean}
+   */
+  hideButtons = $state(false);
+
+  /**
    * Represents when the application should be reset.
    */
   resetKey = $state(Symbol());

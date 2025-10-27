@@ -27,6 +27,10 @@ export function handleGlobalState(searchParams: URLSearchParams) {
     globalState.titleFromUrl = true;
   }
 
+  if (searchParams.has('hideButtons')) {
+    globalState.hideButtons = searchParams.get('hideButtons') === 'true';
+  }
+
   if (searchParams.has('lang')) {
     locale.set(searchParams.get('lang'));
   } else {

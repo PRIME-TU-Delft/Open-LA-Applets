@@ -110,3 +110,9 @@ When debugging for performance, you can run the app with `pnpm dev:fps` to inclu
 | ------------ | -------------------------------------------- | ------- |
 | `position3D` | The position of the applet in the 3D scene   | 0,0,0   |
 | `zoom3D`     | The zoom level of the applet in the 3D scene | 29      |
+
+## Applet static renders
+
+It's possible to also access static PNG renders of the applets by going to `/static` after the applet URL (adding `/image.png` at the end of the applet URL will give you instead the raw PNG file). Additionaly, the query parameter `qr` can be set to `true` to display a QR code with a link to the interactive applet.
+
+Generating static renders of applets is done by Playwright and can be triggered by running `pnpm screenshots` after building the project or together by running `pnpm build:with-screenshots`.
