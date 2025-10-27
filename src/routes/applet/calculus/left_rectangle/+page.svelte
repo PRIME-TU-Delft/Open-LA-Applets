@@ -28,8 +28,8 @@
   };
 
   const draggables = [
-    new Draggable(new Vector2(5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom'),
-    new Draggable(new Vector2(2, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
+    new Draggable(new Vector2(4.5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom'),
+    new Draggable(new Vector2(1.5, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
   ];
 
   const xR = $derived(draggables[0].position.x);
