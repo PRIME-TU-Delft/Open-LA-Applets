@@ -3,7 +3,7 @@
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
 
-  const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
+  const modules = import.meta.glob('/src/routes/applet/calculus/**/+page.svelte');
 
   let contributors = [
     { name: 'Abel de Bruijn', title: 'Lead-developer' },
@@ -17,32 +17,31 @@
     { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];
 
-  const fileUrls = Object.keys(modules)
-    .map((rawUrl) =>
-      // Remove head of path and extension
-      rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
-    )
-    .filter((s) => s !== '[...applet]/static' && !s.startsWith('calculus'));
+  const fileUrls = Object.keys(modules).map((rawUrl) =>
+    // Remove head of path and extension
+    rawUrl.replace('/src/routes/applet/calculus/', '').replace('/+page.svelte', '')
+  );
 </script>
 
 <NavBar
-  bookTitle="Open LA book"
-  bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"
+  bookTitle="Open Calculus book"
+  bookURL="https://tudelft-prime-books.github.io/Calculus/"
   {fileUrls}
+  directory="calculus/"
 />
 
 <div class="mx-auto my-32 max-w-4xl rounded-xl bg-blue-50 p-10">
   <div class="prose w-full max-w-full">
-    <h1>Interactive Linear Algebra applets</h1>
+    <h1>Interactive Calculus applets</h1>
     These applets were created for the
     <a
       class="inline-flex items-center gap-1 hover:underline"
-      href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
+      href="https://tudelft-prime-books.github.io/Calculus/"
     >
-      TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
-    >. Abstract linear algebra concepts are visualized in an interactive way to help students
-    understand the material better. Using 2D and 3D graphics, the applets provide a hands-on
-    experience to explore the concepts.
+      TU Delft Open Calculus book <ExternalLink class="h-4 w-4" /></a
+    >. Abstract calculus concepts are visualized in an interactive way to help students understand
+    the material better. Using 2D and 3D graphics, the applets provide a hands-on experience to
+    explore the concepts.
 
     <p>
       The applets are sorted by the paragraph that they are associated with in the book. Feel free
@@ -51,9 +50,9 @@
 
     <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
       <span class="font-bold">Hint:</span>
-      Looking for Calculus applets? Go to
-      <a class="inline-flex items-center gap-1 hover:underline" href="/calculus"
-        >/calculus <ExternalLink class="h-4 w-4" /></a
+      Looking for Linear Algebra applets? Go to the
+      <a class="inline-flex items-center gap-1 hover:underline" href="/"
+        >main page <ExternalLink class="h-4 w-4" /></a
       >
     </blockquote>
 
@@ -68,7 +67,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} />
+  <FolderList {fileUrls} directory="calculus/" />
 
   <div
     class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"
@@ -77,9 +76,8 @@
       <h2>Credits</h2>
       <p>
         These applets were created for the
-        <a href="https://interactivetextbooks.tudelft.nl/linear-algebra/">
-          TU Delft Open Linear Algebra book
-        </a> by these wonderful contributors.
+        <a href="https://tudelft-prime-books.github.io/Calculus/"> TU Delft Open Calculus book </a> by
+        these wonderful contributors.
       </p>
 
       <h3>Contributors</h3>
