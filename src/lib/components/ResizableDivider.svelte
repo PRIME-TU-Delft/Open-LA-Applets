@@ -1,17 +1,29 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
   import { _ } from 'svelte-i18n';
+  import { onMount } from 'svelte';
 
   let {
     onResize,
-    minimumWidthPercent = 20
+    minimumWidthPercent = 20,
+    defaultLeftDivision = 50
   }: {
     onResize: (leftWidth: number) => void;
     minimumWidthPercent?: number;
+    defaultLeftDivision?: number;
   } = $props();
 
   let isDragging = $state(false);
   let dividerRef: HTMLButtonElement;
+
+  onMount(() => {
+    if (!dividerRef) return;
+    const parent = dividerRef.parentElement;
+    if (!parent) return;
+    const rect = parent.getBoundingClientRect();
+    const leftWidth = (rect.width * defaultLeftDivision) / 100;
+    onResize(leftWidth);
+  });
 
   /**
    * Calculates the new left width based on client X position
@@ -23,8 +35,15 @@
     if (!parent) return null;
 
     const rect = parent.getBoundingClientRect();
-    const leftWidth = clientX - rect.left;
+    let leftWidth = clientX - rect.left;
     const minimumWidth = (rect.width * minimumWidthPercent) / 100;
+
+    // snapping
+    const defaultWidth = (rect.width * defaultLeftDivision) / 100;
+    const snapThreshold = rect.width * 0.01;
+    if (Math.abs(leftWidth - defaultWidth) <= snapThreshold) {
+      leftWidth = defaultWidth;
+    }
 
     if (leftWidth >= minimumWidth && leftWidth <= rect.width - minimumWidth) {
       return leftWidth;
@@ -83,6 +102,15 @@
       };
     }
   });
+
+  function handleDoubleClick() {
+    if (!dividerRef) return;
+    const parent = dividerRef.parentElement;
+    if (!parent) return;
+    const rect = parent.getBoundingClientRect();
+    const leftWidth = (rect.width * defaultLeftDivision) / 100;
+    onResize(leftWidth);
+  }
 </script>
 
 <button
@@ -96,6 +124,7 @@
   )}
   onmousedown={handleMouseDown}
   ontouchstart={handleTouchStart}
+  ondblclick={handleDoubleClick}
   title={$_('resize')}
 >
   <span

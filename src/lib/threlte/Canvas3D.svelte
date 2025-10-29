@@ -10,6 +10,7 @@
       children: Snippet;
       splitCanvas2DChildren?: Snippet;
       splitCanvas3DChildren?: Snippet;
+      defaultLeftDivision?: number;
     };
 </script>
 
@@ -44,7 +45,8 @@
     // Canvas2DProps
     cameraPosition = new Vector3(10, 10, 10),
     cameraZoom = 29,
-    enablePan = false
+    enablePan = false,
+    defaultLeftDivision
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -140,7 +142,10 @@
     </div>
 
     {#if hasSplitCanvas}
-      <ResizableDivider onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)} />
+      <ResizableDivider
+        onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)}
+        {defaultLeftDivision}
+      />
     {/if}
 
     {#if splitCanvas2DChildren}

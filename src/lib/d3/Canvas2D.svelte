@@ -33,7 +33,8 @@
     showAxisNumbers = true,
     enablePan = true,
     customAxis = false,
-    draggables = []
+    draggables = [],
+    defaultLeftDivision
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -139,7 +140,10 @@
     </CanvasD3>
 
     {#if hasSplitCanvas}
-      <ResizableDivider onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)} />
+      <ResizableDivider
+        onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)}
+        {defaultLeftDivision}
+      />
     {/if}
 
     {#if splitCanvas2DChildren}
