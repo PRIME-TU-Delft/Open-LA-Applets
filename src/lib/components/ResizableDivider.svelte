@@ -1,5 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
+  import { _ } from 'svelte-i18n';
 
   let {
     onResize,
@@ -90,17 +91,19 @@
   tabindex="-1"
   aria-label="Resizable divider"
   class={cn(
-    'relative -ml-1 flex h-full w-2 flex-shrink-0 cursor-col-resize items-center justify-center border-r-4 border-slate-400 bg-transparent select-none',
+    'relative -ml-1 flex h-full w-1.5 cursor-col-resize flex-col justify-around bg-slate-700 select-none',
     'group'
   )}
   onmousedown={handleMouseDown}
   ontouchstart={handleTouchStart}
+  title={$_('resize')}
 >
-  <div
-    class={cn(
-      'pointer-events-none h-10 w-0.5 rounded-sm bg-slate-400 transition-all duration-200',
-      'group-hover:w-1 group-hover:bg-blue-500',
-      isDragging && 'w-1 bg-blue-500'
-    )}
-  ></div>
+  <span
+    class="-ml-1.75 h-auto w-full stroke-white text-3xl text-white"
+    style="writing-mode: vertical-lr;">...</span
+  >
+  <span
+    class="-ml-1.75 h-auto w-full stroke-white text-3xl text-white"
+    style="writing-mode: vertical-lr;">...</span
+  >
 </button>
