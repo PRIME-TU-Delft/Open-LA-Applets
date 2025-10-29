@@ -119,7 +119,7 @@
   tabindex="-1"
   aria-label="Resizable divider"
   class={cn(
-    'relative -ml-1 flex h-full w-1.5 cursor-col-resize flex-col justify-around bg-slate-700 select-none',
+    'relative flex h-full w-1.5 cursor-col-resize flex-col justify-around bg-slate-700 select-none',
     'group'
   )}
   onmousedown={handleMouseDown}
@@ -127,12 +127,19 @@
   ondblclick={handleDoubleClick}
   title={$_('resize')}
 >
-  <span
-    class="-ml-1.75 h-auto w-full stroke-white text-3xl text-white"
-    style="writing-mode: vertical-lr;">...</span
-  >
-  <span
-    class="-ml-1.75 h-auto w-full stroke-white text-3xl text-white"
-    style="writing-mode: vertical-lr;">...</span
-  >
+  <div class="flex flex-col items-center justify-center">
+    <svg width="12" height="24" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="6" cy="4" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+      <circle cx="6" cy="12" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+      <circle cx="6" cy="20" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+    </svg>
+  </div>
+
+  <div class="flex flex-col items-center justify-center">
+    <svg width="12" height="24" viewBox="0 0 12 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="6" cy="4" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+      <circle cx="6" cy="12" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+      <circle cx="6" cy="20" r="1.7" stroke="white" stroke-width="1.5" fill="white" />
+    </svg>
+  </div>
 </button>
