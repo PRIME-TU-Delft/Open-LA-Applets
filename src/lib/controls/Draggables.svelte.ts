@@ -12,6 +12,7 @@ import { Vector2 } from 'three';
  * @param label The label of the draggable
  * @param snapFn The function to snap the draggable to the grid
  * @param valueFn The function to format the value
+ * @param labelPosition Position of the label
  */
 
 export class Draggable implements Controller<Vector2> {
@@ -25,13 +26,15 @@ export class Draggable implements Controller<Vector2> {
   label = '';
   snapFn: (value: Vector2) => Vector2;
   releaseFn: (value: Vector2) => Vector2;
+  labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right';
 
   constructor(
     defaultValue: Vector2,
     color: string = PrimeColor.blue,
     label: string = '',
     snapFn: (value: Vector2) => Vector2 = (v) => v,
-    releaseFn: ((value: Vector2) => Vector2) | undefined = undefined
+    releaseFn: ((value: Vector2) => Vector2) | undefined = undefined,
+    labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right'
   ) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
@@ -39,6 +42,7 @@ export class Draggable implements Controller<Vector2> {
     this.label = label;
     this.snapFn = snapFn;
     this.releaseFn = releaseFn ?? snapFn;
+    this.labelPosition = labelPosition;
   }
 
   static Default = new Draggable(new Vector2(0, 0));

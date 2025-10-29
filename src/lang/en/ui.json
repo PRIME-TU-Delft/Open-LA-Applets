@@ -16,7 +16,12 @@
   "share_intro_text": "This applet was created for the",
   "share_book_link_text": "TU Delft Open Linear Algebra book",
   "share_more_info": "For more information about these applets, please visit",
-  "share_accordion_embed": "Embed",
+  "share_accordion_embed_interactive": "Embed interactively",
+  "share_accordion_static_image": "Static image",
+  "embed_include_state": "Include current state (camera position) in url",
+  "embed_applet_url": "Url to this applet:",
+  "embed_include_qr": "Include a QR code to the applet in the image",
+  "embed_static_url": "Url to a static image of this applet:",
   "share_accordion_licence": "Licence [CC-BY v4.0 / Apache v2.0]",
   "share_licence_title": "PRIME Linear Algebra applets",
   "share_licence_by": "by",
@@ -34,5 +39,10 @@
   "dropdown_select_item": "Select item",
   "slideshow_prev": "Go to previous step",
   "slideshow_next": "Go to next step",
-  "slideshow_original_state": "Original state"
+  "slideshow_original_state": "Original state",
+  "clipboard_copied": "Copied to clipboard!",
+  "clipboard_copy": "Copy to clipboard",
+  "open_new_tab": "Open in new tab",
+  "open_github": "Open in GitHub",
+  "download_image": "Download image"
 }

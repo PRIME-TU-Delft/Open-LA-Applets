@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { page } from '$app/state';
   import { cameraState } from '$lib/stores/camera.svelte';
   import Copy from '@lucide/svelte/icons/copy';
@@ -8,7 +8,7 @@
   import { Checkbox } from './ui/checkbox';
   import { Label } from './ui/label';
   import Textarea from './ui/textarea/textarea.svelte';
-  import { locale } from 'svelte-i18n';
+  import { _, locale } from 'svelte-i18n';
   import { fromStore } from 'svelte/store';
 
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
@@ -79,7 +79,7 @@
     for="include-state"
     class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
   >
-    <span>Include current state (camera position) in url</span>
+    <span>{$_('embed_include_state')}</span>
   </Label>
 </div>
 
@@ -87,32 +87,34 @@
   for="url-state"
   class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 >
-  Url to this applet:
+  {$_('embed_applet_url')}
 </Label>
 
 <div class="relative h-full w-full">
   <Textarea readonly value={stateUrl} />
   {#if showCopySucess}
     <div class="absolute bottom-1 left-1 text-green-700" in:fly={{ y: 20 }}>
-      Copied to clipboard!
+      {$_('clipboard_copied')}
     </div>
   {/if}
 </div>
 
 <div class="mt-2 flex gap-2 overflow-x-auto">
   <Button onclick={() => copyToClipboard()}>
-    Copy to clipboard <Copy class="ml-2 size-4" />
+    {$_('clipboard_copy')}
+    <Copy class="ml-2 size-4" />
   </Button>
 
   <a href={stateUrl} target="_blank">
     <Button>
-      Open in new tab <ExternalLink class="ml-2 size-4" />
+      {$_('open_new_tab')}
+      <ExternalLink class="ml-2 size-4" />
     </Button>
   </a>
 
   <a href={githubLink} target="_blank">
     <Button>
-      Open in GitHub
+      {$_('open_github')}
 
       <svg
         class="ml-2 size-4"
