@@ -11,9 +11,10 @@
 
   type CommandPromptProps = {
     fileUrls: string[];
+    directory?: string;
   };
 
-  let { fileUrls }: CommandPromptProps = $props();
+  let { fileUrls, directory = '' }: CommandPromptProps = $props();
 
   let open = $state(false);
   let showPreview = $state(false);
@@ -40,7 +41,7 @@
           const file = {
             file: curr.file.replaceAll('_', ' '),
             folder: curr.folder,
-            url: `/applet/${curr.folder}/${curr.file}`
+            url: `/applet/${directory}${curr.folder}/${curr.file}`
           };
 
           if (curr.folder in acc) {
