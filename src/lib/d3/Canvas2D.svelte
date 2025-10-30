@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
+  import ResizableDivider from '$lib/components/ResizableDivider.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import Camera3D from '$lib/threlte/Camera3D.svelte';
@@ -32,7 +33,8 @@
     showAxisNumbers = true,
     enablePan = true,
     customAxis = false,
-    draggables = []
+    draggables = [],
+    defaultLeftDivision
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -45,6 +47,8 @@
   const renderMode = $derived(activityState.isActive ? 'on-demand' : 'manual');
 
   let enableEasterEgg = $state(false);
+
+  let leftCanvasWidth = $state<number | null>(null);
 
   $effect.pre(() => {
     const searchParams = page?.url?.searchParams;
@@ -117,7 +121,10 @@
   {splitFormulas}
 >
   {#snippet sceneChildren(width: number, height: number)}
-    {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
+    {@const defaultCanvasWidth = width / 2}
+    {@const leftWidth = leftCanvasWidth ?? defaultCanvasWidth}
+    {@const rightWidth = width - leftWidth}
+    {@const canvasWidth = hasSplitCanvas ? leftWidth : width}
     <CanvasD3
       width={canvasWidth}
       {height}
@@ -132,13 +139,20 @@
       {@render children()}
     </CanvasD3>
 
+    {#if hasSplitCanvas}
+      <ResizableDivider
+        onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)}
+        {defaultLeftDivision}
+      />
+    {/if}
+
     {#if splitCanvas2DChildren}
-      <CanvasD3 {height} width={canvasWidth} {...splitCanvas2DProps} isSplit>
+      <CanvasD3 {height} width={rightWidth} {...splitCanvas2DProps} isSplit>
         {@render splitCanvas2DChildren()}
       </CanvasD3>
     {:else if splitCanvas3DChildren}
       <Confetti isSplit />
-      <div style="width: {canvasWidth}px" class="overflow-hidden">
+      <div style="width: {rightWidth}px" class="overflow-hidden">
         <Canvas {renderMode} toneMapping={NoToneMapping}>
           <Camera3D {...splitCanvas3DProps} isSplit />
 

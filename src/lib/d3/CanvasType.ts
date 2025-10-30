@@ -10,4 +10,5 @@ export type CanvasProps = SceneProps &
     children: Snippet;
     splitCanvas2DChildren?: Snippet;
     splitCanvas3DChildren?: Snippet;
+    defaultLeftDivision?: number;
   };
