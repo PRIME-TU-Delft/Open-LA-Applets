@@ -35,6 +35,8 @@
   let doReset: ReturnType<typeof setTimeout>;
   let orbitControlsRef = $state<OrbitControlsJS>();
 
+  let firstLoad = true;
+
   /**
    * Function for reseting the 3D camera to the original position and zoom
    * Do this with a smooth animation and ✨ QuAtErNiOnS ✨
@@ -117,6 +119,12 @@
 
   $effect(() => {
     const _ = globalState.resetKey;
+
+    // otherwise it reset after the first movement of the camera
+    if (firstLoad) {
+      firstLoad = false;
+      return;
+    }
 
     resetCamera();
 
