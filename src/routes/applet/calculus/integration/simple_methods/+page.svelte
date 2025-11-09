@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { Controls } from '$lib/controls/Controls';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
+  import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -32,8 +34,22 @@
     new Draggable(new Vector2(1.5, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
   ];
 
+  const controls = Controls.addDropdown('applets.calculus.integration.left_rectangle.title', [
+    'applets.calculus.integration.left_rectangle.title',
+    'applets.calculus.integration.trapezoid_rule.title'
+  ]);
+
   const xR = $derived(draggables[0].position.x);
   const xL = $derived(draggables[1].position.x);
+
+  const areaTrapezoid = $derived(((func(xL) + func(xR)) * (xR - xL)) / 2);
+  const areaRectangle = $derived(func(xL) * (xR - xL));
+
+  const area = $derived(
+    controls[0] == 'applets.calculus.integration.left_rectangle.title'
+      ? areaRectangle
+      : areaTrapezoid
+  );
 
   const formulas = $derived.by(() => [
     new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
@@ -42,16 +58,11 @@
       .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
     new Formula('\\text{\\$1} = \\$2')
       .addAutoParam($_('applets.common.area'))
-      .addAutoParam(round(func(xL) * (xR - xL)), PrimeColor.orange)
+      .addAutoParam(round(area), PrimeColor.orange)
   ]);
 </script>
 
-<Canvas2D
-  {draggables}
-  {formulas}
-  cameraPosition={new Vector2(4, 2)}
-  title={$_('applets.calculus.integration.left_rectangle.title')}
->
+<Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
@@ -61,13 +72,30 @@
     }}
   />
 
-  <Parallelogram2D
-    points={[new Vector2(xL, 0), new Vector2(xR, 0), new Vector2(xL, func(xL))]}
-    color={PrimeColor.orange + PrimeColor.opacity(0.6)}
-    strokeColor={PrimeColor.orange}
-    strokeWidth={1}
-    fillStyle="dashed"
-  />
+  {#if controls[0] == 'applets.calculus.integration.left_rectangle.title'}
+    <Parallelogram2D
+      points={[new Vector2(xL, 0), new Vector2(xR, 0), new Vector2(xL, func(xL))]}
+      color={PrimeColor.orange + PrimeColor.opacity(0.6)}
+      strokeColor={PrimeColor.orange}
+      strokeWidth={1}
+      fillStyle="dashed"
+    />
+  {/if}
+
+  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title'}
+    <Polygon2D
+      points={[
+        new Vector2(xL, 0),
+        new Vector2(xR, 0),
+        new Vector2(xR, func(xR)),
+        new Vector2(xL, func(xL))
+      ]}
+      color={PrimeColor.orange + PrimeColor.opacity(0.6)}
+      strokeColor={PrimeColor.orange}
+      strokeWidth={1}
+      fillStyle="dashed"
+    />
+  {/if}
 
   <Point2D color={PrimeColor.orange} position={new Vector2(xL, func(xL))} />
   <Latex2D
@@ -75,4 +103,13 @@
     latex="f(x_L)"
     color={PrimeColor.orange}
   />
+
+  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title'}
+    <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
+    <Latex2D
+      position={new Vector2(xR - 0.1, func(xR) + 0.6)}
+      latex="f(x_R)"
+      color={PrimeColor.orange}
+    />
+  {/if}
 </Canvas2D>

@@ -52,7 +52,7 @@
   {draggables}
   {formulas}
   cameraPosition={new Vector2(4, 2)}
-  title={$_('applets.calculus.trapezoid_rule.title')}
+  title={$_('applets.calculus.integration.trapezoid_rule.title')}
 >
   <ExplicitFunction2D
     {func}
