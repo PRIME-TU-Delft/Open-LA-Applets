@@ -2,6 +2,7 @@
   import { cn } from '$lib/utils';
   import { _ } from 'svelte-i18n';
   import { onMount } from 'svelte';
+  import { globalState } from '$lib/stores/globalState.svelte';
 
   let {
     onResize,
@@ -16,13 +17,25 @@
   let isDragging = $state(false);
   let dividerRef: HTMLButtonElement;
 
+  let defaultLeftWidth: number;
+
   onMount(() => {
     if (!dividerRef) return;
     const parent = dividerRef.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
-    const leftWidth = (rect.width * defaultLeftDivision) / 100;
-    onResize(leftWidth);
+    defaultLeftWidth = (rect.width * defaultLeftDivision) / 100;
+    onResize(defaultLeftWidth);
+  });
+
+  function reset() {
+    onResize(defaultLeftWidth);
+  }
+
+  $effect(() => {
+    const _ = globalState.resetKey;
+
+    reset();
   });
 
   /**
