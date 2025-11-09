@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import { Controls } from '$lib/controls/Controls';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -34,7 +35,16 @@
     new Draggable(new Vector2(1.5, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
   ];
 
-  const controls = Controls.addDropdown('applets.calculus.integration.left_rectangle.title', [
+  const searchParams = page?.url?.searchParams;
+  const rule = searchParams.get('rule');
+
+  let defaultRule = 'applets.calculus.integration.left_rectangle.title';
+
+  if (rule === 'trapezoid') {
+    defaultRule = 'applets.calculus.integration.trapezoid_rule.title';
+  }
+
+  const controls = Controls.addDropdown(defaultRule, [
     'applets.calculus.integration.left_rectangle.title',
     'applets.calculus.integration.trapezoid_rule.title'
   ]);
