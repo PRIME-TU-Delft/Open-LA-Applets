@@ -11,6 +11,9 @@
   "calculus": {
     "left_rectangle": {
       "title": "linker Rechthoekregel"
+    },
+    "trapezoid_rule": {
+      "title": "Trapeziumregel"
     }
   },
   "change_of_basis": {
