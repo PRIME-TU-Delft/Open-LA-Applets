@@ -32,6 +32,7 @@
 
   let interval: ReturnType<typeof setInterval>;
   let doReset: ReturnType<typeof setTimeout>;
+  let orbitControlsRef = $state<any>();
 
   /**
    * Function for reseting the 3D camera to the original position and zoom
@@ -67,6 +68,11 @@
       // Update the projection matrix to reflect the changes for the camera
       cameraStore.updateProjectionMatrix();
 
+      // OrbitControls has to be updated, because it stores camera state
+      if (orbitControlsRef) {
+        orbitControlsRef.update();
+      }
+
       advance(); // Manually advance the renderer
     }, DURATION / INTERVALS);
 
@@ -78,6 +84,11 @@
       cameraStore.position.copy(originalPosition.clone());
       cameraStore.lookAt(0, 0, 0);
       cameraStore.updateProjectionMatrix();
+
+      // OrbitControls has to be updated, because it stores camera state
+      if (orbitControlsRef) {
+        orbitControlsRef.update();
+      }
 
       advance();
 
@@ -139,6 +150,7 @@
 >
   {#if activityState.isActive}
     <OrbitControls
+      bind:ref={orbitControlsRef}
       enableZoom
       {enablePan}
       maxZoom={zoom * 10}
