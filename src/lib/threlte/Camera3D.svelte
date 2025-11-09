@@ -17,6 +17,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { get } from 'svelte/store';
   import { OrthographicCamera, Quaternion, Vector3 } from 'three';
+  import { OrbitControls as OrbitControlsJS } from 'three/addons/controls/OrbitControls.js';
 
   let {
     enablePan = true,
@@ -32,7 +33,7 @@
 
   let interval: ReturnType<typeof setInterval>;
   let doReset: ReturnType<typeof setTimeout>;
-  let orbitControlsRef = $state<any>();
+  let orbitControlsRef = $state<OrbitControlsJS>();
 
   /**
    * Function for reseting the 3D camera to the original position and zoom
