@@ -78,7 +78,8 @@
     color={PrimeColor.blue}
     integral={{
       xLeft: xL,
-      xRight: xR
+      xRight: xR,
+      fillStyle: 'full'
     }}
   />
 
