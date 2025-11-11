@@ -5,6 +5,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
@@ -42,24 +43,45 @@
 
   if (rule === 'trapezoid') {
     defaultRule = 'applets.calculus.integration.trapezoid_rule.title';
+  } else if (rule === 'simpson') {
+    defaultRule = 'applets.calculus.integration.simpson_rule.title';
   }
 
   const controls = Controls.addDropdown(defaultRule, [
     'applets.calculus.integration.left_rectangle.title',
-    'applets.calculus.integration.trapezoid_rule.title'
+    'applets.calculus.integration.trapezoid_rule.title',
+    'applets.calculus.integration.simpson_rule.title'
   ]);
 
   const xR = $derived(draggables[0].position.x);
   const xL = $derived(draggables[1].position.x);
 
+  const xM = $derived((xL + xR) / 2);
+
+  const simpsonQuadraticFunc = $derived((x: number) => {
+    const yL = func(xL);
+    const yM = func(xM);
+    const yR = func(xR);
+
+    const L0 = ((x - xM) * (x - xR)) / ((xL - xM) * (xL - xR));
+    const L1 = ((x - xL) * (x - xR)) / ((xM - xL) * (xM - xR));
+    const L2 = ((x - xL) * (x - xM)) / ((xR - xL) * (xR - xM));
+
+    return yL * L0 + yM * L1 + yR * L2;
+  });
+
   const areaTrapezoid = $derived(((func(xL) + func(xR)) * (xR - xL)) / 2);
   const areaRectangle = $derived(func(xL) * (xR - xL));
 
-  const area = $derived(
-    controls[0] == 'applets.calculus.integration.left_rectangle.title'
-      ? areaRectangle
-      : areaTrapezoid
-  );
+  const simpsonEstimate = $derived(((xR - xL) / 6) * (func(xL) + 4 * func(xM) + func(xR)));
+
+  const area = $derived.by(() => {
+    if (controls[0] == 'applets.calculus.integration.left_rectangle.title') return areaRectangle;
+    if (controls[0] == 'applets.calculus.integration.trapezoid_rule.title') return areaTrapezoid;
+    if (controls[0] == 'applets.calculus.integration.simpson_rule.title') return simpsonEstimate;
+
+    return 0;
+  });
 
   const formulas = $derived.by(() => [
     new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
@@ -115,12 +137,55 @@
     color={PrimeColor.orange}
   />
 
-  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title'}
+  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title' || controls[0] == 'applets.calculus.integration.simpson_rule.title'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
       position={new Vector2(xR - 0.1, func(xR) + 0.6)}
       latex="f(x_R)"
       color={PrimeColor.orange}
+    />
+  {/if}
+
+  {#if controls[0] == 'applets.calculus.integration.simpson_rule.title'}
+    <Point2D color={PrimeColor.orange} position={new Vector2(xM, 0)} />
+    <Latex2D position={new Vector2(xM - 0.1, -0.05)} latex="x_M" color={PrimeColor.orange} />
+
+    <Point2D color={PrimeColor.orange} position={new Vector2(xM, func(xM))} />
+    <Latex2D
+      position={new Vector2(xM - 0.1, func(xM) + 0.6)}
+      latex="f(x_M)"
+      color={PrimeColor.orange}
+    />
+
+    <Line2D
+      start={new Vector2(xL, 0)}
+      end={new Vector2(xR, 0)}
+      color={PrimeColor.orange}
+      width={0.05}
+    />
+    <Line2D
+      start={new Vector2(xL, 0)}
+      end={new Vector2(xL, func(xL))}
+      color={PrimeColor.orange}
+      width={0.05}
+    />
+    <Line2D
+      start={new Vector2(xR, 0)}
+      end={new Vector2(xR, func(xR))}
+      color={PrimeColor.orange}
+      width={0.05}
+    />
+
+    <ExplicitFunction2D
+      func={simpsonQuadraticFunc}
+      color={PrimeColor.orange}
+      xMin={xL}
+      xMax={xR}
+      integral={{
+        xLeft: xL,
+        xRight: xR,
+        fillStyle: 'dashed'
+      }}
     />
   {/if}
 </Canvas2D>
