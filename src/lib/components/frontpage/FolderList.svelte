@@ -49,7 +49,7 @@
       <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
       {#each files as { title, url } (url)}
         <Accordion.Content>
-          <ListItem {title} {url} />
+          <ListItem {title} url={url as '/applet/${string}'} />
         </Accordion.Content>
       {/each}
     </Accordion.Item>
