@@ -14,7 +14,7 @@
     tension?: number;
     showArrows?: boolean;
     width?: number;
-    integral?: { xLeft: number; xRight: number };
+    integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed' };
   };
 
   const {
@@ -138,11 +138,30 @@
 
     return `${curvePath} L ${lastPoint.x},0 L ${firstPoint.x},0 Z`;
   });
+
+  const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);
+  const integralFillValue = $derived(
+    integral?.fillStyle === 'dashed' ? `url(#${patternId})` : color + PrimeColor.opacity(0.5)
+  );
 </script>
+
+{#if integral?.fillStyle === 'dashed'}
+  <defs>
+    <pattern
+      id={patternId}
+      patternUnits="userSpaceOnUse"
+      width="0.08"
+      height="0.08"
+      patternTransform="rotate(45)"
+    >
+      <line x1="0" y1="0" x2="0" y2="0.08" stroke={color} stroke-width="0.03" />
+    </pattern>
+  </defs>
+{/if}
 
 <!-- Integral region -->
 {#if integralPath}
-  <path d={integralPath} fill={color + PrimeColor.opacity(0.5)} stroke="none" />
+  <path d={integralPath} fill={integralFillValue} stroke="none" />
 {/if}
 
 {#if showArrows}

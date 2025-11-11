@@ -15,6 +15,9 @@
       },
       "trapezoid_rule": {
         "title": "Trapeziumregel"
+      },
+      "simpson_rule": {
+        "title": "Simpson's regel"
       }
     }
   },
