@@ -50,7 +50,7 @@
     return yL * L0 + yM * L1 + yR * L2;
   });
 
-  const area = $derived(((func(xL) + func(xR)) * (xR - xL)) / 2);
+  const area = $derived(((xR - xL) / 6) * (func(xL) + 4 * func(xM) + func(xR)));
 
   const formulas = $derived.by(() => [
     new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
