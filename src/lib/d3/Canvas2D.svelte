@@ -12,7 +12,6 @@
   import CanvasD3 from './CanvasD3.svelte';
   import type { CanvasProps } from './CanvasType';
 
-  // eslint-disable-next-line svelte/no-unused-props
   let {
     title,
     showFormulasDefault,
