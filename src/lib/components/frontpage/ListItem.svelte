@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import * as Button from '$lib/components/ui/button';
   import { formatString } from '$lib/utils/FormatString';
   import ArrowRight from '@lucide/svelte/icons/arrow-right';
@@ -6,7 +7,7 @@
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import { fade } from 'svelte/transition';
 
-  export let url = '';
+  export let url: `/applet/${string}`;
   export let title = '';
   export let subtitle = '';
 
@@ -29,7 +30,7 @@
   {/if}
   <a
     class="link-hover flex w-full items-center justify-between rounded bg-slate-200 p-4"
-    href={url}
+    href={resolve(url)}
   >
     <div>
       <span class="text-sm text-slate-500">

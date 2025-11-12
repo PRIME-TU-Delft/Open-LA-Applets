@@ -7,7 +7,7 @@
   const queryParams = new URLSearchParams(page.url.searchParams);
   const showQR = queryParams.get('qr') === 'true';
 
-  const applet = $derived(page.params.applet);
+  const applet = $derived(page.params.applet || '');
 
   let found: boolean = $state(true);
 </script>

@@ -36,19 +36,15 @@
   const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
 
-  const endPoint = $derived(origin.clone().add(direction.clone().multiplyScalar(length))); // store with tip of the vector
-  const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
+  const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
 
-  $effect(() => {
-    if (!noNormalise) {
-      direction = direction.clone().normalize();
-    }
-  });
+  const endPoint = $derived(origin.clone().add(normalizedDirection.clone().multiplyScalar(length))); // store with tip of the vector
+  const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
 
   const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
 
   const coneStartPos = $derived(
-    origin.clone().add(direction.clone().multiplyScalar(coneStart - coneHeight / 2))
+    origin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
   );
 </script>
 
@@ -76,7 +72,7 @@
     <Point2D position={new Vector2()} {color} />
   {:else}
     <g
-      transform={`translate(${origin.x}, ${origin.y}) rotate(${(direction.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
+      transform={`translate(${origin.x}, ${origin.y}) rotate(${(normalizedDirection.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
     >
       <Triangle2D
         points={[

@@ -10,20 +10,23 @@
   import Textarea from './ui/textarea/textarea.svelte';
   import { _ } from 'svelte-i18n';
   import { getScreenshotName } from '$lib/screenshots/utils';
+  import { resolve } from '$app/paths';
 
   let showCopySucess = $state(false);
   let includeQR = $state(true);
 
-  const screenshotImage = $derived('/' + getScreenshotName(page.url.pathname));
+  const screenshotImage: `/${string}` = $derived(
+    ('/' + getScreenshotName(page.url.pathname)) as `/${string}`
+  );
 
-  const stateUrl = $derived.by(() => {
+  const stateUrl: `/${string}` = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname + '/static');
 
     if (includeQR) {
       url.searchParams.set('qr', 'true');
     }
 
-    return url.toString();
+    return url.toString() as `/${string}`;
   });
 
   function copyToClipboard() {
@@ -69,14 +72,14 @@
     <Copy class="ml-2 size-4" />
   </Button>
 
-  <a href={stateUrl} target="_blank">
+  <a href={resolve(stateUrl)} target="_blank">
     <Button>
       {$_('open_new_tab')}
       <ExternalLink class="ml-2 size-4" />
     </Button>
   </a>
 
-  <a href={screenshotImage} download target="_blank">
+  <a href={resolve(screenshotImage)} download target="_blank">
     <Button>
       {$_('download_image')}
 
