@@ -44,5 +44,6 @@
   "clipboard_copy": "Kopieer",
   "open_new_tab": "Openen in nieuw tabblad",
   "open_github": "Openen in GitHub",
-  "download_image": "Downloaden"
+  "download_image": "Downloaden",
+  "resize": "Grootte aanpassen"
 }
