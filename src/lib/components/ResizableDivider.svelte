@@ -100,22 +100,6 @@
     isDragging = false;
   }
 
-  $effect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleEnd);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleEnd);
-
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleEnd);
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleEnd);
-      };
-    }
-  });
-
   function handleDoubleClick() {
     if (!dividerRef) return;
     const parent = dividerRef.parentElement;
@@ -125,6 +109,13 @@
     onResize(leftWidth);
   }
 </script>
+
+<svelte:document
+  onmousemove={handleMouseMove}
+  onmouseup={handleEnd}
+  ontouchmove={handleTouchMove}
+  ontouchend={handleEnd}
+/>
 
 <button
   bind:this={dividerRef}
