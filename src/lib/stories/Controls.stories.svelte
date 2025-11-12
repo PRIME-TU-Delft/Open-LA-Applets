@@ -210,7 +210,10 @@ const dropdownVals = [
   'applets.testing.controls_stories.no_vector'
 ];
 const dropdownControl = Controls.addDropdown(dropdownVals[0], dropdownVals);
+
 ```
+The dropdown values should be localized strings. They can be configured in the `src/lang/[lang]/applets.json` file.
+Read more about localization [here](./?path=/docs/tutorials-tutorial-translation--docs).
  -->
 <Story name="Dropdown">
   <div class="h-[300px] overflow-hidden rounded-lg">
