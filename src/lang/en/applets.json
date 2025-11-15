@@ -11,7 +11,9 @@
   "calculus": {
     "integration": {
       "simple_methods": {
-        "rectangle": "Left Rectangle rule",
+        "left": "Left Rectangle rule",
+        "right": "Right Rectangle rule",
+        "midpoint": "Midpoint rule",
         "trapezoid": "Trapezoid rule",
         "simpson": "Simpson's rule"
       }

@@ -11,7 +11,9 @@
   "calculus": {
     "integration": {
       "simple_methods": {
-        "rectangle": "linker Rechthoekregel",
+        "left": "linker Rechthoekregel",
+        "right": "recther Rechthoekregel",
+        "midpoint": "Middenpuntregel",
         "trapezoid": "Trapeziumregel",
         "simpson": "Simpson's regel"
       }
