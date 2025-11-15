@@ -144,7 +144,7 @@
     onmouseleave={() => waitThenReset()}
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
-    <div class="flex h-full w-full gap-3 divide-x-2 divide-slate-400 bg-white">
+    <div class="flex h-full w-full bg-white">
       {#if sceneChildren && width > 0}
         {@render sceneChildren(width, height)}
       {:else}

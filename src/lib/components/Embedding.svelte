@@ -99,6 +99,7 @@
   {/if}
 </div>
 
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
 <div class="mt-2 flex gap-2 overflow-x-auto">
   <Button onclick={() => copyToClipboard()}>
     {$_('clipboard_copy')}

@@ -43,7 +43,14 @@ export default ts.config(
           ignoreRestSiblings: true
         }
       ],
-      'local-rules/no-hardcoded-title': 'error'
+      'local-rules/no-hardcoded-title': 'error',
+      'svelte/no-unnecessary-state-wrap': [
+        'error',
+        {
+          additionalReactiveClasses: [],
+          allowReassign: true
+        }
+      ]
     }
   },
   {

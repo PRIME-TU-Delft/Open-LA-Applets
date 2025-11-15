@@ -166,7 +166,10 @@
     "controls_stories": {
       "fade_out_a": "fade out a",
       "move_b_to": "Move b to (-1,2)",
-      "move_b_from": "Move b to (2,-1)"
+      "move_b_from": "Move b to (2,-1)",
+      "vector_left": "Vector to the left",
+      "vector_right": "Vector to the right",
+      "no_vector": "No vector"
     },
     "more_languages": {
       "title": "Multiple languages test",
