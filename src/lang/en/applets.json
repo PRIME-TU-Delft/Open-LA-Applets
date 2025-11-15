@@ -9,8 +9,14 @@
     }
   },
   "calculus": {
-    "left_rectangle": {
-      "title": "Left Rectangle rule"
+    "integration": {
+      "simple_methods": {
+        "left": "Left Rectangle rule",
+        "right": "Right Rectangle rule",
+        "midpoint": "Midpoint rule",
+        "trapezoid": "Trapezoid rule",
+        "simpson": "Simpson's rule"
+      }
     }
   },
   "change_of_basis": {

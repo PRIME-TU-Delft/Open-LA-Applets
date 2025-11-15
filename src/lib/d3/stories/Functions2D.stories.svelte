@@ -72,7 +72,8 @@
     color: PrimeColor.yellow,
     integral: {
       xLeft: 2,
-      xRight: 5
+      xRight: 5,
+      fillStyle: 'full'
     }
   }}
   {template}
