@@ -45,14 +45,10 @@ export function getAllLanguagesInfo(): LanguageInfo[] {
  * Get available languages for a specific applet with translation status
  * Returns languages that have UI translations + languages that have translations for the specific applet
  *
- * @param category - The applet category (e.g., "basisdim", "crossproduct")
- * @param appletName - The specific applet name (e.g., "more_languages")
+ * @param route - route to the applet, e.g. ["calculus", "integration", "riemann"]
  * @returns Array of language info objects with translation status
  */
-export function getAvailableLanguagesForApplet(
-  category: string,
-  appletName: string
-): LanguageInfo[] {
+export function getAvailableLanguagesForApplet(route: string[]): LanguageInfo[] {
   const languageMap = new Map<string, LanguageInfo>();
 
   // Check for applet translations
@@ -64,8 +60,22 @@ export function getAvailableLanguagesForApplet(
     const module = appletModules[key] as any;
     const translations = module?.default;
 
-    // Check if this language has translations for the specific applet
-    if (translations?.[category]?.[appletName]) {
+    let success = true;
+    let l = translations;
+
+    for (let i = 0; i < route.length; i++) {
+      console.log(l);
+      console.log(route[i]);
+
+      l = l?.[route[i]];
+
+      if (l === undefined) {
+        success = false;
+        break;
+      }
+    }
+
+    if (success) {
       languageMap.set(langMatch, {
         code: langMatch,
         hasUI: false, // Will be updated below
