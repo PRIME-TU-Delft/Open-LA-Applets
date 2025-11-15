@@ -39,18 +39,18 @@
   const searchParams = page?.url?.searchParams;
   const rule = searchParams.get('rule');
 
-  let defaultRule = 'applets.calculus.integration.left_rectangle.title';
+  let defaultRule = 'applets.calculus.integration.simple_methods.rectangle';
 
   if (rule === 'trapezoid') {
-    defaultRule = 'applets.calculus.integration.trapezoid_rule.title';
+    defaultRule = 'applets.calculus.integration.simple_methods.trapezoid';
   } else if (rule === 'simpson') {
-    defaultRule = 'applets.calculus.integration.simpson_rule.title';
+    defaultRule = 'applets.calculus.integration.simple_methods.simpson';
   }
 
   const controls = Controls.addDropdown(defaultRule, [
-    'applets.calculus.integration.left_rectangle.title',
-    'applets.calculus.integration.trapezoid_rule.title',
-    'applets.calculus.integration.simpson_rule.title'
+    'applets.calculus.integration.simple_methods.rectangle',
+    'applets.calculus.integration.simple_methods.trapezoid',
+    'applets.calculus.integration.simple_methods.simpson'
   ]);
 
   const xR = $derived(draggables[0].position.x);
@@ -76,9 +76,12 @@
   const simpsonEstimate = $derived(((xR - xL) / 6) * (func(xL) + 4 * func(xM) + func(xR)));
 
   const area = $derived.by(() => {
-    if (controls[0] == 'applets.calculus.integration.left_rectangle.title') return areaRectangle;
-    if (controls[0] == 'applets.calculus.integration.trapezoid_rule.title') return areaTrapezoid;
-    if (controls[0] == 'applets.calculus.integration.simpson_rule.title') return simpsonEstimate;
+    if (controls[0] == 'applets.calculus.integration.simple_methods.rectangle')
+      return areaRectangle;
+    if (controls[0] == 'applets.calculus.integration.simple_methods.trapezoid')
+      return areaTrapezoid;
+    if (controls[0] == 'applets.calculus.integration.simple_methods.simpson')
+      return simpsonEstimate;
 
     return 0;
   });
@@ -94,7 +97,7 @@
         .addAutoParam(round(area), PrimeColor.orange)
     ];
 
-    if (controls[0] == 'applets.calculus.integration.simpson_rule.title') {
+    if (controls[0] == 'applets.calculus.integration.simple_methods.simpson') {
       f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
         round(area),
         PrimeColor.orange
@@ -116,7 +119,7 @@
     }}
   />
 
-  {#if controls[0] == 'applets.calculus.integration.left_rectangle.title'}
+  {#if controls[0] == 'applets.calculus.integration.simple_methods.rectangle'}
     <Parallelogram2D
       points={[new Vector2(xL, 0), new Vector2(xR, 0), new Vector2(xL, func(xL))]}
       color={PrimeColor.orange + PrimeColor.opacity(0.6)}
@@ -126,7 +129,7 @@
     />
   {/if}
 
-  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title'}
+  {#if controls[0] == 'applets.calculus.integration.simple_methods.trapezoid'}
     <Polygon2D
       points={[
         new Vector2(xL, 0),
@@ -148,7 +151,7 @@
     color={PrimeColor.orange}
   />
 
-  {#if controls[0] == 'applets.calculus.integration.trapezoid_rule.title' || controls[0] == 'applets.calculus.integration.simpson_rule.title'}
+  {#if controls[0] == 'applets.calculus.integration.simple_methods.trapezoid' || controls[0] == 'applets.calculus.integration.simple_methods.simpson'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
       position={new Vector2(xR - 0.1, func(xR) + 0.6)}
@@ -157,7 +160,7 @@
     />
   {/if}
 
-  {#if controls[0] == 'applets.calculus.integration.simpson_rule.title'}
+  {#if controls[0] == 'applets.calculus.integration.simple_methods.simpson'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xM, 0)} />
     <Latex2D position={new Vector2(xM - 0.1, -0.05)} latex="x_M" color={PrimeColor.orange} />
 

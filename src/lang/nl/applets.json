@@ -10,14 +10,10 @@
   },
   "calculus": {
     "integration": {
-      "left_rectangle": {
-        "title": "linker Rechthoekregel"
-      },
-      "trapezoid_rule": {
-        "title": "Trapeziumregel"
-      },
-      "simpson_rule": {
-        "title": "Simpson's regel"
+      "simple_methods": {
+        "rectangle": "linker Rechthoekregel",
+        "trapezoid": "Trapeziumregel",
+        "simpson": "Simpson's regel"
       }
     }
   },
