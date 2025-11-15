@@ -83,15 +83,26 @@
     return 0;
   });
 
-  const formulas = $derived.by(() => [
-    new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
-      .addAutoParam(round(xL), PrimeColor.orange)
-      .addAutoParam(round(xR), PrimeColor.orange)
-      .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
-    new Formula('\\text{\\$1} = \\$2')
-      .addAutoParam($_('applets.common.area'))
-      .addAutoParam(round(area), PrimeColor.orange)
-  ]);
+  const formulas = $derived.by(() => {
+    let f = [
+      new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
+        .addAutoParam(round(xL), PrimeColor.orange)
+        .addAutoParam(round(xR), PrimeColor.orange)
+        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
+      new Formula('\\text{\\$1} = \\$2')
+        .addAutoParam($_('applets.common.area'))
+        .addAutoParam(round(area), PrimeColor.orange)
+    ];
+
+    if (controls[0] == 'applets.calculus.integration.simpson_rule.title') {
+      f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
+        round(area),
+        PrimeColor.orange
+      );
+    }
+
+    return f;
+  });
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
