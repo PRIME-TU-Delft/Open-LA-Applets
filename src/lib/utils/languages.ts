@@ -64,9 +64,6 @@ export function getAvailableLanguagesForApplet(route: string[]): LanguageInfo[] 
     let l = translations;
 
     for (let i = 0; i < route.length; i++) {
-      console.log(l);
-      console.log(route[i]);
-
       l = l?.[route[i]];
 
       if (l === undefined) {

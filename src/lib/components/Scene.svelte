@@ -63,10 +63,6 @@
 
   const languages = $derived.by(() => {
     if (appletRoute[0] !== '') {
-      console.log(appletRoute);
-
-      console.log(getAvailableLanguagesForApplet(appletRoute));
-
       return getAvailableLanguagesForApplet(appletRoute);
     }
 

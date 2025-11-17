@@ -30,6 +30,7 @@ export default ts.config(
       }
     },
     rules: {
+      'no-console': 'error',
       'no-undef': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',

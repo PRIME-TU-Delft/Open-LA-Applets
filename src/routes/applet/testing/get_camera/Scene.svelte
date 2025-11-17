@@ -1,4 +1,6 @@
 <script lang="ts">
+  /* eslint-disable no-console */
+
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { OrthographicCamera } from 'three';

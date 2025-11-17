@@ -34,7 +34,6 @@
     lines.push(new Vector2(x, y));
     angles_deg.push(angle);
   }
-  console.log(lines);
 
   function strokeWidth(index: number) {
     if (highlightRadii.includes(index)) return 0.03;
