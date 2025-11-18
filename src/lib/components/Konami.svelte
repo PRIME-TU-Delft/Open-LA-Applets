@@ -26,6 +26,7 @@
   // The function to handle keydown events.
   function handleKeyDown(e: KeyboardEvent) {
     const code = e.code; // The code of the key pressed.
+    /* eslint-disable-next-line no-console */
     if (debug) console.log(code); //  If debug is true, Logging the code.
 
     const deltaTime = e.timeStamp - lastKeyTime; // The time elapsed since the last key press.
@@ -38,6 +39,7 @@
     if (code === konami[currentKeys.length]) {
       // If the key pressed is the next key in the Konami Code sequence, add it to the current keys sequence.
       currentKeys.push(code);
+      /* eslint-disable-next-line no-console */
       if (debug) console.log(currentKeys); // If debug is true, log the current keys sequence.
     } else {
       // If the key pressed is not the next key in the Konami Code sequence, reset the current keys sequence.

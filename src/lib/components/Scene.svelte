@@ -46,20 +46,24 @@
   /**
    * Get languages available for this applet
    */
-  const [appletCategory, appletName] = $derived.by(() => {
+  const appletRoute: string[] = $derived.by(() => {
     const pathname = page.url?.pathname || '';
-    const match = pathname.match(/\/applet\/([^/]+)\/([^/]+)/);
+    const match = pathname.match(/\/applet\/*([^/]+)*\/([^/]+)\/([^/]+)/);
 
     if (match) {
-      return [match[1], match[2]];
+      let ret = [...match.splice(1)];
+      ret = ret.filter(function (element) {
+        return element !== undefined;
+      });
+      return ret;
     }
 
-    return [null, null];
+    return [''];
   });
 
   const languages = $derived.by(() => {
-    if (appletCategory && appletName) {
-      return getAvailableLanguagesForApplet(appletCategory, appletName);
+    if (appletRoute[0] !== '') {
+      return getAvailableLanguagesForApplet(appletRoute);
     }
 
     return getAllLanguagesInfo(); // fallback

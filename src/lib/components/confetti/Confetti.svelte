@@ -103,6 +103,7 @@
 
   onMount(() => {
     if (!w || !h) {
+      /* eslint-disable-next-line no-console */
       console.warn('No width or height provided for the canvas');
       return;
     }
