@@ -9,12 +9,16 @@
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector3 } from 'three';
   import Point3D from '$lib/threlte/Point3D.svelte';
+  import NumberFlow from '@number-flow/svelte';
 
   const methods = ['center', 'random', 'min', 'max'];
 
   const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
-    .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry) // b
-    .addSlider(10, 1, 20, 1, PrimeColor.blue); // numRectangles
+    .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry, {
+      label: 'spread',
+      labelFormat: labelFormatSpread
+    }) // b
+    .addSlider(10, 1, 20, 1, PrimeColor.blue, { label: 'n', labelFormat: labelFormatN }); // numRectangles
 
   const func = (x: number, y: number) => 4 - (1 / 4) * (x ** 2 + y ** 2);
   const func_display =
@@ -138,7 +142,18 @@
   });
 </script>
 
-<Canvas3D {controls} {formulas} cameraZoom={100}>
+{#snippet labelFormatSpread(value: number)}
+  <div class="flex gap-1">
+    <NumberFlow value={-value} />
+    <p>to</p>
+    <NumberFlow {value} />
+  </div>
+{/snippet}
+{#snippet labelFormatN(value: number)}
+  <NumberFlow {value} />
+{/snippet}
+
+<Canvas3D {controls} {formulas} cameraZoom={40}>
   <Axis3D showNumbers={true} axisLength={5} axisSpacing={1} />
   <Surface3D
     {func}
