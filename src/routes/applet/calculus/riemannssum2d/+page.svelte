@@ -9,18 +9,18 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
-  const methods = ['left', 'right', 'middle', 'random', 'min', 'max'];
+  const methods = ['middle', 'left', 'right', 'random', 'min', 'max'];
 
   const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
-    .addSlider(2, -4, 4, 0.1, PrimeColor.raspberry) // b
-    .addSlider(10, 1, 50, 1, PrimeColor.blue); // numRectangles
+    .addSlider(1, -2, 2, 0.1, PrimeColor.raspberry) // b
+    .addSlider(5, 1, 10, 1, PrimeColor.blue); // numRectangles
 
-  const func = (x: number) => Math.cos((2 * Math.PI * x) / 4);
-  const func_display = '\\int_{\\$1}^{\\$2} (\\cos(\\frac{2\\pi x}{4})) dx~~=~~\\$3';
+  const func = (x: number) => Math.exp(-x) + 1;
+  const func_display = '\\int_{\\$1}^{\\$2} (e^{-x} + 1) dx~~=~~\\$3';
 
   const formulas = $derived.by(() => {
-    const a = -round(controls[1]);
-    const b = round(controls[1]);
+    const a = round(1-controls[1]);
+    const b = round(1+controls[1]);
     const numRectangles = round(controls[2]);
     const dx = (b - a) / numRectangles;
     const result = integrate(func, a, b);
@@ -28,13 +28,13 @@
     const f1 = new Formula(func_display)
       .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(result.toFixed(3), PrimeColor.blue);
+      .addAutoParam(result.toFixed(3), PrimeColor.cyan);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
     const riemann_display = '\\sum_{i=1}^{n} f(x_i^*) \\Delta x~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
 
     const f2 = new Formula(riemann_display)
-      .addAutoParam(riemannSum.toFixed(3), PrimeColor.orange)
+      .addAutoParam(riemannSum.toFixed(3), PrimeColor.cyan)
       .addAutoParam(numRectangles, PrimeColor.blue)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
@@ -44,8 +44,8 @@
   const method = $derived(controls[0]);
 
   const rects = $derived.by(() => {
-    const a = -controls[1];
-    const b = controls[1];
+    const a = 1-controls[1];
+    const b = 1+controls[1];
     const numRectangles = controls[2];
     const dx = (b - a) / numRectangles;
     const newRects = [];
@@ -118,15 +118,19 @@
     }
     return newRects;
   });
+
+  const sampledPoints = $derived.by(() => {
+    return rects.map((rect) => new Vector2(rect.samplePosition.x, 0));
+  });
 </script>
 
-<Canvas2D showAxisNumbers={true} {controls} {formulas}>
+<Canvas2D showAxisNumbers={true} {controls} {formulas} cameraPosition={new Vector2(1, 1)} cameraZoom={1.25}>
   <ParameterizedFunction2D
     xFunc={(t) => t}
     yFunc={func}
     color={PrimeColor.blue}
-    tStart={-30}
-    tEnd={30}
+    tStart={-1}
+    tEnd={3}
     stepSize={0.1}
   />
   <g>
@@ -138,11 +142,22 @@
         position={rect.samplePosition}
         color={PrimeColor.black}
         radius={0.04}
-        hoverText={`${round(rect.height, 2)}`}
+        text={`${round(rect.height, 2)}`}
+        showTextOnlyOnHover={true}
         fontSize={0.5}
         offset={Math.max(rect.points[0].y, rect.points[1].y) > 0
           ? new Vector2(0, 0.3)
           : new Vector2(0, -0.1)}
+      />
+    {/each}
+    {#each sampledPoints as point, index (index)}
+      <Point2D
+        position={point}
+        color={PrimeColor.orange}
+        radius={0.03}
+        text={`T_{${index + 1}}`}
+        fontSize={0.4}
+        offset={new Vector2(0, -0.05)}
       />
     {/each}
   </g>

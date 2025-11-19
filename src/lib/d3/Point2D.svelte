@@ -6,7 +6,8 @@
     color?: string;
     pulse?: boolean;
     opacity?: number;
-    hoverText?: string;
+    text?: string;
+    showTextOnlyOnHover?: boolean;
     fontSize?: number;
     offset?: Vector2;
   };
@@ -22,12 +23,13 @@
     position = new Vector2(0, 0),
     isSquare = false,
     radius = POINT_SIZE,
-    color = 'black',
+    color = PrimeColor.black,
     pulse = false,
     opacity = 1,
-    hoverText = '',
+    text = '',
     fontSize = 1,
-    offset = new Vector2(0, 0)
+    offset = new Vector2(0, 0),
+    showTextOnlyOnHover = false
   }: Point2DProps = $props();
 </script>
 
@@ -65,10 +67,14 @@
     {/if}
   {/if}
 </g>
-{#if hoverText}
-  <g class="hoverText">
-    <Latex2D latex={hoverText} {position} {offset} {fontSize} color={PrimeColor.black} />
-  </g>
+{#if text}
+  {#if showTextOnlyOnHover}
+    <g class="hoverText">
+      <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
+    </g>
+  {:else}
+    <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
+  {/if}
 {/if}
 
 <style>
