@@ -159,3 +159,13 @@ export function leastSquaresLine(points: Vector2[]) {
 
   return [new Vector2(0, b), new Vector2(5, y2)];
 }
+
+export function integrate(f: (x: number) => number, a: number, b: number, n = 1000) {
+  // Using the trapezoidal rule for numerical integration
+  const h = (b - a) / n;
+  let sum = 0.5 * (f(a) + f(b));
+  for (let i = 1; i < n; i++) {
+    sum += f(a + i * h);
+  }
+  return sum * h;
+}
