@@ -19,8 +19,8 @@
   const func_display = '\\int_{\\$1}^{\\$2} (e^{-x} + 1) dx~~=~~\\$3';
 
   const formulas = $derived.by(() => {
-    const a = round(1-controls[1]);
-    const b = round(1+controls[1]);
+    const a = round(1 - controls[1]);
+    const b = round(1 + controls[1]);
     const numRectangles = round(controls[2]);
     const dx = (b - a) / numRectangles;
     const result = integrate(func, a, b);
@@ -44,8 +44,8 @@
   const method = $derived(controls[0]);
 
   const rects = $derived.by(() => {
-    const a = 1-controls[1];
-    const b = 1+controls[1];
+    const a = 1 - controls[1];
+    const b = 1 + controls[1];
     const numRectangles = controls[2];
     const dx = (b - a) / numRectangles;
     const newRects = [];
@@ -124,7 +124,13 @@
   });
 </script>
 
-<Canvas2D showAxisNumbers={true} {controls} {formulas} cameraPosition={new Vector2(1, 1)} cameraZoom={1.25}>
+<Canvas2D
+  showAxisNumbers={true}
+  {controls}
+  {formulas}
+  cameraPosition={new Vector2(1, 1)}
+  cameraZoom={1.25}
+>
   <ParameterizedFunction2D
     xFunc={(t) => t}
     yFunc={func}
