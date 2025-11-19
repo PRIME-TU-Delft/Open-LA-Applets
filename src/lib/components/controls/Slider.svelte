@@ -9,6 +9,7 @@
   import Pause from '@lucide/svelte/icons/pause';
   import Play from '@lucide/svelte/icons/play';
   import { generateUUID } from 'three/src/math/MathUtils.js';
+  import { _ } from 'svelte-i18n';
 
   type SliderProps = {
     value: number;
@@ -19,6 +20,7 @@
     onStartChanging?: () => void;
     onExpand?: () => void;
     onMinimize?: () => void;
+    hideButtons?: boolean;
   };
 
   let {
@@ -29,7 +31,8 @@
     onStopChanging,
     onStartChanging,
     onExpand = () => {},
-    onMinimize = () => {}
+    onMinimize = () => {},
+    hideButtons = false
   }: SliderProps = $props();
 
   let uuid = generateUUID();
@@ -111,12 +114,12 @@
 
 {#if !isExpanded}
   <!-- If not selected display only the expand button -->
-  <div class="tooltip tooltip-top" data-tip="Extend slider">
+  <div class="tooltip tooltip-top" data-tip={$_('slider_expand')}>
     <Button.Action
       class="text-white"
       --bg={slider.color}
       --hover-bg={slider.color + PrimeColor.opacity(0.8)}
-      tooltip="Expand slider"
+      tooltip={$_('slider_expand')}
       side="top"
       onclick={onExpand}
     >
@@ -129,7 +132,7 @@
     class="relative rounded-full text-white"
     --bg={slider.color}
     --hover-bg={slider.color + PrimeColor.opacity(0.8)}
-    tooltip="Toggle animation"
+    tooltip={$_('slider_toggle_animation')}
     side="top"
     onclick={togglePlay}
   >
@@ -141,15 +144,17 @@
       {/if}
     {/key}
 
-    <Button.Action
-      class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
-      --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
-      --hover-bg="var(--color-blue-100)"
-      tooltip="Minimize slider"
-      onclick={onMinimize}
-    >
-      <ChevronsRightLeft class="size-4 group-hover:size-4" />
-    </Button.Action>
+    {#if !hideButtons}
+      <Button.Action
+        class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
+        --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
+        --hover-bg="var(--color-blue-100)"
+        tooltip={$_('slider_minimize')}
+        onclick={onMinimize}
+      >
+        <ChevronsRightLeft class="size-4 group-hover:size-4" />
+      </Button.Action>
+    {/if}
   </Button.Action>
 
   {#if slider.label}

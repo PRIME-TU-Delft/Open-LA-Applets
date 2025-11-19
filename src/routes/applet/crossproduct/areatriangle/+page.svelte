@@ -10,6 +10,7 @@
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let P = new MathVector3(2, 1, 0);
   let Q = new MathVector3(2, 2, 2);
@@ -34,8 +35,8 @@
           PrimeColor.orange
         ),
       new Formula(
-        `\\text{Area}(\\Delta \\mathbf{PQR}) = \\frac{1}{2} ||\\mathbf{n}|| = ${round(area, 1)}`
-      )
+        `\\text{\\$1}(\\Delta \\mathbf{PQR}) = \\frac{1}{2} ||\\mathbf{n}|| = ${round(area, 1)}`
+      ).addAutoParam($_('applets.common.area'))
     ];
   });
 </script>
@@ -104,7 +105,7 @@
   <Latex3D
     position={P.clone().add(Q.clone().multiplyScalar(0.5))}
     offset={new Vector3(0, 0, 0)}
-    latex={`\\text{\\textcolor{${PrimeColor.yellow}}{A}} = \\text{Area}(\\Delta \\mathbf{PQR})`}
+    latex={`\\text{\\textcolor{${PrimeColor.yellow}}{A}} = \\text{${$_('applets.common.area')}}(\\Delta \\mathbf{PQR})`}
     hasBackground
   />
 

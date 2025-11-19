@@ -1,0 +1,185 @@
+{
+  "common": {
+    "fill": "Vullen",
+    "area": "Oppervlakte"
+  },
+  "basisdim": {
+    "standardbasis": {
+      "title": "De standaardbasissen in 2D en 3D"
+    }
+  },
+  "calculus": {
+    "left_rectangle": {
+      "title": "linker Rechthoekregel"
+    }
+  },
+  "change_of_basis": {
+    "projection": {
+      "title": "Projectie met betrekking tot een geschikte basis"
+    }
+  },
+  "complex_basics": {
+    "complex_addition": {
+      "title": "Optellen van complexe getallen"
+    },
+    "complex_inversion": {
+      "title": "Omgekeerde van een complex getal: Cartesisch en polair"
+    }
+  },
+  "det_geometric": {
+    "linearity_one": {
+      "translate_abd": "Verplaats ABD"
+    },
+    "linearity_two": {
+      "translate_obda_along_v": "Verplaats OBDA langs v",
+      "translate_ogc_along_u": "Verplaats OGC langs u",
+      "translate_aef_along_u": "Verplaats AEF langs u",
+      "rename_oafc_oaeg_cgef": "Hernoem OAFC = OAEG + CGEF",
+      "rename_oaeg_cgef_oafc": "Hernoem OAEG + CGEF = OAFC",
+      "substract_cgef": "Trek CGEF af",
+      "add_cgef": "Tel CGEF op"
+    }
+  },
+  "dot_product": {
+    "diagonal_parallelogram": {
+      "title": "Optellen en aftrekken van 2 vectoren"
+    },
+    "triangle_inequality": {
+      "title": "De driehoeksongelijkheid"
+    },
+    "innerproduct_projectionvectorline": {
+      "title": "Projectie van een vector op een vector die niet nul is"
+    }
+  },
+  "eigenvalue_eigenvector": {
+    "no_eigenvector": {
+      "an_eigenvector": "Een eigenvector",
+      "no_eigenvector": "Geen eigenvector"
+    }
+  },
+  "geom_lin_trans": {
+    "proj_on_line_3d": {
+      "title": "Projectie van een vector op een lijn"
+    },
+    "reflect_in_r2": {
+      "title": "Weerspiegeling van meerdere punten langs een lijn"
+    }
+  },
+  "injectivity_and_surjectivity": {
+    "injsurj_injex_example": {
+      "transformation_1": "Transformatie 1",
+      "transformation_2": "Transformatie 2",
+      "transformation_3": "Transformatie 3",
+      "new_target": "Nieuw doel"
+    }
+  },
+  "linear_combinations": {
+    "span_one": {
+      "title": "De span van een vector",
+      "length": "lengte"
+    },
+    "span_two_line": {
+      "title": "De span van twee parallelle vectoren"
+    },
+    "span_two_plane": {
+      "title": "De span van twee vectoren die in hetzelfde vlak liggen"
+    },
+    "span_three_plane": {
+      "title": "De span van drie vectoren die in hetzelfde vlak liggen"
+    }
+  },
+  "linear_independence": {
+    "linind_example_in_3d": {
+      "linearly": "lineair",
+      "in": "on",
+      "dependent": "afhankelijk"
+    }
+  },
+  "lines_and_planes": {
+    "plane_line_intersection": {
+      "title": "Twee vlakken met een snijlijn."
+    },
+    "parametric_vector_equation": {
+      "title": "Een parametrische vector van een lijn"
+    },
+    "normal_equation_plane": {
+      "title": "Een vlak door het punt P."
+    },
+    "normal_equation_plane_origin": {
+      "title": "Een vlak door de oorsprong."
+    },
+    "two_disjoint_planes": {
+      "title": "Twee vlakken zonder een gemeenschappelijk punt."
+    },
+    "directional_vectors_plane": {
+      "title": "Een parametrische vectorvergelijking van een vlak."
+    },
+    "disjoint_planes": {
+      "title": "Drie vlakken zonder gemeenschappelijk punt."
+    },
+    "two_planes_coincide": {
+      "title": "Twee vlakken met een gemeenschappelijk punt."
+    },
+    "parametric_line_space": {
+      "title": "Een parametrische vector van een lijn in een 3D-ruimte"
+    }
+  },
+  "matrix_operations": {
+    "nilpotent": {
+      "project_on_x1": "Projecteer op x1",
+      "rotate_90_degrees": "Roteer 90 graden",
+      "expand_on_x1": "Uitbreiden op x1"
+    }
+  },
+  "subspaces_in_rn": {
+    "the_game": {
+      "disc": "Schijf",
+      "affine_line": "Affiene Lijn",
+      "two_axes": "Twee assen",
+      "first_quadrant": "Eerste kwadrant",
+      "two_sided_cone": "Tweezijdige kegel"
+    }
+  },
+  "ortho": {
+    "orthocomp": {
+      "title": "Het orthogonale complement van een lijn (links) en een vlak (rechts)"
+    }
+  },
+  "symmetric_matrices": {
+    "quadratic_forms": {
+      "title": "Kwadratische vormen"
+    }
+  },
+  "testing": {
+    "animation_studio": {
+      "extended_length": "Uitgebreide lengte",
+      "translated": "Verschoven",
+      "show_2nd_and_fade_3rd_next": "Toon 2e vector en fade in 3e vector",
+      "show_2nd_and_fade_3rd_prev": "Verberg 2e vector en fade out 3e vector"
+    },
+    "controls_stories": {
+      "fade_out_a": "vervagen a",
+      "move_b_to": "Verplaats b naar (-1,2)",
+      "move_b_from": "Verplaats b naar (2,-1)"
+    }
+  },
+  "vectors": {
+    "rules": {
+      "rule_1": "Regel 1 - Plus Identiteit",
+      "rule_2": "Regel 2 - Associativiteit",
+      "rule_3": "Regel 3 - Commutativiteit",
+      "rule_4": "Regel 4 - Negatie",
+      "rule_5": "Regel 5 - Identiteit",
+      "rule_6": "Regel 6 - Distributiviteit",
+      "rule_7": "Regel 7 - Vermenigvuldiging",
+      "rule_8": "Regel 8 - Vermenigvuldiging"
+    },
+    "3Daddition": {
+      "title": "Geometrische interpretatie van optelling voor driedimensionale vectoren."
+    }
+  },
+  "tutorials": {
+    "complex_numbers_addition": "Optellen van complexe getallen",
+    "magnitude_z2": "Modulus van z_2"
+  }
+}

@@ -1,5 +1,7 @@
 import { globalState } from '$lib/stores/globalState.svelte';
+import { locale } from 'svelte-i18n';
 import { Vector2, Vector3 } from 'three';
+import { DEFAULT_LANGUAGE } from './languages';
 
 type Params2D = {
   position2D: Vector2;
@@ -22,6 +24,17 @@ export function handleGlobalState(searchParams: URLSearchParams) {
 
   if (searchParams.has('title')) {
     globalState.title = searchParams.get('title') ?? '';
+    globalState.titleFromUrl = true;
+  }
+
+  if (searchParams.has('hideButtons')) {
+    globalState.hideButtons = searchParams.get('hideButtons') === 'true';
+  }
+
+  if (searchParams.has('lang')) {
+    locale.set(searchParams.get('lang'));
+  } else {
+    locale.set(DEFAULT_LANGUAGE);
   }
 }
 

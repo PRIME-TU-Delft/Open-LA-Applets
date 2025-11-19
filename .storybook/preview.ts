@@ -3,6 +3,8 @@ import type { Preview } from '@storybook/sveltekit';
 import '../src/app.css';
 import 'katex/dist/katex.min.css';
 
+import { addMessages, init } from 'svelte-i18n';
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -13,7 +15,16 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Introduction', 'Colors', 'Initialize', '2D Components', '3D Components', '*']
+        order: [
+          'Introduction',
+          'Colors',
+          'Localization',
+          'Tutorials',
+          'Initialize',
+          '2D Components',
+          '3D Components',
+          '*'
+        ]
       }
     },
 
@@ -26,5 +37,21 @@ const preview: Preview = {
   },
   tags: ['autodocs']
 };
+
+// Localization
+import enUI from '../src/lang/en/ui.json';
+import enApplets from '../src/lang/en/applets.json';
+
+import nlUI from '../src/lang/nl/ui.json';
+import nlApplets from '../src/lang/nl/applets.json';
+
+addMessages('en', enUI);
+addMessages('en', { applets: enApplets });
+addMessages('nl', nlUI);
+addMessages('nl', { applets: nlApplets });
+
+init({
+  fallbackLocale: 'en'
+});
 
 export default preview;

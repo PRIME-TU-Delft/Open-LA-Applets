@@ -14,10 +14,10 @@ export class Toggle implements Controller<boolean> {
   value = $state(false);
   color: string = PrimeColor.blue;
   width = 10;
-  label: string | undefined = undefined;
+  label = $state(undefined) as string | undefined;
   type = 'toggle';
   isSwitch: boolean = false;
-  switchRightSide: string | undefined = undefined;
+  switchRightSide = $state(undefined) as string | undefined;
 
   constructor(
     defaultValue: boolean,

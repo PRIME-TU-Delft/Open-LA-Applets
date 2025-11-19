@@ -27,3 +27,6 @@ vite.config.ts.timestamp-*
 chromatic.log
 
 *storybook.log
+
+# Screenshots
+static/applet/

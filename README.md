@@ -25,8 +25,9 @@ Creating a new applet starts directly by making a tri-fold decision. First, do y
 
 You can find tutorials for creating 2D, 3D and split view applets here:
 
-- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-2d--docs)
-- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorial-3d--docs)
+- [2D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-2d--docs)
+- [3D applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-3d--docs)
+- [Translating applets](https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-translation--docs)
 
 ## Uploading applets
 
@@ -83,6 +84,7 @@ When debugging for performance, you can run the app with `pnpm dev:fps` to inclu
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `iframe`  | This parameter is added by default and set to true for each applet in this book. Therefore, this parameter is not configurable for this book. When using an applet in a different context will change the bahaviour. | false   |
 | `title`   | A string that will be shown as the title of the applet when the applet is in fullscreen mode                                                                                                                         | ""      |
+| `lang`    | Language code to use for text in the applet (like `en` or `nl`)                                                                                                                                                      | en      |
 
 ### Control parameters
 
@@ -108,3 +110,9 @@ When debugging for performance, you can run the app with `pnpm dev:fps` to inclu
 | ------------ | -------------------------------------------- | ------- |
 | `position3D` | The position of the applet in the 3D scene   | 0,0,0   |
 | `zoom3D`     | The zoom level of the applet in the 3D scene | 29      |
+
+## Applet static renders
+
+It's possible to also access static PNG renders of the applets by going to `/static` after the applet URL (adding `/image.png` at the end of the applet URL will give you instead the raw PNG file). Additionaly, the query parameter `qr` can be set to `true` to display a QR code with a link to the interactive applet.
+
+Generating static renders of applets is done by Playwright and can be triggered by running `pnpm screenshots` after building the project or together by running `pnpm build:with-screenshots`.

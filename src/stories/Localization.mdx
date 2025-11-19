@@ -1,0 +1,141 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Localization" />
+
+# Localization
+
+The library supports having translations in multiple languages. The language files are located in `src/lang` folder.
+
+## Language Structure
+
+Each language has its own directory inside `src/lang`, named with the language code (e.g., `en` for English, `nl` for Dutch, `pl` for Polish). Inside each language directory, there are two JSON files:
+
+- **`ui.json`** - Contains translations for UI elements such as buttons, tooltips, and other interface text (e.g., "Lock", "Reset", "Change language").
+- **`applets.json`** - Contains translations for applet-specific content such as titles, labels, and other text that appears within individual applets.
+
+### File Structure
+
+Both files follow a nested JSON structure where:
+
+- **Top-level keys** are categories (e.g., `common`, `vectors`, `complex_basics`, `testing`) - they are the names of applet folders
+- **Second-level keys** are applet names used to group the translations related to specific applets within each category
+- **Nested keys** are specific translation keys within each category and applet
+- **Values** are the translated strings
+
+Example structure for `applets.json`:
+
+```json
+// src/lang/en/applets.json
+{
+  "complex_basics": {
+    "complex_addition": {
+      "title": "Complex numbers addition"
+    },
+    "complex_inversion": {
+      "title": "Inverse of a complex number: Cartesian and Polar"
+    }
+  },
+  "tutorials": {
+    "complex_numbers_addition": "Complex numbers addition",
+    "magnitude_z2": "Magnitude of z_2"
+  }
+}
+```
+
+## Using Translations
+
+To use translations in your applet, import the `_` function from `svelte-i18n`:
+
+```ts
+import { _ } from 'svelte-i18n';
+```
+
+Then reference translations using dot notation:
+
+```ts
+$_('applets.tutorials.magnitude_z2'); // For applet translations
+$_('lock'); // For UI translations
+```
+
+### Dropdown control
+
+The Dropdown component is special, since it interprets and evaluates every string as a translation key. This is because it is always used to select string options, which are best handled as translation keys. For example:
+
+```html
+<script lang="ts">
+  // ...
+
+  const controls = Controls.addDropdown(
+    'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1',
+    [
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1',
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2',
+      'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
+    ],
+    PrimeColor.blue
+  );
+</script>
+
+<!-- Example check for selected value: -->
+{#if dropdown == 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2'}
+<!-- ... -->
+{/if}
+```
+
+If you do not want to translate the options, it will still work, since it will fallback to the original string (translation key) if no translation is found.
+
+### Other Controls
+
+Usage for other components is simpler, as they do not evaluate the strings. For example, for the `Slider` control:
+
+```ts
+const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
+  label: $_('applets.tutorials.magnitude_z2'), // Will change based on language
+  labelFormat
+});
+```
+
+Or if you do not want to translate the label, you can just use a normal string:
+
+```ts
+const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
+  label: 'z_2', // No translation
+  labelFormat
+});
+```
+
+### Formulas
+
+It is easiest to add the translations for the formulas using the `addAutoParam()` function. For example:
+
+```ts
+const formulas = $derived.by(() => {
+    // ...
+
+    return [
+        new Formula(
+        `\\text{\\$1}(\\Delta \\mathbf{PQR}) = ...`
+        ).addAutoParam($_('applets.common.area'));
+    ];
+});
+```
+
+## When is a Language Shown?
+
+A language appears in the language selector of an applet when the language has translations for that specific applet category in `applets.json` **OR** has `ui.json` file (for general UI elements).
+
+This means that:
+
+- If a language has `ui.json` but no translations for a specific applet, it will still appear in the selector (the applet will fall back to English for missing translations)
+- If a language has applet-specific translations in `applets.json` but no `ui.json`, it will appear in the selector for that applet (UI elements will fall back to English)
+
+The default language is English (`en`), which serves as the fallback when translations are missing in other languages.
+
+## Setting the Language
+
+Users can change the language in two ways:
+
+1. **Using the language button** - Click the language icon in the top right corner of any applet
+2. **Using URL parameter** - Add `?lang=nl` (or any other language code) to the URL
+
+For more information on how to add translations to an applet, see the [Translation Tutorial](./?path=/docs/tutorials-tutorial-translation--docs).

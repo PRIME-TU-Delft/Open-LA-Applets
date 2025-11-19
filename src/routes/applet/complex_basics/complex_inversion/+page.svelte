@@ -9,6 +9,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let d1 = new Draggable(new Vector2(1, 1), PrimeColor.yellow);
 
@@ -66,7 +67,7 @@
   draggables={[d1]}
   formulas={formulasLeft}
   splitFormulas={formulasRight}
-  title="Inverse of a complex number: Cartesian and Polar"
+  title={$_('applets.complex_basics.complex_inversion.title')}
   cameraZoom={2.75}
   enablePan={false}
   splitCanvas2DProps={{

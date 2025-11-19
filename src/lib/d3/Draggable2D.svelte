@@ -63,6 +63,19 @@
       )
       .raise(); // Means the drag element is lifted to the highest z-index
   });
+
+  const labelOffset: Vector2 = $derived.by(() => {
+    switch (draggable.labelPosition) {
+      case 'top':
+        return new Vector2(0, 0.6);
+      case 'right':
+        return new Vector2(0.2, 0.2);
+      case 'bottom':
+        return new Vector2(-0.1, -0.05);
+      case 'left':
+        return new Vector2(-0.6, 0.2);
+    }
+  });
 </script>
 
 <circle
@@ -89,7 +102,7 @@
   <Latex2D
     latex={draggable.label}
     position={draggable.value}
-    offset={new Vector2(0.2, 0.2)}
+    offset={labelOffset}
     color={draggable.color}
   />
 {/if}

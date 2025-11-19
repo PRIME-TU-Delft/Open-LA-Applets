@@ -17,6 +17,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { get } from 'svelte/store';
   import { OrthographicCamera, Quaternion, Vector3 } from 'three';
+  import { OrbitControls as OrbitControlsJS } from 'three/addons/controls/OrbitControls.js';
 
   let {
     enablePan = true,
@@ -32,6 +33,9 @@
 
   let interval: ReturnType<typeof setInterval>;
   let doReset: ReturnType<typeof setTimeout>;
+  let orbitControlsRef = $state<OrbitControlsJS>();
+
+  let firstLoad = true;
 
   /**
    * Function for reseting the 3D camera to the original position and zoom
@@ -67,6 +71,11 @@
       // Update the projection matrix to reflect the changes for the camera
       cameraStore.updateProjectionMatrix();
 
+      // OrbitControls has to be updated, because it stores camera state
+      if (orbitControlsRef) {
+        orbitControlsRef.update();
+      }
+
       advance(); // Manually advance the renderer
     }, DURATION / INTERVALS);
 
@@ -78,6 +87,11 @@
       cameraStore.position.copy(originalPosition.clone());
       cameraStore.lookAt(0, 0, 0);
       cameraStore.updateProjectionMatrix();
+
+      // OrbitControls has to be updated, because it stores camera state
+      if (orbitControlsRef) {
+        orbitControlsRef.update();
+      }
 
       advance();
 
@@ -105,6 +119,12 @@
 
   $effect(() => {
     const _ = globalState.resetKey;
+
+    // otherwise it reset after the first movement of the camera
+    if (firstLoad) {
+      firstLoad = false;
+      return;
+    }
 
     resetCamera();
 
@@ -139,6 +159,7 @@
 >
   {#if activityState.isActive}
     <OrbitControls
+      bind:ref={orbitControlsRef}
       enableZoom
       {enablePan}
       maxZoom={zoom * 10}

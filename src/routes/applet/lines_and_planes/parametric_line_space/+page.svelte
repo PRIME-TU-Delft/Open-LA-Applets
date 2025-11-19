@@ -7,6 +7,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
   import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const v_0 = new Vector3(-2, 3, 2);
   const u = new Vector3(2, 1, -1);
@@ -27,7 +28,7 @@
   cameraPosition={new Vector3(3.31, 6.55, 15.68)}
   cameraZoom={38}
   {controls}
-  title="A parametric vector of a line in 3D space"
+  title={$_('applets.lines_and_planes.parametric_line_space.title')}
 >
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.raspberry} length={v_0.length()} />

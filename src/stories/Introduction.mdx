@@ -18,7 +18,7 @@ by the Delft University of Technology. The applets are hosted here: [https://ope
 
 ## Authoring applets
 
-The applets are created using [Svelte](https://svelte.dev/) and [Threlte](https://threlte.xyz/) for 3D graphics.
+The applets are created using [Svelte](https://svelte.dev/), [Threlte](https://threlte.xyz/) for 3D graphics and [D3.js](https://d3js.org/) for 2D graphics.
 You can find the source code for the applets in the [GitHub repository](https://github.com/PRIME-TU-Delft/Open-LA-Applets).
 
 Create a new file in the `src/routes/applet/` folder with the convension of `SECTION_NAME_IN_THE_BOOK/APPLET_NAME/+page.svelte`.
@@ -44,13 +44,14 @@ do you want to use formulas to display mathematical notation? If so, you can use
 
 You can find tutorials for creating 2D, 3D and split view applets here:
 
-- [2D applets](./?path=/docs/tutorial-2d--docs)
-- [3D applets](./?path=/docs/tutorial-3d--docs)
+- [2D applets](./?path=/docs/tutorials-tutorial-2d--docs)
+- [3D applets](./?path=/docs/tutorials-tutorial-3d--docs)
+- [Translating applets](./?path=/docs/tutorials-tutorial-translation--docs)
 
 ## Uploading applets
 
 Once you are happy with your applet, you can make a pull request to the main branch. The applet will be automatically
-deployed to `https://deploy-preview-[PR_NUMBER]--playful-otter-9e0500.netlify.app/`. Here you can test the applet in a production
+deployed to `https://deploy-preview-[PR_NUMBER]--openla-preview.netlify.app/`. Here you can test the applet in a production
 environment, or share it with others for feedback. Once the pull request is merged, the applet will be automatically
 deployed to `https://openla.ewi.tudelft.nl`.
 

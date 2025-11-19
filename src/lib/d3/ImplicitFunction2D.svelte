@@ -239,8 +239,6 @@
       }
     }
 
-    console.log({ lines });
-
     return lines;
   });
 

@@ -206,7 +206,8 @@ export class Controls<
   /**
    * Add a new Dropdown to the controls array
    * @param labels - labels for the dropdown
-   * @param dft - default value for the dropdown
+   * @param dft - default value for the dropdown (translation key)
+   * @param values - array of translation keys
    * @param color - color for the dropdown default is raspberry
    */
   addDropdown(dft: string, values: string[], color?: ColorString) {
@@ -217,8 +218,8 @@ export class Controls<
 
   /**
    * Static method to create set Controls<T> to a new dropdown
-   * @param labels - labels for the dropdown
-   * @param dft - default value for the dropdown
+   * @param dft - default value for the dropdown (translation key)
+   * @param values - array of translation keys
    * @param color - color for the dropdown default is raspberry
    * @returns
    */
@@ -255,7 +256,7 @@ export class Controls<
   /**
    * Static method to create set Controls<T> to a new animation
    * @param dft - default value for the animation
-   * @param label - label for the animation
+   * @param label - label for the animation (translation key)
    * @returns
    */
   static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {

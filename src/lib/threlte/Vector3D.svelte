@@ -39,36 +39,29 @@
   const CONE_DIAMETER = 0.1;
 
   let coneMesh = $state<Mesh>();
+  const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
   const vectorLength = $derived(length ?? direction.length());
   const endPoint = $derived(
-    origin.clone().add(direction.clone().normalize().multiplyScalar(vectorLength))
+    origin.clone().add(normalizedDirection.clone().multiplyScalar(vectorLength))
   );
   const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
   const lineEnd = $derived(
-    origin.clone().add(
-      direction
-        .clone()
-        .normalize()
-        .multiplyScalar(vectorLength + (length && length < 0 ? coneHeight : -coneHeight))
-    )
+    origin
+      .clone()
+      .add(
+        normalizedDirection
+          .clone()
+          .multiplyScalar(vectorLength + (length && length < 0 ? coneHeight : -coneHeight))
+      )
   );
   const conePosition = $derived.by(() => {
-    const directionVector = direction
-      .clone()
-      .normalize()
-      .multiplyScalar(coneHeight / 2);
+    const directionVector = normalizedDirection.clone().multiplyScalar(coneHeight / 2);
 
     if (length && length < 0) {
       return lineEnd.clone().sub(directionVector);
     }
 
     return lineEnd.clone().add(directionVector);
-  });
-
-  $effect.pre(() => {
-    if (!noNormalise) {
-      direction = direction.clone().normalize();
-    }
   });
 
   $effect(() => {

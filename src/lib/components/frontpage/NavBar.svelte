@@ -2,7 +2,14 @@
   import * as Breadcrumb from '$lib/components/ui/breadcrumb';
   import CommandPrompt from './CommandPrompt.svelte';
 
-  export let fileUrls: string[];
+  export type NavBarProps = {
+    bookTitle: string;
+    bookURL: string;
+    fileUrls: string[];
+    directory?: string;
+  };
+
+  let { bookTitle, bookURL, fileUrls, directory = '' }: NavBarProps = $props();
 </script>
 
 <nav
@@ -33,11 +40,8 @@
       </Breadcrumb.Item>
       <Breadcrumb.Separator />
       <Breadcrumb.Item>
-        <Breadcrumb.Link
-          href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
-          class="link"
-        >
-          Open LA book
+        <Breadcrumb.Link href={bookURL} class="link">
+          {bookTitle}
         </Breadcrumb.Link>
       </Breadcrumb.Item>
       <Breadcrumb.Separator />
@@ -47,7 +51,7 @@
     </Breadcrumb.List>
   </Breadcrumb.Root>
 
-  <CommandPrompt {fileUrls} />
+  <CommandPrompt {fileUrls} {directory} />
 </nav>
 
 <style>
