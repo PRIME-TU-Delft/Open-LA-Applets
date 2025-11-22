@@ -3,6 +3,7 @@
   import Axis from '$lib/d3/Axis.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
+    import Formulas from '$lib/stories/Formulas.stories.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -65,9 +66,9 @@
   const formulas = $derived.by(() => {
     return [
       new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'),
-      new Formula('Orange - left'),
-      new Formula('Blue - right'),
-      new Formula('Green - trapezoid')
+      Formula.legendFormula('Left rectangle', PrimeColor.orange),
+      Formula.legendFormula('Right rectangle', PrimeColor.blue),
+      Formula.legendFormula('Trapezoid', PrimeColor.darkGreen)
     ];
   });
 
@@ -101,8 +102,6 @@
     errorsPredefined.push({ pointX: p, errors: errors(a) });
   });
 </script>
-
-<!-- TODO: DONT DO 2 * IN X -->
 
 <Canvas2D
   {controls}
