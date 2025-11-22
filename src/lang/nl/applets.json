@@ -9,8 +9,14 @@
     }
   },
   "calculus": {
-    "left_rectangle": {
-      "title": "linker Rechthoekregel"
+    "integration": {
+      "simple_methods": {
+        "left": "linker Rechthoekregel",
+        "right": "recther Rechthoekregel",
+        "midpoint": "Middenpuntregel",
+        "trapezoid": "Trapeziumregel",
+        "simpson": "Simpson's regel"
+      }
     }
   },
   "change_of_basis": {
