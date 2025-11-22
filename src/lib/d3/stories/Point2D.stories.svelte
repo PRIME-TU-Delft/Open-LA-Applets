@@ -39,3 +39,13 @@
 
 <!-- A Point with opacity defined -->
 <Story name="With opacity defined" args={{ opacity: 0.5 }} {template} />
+
+<!-- A Point with text defined -->
+<Story name="With text" args={{ text: 'Hello, World!' }} {template} />
+
+<!-- A Point with text shown only on hover -->
+<Story
+  name="With text shown only on hover"
+  args={{ text: 'Hover me!', showTextOnlyOnHover: true }}
+  {template}
+/>
