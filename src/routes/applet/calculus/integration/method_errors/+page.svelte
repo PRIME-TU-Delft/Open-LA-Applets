@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
+  import Axis from '$lib/d3/Axis.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
@@ -103,7 +104,15 @@
 
 <!-- TODO: DONT DO 2 * IN X -->
 
-<Canvas2D {controls} {formulas} customAxis={true}>
+<Canvas2D
+  {controls}
+  {formulas}
+  customAxis={true}
+  cameraZoom={1.2}
+  cameraPosition={new Vector2(-1.4, -2.75)}
+>
+  <Axis showOrigin={false} logarithmic={true} scaleX={2} />
+
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
     {@const left = Math.log10(pE.errors['left'])}
