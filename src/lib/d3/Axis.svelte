@@ -8,9 +8,19 @@
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
+    logarithmic?: boolean;
+    scaleX?: number;
+    scaleY?: number;
   };
 
-  let { length = GRID_SIZE_2D, showOrigin = true, showAxisNumbers = true }: AxisProps = $props();
+  let {
+    length = GRID_SIZE_2D,
+    showOrigin = true,
+    showAxisNumbers = true,
+    logarithmic = false,
+    scaleX = 1,
+    scaleY = 1
+  }: AxisProps = $props();
 
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndeces = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
@@ -20,6 +30,17 @@
     if (index % 5 == 0) return 0.01;
     return 0.005;
   }
+
+  function getTickText(index: number) {
+    if (!logarithmic) {
+      return index.toLocaleString();
+    }
+
+    return `10^{${index}}`;
+  }
+
+  const yAxisTextX = logarithmic ? 0.3 : -0.3;
+  const yNegativeAxisTextX = logarithmic ? 0.3 : -0.55;
 </script>
 
 <g>
@@ -49,16 +70,22 @@
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
       {#if index > 0}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.07, -0.15)} />
+        <Latex2D latex={getTickText(index)} position={new Vector2(index * scaleX - 0.07, -0.15)} />
       {:else}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.15, -0.15)} />
+        <Latex2D latex={getTickText(index)} position={new Vector2(index * scaleX - 0.15, -0.15)} />
       {/if}
 
       <!-- Y axis number labels -->
       {#if index > 0}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.3, index + 0.12)} />
+        <Latex2D
+          latex={getTickText(index)}
+          position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
+        />
       {:else}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.1)} />
+        <Latex2D
+          latex={getTickText(index)}
+          position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
+        />
       {/if}
     {/if}
   {/each}

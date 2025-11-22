@@ -48,6 +48,14 @@ export class Formula {
     );
   }
 
+  static legendFormula(text: string, color: PrimeColor) {
+    const f = new Formula(`\\$1 - \\text{${text}}`);
+
+    f.addAutoParam('⬤', color);
+
+    return f;
+  }
+
   raw() {
     return this.stringFormula;
   }
