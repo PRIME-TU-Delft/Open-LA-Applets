@@ -2,6 +2,7 @@
   import { Controls } from '$lib/controls/Controls';
   import Axis from '$lib/d3/Axis.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { LegendItem } from '$lib/utils/Legend';
@@ -106,10 +107,13 @@
   {formulas}
   {legendItems}
   customAxis={true}
-  cameraZoom={1.5}
+  cameraZoom={1.35}
   cameraPosition={new Vector2(-1.4, -2.4)}
 >
   <Axis showOrigin={false} logarithmic={true} scaleX={2} />
+
+  <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
+  <Latex2D latex={'\\text{Absolute error}'} position={new Vector2(1.95, -1.5)} rotation={-90} />
 
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
