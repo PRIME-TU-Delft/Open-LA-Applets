@@ -55,7 +55,7 @@
     return currentArea;
   };
 
-  const controls = Controls.addSlider(1 / 8, 1 / 128, 1 / 4, 0.01, PrimeColor.raspberry, {
+  const controls = Controls.addSlider(1 / 20, 1 / 256, 1 / 4, 0.01, PrimeColor.raspberry, {
     label: 'h',
     valueFn: (v: number) => round(v, 3) + 'π'
   });
@@ -106,8 +106,8 @@
   {formulas}
   {legendItems}
   customAxis={true}
-  cameraZoom={1.2}
-  cameraPosition={new Vector2(-1.4, -2.75)}
+  cameraZoom={1.5}
+  cameraPosition={new Vector2(-1.4, -2.4)}
 >
   <Axis showOrigin={false} logarithmic={true} scaleX={2} />
 
@@ -126,14 +126,14 @@
 
   <Point2D
     position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
-    color={PrimeColor.orange}
+    color={PrimeColor.orange + PrimeColor.opacity(0.5)}
   />
   <Point2D
     position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
-    color={PrimeColor.blue}
+    color={PrimeColor.blue + PrimeColor.opacity(0.5)}
   />
   <Point2D
     position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
-    color={PrimeColor.darkGreen}
+    color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
   />
 </Canvas2D>
