@@ -3,8 +3,8 @@
   import Axis from '$lib/d3/Axis.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
-    import Formulas from '$lib/stories/Formulas.stories.svelte';
   import { Formula } from '$lib/utils/Formulas';
+  import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -54,14 +54,10 @@
     return currentArea;
   };
 
-  const controls = Controls.addSlider(
-    Math.PI / 8,
-    Math.PI / 128,
-    Math.PI / 4,
-    0.01,
-    PrimeColor.raspberry,
-    { label: 'h' }
-  );
+  const controls = Controls.addSlider(1 / 8, 1 / 128, 1 / 4, 0.01, PrimeColor.raspberry, {
+    label: 'h',
+    valueFn: (v: number) => round(v, 3) + 'π'
+  });
 
   const formulas = $derived.by(() => {
     return [
@@ -72,7 +68,7 @@
     ];
   });
 
-  const h = $derived(controls[0]);
+  const h = $derived(Math.PI * controls[0]);
 
   let areaDict = $derived(areaFull(L, R, h));
 
