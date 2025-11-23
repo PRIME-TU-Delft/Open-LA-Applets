@@ -8,6 +8,7 @@
   import { LegendItem } from '$lib/utils/Legend';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
   let func = (t: number) => {
@@ -65,11 +66,11 @@
     return [new Formula('f(t) = \\sqrt{1+\\cos^2(t)}')];
   });
 
-  const legendItems = [
-    new LegendItem('Left rectangle', PrimeColor.orange),
-    new LegendItem('Right rectangle', PrimeColor.blue),
-    new LegendItem('Trapezoid', PrimeColor.darkGreen)
-  ];
+  const legendItems = $derived([
+    new LegendItem($_('applets.calculus.integration.method_errors.left'), PrimeColor.orange),
+    new LegendItem($_('applets.calculus.integration.method_errors.right'), PrimeColor.blue),
+    new LegendItem($_('applets.calculus.integration.method_errors.trapezoid'), PrimeColor.darkGreen)
+  ]);
 
   const h = $derived(Math.PI * controls[0]);
 
@@ -109,11 +110,16 @@
   customAxis={true}
   cameraZoom={1.35}
   cameraPosition={new Vector2(-1.4, -2.4)}
+  title={$_('applets.calculus.integration.method_errors.title')}
 >
   <Axis showOrigin={false} logarithmic={true} scaleX={2} />
 
   <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
-  <Latex2D latex={'\\text{Absolute error}'} position={new Vector2(1.95, -1.5)} rotation={-90} />
+  <Latex2D
+    latex={`\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`}
+    position={new Vector2(1.95, -1.5)}
+    rotation={-90}
+  />
 
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
