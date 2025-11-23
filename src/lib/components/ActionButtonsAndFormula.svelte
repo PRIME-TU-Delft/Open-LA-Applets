@@ -16,13 +16,16 @@
   import screenfull from 'screenfull';
   import { _ } from 'svelte-i18n';
   import LanguageWindow from './LanguageWindow.svelte';
+  import type { LegendItem } from '$lib/utils/Legend';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
   type ActionButtonsAndFormulaProps = {
     onReset: () => void;
     formulas?: Formula[];
+    legendItems?: LegendItem[];
     splitFormulas?: Formula[];
+    splitLegendItems?: LegendItem[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
     hideButtons?: boolean;
@@ -32,7 +35,9 @@
   let {
     onReset,
     formulas = [],
+    legendItems = [],
     splitFormulas = [],
+    splitLegendItems = [],
     controls = undefined,
     showFormulas = false,
     languages,
@@ -64,10 +69,10 @@
 </script>
 
 <div class="absolute top-1 right-0 select-none">
-  <!-- FORMULAE -->
+  <!-- FORMULAE and LEGEND -->
   {#if formulasShown}
     <div class="flex justify-end">
-      {#if formulas && formulas.length >= 1}
+      {#if (formulas && formulas.length >= 1) || (legendItems && legendItems.length >= 1)}
         <div
           class="mr-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
@@ -76,14 +81,40 @@
               <LatexUI latex={formula.stringFormula} />
             {/key}
           {/each}
+
+          {#if formulas && formulas.length >= 1 && legendItems && legendItems.length >= 1}
+            <hr />
+          {/if}
+
+          {#each legendItems as legendI (legendI.id)}
+            {#key legendI.label}
+              <div class="flex items-center justify-start gap-4">
+                <div class="h-4 w-4 rounded-full" style="background-color: {legendI.color}"></div>
+                <span class="text-base">{legendI.label}</span>
+              </div>
+            {/key}
+          {/each}
         </div>
       {/if}
 
-      {#if splitFormulas && splitFormulas.length >= 1}
+      {#if (splitFormulas && splitFormulas.length) >= 1 || (splitLegendItems && splitLegendItems.length >= 1)}
         <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
           {#each splitFormulas as formula (formula.id)}
             {#key formula.stringFormula}
               <LatexUI latex={formula.stringFormula} />
+            {/key}
+          {/each}
+
+          {#if splitFormulas && splitFormulas.length >= 1 && splitLegendItems && splitLegendItems.length >= 1}
+            <hr />
+          {/if}
+
+          {#each splitLegendItems as legendI (legendI.id)}
+            {#key legendI.label}
+              <div class="flex items-center justify-start gap-4">
+                <div class="h-4 w-4 rounded-full" style="background-color: {legendI.color}"></div>
+                <span class="text-base">{legendI.label}</span>
+              </div>
             {/key}
           {/each}
         </div>

@@ -4,6 +4,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
+  import { LegendItem } from '$lib/utils/Legend';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -60,13 +61,14 @@
   });
 
   const formulas = $derived.by(() => {
-    return [
-      new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'),
-      Formula.legendFormula('Left rectangle', PrimeColor.orange),
-      Formula.legendFormula('Right rectangle', PrimeColor.blue),
-      Formula.legendFormula('Trapezoid', PrimeColor.darkGreen)
-    ];
+    return [new Formula('f(t) = \\sqrt{1+\\cos^2(t)}')];
   });
+
+  const legendItems = [
+    new LegendItem('Left rectangle', PrimeColor.orange),
+    new LegendItem('Right rectangle', PrimeColor.blue),
+    new LegendItem('Trapezoid', PrimeColor.darkGreen)
+  ];
 
   const h = $derived(Math.PI * controls[0]);
 
@@ -102,6 +104,7 @@
 <Canvas2D
   {controls}
   {formulas}
+  {legendItems}
   customAxis={true}
   cameraZoom={1.2}
   cameraPosition={new Vector2(-1.4, -2.75)}
