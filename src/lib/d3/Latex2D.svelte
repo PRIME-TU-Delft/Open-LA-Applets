@@ -4,6 +4,7 @@
     fontSize?: number;
     position?: Vector2;
     offset?: Vector2;
+    rotation?: number;
     extend?: number;
     color?: string;
   };
@@ -18,6 +19,7 @@
     fontSize = 1,
     position = new Vector2(0, 0),
     offset = new Vector2(0, 0),
+    rotation = 0,
     extend = 0,
     color = 'black'
   }: Latex2DProps = $props();
@@ -30,7 +32,7 @@
 <g
   transform="translate({position.x + offset.x + extendedOffset.x}, {position.y +
     offset.y +
-    extendedOffset.y}) scale({0.02 * fontSize},{-0.02 * fontSize})"
+    extendedOffset.y}) rotate({rotation}) scale({0.02 * fontSize},{-0.02 * fontSize})"
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
