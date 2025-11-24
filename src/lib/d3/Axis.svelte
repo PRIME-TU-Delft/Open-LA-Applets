@@ -8,7 +8,8 @@
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
-    logarithmic?: boolean;
+    logarithmicX?: boolean;
+    logarithmicY?: boolean;
     scaleX?: number;
     scaleY?: number;
   };
@@ -17,7 +18,8 @@
     length = GRID_SIZE_2D,
     showOrigin = true,
     showAxisNumbers = true,
-    logarithmic = false,
+    logarithmicX = false,
+    logarithmicY = false,
     scaleX = 1,
     scaleY = 1
   }: AxisProps = $props();
@@ -31,16 +33,16 @@
     return 0.005;
   }
 
-  function getTickText(index: number) {
-    if (!logarithmic) {
+  function getTickText(index: number, axis: 'x' | 'y') {
+    if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
       return index.toLocaleString();
     }
 
     return `10^{${index}}`;
   }
 
-  const yAxisTextX = logarithmic ? 0.3 : -0.3;
-  const yNegativeAxisTextX = logarithmic ? 0.3 : -0.55;
+  const yAxisTextX = logarithmicY ? 0.3 : -0.3;
+  const yNegativeAxisTextX = logarithmicY ? 0.3 : -0.55;
 </script>
 
 <g>
@@ -70,20 +72,26 @@
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
       {#if index > 0}
-        <Latex2D latex={getTickText(index)} position={new Vector2(index * scaleX - 0.07, -0.15)} />
+        <Latex2D
+          latex={getTickText(index, 'x')}
+          position={new Vector2(index * scaleX - 0.07, -0.15)}
+        />
       {:else}
-        <Latex2D latex={getTickText(index)} position={new Vector2(index * scaleX - 0.15, -0.15)} />
+        <Latex2D
+          latex={getTickText(index, 'x')}
+          position={new Vector2(index * scaleX - 0.15, -0.15)}
+        />
       {/if}
 
       <!-- Y axis number labels -->
       {#if index > 0}
         <Latex2D
-          latex={getTickText(index)}
+          latex={getTickText(index, 'y')}
           position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
         />
       {:else}
         <Latex2D
-          latex={getTickText(index)}
+          latex={getTickText(index, 'y')}
           position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
         />
       {/if}

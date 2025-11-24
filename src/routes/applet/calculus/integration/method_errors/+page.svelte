@@ -112,7 +112,7 @@
   cameraPosition={new Vector2(-1.4, -2.4)}
   title={$_('applets.calculus.integration.method_errors.title')}
 >
-  <Axis showOrigin={false} logarithmic={true} scaleX={2} />
+  <Axis showOrigin={false} logarithmicX={true} logarithmicY={true} scaleX={2} />
 
   <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
   <Latex2D
