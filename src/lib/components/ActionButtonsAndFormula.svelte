@@ -16,6 +16,7 @@
   import screenfull from 'screenfull';
   import { _ } from 'svelte-i18n';
   import LanguageWindow from './LanguageWindow.svelte';
+  import LegendItemComponent from './LegendItemComponent.svelte';
   import type { LegendItem } from '$lib/utils/Legend';
 
   type G = readonly Controller<number | boolean | string | State>[];
@@ -88,10 +89,7 @@
 
           {#each legendItems as legendI (legendI.id)}
             {#key legendI.label}
-              <div class="flex items-center justify-start gap-4">
-                <div class="h-4 w-4 rounded-full" style="background-color: {legendI.color}"></div>
-                <span class="text-base">{legendI.label}</span>
-              </div>
+              <LegendItemComponent {legendI} />
             {/key}
           {/each}
         </div>
@@ -111,10 +109,7 @@
 
           {#each splitLegendItems as legendI (legendI.id)}
             {#key legendI.label}
-              <div class="flex items-center justify-start gap-4">
-                <div class="h-4 w-4 rounded-full" style="background-color: {legendI.color}"></div>
-                <span class="text-base">{legendI.label}</span>
-              </div>
+              <LegendItemComponent {legendI} />
             {/key}
           {/each}
         </div>
