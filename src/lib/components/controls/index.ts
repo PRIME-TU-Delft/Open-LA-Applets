@@ -5,5 +5,6 @@ import Slider from './Slider.svelte';
 import SlideShow from './SlideShow.svelte';
 import Switch from './Switch.svelte';
 import Toggle from './Toggle.svelte';
+import Function from './Function.svelte';
 
-export { DiagonalMatrix, Dropdown, Matrix, Slider, SlideShow, Switch, Toggle };
+export { DiagonalMatrix, Dropdown, Matrix, Slider, SlideShow, Switch, Toggle, Function };

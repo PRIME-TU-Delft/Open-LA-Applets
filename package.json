@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
@@ -78,6 +79,7 @@
     "@threlte/extras": "^9.6.1",
     "@types/three": "^0.177.0",
     "d3": "^7.9.0",
+    "expr-eval": "^2.0.2",
     "formsnap": "^1.0.1",
     "glob": "^11.0.3",
     "katex": "^0.16.25",
