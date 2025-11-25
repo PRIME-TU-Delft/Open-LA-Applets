@@ -14,12 +14,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
+  import type { Expression } from 'expr-eval';
 
-  let func = (x: number) => {
-    return 4 / Math.sqrt(x + 1);
-  };
-  let intFunc = (x: number) => {
-    return 8 * Math.sqrt(x + 1);
+  let intFunc = (_x: number) => {
+    return 0; // TODO
   };
 
   let xlSnapFunc = (p: Vector2) => {
@@ -57,7 +55,13 @@
     'applets.calculus.integration.simple_methods.trapezoid',
     'applets.calculus.integration.simple_methods.midpoint',
     'applets.calculus.integration.simple_methods.simpson'
-  ]).addFunction('sin(x)', 'f(x)=', PrimeColor.blue);
+  ]).addFunction('sqrt( 1 + cos(x)^2 )', 'f(x)=', PrimeColor.blue);
+
+  const expr: Expression = $derived(controls[1]);
+
+  let func = (x: number) => {
+    return expr.evaluate({ x });
+  };
 
   const currentRule = $derived(
     controls[0].replace('applets.calculus.integration.simple_methods.', '')

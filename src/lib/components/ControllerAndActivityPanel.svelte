@@ -107,7 +107,7 @@
         {:else if controller instanceof Matrix}
           <C.Matrix {controller} {hideButtons} />
         {:else if controller instanceof Function}
-          <C.Function bind:value={controller.value} func={controller} />
+          <C.Function func={controller} />
         {/if}
       {/each}
     </div>

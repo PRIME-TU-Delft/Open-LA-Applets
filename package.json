@@ -78,6 +78,7 @@
     "@threlte/extras": "^9.6.1",
     "@types/three": "^0.177.0",
     "d3": "^7.9.0",
+    "expr-eval": "^2.0.2",
     "formsnap": "^1.0.1",
     "glob": "^11.0.3",
     "katex": "^0.16.25",
