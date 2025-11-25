@@ -21,7 +21,7 @@
   };
 
   let xlSnapFunc = (p: Vector2) => {
-    let x = Math.max(Math.min(p.x, xR), -0.99);
+    let x = Math.min(p.x, xR);
     return new Vector2(x, 0);
   };
   let xrSnapFunc = (p: Vector2) => {
