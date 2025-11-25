@@ -49,22 +49,26 @@
     defaultRule = 'applets.calculus.integration.simple_methods.simpson';
   }
 
-  const controls = Controls.addDropdown(defaultRule, [
+  const controls = Controls.addFunction(
+    'sqrt( 1 + cos(x)^2 )',
+    'f(x)',
+    PrimeColor.blue
+  ).addDropdown(defaultRule, [
     'applets.calculus.integration.simple_methods.left',
     'applets.calculus.integration.simple_methods.right',
     'applets.calculus.integration.simple_methods.trapezoid',
     'applets.calculus.integration.simple_methods.midpoint',
     'applets.calculus.integration.simple_methods.simpson'
-  ]).addFunction('sqrt( 1 + cos(x)^2 )', 'f(x)=', PrimeColor.blue);
+  ]);
 
-  const expr: Expression = $derived(controls[1]);
+  const expr: Expression = $derived(controls[0]);
 
   let func = (x: number) => {
     return expr.evaluate({ x });
   };
 
   const currentRule = $derived(
-    controls[0].replace('applets.calculus.integration.simple_methods.', '')
+    controls[1].replace('applets.calculus.integration.simple_methods.', '')
   );
 
   const xR = $derived(draggables[0].position.x);
@@ -97,10 +101,11 @@
 
   const formulas = $derived.by(() => {
     let f = [
-      new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
+      new Formula('\\int_{\\$1}^{\\$2} \\$4 \\,dx = \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
-        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
+        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue)
+        .addAutoParam('f(x)', PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
         .addAutoParam(round(area), PrimeColor.orange)
