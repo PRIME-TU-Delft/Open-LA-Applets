@@ -10,15 +10,11 @@
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
-  import { round } from '$lib/utils/MathLib';
+  import { integral, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
   import type { Expression } from 'expr-eval';
-
-  let intFunc = (_x: number) => {
-    return 0; // TODO
-  };
 
   let xlSnapFunc = (p: Vector2) => {
     let x = Math.min(p.x, xR);
@@ -67,6 +63,10 @@
     return expr.evaluate({ x });
   };
 
+  let intFunc = (a: number, b: number) => {
+    return integral(expr, a, b);
+  };
+
   const currentRule = $derived(
     controls[1].replace('applets.calculus.integration.simple_methods.', '')
   );
@@ -104,7 +104,7 @@
       new Formula('\\int_{\\$1}^{\\$2} \\$4 \\,dx = \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
-        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue)
+        .addAutoParam(round(intFunc(xL, xR)), PrimeColor.blue)
         .addAutoParam('f(x)', PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
