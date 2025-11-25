@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
