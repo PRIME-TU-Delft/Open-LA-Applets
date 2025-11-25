@@ -7,6 +7,7 @@ import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
+import { Function } from './Function.svelte';
 
 /**
  * Interface for a controller
@@ -273,6 +274,17 @@ export class Controls<
   static addMatrix(value: Matrix2, label?: string, color?: string) {
     const newMatrix = new Matrix(value, label, color);
     return new Controls([newMatrix] as const, newMatrix.width);
+  }
+
+  addFunction(value: string, label?: string, color?: PrimeColor) {
+    const newFunction = new Function(value, label, color);
+    this.isAllowedToAddControl(newFunction);
+    return new Controls([...this.controls, newFunction] as const, this._width + newFunction.width);
+  }
+
+  static addFunction(value: string, label?: string, color?: PrimeColor) {
+    const newFunction = new Function(value, label, color);
+    return new Controls([newFunction] as const, newFunction.width);
   }
 
   // Reset all sliders to their default values
