@@ -1,8 +1,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import type { Function } from '$lib/controls/Function.svelte';
-  import * as TextInput from '$lib/components/ui/textinput/index.js';
   import Latex from '../Latex.svelte';
+  import { MathInput } from '../ui/mathinput';
 
   type FunctionProps = {
     func: Function;
@@ -15,4 +15,5 @@
   <Latex latex={func.label + ':'} color={func.color.toString()} />
 {/if}
 
-<TextInput.Root aria-invalid={func.isError} bind:value={func.functionString} />
+<!-- TODO: aria-invalid -->
+<MathInput aria-invalid={func.isError} bind:value={func.functionString} />
