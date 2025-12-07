@@ -1,4 +1,3 @@
-import type { Expression } from 'expr-eval';
 import { Vector2, Vector3 } from 'three';
 
 /**
@@ -169,9 +168,12 @@ export function leastSquaresLine(points: Vector2[]) {
  * @param tolerance - Error tolerance (default: 1e-8)
  * @returns Approximate value of the integral
  */
-export function integral(func: Expression, a: number, b: number, tolerance: number = 1e-8): number {
-  const f = (x: number) => func.evaluate({ x });
-
+export function integral(
+  f: (_: number) => number,
+  a: number,
+  b: number,
+  tolerance: number = 1e-8
+): number {
   // Simpson's rule for a single interval [a, b]
   const simpsonRule = (a: number, b: number, fa: number, fm: number, fb: number): number => {
     return ((b - a) / 6) * (fa + 4 * fm + fb);

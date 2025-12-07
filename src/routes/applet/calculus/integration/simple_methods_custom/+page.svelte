@@ -14,7 +14,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
-  import type { Expression } from 'expr-eval';
+  import { Function as FunctionTS } from '$lib/controls/Function.svelte';
 
   let xlSnapFunc = (p: Vector2) => {
     let x = Math.min(p.x, xR);
@@ -46,7 +46,7 @@
   }
 
   const controls = Controls.addFunction(
-    'sqrt( 1 + cos(x)^2 )',
+    '\\sqrt{1 + {\\cos{(x)}}^2 }',
     'f(x)',
     PrimeColor.blue
   ).addDropdown(defaultRule, [
@@ -57,14 +57,10 @@
     'applets.calculus.integration.simple_methods.simpson'
   ]);
 
-  const expr: Expression = $derived(controls[0]);
-
-  let func = (x: number) => {
-    return expr.evaluate({ x });
-  };
+  let func = $derived(FunctionTS.asFunction(controls[0]));
 
   let intFunc = (a: number, b: number) => {
-    return integral(expr, a, b);
+    return integral(func, a, b);
   };
 
   const currentRule = $derived(

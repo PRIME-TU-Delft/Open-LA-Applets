@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cortex-js/compute-engine':
+        specifier: ^0.30.2
+        version: 0.30.2
       '@number-flow/svelte':
         specifier: ^0.3.9
         version: 0.3.9(svelte@5.43.6)
@@ -29,9 +32,6 @@ importers:
       d3:
         specifier: ^7.9.0
         version: 7.9.0
-      expr-eval:
-        specifier: ^2.0.2
-        version: 2.0.2
       formsnap:
         specifier: ^1.0.1
         version: 1.0.1(svelte@5.43.6)(sveltekit-superforms@2.27.1(@sveltejs/kit@2.48.4(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.43.6)(vite@6.4.1(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)))(svelte@5.43.6)(vite@6.4.1(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.6)))(@types/json-schema@7.0.15)(esbuild@0.25.12)(svelte@5.43.6)(typescript@5.9.3))
@@ -2116,9 +2116,6 @@ packages:
   expect-type@1.2.2:
     resolution: {integrity: sha512-JhFGDVJ7tmDJItKhYgJCGLOWjuK9vPxiXoUFLwLDc99NlmklilbiQJwoctZtt13+xMw91MCk/REan6MWHqDjyA==}
     engines: {node: '>=12.0.0'}
-
-  expr-eval@2.0.2:
-    resolution: {integrity: sha512-4EMSHGOPSwAfBiibw3ndnP0AvjDWLsMvGOvWEZ2F96IGk0bIVdjQisOHxReSkE13mHcfbuCiXw+G4y0zv6N8Eg==}
 
   ext@1.7.0:
     resolution: {integrity: sha512-6hxeJYaL110a9b5TEJSj0gojyHQAmA2ch5Os+ySCiA1QGdS697XWY1pzsrSjqA9LDEEgdB/KypIlR59RcLuHYw==}
@@ -5511,8 +5508,6 @@ snapshots:
       - bare-abort-controller
 
   expect-type@1.2.2: {}
-
-  expr-eval@2.0.2: {}
 
   ext@1.7.0:
     dependencies:
