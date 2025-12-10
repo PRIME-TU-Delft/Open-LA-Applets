@@ -27,7 +27,7 @@ export class Function implements Controller<(x: number) => number> {
         return { value: this.previousValue || this.defaultValue, isError: true };
       }
 
-      const func = Function.asFunction(parsed); 
+      const func = Function.asFunction(parsed);
 
       this.previousValue = func;
       return { value: func, isError: false };
@@ -36,7 +36,7 @@ export class Function implements Controller<(x: number) => number> {
     }
   });
 
-  value: (x:number) => number = $derived(this.parseResult.value);
+  value: (x: number) => number = $derived(this.parseResult.value);
   isError: boolean = $derived(this.parseResult.isError);
   type: string = 'function';
   label: string;

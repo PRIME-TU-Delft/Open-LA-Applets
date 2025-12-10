@@ -14,7 +14,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
-  import { Function as FunctionTS } from '$lib/controls/Function.svelte';
 
   let xlSnapFunc = (p: Vector2) => {
     let x = Math.min(p.x, xR);
