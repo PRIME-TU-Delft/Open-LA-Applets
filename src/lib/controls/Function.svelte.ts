@@ -2,15 +2,15 @@ import { PrimeColor } from '$lib/utils/PrimeColors';
 import type { Controller } from './Controls';
 import { ComputeEngine, type BoxedExpression } from '@cortex-js/compute-engine';
 
-export class Function implements Controller<BoxedExpression> {
+export class Function implements Controller<(x: number) => number> {
   private static ce = new ComputeEngine();
 
   functionString: string = $state('0');
   defaultString: string;
 
   width: number = 30;
-  defaultValue: BoxedExpression;
-  private previousValue: BoxedExpression | null = null;
+  defaultValue: (x: number) => number;
+  private previousValue: ((x: number) => number) | null = null;
 
   private parseResult = $derived.by(() => {
     try {
@@ -27,14 +27,16 @@ export class Function implements Controller<BoxedExpression> {
         return { value: this.previousValue || this.defaultValue, isError: true };
       }
 
-      this.previousValue = parsed;
-      return { value: parsed, isError: false };
+      const func = Function.asFunction(parsed); 
+
+      this.previousValue = func;
+      return { value: func, isError: false };
     } catch (_error) {
       return { value: this.previousValue || this.defaultValue, isError: true };
     }
   });
 
-  value: BoxedExpression = $derived(this.parseResult.value);
+  value: (x:number) => number = $derived(this.parseResult.value);
   isError: boolean = $derived(this.parseResult.isError);
   type: string = 'function';
   label: string;
@@ -47,7 +49,7 @@ export class Function implements Controller<BoxedExpression> {
    * @param color Color of the control
    */
   constructor(defaultFunctionLatex: string, label?: string, color?: PrimeColor) {
-    this.defaultValue = Function.ce.parse(defaultFunctionLatex);
+    this.defaultValue = Function.asFunction(Function.ce.parse(defaultFunctionLatex));
 
     this.defaultString = defaultFunctionLatex;
     this.functionString = defaultFunctionLatex;
@@ -77,10 +79,17 @@ export class Function implements Controller<BoxedExpression> {
    * @returns A function (x: number) => number
    */
   static asFunction(expression: BoxedExpression): (x: number) => number {
+    const compiled = expression.compile();
+    if (compiled) {
+      return (x: number) => {
+        const result = compiled({ x });
+        return typeof result === 'number' && isFinite(result) ? result : NaN;
+      };
+    }
     return (x: number) => Function.evaluateAt(expression, x);
   }
 
-  reset(_ms?: number, _timeSteps?: number): Controller<BoxedExpression> {
+  reset(_ms?: number, _timeSteps?: number): Controller<(x: number) => number> {
     this.functionString = this.defaultString;
     return this;
   }

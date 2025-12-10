@@ -57,7 +57,7 @@
     'applets.calculus.integration.simple_methods.simpson'
   ]);
 
-  let func = $derived(FunctionTS.asFunction(controls[0]));
+  let func = $derived(controls[0]);
 
   let intFunc = (a: number, b: number) => {
     return integral(func, a, b);
