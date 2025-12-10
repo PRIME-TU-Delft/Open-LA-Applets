@@ -17,6 +17,7 @@
   import { _ } from 'svelte-i18n';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
+    import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
   const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
     label: 'A',
@@ -36,6 +37,8 @@
     'B',
     PrimeColor.raspberry
   );
+
+  const functionControl = Controls.addFunction("\\sin{x}", "f(x)", PrimeColor.raspberry);
 
   const state = {
     aOpacity: 1,
@@ -252,6 +255,22 @@ const matrixControl = Controls.addMatrix(new Matrix2(1, 2, 3, 4), 'A', PrimeColo
         length={matrixControl[1].tl * matrixControl[1].br -
           matrixControl[1].tr * matrixControl[1].bl}
       />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!-- 
+With a Function control you can easily have an interactive function input.
+
+```typescript
+const functionControl = Controls.addFunction("\\sin{x}", "f(x)", PrimeColor.raspberry);
+const function: (x: number) => number = functionControl[0];
+```
+-->
+<Story name="Function">
+    <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={functionControl}>
+      <ExplicitFunction2D func={functionControl[0]} color={PrimeColor.raspberry} />
     </Canvas2D>
   </div>
 </Story>
