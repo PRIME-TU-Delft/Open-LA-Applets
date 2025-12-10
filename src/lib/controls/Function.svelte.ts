@@ -40,11 +40,17 @@ export class Function implements Controller<BoxedExpression> {
   label: string;
   color: PrimeColor;
 
-  constructor(defaultFunctionStr: string, label?: string, color?: PrimeColor) {
-    this.defaultValue = Function.ce.parse(defaultFunctionStr);
+  /**
+   * Constructor for the Funcion control
+   * @param defaultFunctionLatex Latex string of the default function
+   * @param label Label of the control
+   * @param color Color of the control
+   */
+  constructor(defaultFunctionLatex: string, label?: string, color?: PrimeColor) {
+    this.defaultValue = Function.ce.parse(defaultFunctionLatex);
 
-    this.defaultString = defaultFunctionStr;
-    this.functionString = defaultFunctionStr;
+    this.defaultString = defaultFunctionLatex;
+    this.functionString = defaultFunctionLatex;
     this.label = label || '';
     this.color = color || PrimeColor.black;
   }
