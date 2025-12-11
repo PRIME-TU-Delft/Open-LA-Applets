@@ -84,7 +84,7 @@
           {/each}
 
           {#if formulas && formulas.length >= 1 && legendItems && legendItems.length >= 1}
-            <hr />
+            <hr class="h-[1px] border-none bg-black" />
           {/if}
 
           {#each legendItems as legendI (legendI.id)}
@@ -104,7 +104,7 @@
           {/each}
 
           {#if splitFormulas && splitFormulas.length >= 1 && splitLegendItems && splitLegendItems.length >= 1}
-            <hr />
+            <hr class="h-[1px] border-none bg-black" />
           {/if}
 
           {#each splitLegendItems as legendI (legendI.id)}
