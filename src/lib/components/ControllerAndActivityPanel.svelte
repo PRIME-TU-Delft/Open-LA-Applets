@@ -18,6 +18,7 @@
   import * as C from './controls';
   import { cn } from '$lib/utils';
   import { _ } from 'svelte-i18n';
+  import { Function } from '$lib/controls/Function.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -105,6 +106,8 @@
           <C.DiagonalMatrix {controller} {hideButtons} />
         {:else if controller instanceof Matrix}
           <C.Matrix {controller} {hideButtons} />
+        {:else if controller instanceof Function}
+          <C.Function func={controller} />
         {/if}
       {/each}
     </div>
