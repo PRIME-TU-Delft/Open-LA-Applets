@@ -1,0 +1,177 @@
+<script lang="ts">
+  import { Controls } from '$lib/controls/Controls';
+  import Axis from '$lib/d3/Axis.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import { toLatexText } from '$lib/utils/FormatString';
+  import { Formula } from '$lib/utils/Formulas';
+  import { LegendItem } from '$lib/utils/Legend';
+  import { round } from '$lib/utils/MathLib';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { _ } from 'svelte-i18n';
+  import { Vector2 } from 'three';
+
+  let func = (t: number) => {
+    return Math.sqrt(1 + Math.pow(Math.cos(t), 2));
+  };
+  let I = 1.058095501; // TODO: actually calculate it?
+
+  let L = 0;
+  let R = Math.PI / 4;
+
+  let area = (xL: number, xR: number) => {
+    return {
+      left: func(xL) * (xR - xL),
+      right: func(xR) * (xR - xL),
+      trapezoid: ((func(xL) + func(xR)) * (xR - xL)) / 2
+    };
+  };
+
+  function roundH(H: number) {
+    let width = R - L;
+    let n = Math.round(width / H);
+
+    return { n: Math.max(1, n), roundedH: width / n };
+  }
+
+  let areaFull = (L: number, H: number) => {
+    let { n, roundedH } = roundH(H);
+
+    let currentArea = {
+      left: 0,
+      right: 0,
+      trapezoid: 0
+    };
+
+    for (let i = 0; i < n; i++) {
+      let x = L + i * roundedH;
+      let a = area(x, x + roundedH);
+
+      currentArea['left'] += a['left'];
+      currentArea['right'] += a['right'];
+      currentArea['trapezoid'] += a['trapezoid'];
+    }
+
+    return currentArea;
+  };
+
+  const controls = Controls.addSlider(1 / 20, 1 / 256, 1 / 4, 0.01, PrimeColor.raspberry, {
+    label: 'h',
+    valueFn: (v: number) => round(roundH(Math.PI * v).roundedH / Math.PI, 4) + 'π'
+  })
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.left')),
+      PrimeColor.orange
+    )
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.right')),
+      PrimeColor.blue
+    )
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.trapezoid')),
+      PrimeColor.darkGreen
+    );
+
+  const formulas = $derived.by(() => {
+    return [
+      new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'),
+      new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t \\approx 1.058')
+    ];
+  });
+
+  const legendItems = $derived([
+    new LegendItem($_('applets.calculus.integration.method_errors.left'), PrimeColor.orange),
+    new LegendItem($_('applets.calculus.integration.method_errors.right'), PrimeColor.blue),
+    new LegendItem($_('applets.calculus.integration.method_errors.trapezoid'), PrimeColor.darkGreen)
+  ]);
+
+  const hNotRounded = $derived(Math.PI * controls[0]);
+
+  let areaDict = $derived(areaFull(L, hNotRounded));
+
+  type MethodsDict = { left: number; right: number; trapezoid: number };
+
+  let errors = (areaDict: MethodsDict) => {
+    return {
+      left: Math.abs(I - areaDict['left']),
+      right: Math.abs(I - areaDict['right']),
+      trapezoid: Math.abs(I - areaDict['trapezoid'])
+    };
+  };
+
+  let errorsDraggable = $derived(errors(areaDict));
+
+  type PointErrors = {
+    pointX: number;
+    errors: MethodsDict;
+  };
+
+  let errorsPredefined: PointErrors[] = [];
+
+  let points = [Math.PI / 4, Math.PI / 8, Math.PI / 16, Math.PI / 32, Math.PI / 64, Math.PI / 128];
+  points.forEach((p) => {
+    let a = areaFull(L, p);
+
+    errorsPredefined.push({ pointX: p, errors: errors(a) });
+  });
+</script>
+
+<Canvas2D
+  {controls}
+  {formulas}
+  {legendItems}
+  customAxis={true}
+  cameraZoom={1.35}
+  cameraPosition={new Vector2(-1.4, -2.4)}
+  title={$_('applets.calculus.integration.method_errors.title')}
+>
+  <Axis showOrigin={false} logarithmicX={true} logarithmicY={true} scaleX={2} />
+
+  <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
+  <Latex2D
+    latex={`\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`}
+    position={new Vector2(1.95, -1.5)}
+    rotation={-90}
+  />
+
+  {#each errorsPredefined as pE (pE.pointX)}
+    {@const x = 2 * Math.log10(pE.pointX)}
+    {@const left = Math.log10(pE.errors['left'])}
+    {@const right = Math.log10(pE.errors['right'])}
+    {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
+
+    {#if controls[1]}
+      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} />
+    {/if}
+    {#if controls[2]}
+      <Point2D position={new Vector2(x, right)} color={PrimeColor.blue} />
+    {/if}
+    {#if controls[3]}
+      <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen} />
+    {/if}
+  {/each}
+
+  {@const hX = 2 * Math.log10(roundH(hNotRounded).roundedH)}
+  {#if controls[1]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
+      color={PrimeColor.orange + PrimeColor.opacity(0.5)}
+    />
+  {/if}
+  {#if controls[2]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
+      color={PrimeColor.blue + PrimeColor.opacity(0.5)}
+    />
+  {/if}
+  {#if controls[3]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
+      color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
+    />
+  {/if}
+</Canvas2D>

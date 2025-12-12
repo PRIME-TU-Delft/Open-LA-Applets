@@ -34,8 +34,10 @@
     title,
     showFormulasDefault,
     formulas,
+    legendItems,
     controls,
     splitFormulas,
+    splitLegendItems,
     splitCanvas2DProps,
     splitCanvas3DProps,
     children,
@@ -118,7 +120,9 @@
   {controls}
   {showFormulasDefault}
   {formulas}
+  {legendItems}
   {splitFormulas}
+  {splitLegendItems}
 >
   {#snippet sceneChildren(width, height)}
     {@const defaultCanvasWidth = width / 2}

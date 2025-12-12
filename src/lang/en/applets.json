@@ -16,6 +16,13 @@
         "midpoint": "Midpoint rule",
         "trapezoid": "Trapezoid rule",
         "simpson": "Simpson's rule"
+      },
+      "method_errors": {
+        "title": "Errors of composite integration rules",
+        "absolute_error": "Absolute error",
+        "left": "Left rectangle",
+        "right": "Right rectangle",
+        "trapezoid": "Trapezoid"
       }
     }
   },

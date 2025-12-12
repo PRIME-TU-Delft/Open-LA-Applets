@@ -42,4 +42,6 @@
   {template}
 />
 
+<Story name="With rotation defined" args={{ latex: 'E=mc^2', rotation: -45 }} {template} />
+
 <Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} {template} />
