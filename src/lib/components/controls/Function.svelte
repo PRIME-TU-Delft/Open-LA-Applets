@@ -15,4 +15,4 @@
   <Latex latex={func.label + ':'} color={func.color.toString()} />
 {/if}
 
-<MathInput class={'w-[150px]'} error={func.isError} bind:value={func.functionString} />
+<MathInput class="w-[150px]" error={func.isError} bind:value={func.functionString} />
