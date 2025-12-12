@@ -95,11 +95,13 @@
   });
 
   const formulas = $derived.by(() => {
+    let I = intFunc(xL, xR);
+
     let f = [
       new Formula('\\int_{\\$1}^{\\$2} \\$4 \\,dx = \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
-        .addAutoParam(round(intFunc(xL, xR)), PrimeColor.blue)
+        .addAutoParam(!Number.isNaN(I) ? round(I) : 'DIV', PrimeColor.blue)
         .addAutoParam('f(x)', PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))

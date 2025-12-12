@@ -10,7 +10,7 @@ export class Function implements Controller<(x: number) => number> {
 
   width: number = 30;
   defaultValue: (x: number) => number;
-  private previousValue: ((x: number) => number) | null = null;
+  private previousValue: (x: number) => number;
 
   private parseResult = $derived.by(() => {
     try {
@@ -21,13 +21,19 @@ export class Function implements Controller<(x: number) => number> {
       }
 
       const unknowns = parsed.unknowns;
-      const hasOnlyX = unknowns.every((v) => v === 'x');
+
+      // Must contain only 'x' as unknown, or be a numeric constant
+      const hasOnlyX = unknowns.length > 0 ? unknowns.every((v) => v === 'x') : parsed.isConstant;
 
       if (!hasOnlyX) {
         return { value: this.previousValue || this.defaultValue, isError: true };
       }
 
       const func = Function.asFunction(parsed);
+
+      if (func == null) {
+        return { value: this.previousValue, isError: true };
+      }
 
       this.previousValue = func;
       return { value: func, isError: false };
@@ -49,7 +55,8 @@ export class Function implements Controller<(x: number) => number> {
    * @param color Color of the control
    */
   constructor(defaultFunctionLatex: string, label?: string, color?: PrimeColor) {
-    this.defaultValue = Function.asFunction(Function.ce.parse(defaultFunctionLatex));
+    this.defaultValue = Function.asFunction(Function.ce.parse(defaultFunctionLatex)) || ((_x) => 0);
+    this.previousValue = this.defaultValue;
 
     this.defaultString = defaultFunctionLatex;
     this.functionString = defaultFunctionLatex;
@@ -58,35 +65,33 @@ export class Function implements Controller<(x: number) => number> {
   }
 
   /**
-   * Evaluate the function at a given x value
-   * @param expression - Expression to evaluate
-   * @param x - The x value to evaluate at
-   * @returns The numerical result (returns NaN on error)
-   */
-  static evaluateAt(expression: BoxedExpression, x: number): number {
-    try {
-      const result = expression.subs({ x: Function.ce.number(x) }).N();
-      const numValue = result.valueOf();
-      return typeof numValue === 'number' && isFinite(numValue) ? numValue : NaN;
-    } catch {
-      return NaN;
-    }
-  }
-
-  /**
    * Get a callable function that evaluates this expression
    * @param expression - Expression to evaluate
    * @returns A function (x: number) => number
    */
-  static asFunction(expression: BoxedExpression): (x: number) => number {
-    const compiled = expression.compile();
-    if (compiled) {
-      return (x: number) => {
-        const result = compiled({ x });
-        return typeof result === 'number' && isFinite(result) ? result : NaN;
-      };
+  static asFunction(expression: BoxedExpression): ((x: number) => number) | null {
+    let compiled;
+
+    try {
+      compiled = expression.compile();
+    } catch (_error) {
+      return null;
     }
-    return (x: number) => Function.evaluateAt(expression, x);
+
+    if (compiled) {
+      const func = (x: number) => {
+        try {
+          const result = compiled({ x });
+          return typeof result === 'number' && isFinite(result) ? result : NaN;
+        } catch (_error) {
+          return NaN;
+        }
+      };
+
+      return func;
+    } else {
+      return null;
+    }
   }
 
   reset(_ms?: number, _timeSteps?: number): Controller<(x: number) => number> {

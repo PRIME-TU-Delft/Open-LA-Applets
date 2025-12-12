@@ -190,6 +190,8 @@ export function integral(
     whole: number,
     depth: number
   ): number => {
+    if (!Number.isFinite(fa) || !Number.isFinite(fm) || !Number.isFinite(fb)) return NaN;
+
     const maxDepth = 50;
     if (depth > maxDepth) {
       return whole;
@@ -202,12 +204,18 @@ export function integral(
     const flm = f(lm);
     const frm = f(rm);
 
+    if (!Number.isFinite(flm) || !Number.isFinite(frm)) return NaN;
+
     const left = simpsonRule(a, m, fa, flm, fm);
     const right = simpsonRule(m, b, fm, frm, fb);
     const total = left + right;
 
+    if (!Number.isFinite(left) || !Number.isFinite(right) || !Number.isFinite(total)) return NaN;
+
     // Error estimate based on difference between refined and coarse approximations
     const error = Math.abs(total - whole) / 15;
+
+    if (!Number.isFinite(error)) return NaN;
 
     if (error < tolerance || depth > maxDepth) {
       // Add error correction term (Richardson extrapolation)
@@ -225,6 +233,9 @@ export function integral(
   const fa = f(a);
   const fm = f(m);
   const fb = f(b);
+
+  if (!Number.isFinite(fa) || !Number.isFinite(fm) || !Number.isFinite(fb)) return NaN;
+
   const whole = simpsonRule(a, b, fa, fm, fb);
 
   return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
