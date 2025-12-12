@@ -27,8 +27,15 @@
     };
   };
 
+  function roundH(H: number) {
+    let width = R - L;
+    let n = Math.round(width / H);
+
+    return { n: Math.max(1, n), roundedH: width / n };
+  }
+
   let areaFull = (L: number, R: number, H: number) => {
-    let current_x = L;
+    let { n, roundedH } = roundH(H);
 
     let currentArea = {
       left: 0,
@@ -36,18 +43,9 @@
       trapezoid: 0
     };
 
-    while (current_x <= R - H) {
-      let a = area(current_x, current_x + H);
-
-      currentArea['left'] += a['left'];
-      currentArea['right'] += a['right'];
-      currentArea['trapezoid'] += a['trapezoid'];
-
-      current_x += H;
-    }
-
-    if (current_x < R) {
-      let a = area(current_x, R);
+    for (let i = 0; i < n; i++) {
+      let x = L + i * roundedH;
+      let a = area(x, x + roundedH);
 
       currentArea['left'] += a['left'];
       currentArea['right'] += a['right'];
@@ -59,11 +57,14 @@
 
   const controls = Controls.addSlider(1 / 20, 1 / 256, 1 / 4, 0.01, PrimeColor.raspberry, {
     label: 'h',
-    valueFn: (v: number) => round(v, 3) + 'π'
+    valueFn: (v: number) => round(roundH(Math.PI * v).roundedH / Math.PI, 4) + 'π'
   });
 
   const formulas = $derived.by(() => {
-    return [new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'), new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t \\approx 1.058')];
+    return [
+      new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'),
+      new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t \\approx 1.058')
+    ];
   });
 
   const legendItems = $derived([
@@ -72,9 +73,9 @@
     new LegendItem($_('applets.calculus.integration.method_errors.trapezoid'), PrimeColor.darkGreen)
   ]);
 
-  const h = $derived(Math.PI * controls[0]);
+  const hNotRounded = $derived(Math.PI * controls[0]);
 
-  let areaDict = $derived(areaFull(L, R, h));
+  let areaDict = $derived(areaFull(L, R, hNotRounded));
 
   type MethodsDict = { left: number; right: number; trapezoid: number };
 
@@ -132,7 +133,7 @@
     <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen} />
   {/each}
 
-  {@const hX = 2 * Math.log10(h)}
+  {@const hX = 2 * Math.log10(roundH(hNotRounded).roundedH)}
 
   <Point2D
     position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
