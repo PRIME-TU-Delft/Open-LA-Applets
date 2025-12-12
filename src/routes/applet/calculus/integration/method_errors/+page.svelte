@@ -4,6 +4,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
+  import { toLatexText } from '$lib/utils/FormatString';
   import { Formula } from '$lib/utils/Formulas';
   import { LegendItem } from '$lib/utils/Legend';
   import { round } from '$lib/utils/MathLib';
@@ -58,7 +59,22 @@
   const controls = Controls.addSlider(1 / 20, 1 / 256, 1 / 4, 0.01, PrimeColor.raspberry, {
     label: 'h',
     valueFn: (v: number) => round(roundH(Math.PI * v).roundedH / Math.PI, 4) + 'π'
-  });
+  })
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.left')),
+      PrimeColor.orange
+    )
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.right')),
+      PrimeColor.blue
+    )
+    .addToggle(
+      true,
+      toLatexText($_('applets.calculus.integration.method_errors.trapezoid')),
+      PrimeColor.darkGreen
+    );
 
   const formulas = $derived.by(() => {
     return [
@@ -128,23 +144,34 @@
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
 
-    <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} />
-    <Point2D position={new Vector2(x, right)} color={PrimeColor.blue} />
-    <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen} />
+    {#if controls[1]}
+      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} />
+    {/if}
+    {#if controls[2]}
+      <Point2D position={new Vector2(x, right)} color={PrimeColor.blue} />
+    {/if}
+    {#if controls[3]}
+      <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen} />
+    {/if}
   {/each}
 
   {@const hX = 2 * Math.log10(roundH(hNotRounded).roundedH)}
-
-  <Point2D
-    position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
-    color={PrimeColor.orange + PrimeColor.opacity(0.5)}
-  />
-  <Point2D
-    position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
-    color={PrimeColor.blue + PrimeColor.opacity(0.5)}
-  />
-  <Point2D
-    position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
-    color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
-  />
+  {#if controls[1]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
+      color={PrimeColor.orange + PrimeColor.opacity(0.5)}
+    />
+  {/if}
+  {#if controls[2]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
+      color={PrimeColor.blue + PrimeColor.opacity(0.5)}
+    />
+  {/if}
+  {#if controls[3]}
+    <Point2D
+      position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
+      color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
+    />
+  {/if}
 </Canvas2D>
