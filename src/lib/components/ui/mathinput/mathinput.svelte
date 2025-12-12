@@ -4,9 +4,9 @@
   import type { MathfieldElement, MathfieldElementAttributes } from 'mathlive';
   import { on } from 'svelte/events';
 
-  type Props = { value?: string } & Partial<MathfieldElementAttributes>;
+  type Props = { value: string, error?: boolean } & Partial<MathfieldElementAttributes>;
 
-  let { value = $bindable(), ...rest }: Props = $props();
+  let { value = $bindable(), error = false, ...rest }: Props = $props();
 
   const init = (node: MathfieldElement) => {
     $effect(() => {
@@ -20,7 +20,7 @@
   };
 </script>
 
-<math-field use:init {...rest}></math-field>
+<math-field class={error ? "border-red" : ""} use:init {...rest}></math-field>
 
 <style>
   /* Hide the virtual keyboard toggle */
