@@ -35,7 +35,7 @@
     return { n: Math.max(1, n), roundedH: width / n };
   }
 
-  let areaFull = (L: number, R: number, H: number) => {
+  let areaFull = (L: number, H: number) => {
     let { n, roundedH } = roundH(H);
 
     let currentArea = {
@@ -91,7 +91,7 @@
 
   const hNotRounded = $derived(Math.PI * controls[0]);
 
-  let areaDict = $derived(areaFull(L, R, hNotRounded));
+  let areaDict = $derived(areaFull(L, hNotRounded));
 
   type MethodsDict = { left: number; right: number; trapezoid: number };
 
@@ -114,7 +114,7 @@
 
   let points = [Math.PI / 4, Math.PI / 8, Math.PI / 16, Math.PI / 32, Math.PI / 64, Math.PI / 128];
   points.forEach((p) => {
-    let a = areaFull(L, R, p);
+    let a = areaFull(L, p);
 
     errorsPredefined.push({ pointX: p, errors: errors(a) });
   });

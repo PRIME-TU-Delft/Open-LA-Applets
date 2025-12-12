@@ -1,8 +1,6 @@
 {
-    "i18n-ally.localesPaths": [
-        "src/lang"
-    ],
-    "i18n-ally.namespace": true,
-    "i18n-ally.pathMatcher": "{locale}/{namespace}.json",
-    "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["src/lang"],
+  "i18n-ally.namespace": true,
+  "i18n-ally.pathMatcher": "{locale}/{namespace}.json",
+  "i18n-ally.keystyle": "nested"
 }
