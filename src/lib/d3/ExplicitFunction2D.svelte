@@ -15,75 +15,161 @@
     showArrows?: boolean;
     width?: number;
     integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed' };
+    maxSlope?: number;
+    curvatureThreshold?: number;
+    maxDepth?: number;
+    minStep?: number;
+    smoothing?: 'cardinal' | 'linear';
   };
 
   const {
     func,
     color = 'black',
-    stepSize = 0.05,
+    stepSize = 0.02,
     xMin = -GRID_SIZE_2D,
     xMax = GRID_SIZE_2D,
     tension = 0.5,
     showArrows = false,
     width = LINE_WIDTH,
-    integral
+    integral,
+    maxSlope = 15,
+    curvatureThreshold = 0.05,
+    maxDepth = 10,
+    minStep = Math.min(stepSize / 20, 0.0015),
+    smoothing = 'linear'
   }: ExplicitFunction2DProps = $props();
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const segments: Vector2[][] = [];
     let currentSegment: Vector2[] = [];
+
+    const pushCurrent = () => {
+      if (currentSegment.length > 0) {
+        segments.push(currentSegment);
+        currentSegment = [];
+      }
+    };
+
+    const safeVal = (x: number) => {
+      try {
+        return func(x);
+      } catch {
+        return NaN;
+      }
+    };
+
+    const bisectBoundary = (a: number, b: number, targetFinite: boolean) => {
+      let lo = a;
+      let hi = b;
+      for (let i = 0; i < 24 && Math.abs(hi - lo) > minStep / 2; i++) {
+        const mid = (lo + hi) / 2;
+        const ym = safeVal(mid);
+        if (Number.isFinite(ym) === targetFinite) {
+          hi = mid;
+        } else {
+          lo = mid;
+        }
+      }
+
+      const xStar = targetFinite ? hi : lo;
+      const yStar = safeVal(xStar);
+      return { x: xStar, y: Number.isFinite(yStar) ? yStar : 0 };
+    };
+
+    const refine = (x0: number, y0: number, x1: number, y1: number, depth: number) => {
+      if (!isFinite(y1)) {
+        pushCurrent();
+        return;
+      }
+
+      const dx = x1 - x0;
+      if (dx <= 0) return;
+
+      if (depth < maxDepth && dx > minStep) {
+        const xm = (x0 + x1) / 2;
+        let ym: number;
+        try {
+          ym = func(xm);
+        } catch {
+          ym = NaN;
+        }
+
+        if (isFinite(ym)) {
+          const slopeL = Math.abs((ym - y0) / (xm - x0));
+          const slopeR = Math.abs((y1 - ym) / (x1 - xm));
+          const localCurvature = Math.abs(ym - (y0 + y1) / 2);
+
+          if (slopeL > maxSlope || slopeR > maxSlope || localCurvature > curvatureThreshold) {
+            refine(x0, y0, xm, ym, depth + 1);
+            refine(xm, ym, x1, y1, depth + 1);
+            return;
+          }
+        }
+      }
+
+      currentSegment.push(new Vector2(x1, y1));
+    };
+
+    let prevX = xMin;
     let prevY: number | null = null;
 
-    const maxSlopeThreshold = 100;
+    const firstY = (() => {
+      const fy = safeVal(prevX);
+      return isFinite(fy) ? fy : null;
+    })();
 
-    for (let x = xMin; x <= xMax; x += stepSize) {
-      let y: number;
-      try {
-        y = func(x);
-        if (!isFinite(y)) {
-          if (currentSegment.length > 0) {
-            segments.push(currentSegment);
-            currentSegment = [];
-          }
-          prevY = null;
-          continue;
-        }
-      } catch {
-        if (currentSegment.length > 0) {
-          segments.push(currentSegment);
-          currentSegment = [];
+    if (firstY !== null) {
+      prevY = firstY;
+      currentSegment.push(new Vector2(prevX, prevY));
+    }
+
+    for (let x = xMin + stepSize; x <= xMax + 1e-9; x += stepSize) {
+      const y = safeVal(x);
+
+      if (!isFinite(y)) {
+        if (prevY !== null) {
+          const boundary = bisectBoundary(prevX, x, false);
+          currentSegment.push(new Vector2(boundary.x, 0));
+          pushCurrent();
         }
         prevY = null;
+        prevX = x;
         continue;
       }
 
-      if (prevY !== null) {
-        const slope = Math.abs((y - prevY) / stepSize);
-        if (slope > maxSlopeThreshold) {
-          if (currentSegment.length > 0) {
-            segments.push(currentSegment);
-            currentSegment = [];
-          }
+      if (prevY === null) {
+        if (x > xMin) {
+          const boundary = bisectBoundary(prevX, x, true);
+          currentSegment.push(new Vector2(boundary.x, 0));
         }
+        currentSegment.push(new Vector2(x, y));
+        prevY = y;
+        prevX = x;
+        continue;
       }
 
-      currentSegment.push(new Vector2(x, y));
+      refine(prevX, prevY, x, y, 0);
+      prevX = x;
       prevY = y;
     }
 
-    if (currentSegment.length > 0) {
-      segments.push(currentSegment);
-    }
+    pushCurrent();
 
     return segments;
   });
 
-  const smoothLines = $derived.by(() => {
+  const curveFactory = $derived(smoothing === 'cardinal' ? curveCardinal.tension(tension) : null);
+
+  const makeLine = () => {
     const l = line<Vector2>()
       .x((d) => d.x)
-      .y((d) => d.y)
-      .curve(curveCardinal.tension(tension));
+      .y((d) => d.y);
+    return curveFactory ? l.curve(curveFactory) : l;
+  };
+
+  const smoothLines = $derived.by(() => {
+    const l = makeLine();
     return functionRoots.map((points) => l(points));
   });
 
@@ -91,52 +177,58 @@
   const integralPath = $derived.by(() => {
     if (!integral) return null;
 
-    const points: Vector2[] = [];
     const { xLeft, xRight } = integral;
+    const segments: Vector2[][] = [];
+    let current: Vector2[] = [];
 
-    try {
-      const yLeft = func(xLeft);
-      if (isFinite(yLeft)) {
-        points.push(new Vector2(xLeft, yLeft));
-      }
-    } catch {
-      // continue
-    }
-
-    for (let x = xLeft + stepSize; x < xRight; x += stepSize) {
-      let y: number;
+    const safeVal = (x: number) => {
       try {
-        y = func(x);
-        if (!isFinite(y)) continue;
+        return func(x);
       } catch {
+        return NaN;
+      }
+    };
+
+    const pushCurrent = () => {
+      if (current.length > 0) {
+        segments.push(current);
+        current = [];
+      }
+    };
+
+    const startY = safeVal(xLeft);
+    if (isFinite(startY)) current.push(new Vector2(xLeft, startY));
+
+    for (let x = xLeft + stepSize; x < xRight + 1e-9; x += stepSize) {
+      const y = safeVal(x);
+      if (!isFinite(y)) {
+        pushCurrent();
         continue;
       }
-      points.push(new Vector2(x, y));
+      current.push(new Vector2(x, y));
     }
 
-    try {
-      const yRight = func(xRight);
-      if (isFinite(yRight)) {
-        points.push(new Vector2(xRight, yRight));
-      }
-    } catch {
-      // continue
-    }
+    const endY = safeVal(xRight);
+    if (isFinite(endY)) current.push(new Vector2(xRight, endY));
+    pushCurrent();
 
-    if (points.length === 0) return null;
+    if (segments.length === 0) return null;
 
-    // Create smooth curve for the function part
-    const l = line<Vector2>()
-      .x((d) => d.x)
-      .y((d) => d.y)
-      .curve(curveCardinal.tension(tension));
+    const l = makeLine();
 
-    const curvePath = l(points);
+    // Build separate polygons per finite segment to avoid stitching across gaps
+    const paths = segments
+      .filter((seg) => seg.length >= 2)
+      .map((seg) => {
+        const path = l(seg);
+        if (!path) return null;
+        const last = seg[seg.length - 1];
+        const first = seg[0];
+        return `${path} L ${last.x},0 L ${first.x},0 Z`;
+      })
+      .filter((p): p is string => !!p);
 
-    const lastPoint = points[points.length - 1];
-    const firstPoint = points[0];
-
-    return `${curvePath} L ${lastPoint.x},0 L ${firstPoint.x},0 Z`;
+    return paths.length > 0 ? paths.join(' ') : null;
   });
 
   const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);
