@@ -63,7 +63,7 @@
   });
 
   const formulas = $derived.by(() => {
-    return [new Formula('f(t) = \\sqrt{1+\\cos^2(t)}')];
+    return [new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'), new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t \\approx 1.058')];
   });
 
   const legendItems = $derived([
