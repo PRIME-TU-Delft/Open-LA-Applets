@@ -58,6 +58,14 @@
 
   let func = $derived(controls[0]);
 
+  let funcPoints = (x: number) => {
+    let result = func(x);
+
+    if (Number.isNaN(result)) return 0;
+
+    return result;
+  };
+
   let intFunc = (a: number, b: number) => {
     return integral(func, a, b);
   };
@@ -172,14 +180,14 @@
   {#if currentRule != 'right' && currentRule != 'midpoint'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xL, func(xL))} />
     <Latex2D
-      position={new Vector2(xL - 0.1, func(xL) + 0.6)}
+      position={new Vector2(xL - 0.1, funcPoints(xL) + 0.6)}
       latex="f(x_L)"
       color={PrimeColor.orange}
     />
   {:else if currentRule == 'right'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
-      position={new Vector2(xR - 0.1, func(xR) + 0.6)}
+      position={new Vector2(xR - 0.1, funcPoints(xR) + 0.6)}
       latex="f(x_R)"
       color={PrimeColor.orange}
     />
@@ -188,7 +196,7 @@
   {#if currentRule == 'trapezoid' || currentRule == 'simpson'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
-      position={new Vector2(xR - 0.1, func(xR) + 0.6)}
+      position={new Vector2(xR - 0.1, funcPoints(xR) + 0.6)}
       latex="f(x_R)"
       color={PrimeColor.orange}
     />
@@ -200,7 +208,7 @@
 
     <Point2D color={PrimeColor.orange} position={new Vector2(xM, func(xM))} />
     <Latex2D
-      position={new Vector2(xM - 0.1, func(xM) + 0.6)}
+      position={new Vector2(xM - 0.1, funcPoints(xM) + 0.6)}
       latex="f(x_M)"
       color={PrimeColor.orange}
     />
