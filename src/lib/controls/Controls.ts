@@ -100,6 +100,8 @@ export class Controls<
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const colors = PrimeColor.asArray();
@@ -116,7 +118,11 @@ export class Controls<
       options?.loop,
       options?.valueFn,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
 
     this.isAllowedToAddControl(newSlider);
@@ -150,6 +156,8 @@ export class Controls<
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const newSlider = new Slider(
@@ -163,7 +171,11 @@ export class Controls<
       options?.loop,
       options?.valueFn,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
     return new Controls([newSlider] as const, newSlider.width);
   }

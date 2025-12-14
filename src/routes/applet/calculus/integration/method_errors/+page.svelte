@@ -52,8 +52,11 @@
   const controls = Controls.addSlider(6, 1, 50, 1, PrimeColor.raspberry, {
     label: 'h',
     valueFn: (v: number) => round(1 / (4 * Math.round(v)), 4) + 'π',
-    onRelease: (_v: number) => {
-      animationOn = !animationOn;
+    onStartChanging: () => {
+      animationOn = true;
+    },
+    onStopChanging: () => {
+      animationOn = false;
     },
     animationStep: 1
   })
@@ -143,7 +146,7 @@
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
 
-    {@const opacity = animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+    {@const opacity = !animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
 
     {#if controls[1]}
       <Point2D position={new Vector2(x, left)} color={PrimeColor.orange + opacity} />
@@ -157,7 +160,7 @@
   {/each}
 
   {@const hX = 2 * Math.log10(h)}
-  {@const opacity = !animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+  {@const opacity = animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
 
   {#if controls[1]}
     <Point2D

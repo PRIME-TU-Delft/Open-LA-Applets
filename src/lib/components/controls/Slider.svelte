@@ -57,12 +57,17 @@
     round();
     slider.onRelease(value);
 
-    if (onStopChanging) onStopChanging();
+    slider.onStopChanging();
+
+    if (onStopChanging) {
+      onStopChanging();
+    }
   }
 
   function startPlaying() {
     isPlaying = true;
     icon = 'Pause';
+    slider.onStartChanging();
 
     playInterval = setInterval(() => {
       // console.log('is playing');
@@ -93,8 +98,11 @@
 
   function startChanging() {
     stopPlaying();
+    slider.onStartChanging();
 
-    if (onStartChanging) onStartChanging();
+    if (onStartChanging) {
+      onStartChanging();
+    }
   }
 
   $effect(() => {
@@ -180,7 +188,9 @@
         bind:value
         onchange={stopPlaying}
         onmousedown={startChanging}
+        onmouseup={slider.onStopChanging}
         ontouchstart={startChanging}
+        ontouchend={slider.onStopChanging}
         style="accent-color: {slider.color}"
       />
     </div>
@@ -194,7 +204,9 @@
       bind:value
       onchange={stopPlaying}
       onmousedown={startChanging}
+      onmouseup={slider.onStopChanging}
       ontouchstart={startChanging}
+      ontouchend={slider.onStopChanging}
       style="accent-color: {slider.color}"
     />
   {/if}
