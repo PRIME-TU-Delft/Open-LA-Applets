@@ -43,11 +43,11 @@ export class Slider implements Controller<number> {
     min = -1,
     max = 1,
     step = 0.1,
-    animationStep = 0.25,
     color: string = PrimeColor.blue,
     label: string = '',
     loop: boolean = false,
     valueFn: (v: number) => string = (v) => v.toString(),
+    animationStep = 0.25,
     valueFormat: ((v: number) => ReturnType<Snippet>) | undefined = undefined,
     changeFunctions: ChangeFunctions = {}
   ) {
