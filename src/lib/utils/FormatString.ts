@@ -20,3 +20,11 @@ export function withSign(number: number) {
     return '+ ' + abs;
   }
 }
+
+/**
+ * Wrap string in \\text{} for Latex
+ * @param string String to format
+ */
+export function toLatexText(string: string) {
+  return `\\text{${string}}`;
+}

@@ -2,6 +2,12 @@ import type { Controller } from './Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import type { Snippet } from 'svelte';
 
+type ChangeFunctions = {
+  onRelease?: (v: number) => void;
+  onStartChanging?: () => void;
+  onStopChanging?: () => void;
+};
+
 /**
  * The Slider class is used to create a slider with a default value and a range of values.
  * The default values are set to 0, -1, 1, and 0.1.
@@ -20,6 +26,7 @@ export class Slider implements Controller<number> {
   min = -1;
   max = 1;
   stepSize = 0.1;
+  animationStep = 0.25;
   color: string = PrimeColor.blue;
   width = 30;
   type = 'sliders';
@@ -28,6 +35,8 @@ export class Slider implements Controller<number> {
   valueFn: (v: number) => string;
   labelFormat?: (v: number) => ReturnType<Snippet>;
   onRelease: (v: number) => void;
+  onStartChanging: () => void;
+  onStopChanging: () => void;
 
   constructor(
     defaultValue: number,
@@ -38,20 +47,36 @@ export class Slider implements Controller<number> {
     label: string = '',
     loop: boolean = false,
     valueFn: (v: number) => string = (v) => v.toString(),
+    animationStep = 0.25,
     valueFormat: ((v: number) => ReturnType<Snippet>) | undefined = undefined,
-    onRelease: (v: number) => void = () => {}
+    changeFunctions: ChangeFunctions = {}
   ) {
     this.defaultValue = defaultValue;
     this.min = min;
     this.max = max;
     this.stepSize = step;
+    this.animationStep = animationStep;
     this.value = defaultValue;
     this.color = color;
     this.label = label;
     this.loop = loop;
     this.valueFn = valueFn;
-    this.onRelease = onRelease;
+    this.onRelease =
+      changeFunctions.onRelease ??
+      ((_v) => {
+        return;
+      });
     this.labelFormat = valueFormat;
+    this.onStartChanging =
+      changeFunctions.onStartChanging ??
+      (() => {
+        return;
+      });
+    this.onStopChanging =
+      changeFunctions.onStopChanging ??
+      (() => {
+        return;
+      });
   }
 
   static Default = new Slider(0);

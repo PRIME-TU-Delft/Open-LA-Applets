@@ -81,6 +81,7 @@ export class Controls<
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
+   * @param options.animationStep - How fast should the animation go
    * @param options.loop - If the slider bounces or loops during autoplay
    * @param options.label - label for the slider
    * @param options.valueFn - function to format the value
@@ -95,9 +96,12 @@ export class Controls<
     options?: {
       label?: string;
       loop?: boolean;
+      animationStep?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const colors = PrimeColor.asArray();
@@ -112,8 +116,13 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.animationStep,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
 
     this.isAllowedToAddControl(newSlider);
@@ -128,6 +137,7 @@ export class Controls<
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
+   * @param options.animationStep - How fast should the animation go
    * @param options.loop - If the slider bounces or loops during autoplay
    * @param options.label - label for the slider
    * @param options.valueFn - function to format the value
@@ -142,9 +152,12 @@ export class Controls<
     options?: {
       label?: string;
       loop?: boolean;
+      animationStep?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const newSlider = new Slider(
@@ -156,8 +169,13 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.animationStep,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
     return new Controls([newSlider] as const, newSlider.width);
   }
