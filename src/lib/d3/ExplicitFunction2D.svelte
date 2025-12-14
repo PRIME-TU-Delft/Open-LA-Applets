@@ -20,6 +20,9 @@
     maxDepth?: number;
     minStep?: number;
     smoothing?: 'cardinal' | 'linear';
+    discontinuitySlope?: number;
+    discontinuityMagnitude?: number;
+    verticalLimit?: number;
   };
 
   const {
@@ -35,8 +38,11 @@
     maxSlope = 15,
     curvatureThreshold = 0.05,
     maxDepth = 10,
-    minStep = Math.min(stepSize / 20, 0.0015),
-    smoothing = 'linear'
+    minStep = Math.min(stepSize / 40, 0.001),
+    smoothing = 'linear',
+    discontinuitySlope = maxSlope * 5000,
+    discontinuityMagnitude = 1e6,
+    verticalLimit = 1e4
   }: ExplicitFunction2DProps = $props();
 
   // Generate points for the function
@@ -59,32 +65,17 @@
       }
     };
 
-    const bisectBoundary = (a: number, b: number, targetFinite: boolean) => {
-      let lo = a;
-      let hi = b;
-      for (let i = 0; i < 24 && Math.abs(hi - lo) > minStep / 2; i++) {
-        const mid = (lo + hi) / 2;
-        const ym = safeVal(mid);
-        if (Number.isFinite(ym) === targetFinite) {
-          hi = mid;
-        } else {
-          lo = mid;
-        }
-      }
-
-      const xStar = targetFinite ? hi : lo;
-      const yStar = safeVal(xStar);
-      return { x: xStar, y: Number.isFinite(yStar) ? yStar : 0 };
-    };
-
-    const refine = (x0: number, y0: number, x1: number, y1: number, depth: number) => {
+    // Returns true when the segment is intentionally split to avoid bridging a discontinuity
+    const refine = (x0: number, y0: number, x1: number, y1: number, depth: number): boolean => {
       if (!isFinite(y1)) {
         pushCurrent();
-        return;
+        return true;
       }
 
       const dx = x1 - x0;
-      if (dx <= 0) return;
+      if (dx <= 0) return false;
+
+      const slope = Math.abs((y1 - y0) / dx);
 
       if (depth < maxDepth && dx > minStep) {
         const xm = (x0 + x1) / 2;
@@ -101,14 +92,26 @@
           const localCurvature = Math.abs(ym - (y0 + y1) / 2);
 
           if (slopeL > maxSlope || slopeR > maxSlope || localCurvature > curvatureThreshold) {
-            refine(x0, y0, xm, ym, depth + 1);
-            refine(xm, ym, x1, y1, depth + 1);
-            return;
+            if (refine(x0, y0, xm, ym, depth + 1)) return true;
+            if (refine(xm, ym, x1, y1, depth + 1)) return true;
+            return false;
           }
         }
       }
 
+      if (
+        slope > discontinuitySlope ||
+        Math.abs(y0) > discontinuityMagnitude ||
+        Math.abs(y1) > discontinuityMagnitude ||
+        Math.abs(y0) > verticalLimit ||
+        Math.abs(y1) > verticalLimit
+      ) {
+        pushCurrent();
+        return true;
+      }
+
       currentSegment.push(new Vector2(x1, y1));
+      return false;
     };
 
     let prevX = xMin;
@@ -129,8 +132,6 @@
 
       if (!isFinite(y)) {
         if (prevY !== null) {
-          const boundary = bisectBoundary(prevX, x, false);
-          currentSegment.push(new Vector2(boundary.x, 0));
           pushCurrent();
         }
         prevY = null;
@@ -139,17 +140,19 @@
       }
 
       if (prevY === null) {
-        if (x > xMin) {
-          const boundary = bisectBoundary(prevX, x, true);
-          currentSegment.push(new Vector2(boundary.x, 0));
-        }
         currentSegment.push(new Vector2(x, y));
         prevY = y;
         prevX = x;
         continue;
       }
 
-      refine(prevX, prevY, x, y, 0);
+      const split = refine(prevX, prevY, x, y, 0);
+      if (split) {
+        prevX = x;
+        prevY = null;
+        continue;
+      }
+
       prevX = x;
       prevY = y;
     }
@@ -168,9 +171,11 @@
     return curveFactory ? l.curve(curveFactory) : l;
   };
 
+  const visibleSegments = $derived.by(() => functionRoots.filter((seg) => seg.length >= 2));
+
   const smoothLines = $derived.by(() => {
     const l = makeLine();
-    return functionRoots.map((points) => l(points));
+    return visibleSegments.map((points) => l(points));
   });
 
   // Generate points for the integral region
@@ -257,7 +262,7 @@
 {/if}
 
 {#if showArrows}
-  {#each functionRoots as points, rootIdx (rootIdx)}
+  {#each visibleSegments as points, rootIdx (rootIdx)}
     {#each points as point, i (i)}
       {#if i > 0 && i < points.length - 1}
         {@const nextPoint = points[i + 1]}

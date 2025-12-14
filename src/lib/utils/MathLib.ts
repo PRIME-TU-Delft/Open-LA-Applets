@@ -174,6 +174,22 @@ export function integral(
   b: number,
   tolerance: number = 1e-8
 ): number {
+  const maxDepth = 25;
+  const maxEvaluations = 8000;
+  const blowupThreshold = 1e12;
+  let evalCount = 0;
+
+  const safeEval = (x: number) => {
+    const v = f(x);
+    evalCount++;
+    if (evalCount > maxEvaluations) return NaN;
+    if (!Number.isFinite(v)) return NaN;
+    if (Math.abs(v) > blowupThreshold) return NaN;
+    return v;
+  };
+
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return NaN;
+
   // Simpson's rule for a single interval [a, b]
   const simpsonRule = (a: number, b: number, fa: number, fm: number, fb: number): number => {
     return ((b - a) / 6) * (fa + 4 * fm + fb);
@@ -190,19 +206,24 @@ export function integral(
     whole: number,
     depth: number
   ): number => {
-    if (!Number.isFinite(fa) || !Number.isFinite(fm) || !Number.isFinite(fb)) return NaN;
+    if (
+      !Number.isFinite(fa) ||
+      !Number.isFinite(fm) ||
+      !Number.isFinite(fb) ||
+      Math.abs(fa) > blowupThreshold ||
+      Math.abs(fm) > blowupThreshold ||
+      Math.abs(fb) > blowupThreshold
+    )
+      return NaN;
 
-    const maxDepth = 50;
-    if (depth > maxDepth) {
-      return whole;
-    }
+    if (depth > maxDepth || evalCount > maxEvaluations) return NaN;
 
     const m = (a + b) / 2;
     const lm = (a + m) / 2;
     const rm = (m + b) / 2;
 
-    const flm = f(lm);
-    const frm = f(rm);
+    const flm = safeEval(lm);
+    const frm = safeEval(rm);
 
     if (!Number.isFinite(flm) || !Number.isFinite(frm)) return NaN;
 
@@ -230,9 +251,9 @@ export function integral(
   };
 
   const m = (a + b) / 2;
-  const fa = f(a);
-  const fm = f(m);
-  const fb = f(b);
+  const fa = safeEval(a);
+  const fm = safeEval(m);
+  const fb = safeEval(b);
 
   if (!Number.isFinite(fa) || !Number.isFinite(fm) || !Number.isFinite(fb)) return NaN;
 
