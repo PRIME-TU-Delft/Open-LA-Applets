@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
@@ -71,6 +72,7 @@
     ]
   },
   "dependencies": {
+    "@cortex-js/compute-engine": "^0.30.2",
     "@number-flow/svelte": "^0.3.9",
     "@sveltejs/adapter-netlify": "^5.2.4",
     "@sveltejs/adapter-node": "^5.4.0",
@@ -81,6 +83,7 @@
     "formsnap": "^1.0.1",
     "glob": "^11.0.3",
     "katex": "^0.16.25",
+    "mathlive": "^0.108.2",
     "screenfull": "^6.0.2",
     "svelte-i18n": "^4.0.1",
     "three": "^0.177.0"
