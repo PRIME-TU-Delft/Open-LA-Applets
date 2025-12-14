@@ -67,7 +67,7 @@
     playInterval = setInterval(() => {
       // console.log('is playing');
       // Bounce the slider back and forth
-      value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
+      value += (moveRight ? -1 : 1) * slider.stepSize * slider.animationStep;
 
       if (slider.loop) {
         // Slider moves to min val

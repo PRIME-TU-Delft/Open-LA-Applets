@@ -28,25 +28,16 @@
     };
   };
 
-  function roundH(H: number) {
-    let width = R - L;
-    let n = Math.round(width / H);
-
-    return { n: Math.max(1, n), roundedH: width / n };
-  }
-
-  let areaFull = (L: number, H: number) => {
-    let { n, roundedH } = roundH(H);
-
+  let areaFull = (L: number, H: number, N: number) => {
     let currentArea = {
       left: 0,
       right: 0,
       trapezoid: 0
     };
 
-    for (let i = 0; i < n; i++) {
-      let x = L + i * roundedH;
-      let a = area(x, x + roundedH);
+    for (let i = 0; i < N; i++) {
+      let x = L + i * H;
+      let a = area(x, x + H);
 
       currentArea['left'] += a['left'];
       currentArea['right'] += a['right'];
@@ -56,9 +47,15 @@
     return currentArea;
   };
 
-  const controls = Controls.addSlider(1 / 20, 1 / 256, 1 / 4, 0.01, PrimeColor.raspberry, {
+  let animationOn = $state(false);
+
+  const controls = Controls.addSlider(6, 1, 50, 1, PrimeColor.raspberry, {
     label: 'h',
-    valueFn: (v: number) => round(roundH(Math.PI * v).roundedH / Math.PI, 4) + 'π'
+    valueFn: (v: number) => round(1 / (4 * Math.round(v)), 4) + 'π',
+    onRelease: (_v: number) => {
+      animationOn = !animationOn;
+    },
+    animationStep: 1
   })
     .addToggle(
       true,
@@ -89,9 +86,10 @@
     new LegendItem($_('applets.calculus.integration.method_errors.trapezoid'), PrimeColor.darkGreen)
   ]);
 
-  const hNotRounded = $derived(Math.PI * controls[0]);
+  const N = $derived(Math.round(controls[0]));
+  const h = $derived((R - L) / N);
 
-  let areaDict = $derived(areaFull(L, hNotRounded));
+  let areaDict = $derived(areaFull(L, h, N));
 
   type MethodsDict = { left: number; right: number; trapezoid: number };
 
@@ -112,11 +110,12 @@
 
   let errorsPredefined: PointErrors[] = [];
 
-  let points = [Math.PI / 4, Math.PI / 8, Math.PI / 16, Math.PI / 32, Math.PI / 64, Math.PI / 128];
-  points.forEach((p) => {
-    let a = areaFull(L, p);
+  let Npoints = [1, 2, 4, 8, 16, 32];
+  Npoints.forEach((n) => {
+    let h = (R - L) / n;
+    let a = areaFull(L, h, n);
 
-    errorsPredefined.push({ pointX: p, errors: errors(a) });
+    errorsPredefined.push({ pointX: h, errors: errors(a) });
   });
 </script>
 
@@ -144,34 +143,38 @@
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
 
+    {@const opacity = animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+
     {#if controls[1]}
-      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} />
+      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange + opacity} />
     {/if}
     {#if controls[2]}
-      <Point2D position={new Vector2(x, right)} color={PrimeColor.blue} />
+      <Point2D position={new Vector2(x, right)} color={PrimeColor.blue + opacity} />
     {/if}
     {#if controls[3]}
-      <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen} />
+      <Point2D position={new Vector2(x, trapezoid)} color={PrimeColor.darkGreen + opacity} />
     {/if}
   {/each}
 
-  {@const hX = 2 * Math.log10(roundH(hNotRounded).roundedH)}
+  {@const hX = 2 * Math.log10(h)}
+  {@const opacity = !animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+
   {#if controls[1]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
-      color={PrimeColor.orange + PrimeColor.opacity(0.5)}
+      color={PrimeColor.orange + opacity}
     />
   {/if}
   {#if controls[2]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
-      color={PrimeColor.blue + PrimeColor.opacity(0.5)}
+      color={PrimeColor.blue + opacity}
     />
   {/if}
   {#if controls[3]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
-      color={PrimeColor.darkGreen + PrimeColor.opacity(0.5)}
+      color={PrimeColor.darkGreen + opacity}
     />
   {/if}
 </Canvas2D>
