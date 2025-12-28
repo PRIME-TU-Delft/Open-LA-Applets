@@ -71,29 +71,33 @@
 
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
-      {#if index > 0}
-        <Latex2D
-          latex={getTickText(index, 'x')}
-          position={new Vector2(index * scaleX - 0.07, -0.15)}
-        />
-      {:else}
-        <Latex2D
-          latex={getTickText(index, 'x')}
-          position={new Vector2(index * scaleX - 0.15, -0.15)}
-        />
+      {#if index * scaleX <= length && index * scaleX >= -length}
+        {#if index > 0}
+          <Latex2D
+            latex={getTickText(index, 'x')}
+            position={new Vector2(index * scaleX - 0.07, -0.15)}
+          />
+        {:else}
+          <Latex2D
+            latex={getTickText(index, 'x')}
+            position={new Vector2(index * scaleX - 0.15, -0.15)}
+          />
+        {/if}
       {/if}
 
       <!-- Y axis number labels -->
-      {#if index > 0}
-        <Latex2D
-          latex={getTickText(index, 'y')}
-          position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
-        />
-      {:else}
-        <Latex2D
-          latex={getTickText(index, 'y')}
-          position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
-        />
+      {#if index * scaleY <= length && index * scaleY >= -length}
+        {#if index > 0}
+          <Latex2D
+            latex={getTickText(index, 'y')}
+            position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
+          />
+        {:else}
+          <Latex2D
+            latex={getTickText(index, 'y')}
+            position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
+          />
+        {/if}
       {/if}
     {/if}
   {/each}
