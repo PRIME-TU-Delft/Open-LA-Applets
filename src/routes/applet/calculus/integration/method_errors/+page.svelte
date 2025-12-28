@@ -127,7 +127,7 @@
   {formulas}
   {legendItems}
   customAxis={true}
-  cameraZoom={1.35}
+  cameraZoom={1.15}
   cameraPosition={new Vector2(-1.4, -2.4)}
   title={$_('applets.calculus.integration.method_errors.title')}
 >
