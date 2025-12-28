@@ -46,7 +46,7 @@
     for="include-qr"
     class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
   >
-    <span>{$_('embed_include_qr')}</span>
+    <span>{$_('ui.embed_include_qr')}</span>
   </Label>
 </div>
 
@@ -54,34 +54,34 @@
   for="url-state"
   class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 >
-  {$_('embed_static_url')}
+  {$_('ui.embed_static_url')}
 </Label>
 
 <div class="relative h-full w-full">
   <Textarea readonly value={stateUrl} />
   {#if showCopySucess}
     <div class="absolute bottom-1 left-1 text-green-700" in:fly={{ y: 20 }}>
-      {$_('clipboard_copied')}
+      {$_('ui.clipboard_copied')}
     </div>
   {/if}
 </div>
 
 <div class="mt-2 flex gap-2 overflow-x-auto">
   <Button onclick={() => copyToClipboard()}>
-    {$_('clipboard_copy')}
+    {$_('ui.clipboard_copy')}
     <Copy class="ml-2 size-4" />
   </Button>
 
   <a href={resolve(stateUrl)} target="_blank">
     <Button>
-      {$_('open_new_tab')}
+      {$_('ui.open_new_tab')}
       <ExternalLink class="ml-2 size-4" />
     </Button>
   </a>
 
   <a href={resolve(screenshotImage)} download target="_blank">
     <Button>
-      {$_('download_image')}
+      {$_('ui.download_image')}
 
       <Download />
     </Button>

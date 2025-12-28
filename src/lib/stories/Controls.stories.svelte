@@ -50,7 +50,7 @@
       return {
         state,
         labelNext: $_('applets.testing.controls_stories.fade_out_a'),
-        labelPrev: $_('slideshow_original_state')
+        labelPrev: $_('ui.slideshow_original_state')
       };
     },
     (t: number, state: S) => {
