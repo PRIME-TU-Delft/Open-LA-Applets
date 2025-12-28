@@ -73,7 +73,7 @@
   splitCanvas2DProps={{
     cameraZoom: 2.75,
     enablePan: false,
-    customAxis: true,
+    axis: null,
     draggables: [d1]
   }}
 >

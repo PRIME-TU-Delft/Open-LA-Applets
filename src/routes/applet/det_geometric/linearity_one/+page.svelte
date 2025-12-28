@@ -31,7 +31,7 @@
   const controls = createControls(u);
 </script>
 
-<Canvas2D {controls} showAxisNumbers={false} cameraPosition={new Vector2(1.5, 1.5)}>
+<Canvas2D {controls} axis={{ showAxisNumbers: false }} cameraPosition={new Vector2(1.5, 1.5)}>
   <!-- MARK: Polygons -->
   <Polygon2D points={OAIC} color={controls[0].polygonColorAdd} opacity={0.2} />
   <Polygon2D points={CIDE} color={controls[0].polygonColorSub} opacity={0.2} />

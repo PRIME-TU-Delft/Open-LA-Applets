@@ -38,10 +38,10 @@
 <Story name="Camera position" args={{ cameraPosition: new Vector2(3, 1) }} {template} />
 
 <!-- This canvas is smaller than the regular canvas. This can be useful in combination with `cameraZoom` -->
-<Story name="Adjust tickLength" args={{ tickLength: 5 }} {template} />
+<Story name="Adjust tickLength" args={{ axis: { length: 5 } }} {template} />
 
 <!-- This can be useful when you would like to show the applet at one specific location -->
 <Story name="Toggle pan" args={{ enablePan: false }} {template} />
 
 <!-- This can be useful when you would like to hide the axis numbers and put more attension to the applet.  -->
-<Story name="Toggle Axis Numbers" args={{ showAxisNumbers: false }} {template} />
+<Story name="Toggle Axis Numbers" args={{ axis: { showAxisNumbers: false } }} {template} />

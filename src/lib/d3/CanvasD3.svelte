@@ -5,14 +5,12 @@
   export type Canvas2DProps = {
     cameraPosition?: Vector2;
     cameraZoom?: number;
-    tickLength?: number; // TODO: move axis to separate component
-    showAxisNumbers?: boolean;
+    axis?: AxisProps | null;
     width?: number;
     height?: number;
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
-    customAxis?: boolean;
     children: Snippet;
   };
 </script>
@@ -32,7 +30,7 @@
     type Transition
   } from 'd3';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import Axis from './Axis.svelte';
+  import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
   import Confetti from '$lib/components/Confetti.svelte';
@@ -41,14 +39,12 @@
   let {
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
-    tickLength,
-    showAxisNumbers,
     width = 500,
     height = 300,
     enablePan = true,
     draggables = [],
     isSplit = false,
-    customAxis = false,
+    axis,
     children
   }: Canvas2DProps = $props();
 
@@ -169,8 +165,8 @@
             30})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-            {#if !customAxis}
-              <Axis {showAxisNumbers} length={tickLength} />
+            {#if axis !== null}
+              <Axis {...axis} />
             {/if}
 
             {@render children()}

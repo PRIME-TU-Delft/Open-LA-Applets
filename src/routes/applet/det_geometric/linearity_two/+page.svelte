@@ -36,7 +36,7 @@
   const state = $derived(controls[0]);
 </script>
 
-<Canvas2D {controls} showAxisNumbers={false}>
+<Canvas2D {controls} axis={{ showAxisNumbers: false }}>
   <!-- MARK: Polygons -->
   {#if state.OAFC.visible}
     <Polygon2D
