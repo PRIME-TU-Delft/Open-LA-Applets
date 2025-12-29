@@ -133,6 +133,11 @@
 
   onMount(() => {
     handleCameraChange();
+
+    // Trigger initial render when in manual mode (e.g., when embedded in iframe)
+    requestAnimationFrame(() => {
+      advance();
+    });
   });
 
   onDestroy(() => {
