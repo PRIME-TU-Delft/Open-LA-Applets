@@ -24,11 +24,6 @@
     return new Vector2(x, 0);
   };
 
-  const draggables = [
-    new Draggable(new Vector2(4.5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom'),
-    new Draggable(new Vector2(1.5, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
-  ];
-
   const searchParams = page?.url?.searchParams;
   const ruleParam = searchParams.get('rule');
 
@@ -44,17 +39,43 @@
     defaultRule = 'applets.calculus.integration.simple_methods.simpson';
   }
 
-  const controls = Controls.addFunction(
-    '\\sqrt{1 + {\\cos{(x)}}^2 }',
-    'f(x)',
-    PrimeColor.blue
-  ).addDropdown(defaultRule, [
-    'applets.calculus.integration.simple_methods.left',
-    'applets.calculus.integration.simple_methods.right',
-    'applets.calculus.integration.simple_methods.trapezoid',
-    'applets.calculus.integration.simple_methods.midpoint',
-    'applets.calculus.integration.simple_methods.simpson'
-  ]);
+  let defaultFunction = searchParams.get('function') || '\\sqrt{1 + {\\cos{(x)}}^2 }';
+
+  const controls = Controls.addFunction(defaultFunction, 'f(x)', PrimeColor.blue).addDropdown(
+    defaultRule,
+    [
+      'applets.calculus.integration.simple_methods.left',
+      'applets.calculus.integration.simple_methods.right',
+      'applets.calculus.integration.simple_methods.trapezoid',
+      'applets.calculus.integration.simple_methods.midpoint',
+      'applets.calculus.integration.simple_methods.simpson'
+    ]
+  );
+
+  let defaultXL: number = parseFloat(searchParams.get('xL') || '1.5');
+  let defaultXR: number = parseFloat(searchParams.get('xR') || '4.5');
+
+  if (isNaN(defaultXL)) defaultXL = 1.5;
+  if (isNaN(defaultXR)) defaultXR = 4.5;
+
+  const draggables = [
+    new Draggable(
+      new Vector2(defaultXR, 0),
+      PrimeColor.orange,
+      'x_R',
+      xrSnapFunc,
+      undefined,
+      'bottom'
+    ),
+    new Draggable(
+      new Vector2(defaultXL, 0),
+      PrimeColor.orange,
+      'x_L',
+      xlSnapFunc,
+      undefined,
+      'bottom'
+    )
+  ];
 
   let func = $derived(controls[0]);
 

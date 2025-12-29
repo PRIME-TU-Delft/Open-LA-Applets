@@ -3,7 +3,7 @@ import { Vector2, Vector3 } from 'three';
 /**
  * round to a certain number of decimal places
  * @param x - number to round
- * @param precision - number of decimal places
+ * @param precision - number of decimal places, defaults to 2
  * @returns rounded number
  */
 export function round(x: number, precision = 2) {
