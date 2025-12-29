@@ -12,7 +12,7 @@
     "integration": {
       "simple_methods": {
         "left": "Linker Rechthoekregel",
-        "right": "Recther Rechthoekregel",
+        "right": "Rechter Rechthoekregel",
         "midpoint": "Middenpuntregel",
         "trapezoid": "Trapeziumregel",
         "simpson": "Simpson's regel"
