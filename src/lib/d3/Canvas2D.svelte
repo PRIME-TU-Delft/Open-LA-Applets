@@ -91,6 +91,7 @@
   - cameraPosition: Vector2 - The position of the camera.
   - cameraZoom: number - The zoom of the camera.
   - axis: AxisProps - The properties of the axis.
+  - labels: LabelProps - Axis labels and their positions.
   - enablePan: boolean - Whether the pan is enabled. 
 
 @description
