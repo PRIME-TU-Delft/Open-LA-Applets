@@ -118,7 +118,12 @@
   {formulas}
   {controls}
   cameraPosition={new Vector2(4, 2)}
-  axis={{ xLabel: 'x', yLabel: 'y', xLabelPosition: 'center' }}
+  axis={{
+    xLabel: 'x',
+    yLabel: 'y',
+    xLabelPosition: 'bottom-center',
+    yLabelPosition: 'left-center'
+  }}
 >
   <ExplicitFunction2D
     {func}
