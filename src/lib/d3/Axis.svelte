@@ -1,10 +1,14 @@
 <script lang="ts" module>
+  export type LabelPosition = 'start' | 'center' | 'end';
+
   export type AxisProps = {
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
     xLabel?: string;
     yLabel?: string;
+    xLabelPosition?: LabelPosition;
+    yLabelPosition?: LabelPosition;
   };
 </script>
 

@@ -159,11 +159,11 @@
   });
 
   const labelStyles = $derived.by(() => {
-    if (!axis?.xLabel) return { x: 'display: none;', y: 'display: none;' };
+    if (!axis) return { x: 'display: none;', y: 'display: none;' };
 
     const unitScale = width / 15;
-    const margin = 10;
-    const labelOffset = 25; // Pixels away from the axis tip
+    const margin = 12;
+    const labelOffset = 25;
 
     const toScreen = (wX: number, wY: number) => {
       const baseX = width / 2 + (wX - cameraPosition.x) * unitScale * cameraZoom;
@@ -171,26 +171,52 @@
       return currentTransform.apply([baseX, baseY]);
     };
 
-    // --- X Label Calculation (at y=0) ---
+    const getPos = (size: number, mode: string = 'end', isYAxis: boolean) => {
+      if (isYAxis) {
+        switch (mode) {
+          case 'start':
+            return size - margin; // Bottom of screen
+          case 'center':
+            return size / 2;
+          case 'end':
+            return margin; // Top of screen
+          default:
+            return margin;
+        }
+      } else {
+        switch (mode) {
+          case 'start':
+            return margin; // Left of screen
+          case 'center':
+            return size / 2;
+          case 'end':
+            return size - margin; // Right of screen
+          default:
+            return size - margin;
+        }
+      }
+    };
+
+    // --- X Label ---
     let xStyle = 'display: none;';
     if (axis.xLabel) {
-      const [rawX, rawY] = toScreen(axis.length || GRID_SIZE_2D, 0);
-      const clampedX = Math.min(Math.max(rawX, margin), width - margin);
-      const clampedY = Math.min(Math.max(rawY, margin), height - margin);
+      const [_rawX, rawY] = toScreen(axis.length || GRID_SIZE_2D, 0);
 
-      // Position: Below the axis tip, centered horizontally
-      xStyle = `left: ${clampedX}px; top: ${clampedY + labelOffset}px; transform: translateX(-50%);`;
+      const finalX = getPos(width, axis.xLabelPosition, false);
+      const finalY = Math.min(Math.max(rawY, margin), height - margin);
+
+      xStyle = `left: ${finalX}px; top: ${finalY + labelOffset}px; transform: translateX(-50%);`;
     }
 
-    // --- Y Label Calculation (at x=0) ---
+    // --- Y Label ---
     let yStyle = 'display: none;';
     if (axis.yLabel) {
-      const [rawX, rawY] = toScreen(0, axis.length || GRID_SIZE_2D);
-      const clampedX = Math.min(Math.max(rawX, margin), width - margin);
-      const clampedY = Math.min(Math.max(rawY, margin), height - margin);
+      const [rawX, _rawY] = toScreen(0, axis.length || GRID_SIZE_2D);
 
-      // Position: Left of the axis tip, centered vertically
-      yStyle = `left: ${clampedX - labelOffset}px; top: ${clampedY}px; transform: translateY(-50%); text-align: right;`;
+      const finalX = Math.min(Math.max(rawX, margin), width - margin);
+      const finalY = getPos(height, axis.yLabelPosition, true);
+
+      yStyle = `left: ${finalX - labelOffset}px; top: ${finalY}px; transform: translateY(-50%); text-align: right;`;
     }
 
     return { x: xStyle, y: yStyle };
