@@ -118,7 +118,7 @@
   {formulas}
   {controls}
   cameraPosition={new Vector2(4, 2)}
-  axis={{
+  labels={{
     xLabel: 'x',
     yLabel: 'y',
     xLabelPosition: 'bottom-center',

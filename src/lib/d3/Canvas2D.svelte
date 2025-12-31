@@ -29,6 +29,7 @@
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
     axis,
+    labels,
     enablePan = true,
     draggables = [],
     defaultLeftDivision
@@ -127,6 +128,7 @@
       {cameraPosition}
       {cameraZoom}
       {axis}
+      {labels}
       {enablePan}
       {draggables}
     >

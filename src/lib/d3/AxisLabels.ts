@@ -3,15 +3,32 @@ import type { AxisProps } from './Axis.svelte';
 import type { ZoomTransform } from 'd3';
 import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
+export type LabelAlign = 'start' | 'center' | 'end';
+
+export type XLabelSide = 'top' | 'bottom';
+export type YLabelSide = 'left' | 'right';
+
+export type XLabelPosition = LabelAlign | XLabelSide | `${XLabelSide}-${LabelAlign}`; // e.g. "top-center", "bottom-end"
+
+export type YLabelPosition = LabelAlign | YLabelSide | `${YLabelSide}-${LabelAlign}`; // e.g. "left-start", "right-center"
+
+export type LabelProps = {
+  xLabel: string;
+  yLabel: string;
+  xLabelPosition: XLabelPosition;
+  yLabelPosition: YLabelPosition;
+};
+
 export function getLabelStyles(
-  axis: AxisProps | null | undefined,
+  labels: LabelProps | undefined,
+  axis: AxisProps | undefined,
   cameraPosition: Vector2,
   cameraZoom: number,
   currentTransform: ZoomTransform,
   width: number,
   height: number
 ) {
-  if (!axis) return { x: 'display: none;', y: 'display: none;' };
+  if (!labels) return { x: 'display: none;', y: 'display: none;' };
 
   const unitScale = width / 15;
   const margin = 12;
@@ -72,9 +89,9 @@ export function getLabelStyles(
 
   // --- X Label ---
   let xStyle = 'display: none;';
-  if (axis.xLabel) {
-    const { side, align } = parsePos(axis.xLabelPosition, false);
-    const [_rawX, rawY] = toScreen(axis.length || GRID_SIZE_2D, 0);
+  if (labels.xLabel) {
+    const { side, align } = parsePos(labels.xLabelPosition, false);
+    const [_rawX, rawY] = toScreen(axis?.length || GRID_SIZE_2D, 0);
 
     const finalX = getAlignPos(width, align, false);
 
@@ -89,9 +106,9 @@ export function getLabelStyles(
 
   // --- Y Label ---
   let yStyle = 'display: none;';
-  if (axis.yLabel) {
-    const { side, align } = parsePos(axis.yLabelPosition, true);
-    const [rawX, _rawY] = toScreen(0, axis.length || GRID_SIZE_2D);
+  if (labels.yLabel) {
+    const { side, align } = parsePos(labels.yLabelPosition, true);
+    const [rawX, _rawY] = toScreen(0, axis?.length || GRID_SIZE_2D);
 
     const offset = side === 'right' ? offsetBase : -offsetBase;
     const clampedX = Math.min(Math.max(rawX, margin), width - margin);

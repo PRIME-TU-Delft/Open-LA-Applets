@@ -1,21 +1,8 @@
 <script lang="ts" module>
-  export type LabelAlign = 'start' | 'center' | 'end';
-
-  export type XLabelSide = 'top' | 'bottom';
-  export type YLabelSide = 'left' | 'right';
-
-  export type XLabelPosition = LabelAlign | XLabelSide | `${XLabelSide}-${LabelAlign}`; // e.g. "top-center", "bottom-end"
-
-  export type YLabelPosition = LabelAlign | YLabelSide | `${YLabelSide}-${LabelAlign}`; // e.g. "left-start", "right-center"
-
   export type AxisProps = {
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
-    xLabel?: string;
-    yLabel?: string;
-    xLabelPosition?: XLabelPosition;
-    yLabelPosition?: YLabelPosition;
   };
 </script>
 

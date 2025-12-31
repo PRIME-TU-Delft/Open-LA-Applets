@@ -6,6 +6,7 @@
     cameraPosition?: Vector2;
     cameraZoom?: number;
     axis?: AxisProps | null;
+    labels?: LabelProps;
     width?: number;
     height?: number;
     enablePan?: boolean;
@@ -38,7 +39,7 @@
   import LatexUI from '$lib/components/Latex.svelte';
 
   import { type ZoomTransform } from 'd3'; // Import types
-  import { getLabelStyles } from './AxisLabels';
+  import { getLabelStyles, type LabelProps } from './AxisLabels';
 
   let currentTransform = $state(zoomIdentity);
 
@@ -51,6 +52,7 @@
     draggables = [],
     isSplit = false,
     axis,
+    labels,
     children
   }: Canvas2DProps = $props();
 
@@ -159,7 +161,15 @@
   });
 
   const labelStyles = $derived(
-    getLabelStyles(axis, cameraPosition, cameraZoom, currentTransform, width, height)
+    getLabelStyles(
+      labels,
+      axis || undefined,
+      cameraPosition,
+      cameraZoom,
+      currentTransform,
+      width,
+      height
+    )
   );
 </script>
 
@@ -194,17 +204,17 @@
     </g>
   </svg>
 
-  {#if axis?.xLabel}
+  {#if labels?.xLabel}
     <LatexUI
-      latex={`\\textbf{${axis.xLabel}}`}
+      latex={`\\textbf{${labels.xLabel}}`}
       fontSize={1.5}
       class="xLabel absolute"
       style={labelStyles.x}
     />
   {/if}
-  {#if axis?.yLabel}
+  {#if labels?.yLabel}
     <LatexUI
-      latex={`\\textbf{${axis.yLabel}}`}
+      latex={`\\textbf{${labels.yLabel}}`}
       fontSize={1.5}
       class="yLabel absolute"
       style={labelStyles.y}
