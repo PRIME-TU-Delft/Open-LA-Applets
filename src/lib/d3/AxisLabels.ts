@@ -42,7 +42,7 @@ export function getLabelStyles(
 
   const parsePos = (posStr: string | undefined, isYAxis: boolean) => {
     const defaults = isYAxis
-      ? { side: 'left', align: 'end' } // Y default: Left of axis, at Top
+      ? { side: 'right', align: 'end' } // Y default: Right of axis, at Top
       : { side: 'top', align: 'end' }; // X default: Above axis, at Right
 
     if (!posStr) return defaults;

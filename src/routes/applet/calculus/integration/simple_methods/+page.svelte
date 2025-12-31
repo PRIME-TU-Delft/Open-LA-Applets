@@ -113,18 +113,7 @@
   });
 </script>
 
-<Canvas2D
-  {draggables}
-  {formulas}
-  {controls}
-  cameraPosition={new Vector2(4, 2)}
-  labels={{
-    xLabel: 'x',
-    yLabel: 'y',
-    xLabelPosition: 'bottom-center',
-    yLabelPosition: 'left-center'
-  }}
->
+<Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
