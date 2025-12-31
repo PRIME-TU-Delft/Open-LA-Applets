@@ -3,6 +3,8 @@
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
+    xLabel?: string;
+    yLabel?: string;
   };
 </script>
 

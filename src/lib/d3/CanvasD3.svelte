@@ -35,6 +35,12 @@
   import { debounce } from '$lib/utils/TimingFunctions';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
+  import LatexUI from '$lib/components/Latex.svelte';
+  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+
+  import { type ZoomTransform } from 'd3'; // Import types
+
+  let currentTransform = $state(zoomIdentity);
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -63,6 +69,8 @@
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
   function transformScene(transform: Transform2D) {
+    currentTransform = transform as unknown as ZoomTransform;
+
     if (!transform.k) return;
 
     if (enablePan) {
@@ -104,6 +112,8 @@
    * It will animate the camera to the default position and zoom level in 750ms.
    */
   function reset() {
+    currentTransform = zoomIdentity;
+
     const svg = select(`#${id}`);
     const node = svg.node() as Element;
 
@@ -147,6 +157,44 @@
     if (isSplit) cameraState.splitCamera2D = undefined;
     else cameraState.camera2D = undefined;
   });
+
+  const labelStyles = $derived.by(() => {
+    if (!axis?.xLabel) return { x: 'display: none;', y: 'display: none;' };
+
+    const unitScale = width / 15;
+    const margin = 10;
+    const labelOffset = 25; // Pixels away from the axis tip
+
+    const toScreen = (wX: number, wY: number) => {
+      const baseX = width / 2 + (wX - cameraPosition.x) * unitScale * cameraZoom;
+      const baseY = height / 2 - (wY - cameraPosition.y) * unitScale * cameraZoom;
+      return currentTransform.apply([baseX, baseY]);
+    };
+
+    // --- X Label Calculation (at y=0) ---
+    let xStyle = 'display: none;';
+    if (axis.xLabel) {
+      const [rawX, rawY] = toScreen(axis.length || GRID_SIZE_2D, 0);
+      const clampedX = Math.min(Math.max(rawX, margin), width - margin);
+      const clampedY = Math.min(Math.max(rawY, margin), height - margin);
+
+      // Position: Below the axis tip, centered horizontally
+      xStyle = `left: ${clampedX}px; top: ${clampedY + labelOffset}px; transform: translateX(-50%);`;
+    }
+
+    // --- Y Label Calculation (at x=0) ---
+    let yStyle = 'display: none;';
+    if (axis.yLabel) {
+      const [rawX, rawY] = toScreen(0, axis.length || GRID_SIZE_2D);
+      const clampedX = Math.min(Math.max(rawX, margin), width - margin);
+      const clampedY = Math.min(Math.max(rawY, margin), height - margin);
+
+      // Position: Left of the axis tip, centered vertically
+      yStyle = `left: ${clampedX - labelOffset}px; top: ${clampedY}px; transform: translateY(-50%); text-align: right;`;
+    }
+
+    return { x: xStyle, y: yStyle };
+  });
 </script>
 
 <div>
@@ -179,4 +227,21 @@
       </g>
     </g>
   </svg>
+
+  {#if axis?.xLabel}
+    <LatexUI
+      latex={`\\textbf{${axis.xLabel}}`}
+      fontSize={1.5}
+      class="xLabel absolute"
+      style={labelStyles.x}
+    />
+  {/if}
+  {#if axis?.yLabel}
+    <LatexUI
+      latex={`\\textbf{${axis.yLabel}}`}
+      fontSize={1.5}
+      class="yLabel absolute"
+      style={labelStyles.y}
+    />
+  {/if}
 </div>
