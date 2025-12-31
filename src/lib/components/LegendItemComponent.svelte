@@ -12,7 +12,7 @@
       : 'none';
 </script>
 
-<div class="flex items-center justify-start gap-4">
+<div class="flex items-center justify-start gap-2">
   <svg class="h-5 w-5">
     {#if isDashed}
       <defs>
@@ -37,5 +37,5 @@
       stroke-width={3}
     />
   </svg>
-  <span class="text-base">{legendI.label}</span>
+  <span class="text-sm">{legendI.label}</span>
 </div>
