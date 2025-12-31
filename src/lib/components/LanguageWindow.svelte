@@ -77,9 +77,9 @@
     if (langInfo.hasUI && langInfo.hasApplet) {
       return '';
     } else if (langInfo.hasUI && !langInfo.hasApplet) {
-      return $_('language_ui_only');
+      return $_('ui.language_ui_only');
     } else if (!langInfo.hasUI && langInfo.hasApplet) {
-      return $_('language_applet_only');
+      return $_('ui.language_applet_only');
     }
 
     return '';
@@ -88,9 +88,9 @@
 
 <Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
-    <Dialog.Title>{$_('language_window_title')}</Dialog.Title>
+    <Dialog.Title>{$_('ui.language_window_title')}</Dialog.Title>
     <Dialog.Description class="flex flex-col gap-2">
-      {$_('language_window_available')}
+      {$_('ui.language_window_available')}
 
       <Button
         href={defaultLangUrl}

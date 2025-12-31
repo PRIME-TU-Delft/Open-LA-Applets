@@ -23,7 +23,7 @@
       <Button.Action class="h-6 w-6" tooltip="Lock scene">
         <Unlock class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300" />
       </Button.Action>
-      {$_('notify_click_anywhere')}
+      {$_('ui.notify_click_anywhere')}
       <span class="absolute -top-1 -right-1 flex h-3 w-3">
         <span
           class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"
@@ -41,7 +41,7 @@
         </Dialog.Trigger>
       </Dialog.Root>
 
-      {$_('lock_disable_zoom')}
+      {$_('ui.lock_disable_zoom')}
     </button>
   {/if}
 </div>
