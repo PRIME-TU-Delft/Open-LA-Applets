@@ -9,7 +9,7 @@
 
   const { controller: dropdown }: DropdownProps = $props();
 
-  const localizedValue = $derived($_(dropdown.value) || $_('dropdown_select_item'));
+  const localizedValue = $derived($_(dropdown.value) || $_('ui.dropdown_select_item'));
 
   const localizedValues = $derived(dropdown.values.map((v) => $_(v) || ''));
 </script>

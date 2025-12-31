@@ -18,6 +18,7 @@
   import * as C from './controls';
   import { cn } from '$lib/utils';
   import { _ } from 'svelte-i18n';
+  import { Function } from '$lib/controls/Function.svelte';
 
   type G = readonly Controller<number | boolean | string | State>[];
   type ControllerAndActivityPanelProps = {
@@ -64,8 +65,8 @@
             : 'translate-x-16 opacity-0 sm:translate-x-20'
         )}
       >
-        <SideButton onclick={(e) => onLock(e)} tooltip={$_('lock_tooltip')}>
-          <span class="mr-0.5 hidden text-xs sm:block">{$_('lock')}</span>
+        <SideButton onclick={(e) => onLock(e)} tooltip={$_('ui.lock_tooltip')}>
+          <span class="mr-0.5 hidden text-xs sm:block">{$_('ui.lock')}</span>
           <Lock class="h-4 w-4" />
         </SideButton>
       </div>
@@ -105,6 +106,8 @@
           <C.DiagonalMatrix {controller} {hideButtons} />
         {:else if controller instanceof Matrix}
           <C.Matrix {controller} {hideButtons} />
+        {:else if controller instanceof Function}
+          <C.Function func={controller} />
         {/if}
       {/each}
     </div>
@@ -119,9 +122,9 @@
             : '-translate-x-16 opacity-0 sm:-translate-x-20'
         )}
       >
-        <SideButton onclick={onReset} tooltip={$_('reset_tooltip')}>
+        <SideButton onclick={onReset} tooltip={$_('ui.reset_tooltip')}>
           <RotateCcw class="h-4 w-4" />
-          <span class="ml-0.5 hidden text-xs sm:block">{$_('reset')}</span>
+          <span class="ml-0.5 hidden text-xs sm:block">{$_('ui.reset')}</span>
         </SideButton>
       </div>
     {/if}
@@ -137,16 +140,16 @@
           : '-top-10 scale-100 motion-safe:hover:scale-105 sm:-top-12'
       )}
     >
-      <SideButton class="h-full w-full text-nowrap" tooltip={$_('notify_tooltip')}>
+      <SideButton class="h-full w-full text-nowrap" tooltip={$_('ui.notify_tooltip')}>
         <div
           class="relative flex min-w-[16rem] items-center gap-2 px-4 py-1 text-center text-xs text-balance sm:text-nowrap"
         >
-          <ShadCNButton.Action class="h-6 w-6" tooltip={$_('lock')}>
+          <ShadCNButton.Action class="h-6 w-6" tooltip={$_('ui.lock')}>
             <Unlock
               class="h-6 w-6 rounded-sm bg-blue-200 p-1 transition-colors hover:bg-blue-300"
             />
           </ShadCNButton.Action>
-          {$_('notify_click_anywhere')}
+          {$_('ui.notify_click_anywhere')}
           <span class="absolute -top-1 -right-1 flex h-3 w-3">
             <span
               class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"

@@ -3,7 +3,7 @@ import { Vector2, Vector3 } from 'three';
 /**
  * round to a certain number of decimal places
  * @param x - number to round
- * @param precision - number of decimal places
+ * @param precision - number of decimal places, defaults to 2
  * @returns rounded number
  */
 export function round(x: number, precision = 2) {
@@ -158,4 +158,106 @@ export function leastSquaresLine(points: Vector2[]) {
   const y2 = m * 5 + b;
 
   return [new Vector2(0, b), new Vector2(5, y2)];
+}
+
+/**
+ * Numerically integrates a function using adaptive Simpson's rule
+ * @param func - Expression to integrate
+ * @param a - Lower bound of integration
+ * @param b - Upper bound of integration
+ * @param tolerance - Error tolerance (default: 1e-8)
+ * @returns Approximate value of the integral
+ */
+export function integral(
+  f: (_: number) => number,
+  a: number,
+  b: number,
+  tolerance: number = 1e-8
+): number {
+  const maxDepth = 25;
+  const maxEvaluations = 8000;
+  const blowupThreshold = 1e12;
+  let evalCount = 0;
+
+  const safeEval = (x: number) => {
+    const v = f(x);
+    evalCount++;
+    if (evalCount > maxEvaluations) return NaN;
+    if (!Number.isFinite(v)) return NaN;
+    if (Math.abs(v) > blowupThreshold) return NaN;
+    return v;
+  };
+
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return NaN;
+
+  // Simpson's rule for a single interval [a, b]
+  const simpsonRule = (a: number, b: number, fa: number, fm: number, fb: number): number => {
+    return ((b - a) / 6) * (fa + 4 * fm + fb);
+  };
+
+  // Recursive adaptive Simpson's rule
+  const adaptiveSimpson = (
+    a: number,
+    b: number,
+    tolerance: number,
+    fa: number,
+    fm: number,
+    fb: number,
+    whole: number,
+    depth: number
+  ): number => {
+    if (
+      !Number.isFinite(fa) ||
+      !Number.isFinite(fm) ||
+      !Number.isFinite(fb) ||
+      Math.abs(fa) > blowupThreshold ||
+      Math.abs(fm) > blowupThreshold ||
+      Math.abs(fb) > blowupThreshold
+    )
+      return NaN;
+
+    if (depth > maxDepth || evalCount > maxEvaluations) return NaN;
+
+    const m = (a + b) / 2;
+    const lm = (a + m) / 2;
+    const rm = (m + b) / 2;
+
+    const flm = safeEval(lm);
+    const frm = safeEval(rm);
+
+    if (!Number.isFinite(flm) || !Number.isFinite(frm)) return NaN;
+
+    const left = simpsonRule(a, m, fa, flm, fm);
+    const right = simpsonRule(m, b, fm, frm, fb);
+    const total = left + right;
+
+    if (!Number.isFinite(left) || !Number.isFinite(right) || !Number.isFinite(total)) return NaN;
+
+    // Error estimate based on difference between refined and coarse approximations
+    const error = Math.abs(total - whole) / 15;
+
+    if (!Number.isFinite(error)) return NaN;
+
+    if (error < tolerance || depth > maxDepth) {
+      // Add error correction term (Richardson extrapolation)
+      return total + (total - whole) / 15;
+    }
+
+    // Recursively refine both halves with tighter tolerance
+    return (
+      adaptiveSimpson(a, m, tolerance / 2, fa, flm, fm, left, depth + 1) +
+      adaptiveSimpson(m, b, tolerance / 2, fm, frm, fb, right, depth + 1)
+    );
+  };
+
+  const m = (a + b) / 2;
+  const fa = safeEval(a);
+  const fm = safeEval(m);
+  const fb = safeEval(b);
+
+  if (!Number.isFinite(fa) || !Number.isFinite(fm) || !Number.isFinite(fb)) return NaN;
+
+  const whole = simpsonRule(a, b, fa, fm, fb);
+
+  return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
 }

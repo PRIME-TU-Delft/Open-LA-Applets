@@ -21,7 +21,7 @@
   {#if controller.label != undefined}
     <span>{controller.label}</span>
   {:else if controller.label == null}
-    <span>{$_('slideshow_original_state')}</span>
+    <span>{$_('ui.slideshow_original_state')}</span>
   {/if}
 </Label>
 
@@ -31,7 +31,7 @@
       class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
-      tooltip={$_('slideshow_prev')}
+      tooltip={$_('ui.slideshow_prev')}
       side="top"
       onclick={() => controller.prev()}
     >
@@ -46,7 +46,7 @@
       class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
-      tooltip={$_('slideshow_next')}
+      tooltip={$_('ui.slideshow_next')}
       side="top"
       onclick={() => controller.next()}
     >
