@@ -71,11 +71,10 @@
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
   function transformScene(transform: Transform2D) {
-    currentTransform = transform as unknown as ZoomTransform;
-
     if (!transform.k) return;
 
     if (enablePan) {
+      currentTransform = transform as unknown as ZoomTransform;
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
       select(`#${id} g`)
@@ -173,7 +172,7 @@
   );
 </script>
 
-<div>
+<div class="relative overflow-hidden">
   {#if !isSplit && (confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center')}
     <Confetti isSplit={false} />
   {:else if isSplit && confettiState.confettiSide === 'right'}
@@ -207,7 +206,7 @@
   {#if labels?.xLabel}
     <LatexUI
       latex={`\\textbf{${labels.xLabel}}`}
-      fontSize={1.5}
+      fontSize={2.5}
       class="xLabel absolute"
       style={labelStyles.x}
     />
@@ -215,7 +214,7 @@
   {#if labels?.yLabel}
     <LatexUI
       latex={`\\textbf{${labels.yLabel}}`}
-      fontSize={1.5}
+      fontSize={2.5}
       class="yLabel absolute"
       style={labelStyles.y}
     />

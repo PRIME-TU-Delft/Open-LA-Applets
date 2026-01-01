@@ -13,10 +13,10 @@ export type XLabelPosition = LabelAlign | XLabelSide | `${XLabelSide}-${LabelAli
 export type YLabelPosition = LabelAlign | YLabelSide | `${YLabelSide}-${LabelAlign}`; // e.g. "left-start", "right-center"
 
 export type LabelProps = {
-  xLabel: string;
-  yLabel: string;
-  xLabelPosition: XLabelPosition;
-  yLabelPosition: YLabelPosition;
+  xLabel?: string;
+  yLabel?: string;
+  xLabelPosition?: XLabelPosition;
+  yLabelPosition?: YLabelPosition;
 };
 
 export function getLabelStyles(
@@ -40,7 +40,7 @@ export function getLabelStyles(
     return currentTransform.apply([baseX, baseY]);
   };
 
-  const parsePos = (posStr: string | undefined, isYAxis: boolean) => {
+  const parsePos = (posStr: XLabelPosition | YLabelPosition | undefined, isYAxis: boolean) => {
     const defaults = isYAxis
       ? { side: 'right', align: 'end' } // Y default: Right of axis, at Top
       : { side: 'top', align: 'end' }; // X default: Above axis, at Right
@@ -68,9 +68,8 @@ export function getLabelStyles(
         case 'center':
           return size / 2;
         case 'end':
-          return margin;
         default:
-          return margin;
+          return 3.5 * margin + 6.5 * margin; // 6.5 for the formulas
       }
     } else {
       // X-Axis: Start=Left, End=Right
@@ -80,9 +79,8 @@ export function getLabelStyles(
         case 'center':
           return size / 2;
         case 'end':
-          return size - margin;
         default:
-          return size - margin;
+          return size - 4.5 * margin;
       }
     }
   };
