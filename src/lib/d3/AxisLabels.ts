@@ -115,7 +115,7 @@ export function getLabelStyles(
     const finalY = getAlignPos(height, align, true);
 
     const textAlign = side === 'right' ? 'left' : 'right';
-    const transX = side === 'right' ? '0%' : '-150%';
+    const transX = side === 'right' ? '0%' : '-120%';
 
     yStyle = `left: ${finalX}px; top: ${finalY}px; transform: translate(${transX}, -50%); text-align: ${textAlign};`;
   }

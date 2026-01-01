@@ -206,7 +206,7 @@
   {#if labels?.xLabel}
     <LatexUI
       latex={`\\textbf{${labels.xLabel}}`}
-      fontSize={2.5}
+      fontSize={1.5}
       class="xLabel absolute"
       style={labelStyles.x}
     />
@@ -214,7 +214,7 @@
   {#if labels?.yLabel}
     <LatexUI
       latex={`\\textbf{${labels.yLabel}}`}
-      fontSize={2.5}
+      fontSize={1.5}
       class="yLabel absolute"
       style={labelStyles.y}
     />

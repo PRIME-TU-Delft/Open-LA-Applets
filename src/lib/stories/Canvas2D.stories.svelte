@@ -37,6 +37,20 @@
 <!-- This canvas is moved to x:3 and y:1 -->
 <Story name="Camera position" args={{ cameraPosition: new Vector2(3, 1) }} {template} />
 
+<!-- This applet has x and y axis labels defined -->
+<Story
+  name="With axis labels"
+  args={{
+    labels: {
+      xLabel: 'x',
+      yLabel: '\\text{error}',
+      xLabelPosition: 'top-center',
+      yLabelPosition: 'right-end'
+    }
+  }}
+  {template}
+/>
+
 <!-- This canvas is smaller than the regular canvas. This can be useful in combination with `cameraZoom` -->
 <Story name="Adjust tickLength" args={{ axis: { length: 5 } }} {template} />
 
