@@ -121,13 +121,14 @@
 {/if}
 
 <!-- x, y, z labels -->
-<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex={'-' + x1} />
-<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex={'-' + x2} />
+<!-- Y and Z switched, because we want Z to be up -->
+<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex={'-' + x1} />
 <Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex={'-' + x3} />
+<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex={'-' + x2} />
 
-<Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex={x1} />
-<Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex={x2} />
+<Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex={x1} />
 <Latex3D position={new Vector3(0, indicatorMax + 0.3, 0)} latex={x3} />
+<Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex={x2} />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>
