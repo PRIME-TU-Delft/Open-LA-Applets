@@ -39,10 +39,7 @@
   const CONE_DIAMETER = 0.1;
 
   let coneMesh = $state<Mesh>();
-  const threltheDirection = new Vector3(direction.x, direction.z, direction.y);
-  const normalizedDirection = $derived(
-    noNormalise ? threltheDirection : threltheDirection.clone().normalize()
-  );
+  const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
   const vectorLength = $derived(length ?? direction.length());
   const endPoint = $derived(
     origin.clone().add(normalizedDirection.clone().multiplyScalar(vectorLength))
