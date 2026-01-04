@@ -41,8 +41,6 @@
   import { type ZoomTransform } from 'd3'; // Import types
   import { getLabelStyles, type LabelProps } from './AxisLabels';
 
-  let currentTransform = $state(zoomIdentity);
-
   let {
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
@@ -55,6 +53,8 @@
     labels,
     children
   }: Canvas2DProps = $props();
+
+  let currentTransform = $state(zoomIdentity);
 
   let id = 'canvas-' + generateUUID();
 

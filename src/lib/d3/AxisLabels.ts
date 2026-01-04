@@ -17,6 +17,7 @@ export type LabelProps = {
   yLabel?: string;
   xLabelPosition?: XLabelPosition;
   yLabelPosition?: YLabelPosition;
+  yLabelRotate?: boolean;
 };
 
 export function getLabelStyles(
@@ -42,8 +43,8 @@ export function getLabelStyles(
 
   const parsePos = (posStr: XLabelPosition | YLabelPosition | undefined, isYAxis: boolean) => {
     const defaults = isYAxis
-      ? { side: 'right', align: 'end' } // Y default: Right of axis, at Top
-      : { side: 'top', align: 'end' }; // X default: Above axis, at Right
+      ? { side: 'left', align: 'end' } // Y default: Left of axis, at Top
+      : { side: 'bottom', align: 'end' }; // X default: Below axis, at Right
 
     if (!posStr) return defaults;
 
@@ -93,13 +94,18 @@ export function getLabelStyles(
 
     const finalX = getAlignPos(width, align, false);
 
-    const offset = side === 'top' ? -offsetBase * 0.5 : offsetBase * 1.25;
+    // TODO: the zoom is only the default value set, try to use the current one
+    // cameraState.camera2D?.zoom does not work for some reason
+    const zoomScale = Math.max(1, cameraZoom);
+    const offset = side === 'top' ? -offsetBase * 0.5 * zoomScale : offsetBase * 1.25 * zoomScale;
+
     const clampedY = Math.min(Math.max(rawY, margin), height - margin);
     const finalY = clampedY + offset;
 
-    const transY = side === 'top' ? '-100%' : '0%';
+    const xAnchor = align === 'start' ? '0' : align === 'center' ? '-50%' : '-100%';
+    const yAnchor = side === 'top' ? '-100%' : '0';
 
-    xStyle = `left: ${finalX}px; top: ${finalY}px; transform: translate(-50%, ${transY});`;
+    xStyle = `left: ${finalX}px; top: ${finalY}px; transform: translate(${xAnchor}, ${yAnchor});`;
   }
 
   // --- Y Label ---
@@ -108,16 +114,26 @@ export function getLabelStyles(
     const { side, align } = parsePos(labels.yLabelPosition, true);
     const [rawX, _rawY] = toScreen(0, axis?.length || GRID_SIZE_2D);
 
-    const offset = side === 'right' ? offsetBase : -offsetBase;
+    const zoomScale = Math.max(1, cameraZoom);
+    const offset = side === 'right' ? offsetBase * zoomScale : -offsetBase * zoomScale;
+
     const clampedX = Math.min(Math.max(rawX, margin), width - margin);
     const finalX = clampedX + offset;
 
     const finalY = getAlignPos(height, align, true);
 
     const textAlign = side === 'right' ? 'left' : 'right';
-    const transX = side === 'right' ? '0%' : '-120%';
 
-    yStyle = `left: ${finalX}px; top: ${finalY}px; transform: translate(${transX}, -50%); text-align: ${textAlign};`;
+    const originX = side === 'right' ? '0' : '100%';
+    const originY = align === 'start' ? '0' : align === 'center' ? '50%' : '100%';
+
+    const yAnchor = align === 'start' ? '0' : align === 'center' ? '-50%' : '-100%';
+    const xAnchor = side === 'right' ? '0' : '-100%';
+
+    const rotation = labels.yLabelRotate ? 'rotate(-90deg)' : '';
+    const transformOrigin = `${originX} ${originY}`;
+
+    yStyle = `left: ${finalX}px; top: ${finalY}px; transform-origin: ${transformOrigin}; transform: translate(${xAnchor}, ${yAnchor}) ${rotation}; text-align: ${textAlign};`;
   }
 
   return { x: xStyle, y: yStyle };
