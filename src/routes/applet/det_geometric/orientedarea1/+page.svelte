@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -22,7 +23,7 @@
 
 <Canvas2D
   {draggables}
-  splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new Vector3(5.79, 14.65, 7.2) }}
+  splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new MathVector3(7.2, 5.79, 14.65) }}
   showAxisNumbers={false}
 >
   <Parallelogram2D points={[new Vector2(0, 0), u, v]} color={PrimeColor.yellow} />

@@ -55,6 +55,18 @@ export default ts.config(
     }
   },
   {
+    files: ['**/applet/**/*.svelte'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "NewExpression[callee.name='Vector3']",
+          message: 'Do not use Vector3. Consider using MathVector3.'
+        }
+      ]
+    }
+  },
+  {
     files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
     languageOptions: {
       parserOptions: {

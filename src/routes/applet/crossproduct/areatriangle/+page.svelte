@@ -41,22 +41,37 @@
   });
 </script>
 
-<Canvas3D cameraPosition={new Vector3(-0.74, 4.87, -16.15)} cameraZoom={100} {formulas}>
+<Canvas3D cameraPosition={new MathVector3(-16.15, -0.74, 4.87)} cameraZoom={100} {formulas}>
   <!-- N -->
   <Vector3D origin={P} direction={n} length={n.length()} color={PrimeColor.orange} />
   <Latex3D position={P.clone().add(n)} extend={0.2} latex={'\\mathbf{n}'} hasBackground />
 
   <!-- P -->
   <Point3D position={P} color={PrimeColor.raspberry} size={0.1} />
-  <Latex3D position={P} offset={new Vector3(-0.3, -0.1, 0)} latex={'\\mathbf{P}'} hasBackground />
+  <Latex3D
+    position={P}
+    offset={new MathVector3(0, -0.3, -0.1)}
+    latex={'\\mathbf{P}'}
+    hasBackground
+  />
 
   <!-- Q -->
   <Point3D position={Q} color={PrimeColor.raspberry} size={0.1} />
-  <Latex3D position={Q} offset={new Vector3(0.2, -0.3, -0.1)} latex={'\\mathbf{Q}'} hasBackground />
+  <Latex3D
+    position={Q}
+    offset={new MathVector3(-0.1, 0.2, -0.3)}
+    latex={'\\mathbf{Q}'}
+    hasBackground
+  />
 
   <!-- R -->
   <Point3D position={R} color={PrimeColor.raspberry} size={0.1} />
-  <Latex3D position={R} offset={new Vector3(-0.3, -0.1, 0)} latex={'\\mathbf{R}'} hasBackground />
+  <Latex3D
+    position={R}
+    offset={new MathVector3(0, -0.3, -0.1)}
+    latex={'\\mathbf{R}'}
+    hasBackground
+  />
 
   <!-- PQ -->
   <Vector3D
@@ -104,7 +119,7 @@
   <Polygon3D points={[P, Q, R]} color={PrimeColor.yellow} opacity={0.2} />
   <Latex3D
     position={P.clone().add(Q.clone().multiplyScalar(0.5))}
-    offset={new Vector3(0, 0, 0)}
+    offset={new MathVector3(0, 0, 0)}
     latex={`\\text{\\textcolor{${PrimeColor.yellow}}{A}} = \\text{${$_('applets.common.area')}}(\\Delta \\mathbf{PQR})`}
     hasBackground
   />
