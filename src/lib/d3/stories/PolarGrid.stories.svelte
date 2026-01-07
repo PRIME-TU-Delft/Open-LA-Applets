@@ -12,7 +12,7 @@
   import Canvas2D from '../Canvas2D.svelte';
   import type { PolarGridProps } from '../PolarGrid.svelte';
 
-  let canvasProps = { customAxis: true };
+  let canvasProps = { axis: null };
 </script>
 
 {#snippet template(args: PolarGridProps)}
@@ -23,7 +23,9 @@
   </div>
 {/snippet}
 
-<!-- Polar grid with default parameters. This story demonstrates a polar grid with a default angle step of 30 degrees. -->
+<!-- Polar grid with default parameters. This story demonstrates a polar grid with a default angle step of 30 degrees.
+ 
+To use a custom Axis in general, set the `axis` property in Canvas2D to `null`.-->
 <Story name="Default" args={{}} {template} />
 
 <!-- Polar grid without ticks and radii numbers. This story demonstrates a polar grid without any ticks on the x-axis. -->

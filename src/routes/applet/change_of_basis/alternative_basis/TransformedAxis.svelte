@@ -53,7 +53,7 @@
     stroke-width={0.04}
   />
 
-  {#each axisIndeces as index (index)}
+  {#each axisIndeces as index, i (i)}
     <!-- Grid Lines -->
     <line
       transform="rotate({yRotation}) scale({basis[1].length()})"
