@@ -12,6 +12,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { integral, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { ComputeEngine } from '@cortex-js/compute-engine';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
@@ -52,11 +53,51 @@
     ]
   );
 
-  let defaultXL: number = parseFloat(searchParams.get('xL') || '1.5');
-  let defaultXR: number = parseFloat(searchParams.get('xR') || '4.5');
+  const urlXL = searchParams.get('xL');
+  const urlXR = searchParams.get('xR');
 
-  if (isNaN(defaultXL)) defaultXL = 1.5;
-  if (isNaN(defaultXR)) defaultXR = 4.5;
+  let isXLLatex = false;
+  let isXRLatex = false;
+
+  let defaultXL: number = 1.5;
+  let defaultXR: number = 4.5;
+
+  function parseLatex(latex: string): number {
+    const ce = new ComputeEngine();
+    const parsed = ce.parse(latex);
+
+    if (!parsed.isValid || parsed.has('Error') || parsed.has('Nothing')) return NaN;
+
+    return parseFloat(parsed.N() as unknown as string);
+  }
+
+  if (urlXL != null) {
+    defaultXL = parseFloat(urlXL);
+
+    const latexXL = parseLatex(urlXL);
+    if (!isNaN(latexXL)) {
+      defaultXL = latexXL;
+      isXLLatex = true;
+    }
+
+    if (isNaN(defaultXL)) {
+      defaultXL = 1.5;
+    }
+  }
+
+  if (urlXR != null) {
+    defaultXR = parseFloat(urlXR);
+
+    const latexXR = parseLatex(urlXR);
+    if (!isNaN(latexXR)) {
+      defaultXR = latexXR;
+      isXRLatex = true;
+    }
+
+    if (isNaN(defaultXR)) {
+      defaultXR = 4.5;
+    }
+  }
 
   const draggables = [
     new Draggable(
@@ -128,8 +169,8 @@
 
     let f = [
       new Formula('\\int_{\\$1}^{\\$2} \\$4 \\,dx = \\$3')
-        .addAutoParam(round(xL), PrimeColor.orange)
-        .addAutoParam(round(xR), PrimeColor.orange)
+        .addAutoParam(isXLLatex && xL == defaultXL ? urlXL || '' : round(xL), PrimeColor.orange)
+        .addAutoParam(isXRLatex && xR == defaultXR ? urlXR || '' : round(xR), PrimeColor.orange)
         .addAutoParam(!Number.isNaN(I) ? round(I) : 'DIV', PrimeColor.blue)
         .addAutoParam('f(x)', PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
