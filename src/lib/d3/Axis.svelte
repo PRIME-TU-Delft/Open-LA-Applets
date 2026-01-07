@@ -1,10 +1,5 @@
-<script lang="ts">
-  import { Vector2 } from 'three';
-  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Latex2D from './Latex2D.svelte';
-
-  type AxisProps = {
+<script lang="ts" module>
+  export type AxisProps = {
     length?: number;
     showOrigin?: boolean;
     showAxisNumbers?: boolean;
@@ -13,6 +8,13 @@
     scaleX?: number;
     scaleY?: number;
   };
+</script>
+
+<script lang="ts">
+  import { Vector2 } from 'three';
+  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Latex2D from './Latex2D.svelte';
 
   let {
     length = GRID_SIZE_2D,

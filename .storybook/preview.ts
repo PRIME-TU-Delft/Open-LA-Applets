@@ -45,9 +45,9 @@ import enApplets from '../src/lang/en/applets.json';
 import nlUI from '../src/lang/nl/ui.json';
 import nlApplets from '../src/lang/nl/applets.json';
 
-addMessages('en', enUI);
+addMessages('en', { ui: enUI });
 addMessages('en', { applets: enApplets });
-addMessages('nl', nlUI);
+addMessages('nl', { ui: nlUI });
 addMessages('nl', { applets: nlApplets });
 
 init({

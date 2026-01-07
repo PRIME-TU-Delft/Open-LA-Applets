@@ -125,7 +125,7 @@
           side="bottom"
           class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
           onclick={onReset}
-          tooltip={$_('reset_scene_tooltip')}
+          tooltip={$_('ui.reset_scene_tooltip')}
         >
           <RotateCcw class="h-5 w-5" />
         </Button.Action>
@@ -136,7 +136,7 @@
         <Dialog.Trigger
           class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
         >
-          <Button.Action side="bottom" tooltip={$_('share_tooltip')}>
+          <Button.Action side="bottom" tooltip={$_('ui.share_tooltip')}>
             <Share class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
@@ -149,7 +149,7 @@
           <Dialog.Trigger
             class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
           >
-            <Button.Action tooltip={$_('change_language')} side="bottom">
+            <Button.Action tooltip={$_('ui.change_language')} side="bottom">
               <Languages class="h-5 w-5" />
             </Button.Action>
           </Dialog.Trigger>
@@ -163,7 +163,7 @@
           side="bottom"
           class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
           onclick={toggleFullscreen}
-          tooltip={isFullscreen ? $_('exit_fullscreen') : $_('enter_fullscreen')}
+          tooltip={isFullscreen ? $_('ui.exit_fullscreen') : $_('ui.enter_fullscreen')}
         >
           {#if isFullscreen}
             <Minimize class="h-5 w-5" />
@@ -182,7 +182,7 @@
             : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
             ? 'border-2'
             : ''}"
-          tooltip={$_('toggle_function')}
+          tooltip={$_('ui.toggle_function')}
           onclick={() => (showFormulas = !showFormulas)}
         >
           <SquareFunction />

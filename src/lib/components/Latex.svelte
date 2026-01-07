@@ -11,6 +11,7 @@
     outputType?: 'html' | 'mathml' | 'htmlAndMathml';
     class?: string;
     fontSize?: number;
+    style?: string;
   };
 
   let {
@@ -20,7 +21,8 @@
     color = 'black',
     outputType = 'html',
     class: classes = '',
-    fontSize = 1
+    fontSize = 1,
+    style
   }: LatexProps = $props();
 
   let strOutput = $derived.by(() => {
@@ -55,7 +57,7 @@
   let latexClasses = cn('latex select-none', classes);
 </script>
 
-<div style="font-size: {fontSize}rem; color: {color}" class={latexClasses}>
+<div style={`font-size: ${fontSize}rem; color: ${color};` + style} class={latexClasses}>
   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html strOutput}
 </div>

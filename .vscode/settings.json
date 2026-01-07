@@ -2,5 +2,31 @@
   "i18n-ally.localesPaths": ["src/lang"],
   "i18n-ally.namespace": true,
   "i18n-ally.pathMatcher": "{locale}/{namespace}.json",
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.keysInUse": [
+    "applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1",
+    "applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2",
+    "applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3",
+    "applets.subspaces_in_rn.the_game.disc",
+    "applets.subspaces_in_rn.the_game.affine_line",
+    "applets.subspaces_in_rn.the_game.two_axes",
+    "applets.subspaces_in_rn.the_game.first_quadrant",
+    "applets.subspaces_in_rn.the_game.two_sided_cone",
+    "applets.calculus.integration.simple_methods.left",
+    "applets.calculus.integration.simple_methods.right",
+    "applets.calculus.integration.simple_methods.midpoint",
+    "applets.calculus.integration.simple_methods.trapezoid",
+    "applets.calculus.integration.simple_methods.simpson",
+    "applets.testing.controls_stories.vector_left",
+    "applets.testing.controls_stories.vector_right",
+    "applets.testing.controls_stories.no_vector",
+    "applets.vectors.rules.rule_1",
+    "applets.vectors.rules.rule_2",
+    "applets.vectors.rules.rule_3",
+    "applets.vectors.rules.rule_4",
+    "applets.vectors.rules.rule_5",
+    "applets.vectors.rules.rule_6",
+    "applets.vectors.rules.rule_7",
+    "applets.vectors.rules.rule_8"
+  ]
 }
