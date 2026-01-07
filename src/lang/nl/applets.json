@@ -11,11 +11,18 @@
   "calculus": {
     "integration": {
       "simple_methods": {
-        "left": "linker Rechthoekregel",
-        "right": "recther Rechthoekregel",
+        "left": "Linker Rechthoekregel",
+        "right": "Rechter Rechthoekregel",
         "midpoint": "Middenpuntregel",
         "trapezoid": "Trapeziumregel",
         "simpson": "Simpson's regel"
+      },
+      "method_errors": {
+        "title": "Fouten in regels voor composite integratie",
+        "absolute_error": "Absolute fout",
+        "left": "Linker Rechthoek",
+        "right": "Rechter Rechthoek",
+        "trapezoid": "Trapezium"
       }
     }
   },

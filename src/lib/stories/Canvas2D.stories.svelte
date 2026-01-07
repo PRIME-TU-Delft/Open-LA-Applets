@@ -15,6 +15,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { onDestroy } from 'svelte';
   import type { CanvasProps } from '$lib/d3/CanvasType';
+  import Axis from '$lib/d3/Axis.svelte';
 
   onDestroy(() => {
     globalState.title = '';
@@ -59,3 +60,27 @@
 
 <!-- This can be useful when you would like to hide the axis numbers and put more attension to the applet.  -->
 <Story name="Toggle Axis Numbers" args={{ axis: { showAxisNumbers: false } }} {template} />
+
+<!-- This story has a logarithmic Y axis -->
+<Story name="Logarithmic axis">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D axis={null}>
+        <Axis logarithmicY={true} />
+        <Vector2D direction={new Vector2(1, Math.log10(2))} color={PrimeColor.blue} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
+<!-- This story has a scaled X axis -->
+<Story name="Scaled axis">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D axis={null}>
+        <Axis scaleX={2} />
+        <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>

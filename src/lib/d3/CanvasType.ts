@@ -1,4 +1,4 @@
-import type { SceneProps } from '$lib/components/CanvasType';
+import type { SceneProps } from '$lib/components/Scene.svelte';
 import type { Camera3DProps } from '$lib/threlte/CanvasType';
 import type { Snippet } from 'svelte';
 import { type Canvas2DProps } from './CanvasD3.svelte';

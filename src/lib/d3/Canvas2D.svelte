@@ -17,8 +17,10 @@
     title,
     showFormulasDefault,
     formulas,
+    legendItems,
     controls,
     splitFormulas,
+    splitLegendItems,
     splitCanvas2DProps,
     splitCanvas3DProps,
     children,
@@ -115,8 +117,10 @@
   draggables={allDraggables}
   {controls}
   {showFormulasDefault}
+  {legendItems}
   {formulas}
   {splitFormulas}
+  {splitLegendItems}
 >
   {#snippet sceneChildren(width: number, height: number)}
     {@const defaultCanvasWidth = width / 2}
