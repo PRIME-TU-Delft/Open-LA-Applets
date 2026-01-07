@@ -17,7 +17,8 @@ export type LabelProps = {
   yLabel?: string;
   xLabelPosition?: XLabelPosition;
   yLabelPosition?: YLabelPosition;
-  yLabelRotate?: boolean;
+  yLabelRotate?: 'right' | 'left';
+  size?: number;
 };
 
 export function getLabelStyles(
@@ -67,7 +68,7 @@ export function getLabelStyles(
         case 'start':
           return size - margin * 7.5;
         case 'center':
-          return size / 2;
+          return size / 2 - 5 * margin;
         case 'end':
         default:
           return 3.5 * margin + 6.5 * margin; // 6.5 for the formulas
@@ -128,9 +129,13 @@ export function getLabelStyles(
     const originY = align === 'start' ? '0' : align === 'center' ? '50%' : '100%';
 
     const yAnchor = align === 'start' ? '0' : align === 'center' ? '-50%' : '-100%';
-    const xAnchor = side === 'right' ? '0' : '-100%';
+    const xAnchor = side === 'right' ? '70%' : '-100%';
 
-    const rotation = labels.yLabelRotate ? 'rotate(-90deg)' : '';
+    const rotation = labels.yLabelRotate
+      ? labels.yLabelRotate == 'left'
+        ? 'rotate(-90deg)'
+        : 'rotate(90deg)'
+      : '';
     const transformOrigin = `${originX} ${originY}`;
 
     yStyle = `left: ${finalX}px; top: ${finalY}px; transform-origin: ${transformOrigin}; transform: translate(${xAnchor}, ${yAnchor}) ${rotation}; text-align: ${textAlign};`;
