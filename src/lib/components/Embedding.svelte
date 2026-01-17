@@ -145,32 +145,30 @@
       </h3>
 
       <Table>
-        {#snippet children()}
-          <thead>
+        <thead>
+          <tr>
+            <th>{$_('ui.url_param_key')}</th>
+            <th>{$_('ui.description')}</th>
+            <th>{$_('ui.default_value')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each appletState.URLParamsInfo as paramInfo (paramInfo.paramKey)}
             <tr>
-              <th>{$_('ui.url_param_key')}</th>
-              <th>{$_('ui.description')}</th>
-              <th>{$_('ui.default_value')}</th>
+              <td
+                ><code class="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800"
+                  >{paramInfo.paramKey}</code
+                ></td
+              >
+              <td>{paramInfo.description}</td>
+              <td
+                ><code class="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800"
+                  >{paramInfo.defaultValue}</code
+                ></td
+              >
             </tr>
-          </thead>
-          <tbody>
-            {#each appletState.URLParamsInfo as paramInfo (paramInfo.paramKey)}
-              <tr>
-                <td
-                  ><code class="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800"
-                    >{paramInfo.paramKey}</code
-                  ></td
-                >
-                <td>{paramInfo.description}</td>
-                <td
-                  ><code class="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800"
-                    >{paramInfo.defaultValue}</code
-                  ></td
-                >
-              </tr>
-            {/each}
-          </tbody>
-        {/snippet}
+          {/each}
+        </tbody>
       </Table>
     </div>
   {/if}
