@@ -9,6 +9,7 @@
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
+  import { appletState } from '$lib/stores/applet.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { integral, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -195,6 +196,40 @@
 
     return f;
   });
+
+  appletState.URLParamsInfo = [
+    {
+      paramKey: 'rule',
+      defaultValue: 'left',
+      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)'
+    },
+    {
+      paramKey: 'function',
+      defaultValue: '\\sqrt{1 + {\\cos{(x)}}^2 }',
+      description:
+        'Default function value, in latex form. Plus signs (+) have to be encoded with %2b.'
+    },
+    {
+      paramKey: 'xL',
+      defaultValue: 1.5,
+      description: 'Default value for left bound (xL)'
+    },
+    {
+      paramKey: 'xR',
+      defaultValue: 4.5,
+      description: 'Default value for right bound (xR)'
+    },
+    {
+      paramKey: 'xAxisLetter',
+      defaultValue: 'x',
+      description: 'Letter used for the horizontal axis'
+    },
+    {
+      paramKey: 'functionLetter',
+      defaultValue: 'f',
+      description: 'Letter used for the function'
+    }
+  ];
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>

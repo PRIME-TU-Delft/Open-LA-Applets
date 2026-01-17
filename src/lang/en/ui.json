@@ -45,5 +45,9 @@
   "open_new_tab": "Open in new tab",
   "open_github": "Open in GitHub",
   "download_image": "Download image",
-  "resize": "Resize"
+  "resize": "Resize",
+  "custom_url_parameters": "Custom URL parameters for this applet",
+  "url_param_key": "URL param key",
+  "description": "Description",
+  "default_value": "Default value"
 }
