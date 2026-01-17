@@ -114,6 +114,10 @@
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
+  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
+  <Latex2D latex="x" position={new Vector2(10.5, 0.55)} />
+  <Latex2D latex={`f(x)`} position={new Vector2(0.25, 6.25)} />
+
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}

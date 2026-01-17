@@ -42,16 +42,25 @@
 
   let defaultFunction = searchParams.get('function') || '\\sqrt{1 + {\\cos{(x)}}^2 }';
 
-  const controls = Controls.addFunction(defaultFunction, 'f(x)', PrimeColor.blue).addDropdown(
-    defaultRule,
-    [
-      'applets.calculus.integration.simple_methods.left',
-      'applets.calculus.integration.simple_methods.right',
-      'applets.calculus.integration.simple_methods.trapezoid',
-      'applets.calculus.integration.simple_methods.midpoint',
-      'applets.calculus.integration.simple_methods.simpson'
-    ]
-  );
+  const xAxisLetter = searchParams.get('xAxisLetter') || 'x';
+  const functionLetter = searchParams.get('functionLetter') || 'f';
+
+  if (xAxisLetter !== 'x') {
+    defaultFunction = defaultFunction.replaceAll('x', xAxisLetter);
+  }
+
+  const controls = Controls.addFunction(
+    defaultFunction,
+    `${functionLetter}(${xAxisLetter})`,
+    PrimeColor.blue,
+    xAxisLetter
+  ).addDropdown(defaultRule, [
+    'applets.calculus.integration.simple_methods.left',
+    'applets.calculus.integration.simple_methods.right',
+    'applets.calculus.integration.simple_methods.trapezoid',
+    'applets.calculus.integration.simple_methods.midpoint',
+    'applets.calculus.integration.simple_methods.simpson'
+  ]);
 
   const urlXL = searchParams.get('xL');
   const urlXR = searchParams.get('xR');
@@ -103,7 +112,7 @@
     new Draggable(
       new Vector2(defaultXR, 0),
       PrimeColor.orange,
-      'x_R',
+      `{${xAxisLetter}}_R`,
       xrSnapFunc,
       undefined,
       'bottom'
@@ -111,7 +120,7 @@
     new Draggable(
       new Vector2(defaultXL, 0),
       PrimeColor.orange,
-      'x_L',
+      `${xAxisLetter}_L`,
       xlSnapFunc,
       undefined,
       'bottom'
@@ -168,21 +177,20 @@
     let I = intFunc(xL, xR);
 
     let f = [
-      new Formula('\\int_{\\$1}^{\\$2} \\$4 \\,dx = \\$3')
+      new Formula(`\\int_{\\$1}^{\\$2} \\$4 \\,d${xAxisLetter} = \\$3`)
         .addAutoParam(isXLLatex && xL == defaultXL ? urlXL || '' : round(xL), PrimeColor.orange)
         .addAutoParam(isXRLatex && xR == defaultXR ? urlXR || '' : round(xR), PrimeColor.orange)
         .addAutoParam(!Number.isNaN(I) ? round(I) : 'DIV', PrimeColor.blue)
-        .addAutoParam('f(x)', PrimeColor.blue),
+        .addAutoParam(`${functionLetter}(${xAxisLetter})`, PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
         .addAutoParam(round(area), PrimeColor.orange)
     ];
 
     if (currentRule == 'simpson') {
-      f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
-        round(area),
-        PrimeColor.orange
-      );
+      f[1] = new Formula(
+        `\\frac{{${xAxisLetter}}_R - {${xAxisLetter}}_L}{6}(${functionLetter}({${xAxisLetter}}_L) + 4 ${functionLetter}({${xAxisLetter}}_M) + ${functionLetter}({${xAxisLetter}}_R)) = \\$1`
+      ).addAutoParam(round(area), PrimeColor.orange);
     }
 
     return f;
@@ -190,6 +198,10 @@
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
+  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
+  <Latex2D latex={xAxisLetter} position={new Vector2(10.5, 0.55)} />
+  <Latex2D latex={`${functionLetter}(${xAxisLetter})`} position={new Vector2(0.25, 6.25)} />
+
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
@@ -243,14 +255,14 @@
     <Point2D color={PrimeColor.orange} position={new Vector2(xL, func(xL))} />
     <Latex2D
       position={new Vector2(xL - 0.1, funcPoints(xL) + 0.6)}
-      latex="f(x_L)"
+      latex={`${functionLetter}({${xAxisLetter}}_L)`}
       color={PrimeColor.orange}
     />
   {:else if currentRule == 'right'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
       position={new Vector2(xR - 0.1, funcPoints(xR) + 0.6)}
-      latex="f(x_R)"
+      latex={`${functionLetter}({${xAxisLetter}}_R)`}
       color={PrimeColor.orange}
     />
   {/if}
@@ -259,19 +271,23 @@
     <Point2D color={PrimeColor.orange} position={new Vector2(xR, func(xR))} />
     <Latex2D
       position={new Vector2(xR - 0.1, funcPoints(xR) + 0.6)}
-      latex="f(x_R)"
+      latex={`${functionLetter}({${xAxisLetter}}_R)`}
       color={PrimeColor.orange}
     />
   {/if}
 
   {#if currentRule == 'simpson' || currentRule == 'midpoint'}
     <Point2D color={PrimeColor.orange} position={new Vector2(xM, 0)} />
-    <Latex2D position={new Vector2(xM - 0.1, -0.05)} latex="x_M" color={PrimeColor.orange} />
+    <Latex2D
+      position={new Vector2(xM - 0.1, -0.05)}
+      latex={`{${xAxisLetter}}_M`}
+      color={PrimeColor.orange}
+    />
 
     <Point2D color={PrimeColor.orange} position={new Vector2(xM, func(xM))} />
     <Latex2D
       position={new Vector2(xM - 0.1, funcPoints(xM) + 0.6)}
-      latex="f(x_M)"
+      latex={`${functionLetter}({${xAxisLetter}}_M)`}
       color={PrimeColor.orange}
     />
   {/if}
