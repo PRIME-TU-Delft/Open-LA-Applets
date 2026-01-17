@@ -96,15 +96,15 @@
       new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
-        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
+        .addAutoParam(round(intFunc(xR) - intFunc(xL), 7), PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
-        .addAutoParam(round(area), PrimeColor.orange)
+        .addAutoParam(round(area, 7), PrimeColor.orange)
     ];
 
     if (currentRule == 'simpson') {
       f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
-        round(area),
+        round(area, 7),
         PrimeColor.orange
       );
     }

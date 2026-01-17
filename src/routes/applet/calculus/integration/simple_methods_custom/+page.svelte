@@ -180,17 +180,17 @@
       new Formula(`\\int_{\\$1}^{\\$2} \\$4 \\,d${xAxisLetter} = \\$3`)
         .addAutoParam(isXLLatex && xL == defaultXL ? urlXL || '' : round(xL), PrimeColor.orange)
         .addAutoParam(isXRLatex && xR == defaultXR ? urlXR || '' : round(xR), PrimeColor.orange)
-        .addAutoParam(!Number.isNaN(I) ? round(I) : 'DIV', PrimeColor.blue)
+        .addAutoParam(!Number.isNaN(I) ? round(I, 7) : 'DIV', PrimeColor.blue)
         .addAutoParam(`${functionLetter}(${xAxisLetter})`, PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
-        .addAutoParam(round(area), PrimeColor.orange)
+        .addAutoParam(round(area, 7), PrimeColor.orange)
     ];
 
     if (currentRule == 'simpson') {
       f[1] = new Formula(
         `\\frac{{${xAxisLetter}}_R - {${xAxisLetter}}_L}{6}(${functionLetter}({${xAxisLetter}}_L) + 4 ${functionLetter}({${xAxisLetter}}_M) + ${functionLetter}({${xAxisLetter}}_R)) = \\$1`
-      ).addAutoParam(round(area), PrimeColor.orange);
+      ).addAutoParam(round(area, 7), PrimeColor.orange);
     }
 
     return f;
