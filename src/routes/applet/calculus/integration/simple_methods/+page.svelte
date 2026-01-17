@@ -9,6 +9,7 @@
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
+  import { appletState } from '$lib/stores/applet.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -111,6 +112,14 @@
 
     return f;
   });
+
+  appletState.URLParamsInfo = [
+    {
+      paramKey: 'rule',
+      defaultValue: 'left',
+      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)'
+    }
+  ];
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>

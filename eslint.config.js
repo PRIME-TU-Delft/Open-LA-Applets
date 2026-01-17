@@ -45,6 +45,7 @@ export default ts.config(
         }
       ],
       'local-rules/no-hardcoded-title': 'error',
+      'local-rules/require-url-params-info': 'error',
       'svelte/no-unnecessary-state-wrap': [
         'error',
         {
