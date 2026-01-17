@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
   import { Formula } from '$lib/utils/Formulas';
@@ -130,6 +131,11 @@
     logarithmicY: true,
     scaleX: 2
   }}
+  cameraZoom={1.15}
+  cameraPosition={new Vector2(-1.4, -2.4)}
+  title={$_('applets.calculus.integration.method_errors.title')}
+>
+  <!-- RE-ADD when axis labels work better
   labels={{
     xLabel: 'h',
     xLabelPosition: 'top-center',
@@ -137,11 +143,15 @@
     yLabelPosition: 'right-center',
     yLabelRotate: 'right',
     size: 1.5
-  }}
-  cameraZoom={1.15}
-  cameraPosition={new Vector2(-1.4, -2.4)}
-  title={$_('applets.calculus.integration.method_errors.title')}
->
+  }} -->
+
+  <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
+  <Latex2D
+    latex={`\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`}
+    position={new Vector2(1.95, -1.5)}
+    rotation={-90}
+  />
+
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
     {@const left = Math.log10(pE.errors['left'])}
