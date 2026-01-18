@@ -109,6 +109,9 @@
     }
   }
 
+  const cameraX = (defaultXR + defaultXL) / 2;
+  const cameraZoom = Math.min(12 / (defaultXR - defaultXL), 1);
+
   const draggables = [
     new Draggable(
       new Vector2(defaultXR, 0),
@@ -232,7 +235,7 @@
   ];
 </script>
 
-<Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
+<Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(cameraX, 2)} {cameraZoom}>
   <!-- TODO: CHANGE TO NEW AXIS LABELS -->
   <Latex2D latex={xAxisLetter} position={new Vector2(10.5, 0.55)} />
   <Latex2D latex={`${functionLetter}(${xAxisLetter})`} position={new Vector2(0.25, 6.25)} />
