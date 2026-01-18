@@ -4,7 +4,6 @@ import { Vector3 } from 'three';
  * MathVector3 is a Vector3 that has the x, y, and z values swapped to be more consistent with the rest of the math
  */
 export class MathVector3 extends Vector3 {
-
   mathX: number = 0;
   mathY: number = 0;
   mathZ: number = 0;
