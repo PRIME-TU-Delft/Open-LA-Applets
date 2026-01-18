@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,10 +7,9 @@
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
-  const normal = new Vector3(1, 3, 1).normalize();
+  const normal = new MathVector3(1, 1, 3).normalize();
   const controls = Controls.addSlider(1, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
 
   const formulas = $derived.by(() => {
@@ -30,13 +30,13 @@
 
 <Canvas3D
   {formulas}
-  cameraPosition={new Vector3(11.63, 3.66, 12.3)}
+  cameraPosition={new MathVector3(12.3, 11.63, 3.66)}
   {controls}
   title={$_('applets.lines_and_planes.two_disjoint_planes.title')}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}
-      <PlaneFromNormal position={new Vector3(0, value, 0)} {normal} {planeSegment} {color} />
+      <PlaneFromNormal position={new MathVector3(0, 0, value)} {normal} {planeSegment} {color} />
     {/snippet}
   </AutoPlanes>
 

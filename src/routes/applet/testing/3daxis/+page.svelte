@@ -3,10 +3,10 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
+    import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
 
-  let v = new Vector3(1, 2, 3);
+  let v = new MathVector3(3, 1, 2);
 </script>
 
 <Canvas3D>
@@ -16,6 +16,6 @@
     position={v}
     extend={0.75}
     color={PrimeColor.raspberry}
-    latex={'\\begin{bmatrix} ' + v.x + ' \\\\ ' + v.y + ' \\\\ ' + v.z + ' \\end{bmatrix}'}
+    latex={'\\begin{bmatrix} ' + v.mathX + ' \\\\ ' + v.mathY + ' \\\\ ' + v.mathZ + ' \\end{bmatrix}'}
   />
 </Canvas3D>

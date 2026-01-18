@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
@@ -9,7 +10,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { withSign } from '$lib/utils/FormatString';
@@ -38,7 +39,7 @@
 
   const k = $derived(controls[1]);
 
-  const plane_position = $derived(new Vector3(0, k, 0));
+  const plane_position = $derived(new MathVector3(0, 0, k));
 
   let a = $derived(mat.value.tl);
   let b = $derived(2 * mat.value.tr);
@@ -77,8 +78,8 @@
       {#snippet children(value, index, planeSegment, _)}
         {@const color = index == 0 ? PrimeColor.raspberry : PrimeColor.blue}
         <PlaneFromNormal
-          position={new Vector3(0, value, 0)}
-          normal={new Vector3(0, 1, 0)}
+          position={new MathVector3(0, 0, value)}
+          normal={new MathVector3(0, 0, 1)}
           {planeSegment}
           {color}
         />
@@ -92,7 +93,7 @@
     />
 
     <PlaneFromNormal
-      normal={new Vector3(0, 1, 0)}
+      normal={new MathVector3(0, 0, 1)}
       position={plane_position}
       color={PrimeColor.raspberry}
     />

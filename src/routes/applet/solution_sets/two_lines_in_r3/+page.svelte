@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,10 +8,8 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
-  import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
-  import { Vector3 } from 'three';
 
   const controls = Controls.addSlider(4, -5, 6, 0.5, PrimeColor.raspberry, {
     label: 'a',
@@ -42,14 +41,14 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-6, 4.5, 15.5)} showFormulasDefault>
+<Canvas3D {controls} {formulas} cameraPosition={new MathVector3(15.5, -6, 4.5)} showFormulasDefault>
   <!-- Default -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.yellow} alwaysOnTop />
   <Latex3D
     latex={'\\mathbf{v}'}
     position={v}
     extend={0.5}
-    offset={new Vector3(0, 0, 0.5)}
+    offset={new MathVector3(0.5, 0, 0)}
     color={PrimeColor.yellow}
   />
 
@@ -59,7 +58,7 @@
     latex={'\\mathcal{L_1}'}
     position={v.clone().multiplyScalar(-0.5)}
     extend={0.5}
-    offset={new Vector3(0.1, 0, 0.75)}
+    offset={new MathVector3(0.75, 0.1, 0)}
     color={PrimeColor.blue}
   />
 
@@ -72,7 +71,7 @@
     alwaysOnTop
   />
   <Latex3D
-    offset={v_offset.clone().add(new Vector3(0, 0, 0.5))}
+    offset={v_offset.clone().add(new MathVector3(0.5, 0, 0))}
     latex={'\\mathbf{v}'}
     position={v}
     extend={0.5}
@@ -85,7 +84,7 @@
     latex={'\\mathcal{L_2}'}
     position={v_offset.clone().add(v.clone().multiplyScalar(-0.75))}
     extend={0.5}
-    offset={new Vector3(0.1, 0, 0.75)}
+    offset={new MathVector3(0.75, 0.1, 0)}
     color={PrimeColor.darkGreen}
   />
 
@@ -95,7 +94,7 @@
     latex={'\\mathbf{r_0}'}
     position={v_offset}
     extend={0.5}
-    offset={new Vector3(0, 0, 0.5)}
+    offset={new MathVector3(0.5, 0, 0)}
     color={PrimeColor.raspberry}
   />
 

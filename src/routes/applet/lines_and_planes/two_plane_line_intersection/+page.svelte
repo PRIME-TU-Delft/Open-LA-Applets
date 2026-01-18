@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,7 +8,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   const controls = Controls.addSlider(0, -10, 0, 0.5).addSlider(1, 1, 10, 0.5);
@@ -27,7 +27,7 @@
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}
-      <PlaneFromNormal normal={new Vector3(value, 1, 1)} {planeSegment} {color} />
+      <PlaneFromNormal normal={new MathVector3(1, value, 1)} {planeSegment} {color} />
     {/snippet}
   </AutoPlanes>
 
@@ -35,8 +35,8 @@
     <Vector3D
       color={PrimeColor.blue}
       length={11.5}
-      origin={new Vector3(0, -4, 4)}
-      direction={new Vector3(0, 1, -1)}
+      origin={new MathVector3(4, 0, -4)}
+      direction={new MathVector3(-1, 0, 1)}
       radius={1.5}
       alwaysOnTop
       hideHead
