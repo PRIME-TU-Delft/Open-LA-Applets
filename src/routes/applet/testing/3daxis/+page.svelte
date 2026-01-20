@@ -11,17 +11,6 @@
 
 <Canvas3D>
   <Axis3D />
-  <Vector3D direction={v} color={PrimeColor.raspberry} />
-  <Latex3D
-    position={v}
-    extend={0.75}
-    color={PrimeColor.raspberry}
-    latex={'\\begin{bmatrix} ' +
-      v.mathX +
-      ' \\\\ ' +
-      v.mathY +
-      ' \\\\ ' +
-      v.mathZ +
-      ' \\end{bmatrix}'}
-  />
+  <Vector3D direction={v} length={2} color={PrimeColor.raspberry} />
+  <Latex3D position={v} extend={0.75} color={PrimeColor.raspberry} latex={v.toLatexString()} />
 </Canvas3D>

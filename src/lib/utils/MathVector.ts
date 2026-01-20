@@ -42,133 +42,19 @@ export class MathVector3 extends Vector3 {
     return new Vector3(this.y, this.z, this.x);
   }
 
+  toLatexString(): string {
+    return (
+      '\\begin{bmatrix} ' +
+      this.mathX +
+      ' \\\\ ' +
+      this.mathY +
+      ' \\\\ ' +
+      this.mathZ +
+      ' \\end{bmatrix}'
+    );
+  }
+
   clone(): this {
     return new MathVector3(this.mathX, this.mathY, this.mathZ) as this;
-  }
-
-  add(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot add non-MathVector3 to MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.add(v);
-  }
-
-  sub(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot subtract non-MathVector3 from MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.sub(v);
-  }
-
-  multiply(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot multiply MathVector3 by non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.multiply(v);
-  }
-
-  divide(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot divide MathVector3 by non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.divide(v);
-  }
-
-  dot(v: Vector3): number {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute dot product with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.dot(v);
-  }
-
-  cross(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute cross product with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.cross(v);
-  }
-
-  distanceTo(v: Vector3): number {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute distance to non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.distanceTo(v);
-  }
-
-  distanceToSquared(v: Vector3): number {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute squared distance to non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.distanceToSquared(v);
-  }
-
-  lerp(v: Vector3, t: number): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot lerp with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.lerp(v, t);
-  }
-
-  min(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute min with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.min(v);
-  }
-
-  max(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compute max with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.max(v);
-  }
-
-  clamp(min: Vector3, max: Vector3): this {
-    if (!(min instanceof MathVector3) || !(max instanceof MathVector3)) {
-      throw new Error(
-        'Cannot clamp with non-MathVector3 bounds. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.clamp(min, max);
-  }
-
-  copy(v: Vector3): this {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot copy from non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.copy(v);
-  }
-
-  equals(v: Vector3): boolean {
-    if (!(v instanceof MathVector3)) {
-      throw new Error(
-        'Cannot compare MathVector3 with non-MathVector3. Convert to MathVector3 first or use .toThrelteVector3() if you need to work with threlte Vector3.'
-      );
-    }
-    return super.equals(v);
   }
 }
