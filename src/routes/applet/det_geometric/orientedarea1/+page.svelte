@@ -6,7 +6,7 @@
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import RightScene from './RightScene.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
 

@@ -9,7 +9,6 @@
   import { round } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   let P = new MathVector3(2, 1, 0);

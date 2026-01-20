@@ -8,7 +8,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   const b1 = new MathVector3(2, 0, 1);
@@ -44,10 +43,10 @@
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.raspberry} />
   <Latex3D latex={'\\mathbf{b}_3'} position={b3} color={PrimeColor.raspberry} />
 
-  <Point3D position={new Vector3()} color={PrimeColor.raspberry} />
+  <Point3D position={new MathVector3(0, 0, 0)} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'T_{\\epsilon}(\\mathbf{b}_3)'}
-    position={new Vector3()}
+    position={new MathVector3(0, 0, 0)}
     offset={new MathVector3(-0.75, 0.5, 0)}
     color={PrimeColor.raspberry}
   />
