@@ -1,16 +1,30 @@
+<script lang="ts" module>
+  export type AxisProps = {
+    length?: number;
+    showOrigin?: boolean;
+    showAxisNumbers?: boolean;
+    logarithmicX?: boolean;
+    logarithmicY?: boolean;
+    scaleX?: number;
+    scaleY?: number;
+  };
+</script>
+
 <script lang="ts">
   import { Vector2 } from 'three';
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex2D from './Latex2D.svelte';
 
-  type AxisProps = {
-    length?: number;
-    showOrigin?: boolean;
-    showAxisNumbers?: boolean;
-  };
-
-  let { length = GRID_SIZE_2D, showOrigin = true, showAxisNumbers = true }: AxisProps = $props();
+  let {
+    length = GRID_SIZE_2D,
+    showOrigin = true,
+    showAxisNumbers = true,
+    logarithmicX = false,
+    logarithmicY = false,
+    scaleX = 1,
+    scaleY = 1
+  }: AxisProps = $props();
 
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndeces = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
@@ -20,6 +34,17 @@
     if (index % 5 == 0) return 0.01;
     return 0.005;
   }
+
+  function getTickText(index: number, axis: 'x' | 'y') {
+    if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
+      return index.toLocaleString();
+    }
+
+    return `10^{${index}}`;
+  }
+
+  const yAxisTextX = logarithmicY ? 0.3 : -0.3;
+  const yNegativeAxisTextX = logarithmicY ? 0.3 : -0.55;
 </script>
 
 <g>
@@ -48,17 +73,33 @@
 
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
-      {#if index > 0}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.07, -0.15)} />
-      {:else}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(index - 0.15, -0.15)} />
+      {#if index * scaleX <= length && index * scaleX >= -length}
+        {#if index > 0}
+          <Latex2D
+            latex={getTickText(index, 'x')}
+            position={new Vector2(index * scaleX - 0.07, -0.15)}
+          />
+        {:else}
+          <Latex2D
+            latex={getTickText(index, 'x')}
+            position={new Vector2(index * scaleX - 0.15, -0.15)}
+          />
+        {/if}
       {/if}
 
       <!-- Y axis number labels -->
-      {#if index > 0}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.3, index + 0.12)} />
-      {:else}
-        <Latex2D latex={index.toLocaleString()} position={new Vector2(-0.55, index + 0.1)} />
+      {#if index * scaleY <= length && index * scaleY >= -length}
+        {#if index > 0}
+          <Latex2D
+            latex={getTickText(index, 'y')}
+            position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
+          />
+        {:else}
+          <Latex2D
+            latex={getTickText(index, 'y')}
+            position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
+          />
+        {/if}
       {/if}
     {/if}
   {/each}

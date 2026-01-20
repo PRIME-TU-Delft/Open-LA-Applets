@@ -63,7 +63,7 @@
   });
 </script>
 
-<Canvas2D showAxisNumbers={false} {controls} {formulas}>
+<Canvas2D axis={{ showAxisNumbers: false }} {controls} {formulas}>
   <!-- K-th ANGLE -->
   {#each new Array(m - 1) as _, i (i)}
     {@const kPosition = polarToCartesian(radius, phi + deltaAngle * i)}

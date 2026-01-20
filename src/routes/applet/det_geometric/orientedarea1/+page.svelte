@@ -24,7 +24,7 @@
 <Canvas2D
   {draggables}
   splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new MathVector3(7.2, 5.79, 14.65) }}
-  showAxisNumbers={false}
+  axis={{ showAxisNumbers: false }}
 >
   <Parallelogram2D points={[new Vector2(0, 0), u, v]} color={PrimeColor.yellow} />
 
