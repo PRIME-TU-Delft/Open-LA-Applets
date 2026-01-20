@@ -9,17 +9,17 @@
   import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
-  const normal = new Vector3(1, 3, 1).normalize();
-  const controls = Controls.addSlider(1, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
+  const normal = new Vector3(-0.5, 3, 1).normalize();
+  const controls = Controls.addSlider(3, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
 
   const formulas = $derived.by(() => {
     const f1 = new Formula(
-      `1x + 1y + (3 ${controls[0] < 0 ? '' : '+'}\\$)z = 0`,
+      `1x + 1y + 3z = \\$`,
       controls[0],
       PrimeColor.raspberry
     );
     const f2 = new Formula(
-      `1x + 1y + (3 ${controls[1] < 0 ? '' : '+'}\\$)z = 0`,
+      `1x + 1y + 3z = \\$`,
       controls[1],
       PrimeColor.yellow
     );
