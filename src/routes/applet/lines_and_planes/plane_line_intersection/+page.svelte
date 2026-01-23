@@ -9,15 +9,25 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
+  import { withSign } from '$lib/utils/FormatString';
 
   const controls = Controls.addSlider(-0.6, -1, 1, 0.1)
     .addSlider(0.5, -1, 1, 0.1)
     .addSlider(1, -1, 1, 0.1);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('\\$x + 1y + 1z = 0', controls[0], PrimeColor.raspberry);
-    const f2 = new Formula('\\$x + 1y + 1z = 0', controls[1], PrimeColor.yellow);
-    const f3 = new Formula('\\$x + 1y + 1z = 0', controls[2], PrimeColor.darkGreen);
+    const f1 = new Formula('1x \\$1 y + 1z = 0').addAutoParam(
+      withSign(controls[0]),
+      PrimeColor.raspberry
+    );
+    const f2 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
+      withSign(controls[1]),
+      PrimeColor.yellow
+    );
+    const f3 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
+      withSign(controls[2]),
+      PrimeColor.darkGreen
+    );
 
     return [f1, f2, f3];
   });
