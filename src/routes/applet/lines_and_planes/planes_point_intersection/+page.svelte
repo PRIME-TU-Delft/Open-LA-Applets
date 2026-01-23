@@ -18,7 +18,7 @@
     const c0 = controls[0];
     const c1 = controls[1];
 
-    const f0 = new Formula('\\$1: 0.5x - 1y + 1z = 0').addAutoParam('P_1', PrimeColor.darkGreen);
+    const f0 = new Formula('\\$1: 1x + 0.5y - 1z = 0').addAutoParam('P_1', PrimeColor.darkGreen);
     const f1 = new Formula('\\$1: 1 x \\$2 y + 1z = 0')
       .addAutoParam('P_2', PrimeColor.raspberry)
       .addAutoParam(withSign(c0), PrimeColor.raspberry);
