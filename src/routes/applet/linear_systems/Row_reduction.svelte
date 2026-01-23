@@ -15,7 +15,7 @@
     controls: Controls<unknown, readonly [SlideShow<Vector4[]>]>;
   };
 
-  let { cameraPosition = new Vector3(5, 8, 14.5), controls }: RowReductionProps = $props();
+  let { cameraPosition = new MathVector3(14.5, 5, 8), controls }: RowReductionProps = $props();
 
   const COLOR = [PrimeColor.raspberry, PrimeColor.darkGreen, PrimeColor.yellow];
 

@@ -6,14 +6,15 @@
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
+  import { MathVector3 } from '$lib/utils/MathVector';
 
   let v1 = new Draggable(new Vector2(1, 0), PrimeColor.blue, '\\mathbf{v_1}');
   let v2 = new Draggable(new Vector2(0, 1), PrimeColor.darkGreen, '\\mathbf{v_2}');
 
-  let tv1 = $derived(new Vector3(v1.position.y, 0, v1.position.x));
-  let tv2 = $derived(new Vector3(v2.position.y, 0, v2.position.x));
-  let tv3 = new Vector3(0, 1, 0);
+  let tv1 = $derived(new MathVector3(v1.position.x, v1.position.y, 0));
+  let tv2 = $derived(new MathVector3(v2.position.x, v2.position.y, 0));
+  let tv3 = new MathVector3(0, 0, 1);
 </script>
 
 <Canvas3D

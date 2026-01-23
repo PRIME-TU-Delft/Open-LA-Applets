@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
@@ -9,7 +10,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import EllipseTrajectory from '../EllipseTrajectory.svelte';
 
   const ellipse_radius = 5;
@@ -20,8 +20,8 @@
 
   const u = $derived(parametic_point_on_circle_3D(controls[0], ellipse_radius));
 
-  const u_refl = $derived(u.clone().multiply(new Vector3(1, -1, 1))); // Vector U_reflected
-  const u_proj = $derived(u.clone().projectOnVector(u.clone().multiply(new Vector3(1, 0, 1)))); // Projection point of vector u on plane p
+  const u_refl = $derived(u.clone().multiply(new MathVector3(1, 1, -1))); // Vector U_reflected
+  const u_proj = $derived(u.clone().projectOnVector(u.clone().multiply(new MathVector3(1, 1, 0)))); // Projection point of vector u on plane p
 </script>
 
 <Canvas3D {controls}>
@@ -32,8 +32,12 @@
   <Latex3D latex={`\\mathbf{u}`} position={u} color={PrimeColor.darkGreen} />
 
   <!-- Plane p -->
-  <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.yellow} opacity={0.5} />
-  <Latex3D latex={`\\mathcal{P}`} position={new Vector3(1, 0, -5.5)} color={PrimeColor.yellow} />
+  <PlaneFromNormal normal={new MathVector3(0, 0, 1)} color={PrimeColor.yellow} opacity={0.5} />
+  <Latex3D
+    latex={`\\mathcal{P}`}
+    position={new MathVector3(-5.5, 1, 0)}
+    color={PrimeColor.yellow}
+  />
 
   <!-- Reflection v -->
   <Vector3D direction={u_refl} length={u_refl.length()} color={PrimeColor.blue} />
@@ -47,8 +51,8 @@
   />
 
   <!-- Angle between proj and horizontal axis -->
-  <Angle3D origin={u_proj} vs={[new Vector3(1, 0, 0), new Vector3(0, 1, 0)]} size={0.5} />
-  <Angle3D origin={u_proj} vs={[new Vector3(0, 0, 1), new Vector3(0, 1, 0)]} size={0.5} />
+  <Angle3D origin={u_proj} vs={[new MathVector3(0, 1, 0), new MathVector3(0, 0, 1)]} size={0.5} />
+  <Angle3D origin={u_proj} vs={[new MathVector3(1, 0, 0), new MathVector3(0, 0, 1)]} size={0.5} />
 
   <!--Point of relection-->
   <Latex3D
