@@ -21,8 +21,8 @@
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
       .addAutoParam(a, PrimeColor.orange)
-      .addAutoParam(withSign(b), PrimeColor.orange)
-      .addAutoParam(withSign(c), PrimeColor.orange)
+      .addAutoParam(withSign(b, 0), PrimeColor.orange)
+      .addAutoParam(withSign(c, 0), PrimeColor.orange)
       .addAutoParam(round(k, 2), PrimeColor.raspberry);
 
     return [f];
@@ -90,6 +90,7 @@
       func={(x, y) => a * x * x + b * x * y + c * y * y}
       color={PrimeColor.blue}
       opacity={0.7}
+      resolution={75}
     />
 
     <PlaneFromNormal

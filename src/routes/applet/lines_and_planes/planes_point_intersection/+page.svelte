@@ -10,6 +10,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
+  import { withSign } from '$lib/utils/FormatString';
 
   let controls = Controls.addSlider(0.5, -1, 1, 0.1).addSlider(1, -1, 1, 0.1);
 
@@ -17,9 +18,13 @@
     const c0 = controls[0];
     const c1 = controls[1];
 
-    const f0 = new Formula('P_1 = 0.5x + \\$y + 1z = 0', -1, PrimeColor.darkGreen);
-    const f1 = new Formula('P_2 = \\$x + 1y + 1z = 0', c0, PrimeColor.raspberry);
-    const f2 = new Formula('P_3 = \\$x + 1y + 1z = 0', c1, PrimeColor.yellow);
+    const f0 = new Formula('\\$1: 0.5x - 1y + 1z = 0').addAutoParam('P_1', PrimeColor.darkGreen);
+    const f1 = new Formula('\\$1: 1 x \\$2 y + 1z = 0')
+      .addAutoParam('P_2', PrimeColor.raspberry)
+      .addAutoParam(withSign(c0), PrimeColor.raspberry);
+    const f2 = new Formula('\\$1: 1 x \\$2 y + 1z = 0')
+      .addAutoParam('P_3', PrimeColor.yellow)
+      .addAutoParam(withSign(c1), PrimeColor.yellow);
 
     return [f0, f1, f2];
   });
