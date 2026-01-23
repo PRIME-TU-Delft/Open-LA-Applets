@@ -110,7 +110,10 @@
   },
   "lines_and_planes": {
     "plane_line_intersection": {
-      "title": "Two planes with a line of intersection."
+      "title": "Three planes with a line of intersection."
+    },
+    "planes_point_intersection": {
+      "title": "Three planes with a point intersection"
     },
     "parametric_vector_equation": {
       "title": "A parametric vector of a line"
