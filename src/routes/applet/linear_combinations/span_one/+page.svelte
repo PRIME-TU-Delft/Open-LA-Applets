@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,10 +8,9 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
-  const vDir = new Vector3(3, 2, -3);
+  const vDir = new MathVector3(-3, 3, 2);
   const lineDir = vDir.clone().normalize().multiplyScalar(10);
   const controls = Controls.addSlider(vDir.length(), -9, 9, 0.5, PrimeColor.raspberry, {
     label: $_('applets.linear_combinations.span_one.length'),
@@ -46,7 +46,7 @@
   />
   <Latex3D
     latex={'Span\\{\\mathbf{v}\\}'}
-    position={lineDir.clone().add(new Vector3(0, 0.4, 0))}
+    position={lineDir.clone().add(new MathVector3(0, 0, 0.4))}
     color={PrimeColor.darkGreen}
   />
   <Axis3D />

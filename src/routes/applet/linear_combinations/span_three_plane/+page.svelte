@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -8,11 +9,10 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
-  const u = new Vector3(1, 2, -2); // Vector U;
-  const v = new Vector3(3, 1, 0); // Vector V;
+  const u = new MathVector3(-2, 1, 2); // Vector U;
+  const v = new MathVector3(0, 3, 1); // Vector V;
   const w = u.clone().add(v); // Vector W = U + V;
 
   let controls = Controls.addToggle(true, '\\mathbf{u}')
@@ -76,7 +76,11 @@
 
   {#if enabledVectors.length >= 2}
     <!-- Plane span -->
-    <PlaneFromPoints points={[new Vector3(0, 0, 0), u, v]} color={PrimeColor.yellow} size={15} />
+    <PlaneFromPoints
+      points={[new MathVector3(0, 0, 0), u, v]}
+      color={PrimeColor.yellow}
+      size={15}
+    />
     <Latex3D latex={labelstring} position={w.clone().normalize().multiplyScalar(8)} extend={1.5} />
   {:else if enabledVectors.length == 1}
     <!-- Line span -->
@@ -91,8 +95,8 @@
 
     <Latex3D latex={labelstring} position={enabledVectors[0]} extend={1.5} />
   {:else if enabledVectors.length == 0}
-    <Point3D position={new Vector3()} color={PrimeColor.yellow} />
-    <Latex3D latex={labelstring} position={new Vector3(1, 1, 0)} extend={0.5} />
+    <Point3D position={new MathVector3(0, 0, 0)} color={PrimeColor.yellow} />
+    <Latex3D latex={labelstring} position={new MathVector3(0, 1, 1)} extend={0.5} />
   {/if}
 
   <Axis3D />

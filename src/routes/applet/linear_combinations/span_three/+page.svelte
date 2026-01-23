@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -8,11 +9,10 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
 
-  const u = new Vector3(1, 3, 3); // Direction of vector u
-  const v = new Vector3(3, 2, -3); // Direction of vector v
-  const w = new Vector3(1, -2, 0); // Direction of vector w
+  const u = new MathVector3(3, 1, 3); // Direction of vector u
+  const v = new MathVector3(-3, 3, 2); // Direction of vector v
+  const w = new MathVector3(0, 1, -2); // Direction of vector w
 
   let controls = Controls.addToggle(true, '\\mathbf{u}')
     .addToggle(true, '\\mathbf{v}')
@@ -41,7 +41,12 @@
   });
 </script>
 
-<Canvas3D showFormulasDefault cameraPosition={new Vector3(7.63, 6.3, 14.22)} {formulas} {controls}>
+<Canvas3D
+  showFormulasDefault
+  cameraPosition={new MathVector3(14.22, 7.63, 6.3)}
+  {formulas}
+  {controls}
+>
   <Span3D toggles={controls.values} vectors={[u, v, w]} />
 
   {#if controls[0]}
@@ -58,7 +63,7 @@
   {/if}
 
   {#if !controls[0] && !controls[1] && !controls[2]}
-    <Point3D position={new Vector3(0, 0, 0)} color={PrimeColor.yellow} />
+    <Point3D position={new MathVector3(0, 0, 0)} color={PrimeColor.yellow} />
   {/if}
 
   <Axis3D />
