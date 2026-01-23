@@ -13,8 +13,8 @@
   const controls = Controls.addSlider(3, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula(`1x + 1y + 3z = \\$`, controls[0], PrimeColor.raspberry);
-    const f2 = new Formula(`1x + 1y + 3z = \\$`, controls[1], PrimeColor.yellow);
+    const f1 = new Formula(`1x - 0.5 y + 3z = \\$`, controls[0], PrimeColor.raspberry);
+    const f2 = new Formula(`1x - 0.5 y + 3z = \\$`, controls[1], PrimeColor.yellow);
 
     return [f1, f2];
   });
