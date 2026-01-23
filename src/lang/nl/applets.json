@@ -110,7 +110,7 @@
   },
   "lines_and_planes": {
     "plane_line_intersection": {
-      "title": "Twee vlakken met een snijlijn."
+      "title": "Drie vlakken met een snijlijn."
     },
     "parametric_vector_equation": {
       "title": "Een parametrische vector van een lijn"
@@ -135,6 +135,9 @@
     },
     "parametric_line_space": {
       "title": "Een parametrische vector van een lijn in een 3D-ruimte"
+    },
+    "planes_point_intersection": {
+      "title": "Drie vlakken met een puntkruising"
     }
   },
   "matrix_operations": {

@@ -30,7 +30,7 @@
   {formulas}
   cameraZoom={41}
   {controls}
-  title={$_('applets.lines_and_planes.plane_line_intersection.title')}
+  title={$_('applets.lines_and_planes.planes_point_intersection.title')}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}
