@@ -37,7 +37,7 @@
     const pos = draggables[0].position;
     const length = pos.length();
     const f1 = new Formula(`\\text{length} = ${round(length)}`);
-    const f2 = new Formula(`A = \\begin{bmatrix}\\$1 \\\\ \\$2 \\end{bmatrix}`)
+    const f2 = new Formula(`A = \\begin{pmatrix}\\$1 \\\\ \\$2 \\end{pmatrix}`)
       .addAutoParam(round(pos.x), PrimeColor.darkGreen)
       .addAutoParam(round(pos.y), PrimeColor.orange);
     return [f1, f2];
@@ -106,7 +106,7 @@ const autoParamFormula = $derived.by(() => {
   const pos = draggables[0].position;
   const length = pos.length();
   const f1 = new Formula(`\\text{length} = ${round(length)}`);
-  const f2 = new Formula(`A = \\begin{bmatrix}\\$1 \\\\ \\$2 \\end{bmatrix}`)
+  const f2 = new Formula(`A = \\begin{pmatrix}\\$1 \\\\ \\$2 \\end{pmatrix}`)
     .addAutoParam(round(pos.x), PrimeColor.darkGreen)
     .addAutoParam(round(pos.y), PrimeColor.orange);
   return [f1, f2];

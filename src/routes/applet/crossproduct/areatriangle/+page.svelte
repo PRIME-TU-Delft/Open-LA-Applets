@@ -31,7 +31,7 @@
         .addAutoParam('PQ', PrimeColor.blue)
         .addAutoParam('PR', PrimeColor.blue)
         .addAutoParam(
-          `\\begin{bmatrix} ${n.z} \\\\ ${n.x} \\\\ ${n.y} \\end{bmatrix}`,
+          `\\begin{pmatrix} ${n.z} \\\\ ${n.x} \\\\ ${n.y} \\end{pmatrix}`,
           PrimeColor.orange
         ),
       new Formula(

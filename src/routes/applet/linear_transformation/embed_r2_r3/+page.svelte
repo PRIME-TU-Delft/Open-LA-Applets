@@ -25,7 +25,7 @@
   const tv = $derived(new Vector3(v.y, 0, v.x));
 
   const f1 = new Formula(
-    'T(\\mathbf{x})= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} \\mathbf{x}'
+    'T(\\mathbf{x})= \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{pmatrix} \\mathbf{x}'
   );
 </script>
 

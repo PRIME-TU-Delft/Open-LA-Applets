@@ -24,10 +24,10 @@
     const d2 = draggables[1].position;
 
     const f1 = new Formula(
-      `T(\\mathbf{x})=\\begin{bmatrix} 
+      `T(\\mathbf{x})=\\begin{pmatrix} 
         ${round(d1.x, 1)} & ${round(d2.x, 1)} \\\\ 
         ${round(d1.y, 1)} & ${round(d2.y, 1)} 
-      \\end{bmatrix}\\mathbf{x}`
+      \\end{pmatrix}\\mathbf{x}`
     );
 
     return [f1];

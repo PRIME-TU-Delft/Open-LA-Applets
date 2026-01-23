@@ -27,7 +27,7 @@
     position={v1}
     extend={labelOffset}
     color={PrimeColor.darkGreen}
-    latex={'\\begin{bmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{bmatrix}'}
+    latex={'\\begin{pmatrix} ' + v1.x + ' \\\\ ' + v1.z + ' \\\\ ' + v1.y + ' \\end{pmatrix}'}
   />
   <VectorDeconstruction3D p={v1} color={PrimeColor.darkGreen} showAxisPoints />
 
@@ -40,7 +40,7 @@
     position={v2}
     extend={labelOffset}
     color={PrimeColor.blue}
-    latex={'\\begin{bmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{bmatrix}'}
+    latex={'\\begin{pmatrix} ' + v2.x + ' \\\\ ' + v2.z + ' \\\\ ' + v2.y + ' \\end{pmatrix}'}
   />
   <VectorDeconstruction3D p={v2} color={PrimeColor.blue} showAxisPoints />
 
@@ -50,7 +50,7 @@
     position={v3}
     extend={labelOffset}
     color={PrimeColor.raspberry}
-    latex={'\\begin{bmatrix} ' + v3.x + ' \\\\ ' + v3.z + ' \\\\ ' + v3.y + ' \\end{bmatrix}'}
+    latex={'\\begin{pmatrix} ' + v3.x + ' \\\\ ' + v3.z + ' \\\\ ' + v3.y + ' \\end{pmatrix}'}
   />
   <VectorDeconstruction3D p={v3} color={PrimeColor.raspberry} showAxisPoints />
 
