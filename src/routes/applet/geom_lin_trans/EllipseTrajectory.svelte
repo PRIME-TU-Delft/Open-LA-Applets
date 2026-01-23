@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* eslint-disable no-restricted-syntax */
   import Line3D from '$lib/threlte/Line3D.svelte';
   import { parametic_point_on_circle_3D as getPoint } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';

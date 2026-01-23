@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* eslint-disable no-restricted-syntax */
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';

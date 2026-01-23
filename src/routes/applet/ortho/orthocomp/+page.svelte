@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
@@ -8,20 +9,20 @@
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import { _ } from 'svelte-i18n';
 
   let v = new Vector2(3, -3);
   let v_ortho = new Vector2(3, 3);
 
-  let ve = new Vector3(0, 0, 0);
-  let ve_ortho = new Vector3(0, 7, 0);
+  let ve = new MathVector3(0, 0, 0);
+  let ve_ortho = new MathVector3(0, 0, 7);
 
-  const n0 = new Vector3(0, 1, 0);
+  const n0 = new MathVector3(0, 0, 1);
 </script>
 
 <Canvas2D
-  splitCanvas3DProps={{ cameraPosition: new Vector3(10, 10, 13), cameraZoom: 50 }}
+  splitCanvas3DProps={{ cameraPosition: new MathVector3(13, 10, 10), cameraZoom: 50 }}
   cameraZoom={1.5}
   title={$_('applets.ortho.orthocomp.title')}
 >
@@ -59,7 +60,7 @@
   {#snippet splitCanvas3DChildren()}
     <!-- v -->
     <PlaneFromNormal position={ve} normal={n0} color={PrimeColor.darkGreen} />
-    <Latex3D latex="V" position={new Vector3(5.1, 0, 5.2)} color={PrimeColor.darkGreen} />
+    <Latex3D latex="V" position={new MathVector3(5.2, 5.1, 0)} color={PrimeColor.darkGreen} />
 
     <!-- v_ortho -->
     <Vector3D
@@ -70,6 +71,6 @@
     />
     <Latex3D latex={'V^{\\bot}'} position={ve_ortho} color={PrimeColor.blue} />
 
-    <Angle3D vs={[new Vector3(0, 5, 0), new Vector3(3, 0, -3)]} size={0.4} />
+    <Angle3D vs={[new MathVector3(0, 0, 5), new MathVector3(-3, 3, 0)]} size={0.4} />
   {/snippet}
 </Canvas2D>

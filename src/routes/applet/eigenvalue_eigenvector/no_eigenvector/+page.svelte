@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* eslint-disable no-restricted-syntax */
   import { Controls } from '$lib/controls/Controls';
   import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';

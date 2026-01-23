@@ -11,8 +11,8 @@ export function formatString(string: string) {
  * Format number to always have + or - before it
  * @param number Number to format
  */
-export function withSign(number: number) {
-  const abs = Math.abs(number);
+export function withSign(number: number, precision: number = 2) {
+  const abs = Math.abs(number).toFixed(precision);
 
   if (number < 0) {
     return '- ' + abs;
