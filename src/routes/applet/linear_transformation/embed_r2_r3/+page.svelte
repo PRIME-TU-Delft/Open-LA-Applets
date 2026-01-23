@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -11,7 +12,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
 
   const e1 = new Vector2(1, 0);
   const e2 = new Vector2(0, 1);
@@ -20,9 +21,9 @@
 
   const v = $derived(draggables[0].position);
 
-  const te1 = new Vector3(e1.y, 0, e1.x);
-  const te2 = new Vector3(e2.y, 0, e2.x);
-  const tv = $derived(new Vector3(v.y, 0, v.x));
+  const te1 = new MathVector3(e1.x, e1.y, 0);
+  const te2 = new MathVector3(e2.x, e2.y, 0);
+  const tv = $derived(new MathVector3(v.x, v.y, 0));
 
   const f1 = new Formula(
     'T(\\mathbf{x})= \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\\\ 0 & 0 \\end{bmatrix} \\mathbf{x}'
@@ -79,8 +80,8 @@
     <Line3D origin={te2.clone().multiplyScalar(v.y)} endPoint={tv.clone()} color="black" isDashed />
 
     <PlaneFromNormal
-      position={new Vector3(0, 0, 0)}
-      normal={new Vector3(0, 1, 0)}
+      position={new MathVector3(0, 0, 0)}
+      normal={new MathVector3(0, 0, 1)}
       size={10}
       color={PrimeColor.yellow}
       opacity={0.2}

@@ -6,7 +6,7 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
 
   let {
     u,
@@ -26,7 +26,7 @@
 <Axis3D />
 
 <Parallelepiped3D
-  points={[new Vector3(0, 0), tu, tv]}
+  points={[new MathVector3(0, 0, 0), tu, tv]}
   color={PrimeColor.yellow}
   strokeWidth={0.5}
 />
@@ -35,7 +35,7 @@
   {#snippet children(endPoint)}
     <Latex3D latex={'\\tilde{\\mathbf{u}}'} position={endPoint?.clone().multiplyScalar(0.5)} />
     <Latex3D latex="A" extend={0.2} position={endPoint} />
-    <Point3D position={endPoint || new Vector3()} color={PrimeColor.raspberry} />
+    <Point3D position={endPoint || new MathVector3(0, 0, 0)} color={PrimeColor.raspberry} />
   {/snippet}
 </Vector3D>
 
@@ -43,7 +43,7 @@
   {#snippet children(endPoint)}
     <Latex3D latex={'\\tilde{\\mathbf{v}}'} position={endPoint?.clone().multiplyScalar(0.5)} />
     <Latex3D latex="B" extend={0.2} position={endPoint} />
-    <Point3D position={endPoint || new Vector3()} color={PrimeColor.darkGreen} />
+    <Point3D position={endPoint || new MathVector3(0, 0, 0)} color={PrimeColor.darkGreen} />
   {/snippet}
 </Vector3D>
 
@@ -56,22 +56,22 @@
       extend={0.2}
       position={endPoint}
     />
-    <Point3D position={endPoint || new Vector3()} color={PrimeColor.blue} />
+    <Point3D position={endPoint || new MathVector3(0, 0, 0)} color={PrimeColor.blue} />
   {/snippet}
 </Vector3D>
 
 <!-- e1 & e2 & e3 -->
-<Vector3D direction={new Vector3(0, 0, 1)} length={1} color={PrimeColor.blue}>
+<Vector3D direction={new MathVector3(1, 0, 0)} length={1} color={PrimeColor.blue}>
   {#snippet children(endPoint)}
     <Latex3D latex={'\\mathbf{e_1}'} extend={0.1} position={endPoint} />
   {/snippet}
 </Vector3D>
-<Vector3D direction={new Vector3(1, 0, 0)} length={1} color={PrimeColor.blue}>
+<Vector3D direction={new MathVector3(0, 1, 0)} length={1} color={PrimeColor.blue}>
   {#snippet children(endPoint)}
     <Latex3D latex={'\\mathbf{e_2}'} extend={0.1} position={endPoint} />
   {/snippet}
 </Vector3D>
-<Vector3D direction={new Vector3(0, 1, 0)} length={1} color={PrimeColor.blue}>
+<Vector3D direction={new MathVector3(0, 0, 1)} length={1} color={PrimeColor.blue}>
   {#snippet children(endPoint)}
     <Latex3D latex={'\\mathbf{e_3}'} extend={0.1} position={endPoint} />
   {/snippet}

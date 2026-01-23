@@ -1,13 +1,12 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import PlaneFromPoints from '$lib/threlte/planes/PlaneFromPoints.svelte';
   import Point3D from '$lib/threlte/Point3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   const p = new MathVector3(0, 2, 1);
@@ -19,7 +18,7 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(7.7, 7.7, 13.47)}
+  cameraPosition={new MathVector3(13.47, 7.7, 7.7)}
   cameraZoom={41}
   title={$_('applets.lines_and_planes.directional_vectors_plane.title')}
 >

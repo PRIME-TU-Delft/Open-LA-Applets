@@ -1,27 +1,27 @@
 <script lang="ts">
-  import { Vector3 } from 'three';
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
 
-  let V = new Vector3(0, 0, 0);
-  const n0 = new Vector3(0, 1, 0);
+  let V = new MathVector3(0, 0, 0);
+  const n0 = new MathVector3(0, 0, 1);
 
-  let w = new Vector3(0, 4, 0);
+  let w = new MathVector3(0, 0, 4);
 
-  let proj_v = new Vector3(3, 0, 1.5);
+  let proj_v = new MathVector3(1.5, 3, 0);
 
-  let v = new Vector3(3, 4, 1.5);
+  let v = new MathVector3(1.5, 3, 4);
 </script>
 
-<Canvas3D cameraPosition={new Vector3(10, 10, 17)} cameraZoom={50}>
+<Canvas3D cameraPosition={new MathVector3(17, 10, 10)} cameraZoom={50}>
   <!-- v -->
   <Vector3D direction={v} length={v.length()} color={PrimeColor.blue} />
   <Latex3D
     latex={'\\mathbf{u}'}
-    position={v.clone().add(new Vector3(0, 0.2, 0))}
+    position={v.clone().add(new MathVector3(0, 0, 0.2))}
     color={PrimeColor.blue}
   />
 
@@ -33,7 +33,7 @@
   <Vector3D direction={proj_v} length={proj_v.length()} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'\\mathbf{u}_{V}'}
-    position={proj_v.clone().add(new Vector3(0.2, 0, 0.2))}
+    position={proj_v.clone().add(new MathVector3(0.2, 0.2, 0))}
     color={PrimeColor.raspberry}
   />
 
@@ -59,5 +59,5 @@
 
   <!-- V -->
   <PlaneFromNormal position={V} normal={n0} color={PrimeColor.darkGreen} />
-  <Latex3D latex="V" position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.darkGreen} />
+  <Latex3D latex="V" position={new MathVector3(5.4, 5.3, 0)} color={PrimeColor.darkGreen} />
 </Canvas3D>

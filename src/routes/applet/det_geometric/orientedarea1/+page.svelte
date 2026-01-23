@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import RightScene from './RightScene.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
 
@@ -22,7 +23,7 @@
 
 <Canvas2D
   {draggables}
-  splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new Vector3(5.79, 14.65, 7.2) }}
+  splitCanvas3DProps={{ cameraZoom: 50, cameraPosition: new MathVector3(7.2, 5.79, 14.65) }}
   axis={{ showAxisNumbers: false }}
 >
   <Parallelogram2D points={[new Vector2(0, 0), u, v]} color={PrimeColor.yellow} />

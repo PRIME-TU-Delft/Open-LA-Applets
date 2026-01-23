@@ -4,11 +4,11 @@
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
+  import { MathVector3 } from '$lib/utils/MathVector';
 
-  let tv1 = new Vector3(0, 0, 1);
-  let tv2 = new Vector3(1, 0, 0);
-  let tv3 = new Vector3(0, 1, 0);
+  let tv1 = new MathVector3(1, 0, 0);
+  let tv2 = new MathVector3(0, 1, 0);
+  let tv3 = new MathVector3(0, 0, 1);
 </script>
 
 <Canvas3D cameraZoom={100} title="The vectors in 2d and 3d">

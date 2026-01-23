@@ -8,7 +8,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   const b1 = new MathVector3(2, 0, 1);
@@ -17,7 +16,7 @@
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(12.25, 6.74, 9.53)}
+  cameraPosition={new MathVector3(9.53, 12.25, 6.74)}
   cameraZoom={40}
   title={$_('applets.change_of_basis.projection.title')}
 >
@@ -26,7 +25,7 @@
   <Latex3D
     latex={'\\mathbf{b}_1=T_{\\epsilon}(\\mathbf{b}_1)'}
     position={b1}
-    offset={new Vector3(0, 0.75, 0.5)}
+    offset={new MathVector3(0.5, 0, 0.75)}
     color={PrimeColor.blue}
     hasBackground
   />
@@ -36,7 +35,7 @@
   <Latex3D
     latex={'\\mathbf{b}_2=T_{\\epsilon}(\\mathbf{b}_2)'}
     position={b2}
-    offset={new Vector3(0.5, 0, 0.5)}
+    offset={new MathVector3(0.5, 0.5, 0)}
     color={PrimeColor.blue}
   />
 
@@ -44,11 +43,11 @@
   <Vector3D direction={b3} length={b1.length()} color={PrimeColor.raspberry} />
   <Latex3D latex={'\\mathbf{b}_3'} position={b3} color={PrimeColor.raspberry} />
 
-  <Point3D position={new Vector3()} color={PrimeColor.raspberry} />
+  <Point3D position={new MathVector3(0, 0, 0)} color={PrimeColor.raspberry} />
   <Latex3D
     latex={'T_{\\epsilon}(\\mathbf{b}_3)'}
-    position={new Vector3()}
-    offset={new Vector3(0.5, 0, -0.75)}
+    position={new MathVector3(0, 0, 0)}
+    offset={new MathVector3(-0.75, 0.5, 0)}
     color={PrimeColor.raspberry}
   />
 
@@ -57,11 +56,15 @@
   <Angle3D vs={[b2, b3]} />
 
   <!-- Plane span -->
-  <PlaneFromPoints points={[new Vector3(0, 0, 0), b1, b2]} color={PrimeColor.yellow} size={10} />
+  <PlaneFromPoints
+    points={[new MathVector3(0, 0, 0), b1, b2]}
+    color={PrimeColor.yellow}
+    size={10}
+  />
   <Latex3D
     latex="V"
     position={b2.clone().multiplyScalar(-4)}
-    offset={new Vector3(0, 0.2, 0)}
+    offset={new MathVector3(0, 0, 0.2)}
     color={PrimeColor.yellow}
     hasBackground
   />
