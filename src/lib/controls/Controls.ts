@@ -294,14 +294,14 @@ export class Controls<
     return new Controls([newMatrix] as const, newMatrix.width);
   }
 
-  addFunction(latex: string, label?: string, color?: PrimeColor) {
-    const newFunction = new Function(latex, label, color);
+  addFunction(latex: string, label?: string, color?: PrimeColor, parameterLetter?: string) {
+    const newFunction = new Function(latex, label, color, parameterLetter);
     this.isAllowedToAddControl(newFunction);
     return new Controls([...this.controls, newFunction] as const, this._width + newFunction.width);
   }
 
-  static addFunction(latex: string, label?: string, color?: PrimeColor) {
-    const newFunction = new Function(latex, label, color);
+  static addFunction(latex: string, label?: string, color?: PrimeColor, parameterLetter?: string) {
+    const newFunction = new Function(latex, label, color, parameterLetter);
     return new Controls([newFunction] as const, newFunction.width);
   }
 
