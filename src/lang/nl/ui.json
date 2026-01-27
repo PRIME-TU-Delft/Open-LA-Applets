@@ -49,5 +49,6 @@
   "custom_url_parameters": "Aangepaste URL-parameters voor deze applet",
   "default_value": "Standaardwaarde",
   "description": "Beschrijving",
-  "url_param_key": "URL-parameter"
+  "url_param_key": "URL-parameter",
+  "embed_applet_url_params": "Url naar deze applet (met aangepaste parameters):"
 }

@@ -9,6 +9,7 @@ type URLParamInfo = {
   paramKey: string;
   defaultValue: string | number;
   description: string;
+  currentValue: () => string;
 };
 
 export const appletState = new AppletState();

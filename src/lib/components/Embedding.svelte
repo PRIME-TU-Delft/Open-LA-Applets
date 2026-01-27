@@ -48,6 +48,16 @@
     return url.toString();
   });
 
+  const urlWithCustomParams = $derived.by(() => {
+    const url = new URL(page.url.origin + page.url.pathname);
+
+    appletState.URLParamsInfo.forEach((param) => {
+      url.searchParams.set(param.paramKey, param.currentValue());
+    });
+
+    return url.toString();
+  });
+
   const githubLink = $derived.by(() => {
     const refUrl = page?.url?.pathname.replace('/applet/', '');
     const lastUrl = refUrl?.split('/')?.slice(-1)[0]; // Last part of the url
@@ -170,6 +180,17 @@
           {/each}
         </tbody>
       </Table>
+    </div>
+
+    <Label
+      for="url-custom-params"
+      class="mt-4 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    >
+      {$_('ui.embed_applet_url_params')}
+    </Label>
+
+    <div class="my-2 h-full w-full">
+      <Textarea readonly value={urlWithCustomParams} />
     </div>
   {/if}
 </div>

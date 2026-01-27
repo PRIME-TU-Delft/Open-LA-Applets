@@ -49,5 +49,6 @@
   "custom_url_parameters": "Custom URL parameters for this applet",
   "url_param_key": "URL param key",
   "description": "Description",
-  "default_value": "Default value"
+  "default_value": "Default value",
+  "embed_applet_url_params": "Url to this applet (with custom params):"
 }

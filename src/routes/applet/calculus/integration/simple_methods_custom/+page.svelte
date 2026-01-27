@@ -204,33 +204,39 @@
     {
       paramKey: 'rule',
       defaultValue: 'left',
-      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)'
+      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)',
+      currentValue: () => currentRule
     },
     {
       paramKey: 'function',
       defaultValue: '\\sqrt{1 + {\\cos{(x)}}^2 }',
       description:
-        'Default function value, in latex form. Plus signs (+) have to be encoded with %2b.'
+        'Default function value, in latex form. Plus signs (+) have to be encoded with %2b.',
+      currentValue: () => '\\sqrt{1 + {\\cos{(x)}}^2 }' // you cant get the latex easily
     },
     {
       paramKey: 'xL',
       defaultValue: 1.5,
-      description: 'Default value for left bound (xL)'
+      description: 'Default value for left bound (xL)',
+      currentValue: () => xL.toFixed(2).toString()
     },
     {
       paramKey: 'xR',
       defaultValue: 4.5,
-      description: 'Default value for right bound (xR)'
+      description: 'Default value for right bound (xR)',
+      currentValue: () => xR.toFixed(2).toString()
     },
     {
       paramKey: 'xAxisLetter',
       defaultValue: 'x',
-      description: 'Letter used for the horizontal axis'
+      description: 'Letter used for the horizontal axis',
+      currentValue: () => xAxisLetter
     },
     {
       paramKey: 'functionLetter',
       defaultValue: 'f',
-      description: 'Letter used for the function'
+      description: 'Letter used for the function',
+      currentValue: () => functionLetter
     }
   ];
 </script>

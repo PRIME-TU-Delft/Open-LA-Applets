@@ -117,7 +117,8 @@
     {
       paramKey: 'rule',
       defaultValue: 'left',
-      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)'
+      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)',
+      currentValue: () => currentRule
     }
   ];
 </script>
