@@ -57,17 +57,22 @@
     round();
     slider.onRelease(value);
 
-    if (onStopChanging) onStopChanging();
+    slider.onStopChanging();
+
+    if (onStopChanging) {
+      onStopChanging();
+    }
   }
 
   function startPlaying() {
     isPlaying = true;
     icon = 'Pause';
+    slider.onStartChanging();
 
     playInterval = setInterval(() => {
       // console.log('is playing');
       // Bounce the slider back and forth
-      value += ((moveRight ? -1 : 1) * slider.stepSize) / 4;
+      value += (moveRight ? -1 : 1) * slider.stepSize * slider.animationStep;
 
       if (slider.loop) {
         // Slider moves to min val
@@ -93,8 +98,11 @@
 
   function startChanging() {
     stopPlaying();
+    slider.onStartChanging();
 
-    if (onStartChanging) onStartChanging();
+    if (onStartChanging) {
+      onStartChanging();
+    }
   }
 
   $effect(() => {
@@ -114,12 +122,12 @@
 
 {#if !isExpanded}
   <!-- If not selected display only the expand button -->
-  <div class="tooltip tooltip-top" data-tip={$_('slider_expand')}>
+  <div class="tooltip tooltip-top" data-tip={$_('ui.slider_expand')}>
     <Button.Action
       class="text-white"
       --bg={slider.color}
       --hover-bg={slider.color + PrimeColor.opacity(0.8)}
-      tooltip={$_('slider_expand')}
+      tooltip={$_('ui.slider_expand')}
       side="top"
       onclick={onExpand}
     >
@@ -132,7 +140,7 @@
     class="relative rounded-full text-white"
     --bg={slider.color}
     --hover-bg={slider.color + PrimeColor.opacity(0.8)}
-    tooltip={$_('slider_toggle_animation')}
+    tooltip={$_('ui.slider_toggle_animation')}
     side="top"
     onclick={togglePlay}
   >
@@ -149,7 +157,7 @@
         class="group absolute top-8 -right-2 size-5 rounded-full text-blue-950/50 transition-transform hover:scale-120"
         --bg="color-mix(in oklab, var(--color-blue-200) 95%, transparent)"
         --hover-bg="var(--color-blue-100)"
-        tooltip={$_('slider_minimize')}
+        tooltip={$_('ui.slider_minimize')}
         onclick={onMinimize}
       >
         <ChevronsRightLeft class="size-4 group-hover:size-4" />
@@ -180,7 +188,9 @@
         bind:value
         onchange={stopPlaying}
         onmousedown={startChanging}
+        onmouseup={slider.onStopChanging}
         ontouchstart={startChanging}
+        ontouchend={slider.onStopChanging}
         style="accent-color: {slider.color}"
       />
     </div>
@@ -194,7 +204,9 @@
       bind:value
       onchange={stopPlaying}
       onmousedown={startChanging}
+      onmouseup={slider.onStopChanging}
       ontouchstart={startChanging}
+      ontouchend={slider.onStopChanging}
       style="accent-color: {slider.color}"
     />
   {/if}

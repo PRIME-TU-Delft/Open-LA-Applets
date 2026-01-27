@@ -9,8 +9,21 @@
     }
   },
   "calculus": {
-    "left_rectangle": {
-      "title": "Left Rectangle rule"
+    "integration": {
+      "simple_methods": {
+        "left": "Left Rectangle rule",
+        "right": "Right Rectangle rule",
+        "midpoint": "Midpoint rule",
+        "trapezoid": "Trapezoid rule",
+        "simpson": "Simpson's rule"
+      },
+      "method_errors": {
+        "title": "Errors of composite integration rules",
+        "absolute_error": "Absolute error",
+        "left": "Left rectangle",
+        "right": "Right rectangle",
+        "trapezoid": "Trapezoid"
+      }
     }
   },
   "change_of_basis": {
@@ -97,7 +110,10 @@
   },
   "lines_and_planes": {
     "plane_line_intersection": {
-      "title": "Two planes with a line of intersection."
+      "title": "Three planes with a line of intersection."
+    },
+    "planes_point_intersection": {
+      "title": "Three planes with a point intersection"
     },
     "parametric_vector_equation": {
       "title": "A parametric vector of a line"

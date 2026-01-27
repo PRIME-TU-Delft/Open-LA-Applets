@@ -7,6 +7,7 @@ import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
 import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
+import { Function } from './Function.svelte';
 
 /**
  * Interface for a controller
@@ -81,6 +82,7 @@ export class Controls<
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
+   * @param options.animationStep - How fast should the animation go
    * @param options.loop - If the slider bounces or loops during autoplay
    * @param options.label - label for the slider
    * @param options.valueFn - function to format the value
@@ -95,9 +97,12 @@ export class Controls<
     options?: {
       label?: string;
       loop?: boolean;
+      animationStep?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const colors = PrimeColor.asArray();
@@ -112,8 +117,13 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.animationStep,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
 
     this.isAllowedToAddControl(newSlider);
@@ -128,6 +138,7 @@ export class Controls<
    * @param to - to value, default is 1
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
+   * @param options.animationStep - How fast should the animation go
    * @param options.loop - If the slider bounces or loops during autoplay
    * @param options.label - label for the slider
    * @param options.valueFn - function to format the value
@@ -142,9 +153,12 @@ export class Controls<
     options?: {
       label?: string;
       loop?: boolean;
+      animationStep?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
+      onStartChanging?: () => void;
+      onStopChanging?: () => void;
     }
   ) {
     const newSlider = new Slider(
@@ -156,8 +170,13 @@ export class Controls<
       options?.label,
       options?.loop,
       options?.valueFn,
+      options?.animationStep,
       options?.labelFormat,
-      options?.onRelease
+      {
+        onRelease: options?.onRelease,
+        onStartChanging: options?.onStartChanging,
+        onStopChanging: options?.onStopChanging
+      }
     );
     return new Controls([newSlider] as const, newSlider.width);
   }
@@ -273,6 +292,17 @@ export class Controls<
   static addMatrix(value: Matrix2, label?: string, color?: string) {
     const newMatrix = new Matrix(value, label, color);
     return new Controls([newMatrix] as const, newMatrix.width);
+  }
+
+  addFunction(latex: string, label?: string, color?: PrimeColor) {
+    const newFunction = new Function(latex, label, color);
+    this.isAllowedToAddControl(newFunction);
+    return new Controls([...this.controls, newFunction] as const, this._width + newFunction.width);
+  }
+
+  static addFunction(latex: string, label?: string, color?: PrimeColor) {
+    const newFunction = new Function(latex, label, color);
+    return new Controls([newFunction] as const, newFunction.width);
   }
 
   // Reset all sliders to their default values

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,7 +8,6 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   let controls = Controls.addSlider(3, -5, 5, 0.5, PrimeColor.raspberry, {
@@ -18,7 +18,7 @@
     labelFormat
   });
 
-  const v = $derived(new Vector3(3, 2, -3).normalize().multiplyScalar(3)); // Vector v;
+  const v = $derived(new MathVector3(-3, 3, 2).normalize().multiplyScalar(3)); // Vector v;
   const u = $derived(v.clone().multiplyScalar(2)); // Vector u = 2 * v;
   const lineDir = $derived(v.clone().normalize().multiplyScalar(10));
 

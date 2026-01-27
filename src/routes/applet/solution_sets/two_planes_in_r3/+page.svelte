@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,10 +8,8 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
-  import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
-  import { Vector3 } from 'three';
 
   const controls = Controls.addSlider(7, 1, 10, 0.5, PrimeColor.raspberry, {
     label: 'a',
@@ -20,7 +19,7 @@
   const v1 = new MathVector3(-3, 1, 0);
   const v2 = new MathVector3(1, 0, 1);
 
-  const v3 = $derived(new Vector3(0, 0, controls[0]));
+  const v3 = $derived(new MathVector3(controls[0], 0, 0));
 
   const formulas = $derived.by(() => {
     const f1 = new Formula(
@@ -41,7 +40,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D {controls} {formulas} cameraPosition={new Vector3(-8, 8, 12.5)} showFormulasDefault>
+<Canvas3D {controls} {formulas} cameraPosition={new MathVector3(12.5, -8, 8)} showFormulasDefault>
   <!-- Default -->
   <Vector3D direction={v1} length={v1.length()} color={PrimeColor.yellow} />
   <Latex3D latex={'\\mathbf{v_1}'} position={v1} extend={0.5} color={PrimeColor.yellow} />
@@ -49,11 +48,15 @@
   <Vector3D direction={v2} length={v2.length()} color={PrimeColor.orange} />
   <Latex3D latex={'\\mathbf{v_2}'} position={v2} extend={0.5} color={PrimeColor.orange} />
 
-  <PlaneFromPoints points={[v1, v2, new Vector3()]} color={PrimeColor.blue} opacity={0.5} />
+  <PlaneFromPoints
+    points={[v1, v2, new MathVector3(0, 0, 0)]}
+    color={PrimeColor.blue}
+    opacity={0.5}
+  />
 
   <Latex3D
     latex={'\\mathcal{P_1}'}
-    position={new Vector3(0, 0, 0)}
+    position={new MathVector3(0, 0, 0)}
     extend={0.5}
     offset={v2.clone().multiplyScalar(4.25)}
     color={PrimeColor.blue}
@@ -80,7 +83,7 @@
 
   <PlaneFromPoints
     origin={v3}
-    points={[v1, v2, new Vector3()]}
+    points={[v1, v2, new MathVector3(0, 0, 0)]}
     color={PrimeColor.darkGreen}
     opacity={0.5}
   />

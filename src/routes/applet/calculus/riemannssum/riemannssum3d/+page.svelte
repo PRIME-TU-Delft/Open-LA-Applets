@@ -2,7 +2,7 @@
   import { Controls } from '$lib/controls/Controls';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { integrate, round } from '$lib/utils/MathLib';
+  import { integral, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
   import Cuboid3D from '$lib/threlte/Cuboid3D.svelte';
@@ -10,6 +10,7 @@
   import { Vector3 } from 'three';
   import Point3D from '$lib/threlte/Point3D.svelte';
   import NumberFlow from '@number-flow/svelte';
+  import { MathVector3 } from '$lib/utils/MathVector';
 
   const methods = ['center', 'random', 'min', 'max'];
 
@@ -31,7 +32,7 @@
     const dx = (b - a) / numRectangles;
     const dy = dx;
 
-    const result = integrate((x) => integrate((y) => func(x, y), a, b), a, b);
+    const result = integral((x) => integral((y) => func(x, y), a, b), a, b);
 
     const f1 = new Formula(func_display)
       .addAutoParam(a, PrimeColor.raspberry)
@@ -129,11 +130,11 @@
         const z = func(x, y);
         const color = z >= 0 ? PrimeColor.darkGreen : PrimeColor.raspberry;
         newRects.push({
-          points: [new Vector3(y_j, 0, x_i), new Vector3(y_j + dy, z, x_i + dx)] as [
+          points: [new MathVector3(x_i, y_j, 0), new MathVector3(x_i + dx, y_j + dy, z)] as [
             Vector3,
             Vector3
           ],
-          samplePosition: new Vector3(y, z, x),
+          samplePosition: new MathVector3(x, y, z),
           color // Add color to the rect object
         });
       }

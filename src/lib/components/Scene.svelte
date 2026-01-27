@@ -3,7 +3,9 @@
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
+    legendItems?: LegendItem[];
     splitFormulas?: Formula[];
+    splitLegendItems?: LegendItem[];
     showFormulasDefault?: boolean;
     draggables?: Draggable[];
     title?: string;
@@ -27,11 +29,14 @@
   import { cn } from '$lib/utils';
   import { page } from '$app/state';
   import { getAvailableLanguagesForApplet, getAllLanguagesInfo } from '$lib/utils/languages';
+  import type { LegendItem } from '$lib/utils/Legend';
 
   let {
     controls = undefined,
     formulas = [],
+    legendItems = [],
     splitFormulas = [],
+    splitLegendItems = [],
     showFormulasDefault = false,
     draggables = [],
     title,
@@ -116,8 +121,8 @@
 
   $effect(() => {
     // Override title if and only if the title was not set from a URL parameter
-    if (title && !globalState.titleFromUrl) {
-      globalState.title = title;
+    if (!globalState.titleFromUrl) {
+      globalState.title = title || '';
     }
   });
 </script>
@@ -183,7 +188,9 @@
     <ActionButtonsAndFormula
       showFormulas={showFormulasDefault}
       {formulas}
+      {legendItems}
       {splitFormulas}
+      {splitLegendItems}
       {controls}
       {hideButtons}
       {languages}

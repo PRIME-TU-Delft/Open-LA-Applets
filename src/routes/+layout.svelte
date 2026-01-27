@@ -19,7 +19,7 @@
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const ui = uiModules[uiKey] as any;
       if (ui?.default) {
-        addMessages(lang, ui.default);
+        addMessages(lang, { ui: ui.default });
       }
     }
 

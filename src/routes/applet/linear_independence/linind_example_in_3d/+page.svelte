@@ -8,7 +8,6 @@
   import { Formula } from '$lib/utils/Formulas';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import { _ } from 'svelte-i18n';
 
   const controls = Controls.addToggle(true, '\\mathbf{w_3}', PrimeColor.raspberry).addToggle(
@@ -56,7 +55,7 @@
   {formulas}
   showFormulasDefault
   cameraZoom={50}
-  cameraPosition={new Vector3(7, 6.5, 14)}
+  cameraPosition={new MathVector3(14, 7, 6.5)}
 >
   <Vector3D direction={w1} length={2} color={PrimeColor.blue} />
   <Latex3D

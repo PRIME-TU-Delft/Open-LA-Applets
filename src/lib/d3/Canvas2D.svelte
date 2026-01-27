@@ -17,8 +17,10 @@
     title,
     showFormulasDefault,
     formulas,
+    legendItems,
     controls,
     splitFormulas,
+    splitLegendItems,
     splitCanvas2DProps,
     splitCanvas3DProps,
     children,
@@ -28,10 +30,9 @@
     // Canvas2DProps
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
-    tickLength = 30,
-    showAxisNumbers = true,
+    axis,
+    labels,
     enablePan = true,
-    customAxis = false,
     draggables = [],
     defaultLeftDivision
   }: CanvasProps = $props();
@@ -91,8 +92,8 @@
   - splitCanvas3DChildren: Snippet - The children of the split 3D canvas.
   - cameraPosition: Vector2 - The position of the camera.
   - cameraZoom: number - The zoom of the camera.
-  - tickLength: number - The length of the ticks.
-  - showAxisNumbers: boolean - Whether the axis numbers are shown.
+  - axis: AxisProps - The properties of the axis.
+  - labels: LabelProps - Axis labels and their positions.
   - enablePan: boolean - Whether the pan is enabled. 
 
 @description
@@ -116,8 +117,10 @@
   draggables={allDraggables}
   {controls}
   {showFormulasDefault}
+  {legendItems}
   {formulas}
   {splitFormulas}
+  {splitLegendItems}
 >
   {#snippet sceneChildren(width: number, height: number)}
     {@const defaultCanvasWidth = width / 2}
@@ -129,11 +132,10 @@
       {height}
       {cameraPosition}
       {cameraZoom}
-      {tickLength}
-      {showAxisNumbers}
+      {axis}
+      {labels}
       {enablePan}
       {draggables}
-      {customAxis}
     >
       {@render children()}
     </CanvasD3>

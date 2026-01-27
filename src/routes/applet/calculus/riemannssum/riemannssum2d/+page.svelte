@@ -5,7 +5,7 @@
   import Rect2D from '$lib/d3/Rect2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { integrate, round } from '$lib/utils/MathLib';
+  import { integral, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -23,7 +23,7 @@
     const b = round(1 + controls[1]);
     const numRectangles = round(controls[2]);
     const dx = (b - a) / numRectangles;
-    const result = integrate(func, a, b);
+    const result = integral(func, a, b);
 
     const f1 = new Formula(func_display)
       .addAutoParam(a, PrimeColor.raspberry)
@@ -125,7 +125,7 @@
 </script>
 
 <Canvas2D
-  showAxisNumbers={true}
+  axis={{ showAxisNumbers: true }}
   {controls}
   {formulas}
   cameraPosition={new Vector2(1, 1)}

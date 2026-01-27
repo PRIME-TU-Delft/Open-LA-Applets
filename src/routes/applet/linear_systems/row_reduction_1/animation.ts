@@ -15,7 +15,7 @@ const transitionSteps: SlideShowSteps<S> = [
     return {
       state,
       labelNext: 'R2 = 2*R2',
-      labelPrev: get(_)('slideshow_original_state')
+      labelPrev: get(_)('ui.slideshow_original_state')
     };
   },
   (t, state) => {

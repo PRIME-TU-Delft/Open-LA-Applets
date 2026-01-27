@@ -9,8 +9,21 @@
     }
   },
   "calculus": {
-    "left_rectangle": {
-      "title": "linker Rechthoekregel"
+    "integration": {
+      "simple_methods": {
+        "left": "Linker Rechthoekregel",
+        "right": "Rechter Rechthoekregel",
+        "midpoint": "Middenpuntregel",
+        "trapezoid": "Trapeziumregel",
+        "simpson": "Simpson's regel"
+      },
+      "method_errors": {
+        "title": "Fouten in regels voor composite integratie",
+        "absolute_error": "Absolute fout",
+        "left": "Linker Rechthoek",
+        "right": "Rechter Rechthoek",
+        "trapezoid": "Trapezium"
+      }
     }
   },
   "change_of_basis": {
@@ -97,7 +110,7 @@
   },
   "lines_and_planes": {
     "plane_line_intersection": {
-      "title": "Twee vlakken met een snijlijn."
+      "title": "Drie vlakken met een snijlijn."
     },
     "parametric_vector_equation": {
       "title": "Een parametrische vector van een lijn"
@@ -122,6 +135,9 @@
     },
     "parametric_line_space": {
       "title": "Een parametrische vector van een lijn in een 3D-ruimte"
+    },
+    "planes_point_intersection": {
+      "title": "Drie vlakken met een puntkruising"
     }
   },
   "matrix_operations": {

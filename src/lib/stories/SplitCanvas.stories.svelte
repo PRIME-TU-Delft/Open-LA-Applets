@@ -35,8 +35,8 @@ See [here](./?path=/docs/initialize-canvas2d--docs) for more information about t
 The following props are available for `splitCanvas2DProps`:
 - cameraPosition?: `Vector2`;
 - cameraZoom?: `number`
-- tickLength?: `number`
-- showAxisNumbers?: `boolean`
+- axis?: `AxisProps | null`
+- labels?: `LabelProps`
 - enablePan?: `boolean`
 - draggables?: `Draggable[]`
 -->
