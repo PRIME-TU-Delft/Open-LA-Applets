@@ -32,7 +32,7 @@
     "@storybook/addon-vitest": "^10.1.10",
     "@storybook/sveltekit": "^10.1.10",
     "@svelte-put/qr": "^2.1.1",
-    "@sveltejs/kit": "^2.48.4",
+    "@sveltejs/kit": "^2.49.5",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
