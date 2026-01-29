@@ -39,9 +39,9 @@
 
     const f1 = new Formula(pre + res + post + isIn);
 
-    const f2 = new Formula(
-      '\\{' + res + post + `= \\text{\\$1 ${!controls[0] && controls[1] ? '\\$2' : ''}\\$3}`
-    )
+    const isIndependent = (!controls[0] && controls[1]) || (!controls[0] && !controls[1]);
+
+    const f2 = new Formula('\\{' + res + post + `= \\text{\\$1 ${isIndependent ? '\\$2' : ''}\\$3}`)
       .addAutoParam($_('applets.linear_independence.linind_example_in_3d.linearly'))
       .addAutoParam($_('applets.linear_independence.linind_example_in_3d.in'))
       .addAutoParam($_('applets.linear_independence.linind_example_in_3d.dependent'));
