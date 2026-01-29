@@ -16,6 +16,15 @@
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
   let showStateURLCopySucess = $state(false);
   let showParamURLCopySucess = $state(false);
+
+  // Reset URLParamsInfo when navigating to a new page
+  $effect(() => {
+    const _currentPath = page.url.pathname;
+    return () => {
+      appletState.URLParamsInfo = [];
+    };
+  });
+
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 
@@ -159,7 +168,7 @@
     </a>
   </div>
 
-  {#if appletState.URLParamsInfo}
+  {#if appletState.URLParamsInfo && appletState.URLParamsInfo.length > 0}
     <div class="mt-6 w-full">
       <h3 class="mb-3 font-semibold">
         {$_('ui.custom_url_parameters')}

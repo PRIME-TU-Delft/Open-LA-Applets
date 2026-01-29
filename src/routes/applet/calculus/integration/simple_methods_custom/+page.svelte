@@ -215,8 +215,7 @@
     {
       paramKey: 'function',
       defaultValue: '\\sqrt{1 + {\\cos{(x)}}^2 }',
-      description:
-        'Default function value, in latex form. Plus signs (+) have to be encoded with %2b.',
+      description: 'Default function value, in latex form',
       currentValue: () => currentFuctionString
     },
     {
