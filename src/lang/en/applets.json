@@ -103,9 +103,8 @@
   },
   "linear_independence": {
     "linind_example_in_3d": {
-      "linearly": "linearly",
-      "in": "in",
-      "dependent": "dependent"
+      "dependent": "linearly dependent",
+      "independent": "linearly independent"
     }
   },
   "lines_and_planes": {

@@ -41,10 +41,11 @@
 
     const isIndependent = (!controls[0] && controls[1]) || (!controls[0] && !controls[1]);
 
-    const f2 = new Formula('\\{' + res + post + `= \\text{\\$1 ${isIndependent ? '\\$2' : ''}\\$3}`)
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.linearly'))
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.in'))
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.dependent'));
+    const f2 = new Formula('\\{' + res + post + `= \\text{\\$1}`).addAutoParam(
+      isIndependent
+        ? $_('applets.linear_independence.linind_example_in_3d.independent')
+        : $_('applets.linear_independence.linind_example_in_3d.dependent')
+    );
 
     return [f1, f2];
   });
