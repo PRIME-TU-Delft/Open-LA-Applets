@@ -50,11 +50,16 @@
     defaultFunction = defaultFunction.replaceAll('x', xAxisLetter);
   }
 
+  let currentFuctionString = '';
+
   const controls = Controls.addFunction(
     defaultFunction,
     `${functionLetter}(${xAxisLetter})`,
     PrimeColor.blue,
-    xAxisLetter
+    xAxisLetter,
+    (latex: string) => {
+      currentFuctionString = latex;
+    }
   ).addDropdown(defaultRule, [
     'applets.calculus.integration.simple_methods.left',
     'applets.calculus.integration.simple_methods.right',
@@ -212,7 +217,7 @@
       defaultValue: '\\sqrt{1 + {\\cos{(x)}}^2 }',
       description:
         'Default function value, in latex form. Plus signs (+) have to be encoded with %2b.',
-      currentValue: () => '\\sqrt{1 + {\\cos{(x)}}^2 }' // you cant get the latex easily
+      currentValue: () => currentFuctionString
     },
     {
       paramKey: 'xL',

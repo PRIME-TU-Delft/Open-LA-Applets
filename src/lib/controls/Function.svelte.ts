@@ -12,6 +12,8 @@ export class Function implements Controller<(x: number) => number> {
   defaultValue: (x: number) => number;
   private previousValue: (x: number) => number;
 
+  setLatexValue: (latexValue: string) => void;
+
   private parseResult = $derived.by(() => {
     try {
       const parsed = Function.ce.parse(this.functionString);
@@ -35,6 +37,8 @@ export class Function implements Controller<(x: number) => number> {
       if (func == null) {
         return { value: this.previousValue, isError: true };
       }
+
+      this.setLatexValue(this.functionString);
 
       this.previousValue = func;
       return { value: func, isError: false };
@@ -60,7 +64,8 @@ export class Function implements Controller<(x: number) => number> {
     defaultFunctionLatex: string,
     label?: string,
     color?: PrimeColor,
-    parameterLetter?: string
+    parameterLetter?: string,
+    setLatexValue?: (latexValue: string) => void
   ) {
     this.defaultValue =
       Function.asFunction(Function.ce.parse(defaultFunctionLatex), parameterLetter || 'x') ||
@@ -72,6 +77,11 @@ export class Function implements Controller<(x: number) => number> {
     this.label = label || '';
     this.color = color || PrimeColor.black;
     this.parameterLetter = parameterLetter || 'x';
+    this.setLatexValue =
+      setLatexValue ||
+      ((_) => {
+        return;
+      });
   }
 
   /**
