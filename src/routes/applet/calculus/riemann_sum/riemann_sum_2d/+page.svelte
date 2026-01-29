@@ -1,33 +1,60 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
   import Rect2D from '$lib/d3/Rect2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { integral, round } from '$lib/utils/MathLib';
+  import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
   const methods = ['middle', 'left', 'right', 'random', 'min', 'max'];
 
-  const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
-    .addSlider(1, -2, 2, 0.1, PrimeColor.raspberry) // b
-    .addSlider(5, 1, 10, 1, PrimeColor.blue); // numRectangles
+  const controls = Controls.addDropdown('', methods, PrimeColor.yellow).addSlider(
+    5,
+    1,
+    10,
+    1,
+    PrimeColor.blue,
+    { label: 'n' }
+  );
 
-  const func = (x: number) => Math.exp(-x) + 1;
-  const func_display = '\\int_{\\$1}^{\\$2} (e^{-x} + 1) dx~~=~~\\$3';
+  let xlSnapFunc = (p: Vector2) => {
+    let x = Math.max(Math.min(p.x, xR), -0.99);
+    return new Vector2(x, 0);
+  };
+  let xrSnapFunc = (p: Vector2) => {
+    let x = Math.max(p.x, xL);
+    return new Vector2(x, 0);
+  };
+
+  const draggables = [
+    new Draggable(new Vector2(4.5, 0), PrimeColor.orange, 'x_R', xrSnapFunc, undefined, 'bottom'),
+    new Draggable(new Vector2(1.5, 0), PrimeColor.orange, 'x_L', xlSnapFunc, undefined, 'bottom')
+  ];
+
+  const xR = $derived(draggables[0].position.x);
+  const xL = $derived(draggables[1].position.x);
+
+  let func = (x: number) => {
+    return 4 / Math.sqrt(x + 1);
+  };
+  let intFunc = (x: number) => {
+    return 8 * Math.sqrt(x + 1);
+  };
+
+  const func_display = '\\int_{\\$1}^{\\$2} f(x) \\, dx = \\$3';
 
   const formulas = $derived.by(() => {
-    const a = round(1 - controls[1]);
-    const b = round(1 + controls[1]);
-    const numRectangles = round(controls[2]);
-    const dx = (b - a) / numRectangles;
-    const result = integral(func, a, b);
+    const numRectangles = round(controls[1]);
+    const dx = (xR - xL) / numRectangles;
+    const result = intFunc(xR) - intFunc(xL);
 
     const f1 = new Formula(func_display)
-      .addAutoParam(a, PrimeColor.raspberry)
-      .addAutoParam(b, PrimeColor.raspberry)
+      .addAutoParam(xL, PrimeColor.orange)
+      .addAutoParam(xR, PrimeColor.orange)
       .addAutoParam(result.toFixed(3), PrimeColor.cyan);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
@@ -44,24 +71,22 @@
   const method = $derived(controls[0]);
 
   const rects = $derived.by(() => {
-    const a = 1 - controls[1];
-    const b = 1 + controls[1];
-    const numRectangles = controls[2];
-    const dx = (b - a) / numRectangles;
+    const numRectangles = controls[1];
+    const dx = (xR - xL) / numRectangles;
     const newRects = [];
     for (let i = 0; i < numRectangles; i++) {
       let x: number;
       if (method === 'left') {
-        x = a + i * dx;
+        x = xL + i * dx;
       } else if (method === 'right') {
-        x = a + (i + 1) * dx;
+        x = xL + (i + 1) * dx;
       } else if (method === 'middle') {
-        x = a + (i + 0.5) * dx;
+        x = xL + (i + 0.5) * dx;
       } else if (method === 'random') {
-        x = a + i * dx + Math.random() * dx;
+        x = xL + i * dx + Math.random() * dx;
       } else if (method === 'min') {
         // Find the minimum value of func in [x1, x2] by sampling
-        const x1 = a + i * dx;
+        const x1 = xL + i * dx;
         const x2 = x1 + dx;
         const samples = 100;
         let minX = x1;
@@ -77,7 +102,7 @@
         x = minX;
       } else if (method === 'max') {
         // Find the maximum value of func in [x1, x2] by sampling
-        const x1 = a + i * dx;
+        const x1 = xL + i * dx;
         const x2 = x1 + dx;
         const samples = 10;
         let maxX = x1;
@@ -92,14 +117,14 @@
         }
         x = maxX;
       } else {
-        x = a + i * dx; // fallback to left method
+        x = xL + i * dx; // fallback to left method
       }
       const samplePosition = new Vector2(x, func(x));
-      const x1 = a + i * dx;
+      const x1 = xL + i * dx;
       const x2 = x1 + dx;
       const y = func(x);
       const color =
-        b > a
+        xR > xL
           ? y >= 0
             ? PrimeColor.darkGreen
             : PrimeColor.raspberry
@@ -128,15 +153,13 @@
   axis={{ showAxisNumbers: true }}
   {controls}
   {formulas}
+  {draggables}
   cameraPosition={new Vector2(1, 1)}
   cameraZoom={1.25}
 >
-  <ParameterizedFunction2D
-    xFunc={(t) => t}
-    yFunc={func}
+  <ExplicitFunction2D
+    {func}
     color={PrimeColor.blue}
-    tStart={-1}
-    tEnd={3}
     stepSize={0.1}
   />
   <g>
