@@ -4,7 +4,7 @@
   import Rect2D from '$lib/d3/Rect2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { round } from '$lib/utils/MathLib';
+  import { round, roundString } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { Draggable } from '$lib/controls/Draggables.svelte';
@@ -18,7 +18,7 @@
     10,
     1,
     PrimeColor.blue,
-    { label: 'n' }
+    { label: 'n', valueFn: (v) => roundString(v, 0) }
   );
 
   let xlSnapFunc = (p: Vector2) => {
@@ -50,18 +50,18 @@
   const formulas = $derived.by(() => {
     const numRectangles = round(controls[1]);
     const dx = (xR - xL) / numRectangles;
-    const result = intFunc(xR) - intFunc(xL);
+    const integralResult = intFunc(xR) - intFunc(xL);
 
     const f1 = new Formula(func_display)
-      .addAutoParam(xL, PrimeColor.orange)
-      .addAutoParam(xR, PrimeColor.orange)
-      .addAutoParam(result.toFixed(3), PrimeColor.cyan);
+      .addAutoParam(round(xL), PrimeColor.orange)
+      .addAutoParam(round(xR), PrimeColor.orange)
+      .addAutoParam(round(integralResult, 7), PrimeColor.cyan);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
-    const riemann_display = '\\sum_{i=1}^{n} f(x_i^*) \\Delta x~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
+    const riemann_display = '\\sum_{i=1}^{\\$2} f(x_i^*) \\Delta x = \\$1, ~~\\Delta x=\\$3';
 
     const f2 = new Formula(riemann_display)
-      .addAutoParam(riemannSum.toFixed(3), PrimeColor.cyan)
+      .addAutoParam(round(riemannSum, 7), PrimeColor.cyan)
       .addAutoParam(numRectangles, PrimeColor.blue)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
@@ -157,11 +157,7 @@
   cameraPosition={new Vector2(1, 1)}
   cameraZoom={1.25}
 >
-  <ExplicitFunction2D
-    {func}
-    color={PrimeColor.blue}
-    stepSize={0.1}
-  />
+  <ExplicitFunction2D {func} color={PrimeColor.blue} stepSize={0.1} />
   <g>
     {#each rects as rect, index (index)}
       <Rect2D points={rect.points} color={rect.color + '90'} />
