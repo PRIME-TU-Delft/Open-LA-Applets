@@ -45,5 +45,10 @@
   "open_new_tab": "Openen in nieuw tabblad",
   "open_github": "Openen in GitHub",
   "download_image": "Downloaden",
-  "resize": "Grootte aanpassen"
+  "resize": "Grootte aanpassen",
+  "custom_url_parameters": "Aangepaste URL-parameters voor deze applet",
+  "default_value": "Standaardwaarde",
+  "description": "Beschrijving",
+  "url_param_key": "URL-parameter",
+  "embed_applet_url_params": "Url naar deze applet (met aangepaste parameters):"
 }
