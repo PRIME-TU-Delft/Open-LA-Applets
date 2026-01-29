@@ -10,7 +10,14 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
-  const methods = ['middle', 'left', 'right', 'random', 'min', 'max'];
+  const methods = [
+    'applets.calculus.riemann_sum.middle',
+    'applets.calculus.riemann_sum.left',
+    'applets.calculus.riemann_sum.right',
+    'applets.calculus.riemann_sum.random',
+    'applets.calculus.riemann_sum.min',
+    'applets.calculus.riemann_sum.max'
+  ];
 
   const controls = Controls.addDropdown('', methods, PrimeColor.yellow).addSlider(
     5,
@@ -19,6 +26,10 @@
     1,
     PrimeColor.blue,
     { label: 'n', valueFn: (v) => roundString(v, 0) }
+  );
+
+  const currentMethod = $derived(
+    controls[0].replace('applets.calculus.riemann_sum.', '').toLowerCase()
   );
 
   let xlSnapFunc = (p: Vector2) => {
@@ -68,23 +79,21 @@
     return new Formulas(f1, f2);
   });
 
-  const method = $derived(controls[0]);
-
   const rects = $derived.by(() => {
     const numRectangles = controls[1];
     const dx = (xR - xL) / numRectangles;
     const newRects = [];
     for (let i = 0; i < numRectangles; i++) {
       let x: number;
-      if (method === 'left') {
+      if (currentMethod === 'left') {
         x = xL + i * dx;
-      } else if (method === 'right') {
+      } else if (currentMethod === 'right') {
         x = xL + (i + 1) * dx;
-      } else if (method === 'middle') {
+      } else if (currentMethod === 'middle') {
         x = xL + (i + 0.5) * dx;
-      } else if (method === 'random') {
+      } else if (currentMethod === 'random') {
         x = xL + i * dx + Math.random() * dx;
-      } else if (method === 'min') {
+      } else if (currentMethod === 'min') {
         // Find the minimum value of func in [x1, x2] by sampling
         const x1 = xL + i * dx;
         const x2 = x1 + dx;
@@ -100,7 +109,7 @@
           }
         }
         x = minX;
-      } else if (method === 'max') {
+      } else if (currentMethod === 'max') {
         // Find the maximum value of func in [x1, x2] by sampling
         const x1 = xL + i * dx;
         const x2 = x1 + dx;
@@ -154,8 +163,7 @@
   {controls}
   {formulas}
   {draggables}
-  cameraPosition={new Vector2(1, 1)}
-  cameraZoom={1.25}
+  cameraPosition={new Vector2(4, 2)}
 >
   <ExplicitFunction2D {func} color={PrimeColor.blue} stepSize={0.1} />
   <g>

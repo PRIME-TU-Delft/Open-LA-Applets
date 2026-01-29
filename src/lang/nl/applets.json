@@ -24,6 +24,15 @@
         "right": "Rechter Rechthoek",
         "trapezoid": "Trapezium"
       }
+    },
+    "riemann_sum": {
+      "riemann_sum_2d": {},
+      "middle": "Midden",
+      "left": "Links",
+      "right": "Rechts",
+      "random": "Random",
+      "min": "Min",
+      "max": "Max"
     }
   },
   "change_of_basis": {
