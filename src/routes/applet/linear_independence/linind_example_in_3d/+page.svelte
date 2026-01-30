@@ -35,9 +35,9 @@
       .join(', ');
     const post = '\\} ';
 
-    const isIn = '\\subset' + (controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2');
+    const isInLatex = (controls[1] ? '=' : '\\neq') + '\\mathbb{R}^3';
 
-    const f1 = new Formula(pre + res + post + isIn);
+    const f1 = new Formula(pre + res + post + isInLatex);
 
     const isIndependent = (!controls[0] && controls[1]) || (!controls[0] && !controls[1]);
 
