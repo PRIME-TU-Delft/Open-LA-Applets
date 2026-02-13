@@ -25,7 +25,7 @@
     1,
     10,
     1,
-    PrimeColor.blue,
+    PrimeColor.raspberry,
     { label: 'n', valueFn: (v) => roundString(v, 0) }
   );
 
@@ -70,14 +70,14 @@
     const f1 = new Formula(func_display)
       .addAutoParam(round(xL), PrimeColor.orange)
       .addAutoParam(round(xR), PrimeColor.orange)
-      .addAutoParam(round(integralResult, 7), PrimeColor.cyan);
+      .addAutoParam(round(integralResult, 7), PrimeColor.blue);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
     const riemann_display = '\\sum_{i=1}^{\\$2} f(x_i^*) \\Delta x = \\$1, ~~\\Delta x=\\$3';
 
     const f2 = new Formula(riemann_display)
-      .addAutoParam(round(riemannSum, 7), PrimeColor.cyan)
-      .addAutoParam(numRectangles, PrimeColor.blue)
+      .addAutoParam(round(riemannSum, 7), PrimeColor.orange)
+      .addAutoParam(numRectangles, PrimeColor.raspberry)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
     return new Formulas(f1, f2);
@@ -174,6 +174,7 @@
   <Latex2D latex="f(x)" position={new Vector2(0.25, 6.25)} />
 
   <ExplicitFunction2D {func} color={PrimeColor.blue} stepSize={0.1} />
+  
   <g>
     {#each rects as rect, index (index)}
       <Rect2D points={rect.points} color={rect.color + '90'} />
