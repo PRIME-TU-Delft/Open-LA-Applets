@@ -35,16 +35,17 @@
       .join(', ');
     const post = '\\} ';
 
-    const isIn = '\\subset' + (controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2');
+    const isInLatex = (controls[1] ? '=' : '\\neq') + '\\mathbb{R}^3';
 
-    const f1 = new Formula(pre + res + post + isIn);
+    const f1 = new Formula(pre + res + post + isInLatex);
 
-    const f2 = new Formula(
-      '\\{' + res + post + `= \\text{\\$1 ${!controls[0] && controls[1] ? '\\$2' : ''}\\$3}`
-    )
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.linearly'))
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.in'))
-      .addAutoParam($_('applets.linear_independence.linind_example_in_3d.dependent'));
+    const isIndependent = (!controls[0] && controls[1]) || (!controls[0] && !controls[1]);
+
+    const f2 = new Formula('\\{' + res + post + `= \\text{\\$1}`).addAutoParam(
+      isIndependent
+        ? $_('applets.linear_independence.linind_example_in_3d.independent')
+        : $_('applets.linear_independence.linind_example_in_3d.dependent')
+    );
 
     return [f1, f2];
   });

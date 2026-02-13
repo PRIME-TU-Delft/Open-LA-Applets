@@ -12,6 +12,8 @@ export class Function implements Controller<(x: number) => number> {
   defaultValue: (x: number) => number;
   private previousValue: (x: number) => number;
 
+  setLatexValue: (latexValue: string) => void;
+
   private parseResult = $derived.by(() => {
     try {
       const parsed = Function.ce.parse(this.functionString);
@@ -23,17 +25,20 @@ export class Function implements Controller<(x: number) => number> {
       const unknowns = parsed.unknowns;
 
       // Must contain only 'x' as unknown, or be a numeric constant
-      const hasOnlyX = unknowns.length > 0 ? unknowns.every((v) => v === 'x') : parsed.isConstant;
+      const hasOnlyX =
+        unknowns.length > 0 ? unknowns.every((v) => v === this.parameterLetter) : parsed.isConstant;
 
       if (!hasOnlyX) {
         return { value: this.previousValue || this.defaultValue, isError: true };
       }
 
-      const func = Function.asFunction(parsed);
+      const func = Function.asFunction(parsed, this.parameterLetter);
 
       if (func == null) {
         return { value: this.previousValue, isError: true };
       }
+
+      this.setLatexValue(this.functionString);
 
       this.previousValue = func;
       return { value: func, isError: false };
@@ -47,6 +52,7 @@ export class Function implements Controller<(x: number) => number> {
   type: string = 'function';
   label: string;
   color: PrimeColor;
+  parameterLetter: string = 'x';
 
   /**
    * Constructor for the Funcion control
@@ -54,14 +60,28 @@ export class Function implements Controller<(x: number) => number> {
    * @param label Label of the control
    * @param color Color of the control
    */
-  constructor(defaultFunctionLatex: string, label?: string, color?: PrimeColor) {
-    this.defaultValue = Function.asFunction(Function.ce.parse(defaultFunctionLatex)) || ((_x) => 0);
+  constructor(
+    defaultFunctionLatex: string,
+    label?: string,
+    color?: PrimeColor,
+    parameterLetter?: string,
+    setLatexValue?: (latexValue: string) => void
+  ) {
+    this.defaultValue =
+      Function.asFunction(Function.ce.parse(defaultFunctionLatex), parameterLetter || 'x') ||
+      ((_x) => 0);
     this.previousValue = this.defaultValue;
 
     this.defaultString = defaultFunctionLatex;
     this.functionString = defaultFunctionLatex;
     this.label = label || '';
     this.color = color || PrimeColor.black;
+    this.parameterLetter = parameterLetter || 'x';
+    this.setLatexValue =
+      setLatexValue ||
+      ((_) => {
+        return;
+      });
   }
 
   /**
@@ -69,7 +89,10 @@ export class Function implements Controller<(x: number) => number> {
    * @param expression - Expression to evaluate
    * @returns A function (x: number) => number
    */
-  static asFunction(expression: BoxedExpression): ((x: number) => number) | null {
+  static asFunction(
+    expression: BoxedExpression,
+    parameterLetter: string
+  ): ((x: number) => number) | null {
     let compiled;
 
     try {
@@ -81,7 +104,9 @@ export class Function implements Controller<(x: number) => number> {
     if (compiled) {
       const func = (x: number) => {
         try {
-          const result = compiled({ x });
+          const parameterDict: Record<string, number> = {};
+          parameterDict[parameterLetter] = x;
+          const result = compiled(parameterDict);
           return typeof result === 'number' && isFinite(result) ? result : NaN;
         } catch (_error) {
           return NaN;

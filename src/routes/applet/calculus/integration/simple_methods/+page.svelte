@@ -9,6 +9,7 @@
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
+  import { appletState } from '$lib/stores/applet.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -96,24 +97,37 @@
       new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
-        .addAutoParam(round(intFunc(xR) - intFunc(xL)), PrimeColor.blue),
+        .addAutoParam(round(intFunc(xR) - intFunc(xL), 7), PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
-        .addAutoParam(round(area), PrimeColor.orange)
+        .addAutoParam(round(area, 7), PrimeColor.orange)
     ];
 
     if (currentRule == 'simpson') {
       f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
-        round(area),
+        round(area, 7),
         PrimeColor.orange
       );
     }
 
     return f;
   });
+
+  appletState.URLParamsInfo = [
+    {
+      paramKey: 'rule',
+      defaultValue: 'left',
+      description: 'Default integration rule (left, right, trapezoid, midpoint, simpson)',
+      currentValue: () => currentRule
+    }
+  ];
 </script>
 
 <Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(4, 2)}>
+  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
+  <Latex2D latex="x" position={new Vector2(10.5, 0.55)} />
+  <Latex2D latex="f(x)" position={new Vector2(0.25, 6.25)} />
+
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}

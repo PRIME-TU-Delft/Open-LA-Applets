@@ -51,5 +51,64 @@ export default {
         }
       };
     }
+  },
+
+  'require-url-params-info': {
+    meta: {
+      type: 'problem',
+      docs: {
+        description:
+          'Require appletState.URLParamsInfo to be set when using searchParams in applets',
+        category: 'Best Practices',
+        recommended: true
+      },
+      messages: {
+        missingURLParamsInfo:
+          'searchParams is used in this applet, but appletState.URLParamsInfo is not set. You must document all URL parameters used.'
+      },
+      schema: []
+    },
+    create(context) {
+      const filename = context.getFilename();
+
+      // Only check applet files
+      if (!filename.includes('/applet/') || !filename.endsWith('+page.svelte')) {
+        return {};
+      }
+
+      let hasSearchParamsUsage = false;
+      let hasURLParamsInfo = false;
+      let searchParamsNode = null;
+
+      return {
+        Identifier(node) {
+          // Check for searchParams usage
+          if (node.name === 'searchParams') {
+            hasSearchParamsUsage = true;
+            searchParamsNode = node;
+          }
+        },
+
+        AssignmentExpression(node) {
+          // Check for appletState.URLParamsInfo assignment
+          if (
+            node.left?.type === 'MemberExpression' &&
+            node.left?.object?.name === 'appletState' &&
+            node.left?.property?.name === 'URLParamsInfo'
+          ) {
+            hasURLParamsInfo = true;
+          }
+        },
+
+        'Program:exit'() {
+          if (hasSearchParamsUsage && !hasURLParamsInfo && searchParamsNode) {
+            context.report({
+              node: searchParamsNode,
+              messageId: 'missingURLParamsInfo'
+            });
+          }
+        }
+      };
+    }
   }
 };
