@@ -21,9 +21,9 @@
 
   const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
     .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry, {
-      label: 'spread',
+      label: 'spread', // TODO: change to translation or change entirely??
       labelFormat: labelFormatSpread
-    }) // b
+    })
     .addSlider(10, 1, 20, 1, PrimeColor.blue, { label: 'n', labelFormat: labelFormatN }); // numRectangles
 
   const currentMethod = $derived(
@@ -34,8 +34,6 @@
   );
 
   const func = (x: number, y: number) => 4 - (1 / 4) * (x ** 2 + y ** 2);
-  const func_display =
-    '\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} \\left(4 - \\frac{1}{4}(x^2 + y^2)\\right)~dx~dy~~=~~\\$5';
 
   const formulas = $derived.by(() => {
     const a = -round(controls[1]);
@@ -46,19 +44,19 @@
 
     const result = integral((x) => integral((y) => func(x, y), a, b), a, b);
 
-    const f1 = new Formula(func_display)
+    const f1 = new Formula('\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} f(x,y) \\,dx \\,dy = \\$5')
       .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(result.toFixed(3), PrimeColor.blue);
+      .addAutoParam(round(result, 7), PrimeColor.blue);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.samplePosition.y * dx * dy, 0);
     const riemann_display =
-      '\\sum_{i=1}^{n} \\sum_{j=1}^{n} f(x_i^*, y_j^*) \\Delta x \\Delta y~~=~~\\$1,~~n=\\$2,~~\\Delta x=\\$3';
+      '\\sum_{i=1}^{\\$2} \\sum_{j=1}^{\\$2} f(x_i^*, y_j^*) \\Delta x \\Delta y = \\$1, ~~\\Delta x= \\Delta y = \\$3';
 
     const f2 = new Formula(riemann_display)
-      .addAutoParam(riemannSum.toFixed(3), PrimeColor.orange)
+      .addAutoParam(riemannSum.toFixed(7), PrimeColor.orange)
       .addAutoParam(numRectangles, PrimeColor.blue)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
