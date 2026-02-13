@@ -12,7 +12,12 @@
   import NumberFlow from '@number-flow/svelte';
   import { MathVector3 } from '$lib/utils/MathVector';
 
-  const methods = ['center', 'random', 'min', 'max'];
+  const methods = [
+    'applets.calculus.riemann_sum.riemann_sum_3d.center',
+    'applets.calculus.riemann_sum.random',
+    'applets.calculus.riemann_sum.min',
+    'applets.calculus.riemann_sum.max'
+  ];
 
   const controls = Controls.addDropdown('', methods, PrimeColor.yellow)
     .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry, {
@@ -20,6 +25,13 @@
       labelFormat: labelFormatSpread
     }) // b
     .addSlider(10, 1, 20, 1, PrimeColor.blue, { label: 'n', labelFormat: labelFormatN }); // numRectangles
+
+  const currentMethod = $derived(
+    controls[0]
+      .replace('applets.calculus.riemann_sum.', '')
+      .replace('riemann_sum_3d.', '')
+      .toLowerCase()
+  );
 
   const func = (x: number, y: number) => 4 - (1 / 4) * (x ** 2 + y ** 2);
   const func_display =
@@ -68,13 +80,13 @@
         const x_i = a + i * dx;
         const y_j = a + j * dy;
 
-        if (controls[0] === 'center') {
+        if (currentMethod === 'center') {
           x = x_i + 0.5 * dx;
           y = y_j + 0.5 * dy;
-        } else if (controls[0] === 'random') {
+        } else if (currentMethod === 'random') {
           x = x_i + Math.random() * dx;
           y = y_j + Math.random() * dy;
-        } else if (controls[0] === 'min') {
+        } else if (currentMethod === 'min') {
           // Find the minimum value of func in [(x1, y1), (x2, y2)] by sampling
           const x1 = x_i;
           const x2 = x1 + dx;
@@ -98,7 +110,7 @@
           }
           x = minX;
           y = minY;
-        } else if (controls[0] === 'max') {
+        } else if (currentMethod === 'max') {
           // Find the maximum value of func in [(x1, y1), (x2, y2)] by sampling
           const x1 = x_i;
           const x2 = x1 + dx;

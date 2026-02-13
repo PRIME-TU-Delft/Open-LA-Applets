@@ -26,11 +26,15 @@
       }
     },
     "riemann_sum": {
-      "riemann_sum_2d": {},
-      "middle": "Midden",
-      "left": "Links",
-      "right": "Rechts",
-      "random": "Random",
+      "riemann_sum_2d": {
+        "middle": "Midden",
+        "left": "Links",
+        "right": "Rechts"
+      },
+      "riemann_sum_3d": {
+        "center": "Middelpunt"
+      },
+      "random": "Willekeurig",
       "min": "Min",
       "max": "Max"
     }

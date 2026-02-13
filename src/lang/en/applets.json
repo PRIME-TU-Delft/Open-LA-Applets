@@ -26,10 +26,14 @@
       }
     },
     "riemann_sum": {
-      "riemann_sum_2d": {},
-      "middle": "Middle",
-      "left": "Left",
-      "right": "Right",
+      "riemann_sum_2d": {
+        "middle": "Middle",
+        "left": "Left",
+        "right": "Right"
+      },
+      "riemann_sum_3d": {
+        "center": "Center"
+      },
       "random": "Random",
       "min": "Min",
       "max": "Max"

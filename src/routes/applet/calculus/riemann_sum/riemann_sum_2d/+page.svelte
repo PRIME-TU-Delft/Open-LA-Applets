@@ -12,9 +12,9 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
 
   const methods = [
-    'applets.calculus.riemann_sum.middle',
-    'applets.calculus.riemann_sum.left',
-    'applets.calculus.riemann_sum.right',
+    'applets.calculus.riemann_sum.riemann_sum_2d.middle',
+    'applets.calculus.riemann_sum.riemann_sum_2d.left',
+    'applets.calculus.riemann_sum.riemann_sum_2d.right',
     'applets.calculus.riemann_sum.random',
     'applets.calculus.riemann_sum.min',
     'applets.calculus.riemann_sum.max'
@@ -30,7 +30,10 @@
   );
 
   const currentMethod = $derived(
-    controls[0].replace('applets.calculus.riemann_sum.', '').toLowerCase()
+    controls[0]
+      .replace('applets.calculus.riemann_sum.', '')
+      .replace('riemann_sum_2d.', '')
+      .toLowerCase()
   );
 
   let xlSnapFunc = (p: Vector2) => {
