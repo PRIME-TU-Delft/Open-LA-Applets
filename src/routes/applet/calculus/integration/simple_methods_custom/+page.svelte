@@ -245,11 +245,14 @@
   ];
 </script>
 
-<Canvas2D {draggables} {formulas} {controls} cameraPosition={new Vector2(cameraX, 2)} {cameraZoom}>
-  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
-  <Latex2D latex={xAxisLetter} position={new Vector2(10.5, 0.55)} />
-  <Latex2D latex={`${functionLetter}(${xAxisLetter})`} position={new Vector2(0.25, 6.25)} />
-
+<Canvas2D
+  {draggables}
+  {formulas}
+  {controls}
+  cameraPosition={new Vector2(cameraX, 2)}
+  {cameraZoom}
+  labels={{ xLabel: 'x', yLabel: 'f(x)' }}
+>
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
