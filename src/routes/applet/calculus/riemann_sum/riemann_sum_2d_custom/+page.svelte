@@ -28,6 +28,9 @@
   let defaultXL = parseNumericalOrLatex(searchParams.get('xL'), 1.5);
   let defaultXR = parseNumericalOrLatex(searchParams.get('xR'), 4.5);
 
+  const cameraX = (defaultXR.value + defaultXL.value) / 2;
+  const cameraZoom = Math.min(12 / (defaultXR.value - defaultXL.value), 1);
+
   let defaultN = parseInt(searchParams.get('n') || '5');
 
   const methods = [
@@ -240,7 +243,8 @@
   {controls}
   {formulas}
   {draggables}
-  cameraPosition={new Vector2(4, 2)}
+  cameraPosition={new Vector2(cameraX, 2)}
+  {cameraZoom}
 >
   <!-- TODO: CHANGE TO NEW AXIS LABELS -->
   <Latex2D latex={xAxisLetter} position={new Vector2(10.5, 0.55)} />
