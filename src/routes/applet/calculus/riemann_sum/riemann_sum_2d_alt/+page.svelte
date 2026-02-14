@@ -61,9 +61,9 @@
   };
 
   const func_display = '\\int_{\\$1}^{\\$2} f(x) \\, dx = \\$3';
+  const numRectangles = $derived(round(controls[1], 0));
 
   const formulas = $derived.by(() => {
-    const numRectangles = round(controls[1]);
     const dx = (xR - xL) / numRectangles;
     const integralResult = intFunc(xR) - intFunc(xL);
 
@@ -84,7 +84,6 @@
   });
 
   const rects = $derived.by(() => {
-    const numRectangles = controls[1];
     const dx = (xR - xL) / numRectangles;
     const newRects = [];
     for (let i = 0; i < numRectangles; i++) {

@@ -3,7 +3,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { round, roundString } from '$lib/utils/MathLib';
+  import { integral, round, roundString } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { Draggable } from '$lib/controls/Draggables.svelte';
@@ -64,7 +64,7 @@
   );
 
   let xlSnapFunc = (p: Vector2) => {
-    let x = Math.max(Math.min(p.x, xR), -0.99);
+    let x = Math.min(p.x, xR);
     return new Vector2(x, 0);
   };
   let xrSnapFunc = (p: Vector2) => {
@@ -94,19 +94,14 @@
   const xR = $derived(draggables[0].position.x);
   const xL = $derived(draggables[1].position.x);
 
-  let func = (x: number) => {
-    return 4 / Math.sqrt(x + 1);
-  };
-  let intFunc = (x: number) => {
-    return 8 * Math.sqrt(x + 1);
-  };
+  const func = $derived(controls[0]);
 
   const func_display = '\\int_{\\$1}^{\\$2} \\$4 \\, d' + xAxisLetter + ' = \\$3';
-  const numRectangles = $derived(round(controls[2]));
+  const numRectangles = $derived(round(controls[2], 0));
 
   const formulas = $derived.by(() => {
     const dx = (xR - xL) / numRectangles;
-    const integralResult = intFunc(xR) - intFunc(xL);
+    const integralResult = integral(func, xL, xR);
 
     const f1 = new Formula(func_display)
       .addAutoParam(round(xL), PrimeColor.orange)
@@ -210,7 +205,7 @@
     {
       paramKey: 'n',
       defaultValue: 5,
-      description: 'Number of rectangles',
+      description: 'Default number of rectangles',
       currentValue: () => numRectangles.toString()
     },
     {
