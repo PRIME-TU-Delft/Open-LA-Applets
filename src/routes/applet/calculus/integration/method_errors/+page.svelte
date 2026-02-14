@@ -138,10 +138,8 @@
   <!-- RE-ADD when axis labels work better
   labels={{
     xLabel: 'h',
-    xLabelPosition: 'top-center',
     yLabel: $_('applets.calculus.integration.method_errors.absolute_error'),
-    yLabelPosition: 'right-center',
-    yLabelRotate: 'right',
+    yLabelRotate: true,
     size: 1.5
   }} -->
 

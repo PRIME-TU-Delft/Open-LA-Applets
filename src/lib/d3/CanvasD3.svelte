@@ -36,10 +36,9 @@
   import { debounce } from '$lib/utils/TimingFunctions';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
-  import LatexUI from '$lib/components/Latex.svelte';
 
-  import { type ZoomTransform } from 'd3'; // Import types
-  import { getLabelStyles, type LabelProps } from './AxisLabels';
+  import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import Latex2D from './Latex2D.svelte';
 
   let {
     cameraPosition = new Vector2(0, 0),
@@ -54,9 +53,9 @@
     children
   }: Canvas2DProps = $props();
 
-  let currentTransform = $state(zoomIdentity);
-
   let id = 'canvas-' + generateUUID();
+
+  let currentCameraTransform = $state<Transform2D>();
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -74,7 +73,6 @@
     if (!transform.k) return;
 
     if (enablePan) {
-      currentTransform = transform as unknown as ZoomTransform;
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
       select(`#${id} g`)
@@ -87,6 +85,7 @@
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
+    currentCameraTransform = transform2d;
     debouncedUpdate2DCamera(transform2d);
   }
 
@@ -113,8 +112,6 @@
    * It will animate the camera to the default position and zoom level in 750ms.
    */
   function reset() {
-    currentTransform = zoomIdentity;
-
     const svg = select(`#${id}`);
     const node = svg.node() as Element;
 
@@ -159,17 +156,8 @@
     else cameraState.camera2D = undefined;
   });
 
-  const labelStyles = $derived(
-    getLabelStyles(
-      labels,
-      axis || undefined,
-      cameraPosition,
-      cameraZoom,
-      currentTransform,
-      width,
-      height
-    )
-  );
+  const xLabelX = $derived(getXLabelX(currentCameraTransform, width));
+  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height));
 </script>
 
 <div class="relative overflow-hidden">
@@ -192,6 +180,22 @@
               <Axis {...axis} />
             {/if}
 
+            {#if labels?.xLabel}
+              <Latex2D
+                latex={labels.xLabel}
+                fontSize={labels.size || 1}
+                position={new Vector2(xLabelX, 0.75)}
+              />
+            {/if}
+            {#if labels?.yLabel}
+              <Latex2D
+                latex={labels.yLabel}
+                fontSize={labels.size || 1}
+                position={new Vector2(0.25 + (labels.yLabelRotate ? 0.5 : 0), yLabelY)}
+                rotation={labels.yLabelRotate ? -90 : 0}
+              />
+            {/if}
+
             {@render children()}
 
             {#each draggables as d (d.id)}
@@ -202,21 +206,4 @@
       </g>
     </g>
   </svg>
-
-  {#if labels?.xLabel}
-    <LatexUI
-      latex={`\\textbf{${labels.xLabel}}`}
-      fontSize={(labels.size || 1) * 1.5}
-      class="xLabel absolute"
-      style={labelStyles.x}
-    />
-  {/if}
-  {#if labels?.yLabel}
-    <LatexUI
-      latex={`\\textbf{${labels.yLabel}}`}
-      fontSize={(labels.size || 1) * 1.5}
-      class="yLabel absolute"
-      style={labelStyles.y}
-    />
-  {/if}
 </div>
