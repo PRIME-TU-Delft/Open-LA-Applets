@@ -1,4 +1,6 @@
 <script lang="ts">
+  /* eslint-disable no-restricted-syntax */
+
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -78,7 +80,8 @@
     tend: number
   ) {
     const solution = solveMyIVP(x0, y0, tend, labda, gamma, mu);
-    console.log(solution);
+
+    // console.log(solution);
     return solution;
   }
 

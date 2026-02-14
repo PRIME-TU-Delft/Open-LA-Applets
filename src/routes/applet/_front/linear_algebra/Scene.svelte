@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+  /* eslint-disable no-restricted-syntax */
+
   import CustomRenderer from '$lib/threlte/CustomRenderer.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
