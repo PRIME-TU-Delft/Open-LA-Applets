@@ -43,8 +43,7 @@
     return `10^{${index}}`;
   }
 
-  const yAxisTextX = logarithmicY ? 0.3 : -0.3;
-  const yNegativeAxisTextX = logarithmicY ? 0.3 : -0.55;
+  let yAxisTextX = $derived(logarithmicY ? 0.3 : -0.3);
 </script>
 
 <g>
@@ -74,32 +73,21 @@
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
       {#if index * scaleX <= length && index * scaleX >= -length}
-        {#if index > 0}
-          <Latex2D
-            latex={getTickText(index, 'x')}
-            position={new Vector2(index * scaleX - 0.07, -0.15)}
-          />
-        {:else}
-          <Latex2D
-            latex={getTickText(index, 'x')}
-            position={new Vector2(index * scaleX - 0.15, -0.15)}
-          />
-        {/if}
+        <Latex2D
+          latex={getTickText(index, 'x')}
+          position={new Vector2(index * scaleX, -0.15)}
+          centerX={true}
+        />
       {/if}
 
       <!-- Y axis number labels -->
       {#if index * scaleY <= length && index * scaleY >= -length}
-        {#if index > 0}
-          <Latex2D
-            latex={getTickText(index, 'y')}
-            position={new Vector2(yAxisTextX, index * scaleY + 0.12)}
-          />
-        {:else}
-          <Latex2D
-            latex={getTickText(index, 'y')}
-            position={new Vector2(yNegativeAxisTextX, index * scaleY + 0.1)}
-          />
-        {/if}
+        <Latex2D
+          latex={getTickText(index, 'y')}
+          position={new Vector2(yAxisTextX, index * scaleY)}
+          alignX={logarithmicY ? 'left' : 'right'}
+          centerY={true}
+        />
       {/if}
     {/if}
   {/each}
