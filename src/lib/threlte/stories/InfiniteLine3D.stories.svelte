@@ -5,7 +5,7 @@
   import InfiniteLine3D from '../InfiniteLine3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/InfiniteLine3D',
+    title: '3D Components/InfiniteLine3D',
     component: InfiniteLine3D
   });
 </script>

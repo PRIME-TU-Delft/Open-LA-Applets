@@ -34,7 +34,7 @@
   });
 </script>
 
-<Canvas2D customAxis {draggables} {formulas} showFormulasDefault cameraZoom={0.5}>
+<Canvas2D axis={null} {draggables} {formulas} showFormulasDefault cameraZoom={0.5}>
   <TransformedAxis basis={[b1, b2]} />
 
   <!-- Basis -->

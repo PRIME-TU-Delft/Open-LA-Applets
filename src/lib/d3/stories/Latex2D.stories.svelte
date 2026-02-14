@@ -3,7 +3,7 @@
   import Latex2D, { type Latex2DProps } from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Latex2D',
+    title: '2D Components/Latex2D',
     component: Latex2D
   });
 </script>
@@ -41,5 +41,7 @@
   args={{ latex: 'E=mc^2', offset: new Vector2(0.5, 0.5) }}
   {template}
 />
+
+<Story name="With rotation defined" args={{ latex: 'E=mc^2', rotation: -45 }} {template} />
 
 <Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} {template} />

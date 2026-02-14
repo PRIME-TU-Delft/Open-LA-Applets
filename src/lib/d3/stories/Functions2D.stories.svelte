@@ -2,7 +2,7 @@
   import { defineMeta } from '@storybook/addon-svelte-csf';
 
   const { Story } = defineMeta({
-    title: 'D3/Functions2D',
+    title: '2D Components/Functions2D',
     subcomponents: { ExplicitFunction2D, ImplicitFunction2D, ParameterizedFunction2D },
     parameters: {
       docs: {
@@ -60,6 +60,21 @@
     xMax: 3.14,
     width: 0.02,
     showArrows: true
+  }}
+  {template}
+/>
+
+<!-- y = 4/sqrt(x+1) explicit function with integral coloring shown in [2,5] -->
+<Story
+  name="Explicit with integral coloring"
+  args={{
+    func: (x) => 4 / Math.sqrt(x + 1),
+    color: PrimeColor.yellow,
+    integral: {
+      xLeft: 2,
+      xRight: 5,
+      fillStyle: 'full'
+    }
   }}
   {template}
 />

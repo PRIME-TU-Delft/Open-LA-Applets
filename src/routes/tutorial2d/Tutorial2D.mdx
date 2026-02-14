@@ -1,0 +1,337 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+export const host = 'https://openla.ewi.tudelft.nl';
+
+<Meta title="Tutorials/Tutorial 2d" />
+
+# Tutorial 2D
+
+For this 2D tutorial, we will create a simple applet that shows a few arrows, two of which
+can be dragged around. The applets shows students how vector addition works in the complex plane.
+Here is a preview of the final applet:
+
+<iframe src={host + '/tutorial2d/formulas?iframe=true'} width="100%" height="600px"></iframe>
+
+The code for this applet can be found here: [View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/tutorial2d/formulas/%2Bpage.svelte)
+
+<br />
+
+## Step 1: Initialize a 2D canvas
+
+Each 2D applet starts of with a 2D canvas. You can initialize a 2D canvas by importing the `Canvas2D` component from
+`$lib/d3/Canvas2D.svelte`. This component sets up a SVG canvas with a grid and axes. You can give the canvas a title
+by passing a `title` prop. We will also import a `Vector2D` component to show a simple arrow on the canvas. You can
+read more about the `Canvas2D` component in the [documentation](https://docs.openla.ewi.tudelft.nl/?path=/docs/initialize-canvas2d--docs).
+And about the `Vector2D` component in the [documentation](https://docs.openla.ewi.tudelft.nl/?path=/docs/2d-components-vector2d--docs).
+
+```html
+<script lang="ts">
+  // This is where we are import components
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+</script>
+
+<!-- We give the Canvas2D component a title prop -->
+<Canvas2D title="Complex numbers addition">
+  <Vector2D />
+</Canvas2D>
+```
+
+<iframe
+  src={host + '/tutorial2d/create-canvas?iframe=true'}
+  width="100%"
+  height="600px"
+  style={{ border: '1px solid #ccc', borderRadius: '4px' }}
+></iframe>
+
+## Step 2: Add vectors with the correct direction and length
+
+Next, we will add two vectors to the canvas. We can do this by specifiyng the `Vector2` function from the `three` library.
+We will call these vectors `direction1` and `direction2` but these can be any name. We will also import the `PrimeColor`
+enum to give the vectors a color. The direction of the vector is specified by the `direction` prop and the length of the vector
+is specified by the `length` prop. The length of the vector can be calculated by calling the `length()` method on the vector.
+
+```html
+<script lang="ts">
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+
+  // Define two vectors using the Vector2 class from the three library
+  let direction1 = new Vector2(1, 2);
+  let direction2 = new Vector2(2, 0);
+
+  //
+</script>
+
+<Canvas2D title="Complex numbers addition">
+  <!-- Define the two vectors with direction, length and color -->
+  <Vector2D direction="{direction1}" length="{direction1.length()}" color="{PrimeColor.blue}" />
+  <Vector2D
+    direction="{direction2}"
+    length="{direction2.length()}"
+    color="{PrimeColor.darkGreen}"
+  />
+</Canvas2D>
+```
+
+In addition to the two vectors, we will also add a third vector that represents the addition of the first two vectors.
+This vector is calculated by the first vector and adding the second vector to it (`let v_result = direction1.clone().add(direction2.clone());`).
+We will also add a label to this vector using the `Latex2D` component from `$lib/d3/Latex2D.svelte`. This is the complete code so far:
+
+<details>
+  <summary>Collapse to see the full code</summary>
+  ```html
+<script lang="ts">
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+
+let direction1 = new Vector2(1, 2);
+let direction2 = new Vector2(2, 0);
+
+// The addition of two vectors is their sum
+// We need to clone the vectors to avoid mutating the original ones
+let v_result = direction1.clone().add(direction2.clone());
+
+</script>
+
+<!-- We give the Canvas2D component a title prop -->
+<Canvas2D title="Complex numbers addition">
+  <!-- ... Existing code -->
+
+  <!-- Sum vector (the addition of direction1 and direction2) -->
+
+<Vector2D direction="{v_result}" length="{v_result.length()}" color="{PrimeColor.raspberry}" />
+<Latex2D latex="z_3" position="{v_result}" color="{PrimeColor.raspberry}" />
+
+  <!-- Helper vectors that point from the original vectors to the result vector -->
+  <!-- The origin property is used to specify the starting point of the vector -->
+  <!-- The isDashed property is used to specify whether the vector is dashed or not -->
+  <!-- The hideHead property is used to specify whether the arrowhead is hidden or not -->
+
+  <Vector2D
+    direction="{direction1}"
+    length="{direction1.length()}"
+    origin="{direction2}"
+    isDashed="{true}"
+    hideHead="{true}"
+    color="{PrimeColor.blue}"
+  />
+  <Vector2D
+    direction="{direction2}"
+    length="{direction2.length()}"
+    origin="{direction1}"
+    isDashed="{true}"
+    hideHead="{true}"
+    color="{PrimeColor.darkGreen}"
+  />
+</Canvas2D>
+```
+</details>
+
+<iframe src={host + '/tutorial2d/set-vectors?iframe=true'} width="100%" height="600px" />
+
+## Step 3: Make the vectors draggable
+
+In this section we will make the original vectors draggable. This can be done by modifying the direction1 variable.
+We can do this by Wrapping the `Vector2` with a Draggable control from `'$lib/controls/Draggables.svelte'` like so:
+
+```typescript
+import { Draggable } from '$lib/controls/Draggables.svelte';
+
+// Replace 'let direction1 = new Vector2(1, 2);' with:
+let direction1 = new Draggable(new Vector2(1, 2), PrimeColor.blue, 'z_1', Draggable.snapToGrid);
+```
+
+We give this Draggable a color and a label. The last argument is an optional function that defines how the Draggable moves.
+In this case we use the `Draggable.snapToGrid` function that makes the Draggable snap to the grid.
+
+Updating these vectors will give multiple errors at first but we will tackle them one by one.
+
+- The first error is that the direction of `direction1` is no longer directly accessible. We can fix
+  this by replacing all instances of `direction1` with `direction1.position`.
+- The second error is that there are no draggable on screen yet. This can be done by modifying the
+  Canvas2D component to have the prop of `draggable={[direction1]}`. After this addition the
+  draggable should be visible and interactive.
+- There is still one issue remaining. The result vector is not moving with the original vectors.
+  This is because the result vector is only calculated once when the component is initialized. To change this
+  behaviour we need to wrap the `v_result` in a `$derived()` function. This signals to svelte that this variable
+  will change based on the variables it depends on.
+
+<iframe src={host + '/tutorial2d/add-draggables?iframe=true'} width="100%" height="600px"></iframe>
+
+The final code looks like this:
+
+<details>
+<summary>Collapse to see the full code</summary>
+```html
+<script lang="ts"> 
+import { Draggable } from '$lib/controls/Draggables.svelte';
+import Canvas2D from '$lib/d3/Canvas2D.svelte';
+import Latex2D from '$lib/d3/Latex2D.svelte';
+import Vector2D from '$lib/d3/Vector2D.svelte';
+import { PrimeColor } from '$lib/utils/PrimeColors';
+import { Vector2 } from 'three';
+
+// Wrap with draggable with label 'z_1'
+let direction1 = new Draggable(new Vector2(1, 2), PrimeColor.blue, 'z_1', Draggable.snapToGrid);
+let direction2 = new Vector2(2, 0);
+
+// The addition of two vectors is their sum
+// We need to clone the vectors to avoid mutating the original ones
+let v_result = $derived(direction1.position.clone().add(direction2.clone()));
+
+</script>
+
+<Canvas2D draggables={[direction1]} title="Complex numbers addition">
+  <Vector2D
+    direction={direction1.position}
+    length={direction1.position.length()}
+    color={PrimeColor.blue}
+  />
+  <Vector2D direction={direction2} length={direction2.length()} color={PrimeColor.darkGreen} />
+  <Latex2D
+    latex="z_2"
+    position={direction2}
+    offset={new Vector2(0.15, 0)}
+    color={PrimeColor.darkGreen}
+  />
+
+<Vector2D direction={v_result} length={v_result.length()} color={PrimeColor.raspberry} />
+<Latex2D latex="z_3" position={v_result} color={PrimeColor.raspberry} />
+
+  <Vector2D
+    direction={direction1.position}
+    length={direction1.position.length()}
+    origin={direction2}
+    isDashed={true}
+    hideHead={true}
+    color={PrimeColor.blue}
+  />
+  <Vector2D
+    direction={direction2}
+    length={direction2.length()}
+    origin={direction1.position}
+    isDashed={true}
+    hideHead={true}
+    color={PrimeColor.darkGreen}
+  />
+</Canvas2D>
+```
+
+</details>
+
+## Adding controls
+
+This section explains the basics of adding controls to a 2D applet. Controls are UI elements that allow users to interact with the applet.
+There are several types of controls available in the Open-LA applets library, such as buttons, sliders, and toggles etc. These can be found
+in the documentation [here](.?path=/docs/initialize-controls--docs).
+
+For this tutoral, we will add a slider that allows users to change the length of the second vector (`direction2`). This can be done by
+importing the `Controls` class from `$lib/controls/Controls` and then adding a slider. For our purpose a slider with default value of `2`,
+minimum value of `1`, maximum value of `6` and step size of `0.25` is suitable. The color of the slider can be set to `PrimeColor.darkGreen`.
+
+Next we need to make the length of `direction2` reactive to the value of the slider. This can be done by replacing the `new Vector2(2, 0)`
+with a derived vector that normalizes the direction and then multiplies it with the value of the slider.
+
+```typescript
+import { Controls } from '$lib/controls/Controls';
+// Other imports...
+
+const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen);
+
+// replace new Vector2(2, 0) with to make it reacitve to the slider value:
+let direction2 = $derived(new Vector2(2, 0).normalize().multiplyScalar(controls[0]));
+```
+
+To render the controls on screen, we need to pass the `controls` variable to the `Canvas2D` component as a prop.
+
+Lastly we can make the label of the slider more pretty and informative by using the `label` and `labelFormat` option. This will add a label
+in front of the slider and format it to `flow` from one value to another. For this we will use the `NumberFlow` component from the
+`@number-flow/svelte` package.
+
+```typescript
+import NumberFlow from '@number-flow/svelte';
+// Other imports...
+
+const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
+  label: 'z_2',
+  labelFormat
+});
+```
+
+```html
+{#snippet labelFormat(value: number)}
+<NumberFlow {value} />
+{/snippet}
+
+<Canvas2D {controls} draggables="{[direction1]}" title="Complex numbers addition">
+  <!-- Components -->
+</Canvas2D>
+```
+
+<iframe src={host + '/tutorial2d/controls?iframe=true'} width="100%" height="600px"></iframe>
+
+The code up to here can be found here: [View Code](https://github.com/Open-LA/Open-LA-Applets/blob/main/src/routes/tutorial2d/add-draggables/%2Bpage.svelte)
+
+## Adding formulas
+
+To make the applet more informative, we can add some formulas that explain the vector addition. This can be done by
+
+```typescript
+import { Formula } from '$lib/utils/Formulas';
+// Other imports...
+
+const formulas = $derived.by(() => {
+  const f1 = new Formula('z_1 + z_2 = z_3');
+  return [f1];
+});
+```
+
+```html
+<!-- Adding the formulas in the <Canvas2D> -->
+<Canvas2D
+  {controls}
+  draggables="{[direction1]}"
+  formulas="{formulas}"
+  {showFormulasDefault}
+  title="Complex numbers addition"
+>
+  <!-- Components -->
+</Canvas2D>
+```
+
+To add more complex formulas, we can add another formula that shows the components of the vectors. This can be done by using the `addAutoParam` method of the `Formula` class.
+This method allows us to add parameters to the formula that are automatically updated when the values change. We can use this to show the x and y components of the vectors.
+The first `addAutoParam` corresponds to the first `$1` in the formula, the second to `$2` and so on. We can also add colors to the parameters by passing a `PrimeColor` as the second argument.
+
+```typescript
+const f1 = new Formula('z_1 + z_2 = z_3');
+const f2 = new Formula(
+  `(\\$1 + \\$2 i) + 
+   (\\$3 + \\$4 i) = 
+   (\\$5 + \\$6 i)`
+)
+  .addAutoParam(direction1.position.x, PrimeColor.blue)
+  .addAutoParam(direction1.position.y, PrimeColor.blue)
+  .addAutoParam(direction2.x, PrimeColor.darkGreen)
+  .addAutoParam(direction2.y, PrimeColor.darkGreen)
+  .addAutoParam(v_result.x, PrimeColor.raspberry)
+  .addAutoParam(v_result.y, PrimeColor.raspberry);
+return [f1, f2];
+```
+
+<iframe src={host + '/tutorial2d/formulas?iframe=true'} width="100%" height="600px"></iframe>
+
+<br />
+
+## Wrap up
+
+With the addition of controls and formulas, we have made the applet more interactive and informative.
+Users can now manipulate the vectors using the sliders and see the results in real-time, while also having a clear
+understanding of the underlying mathematics. Each of these components can be further customized and you can read
+more about them in the 2D components documentation.

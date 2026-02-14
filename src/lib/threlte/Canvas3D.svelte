@@ -5,12 +5,12 @@
 
   export type CanvasProps = SceneProps &
     Omit<Camera3DProps, 'children' | 'width'> & {
-      title?: string;
       splitCanvas2DProps?: Omit<Canvas2DProps, 'children' | 'width' | 'height' | 'isSplit'>;
       splitCanvas3DProps?: Omit<Camera3DProps, 'isSplit'>;
       children: Snippet;
       splitCanvas2DChildren?: Snippet;
       splitCanvas3DChildren?: Snippet;
+      defaultLeftDivision?: number;
     };
 </script>
 
@@ -18,6 +18,7 @@
   import { page } from '$app/state';
   import Confetti from '$lib/components/Confetti.svelte';
   import Konami from '$lib/components/Konami.svelte';
+  import ResizableDivider from '$lib/components/ResizableDivider.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
@@ -33,8 +34,10 @@
     title,
     showFormulasDefault,
     formulas,
+    legendItems,
     controls,
     splitFormulas,
+    splitLegendItems,
     splitCanvas2DProps,
     splitCanvas3DProps,
     children,
@@ -44,7 +47,8 @@
     // Canvas2DProps
     cameraPosition = new Vector3(10, 10, 10),
     cameraZoom = 29,
-    enablePan = false
+    enablePan = false,
+    defaultLeftDivision
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -57,6 +61,8 @@
   const renderMode = $derived(activityState.isActive ? 'on-demand' : 'manual');
 
   let enableEasterEgg = $state(false);
+
+  let leftCanvasWidth = $state<number | null>(null);
 
   $effect.pre(() => {
     const searchParams = page?.url?.searchParams;
@@ -102,7 +108,7 @@
 - enablePan: Whether to enable pan
 
 @example
-<Canvas3D title={'This is a 3D canvas'}>
+<Canvas3D title='This is a 3D canvas'>
   <Axis3D />
 </Canvas3D>
 
@@ -114,11 +120,16 @@
   {controls}
   {showFormulasDefault}
   {formulas}
+  {legendItems}
   {splitFormulas}
+  {splitLegendItems}
 >
   {#snippet sceneChildren(width, height)}
-    {@const canvasWidth = hasSplitCanvas ? width / 2 : width}
-    <div style="width: {canvasWidth}px" class="overflow">
+    {@const defaultCanvasWidth = width / 2}
+    {@const leftWidth = leftCanvasWidth ?? defaultCanvasWidth}
+    {@const rightWidth = width - leftWidth}
+    {@const canvasWidth = hasSplitCanvas ? leftWidth : width}
+    <div style="width: {canvasWidth}px" class="overflow-hidden">
       {#if confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center'}
         <Confetti isSplit={false} />
       {/if}
@@ -134,12 +145,19 @@
       </Canvas>
     </div>
 
+    {#if hasSplitCanvas}
+      <ResizableDivider
+        onResize={(newLeftWidth) => (leftCanvasWidth = newLeftWidth)}
+        {defaultLeftDivision}
+      />
+    {/if}
+
     {#if splitCanvas2DChildren}
-      <CanvasD3 {height} width={canvasWidth} {...splitCanvas2DProps}>
+      <CanvasD3 {height} width={rightWidth} {...splitCanvas2DProps}>
         {@render splitCanvas2DChildren()}
       </CanvasD3>
     {:else if splitCanvas3DChildren}
-      <div style="width: {canvasWidth}px" class="overflow-hidden">
+      <div style="width: {rightWidth}px" class="overflow-hidden">
         {#if confettiState.confettiSide === 'right'}
           <Confetti isSplit={true} />
         {/if}

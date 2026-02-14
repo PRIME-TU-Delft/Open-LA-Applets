@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -7,20 +8,24 @@
   import Point3D from '$lib/threlte/Point3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
-  const normal = new Vector3(2, 4, 1);
+  const normal = new MathVector3(1, 2, 4);
   const normalizedNormal = normal.clone().normalize();
-  const p = new Vector3(2, 1, 0.5);
+  const p = new MathVector3(0.5, 2, 1);
 
-  const _q = new Vector3(1, 1, -((normalizedNormal.x + normalizedNormal.y) / normalizedNormal.z));
+  const _q = new MathVector3(
+    -((normalizedNormal.x + normalizedNormal.y) / normalizedNormal.z),
+    1,
+    1
+  );
   const q = _q.cross(normalizedNormal).normalize().multiplyScalar(normal.length());
 </script>
 
 <Canvas3D
-  cameraPosition={new Vector3(-11, 5.4, 12.4)}
+  cameraPosition={new MathVector3(12.4, -11, 5.4)}
   cameraZoom={46}
-  title="A plane through the point P."
+  title={$_('applets.lines_and_planes.normal_equation_plane.title')}
 >
   <PlaneFromNormal {normal} position={p} color={PrimeColor.yellow} />
 

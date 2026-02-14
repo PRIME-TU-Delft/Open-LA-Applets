@@ -9,6 +9,7 @@ import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
+import localRules from './eslint-local-rules.js';
 
 const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
@@ -23,7 +24,13 @@ export default ts.config(
     languageOptions: {
       globals: { ...globals.browser, ...globals.node }
     },
+    plugins: {
+      'local-rules': {
+        rules: localRules
+      }
+    },
     rules: {
+      'no-console': 'error',
       'no-undef': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -35,6 +42,27 @@ export default ts.config(
           destructuredArrayIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true
+        }
+      ],
+      'local-rules/no-hardcoded-title': 'error',
+      'local-rules/require-url-params-info': 'error',
+      'svelte/no-unnecessary-state-wrap': [
+        'error',
+        {
+          additionalReactiveClasses: [],
+          allowReassign: true
+        }
+      ]
+    }
+  },
+  {
+    files: ['**/applet/**/*.svelte'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "NewExpression[callee.name='Vector3']",
+          message: 'Do not use Vector3. Consider using MathVector3.'
         }
       ]
     }
@@ -48,6 +76,13 @@ export default ts.config(
         parser: ts.parser,
         svelteConfig
       }
+    }
+  },
+  // Disable hardcoded title rule for tutorials and stories
+  {
+    files: ['**/tutorial*/**/*.svelte', '**/stories/**/*.svelte'],
+    rules: {
+      'local-rules/no-hardcoded-title': 'off'
     }
   },
   storybook.configs['flat/recommended']

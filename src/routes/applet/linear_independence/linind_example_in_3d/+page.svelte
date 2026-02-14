@@ -8,7 +8,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addToggle(true, '\\mathbf{w_3}', PrimeColor.raspberry).addToggle(
     false,
@@ -35,12 +35,16 @@
       .join(', ');
     const post = '\\} ';
 
-    const isIn = '\\subset' + (controls[1] ? '\\mathbb{R}^3' : '\\mathbb{R}^2');
+    const isInLatex = (controls[1] ? '=' : '\\neq') + '\\mathbb{R}^3';
 
-    const f1 = new Formula(pre + res + post + isIn);
+    const f1 = new Formula(pre + res + post + isInLatex);
 
-    const f2 = new Formula(
-      '\\{' + res + post + `= \\text{linearly ${!controls[0] && controls[1] ? 'in' : ''}dependent}`
+    const isIndependent = (!controls[0] && controls[1]) || (!controls[0] && !controls[1]);
+
+    const f2 = new Formula('\\{' + res + post + `= \\text{\\$1}`).addAutoParam(
+      isIndependent
+        ? $_('applets.linear_independence.linind_example_in_3d.independent')
+        : $_('applets.linear_independence.linind_example_in_3d.dependent')
     );
 
     return [f1, f2];
@@ -52,7 +56,7 @@
   {formulas}
   showFormulasDefault
   cameraZoom={50}
-  cameraPosition={new Vector3(7, 6.5, 14)}
+  cameraPosition={new MathVector3(14, 7, 6.5)}
 >
   <Vector3D direction={w1} length={2} color={PrimeColor.blue} />
   <Latex3D

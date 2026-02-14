@@ -4,7 +4,7 @@
   import Latex3D from '../Latex3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Latex3D',
+    title: '3D Components/Latex3D',
     component: Latex3D
   });
 </script>

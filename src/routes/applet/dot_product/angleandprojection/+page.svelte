@@ -32,7 +32,7 @@
   });
 </script>
 
-<Canvas2D showAxisNumbers={false} {draggables} {formulas}>
+<Canvas2D axis={{ showAxisNumbers: false }} {draggables} {formulas}>
   <!-- L and v -->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
   <InfiniteLine2D

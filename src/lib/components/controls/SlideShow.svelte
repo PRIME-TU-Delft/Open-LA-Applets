@@ -7,6 +7,7 @@
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import { scale } from 'svelte/transition';
   import { generateUUID } from 'three/src/math/MathUtils.js';
+  import { _ } from 'svelte-i18n';
 
   type SlideShowProps = {
     controller: SlideShow<State>;
@@ -19,6 +20,8 @@
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
   {#if controller.label != undefined}
     <span>{controller.label}</span>
+  {:else if controller.label == null}
+    <span>{$_('ui.slideshow_original_state')}</span>
   {/if}
 </Label>
 
@@ -28,7 +31,7 @@
       class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
-      tooltip="Go to previous step"
+      tooltip={$_('ui.slideshow_prev')}
       side="top"
       onclick={() => controller.prev()}
     >
@@ -43,7 +46,7 @@
       class="rounded-full text-white"
       --bg={PrimeColor.darkGreen}
       --hover-bg={PrimeColor.darkGreen + PrimeColor.opacity(0.8)}
-      tooltip="Go to next step"
+      tooltip={$_('ui.slideshow_next')}
       side="top"
       onclick={() => controller.next()}
     >

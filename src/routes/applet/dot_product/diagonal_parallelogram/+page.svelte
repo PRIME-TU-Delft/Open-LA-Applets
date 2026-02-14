@@ -9,6 +9,7 @@
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import StaticImage from './StaticImage.svelte';
+  import { _ } from 'svelte-i18n';
 
   const SNAP_DISTANCE = 1;
 
@@ -40,21 +41,21 @@
 
   const formulas = [
     new Formula(`{\\$1} = \\$2`)
-      .addParam(1, ' | \\mathbf{v + w} |', PrimeColor.raspberry)
-      .addParam(2, '|\\mathbf{v - w}|', PrimeColor.orange)
+      .addParam(1, '\\| \\mathbf{v + w} \\|', PrimeColor.raspberry)
+      .addParam(2, '\\|\\mathbf{v - w}\\|', PrimeColor.orange)
   ];
 
   const splitFormulas = $derived.by(() => {
-    const plus = ' | \\mathbf{v + w} |';
-    const min = '|\\mathbf{v - w}|';
+    const plus = ' \\| \\mathbf{v + w} \\|';
+    const min = '\\|\\mathbf{v - w}\\|';
 
     const f1 = new Formula(`\\$1 ${isOrthogonal ? '=' : '\\neq'} \\$2`)
       .addParam(1, plus, PrimeColor.raspberry)
       .addParam(2, min, PrimeColor.orange);
 
     const f2 = new Formula(`\\$1 \\cdot \\$2 = \\$3`)
-      .addParam(1, '|\\mathbf{v}|', PrimeColor.blue)
-      .addParam(2, '|\\mathbf{w}|', PrimeColor.darkGreen)
+      .addParam(1, '\\|\\mathbf{v}\\|', PrimeColor.blue)
+      .addParam(2, '\\|\\mathbf{w}\\|', PrimeColor.darkGreen)
       .addParam(3, round(w.dot(v)), PrimeColor.raspberry);
 
     return [f1, f2];
@@ -62,7 +63,7 @@
 </script>
 
 <Canvas2D
-  title="Addition and subtraction of 2 vectors"
+  title={$_('applets.dot_product.diagonal_parallelogram.title')}
   cameraZoom={1.5}
   cameraPosition={new Vector2(2, 1)}
   splitCanvas2DProps={{

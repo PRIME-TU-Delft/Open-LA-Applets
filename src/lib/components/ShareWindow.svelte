@@ -3,35 +3,45 @@
   import * as Accordion from '$lib/components/ui/accordion';
   import * as Dialog from '$lib/components/ui/dialog';
   import ExternalLink from '@lucide/svelte/icons/external-link';
+  import { _ } from 'svelte-i18n';
   import Embedding from './Embedding.svelte';
+  import EmbeddingStatic from './EmbeddingStatic.svelte';
 </script>
 
 <Dialog.Content class="block sm:max-w-xl">
   <Dialog.Header>
-    <Dialog.Title>Share and embed</Dialog.Title>
+    <Dialog.Title>{$_('ui.share_title')}</Dialog.Title>
     <Dialog.Description>
-      This applet was created for the
+      {$_('ui.share_intro_text')}
       <a
         class="flex items-center gap-1"
         href="https://interactivetextbooks.tudelft.nl/linear-algebra/"
       >
-        TU Delft Open Linear Algebra book <ExternalLink class="h-4 w-4" /></a
+        {$_('ui.share_book_link_text')} <ExternalLink class="h-4 w-4" /></a
       >
-      For more information about these applets, please visit
+      {$_('ui.share_more_info')}
       <a href="https://openla.ewi.tudelft.nl/applet">https://www.openla.ewi.tudelft.nl/applet</a>
 
       <Accordion.Root type="single" class="w-full">
         <!-- EMBEDING -->
         <Accordion.Item value="Embed">
-          <Accordion.Trigger>Embed</Accordion.Trigger>
+          <Accordion.Trigger>{$_('ui.share_accordion_embed_interactive')}</Accordion.Trigger>
           <Accordion.Content>
             <Embedding />
           </Accordion.Content>
         </Accordion.Item>
 
+        <!-- STATIC IMAGE -->
+        <Accordion.Item value="Static image">
+          <Accordion.Trigger>{$_('ui.share_accordion_static_image')}</Accordion.Trigger>
+          <Accordion.Content>
+            <EmbeddingStatic />
+          </Accordion.Content>
+        </Accordion.Item>
+
         <!-- LICENCING -->
         <Accordion.Item value="Licence">
-          <Accordion.Trigger>Licence [CC-BY v4.0 / Apache v2.0]</Accordion.Trigger>
+          <Accordion.Trigger>{$_('ui.share_accordion_licence')}</Accordion.Trigger>
           <Accordion.Content>
             <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
               ><img
@@ -39,20 +49,20 @@
                 style="border-width:0"
                 src="https://i.creativecommons.org/l/by/4.0/88x31.png"
               /></a
-            ><br /><span>PRIME Linear Algebra applets</span>
-            by
+            ><br /><span>{$_('ui.share_licence_title')}</span>
+            {$_('ui.share_licence_by')}
             <a
               href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
               property="cc:attributionName"
               rel="cc:attributionURL">PRIME, TU Delft</a
             >
-            is licensed under a
+            {$_('ui.share_licence_text')}
             <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-              >Creative Commons Attribution 4.0 International License</a
-            >.<br />Based on a work at
+              >{$_('ui.share_licence_link_text')}</a
+            >.<br />{$_('ui.share_licence_based_on')}
             <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
               >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
-            >.<br />Permissions beyond the scope of this license may be available at
+            >.<br />{$_('ui.share_licence_permissions')}
             <a
               href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
               rel="cc:morePermissions"

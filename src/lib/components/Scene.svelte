@@ -3,7 +3,9 @@
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
+    legendItems?: LegendItem[];
     splitFormulas?: Formula[];
+    splitLegendItems?: LegendItem[];
     showFormulasDefault?: boolean;
     draggables?: Draggable[];
     title?: string;
@@ -23,12 +25,18 @@
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
+  import { browser } from '$app/environment';
   import { cn } from '$lib/utils';
+  import { page } from '$app/state';
+  import { getAvailableLanguagesForApplet, getAllLanguagesInfo } from '$lib/utils/languages';
+  import type { LegendItem } from '$lib/utils/Legend';
 
   let {
     controls = undefined,
     formulas = [],
+    legendItems = [],
     splitFormulas = [],
+    splitLegendItems = [],
     showFormulasDefault = false,
     draggables = [],
     title,
@@ -37,6 +45,34 @@
 
   let height = $state(500);
   let width = $state<number>(0);
+
+  const showFps = dev && browser && import.meta.env.VITE_SHOW_FPS === 'true';
+
+  /**
+   * Get languages available for this applet
+   */
+  const appletRoute: string[] = $derived.by(() => {
+    const pathname = page.url?.pathname || '';
+    const match = pathname.match(/\/applet\/*([^/]+)*\/([^/]+)\/([^/]+)/);
+
+    if (match) {
+      let ret = [...match.splice(1)];
+      ret = ret.filter(function (element) {
+        return element !== undefined;
+      });
+      return ret;
+    }
+
+    return [''];
+  });
+
+  const languages = $derived.by(() => {
+    if (appletRoute[0] !== '') {
+      return getAvailableLanguagesForApplet(appletRoute);
+    }
+
+    return getAllLanguagesInfo(); // fallback
+  });
 
   /**
    * Reset camera position, rotation and controls.
@@ -81,10 +117,13 @@
     }
   }
 
+  const hideButtons = globalState.hideButtons;
+
   $effect(() => {
-    // Override the global title if a title is provided
-    // if and only if the global title is not set
-    if (!globalState.title) globalState.title = title || '';
+    // Override title if and only if the title was not set from a URL parameter
+    if (!globalState.titleFromUrl) {
+      globalState.title = title || '';
+    }
   });
 </script>
 
@@ -114,7 +153,7 @@
     onmouseleave={() => waitThenReset()}
   >
     <!-- MARK: THRELTE/D3 SCENE (centre) -->
-    <div class="flex h-full w-full gap-3 divide-x-2 divide-slate-400 bg-white">
+    <div class="flex h-full w-full bg-white">
       {#if sceneChildren && width > 0}
         {@render sceneChildren(width, height)}
       {:else}
@@ -129,14 +168,19 @@
       </div>
     {/if}
 
-    {#if dev}
+    {#if showFps}
       <FpsCounter />
     {/if}
 
     <!-- MARK: CONTROLLER PANEL / ACTIVITY PANEL (bottom-centre)  -->
     {#if controls && controls.length > 0 && controls._width > 0}
-      <ControllerAndActivityPanel {controls} onLock={(e) => lock(e)} onReset={() => reset()} />
-    {:else}
+      <ControllerAndActivityPanel
+        {hideButtons}
+        {controls}
+        onLock={(e) => lock(e)}
+        onReset={() => reset()}
+      />
+    {:else if !hideButtons}
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
@@ -144,8 +188,12 @@
     <ActionButtonsAndFormula
       showFormulas={showFormulasDefault}
       {formulas}
+      {legendItems}
       {splitFormulas}
+      {splitLegendItems}
       {controls}
+      {hideButtons}
+      {languages}
       onReset={() => reset()}
     />
   </div>

@@ -3,12 +3,13 @@
 
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Quaternion, Vector3 } from 'three';
+  import { Quaternion } from 'three';
 
-  let a = $state(new Vector3(4, 1, 1));
+  let a = $state(new MathVector3(1, 4, 1));
   let aLength = $state(4);
-  const b = new Vector3(2, 4, -1);
+  const b = new MathVector3(-1, 2, 4);
 
   // This is a test for reseting the camera position in an animated fashion
   // This is used in `threlte/Camera3D.svelte` to reset the camera position
@@ -31,7 +32,7 @@
   }
 </script>
 
-<Canvas3D cameraPosition={new Vector3(10, 12, -5)} cameraZoom={41}>
+<Canvas3D cameraPosition={new MathVector3(-5, 10, 12)} cameraZoom={41}>
   <Vector3D direction={a} length={aLength} color={PrimeColor.orange} alwaysOnTop isDashed />
   <Vector3D direction={b} color={PrimeColor.darkGreen} noNormalise />
 
@@ -40,7 +41,7 @@
 
 <button
   onclick={() => {
-    a = new Vector3(4, 0, 0);
+    a = new MathVector3(0, 4, 0);
   }}
   style="position:absolute; bottom:1rem; left:1rem; background:lightcoral"
 >

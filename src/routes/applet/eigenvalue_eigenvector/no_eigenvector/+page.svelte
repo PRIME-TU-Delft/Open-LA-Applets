@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* eslint-disable no-restricted-syntax */
   import { Controls } from '$lib/controls/Controls';
   import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -8,6 +9,8 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Matrix3, Vector2, Vector3 } from 'three';
+  import { get } from 'svelte/store';
+  import { _ } from 'svelte-i18n';
 
   const defaultState = {
     angle: -0.35,
@@ -21,7 +24,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'No eigenvector' };
+      return {
+        state,
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.no_eigenvector')
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -29,7 +36,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.3 * t;
@@ -37,7 +48,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=3\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
+      };
     },
     (t, state) => {
       state.angle = state.angle + 0.7 * t;
@@ -45,11 +60,19 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      return { state, labelNext: 'An eigenvector', labelPrev: 'An eigenvector' };
+      return {
+        state,
+        labelNext: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector'),
+        labelPrev: get(_)('applets.eigenvalue_eigenvector.no_eigenvector.an_eigenvector')
+      };
     }
   ];
 
-  const controls = Controls.addSlideShow(defaultState, steps, 'No eigenvector');
+  const controls = Controls.addSlideShow(
+    defaultState,
+    steps,
+    get(_)('applets.eigenvalue_eigenvector.no_eigenvector.no_eigenvector')
+  );
   const state = $derived(controls[0]);
 
   const A = new Matrix3(1, 4, 0, 1, 1, 0, 0, 0, 0);

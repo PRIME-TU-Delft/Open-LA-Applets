@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
@@ -9,8 +10,8 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector3 } from 'three';
   import EllipseTrajectory from '../EllipseTrajectory.svelte';
+  import { _ } from 'svelte-i18n';
 
   const controls = Controls.addSlider(-4.2, -Math.PI, Math.PI, 0.15, PrimeColor.darkGreen, {
     loop: true
@@ -18,13 +19,13 @@
 
   const u = $derived(parametic_point_on_circle_3D(controls[0], 5));
 
-  const lineL = new Vector3(3, 2, -1); // Line L
+  const lineL = new MathVector3(-1, 3, 2); // Line L
   const lineDir = lineL.clone().normalize().multiplyScalar(10); // Line L scaled
 
   const u_proj = $derived(u.clone().projectOnVector(lineL.clone()));
 </script>
 
-<Canvas3D {controls} title="Projection of a vector on a line">
+<Canvas3D {controls} title={$_('applets.geom_lin_trans.proj_on_line_3d.title')}>
   <!-- Vector U -->
   <Vector3D direction={u} length={u.length()} color={PrimeColor.darkGreen} />
   <Latex3D latex={'\\mathbf{u}'} position={u} color={PrimeColor.darkGreen} />
@@ -40,7 +41,7 @@
   />
   <Latex3D
     latex={'\\mathrm{proj}_{\\mathcal{L}}(\\mathbf{u})'}
-    position={u_proj.clone().add(new Vector3(0, -0.5, 0))}
+    position={u_proj.clone().add(new MathVector3(0, 0, -0.5))}
     color={PrimeColor.raspberry}
   />
 

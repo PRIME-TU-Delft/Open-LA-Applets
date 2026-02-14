@@ -5,6 +5,8 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { get } from 'svelte/store';
+  import { _ } from 'svelte-i18n';
 
   const state = {
     position: new Vector2(1, 1),
@@ -23,7 +25,11 @@
     (t, state) => {
       // Zoom from (1) to (2)
       state.zoom = state.zoom + t;
-      return { state, labelNext: 'Extended length', labelPrev: 'Original state' };
+      return {
+        state,
+        labelNext: get(_)('applets.testing.animation_studio.extended_length'),
+        labelPrev: get(_)('ui.slideshow_original_state')
+      };
     },
     (t, state) => {
       // position from (1,1) to (-3,2)
@@ -33,7 +39,11 @@
       // From (2) -> (3)
       state.zoom = state.zoom + 2 * t;
 
-      return { state, labelNext: 'Translated', labelPrev: 'Translated' };
+      return {
+        state,
+        labelNext: get(_)('applets.testing.animation_studio.translated'),
+        labelPrev: get(_)('applets.testing.animation_studio.translated')
+      };
     },
     (t, state) => {
       // Show the second vector when t > 0.5 otherwise hide it
@@ -44,8 +54,8 @@
 
       return {
         state,
-        labelNext: 'Show 2nd vector and fade in 3e vector',
-        labelPrev: 'Hide 2nd vector and fade out 3e vector'
+        labelNext: get(_)('applets.testing.animation_studio.show_2nd_and_fade_3rd_next'),
+        labelPrev: get(_)('applets.testing.animation_studio.show_2nd_and_fade_3rd_prev')
       };
     }
   ];

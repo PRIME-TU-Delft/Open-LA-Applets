@@ -5,7 +5,7 @@
   import Latex2D from '../Latex2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/SmallestArc2D',
+    title: '2D Components/SmallestArc2D',
     component: SmallestArc2D
   });
 </script>

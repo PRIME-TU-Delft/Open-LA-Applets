@@ -24,7 +24,14 @@
   ];
   const labelDraggables = [
     new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'A'),
-    new Draggable(new Vector2(-3, 1), PrimeColor.yellow, '\\mathcal{B}')
+    new Draggable(
+      new Vector2(-3, 1),
+      PrimeColor.yellow,
+      '\\mathcal{B}',
+      undefined,
+      undefined,
+      'left'
+    )
   ];
 
   const defaultSnapDraggables = [
@@ -96,7 +103,7 @@ const draggables = [
 ```typescript
 const draggables = [
   new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'A'),
-  new Draggable(new Vector2(-3, 1), PrimeColor.yellow, '\\mathcal{B}')
+  new Draggable(new Vector2(-3, 1), PrimeColor.yellow, '\\mathcal{B}', undefined, undefined, "left")
 ]
 ```
 -->

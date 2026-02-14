@@ -1,5 +1,7 @@
 import { Controls } from '$lib/controls/Controls';
 import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
+import { _ } from 'svelte-i18n';
+import { get } from 'svelte/store';
 import { Vector4 } from 'three';
 
 const state = [new Vector4(2, -1, -1, 2), new Vector4(1, 2, 4, 4), new Vector4(4, -2, -4, 6)];
@@ -10,7 +12,11 @@ const transitionSteps: SlideShowSteps<S> = [
     // R2 = 2*R2
     state[1] = state[1].add(state[1].clone().multiplyScalar(t));
 
-    return { state, labelNext: 'R2 = 2*R2', labelPrev: 'Original state' };
+    return {
+      state,
+      labelNext: 'R2 = 2*R2',
+      labelPrev: get(_)('ui.slideshow_original_state')
+    };
   },
   (t, state) => {
     // R2 = R2 - R1

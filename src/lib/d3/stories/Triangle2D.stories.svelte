@@ -4,7 +4,7 @@
   import Triangle2D from '../Triangle2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Triangle2D',
+    title: '2D Components/Triangle2D',
     component: Triangle2D
   });
 </script>

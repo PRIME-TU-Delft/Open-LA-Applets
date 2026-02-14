@@ -1,30 +1,22 @@
 <script lang="ts" module>
-  export type Parallelogram2DProps = {
+  import type { Vector2 } from 'three';
+  import type { Polygon2DProps } from './Polygon2D.svelte';
+
+  export type Parallelogram2DProps = Omit<Polygon2DProps, 'points' | 'offset'> & {
     points: [Vector2, Vector2, Vector2];
-    color?: string;
-    strokeWidth?: number;
-    opacity?: number;
   };
 </script>
 
 <script lang="ts">
-  import type { Vector2 } from 'three';
+  import Polygon2D from './Polygon2D.svelte';
 
-  let { points, color = 'black', strokeWidth = 1, opacity = 1 }: Parallelogram2DProps = $props();
+  let { points, ...polygonProps }: Parallelogram2DProps = $props();
 
-  const [a, b, c] = $derived(points.map((p) => p.toArray().join(',')));
-
-  const d = $derived(points[1].clone().add(points[2]).sub(points[0]).toArray().join(','));
+  const d = $derived(points[1].clone().add(points[2]).sub(points[0]));
 </script>
 
 <!-- @component
   This component is used to draw a parallelogram in 2D. It needs three points to be defined and will automatically calculate the fourth point.
  -->
 
-<polygon
-  fill={color}
-  stroke="black"
-  stroke-width={strokeWidth * 0.05}
-  {opacity}
-  points="{a} {b} {d} {c} "
-/>
+<Polygon2D points={[points[0], points[1], d, points[2]]} {...polygonProps} />

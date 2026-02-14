@@ -1,7 +1,8 @@
 <script lang="ts">
   import ExternalLink from '@lucide/svelte/icons/external-link';
-  import FolderList from './FolderList.svelte';
-  import NavBar from './NavBar.svelte';
+  import FolderList from '$lib/components/frontpage/FolderList.svelte';
+  import NavBar from '$lib/components/frontpage/NavBar.svelte';
+  import { resolve } from '$app/paths';
 
   const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
 
@@ -17,17 +18,23 @@
     { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];
 
-  const fileUrls = Object.keys(modules).map((rawUrl) =>
-    // Remove head of path and extension
-    rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
-  );
+  const fileUrls = Object.keys(modules)
+    .map((rawUrl) =>
+      // Remove head of path and extension
+      rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
+    )
+    .filter((s) => s !== '[...applet]/static' && !s.startsWith('calculus'));
 </script>
 
-<NavBar {fileUrls} />
+<NavBar
+  bookTitle="Open LA book"
+  bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"
+  {fileUrls}
+/>
 
 <div class="mx-auto my-32 max-w-4xl rounded-xl bg-blue-50 p-10">
   <div class="prose w-full max-w-full">
-    <h1>Interactive applets</h1>
+    <h1>Interactive Linear Algebra applets</h1>
     These applets were created for the
     <a
       class="inline-flex items-center gap-1 hover:underline"
@@ -42,6 +49,14 @@
       The applets are sorted by the paragraph that they are associated with in the book. Feel free
       to explore each applet by clicking on the links below.
     </p>
+
+    <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
+      <span class="font-bold">Hint:</span>
+      Looking for Calculus applets? Go to
+      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/calculus')}
+        >/calculus <ExternalLink class="h-4 w-4" /></a
+      >
+    </blockquote>
 
     <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
       <span class="font-bold">Hint:</span>

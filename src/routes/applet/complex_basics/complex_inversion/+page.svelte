@@ -9,6 +9,7 @@
   import { Formula } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
 
   let d1 = new Draggable(new Vector2(1, 1), PrimeColor.yellow);
 
@@ -66,13 +67,19 @@
   draggables={[d1]}
   formulas={formulasLeft}
   splitFormulas={formulasRight}
-  title="Inverse of a complex number: Cartesian and Polar"
+  title={$_('applets.complex_basics.complex_inversion.title')}
   cameraZoom={2.75}
-  enablePan={false}
+  labels={{
+    xLabel: '\\text{Re}',
+    yLabel: '\\text{Im}'
+  }}
   splitCanvas2DProps={{
     cameraZoom: 2.75,
-    enablePan: false,
-    customAxis: true,
+    labels: {
+      xLabel: '\\text{Re}',
+      yLabel: '\\text{Im}'
+    },
+    axis: null,
     draggables: [d1]
   }}
 >
@@ -107,9 +114,6 @@
     distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
   />
 
-  <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 2.9)} />
-  <Latex2D latex={'\\text{Re}'} position={new Vector2(2.1, 0.5)} />
-
   {#snippet splitCanvas2DChildren()}
     <PolarGrid highlightRadii={[1]} showAngleTicks={true} />
 
@@ -143,8 +147,5 @@
       color={PrimeColor.raspberry}
       distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
     />
-
-    <Latex2D latex={'\\text{Im}'} position={new Vector2(0.1, 2.9)} />
-    <Latex2D latex={'\\text{Re}'} position={new Vector2(2.1, 0.5)} />
   {/snippet}
 </Canvas2D>

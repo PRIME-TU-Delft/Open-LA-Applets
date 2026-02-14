@@ -6,6 +6,9 @@
     axisSpacing?: number;
     floor?: boolean;
     hideOrigin?: boolean;
+    x1?: string;
+    x2?: string;
+    x3?: string;
   };
 </script>
 
@@ -22,7 +25,10 @@
     axisLength = 10,
     axisSpacing = 2,
     floor = false,
-    hideOrigin = false
+    hideOrigin = false,
+    x1 = 'x',
+    x2 = 'y',
+    x3 = 'z'
   }: Axis3DProps = $props();
 
   const axisInterval = $derived(Math.floor(axisLength / (axisSpacing == 0 ? 1 : axisSpacing)));
@@ -115,13 +121,13 @@
 {/if}
 
 <!-- x, y, z labels -->
-<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex="-x" />
-<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex="-y" />
-<Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex="-z" />
+<Latex3D position={new Vector3(0, 0, indicatorMin - 0.3)} latex={'-' + x1} />
+<Latex3D position={new Vector3(indicatorMin - 0.3, 0, 0)} latex={'-' + x2} />
+<Latex3D position={new Vector3(0, indicatorMin - 0.3, 0)} latex={'-' + x3} />
 
-<Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex="x" />
-<Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex="y" />
-<Latex3D position={new Vector3(0, indicatorMax + 0.3, 0)} latex="z" />
+<Latex3D position={new Vector3(0, 0, indicatorMax + 0.3)} latex={x1} />
+<Latex3D position={new Vector3(indicatorMax + 0.3, 0, 0)} latex={x2} />
+<Latex3D position={new Vector3(0, indicatorMax + 0.3, 0)} latex={x3} />
 
 {#if floor}
   <T.Mesh receiveShadow position.y={-0.1} rotation.x={-90 * (Math.PI / 180)}>

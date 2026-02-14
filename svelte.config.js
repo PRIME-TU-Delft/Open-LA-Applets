@@ -2,6 +2,7 @@
 import nodeAdapter from '@sveltejs/adapter-node';
 import netlifyAdapter from '@sveltejs/adapter-netlify';
 
+/* eslint-disable no-console */
 console.log('Building for: ' + process.env.BUILD_ENV === 'netlify' ? 'Netlify' : 'NodeJS');
 
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';

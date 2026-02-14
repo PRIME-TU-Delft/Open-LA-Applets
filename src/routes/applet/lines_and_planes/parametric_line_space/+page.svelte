@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -6,10 +7,10 @@
   import Vector3D from '$lib/threlte/Vector3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import NumberFlow from '@number-flow/svelte';
-  import { Vector3 } from 'three';
+  import { _ } from 'svelte-i18n';
 
-  const v_0 = new Vector3(-2, 3, 2);
-  const u = new Vector3(2, 1, -1);
+  const v_0 = new MathVector3(2, -2, 3);
+  const u = new MathVector3(-1, 2, 1);
 
   let controls = Controls.addSlider(2, -1.5, 3, 0.1, PrimeColor.darkGreen, {
     label: 'r',
@@ -24,10 +25,10 @@
 {/snippet}
 
 <Canvas3D
-  cameraPosition={new Vector3(3.31, 6.55, 15.68)}
+  cameraPosition={new MathVector3(15.68, 3.31, 6.55)}
   cameraZoom={38}
   {controls}
-  title="A parametric vector of a line in 3D space"
+  title={$_('applets.lines_and_planes.parametric_line_space.title')}
 >
   <!-- Vector v_0 -->
   <Vector3D direction={v_0} color={PrimeColor.raspberry} length={v_0.length()} />
@@ -46,7 +47,7 @@
       <!-- Vector v -->
       <Vector3D direction={endPoint} color={PrimeColor.yellow} length={endPoint?.length()} />
       <Latex3D
-        position={endPoint?.clone().add(new Vector3(0.4, 0, 0))}
+        position={endPoint?.clone().add(new MathVector3(0, 0.4, 0))}
         latex={`\\mathbf{v}`}
         extend={-2}
         color={PrimeColor.yellow}

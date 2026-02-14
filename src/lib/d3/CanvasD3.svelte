@@ -5,14 +5,13 @@
   export type Canvas2DProps = {
     cameraPosition?: Vector2;
     cameraZoom?: number;
-    tickLength?: number; // TODO: move axis to separate component
-    showAxisNumbers?: boolean;
+    axis?: AxisProps | null;
+    labels?: LabelProps;
     width?: number;
     height?: number;
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
-    customAxis?: boolean;
     children: Snippet;
   };
 </script>
@@ -32,25 +31,30 @@
     type Transition
   } from 'd3';
   import { generateUUID } from 'three/src/math/MathUtils.js';
-  import Axis from './Axis.svelte';
+  import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
+  import LatexUI from '$lib/components/Latex.svelte';
+
+  import { type ZoomTransform } from 'd3'; // Import types
+  import { getLabelStyles, type LabelProps } from './AxisLabels';
 
   let {
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
-    tickLength,
-    showAxisNumbers,
     width = 500,
     height = 300,
     enablePan = true,
     draggables = [],
     isSplit = false,
-    customAxis = false,
+    axis,
+    labels,
     children
   }: Canvas2DProps = $props();
+
+  let currentTransform = $state(zoomIdentity);
 
   let id = 'canvas-' + generateUUID();
 
@@ -70,6 +74,7 @@
     if (!transform.k) return;
 
     if (enablePan) {
+      currentTransform = transform as unknown as ZoomTransform;
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
       select(`#${id} g`)
@@ -108,6 +113,8 @@
    * It will animate the camera to the default position and zoom level in 750ms.
    */
   function reset() {
+    currentTransform = zoomIdentity;
+
     const svg = select(`#${id}`);
     const node = svg.node() as Element;
 
@@ -151,9 +158,21 @@
     if (isSplit) cameraState.splitCamera2D = undefined;
     else cameraState.camera2D = undefined;
   });
+
+  const labelStyles = $derived(
+    getLabelStyles(
+      labels,
+      axis || undefined,
+      cameraPosition,
+      cameraZoom,
+      currentTransform,
+      width,
+      height
+    )
+  );
 </script>
 
-<div>
+<div class="relative overflow-hidden">
   {#if !isSplit && (confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center')}
     <Confetti isSplit={false} />
   {:else if isSplit && confettiState.confettiSide === 'right'}
@@ -169,8 +188,8 @@
             30})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
-            {#if !customAxis}
-              <Axis {showAxisNumbers} length={tickLength} />
+            {#if axis !== null}
+              <Axis {...axis} />
             {/if}
 
             {@render children()}
@@ -183,4 +202,21 @@
       </g>
     </g>
   </svg>
+
+  {#if labels?.xLabel}
+    <LatexUI
+      latex={`\\textbf{${labels.xLabel}}`}
+      fontSize={(labels.size || 1) * 1.5}
+      class="xLabel absolute"
+      style={labelStyles.x}
+    />
+  {/if}
+  {#if labels?.yLabel}
+    <LatexUI
+      latex={`\\textbf{${labels.yLabel}}`}
+      fontSize={(labels.size || 1) * 1.5}
+      class="yLabel absolute"
+      style={labelStyles.y}
+    />
+  {/if}
 </div>

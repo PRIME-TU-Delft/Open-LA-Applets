@@ -3,7 +3,7 @@
   import Parallelogram2D from '../Parallelogram2D.svelte';
 
   const { Story } = defineMeta({
-    title: 'D3/Parallelogram2D',
+    title: '2D Components/Parallelogram2D',
     component: Parallelogram2D
   });
 </script>
@@ -32,6 +32,16 @@
   {template}
 />
 
+<Story
+  name="With stroke color"
+  args={{
+    points: [new Vector2(0, 0), new Vector2(0, 1), new Vector2(-1, 1)],
+    strokeColor: PrimeColor.raspberry,
+    color: PrimeColor.black + PrimeColor.opacity(0.3)
+  }}
+  {template}
+/>
+
 <!-- A Parallelogram with different points defined -->
 <Story
   name="With other points defined"
@@ -51,6 +61,16 @@
     points: [new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1)],
     color: PrimeColor.raspberry,
     strokeWidth: 0
+  }}
+  {template}
+/>
+
+<Story
+  name="With dashed fill"
+  args={{
+    points: [new Vector2(0, 0), new Vector2(1, 1), new Vector2(0, 1)],
+    color: PrimeColor.raspberry,
+    fillStyle: 'dashed'
   }}
   {template}
 />

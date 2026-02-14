@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
   import * as Command from '$lib/components/ui/command/index.js';
   import ArrowRight from '@lucide/svelte/icons/arrow-right';
   import Cross from '@lucide/svelte/icons/cross';
@@ -7,13 +8,15 @@
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import File from '@lucide/svelte/icons/file';
   import { onMount } from 'svelte';
+  import { SvelteSet } from 'svelte/reactivity';
   import { scale } from 'svelte/transition';
 
   type CommandPromptProps = {
     fileUrls: string[];
+    directory?: string;
   };
 
-  let { fileUrls }: CommandPromptProps = $props();
+  let { fileUrls, directory = '' }: CommandPromptProps = $props();
 
   let open = $state(false);
   let showPreview = $state(false);
@@ -21,10 +24,10 @@
   interface Applet {
     file: string;
     folder: string;
-    url: string;
+    url: `/applet/${string}`;
   }
 
-  let openApplets = $state(new Set<string>([]));
+  let openApplets = $state(new SvelteSet<string>([]));
 
   const folders = $derived(
     fileUrls
@@ -37,10 +40,10 @@
       })
       .reduce(
         (acc, curr) => {
-          const file = {
+          const file: Applet = {
             file: curr.file.replaceAll('_', ' '),
             folder: curr.folder,
-            url: `/applet/${curr.folder}/${curr.file}`
+            url: `/applet/${directory}${curr.folder}/${curr.file}`
           };
 
           if (curr.folder in acc) {
@@ -56,7 +59,7 @@
 
   function reset() {
     showPreview = false;
-    openApplets = new Set<string>([]);
+    openApplets = new SvelteSet<string>([]);
   }
 
   $effect(() => {
@@ -70,7 +73,7 @@
       openApplets.add(file.file);
     }
 
-    openApplets = new Set(openApplets);
+    openApplets = new SvelteSet(openApplets);
   }
 
   function selectPreviewAppletFolder(files: Applet[]) {
@@ -82,13 +85,13 @@
       files.forEach((file) => openApplets.add(file.file));
     }
 
-    openApplets = new Set(openApplets);
+    openApplets = new SvelteSet(openApplets);
   }
 
   function toggleShowPreview() {
     showPreview = !showPreview;
 
-    openApplets = new Set<string>([]);
+    openApplets = new SvelteSet<string>([]);
   }
 
   onMount(() => {
@@ -132,7 +135,7 @@
     </Command.Item>
 
     {#if openApplets.size > 0}
-      <Command.Item value="close all previews" onSelect={() => (openApplets = new Set([]))}>
+      <Command.Item value="close all previews" onSelect={() => (openApplets = new SvelteSet([]))}>
         <Cross class="mx-2" />
         <span>Close all previews</span>
       </Command.Item>
@@ -194,7 +197,7 @@
             <Command.Item
               class="flex justify-between"
               value={folderTitle + ' ' + file.file}
-              onSelect={() => goto(file.url)}
+              onSelect={() => goto(resolve(file.url))}
             >
               <div class="flex gap-2">
                 <File class="mx-2" />

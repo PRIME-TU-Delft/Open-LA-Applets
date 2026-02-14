@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { MathVector3 } from '$lib/utils/MathVector';
   import { Controls } from '$lib/controls/Controls';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
@@ -9,24 +10,25 @@
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2, Vector3 } from 'three';
+  import { Vector2 } from 'three';
   import { parameterizeConic } from './conic';
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { withSign } from '$lib/utils/FormatString';
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
   import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
+  import { _ } from 'svelte-i18n';
 
   const formulas = $derived.by(() => {
     let f = new Formula('\\$1 x_1^2 \\$2 x_1 x_2 \\$3 x_2^2 = \\$4')
       .addAutoParam(a, PrimeColor.orange)
-      .addAutoParam(withSign(b), PrimeColor.orange)
-      .addAutoParam(withSign(c), PrimeColor.orange)
+      .addAutoParam(withSign(b, 0), PrimeColor.orange)
+      .addAutoParam(withSign(c, 0), PrimeColor.orange)
       .addAutoParam(round(k, 2), PrimeColor.raspberry);
 
     return [f];
   });
 
-  const mat = new DiagonalMatrix(new Matrix2(1, 0.5, 0.5, 1), 'A', PrimeColor.orange, 0.5);
+  const mat = new DiagonalMatrix(new Matrix2(3, 2, 2, 6), 'A', PrimeColor.orange, 0.5);
 
   const controls = $derived.by(() => {
     return Controls.add(mat).addSlider(3, -10, 10, 0.1, PrimeColor.raspberry, {
@@ -37,7 +39,7 @@
 
   const k = $derived(controls[1]);
 
-  const plane_position = $derived(new Vector3(0, k, 0));
+  const plane_position = $derived(new MathVector3(0, 0, k));
 
   let a = $derived(mat.value.tl);
   let b = $derived(2 * mat.value.tr);
@@ -63,16 +65,21 @@
   );
 </script>
 
-<Canvas3D {controls} {formulas} title="Quadratic forms" splitCanvas2DProps={{ cameraZoom: 2 }}>
-  <Axis3D />
+<Canvas3D
+  {controls}
+  {formulas}
+  title={$_('applets.symmetric_matrices.quadratic_forms.title')}
+  splitCanvas2DProps={{ cameraZoom: 2 }}
+>
+  <Axis3D x1="x_1" x2="x_2" x3="x_3" />
 
   {#if a == 0 && b == 0 && c == 0 && k == 0}
     <AutoPlanes values={[0, 0]}>
       {#snippet children(value, index, planeSegment, _)}
         {@const color = index == 0 ? PrimeColor.raspberry : PrimeColor.blue}
         <PlaneFromNormal
-          position={new Vector3(0, value, 0)}
-          normal={new Vector3(0, 1, 0)}
+          position={new MathVector3(0, 0, value)}
+          normal={new MathVector3(0, 0, 1)}
           {planeSegment}
           {color}
         />
@@ -83,10 +90,11 @@
       func={(x, y) => a * x * x + b * x * y + c * y * y}
       color={PrimeColor.blue}
       opacity={0.7}
+      resolution={75}
     />
 
     <PlaneFromNormal
-      normal={new Vector3(0, 1, 0)}
+      normal={new MathVector3(0, 0, 1)}
       position={plane_position}
       color={PrimeColor.raspberry}
     />

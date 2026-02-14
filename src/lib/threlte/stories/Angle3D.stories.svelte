@@ -4,7 +4,7 @@
   import Angle3D from '../Angle3D.svelte';
 
   const { Story } = defineMeta({
-    title: 'Threlte/Angle3D',
+    title: '3D Components/Angle3D',
     component: Angle3D
   });
 </script>

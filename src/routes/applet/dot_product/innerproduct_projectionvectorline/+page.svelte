@@ -9,6 +9,7 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
+  import { _ } from 'svelte-i18n';
 
   const draggables = [
     new Draggable(new Vector2(1, 0.5), PrimeColor.blue, ''),
@@ -25,7 +26,7 @@
   const proj_w_min_w = $derived(w.clone().sub(proj_w));
 </script>
 
-<Canvas2D {draggables} title="Projection of a vector onto a non-zero vector">
+<Canvas2D {draggables} title={$_('applets.dot_product.innerproduct_projectionvectorline.title')}>
   <!-- L /-->
   <InfiniteLine2D direction={v} color={PrimeColor.cyan} />
   <Latex2D latex={'\\mathcal{L}'} position={L_label} color={PrimeColor.cyan} />

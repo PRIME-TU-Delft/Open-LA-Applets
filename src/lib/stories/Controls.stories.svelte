@@ -14,6 +14,10 @@
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { _ } from 'svelte-i18n';
+  import Matrix2 from '$lib/utils/Matrix2.svelte';
+  import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
   const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
     label: 'A',
@@ -34,6 +38,8 @@
     PrimeColor.raspberry
   );
 
+  const functionControl = Controls.addFunction('\\sin{x}', 'f(x)', PrimeColor.raspberry);
+
   const state = {
     aOpacity: 1,
     bPosition: new Vector2(2, 1)
@@ -44,16 +50,35 @@
   const transitionSteps = [
     (t: number, state: S) => {
       state.aOpacity = state.aOpacity - 1 * t;
-      return { state, labelNext: 'fade out a', labelPrev: 'Original state' };
+      return {
+        state,
+        labelNext: $_('applets.testing.controls_stories.fade_out_a'),
+        labelPrev: $_('ui.slideshow_original_state')
+      };
     },
     (t: number, state: S) => {
       state.bPosition = state.bPosition.add(new Vector2(-3, 1).multiplyScalar(t));
 
-      return { state, labelNext: 'Move b to (-1,2)', labelPrev: 'Move b to (2,-1)' };
+      return {
+        state,
+        labelNext: $_('applets.testing.controls_stories.move_b_to'),
+        labelPrev: $_('applets.testing.controls_stories.move_b_from')
+      };
     }
   ];
 
   const slideShowControl = Controls.addSlideShow(state, transitionSteps);
+
+  const dropdownVals = [
+    'applets.testing.controls_stories.vector_left',
+    'applets.testing.controls_stories.vector_right',
+    'applets.testing.controls_stories.no_vector'
+  ];
+  const dropdownControl = Controls.addDropdown(dropdownVals[0], dropdownVals);
+
+  const matrixControl = Controls.addMatrix(new Matrix2(1, 2, 3, 4), 'A', PrimeColor.blue).add(
+    new DiagonalMatrix(new Matrix2(1, 0, 0, 3), 'B', PrimeColor.raspberry)
+  );
 </script>
 
 <!-- 
@@ -176,6 +201,76 @@ const slideShowControl = Controls.addSlideShow(state, transitionSteps);
         length={state.bPosition.length()}
         color={PrimeColor.blue}
       />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!-- 
+```typescript
+const dropdownVals = [
+  'applets.testing.controls_stories.vector_left',
+  'applets.testing.controls_stories.vector_right',
+  'applets.testing.controls_stories.no_vector'
+];
+const dropdownControl = Controls.addDropdown(dropdownVals[0], dropdownVals);
+
+```
+The dropdown values should be localized strings. They can be configured in the `src/lang/[lang]/applets.json` file.
+Read more about localization [here](./?path=/docs/tutorials-tutorial-translation--docs).
+ -->
+<Story name="Dropdown">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={dropdownControl}>
+      {#if dropdownControl[0] == dropdownVals[0]}
+        <Vector2D direction={new Vector2(-2, 1)} length={3} color={PrimeColor.raspberry} />
+      {/if}
+      {#if dropdownControl[0] == dropdownVals[1]}
+        <Vector2D direction={new Vector2(2, 1)} length={3} color={PrimeColor.blue} />
+      {/if}
+    </Canvas2D>
+  </div>
+</Story>
+
+<!-- 
+There are two types of Matrix controls - a normal matrix and a diagonal one which has the additional constraint that bottom right = top left.  
+
+```typescript
+const matrixControl = Controls.addMatrix(new Matrix2(1, 2, 3, 4), 'A', PrimeColor.blue).add(
+  new DiagonalMatrix(new Matrix2(1, 0, 0, 1), 'B', PrimeColor.raspberry)
+);
+```
+ -->
+<Story name="Matrix">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={matrixControl}>
+      <Vector2D
+        direction={new Vector2(1, 1)}
+        color={PrimeColor.blue}
+        length={matrixControl[0].tl * matrixControl[0].br -
+          matrixControl[0].tr * matrixControl[0].bl}
+      />
+      <Vector2D
+        direction={new Vector2(-2, 3)}
+        color={PrimeColor.raspberry}
+        length={matrixControl[1].tl * matrixControl[1].br -
+          matrixControl[1].tr * matrixControl[1].bl}
+      />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!-- 
+With a Function control you can easily have an interactive function input.
+
+```typescript
+const functionControl = Controls.addFunction("\\sin{x}", "f(x)", PrimeColor.raspberry);
+const function: (x: number) => number = functionControl[0];
+```
+-->
+<Story name="Function">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={functionControl}>
+      <ExplicitFunction2D func={functionControl[0]} color={PrimeColor.raspberry} />
     </Canvas2D>
   </div>
 </Story>
