@@ -100,7 +100,7 @@
   const equation = Van_der_Pol_like_equation(2, 0.67, 2, 0, 4, 7);
 </script>
 
-{#each points as { x, y, u, v }}
+{#each points as { x, y, u, v } ([x, y, u, v])}
   <Vector3D
     color={PrimeColor.raspberry}
     length={1.5}
