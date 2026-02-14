@@ -1,9 +1,14 @@
 import type { Transform2D } from '$lib/stores/camera.svelte';
+import type { Vector2 } from 'three';
 
 export type LabelProps = {
   xLabel?: string;
   yLabel?: string;
+  xLabelPosition?: 'center' | 'end';
+  xLabelOffset?: Vector2;
+  yLabelPosition?: 'center' | 'top';
   yLabelRotate?: boolean;
+  yLabelOffset?: Vector2;
   size?: number;
 };
 
@@ -33,7 +38,11 @@ function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transfo
   } as Transform2D;
 }
 
-export function getXLabelX(cameraTransform: Transform2D | undefined, width: number): number {
+export function getXLabelX(
+  cameraTransform: Transform2D | undefined,
+  width: number,
+  labels: LabelProps | undefined
+): number {
   const edgeMarginPx = 64;
 
   const normalizedCamera = revertCameraBaseline(cameraTransform);
@@ -45,13 +54,18 @@ export function getXLabelX(cameraTransform: Transform2D | undefined, width: numb
 
   const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
 
+  if (labels && labels.xLabelPosition == 'center') {
+    return baselineX + normalizedPanX;
+  }
+
   return baselineX - 7.5 + (rightEdgeFactor + normalizedPanX) / zoom;
 }
 
 export function getYabelY(
   cameraTransform: Transform2D | undefined,
   width: number,
-  height: number
+  height: number,
+  labels: LabelProps | undefined
 ): number {
   const edgeMarginPx = 88;
 
@@ -66,6 +80,10 @@ export function getYabelY(
 
   const worldYAtTopMargin =
     baselineY + (15 / width) * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
+
+  if (labels && labels.yLabelPosition == 'center') {
+    return baselineY + normalizedPanY;
+  }
 
   return worldYAtTopMargin;
 }

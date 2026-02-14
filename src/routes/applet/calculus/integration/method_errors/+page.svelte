@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
   import { Formula } from '$lib/utils/Formulas';
@@ -83,9 +82,9 @@
   });
 
   const legendItems = $derived([
-    new LegendItem($_('applets.calculus.integration.method_errors.left'), PrimeColor.orange),
-    new LegendItem($_('applets.calculus.integration.method_errors.right'), PrimeColor.blue),
-    new LegendItem($_('applets.calculus.integration.method_errors.trapezoid'), PrimeColor.darkGreen)
+    new LegendItem($_('applets.calculus.integration.simple_methods.left'), PrimeColor.orange),
+    new LegendItem($_('applets.calculus.integration.simple_methods.right'), PrimeColor.blue),
+    new LegendItem($_('applets.calculus.integration.simple_methods.trapezoid'), PrimeColor.darkGreen)
   ]);
 
   const N = $derived(Math.round(controls[0]));
@@ -134,22 +133,16 @@
   cameraZoom={1.15}
   cameraPosition={new Vector2(-1.4, -2.4)}
   title={$_('applets.calculus.integration.method_errors.title')}
->
-  <!-- RE-ADD when axis labels work better
   labels={{
     xLabel: 'h',
-    yLabel: $_('applets.calculus.integration.method_errors.absolute_error'),
-    yLabelRotate: true,
-    size: 1.5
-  }} -->
-
-  <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
-  <Latex2D
-    latex={`\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`}
-    position={new Vector2(1.95, -1.5)}
-    rotation={-90}
-  />
-
+    xLabelPosition: 'center',
+    xLabelOffset: new Vector2(-1, 0),
+    yLabel: `\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`,
+    yLabelPosition: 'center',
+    yLabelOffset: new Vector2(1, 1),
+    yLabelRotate: true
+  }}
+>
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
     {@const left = Math.log10(pE.errors['left'])}

@@ -156,8 +156,8 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width));
-  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height));
+  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, labels));
+  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, labels));
 </script>
 
 <div class="relative overflow-hidden">
@@ -184,14 +184,20 @@
               <Latex2D
                 latex={labels.xLabel}
                 fontSize={labels.size || 1}
-                position={new Vector2(xLabelX, 0.75)}
+                position={new Vector2(
+                  xLabelX + (labels?.xLabelOffset?.x ?? 0),
+                  0.75 + (labels?.xLabelOffset?.y ?? 0)
+                )}
               />
             {/if}
             {#if labels?.yLabel}
               <Latex2D
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
-                position={new Vector2(0.25 + (labels.yLabelRotate ? 0.5 : 0), yLabelY)}
+                position={new Vector2(
+                  0.25 + (labels.yLabelRotate ? 0.5 : 0) + (labels?.yLabelOffset?.x ?? 0),
+                  yLabelY + +(labels?.yLabelOffset?.y ?? 0)
+                )}
                 rotation={labels.yLabelRotate ? -90 : 0}
               />
             {/if}
