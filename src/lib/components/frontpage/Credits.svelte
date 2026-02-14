@@ -28,7 +28,7 @@
       These applets were created
       {#if bookName && bookURL}
         for the
-        <a href={bookURL}>
+        <a href={bookURL} rel="external">
           {bookName}
         </a>
       {/if}

@@ -7,18 +7,6 @@
 
   const modules = import.meta.glob('/src/routes/applet/calculus/**/+page.svelte');
 
-  let contributors = [
-    { name: 'Abel de Bruijn', title: 'Lead-developer' },
-    { name: 'Pauline Hengst', title: 'Frontend-developer' },
-    { name: 'Julia van der Kris', title: 'Backend-developer' },
-    { name: 'Bartek Włodarczyk', title: 'Developer' },
-    { name: 'Zhenghan Zhong', title: 'Developer' },
-    { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
-    { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
-    { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
-    { name: 'Beryl van Gelderen', title: 'Coordinator' }
-  ];
-
   const fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/calculus/', '').replace('/+page.svelte', '')
