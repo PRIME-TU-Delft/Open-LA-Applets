@@ -84,7 +84,10 @@
   const legendItems = $derived([
     new LegendItem($_('applets.calculus.integration.simple_methods.left'), PrimeColor.orange),
     new LegendItem($_('applets.calculus.integration.simple_methods.right'), PrimeColor.blue),
-    new LegendItem($_('applets.calculus.integration.simple_methods.trapezoid'), PrimeColor.darkGreen)
+    new LegendItem(
+      $_('applets.calculus.integration.simple_methods.trapezoid'),
+      PrimeColor.darkGreen
+    )
   ]);
 
   const N = $derived(Math.round(controls[0]));
