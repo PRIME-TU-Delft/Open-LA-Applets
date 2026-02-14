@@ -23,7 +23,9 @@
       // Remove head of path and extension
       rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
     )
-    .filter((s) => s !== '[...applet]/static' && !s.startsWith('calculus'));
+    .filter(
+      (s) => s !== '[...applet]/static' && !s.startsWith('calculus/') && !s.startsWith('other/')
+    );
 </script>
 
 <NavBar
@@ -55,6 +57,14 @@
       Looking for Calculus applets? Go to
       <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/calculus')}
         >/calculus <ExternalLink class="h-4 w-4" /></a
+      >
+    </blockquote>
+
+    <blockquote class="border-yellow-400/50 bg-yellow-400/10 py-2 text-yellow-800">
+      <span class="font-bold">Hint:</span>
+      Looking for other applets? Go to
+      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/other')}
+        >/other <ExternalLink class="h-4 w-4" /></a
       >
     </blockquote>
 
