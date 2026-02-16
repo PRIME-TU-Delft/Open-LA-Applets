@@ -280,7 +280,7 @@
       position={point}
       color={PrimeColor.black}
       radius={0.05}
-      text={`T_{${index + 1}}`}
+      text={`x_{${index + 1}}^*`}
       fontSize={0.4}
       offset={new Vector2(0, -0.05)}
     />
