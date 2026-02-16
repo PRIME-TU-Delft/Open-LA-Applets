@@ -180,6 +180,12 @@
               <Axis {...axis} />
             {/if}
 
+            {@render children()}
+
+            {#each draggables as d (d.id)}
+              <Draggable2D draggable={d} />
+            {/each}
+
             {#if labels?.xLabel}
               <Latex2D
                 latex={labels.xLabel}
@@ -201,12 +207,6 @@
                 rotation={labels.yLabelRotate ? -90 : 0}
               />
             {/if}
-
-            {@render children()}
-
-            {#each draggables as d (d.id)}
-              <Draggable2D draggable={d} />
-            {/each}
           </g>
         </g>
       </g>
