@@ -43,7 +43,7 @@
     return `10^{${index}}`;
   }
 
-  let yAxisTextX = $derived(logarithmicY ? 0.3 : -0.3);
+  let yAxisTextX = $derived(logarithmicY ? 0.2 : -0.2);
 </script>
 
 <g>
