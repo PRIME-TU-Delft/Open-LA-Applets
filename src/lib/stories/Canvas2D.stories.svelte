@@ -44,9 +44,7 @@
   args={{
     labels: {
       xLabel: 'x',
-      yLabel: '\\text{error}',
-      xLabelPosition: 'top-center',
-      yLabelPosition: 'right-end'
+      yLabel: '\\text{error}'
     }
   }}
   {template}
