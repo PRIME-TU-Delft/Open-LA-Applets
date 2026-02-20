@@ -8,7 +8,6 @@
   import { Vector2 } from 'three';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
 
   const methods = [
@@ -160,10 +159,8 @@
   {formulas}
   {draggables}
   cameraPosition={new Vector2(4, 2)}
+  labels={{ xLabel: 'x', yLabel: 'f(x)' }}
 >
-  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
-  <Latex2D latex="x" position={new Vector2(10.5, 0.55)} />
-  <Latex2D latex="f(x)" position={new Vector2(0.25, 6.25)} />
 
   <ExplicitFunction2D
     {func}
