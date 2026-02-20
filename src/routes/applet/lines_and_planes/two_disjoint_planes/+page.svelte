@@ -5,26 +5,22 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
 
-  const normal = new MathVector3(1, 1, 3).normalize();
-  const controls = Controls.addSlider(1, 1, 5, 0.5).addSlider(0, -5, 0, 0.5);
+  const normal = new MathVector3(-0.5, 1, 3).normalize();
+  const controls = Controls.addSlider(3, 1, 4.5, 0.5).addSlider(-1, -4.5, 0, 0.5);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula(
-      `1x + 1y + (3 ${controls[0] < 0 ? '' : '+'}\\$)z = 0`,
-      controls[0],
-      PrimeColor.raspberry
-    );
-    const f2 = new Formula(
-      `1x + 1y + (3 ${controls[1] < 0 ? '' : '+'}\\$)z = 0`,
-      controls[1],
-      PrimeColor.yellow
-    );
+    const f1 = new Formula(`\\$2: -x + 2 y + 6 z &= \\$1`)
+      .addAutoParam((2 * controls[0]).toFixed(1), PrimeColor.raspberry)
+      .addAutoParam('P_1', PrimeColor.raspberry);
+    const f2 = new Formula(`\\$2: -x + 2 y + 6 z &= \\$1`)
+      .addAutoParam((2 * controls[1]).toFixed(1), PrimeColor.yellow)
+      .addAutoParam('P_2', PrimeColor.yellow);
 
-    return [f1, f2];
+    return new Formulas(f1, f2).align();
   });
 </script>
 
