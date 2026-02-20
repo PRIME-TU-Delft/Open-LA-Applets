@@ -76,7 +76,7 @@
         <Latex2D
           latex={getTickText(index, 'x')}
           position={new Vector2(index * scaleX, -0.15)}
-          centerX={true}
+          alignX="center"
         />
       {/if}
 
@@ -86,7 +86,7 @@
           latex={getTickText(index, 'y')}
           position={new Vector2(yAxisTextX, index * scaleY)}
           alignX={logarithmicY ? 'left' : 'right'}
-          centerY={true}
+          alignY="center"
         />
       {/if}
     {/if}

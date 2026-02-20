@@ -51,17 +51,17 @@
   - Text 2 is aligned left on x
   - Text 3 is aligned right on x
   - Text 4 is centered on y
-  - Text 5 is not centered on y
+  - Text 5 is bottom-aligned on y
   -->
 <Story name="With different alignments">
   {#snippet template()}
     <div class="h-[300px] overflow-hidden rounded-lg">
       <Canvas2D>
-        <Latex2D latex="Text 1" centerX={true} position={new Vector2(0, 1)} />
+        <Latex2D latex="Text 1" alignX="center" position={new Vector2(0, 1)} />
         <Latex2D latex="Text 2" alignX="left" position={new Vector2(0, 2)} />
         <Latex2D latex="Text 3" alignX="right" position={new Vector2(0, 3)} />
-        <Latex2D latex="Text 4" centerY={true} position={new Vector2(1, 0)} />
-        <Latex2D latex="Text 5" centerY={false} position={new Vector2(3, 0)} />
+        <Latex2D latex="Text 4" alignY="center" position={new Vector2(1, 0)} />
+        <Latex2D latex="Text 5" alignY="bottom" position={new Vector2(3, 0)} />
       </Canvas2D>
     </div>
   {/snippet}

@@ -7,9 +7,8 @@
     rotation?: number;
     extend?: number;
     color?: string;
-    centerX?: boolean;
-    centerY?: boolean;
-    alignX?: 'left' | 'right' | null;
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
   };
 </script>
 
@@ -25,9 +24,8 @@
     rotation = 0,
     extend = 0,
     color = 'black',
-    centerX = false,
-    centerY = false,
-    alignX = null
+    alignX = null,
+    alignY = null
   }: Latex2DProps = $props();
 
   let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
@@ -35,13 +33,14 @@
   let style = $derived.by(() => {
     const base = 'display: inline-block; width: max-content;';
 
-    if (alignX == 'right' && centerY) return base + ' transform: translate(-100%, -50%);';
-    if (alignX == 'right') return base + ' transform: translateX(-100%);';
-    if (alignX == 'left' && centerY) return base + ' transform: translateY(-50%);';
-    if (alignX == 'left') return base;
-    if (centerX && centerY) return base + ' transform: translate(-50%, -50%);';
-    if (centerX) return base + ' transform: translateX(-50%);';
-    if (centerY) return base + ' transform: translateY(-50%);';
+    const translateX = alignX === 'right' ? '-100%' : alignX === 'center' ? '-50%' : null;
+
+    const translateY = alignY === 'bottom' ? '-100%' : alignY === 'center' ? '-50%' : null;
+
+    if (translateX && translateY)
+      return base + ` transform: translate(${translateX}, ${translateY});`;
+    if (translateX) return base + ` transform: translateX(${translateX});`;
+    if (translateY) return base + ` transform: translateY(${translateY});`;
     return base;
   });
 
