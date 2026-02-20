@@ -30,7 +30,7 @@
   const formulas = $derived.by(() => {
     const f1 = new Formula('\\mathbf{v}_1 &= \\mathbf{v}_0 + r \\mathbf{u}');
     const f2 = new Formula(
-      '\\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} &= \\begin{bmatrix} \\$3  \\\\ \\$4 \\end{bmatrix} + \\$5 \\begin{bmatrix} \\$6 \\\\ \\$7 \\end{bmatrix}'
+      '\\begin{pmatrix} \\$1 \\\\ \\$2 \\end{pmatrix} &= \\begin{pmatrix} \\$3  \\\\ \\$4 \\end{pmatrix} + \\$5 \\begin{pmatrix} \\$6 \\\\ \\$7 \\end{pmatrix}'
     )
       .addAutoParam(round(v1.x, 1), PrimeColor.yellow)
       .addAutoParam(round(v1.y, 1), PrimeColor.yellow)

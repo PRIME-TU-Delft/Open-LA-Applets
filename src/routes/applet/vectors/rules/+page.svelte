@@ -78,7 +78,7 @@
   });
 
   function toMatrix(vec: Vector2) {
-    return `\\begin{bmatrix} ${round(vec.x, 1)} \\\\ ${round(vec.y, 1)} \\end{bmatrix}`;
+    return `\\begin{pmatrix} ${round(vec.x, 1)} \\\\ ${round(vec.y, 1)} \\end{pmatrix}`;
   }
 
   function toColor(str: string, color: string) {
@@ -86,8 +86,8 @@
   }
 
   const formulas = $derived.by(() => {
-    const zeroVec = '\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}';
-    const v1 = `\\begin{bmatrix} ${round(draggables[0].position.x, 1)} \\\\ ${round(draggables[0].position.y, 1)} \\end{bmatrix}`;
+    const zeroVec = '\\begin{pmatrix} 0 \\\\ 0 \\end{pmatrix}';
+    const v1 = `\\begin{pmatrix} ${round(draggables[0].position.x, 1)} \\\\ ${round(draggables[0].position.y, 1)} \\end{pmatrix}`;
     const v2 = draggables[1] ? toMatrix(draggables[1].position) : '';
     const v3 = draggables[2] ? toMatrix(draggables[2].position) : '';
 
