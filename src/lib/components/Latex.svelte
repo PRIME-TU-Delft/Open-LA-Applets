@@ -22,7 +22,7 @@
     outputType = 'html',
     class: classes = '',
     fontSize = 1,
-    style
+    style = ''
   }: LatexProps = $props();
 
   let strOutput = $derived.by(() => {
@@ -54,7 +54,7 @@
     }
   });
 
-  let latexClasses = cn('latex select-none', classes);
+  let latexClasses = $derived(cn('latex select-none', classes));
 </script>
 
 <div style={`font-size: ${fontSize}rem; color: ${color};` + style} class={latexClasses}>
