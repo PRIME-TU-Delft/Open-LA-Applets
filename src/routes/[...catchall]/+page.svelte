@@ -3,27 +3,18 @@
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
   import { resolve } from '$app/paths';
+  import Credits from '$lib/components/frontpage/Credits.svelte';
 
   const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
-
-  let contributors = [
-    { name: 'Abel de Bruijn', title: 'Lead-developer' },
-    { name: 'Pauline Hengst', title: 'Frontend-developer' },
-    { name: 'Julia van der Kris', title: 'Backend-developer' },
-    { name: 'Bartek Włodarczyk', title: 'Developer' },
-    { name: 'Zhenghan Zhong', title: 'Developer' },
-    { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
-    { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
-    { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
-    { name: 'Beryl van Gelderen', title: 'Coordinator' }
-  ];
 
   const fileUrls = Object.keys(modules)
     .map((rawUrl) =>
       // Remove head of path and extension
       rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
     )
-    .filter((s) => s !== '[...applet]/static' && !s.startsWith('calculus'));
+    .filter(
+      (s) => s !== '[...applet]/static' && !s.startsWith('calculus/') && !s.startsWith('other/')
+    );
 </script>
 
 <NavBar
@@ -58,6 +49,14 @@
       >
     </blockquote>
 
+    <blockquote class="border-yellow-400/50 bg-yellow-400/10 py-2 text-yellow-800">
+      <span class="font-bold">Hint:</span>
+      Looking for other applets? Go to
+      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/other')}
+        >/other <ExternalLink class="h-4 w-4" /></a
+      >
+    </blockquote>
+
     <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
       <span class="font-bold">Hint:</span>
       Press
@@ -71,67 +70,10 @@
 
   <FolderList {fileUrls} />
 
-  <div
-    class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"
-  >
-    <div class="prose max-w-full">
-      <h2>Credits</h2>
-      <p>
-        These applets were created for the
-        <a href="https://interactivetextbooks.tudelft.nl/linear-algebra/">
-          TU Delft Open Linear Algebra book
-        </a> by these wonderful contributors.
-      </p>
-
-      <h3>Contributors</h3>
-      <div class="columns-1 gap-2 md:columns-2">
-        {#each contributors as { name, title } (name)}
-          <div class="mb-2 flex gap-2">
-            <div class="not-prose w-24 overflow-hidden rounded">
-              <img
-                class="aspect-square object-cover"
-                src={'/contributors/' + name + '.jpg'}
-                alt={'Profile of ' + name}
-              />
-            </div>
-            <div class="flex flex-col gap-1">
-              <span class="bold">{name}</span>
-              <span class="text-xs">{title}</span>
-            </div>
-          </div>
-        {/each}
-      </div>
-
-      <h3>License</h3>
-      <p>
-        <a class="not-prose" rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-          ><img
-            alt="Creative Commons License"
-            style="border-width:0"
-            src="https://i.creativecommons.org/l/by/4.0/88x31.png"
-          /></a
-        ><br /><span>PRIME Linear Algebra applets</span>
-        by
-        <a
-          href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/applied-mathematics/studeren/prime"
-          property="cc:attributionName"
-          rel="cc:attributionURL">PRIME, TU Delft</a
-        >
-        is licensed under a
-        <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"
-          >Creative Commons Attribution 4.0 International License</a
-        >.<br />Based on a work at
-        <a href="https://github.com/PRIME-TU-Delft/turborepo-visuals" rel="dct:source"
-          >https://github.com/PRIME-TU-Delft/turborepo-visuals</a
-        >.<br />Permissions beyond the scope of this license may be available at
-        <a
-          href="https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE"
-          rel="cc:morePermissions"
-          >https://github.com/PRIME-TU-Delft/turborepo-visuals/blob/main/LICENSE</a
-        >.
-      </p>
-    </div>
-  </div>
+  <Credits
+    bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"
+    bookName="TU Delft Open Linear Algebra book"
+  />
 
   <div class="rounded bg-slate-300 p-10">
     <img class="h-20 w-full object-contain" alt="prime-tudelft" src="/logo-black.png" />
