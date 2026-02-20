@@ -1,6 +1,6 @@
 <script lang="ts">
   import { MathVector3 } from '$lib/utils/MathVector';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Controls } from '$lib/controls/Controls';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
@@ -14,13 +14,13 @@
   const controls = Controls.addSlider(0, -2, 0.5, 0.5, PrimeColor.darkGreen);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('\\$1 : 1x \\$2y + 1z = 0')
+    const f1 = new Formula('\\$1 : x \\$2y + z = 0')
       .addAutoParam('P_1', PrimeColor.darkGreen)
-      .addAutoParam(withSign(controls[0]), PrimeColor.darkGreen);
-    const f2 = new Formula('\\$1 : 1x + 1y + 1z = 1').addAutoParam('P_2', PrimeColor.yellow);
-    const f3 = new Formula('\\$1 : 1x + 1y + 1z = 0').addAutoParam('P_3', PrimeColor.raspberry);
+      .addAutoParam(withSign(controls[0], 1), PrimeColor.darkGreen);
+    const f2 = new Formula('\\$1 : x + y + z = 1').addAutoParam('P_2', PrimeColor.yellow);
+    const f3 = new Formula('\\$1 : x + y + z = 0').addAutoParam('P_3', PrimeColor.raspberry);
 
-    return [f1, f2, f3];
+    return new Formulas(f1, f2, f3).align();
   });
 </script>
 
