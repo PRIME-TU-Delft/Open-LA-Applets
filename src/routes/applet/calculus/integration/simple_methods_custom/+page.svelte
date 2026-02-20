@@ -12,8 +12,8 @@
   import { appletState } from '$lib/stores/applet.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import { integral, round } from '$lib/utils/MathLib';
+  import { parseNumericalOrLatex } from '$lib/utils/Params';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { ComputeEngine } from '@cortex-js/compute-engine';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
@@ -71,48 +71,14 @@
   const urlXL = searchParams.get('xL');
   const urlXR = searchParams.get('xR');
 
-  let isXLLatex = false;
-  let isXRLatex = false;
+  let xLResult = parseNumericalOrLatex(urlXL, 1.5);
+  let xRResult = parseNumericalOrLatex(urlXR, 4.5);
 
-  let defaultXL: number = 1.5;
-  let defaultXR: number = 4.5;
+  let defaultXL: number = xLResult.value;
+  let defaultXR: number = xRResult.value;
 
-  function parseLatex(latex: string): number {
-    const ce = new ComputeEngine();
-    const parsed = ce.parse(latex);
-
-    if (!parsed.isValid || parsed.has('Error') || parsed.has('Nothing')) return NaN;
-
-    return parseFloat(parsed.N() as unknown as string);
-  }
-
-  if (urlXL != null) {
-    defaultXL = parseFloat(urlXL);
-
-    const latexXL = parseLatex(urlXL);
-    if (!isNaN(latexXL)) {
-      defaultXL = latexXL;
-      isXLLatex = true;
-    }
-
-    if (isNaN(defaultXL)) {
-      defaultXL = 1.5;
-    }
-  }
-
-  if (urlXR != null) {
-    defaultXR = parseFloat(urlXR);
-
-    const latexXR = parseLatex(urlXR);
-    if (!isNaN(latexXR)) {
-      defaultXR = latexXR;
-      isXRLatex = true;
-    }
-
-    if (isNaN(defaultXR)) {
-      defaultXR = 4.5;
-    }
-  }
+  let isXLLatex = xLResult.isLatex;
+  let isXRLatex = xRResult.isLatex;
 
   const cameraX = (defaultXR + defaultXL) / 2;
   const cameraZoom = Math.min(12 / (defaultXR - defaultXL), 1);
