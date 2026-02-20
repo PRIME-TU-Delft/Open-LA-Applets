@@ -161,7 +161,6 @@
   cameraPosition={new Vector2(4, 2)}
   labels={{ xLabel: 'x', yLabel: 'f(x)' }}
 >
-
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}

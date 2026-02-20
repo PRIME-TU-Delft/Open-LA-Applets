@@ -245,9 +245,7 @@
   cameraPosition={new Vector2(cameraX, 2)}
   {cameraZoom}
   labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
-
 >
-
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}
