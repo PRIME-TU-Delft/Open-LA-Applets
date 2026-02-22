@@ -67,8 +67,12 @@
     />
 
     <!-- Tick marks -->
-    <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
-    <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+    {#if index % scaleX == 0}
+      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+    {/if}
+    {#if index % scaleY == 0}
+      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+    {/if}
 
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
