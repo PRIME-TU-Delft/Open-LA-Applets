@@ -14,7 +14,17 @@
   import { appletState } from '$lib/stores/applet.svelte';
 
   let includeState = $state(false); // If true, the url will include the current state of the applet  (camera position, etc...)
-  let showCopySucess = $state(false);
+  let showStateURLCopySucess = $state(false);
+  let showParamURLCopySucess = $state(false);
+
+  // Reset URLParamsInfo when navigating to a new page
+  $effect(() => {
+    const _currentPath = page.url.pathname;
+    return () => {
+      appletState.URLParamsInfo = [];
+    };
+  });
+
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 
@@ -73,13 +83,23 @@
     return url + '%29';
   });
 
-  function copyToClipboard() {
+  function copyStateURLToClipboard() {
     navigator.clipboard.writeText(stateUrl);
 
-    showCopySucess = true;
+    showStateURLCopySucess = true;
 
     setTimeout(() => {
-      showCopySucess = false;
+      showStateURLCopySucess = false;
+    }, 2000);
+  }
+
+  function copyParamURLToClipboard() {
+    navigator.clipboard.writeText(urlWithCustomParams);
+
+    showParamURLCopySucess = true;
+
+    setTimeout(() => {
+      showParamURLCopySucess = false;
     }, 2000);
   }
 </script>
@@ -104,7 +124,7 @@
 
   <div class="relative h-full w-full">
     <Textarea readonly value={stateUrl} />
-    {#if showCopySucess}
+    {#if showStateURLCopySucess}
       <div class="absolute bottom-1 left-1 text-green-700" in:fly={{ y: 20 }}>
         {$_('ui.clipboard_copied')}
       </div>
@@ -113,7 +133,7 @@
 
   <!-- eslint-disable svelte/no-navigation-without-resolve -->
   <div class="mt-2 flex w-max gap-2 overflow-x-auto">
-    <Button onclick={() => copyToClipboard()}>
+    <Button onclick={() => copyStateURLToClipboard()}>
       {$_('ui.clipboard_copy')}
       <Copy class="ml-2 size-4" />
     </Button>
@@ -148,7 +168,7 @@
     </a>
   </div>
 
-  {#if appletState.URLParamsInfo}
+  {#if appletState.URLParamsInfo && appletState.URLParamsInfo.length > 0}
     <div class="mt-6 w-full">
       <h3 class="mb-3 font-semibold">
         {$_('ui.custom_url_parameters')}
@@ -189,8 +209,27 @@
       {$_('ui.embed_applet_url_params')}
     </Label>
 
-    <div class="my-2 h-full w-full">
+    <div class="relative my-2 h-full w-full">
       <Textarea readonly value={urlWithCustomParams} />
+      {#if showParamURLCopySucess}
+        <div class="absolute bottom-1 left-1 text-green-700" in:fly={{ y: 20 }}>
+          {$_('ui.clipboard_copied')}
+        </div>
+      {/if}
+    </div>
+
+    <div class="mt-2 flex w-max gap-2 overflow-x-auto">
+      <Button onclick={() => copyParamURLToClipboard()}>
+        {$_('ui.clipboard_copy')}
+        <Copy class="ml-2 size-4" />
+      </Button>
+
+      <a href={urlWithCustomParams} target="_blank">
+        <Button>
+          {$_('ui.open_new_tab')}
+          <ExternalLink class="ml-2 size-4" />
+        </Button>
+      </a>
     </div>
   {/if}
 </div>

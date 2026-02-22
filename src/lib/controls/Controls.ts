@@ -294,14 +294,26 @@ export class Controls<
     return new Controls([newMatrix] as const, newMatrix.width);
   }
 
-  addFunction(latex: string, label?: string, color?: PrimeColor, parameterLetter?: string) {
-    const newFunction = new Function(latex, label, color, parameterLetter);
+  addFunction(
+    latex: string,
+    label?: string,
+    color?: PrimeColor,
+    parameterLetter?: string,
+    setLatexValue?: (latexValue: string) => void
+  ) {
+    const newFunction = new Function(latex, label, color, parameterLetter, setLatexValue);
     this.isAllowedToAddControl(newFunction);
     return new Controls([...this.controls, newFunction] as const, this._width + newFunction.width);
   }
 
-  static addFunction(latex: string, label?: string, color?: PrimeColor, parameterLetter?: string) {
-    const newFunction = new Function(latex, label, color, parameterLetter);
+  static addFunction(
+    latex: string,
+    label?: string,
+    color?: PrimeColor,
+    parameterLetter?: string,
+    setLatexValue?: (latexValue: string) => void
+  ) {
+    const newFunction = new Function(latex, label, color, parameterLetter, setLatexValue);
     return new Controls([newFunction] as const, newFunction.width);
   }
 

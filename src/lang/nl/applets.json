@@ -24,6 +24,19 @@
         "right": "Rechter Rechthoek",
         "trapezoid": "Trapezium"
       }
+    },
+    "riemann_sum": {
+      "riemann_sum_2d": {
+        "middle": "Midden",
+        "left": "Links",
+        "right": "Rechts"
+      },
+      "riemann_sum_3d": {
+        "center": "Middelpunt"
+      },
+      "random": "Willekeurig",
+      "min": "Min",
+      "max": "Max"
     }
   },
   "change_of_basis": {
@@ -103,9 +116,8 @@
   },
   "linear_independence": {
     "linind_example_in_3d": {
-      "linearly": "lineair",
-      "in": "on",
-      "dependent": "afhankelijk"
+      "dependent": "lineair afhankelijk",
+      "independent": "lineair onafhankelijk"
     }
   },
   "lines_and_planes": {
