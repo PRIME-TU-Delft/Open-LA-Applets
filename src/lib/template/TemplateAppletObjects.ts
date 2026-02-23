@@ -13,7 +13,7 @@ type Integral = {
   fillStyle: 'full' | 'dashed';
 };
 
-export class AppletObject { }
+export class AppletObject {}
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
@@ -96,7 +96,6 @@ export class AsymptoteFragment extends AppletObject {
   }
 }
 
-
 export class ObliqueAsymptoteFragment extends FunctionFragment {
   //! TODO: allow functions to be dashed
 
@@ -107,7 +106,5 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    */
   constructor(func: ((x: number) => number) | string, color: PrimeColor) {
     super(func, color, undefined);
-
-
   }
 }

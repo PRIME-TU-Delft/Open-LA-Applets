@@ -12,7 +12,11 @@ The template system lets you build applets by editing one array (`appletObjects`
 
 Here is a preview of the example template applet:
 
-<iframe src={host + '/applet/calculus/template/template_applet'} width="100%" height="600px"></iframe>
+<iframe
+  src={host + '/applet/calculus/template/template_applet'}
+  width="100%"
+  height="600px"
+></iframe>
 
 The code for this applet can be found here:
 [View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/applet/calculus/template/template_applet/%2Bpage.svelte)
@@ -52,7 +56,6 @@ This is the complete page component for the template applet (`src/routes/applet/
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
-
 </script>
 
 <Canvas2D>
@@ -71,6 +74,7 @@ const appletObjects: AppletObject[] = [
 ## Template objects
 
 The `appletObjects` array can contain the following types of objects:
+
 - `FunctionFragment`: a function graph (defined by JavaScript function or LaTeX string).
 - `AsymptoteFragment`: a vertical or horizontal dashed asymptote.
 - `ObliqueAsymptoteFragment`: an oblique asymptote (defined by JavaScript function or LaTeX string).
@@ -107,13 +111,19 @@ More `FunctionFragment` examples:
 new FunctionFragment((x: number) => x ** 3 - 2 * x, PrimeColor.raspberry);
 
 // 2) JavaScript function: trigonometric
-new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, { xMin: -Math.PI, xMax: Math.PI });
+new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, {
+  xMin: -Math.PI,
+  xMax: Math.PI
+});
 
 // 3) JavaScript function: piecewise
 new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { xMin: -3, xMax: 3 });
 
 // 4) JavaScript function with an integral region
-new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, { xMin: -2, xMax: 4 }).withIntegral({
+new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, {
+  xMin: -2,
+  xMax: 4
+}).withIntegral({
   xLeft: 0,
   xRight: 3,
   fillStyle: 'dashed'
@@ -130,7 +140,7 @@ Use JavaScript functions when you want logic (for example piecewise behavior), a
 Constructor:
 
 ```ts
-new AsymptoteFragment(position, type, color)
+new AsymptoteFragment(position, type, color);
 ```
 
 - `position`: x-value (vertical) or y-value (horizontal)
@@ -149,7 +159,7 @@ new AsymptoteFragment(-2, 'horizontal', PrimeColor.black);
 Constructor:
 
 ```ts
-new ObliqueAsymptoteFragment(func, color)
+new ObliqueAsymptoteFragment(func, color);
 ```
 
 - `func`: either `(x: number) => number` or a LaTeX string (for example `'x+2'`)
@@ -236,4 +246,3 @@ The template workflow is:
 - Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
 
 When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.
-
