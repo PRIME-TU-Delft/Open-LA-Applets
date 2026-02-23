@@ -1,43 +1,26 @@
 <script lang="ts">
-  import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
+  // For ease of creating the template applets
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  import {
+    AppletObject,
+    AsymptoteFragment,
+    FunctionFragment
+  } from '$lib/template/TemplateAppletObjects';
+  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-
-  type Domain = {
-    xMin?: number;
-    xMax?: number;
-  };
-
-  class AppletObject {}
-
-  class FunctionFragment extends AppletObject {
-    func: (x: number) => number;
-    color: PrimeColor;
-    domain: Domain | undefined = undefined;
-
-    constructor(func: (x: number) => number, color: PrimeColor, domain?: Domain) {
-      super();
-
-      this.func = func;
-      this.color = color;
-      this.domain = domain;
-    }
-  }
+  import { Vector2 } from 'three';
 
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 })
+    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue).addGaps(new Vector2(-1, 0)),
+    new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
+      xLeft: -4,
+      xRight: -1.25,
+      fillStyle: 'full'
+    }),
+    new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
+    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black)
   ];
 </script>
 
-<Canvas2D>
-  {#each appletObjects as object, idx (idx)}
-    {#if object instanceof FunctionFragment}
-      <ExplicitFunction2D
-        func={object.func}
-        color={object.color.toString()}
-        xMin={object.domain?.xMin}
-        xMax={object.domain?.xMax}
-      />
-    {/if}
-  {/each}
-</Canvas2D>
+<TemplateComponent objects={appletObjects} />
