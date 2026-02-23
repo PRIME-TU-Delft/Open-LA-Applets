@@ -13,13 +13,14 @@ type Integral = {
   fillStyle: 'full' | 'dashed';
 };
 
-export class AppletObject {}
+export class AppletObject { }
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
   color: PrimeColor;
   domain: Domain | undefined = undefined;
   gaps: Vector2[] = [];
+  includedPoints: Vector2[] = [];
   integral: Integral | undefined = undefined;
 
   /**
@@ -49,8 +50,18 @@ export class FunctionFragment extends AppletObject {
    * @param positions List of Vector2 coordinates of the gaps
    * @returns this
    */
-  addGaps(...xCoordinates: Vector2[]) {
-    this.gaps = this.gaps.concat(xCoordinates);
+  addGaps(...positions: Vector2[]) {
+    this.gaps = this.gaps.concat(positions);
+    return this;
+  }
+
+  /**
+   * Add included points to the function fragment
+   * @param positions List of Vector2 coordinates of the included points
+   * @returns this
+   */
+  addIncludedPoints(...positions: Vector2[]) {
+    this.includedPoints = this.includedPoints.concat(positions);
     return this;
   }
 

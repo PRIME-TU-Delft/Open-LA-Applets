@@ -23,6 +23,14 @@
       {#each object.gaps as position, idx (idx)}
         <Circle2D {position} fill="white" color={object.color.toString()} radius={0.075} />
       {/each}
+      {#each object.includedPoints as position, idx (idx)}
+        <Circle2D
+          {position}
+          fill={object.color.toString()}
+          color={object.color.toString()}
+          radius={0.075}
+        />
+      {/each}
     {:else if object instanceof AsymptoteFragment}
       {#if object.type == 'vertical'}
         <InfiniteLine2D
