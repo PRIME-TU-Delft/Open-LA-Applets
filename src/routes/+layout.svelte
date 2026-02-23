@@ -1,5 +1,7 @@
 <script lang="ts">
   import '../app.css';
+  import { page } from '$app/state';
+  import { appletState } from '$lib/stores/applet.svelte';
   import { addMessages, init } from 'svelte-i18n';
   import {
     availableLanguages,
@@ -36,6 +38,16 @@
   // Localization
   init({
     fallbackLocale: DEFAULT_LANGUAGE
+  });
+
+  let previousPath = $state(page.url.pathname);
+
+  $effect(() => {
+    const currentPath = page.url.pathname;
+    if (currentPath !== previousPath) {
+      appletState.URLParamsInfo = [];
+      previousPath = currentPath;
+    }
   });
 
   let { children } = $props();
