@@ -1,5 +1,7 @@
 <script lang="ts">
   import '../app.css';
+  import { beforeNavigate } from '$app/navigation';
+  import { appletState } from '$lib/stores/applet.svelte';
   import { addMessages, init } from 'svelte-i18n';
   import {
     availableLanguages,
@@ -36,6 +38,10 @@
   // Localization
   init({
     fallbackLocale: DEFAULT_LANGUAGE
+  });
+
+  beforeNavigate(() => {
+    appletState.URLParamsInfo = [];
   });
 
   let { children } = $props();
