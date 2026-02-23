@@ -95,3 +95,19 @@ export class AsymptoteFragment extends AppletObject {
     this.position = position;
   }
 }
+
+
+export class ObliqueAsymptoteFragment extends FunctionFragment {
+  //! TODO: allow functions to be dashed
+
+  /**
+   * Oblique asymptote fragment template object
+   * @param func A javascript function or a latex string describing the asymptote
+   * @param color Color of the asymptote
+   */
+  constructor(func: ((x: number) => number) | string, color: PrimeColor) {
+    super(func, color, undefined);
+
+
+  }
+}

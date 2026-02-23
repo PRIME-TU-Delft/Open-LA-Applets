@@ -4,7 +4,8 @@
   import {
     AppletObject,
     AsymptoteFragment,
-    FunctionFragment
+    FunctionFragment,
+    ObliqueAsymptoteFragment
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -22,7 +23,8 @@
       fillStyle: 'full'
     }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
-    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black)
+    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
+    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
 </script>
 
