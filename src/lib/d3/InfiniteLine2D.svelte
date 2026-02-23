@@ -24,13 +24,13 @@
   const start = $derived(
     dir
       .clone()
-      .multiplyScalar(GRID_SIZE_2D * 2)
+      .multiplyScalar(GRID_SIZE_2D)
       .add(origin)
   );
   const end = $derived(
     dir
       .clone()
-      .multiplyScalar(GRID_SIZE_2D * -2)
+      .multiplyScalar(GRID_SIZE_2D * -1)
       .add(origin)
   );
 </script>
