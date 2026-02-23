@@ -7,6 +7,7 @@
     FunctionFragment
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
@@ -25,4 +26,6 @@
   ];
 </script>
 
-<TemplateComponent objects={appletObjects} />
+<Canvas2D>
+  <TemplateComponent objects={appletObjects} />
+</Canvas2D>
