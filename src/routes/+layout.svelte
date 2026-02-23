@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.css';
-  import { page } from '$app/state';
+  import { beforeNavigate } from '$app/navigation';
   import { appletState } from '$lib/stores/applet.svelte';
   import { addMessages, init } from 'svelte-i18n';
   import {
@@ -40,14 +40,8 @@
     fallbackLocale: DEFAULT_LANGUAGE
   });
 
-  let previousPath = $state(page.url.pathname);
-
-  $effect(() => {
-    const currentPath = page.url.pathname;
-    if (currentPath !== previousPath) {
-      appletState.URLParamsInfo = [];
-      previousPath = currentPath;
-    }
+  beforeNavigate(() => {
+    appletState.URLParamsInfo = [];
   });
 
   let { children } = $props();
