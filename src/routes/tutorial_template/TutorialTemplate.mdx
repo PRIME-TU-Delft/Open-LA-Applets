@@ -1,0 +1,239 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+export const host = 'https://openla.ewi.tudelft.nl';
+
+<Meta title="Tutorials/Tutorial Template" />
+
+# Tutorial Template
+
+This tutorial explains how to quickly create a calculus applet using the template objects.
+
+The template system lets you build applets by editing one array (`appletObjects`) instead of writing custom Svelte rendering logic.
+
+Here is a preview of the example template applet:
+
+<iframe src={host + '/applet/calculus/template/template_applet'} width="100%" height="600px"></iframe>
+
+The code for this applet can be found here:
+[View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/applet/calculus/template/template_applet/%2Bpage.svelte)
+
+<br />
+
+## Template applet structure
+
+This is the complete page component for the template applet (`src/routes/applet/calculus/template/template_applet/+page.svelte`):
+
+```html
+<script lang="ts">
+  // For ease of creating the template applets
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  import {
+    AppletObject,
+    AsymptoteFragment,
+    FunctionFragment,
+    ObliqueAsymptoteFragment
+  } from '$lib/template/TemplateAppletObjects';
+  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
+  import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+
+  const appletObjects: AppletObject[] = [
+    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+      .addGaps(new Vector2(-1, 0))
+      .addIncludedPoints(new Vector2(3, 4)),
+    new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
+      xLeft: -4,
+      xRight: -1.25,
+      fillStyle: 'full'
+    }),
+    new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
+    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
+    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
+  ];
+
+</script>
+
+<Canvas2D>
+  <TemplateComponent objects={appletObjects} />
+</Canvas2D>
+```
+
+In practice, you should only edit `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
+
+```ts
+const appletObjects: AppletObject[] = [
+  // Your objects here
+];
+```
+
+## Template objects
+
+The `appletObjects` array can contain the following types of objects:
+- `FunctionFragment`: a function graph (defined by JavaScript function or LaTeX string).
+- `AsymptoteFragment`: a vertical or horizontal dashed asymptote.
+- `ObliqueAsymptoteFragment`: an oblique asymptote (defined by JavaScript function or LaTeX string).
+
+### 1) `FunctionFragment`
+
+Constructor:
+
+```ts
+new FunctionFragment(func, color, domain?)
+```
+
+- `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`)
+- `color`: one of the `PrimeColor` values
+- `domain` (optional): `{ xMin?: number; xMax?: number }`
+
+Useful chaining methods:
+
+```ts
+new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+  .addGaps(new Vector2(-1, 0))
+  .addIncludedPoints(new Vector2(3, 4))
+  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' });
+```
+
+- `.addGaps(...positions)`: adds open circles at those coordinates
+- `.addIncludedPoints(...positions)`: adds filled points at those coordinates
+- `.withIntegral({ xLeft, xRight, fillStyle })`: shades area under the function between two x-values. `fillStyle` can be either `'full'` (solid color) or `'dashed'` (diagonal lines).
+
+More `FunctionFragment` examples:
+
+```ts
+// 1) JavaScript function: polynomial
+new FunctionFragment((x: number) => x ** 3 - 2 * x, PrimeColor.raspberry);
+
+// 2) JavaScript function: trigonometric
+new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, { xMin: -Math.PI, xMax: Math.PI });
+
+// 3) JavaScript function: piecewise
+new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { xMin: -3, xMax: 3 });
+
+// 4) JavaScript function with an integral region
+new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, { xMin: -2, xMax: 4 }).withIntegral({
+  xLeft: 0,
+  xRight: 3,
+  fillStyle: 'dashed'
+});
+
+// 5) LaTeX string: trigonometric
+new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { xMin: -3.14, xMax: 3.14 });
+```
+
+Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
+
+### 2) `AsymptoteFragment`
+
+Constructor:
+
+```ts
+new AsymptoteFragment(position, type, color)
+```
+
+- `position`: x-value (vertical) or y-value (horizontal)
+- `type`: `'vertical'` or `'horizontal'`
+- `color`: one of the `PrimeColor` values
+
+Examples:
+
+```ts
+new AsymptoteFragment(1, 'vertical', PrimeColor.cyan);
+new AsymptoteFragment(-2, 'horizontal', PrimeColor.black);
+```
+
+### 3) `ObliqueAsymptoteFragment`
+
+Constructor:
+
+```ts
+new ObliqueAsymptoteFragment(func, color)
+```
+
+- `func`: either `(x: number) => number` or a LaTeX string (for example `'x+2'`)
+- `color`: one of the `PrimeColor` values
+
+Example:
+
+```ts
+new ObliqueAsymptoteFragment('x+2', PrimeColor.orange);
+```
+
+## Step-by-step: create an example applet
+
+In this section, we build a small applet from scratch using only `appletObjects`.
+
+### Step 1: Start with one function
+
+Create a parabola on a limited domain:
+
+```ts
+const appletObjects: AppletObject[] = [
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 })
+];
+```
+
+### Step 2: Add a removable discontinuity
+
+Now add a rational function, an open circle at the gap, and a filled value at another point:
+
+```ts
+const appletObjects: AppletObject[] = [
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
+    .addGaps(new Vector2(-1, 0))
+    .addIncludedPoints(new Vector2(2, 3))
+];
+```
+
+### Step 3: Add an integral region
+
+Add a third function and shade its integral between two x-values:
+
+```ts
+const appletObjects: AppletObject[] = [
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
+    .addGaps(new Vector2(-1, 0))
+    .addIncludedPoints(new Vector2(2, 3)),
+  new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
+    xLeft: -2,
+    xRight: 0,
+    fillStyle: 'full'
+  })
+];
+```
+
+### Step 4: Add asymptotes
+
+Finally, add vertical/horizontal asymptotes and one oblique asymptote:
+
+```ts
+const appletObjects: AppletObject[] = [
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
+    .addGaps(new Vector2(-1, 0))
+    .addIncludedPoints(new Vector2(2, 3)),
+  new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
+    xLeft: -2,
+    xRight: 0,
+    fillStyle: 'full'
+  }),
+  new AsymptoteFragment(1, 'vertical', PrimeColor.cyan),
+  new AsymptoteFragment(-2, 'horizontal', PrimeColor.black),
+  new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
+];
+```
+
+## Wrap up
+
+The template workflow is:
+
+- Keep the Svelte page structure as-is.
+- Build your applet by editing only `appletObjects`.
+- Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
+
+When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.
+
