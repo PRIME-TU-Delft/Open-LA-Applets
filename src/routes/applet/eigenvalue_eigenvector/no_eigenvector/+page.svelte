@@ -98,9 +98,9 @@
   });
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('A = \\begin{bmatrix} 1 & 4 \\\\ 1 & 1 \\end{bmatrix}');
+    const f1 = new Formula('A = \\begin{pmatrix} 1 & 4 \\\\ 1 & 1 \\end{pmatrix}');
     const f2 = new Formula(
-      '\\mathbf{w} = \\begin{bmatrix} \\$3 \\\\ \\$4 \\end{bmatrix} \\space A\\mathbf{w} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix}'
+      '\\mathbf{w} = \\begin{pmatrix} \\$3 \\\\ \\$4 \\end{pmatrix} \\space A\\mathbf{w} = \\begin{pmatrix} \\$1 \\\\ \\$2 \\end{pmatrix}'
     )
       .addAutoParam(round(Aw.x, 0), PrimeColor.blue)
       .addAutoParam(round(Aw.y, 0), PrimeColor.blue)

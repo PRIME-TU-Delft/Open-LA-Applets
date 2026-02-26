@@ -46,13 +46,13 @@ export class MathVector3 extends Vector3 {
 
   toLatexString(): string {
     return (
-      '\\begin{bmatrix} ' +
+      '\\begin{pmatrix} ' +
       this.mathX +
       ' \\\\ ' +
       this.mathY +
       ' \\\\ ' +
       this.mathZ +
-      ' \\end{bmatrix}'
+      ' \\end{pmatrix}'
     );
   }
 

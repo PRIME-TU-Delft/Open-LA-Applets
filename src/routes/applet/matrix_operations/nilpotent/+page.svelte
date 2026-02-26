@@ -60,10 +60,10 @@
 
   const formulas = $derived.by(() => {
     const t1 = new Formula(
-      'T_1(x) = \\begin{bmatrix}0 & 0 \\\\ 0 & 1\\end{bmatrix} \\begin{bmatrix}x_1 \\\\ x_2\\end{bmatrix} = \\begin{bmatrix}0 \\\\ x_2\\end{bmatrix}'
+      'T_1(x) = \\begin{pmatrix}0 & 0 \\\\ 0 & 1\\end{pmatrix} \\begin{pmatrix}x_1 \\\\ x_2\\end{pmatrix} = \\begin{pmatrix}0 \\\\ x_2\\end{pmatrix}'
     );
     const t2 = new Formula(
-      'T_2(x) = \\begin{bmatrix}0 & 1 \\\\ -1 & 0\\end{bmatrix} \\begin{bmatrix}x_1 \\\\ x_2\\end{bmatrix} = \\begin{bmatrix}x_2 \\\\ -x_1\\end{bmatrix}'
+      'T_2(x) = \\begin{pmatrix}0 & 1 \\\\ -1 & 0\\end{pmatrix} \\begin{pmatrix}x_1 \\\\ x_2\\end{pmatrix} = \\begin{pmatrix}x_2 \\\\ -x_1\\end{pmatrix}'
     );
 
     if (controls[0].transformType == 'scale') {

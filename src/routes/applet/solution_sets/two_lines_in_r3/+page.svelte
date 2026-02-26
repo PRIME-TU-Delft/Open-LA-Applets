@@ -25,8 +25,8 @@
 
     const f1 = new Formula(
       `\\$1: \\Bigg\\lbrace 
-        \\begin{bmatrix}\\$2 \\\\ \\$3 \\\\0 \\end{bmatrix} + 
-        t \\space \\begin{bmatrix}-4 \\\\ 3 \\\\ 1 \\end{bmatrix} \\space | \\space
+        \\begin{pmatrix}\\$2 \\\\ \\$3 \\\\0 \\end{pmatrix} + 
+        t \\space \\begin{pmatrix}-4 \\\\ 3 \\\\ 1 \\end{pmatrix} \\space | \\space
         t \\in \\mathbb{R} \\Bigg\\rbrace`
     )
       .addAutoParam('\\mathcal{L_2}', PrimeColor.darkGreen)

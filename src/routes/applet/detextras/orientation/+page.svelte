@@ -19,7 +19,7 @@
 
   const formulas = $derived.by(() => {
     const matrix = controls[1] ? '3&1\\\\1&3' : '1&3\\\\3&1';
-    const f1 = new Formula(`T(\\mathbf{x})=\\begin{bmatrix} ${matrix} \\end{bmatrix}\\mathbf{x}`);
+    const f1 = new Formula(`T(\\mathbf{x})=\\begin{pmatrix} ${matrix} \\end{pmatrix}\\mathbf{x}`);
     const f2 = new Formula(
       `\\det ${controls[1] ? 'B = ' : 'A = -'}8 ${controls[1] ? '\\gt' : '\\lt'}0`
     );

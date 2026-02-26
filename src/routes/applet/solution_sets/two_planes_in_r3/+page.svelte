@@ -24,9 +24,9 @@
   const formulas = $derived.by(() => {
     const f1 = new Formula(
       `\\$1: \\Bigg\\lbrace 
-        \\begin{bmatrix}\\$2 \\\\ 0 \\\\0 \\end{bmatrix} + 
-        s \\space \\begin{bmatrix}-3 \\\\ 1 \\\\ 0 \\end{bmatrix} + 
-        t \\space \\begin{bmatrix}1 \\\\ 0 \\\\ 1 \\end{bmatrix} \\space | \\space
+        \\begin{pmatrix}\\$2 \\\\ 0 \\\\0 \\end{pmatrix} + 
+        s \\space \\begin{pmatrix}-3 \\\\ 1 \\\\ 0 \\end{pmatrix} + 
+        t \\space \\begin{pmatrix}1 \\\\ 0 \\\\ 1 \\end{pmatrix} \\space | \\space
         s, t \\in \\mathbb{R} \\Bigg\\rbrace`
     )
       .addAutoParam('\\mathcal{P_2}', PrimeColor.darkGreen)
