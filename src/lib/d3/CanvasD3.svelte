@@ -194,7 +194,7 @@
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
                   0.75 + (labels?.xLabelOffset?.y ?? 0)
                 )}
-                alignX={ labels.xLabelPosition == "center" ? "center" : "right"}
+                alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
               />
             {/if}
             {#if labels?.yLabel}
@@ -206,7 +206,7 @@
                   yLabelY + +(labels?.yLabelOffset?.y ?? 0)
                 )}
                 rotation={labels.yLabelRotate ? -90 : 0}
-                alignX={ labels.xLabelPosition == "center" ? "center" : "left"}
+                alignX={labels.xLabelPosition == 'center' ? 'center' : 'left'}
               />
             {/if}
           </g>

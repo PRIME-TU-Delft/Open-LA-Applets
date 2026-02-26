@@ -64,7 +64,8 @@ export function getXLabelX(
 
   const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
 
-  const worldPostAtRight = baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
+  const worldPostAtRight =
+    baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
 
   return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D);
 }
