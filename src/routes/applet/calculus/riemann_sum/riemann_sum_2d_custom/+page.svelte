@@ -41,6 +41,15 @@
     'applets.calculus.riemann_sum.max'
   ];
 
+  let defaultRule = methods[0];
+  const ruleParam = searchParams.get('rule');
+
+  if (ruleParam == 'left') defaultRule = methods[1];
+  else if (ruleParam == 'right') defaultRule = methods[2];
+  else if (ruleParam == 'random') defaultRule = methods[3];
+  else if (ruleParam == 'min') defaultRule = methods[4];
+  else if (ruleParam == 'max') defaultRule = methods[5];
+
   let currentFuctionString = '';
 
   const controls = Controls.addFunction(
@@ -52,7 +61,7 @@
       currentFuctionString = latex;
     }
   )
-    .addDropdown('', methods, PrimeColor.yellow)
+    .addDropdown(defaultRule, methods, PrimeColor.yellow)
     .addSlider(defaultN, 1, 10, 1, PrimeColor.raspberry, {
       label: 'n',
       valueFn: (v) => roundString(v, 0)
@@ -198,6 +207,12 @@
   });
 
   appletState.URLParamsInfo = [
+    {
+      paramKey: 'rule',
+      defaultValue: 'middle',
+      description: 'Default integration rule (middle, left, right, random, min, max)',
+      currentValue: () => currentMethod
+    },
     {
       paramKey: 'function',
       defaultValue: '\\sqrt{1 + {\\cos{(x)}}^2 }',

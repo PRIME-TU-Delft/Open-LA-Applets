@@ -17,14 +17,6 @@
   let showStateURLCopySucess = $state(false);
   let showParamURLCopySucess = $state(false);
 
-  // Reset URLParamsInfo when navigating to a new page
-  $effect(() => {
-    const _currentPath = page.url.pathname;
-    return () => {
-      appletState.URLParamsInfo = [];
-    };
-  });
-
   const stateUrl = $derived.by(() => {
     const url = new URL(page.url.origin + page.url.pathname);
 

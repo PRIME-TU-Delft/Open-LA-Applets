@@ -9,6 +9,11 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
+  import { page } from '$app/state';
+  import { appletState } from '$lib/stores/applet.svelte';
+
+  const searchParams = page?.url?.searchParams;
+  const ruleParam = searchParams.get('rule');
 
   const methods = [
     'applets.calculus.riemann_sum.riemann_sum_2d.middle',
@@ -19,7 +24,15 @@
     'applets.calculus.riemann_sum.max'
   ];
 
-  const controls = Controls.addDropdown('', methods, PrimeColor.yellow).addSlider(
+  let defaultRule = methods[0];
+
+  if (ruleParam == 'left') defaultRule = methods[1];
+  else if (ruleParam == 'right') defaultRule = methods[2];
+  else if (ruleParam == 'random') defaultRule = methods[3];
+  else if (ruleParam == 'min') defaultRule = methods[4];
+  else if (ruleParam == 'max') defaultRule = methods[5];
+
+  const controls = Controls.addDropdown(defaultRule, methods, PrimeColor.yellow).addSlider(
     5,
     1,
     10,
@@ -151,6 +164,15 @@
   const sampledPoints = $derived.by(() => {
     return rects.map((rect) => new Vector2(rect.samplePosition.x, 0));
   });
+
+  appletState.URLParamsInfo = [
+    {
+      paramKey: 'rule',
+      defaultValue: 'middle',
+      description: 'Default integration rule (middle, left, right, random, min, max)',
+      currentValue: () => currentMethod
+    }
+  ];
 </script>
 
 <Canvas2D
