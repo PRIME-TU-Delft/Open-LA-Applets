@@ -8,7 +8,6 @@
   import { Vector2 } from 'three';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import { page } from '$app/state';
   import { appletState } from '$lib/stores/applet.svelte';
@@ -260,11 +259,8 @@
   {draggables}
   cameraPosition={new Vector2(cameraX, 2)}
   {cameraZoom}
+  labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
 >
-  <!-- TODO: CHANGE TO NEW AXIS LABELS -->
-  <Latex2D latex={xAxisLetter} position={new Vector2(10.5, 0.55)} />
-  <Latex2D latex={functionLetter + '(' + xAxisLetter + ')'} position={new Vector2(0.25, 6.25)} />
-
   <ExplicitFunction2D
     {func}
     color={PrimeColor.blue}

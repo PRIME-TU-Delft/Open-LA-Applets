@@ -7,9 +7,7 @@
 <Canvas2D
   labels={{
     xLabel: 'x',
-    yLabel: 'y',
-    xLabelPosition: 'top-end',
-    yLabelPosition: 'right-end'
+    yLabel: 'y'
   }}
 >
   <ImplicitFunction2D
