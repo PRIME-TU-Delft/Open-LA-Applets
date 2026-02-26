@@ -156,8 +156,8 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, labels));
-  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, labels));
+  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels));
+  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, cameraZoom, labels));
 </script>
 
 <div class="relative overflow-hidden">

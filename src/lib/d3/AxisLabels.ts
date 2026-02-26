@@ -43,6 +43,7 @@ function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transfo
 export function getXLabelX(
   cameraTransform: Transform2D | undefined,
   width: number,
+  cameraZoom: number,
   labels: LabelProps | undefined
 ): number {
   const edgeMarginPx = 64;
@@ -53,8 +54,9 @@ export function getXLabelX(
   const baselineX = cameraBaselineX ?? 0;
   const normalizedPanX = normalizedCamera.x;
   const zoom = Math.max(cameraTransform.k, 1e-6);
+  const totalZoom = zoom * cameraZoom;
 
-  const worldXAtCenter = baselineX - 7.5 + (7.5 + normalizedPanX) / zoom;
+  const worldXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
 
   if (labels && labels.xLabelPosition == 'center') {
     return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
@@ -62,7 +64,7 @@ export function getXLabelX(
 
   const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
 
-  const worldPostAtRight = baselineX - 7.5 + (rightEdgeFactor + normalizedPanX) / zoom;
+  const worldPostAtRight = baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
 
   return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D);
 }
@@ -71,6 +73,7 @@ export function getYabelY(
   cameraTransform: Transform2D | undefined,
   width: number,
   height: number,
+  cameraZoom: number,
   labels: LabelProps | undefined
 ): number {
   const edgeMarginPx = 88;
@@ -83,16 +86,17 @@ export function getYabelY(
   const zoom = Math.max(cameraTransform.k, 1e-6);
 
   const translateY = (normalizedPanY * width) / 15;
+  const scaleFactor = 15 / (width * cameraZoom);
 
   const worldYAtCenter =
-    baselineY + (15 / width) * (height / 2 + translateY / zoom - height / (2 * zoom));
+    baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
 
   if (labels && labels.yLabelPosition == 'center') {
     return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
   }
 
   const worldYAtTopMargin =
-    baselineY + (15 / width) * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
+    baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
 
   return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D);
 }
