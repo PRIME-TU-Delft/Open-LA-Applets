@@ -139,10 +139,9 @@
   labels={{
     xLabel: 'h',
     xLabelPosition: 'center',
-    xLabelOffset: new Vector2(-1, 0),
     yLabel: `\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`,
     yLabelPosition: 'center',
-    yLabelOffset: new Vector2(1, 1),
+    yLabelOffset: new Vector2(1, 0),
     yLabelRotate: true
   }}
 >

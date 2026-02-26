@@ -1,4 +1,6 @@
 import type { Transform2D } from '$lib/stores/camera.svelte';
+import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+import { clamp } from '$lib/utils/MathLib';
 import type { Vector2 } from 'three';
 
 export type LabelProps = {
@@ -52,13 +54,17 @@ export function getXLabelX(
   const normalizedPanX = normalizedCamera.x;
   const zoom = Math.max(cameraTransform.k, 1e-6);
 
-  const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
+  const worldXAtCenter = baselineX - 7.5 + (7.5 + normalizedPanX) / zoom;
 
   if (labels && labels.xLabelPosition == 'center') {
-    return baselineX + normalizedPanX;
+    return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
   }
 
-  return baselineX - 7.5 + (rightEdgeFactor + normalizedPanX) / zoom;
+  const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
+
+  const worldPostAtRight = baselineX - 7.5 + (rightEdgeFactor + normalizedPanX) / zoom;
+
+  return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D);
 }
 
 export function getYabelY(
@@ -78,12 +84,15 @@ export function getYabelY(
 
   const translateY = (normalizedPanY * width) / 15;
 
+  const worldYAtCenter =
+    baselineY + (15 / width) * (height / 2 + translateY / zoom - height / (2 * zoom));
+
+  if (labels && labels.yLabelPosition == 'center') {
+    return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
+  }
+
   const worldYAtTopMargin =
     baselineY + (15 / width) * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
 
-  if (labels && labels.yLabelPosition == 'center') {
-    return baselineY + normalizedPanY;
-  }
-
-  return worldYAtTopMargin;
+  return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D);
 }
