@@ -7,7 +7,7 @@
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Point3D from '$lib/threlte/Point3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { withSign } from '$lib/utils/FormatString';
@@ -18,15 +18,15 @@
     const c0 = controls[0];
     const c1 = controls[1];
 
-    const f0 = new Formula('\\$1: 1x + 0.5y - 1z = 0').addAutoParam('P_1', PrimeColor.darkGreen);
-    const f1 = new Formula('\\$1: 1 x \\$2 y + 1z = 0')
+    const f0 = new Formula('\\$1: 1x + 0.5y - 1z &= 0').addAutoParam('P_1', PrimeColor.darkGreen);
+    const f1 = new Formula('\\$1: 1 x \\$2 y + 1z &= 0')
       .addAutoParam('P_2', PrimeColor.raspberry)
       .addAutoParam(withSign(c0), PrimeColor.raspberry);
-    const f2 = new Formula('\\$1: 1 x \\$2 y + 1z = 0')
+    const f2 = new Formula('\\$1: 1 x \\$2 y + 1z &= 0')
       .addAutoParam('P_3', PrimeColor.yellow)
       .addAutoParam(withSign(c1), PrimeColor.yellow);
 
-    return [f0, f1, f2];
+    return new Formulas(f0, f1, f2).align();
   });
 </script>
 
