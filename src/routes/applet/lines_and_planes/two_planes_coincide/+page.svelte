@@ -10,8 +10,8 @@
 
   const normal = new MathVector3(1, 1, 3).normalize();
   let formulas: Formula[] = [
-    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.raspberry),
-    new Formula('1x + 1y + 3z = \\$', 0, PrimeColor.yellow)
+    new Formula('\\$1: x + y + 3z = 0').addAutoParam('P_1', PrimeColor.raspberry),
+    new Formula('\\$1: x + y + 3z = 0').addAutoParam('P_2', PrimeColor.yellow)
   ];
 </script>
 
