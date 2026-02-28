@@ -11,6 +11,9 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let viewBox: ViewBox | undefined = new ViewBox(new Vector2(-3, -4), new Vector2(4, 7), 0.5);
 
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
@@ -28,6 +31,6 @@
   ];
 </script>
 
-<Canvas2D>
+<Canvas2D initialViewBox={viewBox}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
