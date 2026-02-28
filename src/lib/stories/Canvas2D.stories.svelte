@@ -16,6 +16,7 @@
   import { onDestroy } from 'svelte';
   import type { CanvasProps } from '$lib/d3/CanvasType';
   import Axis from '$lib/d3/Axis.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
   onDestroy(() => {
     globalState.title = '';
@@ -37,6 +38,13 @@
 
 <!-- This canvas is moved to x:3 and y:1 -->
 <Story name="Camera position" args={{ cameraPosition: new Vector2(3, 1) }} {template} />
+
+<!-- This canvas has a view box set, the area from (0,0) to (1,2), with a margin of 0.5, will be visible on any screen. -->
+<Story
+  name="View box"
+  args={{ initialViewBox: new ViewBox(new Vector2(0, 0), new Vector2(1, 2), 0.5) }}
+  {template}
+/>
 
 <!-- This applet has x and y axis labels defined -->
 <Story

@@ -42,7 +42,7 @@
     smoothing = 'linear',
     discontinuitySlope = maxSlope * 5000,
     discontinuityMagnitude = 1e6,
-    verticalLimit = 1e4
+    verticalLimit = GRID_SIZE_2D
   }: ExplicitFunction2DProps = $props();
 
   // Generate points for the function
