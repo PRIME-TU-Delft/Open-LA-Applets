@@ -1,7 +1,7 @@
 <script lang="ts" module>
   export type Point2DProps = {
     position: Vector2;
-    isSquare?: boolean;
+    shape?: 'circle' | 'square' | 'triangle';
     radius?: number;
     color?: string;
     pulse?: boolean;
@@ -21,7 +21,7 @@
 
   let {
     position = new Vector2(0, 0),
-    isSquare = false,
+    shape = 'circle',
     radius = POINT_SIZE,
     color = PrimeColor.black,
     pulse = false,
@@ -34,7 +34,7 @@
 </script>
 
 <g class="point2d">
-  {#if isSquare}
+  {#if shape == 'square'}
     <rect
       x={position.x - radius}
       y={position.y - radius}
@@ -52,7 +52,7 @@
         fill={color}
       />
     {/if}
-  {:else}
+  {:else if shape == 'circle'}
     <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
 
     {#if pulse}
@@ -63,6 +63,24 @@
         cy={position.y}
         r={radius * 2}
         fill={color}
+      />
+    {/if}
+  {:else if shape == 'triangle'}
+    {@const triRadius = radius * 1.2}
+    {@const dx = (triRadius * Math.sqrt(3)) / 2}
+    {@const dy = triRadius / 2}
+    <polygon
+      fill={color}
+      {opacity}
+      points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+    />
+
+    {#if pulse}
+      <polygon
+        class="pulse"
+        style="transform-origin: {position.x}px {position.y}px;"
+        fill={color}
+        points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
       />
     {/if}
   {/if}
@@ -80,6 +98,10 @@
 <style>
   circle.pulse {
     animation: pulseCircle 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  polygon.pulse {
+    animation: pulseTriangle 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
   rect.pulse {
@@ -122,6 +144,21 @@
       height: var(--r-large);
       x: calc(var(--posX) - var(--r-large) / 2);
       y: calc(var(--posY) - var(--r-large) / 2);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes pulseTriangle {
+    0% {
+      transform: scale(3);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.25;
+    }
+    100% {
+      transform: scale(3);
       opacity: 0.5;
     }
   }
