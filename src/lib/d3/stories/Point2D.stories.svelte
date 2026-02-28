@@ -31,8 +31,11 @@
 <!-- A Point with different radius defined -->
 <Story name="With radius defined" args={{ radius: 2 }} {template} />
 
-<!-- A Point with different shape defined -->
-<Story name="With square shape" args={{ isSquare: true }} {template} />
+<!-- A Point with square shape defined -->
+<Story name="With square shape" args={{ shape: 'square' }} {template} />
+
+<!-- A Point with triangle shape defined -->
+<Story name="With triangle shape" args={{ shape: 'triangle' }} {template} />
 
 <!-- A Point with pulse effect defined -->
 <Story name="With pulse effect" args={{ pulse: true }} {template} />
