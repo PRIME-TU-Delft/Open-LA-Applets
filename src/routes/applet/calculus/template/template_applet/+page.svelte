@@ -13,8 +13,22 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
 
-  let viewBox: ViewBox | undefined = new ViewBox(new Vector2(-3, -4), new Vector2(4, 7), 0.5);
+  let initialViewBox: ViewBox | undefined;
 
+  // ###############
+  // CAMERA SETTINGS
+  // ###############
+
+  // (remove if unnecessary)
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(4, 7), // top-right
+    0.5 // margin
+  );
+
+  // ##############
+  // APPLET OBJECTS
+  // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
     new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
@@ -31,6 +45,6 @@
   ];
 </script>
 
-<Canvas2D initialViewBox={viewBox}>
+<Canvas2D {initialViewBox}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

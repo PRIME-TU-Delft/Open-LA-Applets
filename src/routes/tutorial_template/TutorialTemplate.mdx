@@ -41,7 +41,24 @@ This is the complete page component for the template applet (`src/routes/applet/
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
+  let initialViewBox: ViewBox | undefined;
+
+  // ###############
+  // CAMERA SETTINGS
+  // ###############
+
+  // (remove if unnecessary)
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(4, 7), // top-right
+    0.5 // margin
+  );
+
+  // ##############
+  // APPLET OBJECTS
+  // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
     new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
@@ -58,18 +75,38 @@ This is the complete page component for the template applet (`src/routes/applet/
   ];
 </script>
 
-<Canvas2D>
+<Canvas2D {initialViewBox}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
 ```
 
-In practice, you should only edit `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
+In practice, you should usually edit only `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
+
+If you want a custom starting camera, define a `ViewBox` in the `camera settings` part. If not, then remove the `camera settings` lines.
 
 ```ts
 const appletObjects: AppletObject[] = [
   // Your objects here
 ];
 ```
+
+## Optional: set an initial view with `ViewBox`
+
+Use `ViewBox` when you want to guarantee a minimum visible area on first render, independent of viewport size.
+
+```ts
+initialViewBox = new ViewBox(
+  new Vector2(-3, -4), // bottom-left
+  new Vector2(4, 7), // top-right
+  0.5 // optional margin
+);
+```
+
+Notes:
+
+- `initialViewBox` is only used for the initial camera state.
+- Users can still pan and zoom normally afterwards.
+- On wide screens users may see more than the box; the box defines the minimum area that should be visible.
 
 ## Template objects
 
@@ -243,6 +280,7 @@ The template workflow is:
 
 - Keep the Svelte page structure as-is.
 - Build your applet by editing only `appletObjects`.
+- Optionally set `initialViewBox` to control the initial camera framing.
 - Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
 
 When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.
