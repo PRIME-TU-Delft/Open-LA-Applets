@@ -63,7 +63,7 @@
       color={PrimeColor.raspberry}
     />
 
-    <Point2D position={ut.ut} color={PrimeColor.blue} isSquare />
+    <Point2D position={ut.ut} color={PrimeColor.blue} shape="square" />
     <Latex2D
       latex={`R(\\mathbf{u}_${index + 1})`}
       position={ut.ut}
