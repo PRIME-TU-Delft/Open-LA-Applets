@@ -53,7 +53,7 @@
    */
   const appletRoute: string[] = $derived.by(() => {
     const pathname = page.url?.pathname || '';
-    const match = pathname.match(/\/applet\/*([^/]+)*\/([^/]+)\/([^/]+)/);
+    const match = pathname.match(/\/applet\/(?:([^/]+)\/)?([^/]+)\/([^/]+)/);
 
     if (match) {
       let ret = [...match.splice(1)];
