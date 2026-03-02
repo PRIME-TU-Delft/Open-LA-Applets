@@ -47,8 +47,11 @@
     {#if pulse}
       <rect
         class="pulse"
-        style="--r-small: {radius * 4}px; --r-large: {radius *
-          8}px; --posX: {position.x}px; --posY: {position.y}px;"
+        style="transform-origin: {position.x}px {position.y}px;"
+        x={position.x - radius}
+        y={position.y - radius}
+        height={radius * 2}
+        width={radius * 2}
         fill={color}
       />
     {/if}
@@ -58,10 +61,10 @@
     {#if pulse}
       <circle
         class="pulse"
-        style="--r-small: {radius * 2}; --r-large: {radius * 4};"
+        style="transform-origin: {position.x}px {position.y}px;"
         cx={position.x}
         cy={position.y}
-        r={radius * 2}
+        r={radius}
         fill={color}
       />
     {/if}
@@ -97,58 +100,18 @@
 
 <style>
   circle.pulse {
-    animation: pulseCircle 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
   polygon.pulse {
-    animation: pulseTriangle 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
   rect.pulse {
-    animation: pulseRect 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    /* width: var(--r-large); */
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
-  @keyframes pulseCircle {
-    0% {
-      r: var(--r-large);
-      opacity: 0.5;
-    }
-    50% {
-      r: var(--r-small);
-      opacity: 0.25;
-    }
-    100% {
-      r: var(--r-large);
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes pulseRect {
-    0% {
-      width: var(--r-large);
-      height: var(--r-large);
-      x: calc(var(--posX) - var(--r-large) / 2);
-      y: calc(var(--posY) - var(--r-large) / 2);
-      opacity: 0.5;
-    }
-    50% {
-      width: var(--r-small);
-      height: var(--r-small);
-      x: calc(var(--posX) - var(--r-small) / 2);
-      y: calc(var(--posY) - var(--r-small) / 2);
-      opacity: 0.25;
-    }
-    100% {
-      width: var(--r-large);
-      height: var(--r-large);
-      x: calc(var(--posX) - var(--r-large) / 2);
-      y: calc(var(--posY) - var(--r-large) / 2);
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes pulseTriangle {
+  @keyframes pulseScale {
     0% {
       transform: scale(3);
       opacity: 0.5;
