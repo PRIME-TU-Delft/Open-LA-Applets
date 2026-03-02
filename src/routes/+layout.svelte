@@ -7,7 +7,7 @@
     availableLanguages,
     uiModules,
     appletModules,
-    DEFAULT_LANGUAGE
+    getDefaultLanguage
   } from '$lib/utils/languages';
 
   // Load translations for all languages
@@ -37,7 +37,7 @@
 
   // Localization
   init({
-    fallbackLocale: DEFAULT_LANGUAGE
+    fallbackLocale: getDefaultLanguage()
   });
 
   beforeNavigate(() => {
