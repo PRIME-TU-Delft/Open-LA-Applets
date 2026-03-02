@@ -48,32 +48,34 @@
 
   let animationOn = $state(false);
 
-  const controls = Controls.addSlider(6, 1, 50, 1, PrimeColor.raspberry, {
-    label: 'h',
-    valueFn: (v: number) => round(1 / (4 * Math.round(v)), 4) + 'π',
-    onStartChanging: () => {
-      animationOn = true;
-    },
-    onStopChanging: () => {
-      animationOn = false;
-    },
-    animationStep: 1
-  })
-    .addToggle(
-      true,
-      toLatexText($_('applets.calculus.integration.method_errors.left')),
-      PrimeColor.orange
-    )
-    .addToggle(
-      true,
-      toLatexText($_('applets.calculus.integration.method_errors.right')),
-      PrimeColor.blue
-    )
-    .addToggle(
-      true,
-      toLatexText($_('applets.calculus.integration.method_errors.trapezoid')),
-      PrimeColor.darkGreen
-    );
+  const controls = $derived.by(() =>
+    Controls.addSlider(6, 1, 50, 1, PrimeColor.raspberry, {
+      label: 'h',
+      valueFn: (v: number) => round(1 / (4 * Math.round(v)), 4) + 'π',
+      onStartChanging: () => {
+        animationOn = true;
+      },
+      onStopChanging: () => {
+        animationOn = false;
+      },
+      animationStep: 1
+    })
+      .addToggle(
+        true,
+        toLatexText($_('applets.calculus.integration.method_errors.left')),
+        PrimeColor.orange
+      )
+      .addToggle(
+        true,
+        toLatexText($_('applets.calculus.integration.method_errors.right')),
+        PrimeColor.blue
+      )
+      .addToggle(
+        true,
+        toLatexText($_('applets.calculus.integration.method_errors.trapezoid')),
+        PrimeColor.darkGreen
+      )
+  );
 
   const formulas = $derived.by(() => {
     return [
