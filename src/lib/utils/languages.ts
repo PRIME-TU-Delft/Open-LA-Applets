@@ -102,7 +102,6 @@ export function getAvailableLanguagesForApplet(route: string[]): LanguageInfo[] 
 }
 
 export function getDefaultLanguage() {
-  console.log(navigator.language);
   return navigator.language.split('-')[0] || 'en';
 }
 
