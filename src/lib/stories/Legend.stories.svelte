@@ -16,7 +16,7 @@
   import { Vector2 } from 'three';
   import { Formula } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
-  import { FillType, LegendItem } from '$lib/utils/Legend';
+  import { FillType, LegendItem, Shape } from '$lib/utils/Legend';
 
   const draggables = [new Draggable(new Vector2(3, 1), PrimeColor.blue, 'A')];
 
@@ -67,8 +67,8 @@ const legendItems = [
       <Canvas2D
         legendItems={[
           new LegendItem('A', PrimeColor.blue),
-          new LegendItem('B', PrimeColor.raspberry, FillType.Border),
-          new LegendItem('C', PrimeColor.darkGreen, FillType.Dashed)
+          new LegendItem('B', PrimeColor.raspberry, Shape.Circle, FillType.Border),
+          new LegendItem('C', PrimeColor.darkGreen, Shape.Circle, FillType.Dashed)
         ]}
       >
         <Vector2D
