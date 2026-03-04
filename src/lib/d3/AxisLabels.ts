@@ -23,7 +23,6 @@ let cameraBaselineY: number | undefined;
  * @param cameraTransform D3's camera transform
  * @returns camera position without baseline
  */
-
 function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transform2D | undefined {
   if (!cameraTransform) return undefined;
   if (cameraBaselineX === undefined) {
@@ -46,8 +45,6 @@ export function getXLabelX(
   cameraZoom: number,
   labels: LabelProps | undefined
 ): number {
-  const edgeMarginPx = 64;
-
   const normalizedCamera = revertCameraBaseline(cameraTransform);
   if (!cameraTransform || !normalizedCamera) return 6.8;
 
@@ -61,6 +58,8 @@ export function getXLabelX(
   if (labels && labels.xLabelPosition == 'center') {
     return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
   }
+
+  const edgeMarginPx = 48;
 
   const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
 
@@ -77,8 +76,6 @@ export function getYabelY(
   cameraZoom: number,
   labels: LabelProps | undefined
 ): number {
-  const edgeMarginPx = 88;
-
   const normalizedCamera = revertCameraBaseline(cameraTransform);
   if (!cameraTransform || !normalizedCamera) return 6.25;
 
@@ -95,6 +92,8 @@ export function getYabelY(
   if (labels && labels.yLabelPosition == 'center') {
     return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
   }
+
+  const edgeMarginPx = 30;
 
   const worldYAtTopMargin =
     baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);

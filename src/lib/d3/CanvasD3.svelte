@@ -184,18 +184,18 @@
             30})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
+            <!-- 4. Axis: ticks, axis lines, tick numbers -->
             {#if axis !== null}
               <Axis {...axis} />
             {/if}
 
+            <!-- 3. Scene components -->
             {@render children()}
 
-            {#each draggables as d (d.id)}
-              <Draggable2D draggable={d} />
-            {/each}
-
+            <!-- 2. Axis labels -->
             {#if labels?.xLabel}
               <Latex2D
+                dimOnHover={true}
                 latex={labels.xLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
@@ -207,6 +207,7 @@
             {/if}
             {#if labels?.yLabel}
               <Latex2D
+                dimOnHover={true}
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
@@ -217,6 +218,11 @@
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'left'}
               />
             {/if}
+
+            <!-- 1. Draggables on top of everything -->
+            {#each draggables as d (d.id)}
+              <Draggable2D draggable={d} />
+            {/each}
           </g>
         </g>
       </g>
