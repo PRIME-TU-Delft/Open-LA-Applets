@@ -10,7 +10,7 @@
   import { parametic_point_on_circle_3D } from '$lib/utils/MathLib';
   import { MathVector3 } from '$lib/utils/MathVector';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import EllipseTrajectory from '../EllipseTrajectory.svelte';
+  import EllipseTrajectory from '../../../geom_lin_trans/EllipseTrajectory.svelte';
 
   const ellipse_radius = 5;
 
