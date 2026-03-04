@@ -93,12 +93,10 @@
       Shape.Square
     ),
     new LegendItem(
-      
       $_('applets.calculus.integration.simple_methods.trapezoid'),
-     
+
       PrimeColor.darkGreen,
       Shape.Triangle
-    
     )
   ]);
 

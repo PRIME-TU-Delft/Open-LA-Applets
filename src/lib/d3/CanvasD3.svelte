@@ -61,8 +61,6 @@
   // svelte-ignore state_referenced_locally
   let cameraPosition = viewBox ? viewBox.getCameraPos() : cameraPositionProp;
 
-  let currentTransform = $state(zoomIdentity);
-
   let id = 'canvas-' + generateUUID();
 
   let currentCameraTransform = $state<Transform2D>();
