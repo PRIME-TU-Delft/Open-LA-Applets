@@ -90,7 +90,7 @@
   <RightAngle2D vs={[w1, dir_L]} size={0.25} />
 
   <!-- T1(u1) -->
-  <Point2D position={proj_u1} isSquare color={PrimeColor.blue} />
+  <Point2D position={proj_u1} shape="square" color={PrimeColor.blue} />
   <Latex2D
     latex={`T_1(\\mathbf{u}_1)`}
     position={proj_u1}
@@ -125,7 +125,7 @@
     />
 
     <!-- T2(u2) -->
-    <Point2D position={proj_u2} isSquare color={PrimeColor.blue} />
+    <Point2D position={proj_u2} shape="square" color={PrimeColor.blue} />
     <Latex2D
       latex={`T_2(\\mathbf{u}_2)`}
       position={proj_u2}

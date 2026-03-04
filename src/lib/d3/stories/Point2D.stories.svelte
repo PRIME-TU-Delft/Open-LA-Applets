@@ -31,14 +31,20 @@
 <!-- A Point with different radius defined -->
 <Story name="With radius defined" args={{ radius: 2 }} {template} />
 
-<!-- A Point with different shape defined -->
-<Story name="With square shape" args={{ isSquare: true }} {template} />
+<!-- A Point with square shape defined -->
+<Story name="With square shape" args={{ shape: 'square' }} {template} />
+
+<!-- A Point with triangle shape defined -->
+<Story name="With triangle shape" args={{ shape: 'triangle' }} {template} />
 
 <!-- A Point with pulse effect defined -->
 <Story name="With pulse effect" args={{ pulse: true }} {template} />
 
 <!-- A Point with opacity defined -->
 <Story name="With opacity defined" args={{ opacity: 0.5 }} {template} />
+
+<!-- A Point with fill defined -->
+<Story name="With fill defined" args={{ fill: 'white' }} {template} />
 
 <!-- A Point with text defined -->
 <Story name="With text" args={{ text: 'Hello, World!' }} {template} />

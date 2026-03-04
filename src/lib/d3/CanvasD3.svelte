@@ -5,6 +5,7 @@
   export type Canvas2DProps = {
     cameraPosition?: Vector2;
     cameraZoom?: number;
+    initialViewBox?: ViewBox;
     axis?: AxisProps | null;
     labels?: LabelProps;
     width?: number;
@@ -39,10 +40,12 @@
 
   import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
   import Latex2D from './Latex2D.svelte';
+  import type { ViewBox } from './ViewBox';
 
   let {
-    cameraPosition = new Vector2(0, 0),
-    cameraZoom = 1,
+    cameraPosition: cameraPositionProp = new Vector2(0, 0),
+    cameraZoom: cameraZoomProp = 1,
+    initialViewBox: viewBox,
     width = 500,
     height = 300,
     enablePan = true,
@@ -52,6 +55,13 @@
     labels,
     children
   }: Canvas2DProps = $props();
+
+  // svelte-ignore state_referenced_locally
+  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height) : cameraZoomProp;
+  // svelte-ignore state_referenced_locally
+  let cameraPosition = viewBox ? viewBox.getCameraPos() : cameraPositionProp;
+
+  let currentTransform = $state(zoomIdentity);
 
   let id = 'canvas-' + generateUUID();
 

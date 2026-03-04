@@ -21,16 +21,11 @@
   }: InfiniteLine2DProps = $props();
 
   const dir = $derived(direction.clone().normalize());
-  const start = $derived(
-    dir
-      .clone()
-      .multiplyScalar(GRID_SIZE_2D * 2)
-      .add(origin)
-  );
+  const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(origin));
   const end = $derived(
     dir
       .clone()
-      .multiplyScalar(GRID_SIZE_2D * -2)
+      .multiplyScalar(GRID_SIZE_2D * -1)
       .add(origin)
   );
 </script>

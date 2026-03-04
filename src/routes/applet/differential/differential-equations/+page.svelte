@@ -42,9 +42,9 @@
 
   const formulas = $derived.by(() => {
     const f1 = new Formula(
-      "\\mathbf{x'}(t) = \\begin{bmatrix} 1 & 4 \\\\ 1 & 1 \\end{bmatrix} \\mathbf{x}(t) "
+      "\\mathbf{x'}(t) = \\begin{pmatrix} 1 & 4 \\\\ 1 & 1 \\end{pmatrix} \\mathbf{x}(t) "
     );
-    const f2 = new Formula('\\mathbf{x_0} = \\begin{bmatrix} \\$1 \\\\ \\$2 \\end{bmatrix} ')
+    const f2 = new Formula('\\mathbf{x_0} = \\begin{pmatrix} \\$1 \\\\ \\$2 \\end{pmatrix} ')
       .addAutoParam(round(draggables[0].position.x, 1), PrimeColor.raspberry)
       .addAutoParam(round(draggables[0].position.y, 1), PrimeColor.raspberry);
 

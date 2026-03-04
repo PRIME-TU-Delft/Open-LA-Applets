@@ -78,21 +78,21 @@
       controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_1'
     ) {
       const f2 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{bmatrix}\\mathbf{v}'
+        'T(\\mathbf{v})=\\begin{pmatrix}0.5 & 2 \\\\ 0.9 & -1 \\end{pmatrix}\\mathbf{v}'
       );
       formulas.push(f2);
     } else if (
       controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_2'
     ) {
       const f1 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{bmatrix}\\mathbf{v}'
+        'T(\\mathbf{v})=\\begin{pmatrix}0.8 & -2 \\\\ -0.6 & 1.5 \\end{pmatrix}\\mathbf{v}'
       );
       formulas.push(f1);
     } else if (
       controls[0] === 'applets.injectivity_and_surjectivity.injsurj_injex_example.transformation_3'
     ) {
       const f3 = new Formula(
-        'T(\\mathbf{v})=\\begin{bmatrix}1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\mathbf{v}'
+        'T(\\mathbf{v})=\\begin{pmatrix}1 & 3 \\\\ 2 & 4 \\end{pmatrix}\\mathbf{v}'
       );
       formulas.push(f3);
     }
