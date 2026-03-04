@@ -14,10 +14,16 @@
   import { ViewBox } from '$lib/d3/ViewBox';
 
   let initialViewBox: ViewBox | undefined;
+  let cameraPosition: Vector2 | undefined;
+  let cameraZoom: number | undefined;
 
   // ###############
   // CAMERA SETTINGS
   // ###############
+
+  // (remove if unnecessary)
+  cameraPosition = new Vector2(3, 1);
+  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -45,6 +51,6 @@
   ];
 </script>
 
-<Canvas2D {initialViewBox}>
+<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

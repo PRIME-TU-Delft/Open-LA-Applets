@@ -44,10 +44,16 @@ This is the complete page component for the template applet (`src/routes/applet/
   import { ViewBox } from '$lib/d3/ViewBox';
 
   let initialViewBox: ViewBox | undefined;
+  let cameraPosition: Vector2 | undefined;
+  let cameraZoom: number | undefined;
 
   // ###############
   // CAMERA SETTINGS
   // ###############
+
+  // (remove if unnecessary)
+  cameraPosition = new Vector2(3, 1);
+  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -75,14 +81,14 @@ This is the complete page component for the template applet (`src/routes/applet/
   ];
 </script>
 
-<Canvas2D {initialViewBox}>
+<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
 ```
 
 In practice, you should usually edit only `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
 
-If you want a custom starting camera, define a `ViewBox` in the `camera settings` part. If not, then remove the `camera settings` lines.
+If you want a custom starting camera, define a `ViewBox` in the `camera settings` part, or set `cameraPosition` and `cameraZoom`. If not, then remove the `camera settings` lines.
 
 ```ts
 const appletObjects: AppletObject[] = [
@@ -90,7 +96,9 @@ const appletObjects: AppletObject[] = [
 ];
 ```
 
-## Optional: set an initial view with `ViewBox`
+## Optional: set an initial view
+
+### Using a `ViewBox`
 
 Use `ViewBox` when you want to guarantee a minimum visible area on first render, independent of viewport size.
 
@@ -107,6 +115,20 @@ Notes:
 - `initialViewBox` is only used for the initial camera state.
 - Users can still pan and zoom normally afterwards.
 - On wide screens users may see more than the box; the box defines the minimum area that should be visible.
+- View box cannot be used together with `cameraPosition` or `cameraZoom`.
+
+### Using `cameraPosition` and `cameraZoom`
+
+If you only want to set camera position and zoom, you can use `cameraPosition` and `cameraZoom` properties in the camera settings section.
+
+```ts
+cameraPosition = new Vector2(3, 1);
+cameraZoom = 1.5;
+```
+
+Notes:
+
+- Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
 
 ## Template objects
 
