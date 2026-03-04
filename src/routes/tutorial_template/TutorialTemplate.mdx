@@ -133,18 +133,20 @@ Constructor:
 new FunctionFragment(func, color, domain?)
 ```
 
-- `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`)
-- `color`: one of the `PrimeColor` values
-- `domain` (optional): `{ xMin?: number; xMax?: number }`, can be set to `undefined` to cover the whole grid
-- `shape` (optional): `circle`, `square` or `triangle`, used for the points (gaps, included points) and legend item shapes, uses `circle` by default
+- `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`).
+- `color`: one of the `PrimeColor` values.
+- `domain` (optional): `{ xMin?: number; xMax?: number }`, can be set to `undefined` to cover the whole grid.
+- `isDashed` (optional): `true` or (by default ) `false`.
+- `shape` (optional): `circle`, `square` or `triangle`, used for the points (gaps, included points) and legend item shapes, uses `circle` by default.
 
 Useful chaining methods:
 
 ```ts
-new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, true)
   .addGaps(new Vector2(-1, 0))
   .addIncludedPoints(new Vector2(3, 4))
-  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' });
+  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' })
+  .withLegend("Function f", FillType.Border);
 ```
 
 - `.addGaps(...positions)`: adds open circles at those coordinates
@@ -181,7 +183,7 @@ new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, {
 new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { xMin: -3.14, xMax: 3.14 });
 
 // 6) Function with square points and legend text
-new FunctionFragment((x: number) => -x, PrimeColor.raspberry, undefined, 'square').withLegend(
+new FunctionFragment((x: number) => -x, PrimeColor.raspberry, undefined, false, 'square').withLegend(
   'Some function f(x)',
   FillType.Dashed
 );
@@ -302,7 +304,7 @@ The template workflow is:
 
 - Keep the Svelte page structure as-is.
 - Build your applet by editing only `appletObjects`.
-- Optionally set `initialViewBox` to control the initial camera framing.
+- Optionally set `initialViewBox` or `cameraPosition`, `cameraZoom` to control the initial camera framing.
 - Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
 
 When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.
