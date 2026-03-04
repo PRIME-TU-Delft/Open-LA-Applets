@@ -126,8 +126,6 @@ export class AsymptoteFragment extends AppletObject {
 }
 
 export class ObliqueAsymptoteFragment extends FunctionFragment {
-  //! TODO: allow functions to be dashed
-
   /**
    * Oblique asymptote fragment template object
    * @param func A javascript function or a latex string describing the asymptote

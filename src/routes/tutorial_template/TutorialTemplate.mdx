@@ -148,7 +148,8 @@ new FunctionFragment(func, color, domain?)
 
 - `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`)
 - `color`: one of the `PrimeColor` values
-- `domain` (optional): `{ xMin?: number; xMax?: number }`
+- `domain` (optional): `{ xMin?: number; xMax?: number }`, can be set to `undefined` to cover the whole grid
+- `shape` (optional): `circle`, `square` or `triangle`, used for the points (gaps, included points) and legend item shapes, uses `circle` by default
 
 Useful chaining methods:
 
@@ -162,6 +163,7 @@ new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
 - `.addGaps(...positions)`: adds open circles at those coordinates
 - `.addIncludedPoints(...positions)`: adds filled points at those coordinates
 - `.withIntegral({ xLeft, xRight, fillStyle })`: shades area under the function between two x-values. `fillStyle` can be either `'full'` (solid color) or `'dashed'` (diagonal lines).
+- `.withLegend(text: string, fill?: FillType)`: adds legend item for this function, with the specified text and fill type (default: `FillType.Full`, `FillType.Dashed`, `FillType.Border`).
 
 More `FunctionFragment` examples:
 
@@ -175,7 +177,7 @@ new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, {
   xMax: Math.PI
 });
 
-// 3) JavaScript function: piecewise
+// 3) JavaScript function: piecewise, using JS ternary operator
 new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { xMin: -3, xMax: 3 });
 
 // 4) JavaScript function with an integral region
@@ -190,6 +192,17 @@ new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, {
 
 // 5) LaTeX string: trigonometric
 new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { xMin: -3.14, xMax: 3.14 });
+
+// 6) Function with square points and legend text
+new FunctionFragment((x: number) => -x, PrimeColor.raspberry, undefined, 'square').withLegend(
+  'Some function f(x)',
+  FillType.Dashed
+);
+
+// 7) Function with only legend defined
+new FunctionFragment((x: number) => x ** 2 - 3, PrimeColor.raspberry).withLegend(
+  'Another function g(x)',
+);
 ```
 
 Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
