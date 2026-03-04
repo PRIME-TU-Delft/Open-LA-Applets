@@ -14,6 +14,7 @@
     tension?: number;
     showArrows?: boolean;
     width?: number;
+    isDashed?: boolean;
     integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed' };
     maxSlope?: number;
     curvatureThreshold?: number;
@@ -34,6 +35,7 @@
     tension = 0.5,
     showArrows = false,
     width = LINE_WIDTH,
+    isDashed = false,
     integral,
     maxSlope = 15,
     curvatureThreshold = 0.05,
@@ -282,5 +284,11 @@
 {/if}
 
 {#each smoothLines as d, idx (idx)}
-  <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+  <path
+    {d}
+    stroke={color ?? 'black'}
+    stroke-width={width ?? LINE_WIDTH}
+    fill="none"
+    stroke-dasharray="{width} {isDashed ? width : 0}"
+  />
 {/each}

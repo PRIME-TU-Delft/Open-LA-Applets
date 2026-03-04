@@ -14,6 +14,7 @@
     yMin?: number;
     yMax?: number;
     width?: number;
+    isDashed?: boolean;
   };
 
   class StartEndLine {
@@ -102,7 +103,8 @@
     tension = -0.5,
     yMin = -GRID_SIZE_2D,
     yMax = GRID_SIZE_2D,
-    width = LINE_WIDTH
+    width = LINE_WIDTH,
+    isDashed = false
   }: ImplicitFunction2DProps = $props();
 
   function interpolate(p1: Vector2, p2: Vector2, v1: number, v2: number): Vector2 {
@@ -254,7 +256,13 @@
 
 {#each smoothLines as d, idx (idx)}
   {#if d}
-    <path {d} stroke={color} stroke-width={width ?? LINE_WIDTH} fill="none" />
+    <path
+      {d}
+      stroke={color}
+      stroke-width={width ?? LINE_WIDTH}
+      fill="none"
+      stroke-dasharray="{width} {isDashed ? width : 0}"
+    />
   {/if}
 {/each}
 
