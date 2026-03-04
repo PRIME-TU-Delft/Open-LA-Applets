@@ -44,7 +44,7 @@
 <Story name="With opacity defined" args={{ opacity: 0.5 }} {template} />
 
 <!-- A Point with fill defined -->
-<Story name="With fill defined" args={{ fill: "white" }} {template} />
+<Story name="With fill defined" args={{ fill: 'white' }} {template} />
 
 <!-- A Point with text defined -->
 <Story name="With text" args={{ text: 'Hello, World!' }} {template} />
