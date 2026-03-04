@@ -1,6 +1,7 @@
 import { ComputeEngine } from '@cortex-js/compute-engine';
 import type { PrimeColor } from '../utils/PrimeColors';
 import type { Vector2 } from 'three';
+import type { FillType } from '$lib/utils/Legend';
 
 type Domain = {
   xMin?: number;
@@ -13,23 +14,34 @@ type Integral = {
   fillStyle: 'full' | 'dashed';
 };
 
+type Shape = 'circle' | 'square' | 'triangle';
+
 export class AppletObject {}
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
   color: PrimeColor;
-  domain: Domain | undefined = undefined;
+  domain: Domain | undefined;
   gaps: Vector2[] = [];
   includedPoints: Vector2[] = [];
-  integral: Integral | undefined = undefined;
+  integral: Integral | undefined;
+  legendText: string | undefined;
+  legendFill: FillType | undefined;
+  shape: Shape = 'circle';
 
   /**
    * Function fragment template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param domain Domain on which the function should be drawn
+   * @param shape Shape to use for legend and points
    */
-  constructor(func: ((x: number) => number) | string, color: PrimeColor, domain?: Domain) {
+  constructor(
+    func: ((x: number) => number) | string,
+    color: PrimeColor,
+    domain?: Domain,
+    shape?: Shape
+  ) {
     super();
 
     if (typeof func == 'string') {
@@ -43,6 +55,7 @@ export class FunctionFragment extends AppletObject {
     }
     this.color = color;
     this.domain = domain;
+    if (shape) this.shape = shape;
   }
 
   /**
@@ -72,6 +85,18 @@ export class FunctionFragment extends AppletObject {
    */
   withIntegral(integral: Integral) {
     this.integral = integral;
+    return this;
+  }
+
+  /**
+   * Adds a legend item for this function
+   * @param text Text to be shown in the legend item
+   * @param fill Type of fill to be used in the legend item
+   * @returns this
+   */
+  withLegend(text: string, fill?: FillType) {
+    this.legendText = text;
+    this.legendFill = fill;
     return this;
   }
 }

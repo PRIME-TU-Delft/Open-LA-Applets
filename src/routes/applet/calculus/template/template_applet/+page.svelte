@@ -12,6 +12,8 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import { getLegend } from '$lib/template/ObjectFormulas';
+  import { FillType } from '$lib/utils/Legend';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -37,20 +39,23 @@
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, 'square')
       .addGaps(new Vector2(-1, 0))
-      .addIncludedPoints(new Vector2(3, 4)),
-    new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
-      xLeft: -4,
-      xRight: -1.25,
-      fillStyle: 'full'
-    }),
+      .addIncludedPoints(new Vector2(3, 4))
+      .withLegend('f(x)', FillType.Dashed),
+    new FunctionFragment('e^x', PrimeColor.darkGreen)
+      .withIntegral({
+        xLeft: -4,
+        xRight: -1.25,
+        fillStyle: 'full'
+      })
+      .withLegend('g(x)'),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
 </script>
 
-<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom}>
+<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom} legendItems={getLegend(appletObjects)}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

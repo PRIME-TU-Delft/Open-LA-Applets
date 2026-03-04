@@ -37,10 +37,31 @@ export class LegendItem {
    * @param shape Shape used for the concept in the applet
    * @param fill Type of fill for the circle in the legend
    */
-  constructor(label: string, color: PrimeColor, shape?: Shape, fill?: FillType) {
+  constructor(label: string, color: PrimeColor, shape?: Shape | string, fill?: FillType) {
     this.label = label;
     this.color = color;
+
+    if (typeof shape == 'string') {
+      shape = LegendItem.getShape(shape);
+    }
+
     this.shape = shape || Shape.Circle;
     this.fillType = fill || this.fillType;
+  }
+
+  /**
+   * Get shape enum from string
+   * @param shape Shape in string form
+   * @returns Shape in Enum form
+   */
+  static getShape(shape: string) {
+    switch (shape) {
+      case 'square':
+        return Shape.Square;
+      case 'triangle':
+        return Shape.Triangle;
+      default:
+        return Shape.Circle;
+    }
   }
 }
