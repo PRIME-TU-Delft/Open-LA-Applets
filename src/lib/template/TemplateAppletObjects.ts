@@ -27,6 +27,7 @@ export class FunctionFragment extends AppletObject {
   integral: Integral | undefined;
   legendText: string | undefined;
   legendFill: FillType | undefined;
+  isDashed: boolean = false;
   shape: Shape = 'circle';
 
   /**
@@ -34,12 +35,14 @@ export class FunctionFragment extends AppletObject {
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param domain Domain on which the function should be drawn
+   * @param isDashed Whether the function line should be dashed
    * @param shape Shape to use for legend and points
    */
   constructor(
     func: ((x: number) => number) | string,
     color: PrimeColor,
     domain?: Domain,
+    isDashed?: boolean,
     shape?: Shape
   ) {
     super();
@@ -55,6 +58,7 @@ export class FunctionFragment extends AppletObject {
     }
     this.color = color;
     this.domain = domain;
+    if (isDashed) this.isDashed = isDashed;
     if (shape) this.shape = shape;
   }
 
@@ -130,6 +134,6 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    * @param color Color of the asymptote
    */
   constructor(func: ((x: number) => number) | string, color: PrimeColor) {
-    super(func, color, undefined);
+    super(func, color, undefined, true);
   }
 }

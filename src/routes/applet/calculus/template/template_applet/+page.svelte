@@ -39,7 +39,7 @@
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, 'square')
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, false, 'square')
       .addGaps(new Vector2(-1, 0))
       .addIncludedPoints(new Vector2(3, 4))
       .withLegend('f(x)', FillType.Dashed),

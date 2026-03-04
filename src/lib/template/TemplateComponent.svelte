@@ -16,6 +16,7 @@
       xMin={object.domain?.xMin}
       xMax={object.domain?.xMax}
       integral={object.integral}
+      isDashed={object.isDashed}
     />
 
     {#each object.gaps as position, idx (idx)}
