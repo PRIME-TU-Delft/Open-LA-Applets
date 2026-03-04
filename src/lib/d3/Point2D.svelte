@@ -4,6 +4,7 @@
     shape?: 'circle' | 'square' | 'triangle';
     radius?: number;
     color?: string;
+    fill?: string | undefined;
     pulse?: boolean;
     opacity?: number;
     text?: string;
@@ -14,7 +15,7 @@
 </script>
 
 <script lang="ts">
-  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
+  import { LINE_WIDTH, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -24,6 +25,7 @@
     shape = 'circle',
     radius = POINT_SIZE,
     color = PrimeColor.black,
+    fill = undefined,
     pulse = false,
     opacity = 1,
     text = '',
@@ -40,7 +42,9 @@
       y={position.y - radius}
       height={radius * 2}
       width={radius * 2}
-      fill={color}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
       {opacity}
     />
 
@@ -52,11 +56,21 @@
         y={position.y - radius}
         height={radius * 2}
         width={radius * 2}
-        fill={color}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
       />
     {/if}
   {:else if shape == 'circle'}
-    <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
+    <circle
+      cx={position.x}
+      cy={position.y}
+      r={radius}
+      {opacity}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
+    />
 
     {#if pulse}
       <circle
@@ -65,7 +79,9 @@
         cx={position.x}
         cy={position.y}
         r={radius}
-        fill={color}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
       />
     {/if}
   {:else if shape == 'triangle'}
@@ -73,17 +89,21 @@
     {@const dx = (triRadius * Math.sqrt(3)) / 2}
     {@const dy = triRadius / 2}
     <polygon
-      fill={color}
       {opacity}
       points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
     />
 
     {#if pulse}
       <polygon
         class="pulse"
         style="transform-origin: {position.x}px {position.y}px;"
-        fill={color}
         points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
       />
     {/if}
   {/if}
