@@ -64,6 +64,17 @@
   {template}
 />
 
+<!-- y = cos(x) explicit function with dashed lines -->
+<Story
+  name="Dashed cos(x)"
+  args={{
+    func: (x) => Math.cos(x),
+    color: PrimeColor.raspberry,
+    isDashed: true
+  }}
+  {template}
+/>
+
 <!-- y = 4/sqrt(x+1) explicit function with integral coloring shown in [2,5] -->
 <Story
   name="Explicit with integral coloring"

@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim AS builder
+FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 
 RUN corepack enable
@@ -44,7 +44,7 @@ RUN pnpm build:with-screenshots
 
 
 
-FROM node:22-bookworm-slim AS runner
+FROM node:24-bookworm-slim AS runner
 WORKDIR /app
 
 RUN echo '{"type": "module"}' > package.json

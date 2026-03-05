@@ -30,16 +30,16 @@
 
   const f1 = $derived(
     new Formula(
-      '\\mathbf{n} = \\begin{bmatrix} ' + round(N.x) + ' \\\\ ' + round(N.y) + ' \\end{bmatrix}'
+      '\\mathbf{n} = \\begin{pmatrix} ' + round(N.x) + ' \\\\ ' + round(N.y) + ' \\end{pmatrix}'
     )
   );
   const f2 = $derived(
     new Formula(
-      '\\overrightarrow{PQ} = \\begin{bmatrix} ' +
+      '\\overrightarrow{PQ} = \\begin{pmatrix} ' +
         round(PQ.x) +
         ' \\\\ ' +
         round(PQ.y) +
-        ' \\end{bmatrix}'
+        ' \\end{pmatrix}'
     )
   );
   const f3 = $derived(new Formula('\\mathbf{n} \\cdot \\overrightarrow{PQ} = ' + round(N.dot(PQ))));

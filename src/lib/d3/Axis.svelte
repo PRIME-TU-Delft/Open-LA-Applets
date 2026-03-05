@@ -29,7 +29,9 @@
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndeces = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
 
-  function stokeWidth(index: number) {
+  function stokeWidth(index: number, logarithmic: boolean) {
+    if (logarithmic) return 0.005;
+
     if (index % 10 == 0) return 0.02;
     if (index % 5 == 0) return 0.01;
     return 0.005;
@@ -55,7 +57,7 @@
       x2={index}
       y2={length}
       stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
-      stroke-width={stokeWidth(index)}
+      stroke-width={stokeWidth(index, logarithmicX)}
     />
     <line
       x1={-length}
@@ -63,12 +65,16 @@
       x2={length}
       y2={index}
       stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
-      stroke-width={stokeWidth(index)}
+      stroke-width={stokeWidth(index, logarithmicY)}
     />
 
     <!-- Tick marks -->
-    <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
-    <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+    {#if index % scaleX == 0}
+      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+    {/if}
+    {#if index % scaleY == 0}
+      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+    {/if}
 
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->

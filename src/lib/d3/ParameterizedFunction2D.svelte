@@ -14,6 +14,7 @@
     tension?: number;
     showArrows?: boolean;
     width?: number;
+    isDashed?: boolean;
   };
 
   const {
@@ -25,7 +26,8 @@
     tEnd = 3,
     tension = 0.5,
     showArrows = false,
-    width = LINE_WIDTH
+    width = LINE_WIDTH,
+    isDashed = false
   }: ParameterizedFunction2DProps = $props();
 
   // Generate points for the function
@@ -78,5 +80,11 @@
 {/if}
 
 {#each smoothLines as d, idx (idx)}
-  <path {d} stroke={color ?? 'black'} stroke-width={width ?? LINE_WIDTH} fill="none" />
+  <path
+    {d}
+    stroke={color ?? 'black'}
+    stroke-width={width ?? LINE_WIDTH}
+    fill="none"
+    stroke-dasharray="{width} {isDashed ? width : 0}"
+  />
 {/each}

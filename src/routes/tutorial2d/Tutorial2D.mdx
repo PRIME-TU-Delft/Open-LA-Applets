@@ -67,11 +67,11 @@ is specified by the `length` prop. The length of the vector can be calculated by
 
 <Canvas2D title="Complex numbers addition">
   <!-- Define the two vectors with direction, length and color -->
-  <Vector2D direction="{direction1}" length="{direction1.length()}" color="{PrimeColor.blue}" />
+  <Vector2D direction={direction1} length={direction1.length()} color={PrimeColor.blue} />
   <Vector2D
-    direction="{direction2}"
-    length="{direction2.length()}"
-    color="{PrimeColor.darkGreen}"
+    direction={direction2}
+    length={direction2.length()}
+    color={PrimeColor.darkGreen}
   />
 </Canvas2D>
 ```
@@ -105,8 +105,8 @@ let v_result = direction1.clone().add(direction2.clone());
 
   <!-- Sum vector (the addition of direction1 and direction2) -->
 
-<Vector2D direction="{v_result}" length="{v_result.length()}" color="{PrimeColor.raspberry}" />
-<Latex2D latex="z_3" position="{v_result}" color="{PrimeColor.raspberry}" />
+<Vector2D direction={v_result} length={v_result.length()} color={PrimeColor.raspberry} />
+<Latex2D latex="z_3" position={v_result} color={PrimeColor.raspberry} />
 
   <!-- Helper vectors that point from the original vectors to the result vector -->
   <!-- The origin property is used to specify the starting point of the vector -->
@@ -114,20 +114,20 @@ let v_result = direction1.clone().add(direction2.clone());
   <!-- The hideHead property is used to specify whether the arrowhead is hidden or not -->
 
   <Vector2D
-    direction="{direction1}"
-    length="{direction1.length()}"
-    origin="{direction2}"
-    isDashed="{true}"
-    hideHead="{true}"
-    color="{PrimeColor.blue}"
+    direction={direction1}
+    length={direction1.length()}
+    origin={direction2}
+    isDashed={true}
+    hideHead={true}
+    color={PrimeColor.blue}
   />
   <Vector2D
-    direction="{direction2}"
-    length="{direction2.length()}"
-    origin="{direction1}"
-    isDashed="{true}"
-    hideHead="{true}"
-    color="{PrimeColor.darkGreen}"
+    direction={direction2}
+    length={direction2.length()}
+    origin={direction1}
+    isDashed={true}
+    hideHead={true}
+    color={PrimeColor.darkGreen}
   />
 </Canvas2D>
 ```
@@ -269,7 +269,7 @@ const controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.darkGreen, {
 <NumberFlow {value} />
 {/snippet}
 
-<Canvas2D {controls} draggables="{[direction1]}" title="Complex numbers addition">
+<Canvas2D {controls} draggables={[direction1]} title="Complex numbers addition">
   <!-- Components -->
 </Canvas2D>
 ```
@@ -296,8 +296,8 @@ const formulas = $derived.by(() => {
 <!-- Adding the formulas in the <Canvas2D> -->
 <Canvas2D
   {controls}
-  draggables="{[direction1]}"
-  formulas="{formulas}"
+  draggables={[direction1]}
+  formulas={formulas}
   {showFormulasDefault}
   title="Complex numbers addition"
 >
@@ -312,8 +312,8 @@ The first `addAutoParam` corresponds to the first `$1` in the formula, the secon
 ```typescript
 const f1 = new Formula('z_1 + z_2 = z_3');
 const f2 = new Formula(
-  `(\\$1 + \\$2 i) + 
-   (\\$3 + \\$4 i) = 
+  `(\\$1 + \\$2 i) +
+   (\\$3 + \\$4 i) =
    (\\$5 + \\$6 i)`
 )
   .addAutoParam(direction1.position.x, PrimeColor.blue)

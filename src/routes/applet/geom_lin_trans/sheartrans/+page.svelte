@@ -25,7 +25,7 @@
     const te2 = new Vector2(0, 1).add(w.clone().multiplyScalar(controls[0]));
 
     const f1 = new Formula(
-      `T(\\mathbf{x}) = \\begin{bmatrix} \\$1 & \\$2 \\\\ \\$3 & \\$4 \\end{bmatrix} \\mathbf{x}`
+      `T(\\mathbf{x}) = \\begin{pmatrix} \\$1 & \\$2 \\\\ \\$3 & \\$4 \\end{pmatrix} \\mathbf{x}`
     )
       .addAutoParam(round(te1.x, 1), PrimeColor.blue)
       .addAutoParam(round(te2.x, 1), PrimeColor.blue)

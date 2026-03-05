@@ -21,7 +21,7 @@
   const c2 = $derived((-1 / 5) * (y - 3 * x));
 
   const formulas = $derived.by(() => {
-    const vec = `\\begin{bmatrix} ${round(x)} \\\\ ${round(y)} \\end{bmatrix}`;
+    const vec = `\\begin{pmatrix} ${round(x)} \\\\ ${round(y)} \\end{pmatrix}`;
 
     const f1 = new Formula('\\$1 = \\$2 \\$3 + \\$4 \\$5')
       .addAutoParam(vec, PrimeColor.blue)
