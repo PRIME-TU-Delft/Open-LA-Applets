@@ -69,7 +69,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} />
+  <FolderList {fileUrls} book="Linear-Algebra" />
 
   <div
     class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"

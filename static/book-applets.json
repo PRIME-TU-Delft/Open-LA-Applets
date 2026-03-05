@@ -1,0 +1,465 @@
+{
+  "Linear-Algebra": {
+    "applets": [
+      {
+        "url": "appendix/complex_numbers",
+        "title": "",
+        "name": "Fig:ComplexNumbers:threesolfig",
+        "source_files": [
+          "Appendices/ComplexNumbersPolar.md"
+        ]
+      },
+      {
+        "url": "basisdim/standardbasis",
+        "title": "",
+        "name": "Fig:BasisDim:StandardBasis",
+        "source_files": [
+          "Chapter4/BasisAndDimension.md"
+        ]
+      },
+      {
+        "url": "change_of_basis/alternative_basis",
+        "title": "",
+        "name": "Fig:ChangeOfBasis:AlternativeBasis",
+        "source_files": [
+          "Chapter4/ChangeOfBasis.md"
+        ]
+      },
+      {
+        "url": "change_of_basis/projection",
+        "title": "",
+        "name": "Fig:ChangeOfBasis:Projection",
+        "source_files": [
+          "Chapter4/ChangeOfBasis.md"
+        ]
+      },
+      {
+        "url": "det_geometric/linearity_one",
+        "title": "",
+        "name": "Fig:DetGeometric:Linearity1",
+        "source_files": [
+          "Chapter5/DeterminantsGeometric.md"
+        ]
+      },
+      {
+        "url": "det_geometric/linearity_two",
+        "title": "",
+        "name": "Fig:DetGeometric:Linearity2",
+        "source_files": [
+          "Chapter5/DeterminantsGeometric.md"
+        ]
+      },
+      {
+        "url": "det_geometric/orientedarea1",
+        "title": "",
+        "name": "Fig:DetGeometric:OrientedArea1",
+        "source_files": [
+          "Chapter5/DeterminantsGeometric.md"
+        ]
+      },
+      {
+        "url": "det_geometric/paraped",
+        "title": "",
+        "name": "Fig:DetGeometric:Paraped",
+        "source_files": [
+          "Chapter5/DeterminantsGeometric.md"
+        ]
+      },
+      {
+        "url": "detextras/orientation",
+        "title": "",
+        "name": "Fig:DetExtras:Orientation",
+        "source_files": [
+          "Chapter5/DeterminantsExtras.md"
+        ]
+      },
+      {
+        "url": "dot_product/angleandprojection",
+        "title": "",
+        "name": "Fig:InnerProduct:AngleAndProjection",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "dot_product/diagonal_parallelogram",
+        "title": "",
+        "name": "Fig:InnerProduct:diagonal-parallelogram",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "dot_product/inner_product_length",
+        "title": "",
+        "name": "Fig:InnerProduct:length-3D",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "dot_product/innerproduct_projectionvectorline",
+        "title": "",
+        "name": "Fig:InnerProduct:ProjectionVectorLine",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "dot_product/perpendicularline",
+        "title": "",
+        "name": "Fig:InnerProduct:PerpendicularLine",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "dot_product/triangle_inequality",
+        "title": "",
+        "name": "Fig:InnerProduct:TriangleInequality",
+        "source_files": [
+          "Chapter1/Inner_Product.md"
+        ]
+      },
+      {
+        "url": "eigenvalue_eigenvector/no_eigenvector",
+        "title": "",
+        "name": "Fig:Eigenvalues:Eigenvector-no-Eigenvector",
+        "source_files": [
+          "Chapter6/EigenvaluesEigenvectors.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/3d_proj_on_line",
+        "title": "",
+        "name": "Fig:GeomLinTrans:3DProj",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/3d_refl_along_plane",
+        "title": "",
+        "name": "Fig:GeomLinTrans:3DReflalongPlane",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/proj_in_r2",
+        "title": "",
+        "name": "Fig:GeomLinTrans:ProjinR2",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/reflect_in_r2",
+        "title": "",
+        "name": "Fig:GeomLinTrans:ReflinR2",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/rotisdoublerefl",
+        "title": "",
+        "name": "Fig:GeomLinTrans:RotisDoubleRefl",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "geom_lin_trans/sheartrans",
+        "title": "",
+        "name": "Fig:GeomLinTrans:ShearTrans",
+        "source_files": [
+          "Chapter3/GeometryofLinearTransformations.md"
+        ]
+      },
+      {
+        "url": "injectivity_and_surjectivity/injsurj-injex",
+        "title": "",
+        "name": "Fig:InjSurj:SurjEx",
+        "source_files": [
+          "Chapter3/Injectivity_and_surjectivity.md"
+        ]
+      },
+      {
+        "url": "injectivity_and_surjectivity/injsurj-injex-example",
+        "title": "",
+        "name": "Fig:InjSurj:InjExExample",
+        "source_files": [
+          "Chapter3/Injectivity_and_surjectivity.md"
+        ]
+      },
+      {
+        "url": "injectivity_and_surjectivity/injsurj-injex-example2",
+        "title": "",
+        "name": "Fig:InjSurj:InjExExample2",
+        "source_files": [
+          "Chapter3/Injectivity_and_surjectivity.md"
+        ]
+      },
+      {
+        "url": "injectivity_and_surjectivity/injsurj-injex-example3",
+        "title": "",
+        "name": "Fig:InjSurj:InjEx",
+        "source_files": [
+          "Chapter3/Injectivity_and_surjectivity.md"
+        ]
+      },
+      {
+        "url": "injectivity_and_surjectivity/injsurj-nonsurjex",
+        "title": "",
+        "name": "Fig:InjSurj:NonSurjEx",
+        "source_files": [
+          "Chapter3/Injectivity_and_surjectivity.md"
+        ]
+      },
+      {
+        "url": "leastsquares/bestlines_split_canvas",
+        "title": "",
+        "name": "Fig:LeastSquares:BestLines",
+        "source_files": [
+          "Chapter7/LeastSquares.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/linearcombinations",
+        "title": "",
+        "name": "Fig:LinearCombinations:LinearCombinations",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/span_one",
+        "title": "",
+        "name": "Fig:LinearCombinations:SpanOneVectors",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/span_three",
+        "title": "",
+        "name": "Fig:LinearCombinations:SpanThreeVectors1",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/span_three_plane",
+        "title": "",
+        "name": "Fig:LinearCombinations:SpanThreeVectors2",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/span_two_line",
+        "title": "",
+        "name": "Fig:LinearCombinations:SpanTwoParallelVectors",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_combinations/span_two_plane",
+        "title": "",
+        "name": "Fig:LinearCombinations:SpanTwoVectors",
+        "source_files": [
+          "Chapter2/LinearCombinations.md"
+        ]
+      },
+      {
+        "url": "linear_independence/linind_example_in_2d",
+        "title": "",
+        "name": "Fig:LinInd:Examplein2D",
+        "source_files": [
+          "Chapter2/LinearIndependence.md"
+        ]
+      },
+      {
+        "url": "linear_independence/linind_example_in_3d",
+        "title": "",
+        "name": "Fig:LinInd:Examplein3D",
+        "source_files": [
+          "Chapter2/LinearIndependence.md"
+        ]
+      },
+      {
+        "url": "linear_transformation/embed_r2_r3",
+        "title": "",
+        "name": "Fig:LinTrafo:EmbedR2R3",
+        "source_files": [
+          "Chapter3/Linear_Transformations.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/directional_vectors_plane",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:DirectionalVectorsPlane",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/disjoint_planes",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:DisjointPlanes",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/normal_equation_plane",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:NormalEquationPlane",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/normal_equation_plane_origin",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:NormalEquationPlaneOrigin",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/parametric_line_space",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:ParametricLineSpace",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/plane_line_intersection",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:PlanesLineIntersection",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/planes_point_intersection",
+        "title": "Three planes with one point in common.",
+        "name": "Fig:LinesAndPlanes:PlanesPointIntersection",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/two_disjoint_planes",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:TwoDisjointPlanes",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/two_plane_line_intersection",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:TwoPlanesLineIntersection",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/two_planes_coincide",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:TwoPlanesCoincide",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "lines_and_planes/vector_equation",
+        "title": "",
+        "name": "Fig:LinesAndPlanes:VectorEquation",
+        "source_files": [
+          "Chapter1/Lines_and_Planes.md"
+        ]
+      },
+      {
+        "url": "matrix_operations/nilpotent",
+        "title": "",
+        "name": "Fig:MatrixOps:Nilpotent",
+        "source_files": [
+          "Chapter3/MatrixOperations.md"
+        ]
+      },
+      {
+        "url": "ortho/decompas2proj",
+        "title": "",
+        "name": "Fig:OrthoBase:DecompAs2Proj",
+        "source_files": [
+          "Chapter7/OrthoBase.md"
+        ]
+      },
+      {
+        "url": "ortho/orthocomp",
+        "title": "",
+        "name": "Fig:OrthoComp:OrthoComp",
+        "source_files": [
+          "Chapter7/OrthoComp.md"
+        ]
+      },
+      {
+        "url": "ortho/orthodecomp",
+        "title": "",
+        "name": "Fig:OrthoBase:OrthoDecomp",
+        "source_files": [
+          "Chapter7/OrthoComp.md"
+        ]
+      },
+      {
+        "url": "solution_sets/two_lines_in_r3",
+        "title": "",
+        "name": "Fig:SolSet:TwoLinesinR3",
+        "source_files": [
+          "Chapter2/SolutionSets.md"
+        ]
+      },
+      {
+        "url": "solution_sets/two_planes_in_r3",
+        "title": "",
+        "name": "Fig:SolSet:TwoPlanesinR3",
+        "source_files": [
+          "Chapter2/SolutionSets.md"
+        ]
+      },
+      {
+        "url": "subspaces_in_rn/the_game",
+        "title": "",
+        "name": "Fig:Subspaces:SubspacesGame",
+        "source_files": [
+          "Chapter4/Subspaces_of_Rn.md"
+        ]
+      },
+      {
+        "url": "symmetric_matrices/quadratic_forms",
+        "title": "",
+        "name": "Fig:QuadForms:Ellipses",
+        "source_files": [
+          "Chapter8/QuadraticForms.md"
+        ]
+      },
+      {
+        "url": "vectors/3Daddition",
+        "title": "",
+        "name": "",
+        "source_files": [
+          "Chapter1/Vectors.md"
+        ]
+      }
+    ]
+  },
+  "Calculus": {
+    "applets": []
+  }
+}
