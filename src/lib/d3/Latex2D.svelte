@@ -66,6 +66,24 @@
 
 <style>
   .latex-dim:hover {
-    opacity: 50%;
+    animation: dim 1s forwards;
+  }
+
+  @keyframes dim {
+    0% {
+      opacity: 100%;
+    }
+
+    25% {
+      opacity: 100%;
+    }
+
+    80% {
+      opacity: 20%;
+    }
+
+    100% {
+      opacity: 10%;
+    }
   }
 </style>
