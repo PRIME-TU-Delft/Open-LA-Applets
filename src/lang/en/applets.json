@@ -139,6 +139,9 @@
     "two_disjoint_planes": {
       "title": "Two planes without a point in common."
     },
+    "two_plane_line_intersection": {
+      "title": "Two planes with a line of intersection"
+    },
     "directional_vectors_plane": {
       "title": "A parametric vector equation of a plane."
     },
@@ -146,7 +149,7 @@
       "title": "Three planes without a point in common."
     },
     "two_planes_coincide": {
-      "title": "Two planes with a point in common."
+      "title": "Two planes that coincide."
     },
     "parametric_line_space": {
       "title": "A parametric vector of a line in 3D space"

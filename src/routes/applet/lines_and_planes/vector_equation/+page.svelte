@@ -106,7 +106,7 @@
   {/if}
 
   <Latex2D
-    latex={'r \\cdot \\mathbf{u}'}
+    latex={'r \\mathbf{u}'}
     position={v0.clone().add(
       u
         .clone()

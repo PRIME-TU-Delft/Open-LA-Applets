@@ -6,7 +6,7 @@
   import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { withSign } from '$lib/utils/FormatString';
@@ -14,23 +14,21 @@
   const controls = Controls.addSlider(0, -10, 0, 0.5).addSlider(1, 1, 10, 0.5);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
-      withSign(controls[0]),
-      PrimeColor.raspberry
-    );
-    const f2 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
-      withSign(controls[1]),
-      PrimeColor.yellow
-    );
+    const f1 = new Formula('\\$2: x \\$1y + z &= 0')
+      .addAutoParam(withSign(controls[0]), PrimeColor.raspberry)
+      .addAutoParam('P_1', PrimeColor.raspberry);
+    const f2 = new Formula('\\$2: x \\$1y + z &= 0')
+      .addAutoParam(withSign(controls[1]), PrimeColor.yellow)
+      .addAutoParam('P_2', PrimeColor.yellow);
 
-    return [f1, f2];
+    return new Formulas(f1, f2).align();
   });
 </script>
 
 <Canvas3D
   {controls}
   {formulas}
-  title={$_('applets.lines_and_planes.plane_line_intersection.title')}
+  title={$_('applets.lines_and_planes.two_plane_line_intersection.title')}
 >
   <AutoPlanes values={[controls[0], controls[1]]}>
     {#snippet children(value, _, planeSegment, color)}

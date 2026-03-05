@@ -31,8 +31,8 @@
     const f2 = new Formula(
       '\\mathcal{\\$4}&= \\text{\\$5}(OP\\thinspace QR) \\\\ &= ||\\$1 \\times \\$2|| = \\$3'
     )
-      .addAutoParam('a', PrimeColor.blue)
-      .addAutoParam('b', PrimeColor.cyan)
+      .addAutoParam('\\mathbf{a}', PrimeColor.blue)
+      .addAutoParam('\\mathbf{b}', PrimeColor.cyan)
       .addAutoParam(axb.length().toFixed(2), PrimeColor.orange)
       .addAutoParam('A', PrimeColor.blue)
       .addAutoParam($_('applets.common.area'));

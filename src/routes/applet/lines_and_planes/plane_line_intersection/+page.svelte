@@ -6,7 +6,7 @@
   import AutoPlanes from '$lib/threlte/planes/AutoPlanes.svelte';
   import PlaneFromNormal from '$lib/threlte/planes/PlaneFromNormal.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { withSign } from '$lib/utils/FormatString';
@@ -16,20 +16,17 @@
     .addSlider(1, -1, 1, 0.1);
 
   const formulas = $derived.by(() => {
-    const f1 = new Formula('1x \\$1 y + 1z = 0').addAutoParam(
-      withSign(controls[0]),
-      PrimeColor.raspberry
-    );
-    const f2 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
-      withSign(controls[1]),
-      PrimeColor.yellow
-    );
-    const f3 = new Formula('1x \\$1y + 1z = 0').addAutoParam(
-      withSign(controls[2]),
-      PrimeColor.darkGreen
-    );
+    const f1 = new Formula('\\$2: x \\$1 y + z &= 0')
+      .addAutoParam(withSign(controls[0]), PrimeColor.raspberry)
+      .addAutoParam('P_1', PrimeColor.raspberry);
+    const f2 = new Formula('\\$2: x \\$1y + z &= 0')
+      .addAutoParam(withSign(controls[1]), PrimeColor.yellow)
+      .addAutoParam('P_2', PrimeColor.yellow);
+    const f3 = new Formula('\\$2: x \\$1y + z &= 0')
+      .addAutoParam(withSign(controls[2]), PrimeColor.darkGreen)
+      .addAutoParam('P_3', PrimeColor.darkGreen);
 
-    return [f1, f2, f3];
+    return new Formulas(f1, f2, f3).align();
   });
 </script>
 
