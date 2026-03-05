@@ -17,8 +17,14 @@
     const f1 = new Formula('\\$1 : x \\$2y + z &= 0')
       .addAutoParam('P_1', PrimeColor.darkGreen)
       .addAutoParam(withSign(controls[0], 1), PrimeColor.darkGreen);
-    const f2 = new Formula('\\$1 : x + y + z &= 1').addAutoParam('P_2', PrimeColor.yellow);
-    const f3 = new Formula('\\$1 : x + y + z &= 0').addAutoParam('P_3', PrimeColor.raspberry);
+    const f2 = new Formula('\\$1 : x + \\phantom{0.0} y + z &= 1').addAutoParam(
+      'P_2',
+      PrimeColor.yellow
+    );
+    const f3 = new Formula('\\$1 : x + \\phantom{0.0} y + z &= 0').addAutoParam(
+      'P_3',
+      PrimeColor.raspberry
+    );
 
     return new Formulas(f1, f2, f3).align();
   });
