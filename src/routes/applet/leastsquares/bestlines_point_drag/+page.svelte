@@ -9,7 +9,7 @@
   import { leastSquaresLine, round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { projectPoints } from '../../../leastsquares/formula_gen';
+  import { projectPoints } from '../formula_gen';
 
   let draggables = [
     new Draggable(new Vector2(1, 3), PrimeColor.orange, '\\mathcal{P}_1', Draggable.snapToGrid),
