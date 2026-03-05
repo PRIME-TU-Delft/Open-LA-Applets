@@ -101,6 +101,9 @@ export function getAvailableLanguagesForApplet(route: string[]): LanguageInfo[] 
   return Array.from(languageMap.values()).sort((a, b) => a.code.localeCompare(b.code));
 }
 
+export function getDefaultLanguage() {
+  return navigator.language.split('-')[0] || 'en';
+}
+
 export { uiModules, appletModules };
 export const availableLanguages = getAvailableLanguages();
-export const DEFAULT_LANGUAGE = 'en';

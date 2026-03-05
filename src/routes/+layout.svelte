@@ -3,12 +3,7 @@
   import { beforeNavigate } from '$app/navigation';
   import { appletState } from '$lib/stores/applet.svelte';
   import { addMessages, init } from 'svelte-i18n';
-  import {
-    availableLanguages,
-    uiModules,
-    appletModules,
-    DEFAULT_LANGUAGE
-  } from '$lib/utils/languages';
+  import { availableLanguages, uiModules, appletModules } from '$lib/utils/languages';
 
   // Load translations for all languages
   availableLanguages.forEach((lang) => {
@@ -37,7 +32,7 @@
 
   // Localization
   init({
-    fallbackLocale: DEFAULT_LANGUAGE
+    fallbackLocale: 'en'
   });
 
   beforeNavigate(() => {
