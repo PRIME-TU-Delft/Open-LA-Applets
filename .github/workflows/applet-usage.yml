@@ -1,5 +1,4 @@
 name: Check book applet usage
-
 on:
   schedule:
     - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
@@ -10,19 +9,16 @@ permissions:
 
 jobs:
   check-book-applets:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Scan book repositories for applet usage
         run: python scripts/check-book-applets.py
-
       - name: Commit updated book-applets.json
         run: |
           git config user.name "PRIME-bot"

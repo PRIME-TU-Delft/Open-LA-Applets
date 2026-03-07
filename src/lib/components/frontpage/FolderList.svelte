@@ -46,12 +46,8 @@
           let file = {
             title: curr.file,
             url: `/applet/${route}`,
-            used: false
+            used: thisAppletUsage != undefined
           };
-
-          if (thisAppletUsage) {
-            file.used = true;
-          }
 
           if (curr.folder in acc) {
             acc[curr.folder].push(file);
