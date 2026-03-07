@@ -3,7 +3,6 @@ on:
   schedule:
     - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
   workflow_dispatch:
-  pull_request:
 
 permissions:
   contents: write
@@ -14,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -29,5 +30,5 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update book applet usage data"
-            git push
+            git push origin HEAD:${GITHUB_REF_NAME}
           fi
