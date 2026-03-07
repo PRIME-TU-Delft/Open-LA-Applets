@@ -46,7 +46,7 @@
           let file = {
             title: curr.file,
             url: `/applet/${route}`,
-            used: thisAppletUsage != undefined
+            used: thisAppletUsage != undefined || appletUsageInBook == undefined // if appletUsageInBook is undefined, then loading the usage file failed
           };
 
           if (curr.folder in acc) {
