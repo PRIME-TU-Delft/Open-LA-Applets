@@ -3,6 +3,7 @@
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
   import { resolve } from '$app/paths';
+  import type { PageProps } from './$types';
 
   const modules = import.meta.glob('/src/routes/applet/calculus/**/+page.svelte');
 
@@ -22,6 +23,8 @@
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/calculus/', '').replace('/+page.svelte', '')
   );
+
+  let { data }: PageProps = $props();
 </script>
 
 <NavBar
@@ -68,7 +71,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="calculus/" />
+  <FolderList {fileUrls} appletUsageInBook={data['Calculus']} directory="calculus/" />
 
   <div
     class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"
