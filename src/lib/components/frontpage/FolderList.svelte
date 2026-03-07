@@ -3,16 +3,29 @@
   import * as Accordion from '$lib/components/ui/accordion';
   import ListItem from './ListItem.svelte';
 
+  type AppletUsageEntry = {
+    url: string;
+    title: string;
+    name: string;
+    source_files: string[];
+  };
+
+  type BookAppletUsage = {
+    applets: AppletUsageEntry[];
+  };
+
   export type FolderListProps = {
     fileUrls: string[];
     directory?: string;
+    appletUsageInBook: BookAppletUsage;
   };
 
-  let { fileUrls, directory = '' }: FolderListProps = $props();
+  let { fileUrls, directory = '', appletUsageInBook }: FolderListProps = $props();
 
   type File = {
     title: string;
     url: string;
+    used: boolean;
   };
 
   let folders = $derived(
@@ -26,9 +39,14 @@
       })
       .reduce(
         (acc, curr) => {
-          const file = {
+          const route = `${directory}${curr.folder}/${curr.file}`;
+          const usedApplets = appletUsageInBook?.applets ?? [];
+          const thisAppletUsage = usedApplets.find((e) => e.url === route);
+
+          let file = {
             title: curr.file,
-            url: `/applet/${directory}${curr.folder}/${curr.file}`
+            url: `/applet/${route}`,
+            used: thisAppletUsage != undefined || appletUsageInBook == undefined // if appletUsageInBook is undefined, then loading the usage file failed
           };
 
           if (curr.folder in acc) {
@@ -47,9 +65,9 @@
   {#each Object.entries(folders) as [folderTitle, files], index (folderTitle)}
     <Accordion.Item value="item-{index}">
       <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
-      {#each files as { title, url } (url)}
+      {#each files as { title, url, used } (url)}
         <Accordion.Content>
-          <ListItem {title} url={url as '/applet/${string}'} />
+          <ListItem {title} {used} url={url as '/applet/${string}'} />
         </Accordion.Content>
       {/each}
     </Accordion.Item>

@@ -3,6 +3,7 @@
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
   import { resolve } from '$app/paths';
+  import type { PageProps } from './$types';
 
   const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
 
@@ -24,6 +25,8 @@
       rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
     )
     .filter((s) => s !== '[...applet]/static' && !s.startsWith('calculus'));
+
+  let { data }: PageProps = $props();
 </script>
 
 <NavBar
@@ -69,7 +72,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} />
+  <FolderList {fileUrls} appletUsageInBook={data['Linear-Algebra']} />
 
   <div
     class="border-base-300 bg-base-200 container mx-auto my-10 box-border flex flex-col gap-2 rounded-lg border p-4"
