@@ -29,25 +29,15 @@ This is the complete page component for the template applet (`src/routes/applet/
 
 ```html
 <script lang="ts">
-  // For ease of creating the template applets
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  import {
-    AppletObject,
-    AsymptoteFragment,
-    FunctionFragment,
-    ObliqueAsymptoteFragment
-  } from '$lib/template/TemplateAppletObjects';
-  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
-  import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
-
-  let initialViewBox: ViewBox | undefined;
+  // imports, definitons...
 
   // ###############
   // CAMERA SETTINGS
   // ###############
+
+  // (remove if unnecessary)
+  cameraPosition = new Vector2(3, 1);
+  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -61,28 +51,31 @@ This is the complete page component for the template applet (`src/routes/applet/
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, false, 'square')
       .addGaps(new Vector2(-1, 0))
-      .addIncludedPoints(new Vector2(3, 4)),
-    new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
-      xLeft: -4,
-      xRight: -1.25,
-      fillStyle: 'full'
-    }),
+      .addIncludedPoints(new Vector2(3, 4))
+      .withLegend('f(x)', FillType.Dashed),
+    new FunctionFragment('e^x', PrimeColor.darkGreen)
+      .withIntegral({
+        xLeft: -4,
+        xRight: -1.25,
+        fillStyle: 'full'
+      })
+      .withLegend('g(x)'),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
 </script>
 
-<Canvas2D {initialViewBox}>
+<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom} legendItems={getLegend(appletObjects)}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
 ```
 
 In practice, you should usually edit only `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
 
-If you want a custom starting camera, define a `ViewBox` in the `camera settings` part. If not, then remove the `camera settings` lines.
+If you want a custom starting camera, define a `ViewBox` in the `camera settings` part, or set `cameraPosition` and `cameraZoom`. If not, then remove the `camera settings` lines.
 
 ```ts
 const appletObjects: AppletObject[] = [
@@ -90,7 +83,9 @@ const appletObjects: AppletObject[] = [
 ];
 ```
 
-## Optional: set an initial view with `ViewBox`
+## Optional: set an initial view
+
+### Using a `ViewBox`
 
 Use `ViewBox` when you want to guarantee a minimum visible area on first render, independent of viewport size.
 
@@ -107,6 +102,20 @@ Notes:
 - `initialViewBox` is only used for the initial camera state.
 - Users can still pan and zoom normally afterwards.
 - On wide screens users may see more than the box; the box defines the minimum area that should be visible.
+- View box cannot be used together with `cameraPosition` or `cameraZoom`.
+
+### Using `cameraPosition` and `cameraZoom`
+
+If you only want to set camera position and zoom, you can use `cameraPosition` and `cameraZoom` properties in the camera settings section.
+
+```ts
+cameraPosition = new Vector2(3, 1);
+cameraZoom = 1.5;
+```
+
+Notes:
+
+- Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
 
 ## Template objects
 
@@ -124,22 +133,26 @@ Constructor:
 new FunctionFragment(func, color, domain?)
 ```
 
-- `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`)
-- `color`: one of the `PrimeColor` values
-- `domain` (optional): `{ xMin?: number; xMax?: number }`
+- `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`).
+- `color`: one of the `PrimeColor` values.
+- `domain` (optional): `{ xMin?: number; xMax?: number }`, can be set to `undefined` to cover the whole grid.
+- `isDashed` (optional): `true` or (by default ) `false`.
+- `shape` (optional): `circle`, `square` or `triangle`, used for the points (gaps, included points) and legend item shapes, uses `circle` by default.
 
 Useful chaining methods:
 
 ```ts
-new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 })
+new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, true)
   .addGaps(new Vector2(-1, 0))
   .addIncludedPoints(new Vector2(3, 4))
-  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' });
+  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' })
+  .withLegend("Function f", FillType.Border);
 ```
 
 - `.addGaps(...positions)`: adds open circles at those coordinates
 - `.addIncludedPoints(...positions)`: adds filled points at those coordinates
 - `.withIntegral({ xLeft, xRight, fillStyle })`: shades area under the function between two x-values. `fillStyle` can be either `'full'` (solid color) or `'dashed'` (diagonal lines).
+- `.withLegend(text: string, fill?: FillType)`: adds legend item for this function, with the specified text and fill type (default: `FillType.Full`, `FillType.Dashed`, `FillType.Border`).
 
 More `FunctionFragment` examples:
 
@@ -153,7 +166,7 @@ new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, {
   xMax: Math.PI
 });
 
-// 3) JavaScript function: piecewise
+// 3) JavaScript function: piecewise, using JS ternary operator
 new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { xMin: -3, xMax: 3 });
 
 // 4) JavaScript function with an integral region
@@ -168,6 +181,17 @@ new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, {
 
 // 5) LaTeX string: trigonometric
 new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { xMin: -3.14, xMax: 3.14 });
+
+// 6) Function with square points and legend text
+new FunctionFragment((x: number) => -x, PrimeColor.raspberry, undefined, false, 'square').withLegend(
+  'Some function f(x)',
+  FillType.Dashed
+);
+
+// 7) Function with only legend defined
+new FunctionFragment((x: number) => x ** 2 - 3, PrimeColor.raspberry).withLegend(
+  'Another function g(x)',
+);
 ```
 
 Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
@@ -280,7 +304,7 @@ The template workflow is:
 
 - Keep the Svelte page structure as-is.
 - Build your applet by editing only `appletObjects`.
-- Optionally set `initialViewBox` to control the initial camera framing.
+- Optionally set `initialViewBox` or `cameraPosition`, `cameraZoom` to control the initial camera framing.
 - Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
 
 When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.

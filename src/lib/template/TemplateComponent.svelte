@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Circle2D from '$lib/d3/Circle2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import { Vector2 } from 'three';
   import { AsymptoteFragment, FunctionFragment, type AppletObject } from './TemplateAppletObjects';
+  import Point2D from '$lib/d3/Point2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -16,18 +16,20 @@
       xMin={object.domain?.xMin}
       xMax={object.domain?.xMax}
       integral={object.integral}
+      isDashed={object.isDashed}
     />
 
     {#each object.gaps as position, idx (idx)}
-      <Circle2D {position} fill="white" color={object.color.toString()} radius={0.075} />
+      <Point2D
+        {position}
+        color={object.color.toString()}
+        fill="white"
+        radius={0.075}
+        shape={object.shape}
+      />
     {/each}
     {#each object.includedPoints as position, idx (idx)}
-      <Circle2D
-        {position}
-        fill={object.color.toString()}
-        color={object.color.toString()}
-        radius={0.075}
-      />
+      <Point2D {position} color={object.color.toString()} radius={0.075} shape={object.shape} />
     {/each}
   {:else if object instanceof AsymptoteFragment}
     {#if object.type == 'vertical'}

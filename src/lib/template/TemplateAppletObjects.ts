@@ -1,6 +1,7 @@
 import { ComputeEngine } from '@cortex-js/compute-engine';
 import type { PrimeColor } from '../utils/PrimeColors';
 import type { Vector2 } from 'three';
+import type { FillType } from '$lib/utils/Legend';
 
 type Domain = {
   xMin?: number;
@@ -13,23 +14,37 @@ type Integral = {
   fillStyle: 'full' | 'dashed';
 };
 
+type Shape = 'circle' | 'square' | 'triangle';
+
 export class AppletObject {}
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
   color: PrimeColor;
-  domain: Domain | undefined = undefined;
+  domain: Domain | undefined;
   gaps: Vector2[] = [];
   includedPoints: Vector2[] = [];
-  integral: Integral | undefined = undefined;
+  integral: Integral | undefined;
+  legendText: string | undefined;
+  legendFill: FillType | undefined;
+  isDashed: boolean = false;
+  shape: Shape = 'circle';
 
   /**
    * Function fragment template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param domain Domain on which the function should be drawn
+   * @param isDashed Whether the function line should be dashed
+   * @param shape Shape to use for legend and points
    */
-  constructor(func: ((x: number) => number) | string, color: PrimeColor, domain?: Domain) {
+  constructor(
+    func: ((x: number) => number) | string,
+    color: PrimeColor,
+    domain?: Domain,
+    isDashed?: boolean,
+    shape?: Shape
+  ) {
     super();
 
     if (typeof func == 'string') {
@@ -43,6 +58,8 @@ export class FunctionFragment extends AppletObject {
     }
     this.color = color;
     this.domain = domain;
+    if (isDashed) this.isDashed = isDashed;
+    if (shape) this.shape = shape;
   }
 
   /**
@@ -74,6 +91,18 @@ export class FunctionFragment extends AppletObject {
     this.integral = integral;
     return this;
   }
+
+  /**
+   * Adds a legend item for this function
+   * @param text Text to be shown in the legend item
+   * @param fill Type of fill to be used in the legend item
+   * @returns this
+   */
+  withLegend(text: string, fill?: FillType) {
+    this.legendText = text;
+    this.legendFill = fill;
+    return this;
+  }
 }
 
 export class AsymptoteFragment extends AppletObject {
@@ -97,14 +126,12 @@ export class AsymptoteFragment extends AppletObject {
 }
 
 export class ObliqueAsymptoteFragment extends FunctionFragment {
-  //! TODO: allow functions to be dashed
-
   /**
    * Oblique asymptote fragment template object
    * @param func A javascript function or a latex string describing the asymptote
    * @param color Color of the asymptote
    */
   constructor(func: ((x: number) => number) | string, color: PrimeColor) {
-    super(func, color, undefined);
+    super(func, color, undefined, true);
   }
 }
