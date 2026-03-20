@@ -38,8 +38,7 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(`\\frac{1}{x}`, PrimeColor.blue)
-      .withLegend('f(x)'),
+    new FunctionFragment(`\\frac{1}{x}`, PrimeColor.blue).withLegend('f(x)')
   ];
 </script>
 

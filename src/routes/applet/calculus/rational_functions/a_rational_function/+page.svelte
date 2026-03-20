@@ -42,7 +42,7 @@
       .withLegend('f(x)')
       .addGaps(new Vector2(1.5, 2.6)),
     new AsymptoteFragment(-1, 'vertical', PrimeColor.blue),
-    new AsymptoteFragment(1, 'horizontal', PrimeColor.blue),
+    new AsymptoteFragment(1, 'horizontal', PrimeColor.blue)
   ];
 </script>
 
