@@ -1,7 +1,6 @@
 import { ComputeEngine } from '@cortex-js/compute-engine';
 import type { PrimeColor } from '../utils/PrimeColors';
 import type { Vector2 } from 'three';
-import type { FillType } from '$lib/utils/Legend';
 
 type Domain = {
   xMin?: number;
@@ -11,12 +10,13 @@ type Domain = {
 type Integral = {
   xLeft: number;
   xRight: number;
-  fillStyle: 'full' | 'dashed';
+  isDashed?: boolean;
+  legendText?: string;
 };
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject {}
+export class AppletObject { }
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
@@ -26,9 +26,9 @@ export class FunctionFragment extends AppletObject {
   includedPoints: Vector2[] = [];
   integral: Integral | undefined;
   legendText: string | undefined;
-  legendFill: FillType | undefined;
   isDashed: boolean = false;
   shape: Shape = 'circle';
+  pointsLegendText: { included: string | undefined, gaps: string | undefined } = { included: undefined, gaps: undefined };
 
   /**
    * Function fragment template object
@@ -65,20 +65,24 @@ export class FunctionFragment extends AppletObject {
   /**
    * Add gaps to the function fragment
    * @param positions List of Vector2 coordinates of the gaps
+   * @param legendText (optional) Text shown in the legend for all the gap points
    * @returns this
    */
-  addGaps(...positions: Vector2[]) {
+  addGaps(positions: Vector2 | Vector2[], legendText?: string) {
     this.gaps = this.gaps.concat(positions);
+    this.pointsLegendText.gaps = legendText;
     return this;
   }
 
   /**
    * Add included points to the function fragment
    * @param positions List of Vector2 coordinates of the included points
+   * @param legendText (optional) Text shown in the legend for all the included points
    * @returns this
    */
-  addIncludedPoints(...positions: Vector2[]) {
+  addIncludedPoints(positions: Vector2 | Vector2[], legendText?: string) {
     this.includedPoints = this.includedPoints.concat(positions);
+    this.pointsLegendText.included = legendText;
     return this;
   }
 
@@ -95,12 +99,10 @@ export class FunctionFragment extends AppletObject {
   /**
    * Adds a legend item for this function
    * @param text Text to be shown in the legend item
-   * @param fill Type of fill to be used in the legend item
    * @returns this
    */
-  withLegend(text: string, fill?: FillType) {
+  withLegend(text: string) {
     this.legendText = text;
-    this.legendFill = fill;
     return this;
   }
 }
