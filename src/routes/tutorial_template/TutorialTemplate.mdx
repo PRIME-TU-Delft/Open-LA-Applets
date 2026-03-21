@@ -34,6 +34,7 @@ This is the complete page component for the template applet (`src/routes/applet/
   // ###############
   // CAMERA SETTINGS
   // ###############
+  // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
@@ -45,6 +46,14 @@ This is the complete page component for the template applet (`src/routes/applet/
     new Vector2(4, 7), // top-right
     0.5 // margin
   );
+
+  // ###########
+  // AXIS LABELS
+  // ###########
+
+  // (remove if unnecessary)
+  xAxisLabel = '';
+  yAxisLabel = '';
 
   // ##############
   // APPLET OBJECTS
@@ -61,7 +70,13 @@ This is the complete page component for the template applet (`src/routes/applet/
   ];
 </script>
 
-<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom} legendItems={getLegend(appletObjects)}>
+<Canvas2D
+  {initialViewBox}
+  {cameraPosition}
+  {cameraZoom}
+  legendItems={getLegend(appletObjects)}
+  labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
 ```
@@ -109,6 +124,21 @@ cameraZoom = 1.5;
 Notes:
 
 - Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
+
+## Optional: set axis labels
+
+If you want to also have dynamic axis labels in your applet, you can define them in the `axis labels` part. They are rendered with LaTeX.
+
+Example:
+
+```ts
+// ###########
+// AXIS LABELS
+// ###########
+
+xAxisLabel = 'x';
+yAxisLabel = 'f(x)';
+```
 
 ## Template objects
 
