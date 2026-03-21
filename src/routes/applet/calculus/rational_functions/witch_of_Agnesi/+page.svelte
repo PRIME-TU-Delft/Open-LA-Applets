@@ -38,7 +38,7 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(`\\frac{8 (0.5)^3}{x^2+4(0.5)^2}`, PrimeColor.blue).withLegend('f(x)')
+    new FunctionFragment(`\\frac{8 (0.5)^3}{x^2+4(0.5)^2}`, PrimeColor.blue, { legendText: 'f(x)' })
   ];
 </script>
 
