@@ -18,10 +18,13 @@
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
+  let xAxisLabel: string | undefined;
+  let yAxisLabel: string | undefined;
 
   // ###############
   // CAMERA SETTINGS
   // ###############
+  // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
@@ -33,6 +36,14 @@
     new Vector2(4, 7), // top-right
     0.5 // margin
   );
+
+  // ###########
+  // AXIS LABELS
+  // ###########
+
+  // (remove if unnecessary)
+  xAxisLabel = '';
+  yAxisLabel = '';
 
   // ##############
   // APPLET OBJECTS
@@ -61,12 +72,6 @@
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
-
-  // ###########
-  // AXIS LABELS
-  // ###########
-  const xAxisLabel = '';
-  const yAxisLabel = '';
 </script>
 
 <Canvas2D
