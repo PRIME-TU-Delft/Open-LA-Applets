@@ -35,7 +35,7 @@
   }: Point2DProps = $props();
 </script>
 
-<g class="point2d">
+<g class="point2d" {opacity}>
   {#if shape == 'square'}
     <rect
       x={position.x - radius}
@@ -45,7 +45,6 @@
       stroke={color}
       stroke-width={LINE_WIDTH}
       fill={fill ?? color}
-      {opacity}
     />
 
     {#if pulse}
@@ -66,7 +65,6 @@
       cx={position.x}
       cy={position.y}
       r={radius}
-      {opacity}
       stroke={color}
       stroke-width={LINE_WIDTH}
       fill={fill ?? color}
@@ -89,7 +87,6 @@
     {@const dx = (triRadius * Math.sqrt(3)) / 2}
     {@const dy = triRadius / 2}
     <polygon
-      {opacity}
       points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
       stroke={color}
       stroke-width={LINE_WIDTH}
