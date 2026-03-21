@@ -34,16 +34,22 @@ export class FunctionFragment extends AppletObject {
    * Function fragment template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
-   * @param domain Domain on which the function should be drawn
-   * @param isDashed Whether the function line should be dashed
-   * @param shape Shape to use for legend and points
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.integral Properties of the integral
+   * @param options.legendText Text to be shown in the legend item
    */
   constructor(
     func: ((x: number) => number) | string,
     color: PrimeColor,
-    domain?: Domain,
-    isDashed?: boolean,
-    shape?: Shape
+    options: {
+      domain?: Domain,
+      isDashed?: boolean,
+      shape?: Shape,
+      integral?: Integral,
+      legendText?: string
+    }
   ) {
     super();
 
@@ -57,9 +63,11 @@ export class FunctionFragment extends AppletObject {
       this.func = func;
     }
     this.color = color;
-    this.domain = domain;
-    if (isDashed) this.isDashed = isDashed;
-    if (shape) this.shape = shape;
+    this.domain = options.domain;
+    this.legendText = options.legendText;
+    if (options.isDashed) this.isDashed = options.isDashed;
+    if (options.shape) this.shape = options.shape;
+    if (options.integral) this.integral = options.integral;
   }
 
   /**
@@ -83,26 +91,6 @@ export class FunctionFragment extends AppletObject {
   addIncludedPoints(positions: Vector2 | Vector2[], legendText?: string) {
     this.includedPoints = this.includedPoints.concat(positions);
     this.pointsLegendText.included = legendText;
-    return this;
-  }
-
-  /**
-   * Sets integral shading of the function
-   * @param integral Properties of the integral
-   * @returns this
-   */
-  withIntegral(integral: Integral) {
-    this.integral = integral;
-    return this;
-  }
-
-  /**
-   * Adds a legend item for this function
-   * @param text Text to be shown in the legend item
-   * @returns this
-   */
-  withLegend(text: string) {
-    this.legendText = text;
     return this;
   }
 }
@@ -134,6 +122,6 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    * @param color Color of the asymptote
    */
   constructor(func: ((x: number) => number) | string, color: PrimeColor) {
-    super(func, color, undefined, true);
+    super(func, color, { isDashed: true });
   }
 }

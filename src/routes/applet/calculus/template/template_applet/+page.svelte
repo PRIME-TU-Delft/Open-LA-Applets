@@ -37,18 +37,25 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, false, 'square')
-      .addGaps(new Vector2(-1, 0), "gaps")
-      .addIncludedPoints(new Vector2(3, 4), "included")
-      .withLegend('f(x)'),
-    new FunctionFragment('e^x', PrimeColor.darkGreen)
-      .withIntegral({
+    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
+      domain: { xMin: -1, xMax: 2.14 }
+    }),
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, {
+      domain: { xMax: 3 },
+      isDashed: false,
+      shape: 'square',
+      legendText: 'f(x)'
+    })
+      .addGaps(new Vector2(-1, 0), 'gaps')
+      .addIncludedPoints(new Vector2(3, 4), 'included'),
+    new FunctionFragment('e^x', PrimeColor.darkGreen, {
+      integral: {
         xLeft: -4,
         xRight: -1.25,
         isDashed: true
-      })
-      .withLegend('g(x)'),
+      },
+      legendText: 'g(x)'
+    }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
