@@ -123,8 +123,9 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    * Oblique asymptote fragment template object
    * @param func A javascript function or a latex string describing the asymptote
    * @param color Color of the asymptote
+   * @param legendText Text to be shown in the legend item
    */
-  constructor(func: ((x: number) => number) | string, color: PrimeColor) {
-    super(func, color, { isDashed: true });
+  constructor(func: ((x: number) => number) | string, color: PrimeColor, legendText?: string) {
+    super(func, color, { isDashed: true, legendText: legendText });
   }
 }
