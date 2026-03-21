@@ -1,7 +1,6 @@
 import { ComputeEngine } from '@cortex-js/compute-engine';
 import type { PrimeColor } from '../utils/PrimeColors';
 import type { Vector2 } from 'three';
-import type { FillType } from '$lib/utils/Legend';
 
 type Domain = {
   xMin?: number;
@@ -11,7 +10,8 @@ type Domain = {
 type Integral = {
   xLeft: number;
   xRight: number;
-  fillStyle: 'full' | 'dashed';
+  isDashed?: boolean;
+  legendText?: string;
 };
 
 type Shape = 'circle' | 'square' | 'triangle';
@@ -26,24 +26,33 @@ export class FunctionFragment extends AppletObject {
   includedPoints: Vector2[] = [];
   integral: Integral | undefined;
   legendText: string | undefined;
-  legendFill: FillType | undefined;
   isDashed: boolean = false;
   shape: Shape = 'circle';
+  pointsLegendText: { included: string | undefined; gaps: string | undefined } = {
+    included: undefined,
+    gaps: undefined
+  };
 
   /**
    * Function fragment template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
-   * @param domain Domain on which the function should be drawn
-   * @param isDashed Whether the function line should be dashed
-   * @param shape Shape to use for legend and points
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.integral Properties of the integral
+   * @param options.legendText Text to be shown in the legend item
    */
   constructor(
     func: ((x: number) => number) | string,
     color: PrimeColor,
-    domain?: Domain,
-    isDashed?: boolean,
-    shape?: Shape
+    options: {
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      integral?: Integral;
+      legendText?: string;
+    }
   ) {
     super();
 
@@ -57,50 +66,34 @@ export class FunctionFragment extends AppletObject {
       this.func = func;
     }
     this.color = color;
-    this.domain = domain;
-    if (isDashed) this.isDashed = isDashed;
-    if (shape) this.shape = shape;
+    this.domain = options.domain;
+    this.legendText = options.legendText;
+    if (options.isDashed) this.isDashed = options.isDashed;
+    if (options.shape) this.shape = options.shape;
+    if (options.integral) this.integral = options.integral;
   }
 
   /**
    * Add gaps to the function fragment
    * @param positions List of Vector2 coordinates of the gaps
+   * @param legendText (optional) Text shown in the legend for all the gap points
    * @returns this
    */
-  addGaps(...positions: Vector2[]) {
+  addGaps(positions: Vector2 | Vector2[], legendText?: string) {
     this.gaps = this.gaps.concat(positions);
+    this.pointsLegendText.gaps = legendText;
     return this;
   }
 
   /**
    * Add included points to the function fragment
    * @param positions List of Vector2 coordinates of the included points
+   * @param legendText (optional) Text shown in the legend for all the included points
    * @returns this
    */
-  addIncludedPoints(...positions: Vector2[]) {
+  addIncludedPoints(positions: Vector2 | Vector2[], legendText?: string) {
     this.includedPoints = this.includedPoints.concat(positions);
-    return this;
-  }
-
-  /**
-   * Sets integral shading of the function
-   * @param integral Properties of the integral
-   * @returns this
-   */
-  withIntegral(integral: Integral) {
-    this.integral = integral;
-    return this;
-  }
-
-  /**
-   * Adds a legend item for this function
-   * @param text Text to be shown in the legend item
-   * @param fill Type of fill to be used in the legend item
-   * @returns this
-   */
-  withLegend(text: string, fill?: FillType) {
-    this.legendText = text;
-    this.legendFill = fill;
+    this.pointsLegendText.included = legendText;
     return this;
   }
 }
@@ -130,8 +123,9 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    * Oblique asymptote fragment template object
    * @param func A javascript function or a latex string describing the asymptote
    * @param color Color of the asymptote
+   * @param legendText Text to be shown in the legend item
    */
-  constructor(func: ((x: number) => number) | string, color: PrimeColor) {
-    super(func, color, undefined, true);
+  constructor(func: ((x: number) => number) | string, color: PrimeColor, legendText?: string) {
+    super(func, color, { isDashed: true, legendText: legendText });
   }
 }
