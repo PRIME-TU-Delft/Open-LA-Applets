@@ -1,5 +1,6 @@
 <script lang="ts">
   import { FillType, LegendItem, Shape } from '$lib/utils/Legend';
+  import LatexUI from '$lib/components/Latex.svelte';
 
   const { legendI }: { legendI: LegendItem } = $props();
 
@@ -69,5 +70,5 @@
       />
     {/if}
   </svg>
-  <span class="text-sm">{legendI.label}</span>
+  <LatexUI latex={legendI.label} />
 </div>

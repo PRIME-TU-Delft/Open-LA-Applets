@@ -34,6 +34,7 @@ This is the complete page component for the template applet (`src/routes/applet/
   // ###############
   // CAMERA SETTINGS
   // ###############
+  // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
@@ -46,29 +47,36 @@ This is the complete page component for the template applet (`src/routes/applet/
     0.5 // margin
   );
 
+  // ###########
+  // AXIS LABELS
+  // ###########
+
+  // (remove if unnecessary)
+  xAxisLabel = '';
+  yAxisLabel = '';
+
   // ##############
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { xMin: -1, xMax: 2.14 }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, false, 'square')
+    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, { domain: { xMin: -1, xMax: 2.14 } }),
+    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { domain: { xMax: 3 }, isDashed: false, shape: 'square', legendText: 'f(x)' })
       .addGaps(new Vector2(-1, 0))
-      .addIncludedPoints(new Vector2(3, 4))
-      .withLegend('f(x)', FillType.Dashed),
-    new FunctionFragment('e^x', PrimeColor.darkGreen)
-      .withIntegral({
-        xLeft: -4,
-        xRight: -1.25,
-        fillStyle: 'full'
-      })
-      .withLegend('g(x)'),
+      .addIncludedPoints(new Vector2(3, 4)),
+    new FunctionFragment('e^x', PrimeColor.darkGreen, { integral: { xLeft: -4, xRight: -1.25, isDashed: false }, legendText: 'g(x)' }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
   ];
 </script>
 
-<Canvas2D {initialViewBox} {cameraPosition} {cameraZoom} legendItems={getLegend(appletObjects)}>
+<Canvas2D
+  {initialViewBox}
+  {cameraPosition}
+  {cameraZoom}
+  legendItems={getLegend(appletObjects)}
+  labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
 ```
@@ -117,6 +125,21 @@ Notes:
 
 - Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
 
+## Optional: set axis labels
+
+If you want to also have dynamic axis labels in your applet, you can define them in the `axis labels` part. They are rendered with LaTeX.
+
+Example:
+
+```ts
+// ###########
+// AXIS LABELS
+// ###########
+
+xAxisLabel = 'x';
+yAxisLabel = 'f(x)';
+```
+
 ## Template objects
 
 The `appletObjects` array can contain the following types of objects:
@@ -130,29 +153,28 @@ The `appletObjects` array can contain the following types of objects:
 Constructor:
 
 ```ts
-new FunctionFragment(func, color, domain?)
+new FunctionFragment(func, color, options?)
 ```
 
 - `func`: either `(x: number) => number` or a LaTeX string (for example `'\\sin(x)'`).
 - `color`: one of the `PrimeColor` values.
-- `domain` (optional): `{ xMin?: number; xMax?: number }`, can be set to `undefined` to cover the whole grid.
-- `isDashed` (optional): `true` or (by default ) `false`.
-- `shape` (optional): `circle`, `square` or `triangle`, used for the points (gaps, included points) and legend item shapes, uses `circle` by default.
+- `options` (optional): an object with the following properties:
+  - `domain`: `{ xMin?: number; xMax?: number }`, specifies where the function should be drawn. You can specify just `xMin`, just `xMax`, or both. Omit both to display across the entire view.
+  - `isDashed`: `true` or (by default) `false`, renders the function with a dashed line instead of solid.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for the points (gaps, included points) and legend item shapes. Default: `'circle'`.
+  - `integral`: `{ xLeft: number; xRight: number; isDashed?: boolean; legendText?: string }` to shade area under the function between two x-values.
+  - `legendText`: text to display in the legend for this function.
 
 Useful chaining methods:
 
 ```ts
-new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMax: 3 }, true)
-  .addGaps(new Vector2(-1, 0))
-  .addIncludedPoints(new Vector2(3, 4))
-  .withIntegral({ xLeft: -4, xRight: -1.25, fillStyle: 'full' })
-  .withLegend("Function f", FillType.Border);
+new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { domain: { xMax: 3 }, isDashed: true, legendText: 'f(x)' })
+  .addGaps(new Vector2(-1, 0), "gaps")
+  .addIncludedPoints(new Vector2(3, 4));
 ```
 
-- `.addGaps(...positions)`: adds open circles at those coordinates
-- `.addIncludedPoints(...positions)`: adds filled points at those coordinates
-- `.withIntegral({ xLeft, xRight, fillStyle })`: shades area under the function between two x-values. `fillStyle` can be either `'full'` (solid color) or `'dashed'` (diagonal lines).
-- `.withLegend(text: string, fill?: FillType)`: adds legend item for this function, with the specified text and fill type (default: `FillType.Full`, `FillType.Dashed`, `FillType.Border`).
+- `.addGaps(positions, legendText?)`: adds open circles at those coordinates. Pass an array of `Vector2` points for multiple gaps. The optional second parameter sets legend text for these points (e.g., `.addGaps([new Vector2(-1, 0), new Vector2(2, 1)], 'discontinuity')`)
+- `.addIncludedPoints(positions, legendText?)`: adds filled circles/shapes at those coordinates. Also supports multiple points and optional legend text.
 
 More `FunctionFragment` examples:
 
@@ -162,36 +184,48 @@ new FunctionFragment((x: number) => x ** 3 - 2 * x, PrimeColor.raspberry);
 
 // 2) JavaScript function: trigonometric
 new FunctionFragment((x: number) => Math.sin(2 * x), PrimeColor.blue, {
-  xMin: -Math.PI,
-  xMax: Math.PI
+  domain: { xMin: -Math.PI, xMax: Math.PI }
 });
 
 // 3) JavaScript function: piecewise, using JS ternary operator
-new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { xMin: -3, xMax: 3 });
+new FunctionFragment((x: number) => (x < 0 ? -1 : 1), PrimeColor.darkGreen, { domain: { xMin: -3, xMax: 3 } });
 
 // 4) JavaScript function with an integral region
 new FunctionFragment((x: number) => 0.5 * x + 1, PrimeColor.orange, {
-  xMin: -2,
-  xMax: 4
-}).withIntegral({
-  xLeft: 0,
-  xRight: 3,
-  fillStyle: 'dashed'
+  domain: { xMin: -2, xMax: 4 },
+  integral: { xLeft: 0, xRight: 3, isDashed: true }
 });
 
 // 5) LaTeX string: trigonometric
-new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { xMin: -3.14, xMax: 3.14 });
+new FunctionFragment('\\sin(2x)', PrimeColor.cyan, { domain: { xMin: -3.14, xMax: 3.14 } });
 
 // 6) Function with square points and legend text
-new FunctionFragment((x: number) => -x, PrimeColor.raspberry, undefined, false, 'square').withLegend(
-  'Some function f(x)',
-  FillType.Dashed
-);
+new FunctionFragment((x: number) => -x, PrimeColor.raspberry, {
+  shape: 'square',
+  legendText: 'Some function f(x)'
+});
 
 // 7) Function with only legend defined
-new FunctionFragment((x: number) => x ** 2 - 3, PrimeColor.raspberry).withLegend(
-  'Another function g(x)',
-);
+new FunctionFragment((x: number) => x ** 2 - 3, PrimeColor.raspberry, {
+  legendText: 'Another function g(x)'
+});
+
+// 8) Complex function with multiple gaps, points, and integral
+new FunctionFragment('\\frac{1}{x^2 - 4}', PrimeColor.blue, {
+  domain: { xMin: -5, xMax: 5 },
+  integral: { xLeft: 0.5, xRight: 1.9, isDashed: true, legendText: 'area₁' }
+})
+  .addGaps(new Vector2(-2, 0), 'vertical asymptotes')
+  .addGaps(new Vector2(2, 0))
+  .addIncludedPoints(new Vector2(0, -0.25), 'y-intercept');
+
+// 9) Dashed function with multiple integral regions for comparison
+new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.orange, {
+  isDashed: true,
+  shape: 'square',
+  integral: { xLeft: -2, xRight: 0, isDashed: false, legendText: 'solid area' }
+})
+  .addIncludedPoints([new Vector2(-1, 0), new Vector2(1, 0)], 'zeros');
 ```
 
 Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
@@ -220,16 +254,18 @@ new AsymptoteFragment(-2, 'horizontal', PrimeColor.black);
 Constructor:
 
 ```ts
-new ObliqueAsymptoteFragment(func, color);
+new ObliqueAsymptoteFragment(func, color, legendText);
 ```
 
 - `func`: either `(x: number) => number` or a LaTeX string (for example `'x+2'`)
 - `color`: one of the `PrimeColor` values
+- `legendText`: (optional) text to display in the legend for this asymptote
 
 Example:
 
 ```ts
-new ObliqueAsymptoteFragment('x+2', PrimeColor.orange);
+new ObliqueAsymptoteFragment('x+2', PrimeColor.orange, "asymptote");
+new ObliqueAsymptoteFragment('-x', PrimeColor.raspberry);
 ```
 
 ## Step-by-step: create an example applet
@@ -242,69 +278,72 @@ Create a parabola on a limited domain:
 
 ```ts
 const appletObjects: AppletObject[] = [
-  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 })
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { domain: { xMin: -2, xMax: 2 } })
 ];
 ```
 
 ### Step 2: Add a removable discontinuity
 
-Now add a rational function, an open circle at the gap, and a filled value at another point:
+Now add a rational function, an open circle at the gap, and a filled value at another point. You can chain multiple `.addGaps()` and `.addIncludedPoints()` calls:
 
 ```ts
 const appletObjects: AppletObject[] = [
-  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
-  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
-    .addGaps(new Vector2(-1, 0))
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { domain: { xMin: -2, xMax: 2 } }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { domain: { xMin: -3, xMax: 3 } })
+    .addGaps(new Vector2(-1, 0), 'hole at x = -1')
     .addIncludedPoints(new Vector2(2, 3))
 ];
 ```
 
 ### Step 3: Add an integral region
 
-Add a third function and shade its integral between two x-values:
+Add a third function and shade its integral between two x-values. You can use `isDashed: true` for a hatched fill pattern:
 
 ```ts
 const appletObjects: AppletObject[] = [
-  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
-  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
-    .addGaps(new Vector2(-1, 0))
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { domain: { xMin: -2, xMax: 2 } }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { domain: { xMin: -3, xMax: 3 } })
+    .addGaps(new Vector2(-1, 0), 'hole at x = -1')
     .addIncludedPoints(new Vector2(2, 3)),
-  new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
-    xLeft: -2,
-    xRight: 0,
-    fillStyle: 'full'
+  new FunctionFragment('e^x', PrimeColor.darkGreen, {
+    integral: { xLeft: -2, xRight: 0, isDashed: false, legendText: 'area under curve' }
   })
 ];
 ```
 
 ### Step 4: Add asymptotes
 
-Finally, add vertical/horizontal asymptotes and one oblique asymptote:
+Finally, add vertical/horizontal asymptotes and one oblique asymptote. Oblique asymptotes can include legend text:
 
 ```ts
 const appletObjects: AppletObject[] = [
-  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { xMin: -2, xMax: 2 }),
-  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { xMin: -3, xMax: 3 })
-    .addGaps(new Vector2(-1, 0))
+  new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.raspberry, { domain: { xMin: -2, xMax: 2 } }),
+  new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, { domain: { xMin: -3, xMax: 3 } })
+    .addGaps(new Vector2(-1, 0), 'hole at x = -1')
     .addIncludedPoints(new Vector2(2, 3)),
-  new FunctionFragment('e^x', PrimeColor.darkGreen).withIntegral({
-    xLeft: -2,
-    xRight: 0,
-    fillStyle: 'full'
+  new FunctionFragment('e^x', PrimeColor.darkGreen, {
+    integral: { xLeft: -2, xRight: 0, isDashed: false, legendText: 'area under curve' }
   }),
   new AsymptoteFragment(1, 'vertical', PrimeColor.cyan),
   new AsymptoteFragment(-2, 'horizontal', PrimeColor.black),
-  new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
+  new ObliqueAsymptoteFragment('x+2', PrimeColor.orange, 'oblique asymptote')
 ];
 ```
 
-## Wrap up
+## How to create your own template applet
 
-The template workflow is:
+1. **Copy the template applet** and keep the structure.
 
-- Keep the Svelte page structure as-is.
-- Build your applet by editing only `appletObjects`.
-- Optionally set `initialViewBox` or `cameraPosition`, `cameraZoom` to control the initial camera framing.
-- Combine `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` as needed.
+2. **Edit only `appletObjects`** — Add `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` objects that represent your mathematical content.
 
-When the applet gets more interactive or needs custom behavior, you can switch from this template approach to a fully custom Svelte applet or build on top of the existing template one.
+3. **Combine features freely** — You can mix and match:
+   - Function domains (partial or full)
+   - Dashing styles
+   - Point shapes (circle, square, triangle)
+   - Integral fills (solid or hatched)
+   - Custom legend labels for everything
+   - Multiple gaps and included points via chaining
+
+4. **Set camera framing (optional)** — Use `initialViewBox` for guaranteed minimum visible area, or `cameraPosition`/`cameraZoom` for simple positioning.
+
+5. **Next steps** — If your applet needs interactivity or custom logic, ask a TA for help.

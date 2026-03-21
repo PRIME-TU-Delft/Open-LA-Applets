@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
   import { Formula } from '$lib/utils/Formulas';
@@ -84,17 +83,18 @@
 
   const legendItems = $derived([
     new LegendItem(
-      $_('applets.calculus.integration.method_errors.left'),
+      toLatexText($_('applets.calculus.integration.simple_methods.left')),
       PrimeColor.orange,
       Shape.Circle
     ),
     new LegendItem(
-      $_('applets.calculus.integration.method_errors.right'),
+      toLatexText($_('applets.calculus.integration.simple_methods.right')),
       PrimeColor.blue,
       Shape.Square
     ),
     new LegendItem(
-      $_('applets.calculus.integration.method_errors.trapezoid'),
+      toLatexText($_('applets.calculus.integration.simple_methods.trapezoid')),
+
       PrimeColor.darkGreen,
       Shape.Triangle
     )
@@ -146,39 +146,31 @@
   cameraZoom={1.15}
   cameraPosition={new Vector2(-1.4, -2.4)}
   title={$_('applets.calculus.integration.method_errors.title')}
->
-  <!-- RE-ADD when axis labels work better
   labels={{
     xLabel: 'h',
-    xLabelPosition: 'top-center',
-    yLabel: $_('applets.calculus.integration.method_errors.absolute_error'),
-    yLabelPosition: 'right-center',
-    yLabelRotate: 'right',
-    size: 1.5
-  }} -->
-
-  <Latex2D latex="h" position={new Vector2(-2.5, 0.55)} />
-  <Latex2D
-    latex={`\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`}
-    position={new Vector2(1.95, -1.5)}
-    rotation={-90}
-  />
-
+    xLabelPosition: 'center',
+    yLabel: `\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`,
+    yLabelPosition: 'center',
+    yLabelOffset: new Vector2(1, 0),
+    yLabelRotate: true
+  }}
+>
   {#each errorsPredefined as pE (pE.pointX)}
     {@const x = 2 * Math.log10(pE.pointX)}
     {@const left = Math.log10(pE.errors['left'])}
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
 
-    {@const opacity = !animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+    {@const opacity = !animationOn ? 1 : 0.5}
 
     {#if controls[1]}
-      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange + opacity} shape="circle" />
+      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} {opacity} shape="circle" />
     {/if}
     {#if controls[2]}
       <Point2D
         position={new Vector2(x, right)}
-        color={PrimeColor.blue + opacity}
+        color={PrimeColor.blue}
+        {opacity}
         radius={0.085}
         shape="square"
       />
@@ -186,26 +178,29 @@
     {#if controls[3]}
       <Point2D
         position={new Vector2(x, trapezoid)}
-        color={PrimeColor.darkGreen + opacity}
+        color={PrimeColor.darkGreen}
+        {opacity}
         shape="triangle"
       />
     {/if}
   {/each}
 
   {@const hX = 2 * Math.log10(h)}
-  {@const opacity = animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+  {@const opacity = animationOn ? 1 : 0.5}
 
   {#if controls[1]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
-      color={PrimeColor.orange + opacity}
+      color={PrimeColor.orange}
+      {opacity}
       shape="circle"
     />
   {/if}
   {#if controls[2]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
-      color={PrimeColor.blue + opacity}
+      color={PrimeColor.blue}
+      {opacity}
       shape="square"
       radius={0.085}
     />
@@ -213,7 +208,8 @@
   {#if controls[3]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
-      color={PrimeColor.darkGreen + opacity}
+      color={PrimeColor.darkGreen}
+      {opacity}
       shape="triangle"
     />
   {/if}

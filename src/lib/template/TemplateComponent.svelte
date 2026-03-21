@@ -15,7 +15,13 @@
       color={object.color.toString()}
       xMin={object.domain?.xMin}
       xMax={object.domain?.xMax}
-      integral={object.integral}
+      integral={object.integral
+        ? {
+            xLeft: object.integral?.xLeft,
+            xRight: object.integral?.xRight,
+            fillStyle: object.integral?.isDashed ? 'dashed' : 'full'
+          }
+        : undefined}
       isDashed={object.isDashed}
     />
 

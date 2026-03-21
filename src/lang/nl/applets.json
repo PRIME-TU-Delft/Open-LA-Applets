@@ -143,13 +143,16 @@
       "title": "Drie vlakken zonder gemeenschappelijk punt."
     },
     "two_planes_coincide": {
-      "title": "Twee vlakken met een gemeenschappelijk punt."
+      "title": "Twee vlakken die samenvallen"
     },
     "parametric_line_space": {
       "title": "Een parametrische vector van een lijn in een 3D-ruimte"
     },
     "planes_point_intersection": {
       "title": "Drie vlakken met een puntkruising"
+    },
+    "two_plane_line_intersection": {
+      "title": "Twee vlakken met een snijlijn"
     }
   },
   "matrix_operations": {

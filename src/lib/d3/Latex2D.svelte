@@ -9,6 +9,7 @@
     color?: string;
     alignX?: 'left' | 'right' | 'center' | null;
     alignY?: 'top' | 'bottom' | 'center' | null;
+    dimOnHover?: boolean;
   };
 </script>
 
@@ -25,7 +26,8 @@
     extend = 0,
     color = 'black',
     alignX = null,
-    alignY = null
+    alignY = null,
+    dimOnHover = false
   }: Latex2DProps = $props();
 
   let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
@@ -48,6 +50,7 @@
 </script>
 
 <g
+  class={dimOnHover ? 'latex-dim' : ''}
   transform="translate({position.x + offset.x + extendedOffset.x}, {position.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({0.02 * fontSize},{-0.02 * fontSize})"
@@ -60,3 +63,27 @@
     {/if}
   </foreignObject>
 </g>
+
+<style>
+  .latex-dim:hover {
+    animation: dim 1s forwards;
+  }
+
+  @keyframes dim {
+    0% {
+      opacity: 100%;
+    }
+
+    25% {
+      opacity: 100%;
+    }
+
+    80% {
+      opacity: 20%;
+    }
+
+    100% {
+      opacity: 10%;
+    }
+  }
+</style>
