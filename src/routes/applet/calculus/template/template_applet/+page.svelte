@@ -13,6 +13,7 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
+  import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -46,8 +47,8 @@
       shape: 'square',
       legendText: 'f(x)'
     })
-      .addGaps(new Vector2(-1, 0), 'gaps')
-      .addIncludedPoints(new Vector2(3, 4), 'included'),
+      .addGaps(new Vector2(-1, 0), toLatexText('gaps'))
+      .addIncludedPoints(new Vector2(3, 4), toLatexText('included')),
     new FunctionFragment('e^x', PrimeColor.darkGreen, {
       integral: {
         xLeft: -4,

@@ -83,17 +83,17 @@
 
   const legendItems = $derived([
     new LegendItem(
-      $_('applets.calculus.integration.simple_methods.left'),
+      toLatexText($_('applets.calculus.integration.simple_methods.left')),
       PrimeColor.orange,
       Shape.Circle
     ),
     new LegendItem(
-      $_('applets.calculus.integration.simple_methods.right'),
+      toLatexText($_('applets.calculus.integration.simple_methods.right')),
       PrimeColor.blue,
       Shape.Square
     ),
     new LegendItem(
-      $_('applets.calculus.integration.simple_methods.trapezoid'),
+      toLatexText($_('applets.calculus.integration.simple_methods.trapezoid')),
 
       PrimeColor.darkGreen,
       Shape.Triangle
