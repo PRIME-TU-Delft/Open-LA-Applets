@@ -161,15 +161,16 @@
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
 
-    {@const opacity = !animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+    {@const opacity = !animationOn ? 1 : 0.5}
 
     {#if controls[1]}
-      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange + opacity} shape="circle" />
+      <Point2D position={new Vector2(x, left)} color={PrimeColor.orange} {opacity} shape="circle" />
     {/if}
     {#if controls[2]}
       <Point2D
         position={new Vector2(x, right)}
-        color={PrimeColor.blue + opacity}
+        color={PrimeColor.blue}
+        {opacity}
         radius={0.085}
         shape="square"
       />
@@ -177,26 +178,29 @@
     {#if controls[3]}
       <Point2D
         position={new Vector2(x, trapezoid)}
-        color={PrimeColor.darkGreen + opacity}
+        color={PrimeColor.darkGreen}
+        {opacity}
         shape="triangle"
       />
     {/if}
   {/each}
 
   {@const hX = 2 * Math.log10(h)}
-  {@const opacity = animationOn ? PrimeColor.opacity(1) : PrimeColor.opacity(0.5)}
+  {@const opacity = animationOn ? 1 : 0.5}
 
   {#if controls[1]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['left']))}
-      color={PrimeColor.orange + opacity}
+      color={PrimeColor.orange}
+      {opacity}
       shape="circle"
     />
   {/if}
   {#if controls[2]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['right']))}
-      color={PrimeColor.blue + opacity}
+      color={PrimeColor.blue}
+      {opacity}
       shape="square"
       radius={0.085}
     />
@@ -204,7 +208,8 @@
   {#if controls[3]}
     <Point2D
       position={new Vector2(hX, Math.log10(errorsDraggable['trapezoid']))}
-      color={PrimeColor.darkGreen + opacity}
+      color={PrimeColor.darkGreen}
+      {opacity}
       shape="triangle"
     />
   {/if}
