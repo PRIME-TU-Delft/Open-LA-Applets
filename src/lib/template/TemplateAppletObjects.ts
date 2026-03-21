@@ -16,7 +16,7 @@ type Integral = {
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject { }
+export class AppletObject {}
 
 export class FunctionFragment extends AppletObject {
   func: (x: number) => number;
@@ -28,7 +28,10 @@ export class FunctionFragment extends AppletObject {
   legendText: string | undefined;
   isDashed: boolean = false;
   shape: Shape = 'circle';
-  pointsLegendText: { included: string | undefined, gaps: string | undefined } = { included: undefined, gaps: undefined };
+  pointsLegendText: { included: string | undefined; gaps: string | undefined } = {
+    included: undefined,
+    gaps: undefined
+  };
 
   /**
    * Function fragment template object
@@ -44,11 +47,11 @@ export class FunctionFragment extends AppletObject {
     func: ((x: number) => number) | string,
     color: PrimeColor,
     options: {
-      domain?: Domain,
-      isDashed?: boolean,
-      shape?: Shape,
-      integral?: Integral,
-      legendText?: string
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      integral?: Integral;
+      legendText?: string;
     }
   ) {
     super();
