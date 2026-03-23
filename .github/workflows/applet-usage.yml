@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   check-book-applets:
@@ -34,14 +35,11 @@ jobs:
         run: python scripts/check-book-applets.py
       - name: Format project
         run: pnpm format
-      - name: Commit updated book-applets.json
-        run: |
-          git config user.name "PRIME-bot"
-          git config user.email "PRIME@tudelft.nl"
-          git add static/book-applets.json
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: update book applet usage data"
-            git push origin HEAD:${GITHUB_REF_NAME}
-          fi
+      - name: Create pull request with updates
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "chore: update book applet usage data"
+          title: "chore: update book applet usage data"
+          body: "Automated update of book applet usage data and formatting."
+          branch: "chore/update-book-applet-usage"
+          delete-branch: true
