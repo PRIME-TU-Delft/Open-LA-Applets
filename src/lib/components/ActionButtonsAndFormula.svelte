@@ -45,6 +45,9 @@
     hideButtons = false
   }: ActionButtonsAndFormulaProps = $props();
 
+  // svelte-ignore state_referenced_locally
+  if (legendItems?.length >= 1) showFormulas = true;
+
   let isFullscreen = $state(false); // Is the scene fullscreen?
   let languageModalOpen = $state(false); // Is the language modal open?
 
@@ -174,7 +177,7 @@
       {/if}
 
       <!-- TOGGLE FORMULAE BUTTON -->
-      {#if !globalState.isInset() && formulas && formulas.length >= 1}
+      {#if !globalState.isInset() && (formulas?.length >= 1 || legendItems?.length >= 1)}
         <Button.Action
           side="bottom"
           class="{!formulasShown
