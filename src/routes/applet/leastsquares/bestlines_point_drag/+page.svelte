@@ -58,7 +58,7 @@
   <Latex2D position={new Vector2(p1.x, p1.clone().multiplyScalar(0.5).y)} latex="x_1" />
   <Latex2D position={new Vector2(p1.clone().multiplyScalar(0.5).x, p1.y)} latex="y_1" />
 
-  {#each ps_proj as pt (pt.p.toString())}
+  {#each ps_proj as pt, i (i)}
     <!-- distances -->
     <Vector2D
       origin={pt.p}

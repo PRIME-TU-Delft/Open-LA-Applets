@@ -1,0 +1,47 @@
+name: Check book applet usage
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-book-applets:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10"
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Scan book repositories for applet usage
+        run: python scripts/check-book-applets.py
+      - name: Format project
+        run: pnpm format
+      - name: Commit updated book-applets.json
+        run: |
+          git config user.name "PRIME-bot"
+          git config user.email "PRIME@tudelft.nl"
+          git add static/book-applets.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update book applet usage data"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
