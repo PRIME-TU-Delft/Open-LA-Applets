@@ -346,6 +346,13 @@
     ]
   },
   "Calculus": {
-    "applets": []
+    "applets": [
+      {
+        "url": "test/test1",
+        "title": "",
+        "name": "Fig:test",
+        "source_files": ["Chapter1/Calc.md"]
+      }
+    ]
   }
 }
