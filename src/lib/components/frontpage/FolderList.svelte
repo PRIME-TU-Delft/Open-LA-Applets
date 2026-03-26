@@ -11,7 +11,7 @@
   export type FolderListProps = {
     fileUrls: string[];
     directory?: string;
-    appletUsageInBook: BookAppletUsage;
+    appletUsageInBook?: BookAppletUsage;
   };
 
   let { fileUrls, directory = '', appletUsageInBook }: FolderListProps = $props();
@@ -59,6 +59,7 @@
 </script>
 
 <div class="mx-auto my-10 flex flex-col">
+  {#if appletUsageInBook !== undefined}
   <div class="mb-2 self-end">
     <Tooltip.Provider>
       <Tooltip.Root>
@@ -74,6 +75,7 @@
     </Tooltip.Provider>
     <Switch bind:checked={showUnused} id="show-unused-toggle" />
   </div>
+  {/if}
 
   <Accordion.Root type="single" class="container mx-auto">
     {#each Object.entries(folders) as [folderTitle, files] (folderTitle)}
