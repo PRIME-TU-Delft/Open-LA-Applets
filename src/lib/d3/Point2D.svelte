@@ -1,107 +1,154 @@
 <script lang="ts" module>
   export type Point2DProps = {
     position: Vector2;
-    isSquare?: boolean;
+    shape?: 'circle' | 'square' | 'triangle';
     radius?: number;
     color?: string;
+    fill?: string | undefined;
     pulse?: boolean;
     opacity?: number;
+    text?: string;
+    showTextOnlyOnHover?: boolean;
+    fontSize?: number;
+    offset?: Vector2;
   };
 </script>
 
 <script lang="ts">
-  import { POINT_SIZE } from '$lib/utils/AttributeDimensions';
+  import { LINE_WIDTH, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import Latex2D from './Latex2D.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   let {
     position = new Vector2(0, 0),
-    isSquare = false,
+    shape = 'circle',
     radius = POINT_SIZE,
-    color = 'black',
+    color = PrimeColor.black,
+    fill = undefined,
     pulse = false,
-    opacity = 1
+    opacity = 1,
+    text = '',
+    fontSize = 1,
+    offset = new Vector2(0, 0),
+    showTextOnlyOnHover = false
   }: Point2DProps = $props();
 </script>
 
-{#if isSquare}
-  <rect
-    x={position.x - radius}
-    y={position.y - radius}
-    height={radius * 2}
-    width={radius * 2}
-    fill={color}
-    {opacity}
-  />
-
-  {#if pulse}
+<g class="point2d" {opacity}>
+  {#if shape == 'square'}
     <rect
-      class="pulse"
-      style="--r-small: {radius * 4}px; --r-large: {radius *
-        8}px; --posX: {position.x}px; --posY: {position.y}px;"
-      fill={color}
+      x={position.x - radius}
+      y={position.y - radius}
+      height={radius * 2}
+      width={radius * 2}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
     />
-  {/if}
-{:else}
-  <circle cx={position.x} cy={position.y} r={radius} fill={color} {opacity} />
 
-  {#if pulse}
+    {#if pulse}
+      <rect
+        class="pulse"
+        style="transform-origin: {position.x}px {position.y}px;"
+        x={position.x - radius}
+        y={position.y - radius}
+        height={radius * 2}
+        width={radius * 2}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
+      />
+    {/if}
+  {:else if shape == 'circle'}
     <circle
-      class="pulse"
-      style="--r-small: {radius * 2}; --r-large: {radius * 4};"
       cx={position.x}
       cy={position.y}
-      r={radius * 2}
-      fill={color}
+      r={radius}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
     />
+
+    {#if pulse}
+      <circle
+        class="pulse"
+        style="transform-origin: {position.x}px {position.y}px;"
+        cx={position.x}
+        cy={position.y}
+        r={radius}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
+      />
+    {/if}
+  {:else if shape == 'triangle'}
+    {@const triRadius = radius * 1.2}
+    {@const dx = (triRadius * Math.sqrt(3)) / 2}
+    {@const dy = triRadius / 2}
+    <polygon
+      points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
+    />
+
+    {#if pulse}
+      <polygon
+        class="pulse"
+        style="transform-origin: {position.x}px {position.y}px;"
+        points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
+      />
+    {/if}
+  {/if}
+</g>
+{#if text}
+  {#if showTextOnlyOnHover}
+    <g class="hoverText">
+      <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
+    </g>
+  {:else}
+    <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
   {/if}
 {/if}
 
 <style>
   circle.pulse {
-    animation: pulseCircle 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  polygon.pulse {
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
   rect.pulse {
-    animation: pulseRect 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-    /* width: var(--r-large); */
+    animation: pulseScale 3s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
 
-  @keyframes pulseCircle {
+  @keyframes pulseScale {
     0% {
-      r: var(--r-large);
+      transform: scale(3);
       opacity: 0.5;
     }
     50% {
-      r: var(--r-small);
+      transform: scale(1.5);
       opacity: 0.25;
     }
     100% {
-      r: var(--r-large);
+      transform: scale(3);
       opacity: 0.5;
     }
   }
 
-  @keyframes pulseRect {
-    0% {
-      width: var(--r-large);
-      height: var(--r-large);
-      x: calc(var(--posX) - var(--r-large) / 2);
-      y: calc(var(--posY) - var(--r-large) / 2);
-      opacity: 0.5;
-    }
-    50% {
-      width: var(--r-small);
-      height: var(--r-small);
-      x: calc(var(--posX) - var(--r-small) / 2);
-      y: calc(var(--posY) - var(--r-small) / 2);
-      opacity: 0.25;
-    }
-    100% {
-      width: var(--r-large);
-      height: var(--r-large);
-      x: calc(var(--posX) - var(--r-large) / 2);
-      y: calc(var(--posY) - var(--r-large) / 2);
-      opacity: 0.5;
-    }
+  .hoverText {
+    display: none;
+    pointer-events: none;
+  }
+
+  .point2d:hover + .hoverText {
+    display: block;
   }
 </style>

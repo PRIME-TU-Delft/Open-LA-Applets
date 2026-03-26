@@ -7,6 +7,9 @@
     rotation?: number;
     extend?: number;
     color?: string;
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
+    dimOnHover?: boolean;
   };
 </script>
 
@@ -21,24 +24,66 @@
     offset = new Vector2(0, 0),
     rotation = 0,
     extend = 0,
-    color = 'black'
+    color = 'black',
+    alignX = null,
+    alignY = null,
+    dimOnHover = false
   }: Latex2DProps = $props();
 
   let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
+
+  let style = $derived.by(() => {
+    const base = 'display: inline-block; width: max-content;';
+
+    const translateX = alignX === 'right' ? '-100%' : alignX === 'center' ? '-50%' : null;
+
+    const translateY = alignY === 'bottom' ? '-100%' : alignY === 'center' ? '-50%' : null;
+
+    if (translateX && translateY)
+      return base + ` transform: translate(${translateX}, ${translateY});`;
+    if (translateX) return base + ` transform: translateX(${translateX});`;
+    if (translateY) return base + ` transform: translateY(${translateY});`;
+    return base;
+  });
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 </script>
 
 <g
+  class={dimOnHover ? 'latex-dim' : ''}
   transform="translate({position.x + offset.x + extendedOffset.x}, {position.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({0.02 * fontSize},{-0.02 * fontSize})"
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" />
+      <Latex {latex} {color} outputType="mathml" {style} />
     {:else}
-      <Latex {latex} {color} outputType="html" />
+      <Latex {latex} {color} outputType="html" {style} />
     {/if}
   </foreignObject>
 </g>
+
+<style>
+  .latex-dim:hover {
+    animation: dim 1s forwards;
+  }
+
+  @keyframes dim {
+    0% {
+      opacity: 100%;
+    }
+
+    25% {
+      opacity: 100%;
+    }
+
+    80% {
+      opacity: 20%;
+    }
+
+    100% {
+      opacity: 10%;
+    }
+  }
+</style>

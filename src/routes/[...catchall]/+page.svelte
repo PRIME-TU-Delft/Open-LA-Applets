@@ -4,6 +4,7 @@
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
   import { resolve } from '$app/paths';
   import Credits from '$lib/components/frontpage/Credits.svelte';
+  import type { PageProps } from './$types';
 
   const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
 
@@ -15,6 +16,8 @@
     .filter(
       (s) => s !== '[...applet]/static' && !s.startsWith('calculus/') && !s.startsWith('other/')
     );
+
+  let { data }: PageProps = $props();
 </script>
 
 <NavBar
@@ -68,7 +71,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} />
+  <FolderList {fileUrls} appletUsageInBook={data['Linear-Algebra']} />
 
   <Credits
     bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"

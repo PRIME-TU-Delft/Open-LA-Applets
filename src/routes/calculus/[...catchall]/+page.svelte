@@ -4,6 +4,7 @@
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
   import { resolve } from '$app/paths';
   import Credits from '$lib/components/frontpage/Credits.svelte';
+  import type { PageProps } from './$types';
 
   const modules = import.meta.glob('/src/routes/applet/calculus/**/+page.svelte');
 
@@ -11,6 +12,8 @@
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/calculus/', '').replace('/+page.svelte', '')
   );
+
+  let { data }: PageProps = $props();
 </script>
 
 <NavBar
@@ -65,7 +68,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="calculus/" />
+  <FolderList {fileUrls} directory="calculus/" appletUsageInBook={data['Calculus']} />
 
   <Credits
     bookURL="https://tudelft-prime-books.github.io/Calculus/"

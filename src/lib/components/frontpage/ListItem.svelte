@@ -10,6 +10,7 @@
   export let url: `/applet/${string}`;
   export let title = '';
   export let subtitle = '';
+  export let used = true;
 
   let showUrlIframe = '';
 
@@ -40,7 +41,12 @@
         {formatString(title)}
       </span>
     </div>
-    <ArrowRight />
+    <div class="flex items-center gap-2">
+      {#if !used}
+        <span class="rounded-xl bg-amber-300 px-2 py-1">Unused</span>
+      {/if}
+      <ArrowRight />
+    </div>
   </a>
 </div>
 

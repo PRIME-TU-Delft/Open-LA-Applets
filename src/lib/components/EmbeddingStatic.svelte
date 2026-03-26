@@ -72,7 +72,8 @@
     <Copy class="ml-2 size-4" />
   </Button>
 
-  <a href={resolve(stateUrl)} target="_blank">
+  <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+  <a href={stateUrl} target="_blank">
     <Button>
       {$_('ui.open_new_tab')}
       <ExternalLink class="ml-2 size-4" />

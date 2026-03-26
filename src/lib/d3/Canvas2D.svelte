@@ -30,6 +30,7 @@
     // Canvas2DProps
     cameraPosition = new Vector2(0, 0),
     cameraZoom = 1,
+    initialViewBox: viewBox,
     axis,
     labels,
     enablePan = true,
@@ -132,6 +133,7 @@
       {height}
       {cameraPosition}
       {cameraZoom}
+      initialViewBox={viewBox}
       {axis}
       {labels}
       {enablePan}

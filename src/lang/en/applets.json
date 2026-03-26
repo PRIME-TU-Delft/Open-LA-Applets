@@ -20,10 +20,23 @@
       "method_errors": {
         "title": "Errors of composite integration rules",
         "absolute_error": "Absolute error",
-        "left": "Left rectangle",
-        "right": "Right rectangle",
+        "left": "Left",
+        "right": "Right",
         "trapezoid": "Trapezoid"
       }
+    },
+    "riemann_sum": {
+      "riemann_sum_2d": {
+        "middle": "Middle",
+        "left": "Left",
+        "right": "Right"
+      },
+      "riemann_sum_3d": {
+        "center": "Center"
+      },
+      "random": "Random",
+      "min": "Min",
+      "max": "Max"
     }
   },
   "change_of_basis": {
@@ -126,6 +139,9 @@
     "two_disjoint_planes": {
       "title": "Two planes without a point in common."
     },
+    "two_plane_line_intersection": {
+      "title": "Two planes with a line of intersection"
+    },
     "directional_vectors_plane": {
       "title": "A parametric vector equation of a plane."
     },
@@ -133,7 +149,7 @@
       "title": "Three planes without a point in common."
     },
     "two_planes_coincide": {
-      "title": "Two planes with a point in common."
+      "title": "Two planes that coincide."
     },
     "parametric_line_space": {
       "title": "A parametric vector of a line in 3D space"

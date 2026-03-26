@@ -5,6 +5,7 @@
   export type Canvas2DProps = {
     cameraPosition?: Vector2;
     cameraZoom?: number;
+    initialViewBox?: ViewBox;
     axis?: AxisProps | null;
     labels?: LabelProps;
     width?: number;
@@ -36,14 +37,15 @@
   import { debounce } from '$lib/utils/TimingFunctions';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
-  import LatexUI from '$lib/components/Latex.svelte';
 
-  import { type ZoomTransform } from 'd3'; // Import types
-  import { getLabelStyles, type LabelProps } from './AxisLabels';
+  import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import Latex2D from './Latex2D.svelte';
+  import type { ViewBox } from './ViewBox';
 
   let {
-    cameraPosition = new Vector2(0, 0),
-    cameraZoom = 1,
+    cameraPosition: cameraPositionProp = new Vector2(0, 0),
+    cameraZoom: cameraZoomProp = 1,
+    initialViewBox: viewBox,
     width = 500,
     height = 300,
     enablePan = true,
@@ -54,9 +56,14 @@
     children
   }: Canvas2DProps = $props();
 
-  let currentTransform = $state(zoomIdentity);
+  // svelte-ignore state_referenced_locally
+  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height) : cameraZoomProp;
+  // svelte-ignore state_referenced_locally
+  let cameraPosition = viewBox ? viewBox.getCameraPos() : cameraPositionProp;
 
   let id = 'canvas-' + generateUUID();
+
+  let currentCameraTransform = $state<Transform2D>();
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -74,7 +81,6 @@
     if (!transform.k) return;
 
     if (enablePan) {
-      currentTransform = transform as unknown as ZoomTransform;
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
     } else {
       select(`#${id} g`)
@@ -87,6 +93,7 @@
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
+    currentCameraTransform = transform2d;
     debouncedUpdate2DCamera(transform2d);
   }
 
@@ -113,8 +120,6 @@
    * It will animate the camera to the default position and zoom level in 750ms.
    */
   function reset() {
-    currentTransform = zoomIdentity;
-
     const svg = select(`#${id}`);
     const node = svg.node() as Element;
 
@@ -159,17 +164,8 @@
     else cameraState.camera2D = undefined;
   });
 
-  const labelStyles = $derived(
-    getLabelStyles(
-      labels,
-      axis || undefined,
-      cameraPosition,
-      cameraZoom,
-      currentTransform,
-      width,
-      height
-    )
-  );
+  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels));
+  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, cameraZoom, labels));
 </script>
 
 <div class="relative overflow-hidden">
@@ -188,12 +184,42 @@
             30})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
+            <!-- 4. Axis: ticks, axis lines, tick numbers -->
             {#if axis !== null}
               <Axis {...axis} />
             {/if}
 
+            <!-- 3. Scene components -->
             {@render children()}
 
+            <!-- 2. Axis labels -->
+            {#if labels?.xLabel}
+              <Latex2D
+                dimOnHover={true}
+                latex={labels.xLabel}
+                fontSize={labels.size || 1}
+                position={new Vector2(
+                  xLabelX + (labels?.xLabelOffset?.x ?? 0),
+                  0.75 + (labels?.xLabelOffset?.y ?? 0)
+                )}
+                alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
+              />
+            {/if}
+            {#if labels?.yLabel}
+              <Latex2D
+                dimOnHover={true}
+                latex={labels.yLabel}
+                fontSize={labels.size || 1}
+                position={new Vector2(
+                  0.25 + (labels.yLabelRotate ? 0.5 : 0) + (labels?.yLabelOffset?.x ?? 0),
+                  yLabelY + +(labels?.yLabelOffset?.y ?? 0)
+                )}
+                rotation={labels.yLabelRotate ? -90 : 0}
+                alignX={labels.xLabelPosition == 'center' ? 'center' : 'left'}
+              />
+            {/if}
+
+            <!-- 1. Draggables on top of everything -->
             {#each draggables as d (d.id)}
               <Draggable2D draggable={d} />
             {/each}
@@ -202,21 +228,4 @@
       </g>
     </g>
   </svg>
-
-  {#if labels?.xLabel}
-    <LatexUI
-      latex={`\\textbf{${labels.xLabel}}`}
-      fontSize={(labels.size || 1) * 1.5}
-      class="xLabel absolute"
-      style={labelStyles.x}
-    />
-  {/if}
-  {#if labels?.yLabel}
-    <LatexUI
-      latex={`\\textbf{${labels.yLabel}}`}
-      fontSize={(labels.size || 1) * 1.5}
-      class="yLabel absolute"
-      style={labelStyles.y}
-    />
-  {/if}
 </div>

@@ -10,6 +10,12 @@
       "options": {
         "parser": "svelte"
       }
+    },
+    {
+      "files": "*.mdx",
+      "options": {
+        "embeddedLanguageFormatting": "off"
+      }
     }
   ]
 }
