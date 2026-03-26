@@ -60,21 +60,21 @@
 
 <div class="mx-auto my-10 flex flex-col">
   {#if appletUsageInBook !== undefined}
-  <div class="mb-2 self-end">
-    <Tooltip.Provider>
-      <Tooltip.Root>
-        <Tooltip.Trigger>
-          <label for="show-unused-toggle">
-            Show <span class="underline decoration-dotted">unused</span> applets
-          </label>
-        </Tooltip.Trigger>
-        <Tooltip.Content>
-          <p>"Unused" applets are those that do not appear in the book.</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
-    </Tooltip.Provider>
-    <Switch bind:checked={showUnused} id="show-unused-toggle" />
-  </div>
+    <div class="mb-2 self-end">
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            <label for="show-unused-toggle">
+              Show <span class="underline decoration-dotted">unused</span> applets
+            </label>
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>"Unused" applets are those that do not appear in the book.</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+      <Switch bind:checked={showUnused} id="show-unused-toggle" />
+    </div>
   {/if}
 
   <Accordion.Root type="single" class="container mx-auto">
