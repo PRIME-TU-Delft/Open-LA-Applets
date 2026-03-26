@@ -1,28 +1,6 @@
 import type { PageServerLoad } from './$types';
+import { loadBookAppletsUsage } from '$lib/server/bookApplets';
 
-type AppletUsageEntry = {
-  url: string;
-  title: string;
-  name: string;
-  source_files: string[];
-};
-
-type BookAppletUsage = {
-  applets: AppletUsageEntry[];
-};
-
-type AppletsUsageByBook = Record<string, BookAppletUsage>;
-
-export const load: PageServerLoad = async ({ fetch }) => {
-  const res = await fetch('/book-applets.json', {
-    cache: 'force-cache'
-  });
-
-  if (!res.ok) {
-    return {};
-  }
-
-  const usage: AppletsUsageByBook = await res.json();
-
-  return usage;
+export const load: PageServerLoad = () => {
+  return loadBookAppletsUsage();
 };

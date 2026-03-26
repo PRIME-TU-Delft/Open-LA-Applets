@@ -4,19 +4,9 @@
   import ListItem from './ListItem.svelte';
   import Switch from '../ui/switch/switch.svelte';
   import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+  import type { BookAppletUsage } from '$lib/server/bookApplets';
 
   let showUnused: boolean = $state(false);
-
-  type AppletUsageEntry = {
-    url: string;
-    title: string;
-    name: string;
-    source_files: string[];
-  };
-
-  type BookAppletUsage = {
-    applets: AppletUsageEntry[];
-  };
 
   export type FolderListProps = {
     fileUrls: string[];

@@ -82,7 +82,12 @@ def find_applet_usages(book_dir: str) -> list[dict]:
 
 def main():
     output_path = (
-        Path(__file__).resolve().parent.parent / "static" / "book-applets.json"
+        Path(__file__).resolve().parent.parent
+        / "src"
+        / "lib"
+        / "server"
+        / "data"
+        / "book-applets.json"
     )
 
     result = {}
