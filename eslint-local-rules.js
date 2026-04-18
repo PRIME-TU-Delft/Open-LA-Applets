@@ -69,7 +69,12 @@ export default {
       schema: []
     },
     create(context) {
-      const filename = context.getFilename();
+      const filename =
+        typeof context.filename === 'string'
+          ? context.filename
+          : typeof context.getFilename === 'function'
+            ? context.getFilename()
+            : '';
 
       // Only check applet files
       if (!filename.includes('/applet/') || !filename.endsWith('+page.svelte')) {

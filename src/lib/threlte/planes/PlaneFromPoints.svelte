@@ -26,7 +26,9 @@
 
   let planeMesh = $state<Mesh>();
 
-  let materials = [new MeshBasicMaterial({ color, transparent: true, opacity, side: DoubleSide })];
+  let materials = $derived([
+    new MeshBasicMaterial({ color, transparent: true, opacity, side: DoubleSide })
+  ]);
 
   $effect(() => {
     if (!planeMesh) return;

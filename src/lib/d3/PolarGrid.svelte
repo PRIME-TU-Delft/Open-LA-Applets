@@ -22,18 +22,22 @@
     showAngleTicks = false
   }: PolarGridProps = $props();
 
-  let lines: Vector2[] = [];
-  let angles_deg: number[] = [];
+  let { lines, angles_deg } = $derived.by(() => {
+    let lines: Vector2[] = [];
+    let angles_deg: number[] = [];
 
-  for (let angle = 0; angle < 180; angle += angleStep) {
-    let rad = (angle * Math.PI) / 180.0;
+    for (let angle = 0; angle < 180; angle += angleStep) {
+      let rad = (angle * Math.PI) / 180.0;
 
-    let x = Math.cos(rad);
-    let y = Math.sin(rad);
+      let x = Math.cos(rad);
+      let y = Math.sin(rad);
 
-    lines.push(new Vector2(x, y));
-    angles_deg.push(angle);
-  }
+      lines.push(new Vector2(x, y));
+      angles_deg.push(angle);
+    }
+
+    return { lines, angles_deg };
+  });
 
   function strokeWidth(index: number) {
     if (highlightRadii.includes(index)) return 0.03;
