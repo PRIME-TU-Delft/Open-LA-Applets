@@ -31,8 +31,8 @@
     return radians * (180 / Math.PI);
   }
 
-  let xRotation = radiansToDegrees(Math.atan(basis[0].y / basis[0].x));
-  let yRotation = radiansToDegrees(Math.atan(-basis[1].x / basis[1].y));
+  let xRotation = $derived(radiansToDegrees(Math.atan(basis[0].y / basis[0].x)));
+  let yRotation = $derived(radiansToDegrees(Math.atan(-basis[1].x / basis[1].y)));
 </script>
 
 <g>

@@ -23,14 +23,14 @@
     planeSegment = PlaneSegments.default()
   }: PlaneFromNormalProps = $props();
 
-  let materials = [
+  let materials = $derived([
     new MeshBasicMaterial({
       color,
       transparent: opacity < 1,
       opacity,
       side: DoubleSide
     })
-  ];
+  ]);
 
   let planeNormalMesh = $state<Mesh<PlaneGeometry>>();
 

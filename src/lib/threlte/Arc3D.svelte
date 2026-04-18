@@ -19,7 +19,7 @@
     pointsOnArc = 15
   }: Arc3DProps = $props();
 
-  let u = $state(points[0].clone());
+  let u = $derived(points[0].clone());
 
   // a detailed explanation of used math can be found in  Open LA book Teams -> developers interactivity -> files -> cirkelboog.pdf
 

@@ -1,6 +1,6 @@
-import { ComputeEngine } from '@cortex-js/compute-engine';
 import type { PrimeColor } from '../utils/PrimeColors';
 import type { Vector2 } from 'three';
+import { parse, compile } from '@cortex-js/compute-engine';
 
 type Domain = {
   xMin?: number;
@@ -57,11 +57,13 @@ export class FunctionFragment extends AppletObject {
     super();
 
     if (typeof func == 'string') {
-      const ce = new ComputeEngine();
-      const parsed = ce.parse(func);
-      const compiled = parsed.compile();
+      const parsed = parse(func);
+      const compiled = compile(parsed);
 
-      this.func = (x: number) => compiled({ x });
+      this.func = (x: number) => {
+        const result = compiled.run?.({ x });
+        return typeof result === 'number' ? result : Number(result);
+      };
     } else {
       this.func = func;
     }

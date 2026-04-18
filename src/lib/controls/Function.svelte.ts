@@ -1,6 +1,6 @@
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import type { Controller } from './Controls';
-import { ComputeEngine, type BoxedExpression } from '@cortex-js/compute-engine';
+import { compile, ComputeEngine, type ExpressionInput } from '@cortex-js/compute-engine';
 
 export class Function implements Controller<(x: number) => number> {
   private static ce = new ComputeEngine();
@@ -90,13 +90,13 @@ export class Function implements Controller<(x: number) => number> {
    * @returns A function (x: number) => number
    */
   static asFunction(
-    expression: BoxedExpression,
+    expression: ExpressionInput,
     parameterLetter: string
   ): ((x: number) => number) | null {
     let compiled;
 
     try {
-      compiled = expression.compile();
+      compiled = compile(expression);
     } catch (_error) {
       return null;
     }
@@ -106,7 +106,7 @@ export class Function implements Controller<(x: number) => number> {
         try {
           const parameterDict: Record<string, number> = {};
           parameterDict[parameterLetter] = x;
-          const result = compiled(parameterDict);
+          const result = compiled.run?.(parameterDict);
           return typeof result === 'number' && isFinite(result) ? result : NaN;
         } catch (_error) {
           return NaN;
