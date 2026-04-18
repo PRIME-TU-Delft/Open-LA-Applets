@@ -49,5 +49,5 @@
   y2={end.y}
   stroke={color}
   stroke-width={width}
-  stroke-dasharray="{width} {isDashed ? width : 0}"
+  stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
 />
