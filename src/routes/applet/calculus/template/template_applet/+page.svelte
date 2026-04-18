@@ -1,6 +1,5 @@
 <script lang="ts">
-  // For ease of creating the template applets
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
     AppletObject,
     AsymptoteFragment,
@@ -20,6 +19,12 @@
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
+
+  // ########################
+  // TUTORIAL / DOCUMENTATION
+  // ########################
+  // https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-template--docs
+  // on this page you can find documentation for the template objects and a tutorial on using them
 
   // ###############
   // CAMERA SETTINGS
