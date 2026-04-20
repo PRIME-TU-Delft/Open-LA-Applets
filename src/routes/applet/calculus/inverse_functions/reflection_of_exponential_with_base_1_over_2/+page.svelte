@@ -52,7 +52,7 @@
     new FunctionFragment('(\\frac{1}{2})^x', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=(\\frac{1}{2})^x'
+      legendText: 'f(x)=\\left(\\frac{1}{2}\\right)^x'
     }),
     new FunctionFragment('\\log_{\\frac{1}{2}}(x)', PrimeColor.darkGreen, {
       isDashed: false,

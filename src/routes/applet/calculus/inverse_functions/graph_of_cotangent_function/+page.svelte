@@ -53,6 +53,11 @@
       isDashed: false,
       shape: 'square',
       legendText: '\\cot(x)'
+    }),
+    new FunctionFragment('\\pi/2 - \\arctan(x)', PrimeColor.darkGreen, {
+      isDashed: false,
+      shape: 'square',
+      legendText: '\\operatorname{arccot}(x)'
     })
   ];
 </script>
