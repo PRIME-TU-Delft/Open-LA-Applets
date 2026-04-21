@@ -18,8 +18,7 @@ type Shape = 'circle' | 'square' | 'triangle';
 
 export class AppletObject {}
 
-export class FunctionFragment extends AppletObject {
-  func: (x: number) => number;
+export abstract class AbstractFunctionFragment extends AppletObject {
   color: PrimeColor;
   domain: Domain | undefined;
   gaps: Vector2[] = [];
@@ -35,7 +34,6 @@ export class FunctionFragment extends AppletObject {
 
   /**
    * Function fragment template object
-   * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
    * @param options.isDashed Whether the function line should be dashed
@@ -44,9 +42,8 @@ export class FunctionFragment extends AppletObject {
    * @param options.legendText Text to be shown in the legend item
    */
   constructor(
-    func: ((x: number) => number) | string,
     color: PrimeColor,
-    options: {
+    options?: {
       domain?: Domain;
       isDashed?: boolean;
       shape?: Shape;
@@ -56,23 +53,12 @@ export class FunctionFragment extends AppletObject {
   ) {
     super();
 
-    if (typeof func == 'string') {
-      const parsed = parse(func);
-      const compiled = compile(parsed);
-
-      this.func = (x: number) => {
-        const result = compiled.run?.({ x });
-        return typeof result === 'number' ? result : Number(result);
-      };
-    } else {
-      this.func = func;
-    }
     this.color = color;
-    this.domain = options.domain;
-    this.legendText = options.legendText;
-    if (options.isDashed) this.isDashed = options.isDashed;
-    if (options.shape) this.shape = options.shape;
-    if (options.integral) this.integral = options.integral;
+    this.domain = options?.domain;
+    this.legendText = options?.legendText;
+    if (options?.isDashed) this.isDashed = options.isDashed;
+    if (options?.shape) this.shape = options.shape;
+    if (options?.integral) this.integral = options.integral;
   }
 
   /**
@@ -97,6 +83,92 @@ export class FunctionFragment extends AppletObject {
     this.includedPoints = this.includedPoints.concat(positions);
     this.pointsLegendText.included = legendText;
     return this;
+  }
+}
+
+export class FunctionFragment extends AbstractFunctionFragment {
+  func: (x: number) => number;
+
+  /**
+   * Function fragment template object
+   * @param func A javascript function or a latex string describing the function
+   * @param color Color of the function graph
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.integral Properties of the integral
+   * @param options.legendText Text to be shown in the legend item
+   */
+  constructor(
+    func: ((x: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      integral?: Integral;
+      legendText?: string;
+    }
+  ) {
+    super(color, options);
+
+    if (typeof func == 'string') {
+      const parsed = parse(func);
+      const compiled = compile(parsed);
+
+      this.func = (x: number) => {
+        const result = compiled.run?.({ x });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.func = func;
+    }
+  }
+}
+
+export class ImplicitFunctionFragment extends AbstractFunctionFragment {
+  func: (x: number, y: number) => number;
+
+  /**
+   * Implicit function fragment template object
+   * @param func A javascript function or a latex string describing the function. If in JS, it has to be a zero func (=0)
+   * @param color Color of the function graph
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.integral Properties of the integral
+   * @param options.legendText Text to be shown in the legend item
+   */
+  constructor(
+    func: ((x: number, y: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      legendText?: string;
+    }
+  ) {
+    super(color, options);
+
+    if (typeof func == 'string') {
+      console.log('IMPLICIT');
+      console.log(func);
+
+      const parsed = parse(func);
+      const compiled = compile(parsed);
+
+      console.log(compiled);
+
+      this.func = (x: number, y: number) => {
+        // CONVERT TO ZERO FUNCTION, or change implicit function 2d
+
+        const result = compiled.run?.({ x, y });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.func = func;
+    }
   }
 }
 

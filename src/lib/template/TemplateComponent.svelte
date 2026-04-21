@@ -2,28 +2,45 @@
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import { Vector2 } from 'three';
-  import { AsymptoteFragment, FunctionFragment, type AppletObject } from './TemplateAppletObjects';
+  import {
+    AbstractFunctionFragment,
+    AsymptoteFragment,
+    FunctionFragment,
+    ImplicitFunctionFragment,
+    type AppletObject
+  } from './TemplateAppletObjects';
   import Point2D from '$lib/d3/Point2D.svelte';
+  import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
 
 {#each objects as object, idx (idx)}
-  {#if object instanceof FunctionFragment}
-    <ExplicitFunction2D
-      func={object.func}
-      color={object.color.toString()}
-      xMin={object.domain?.xMin}
-      xMax={object.domain?.xMax}
-      integral={object.integral
-        ? {
-            xLeft: object.integral?.xLeft,
-            xRight: object.integral?.xRight,
-            fillStyle: object.integral?.isDashed ? 'dashed' : 'full'
-          }
-        : undefined}
-      isDashed={object.isDashed}
-    />
+  {#if object instanceof AbstractFunctionFragment}
+    {#if object instanceof ImplicitFunctionFragment}
+      <ImplicitFunction2D
+        zeroFunc={object.func}
+        color={object.color.toString()}
+        xMin={object.domain?.xMin}
+        xMax={object.domain?.xMax}
+        isDashed={object.isDashed}
+      />
+    {:else if object instanceof FunctionFragment}
+      <ExplicitFunction2D
+        func={object.func}
+        color={object.color.toString()}
+        xMin={object.domain?.xMin}
+        xMax={object.domain?.xMax}
+        integral={object.integral
+          ? {
+              xLeft: object.integral?.xLeft,
+              xRight: object.integral?.xRight,
+              fillStyle: object.integral?.isDashed ? 'dashed' : 'full'
+            }
+          : undefined}
+        isDashed={object.isDashed}
+      />
+    {/if}
 
     {#each object.gaps as position, idx (idx)}
       <Point2D

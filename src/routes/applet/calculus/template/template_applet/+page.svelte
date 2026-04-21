@@ -4,6 +4,7 @@
     AppletObject,
     AsymptoteFragment,
     FunctionFragment,
+    ImplicitFunctionFragment,
     ObliqueAsymptoteFragment
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
@@ -54,6 +55,8 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
+    new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange),
+    new ImplicitFunctionFragment('x^2 + y^2 - 10', PrimeColor.blue),
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
       domain: { xMin: -1, xMax: 2.14 }
     }),
