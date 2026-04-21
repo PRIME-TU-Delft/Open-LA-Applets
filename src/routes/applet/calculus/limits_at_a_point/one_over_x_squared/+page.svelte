@@ -13,6 +13,7 @@
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import Function from '$lib/components/controls/Function.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -58,7 +59,13 @@
       isDashed: false,
       shape: 'circle',
       legendText: 'f(x)=\\frac{1}{x^2}'
-    })
+    }),
+    new FunctionFragment('', PrimeColor.raspberry, {
+      isDashed: true,
+      shape: 'triangle',
+      legendText: 'x=0'
+    }),
+    new AsymptoteFragment(0, 'vertical', PrimeColor.raspberry)
   ];
 </script>
 

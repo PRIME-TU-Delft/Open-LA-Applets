@@ -60,6 +60,16 @@
       shape: 'circle',
       legendText: 'f(x)=\\frac{1}{(x-1)(x-2)^2}'
     }),
+    new FunctionFragment('', PrimeColor.raspberry, {
+      isDashed: true,
+      shape: 'triangle',
+      legendText: 'x=1'
+    }),
+    new FunctionFragment('', PrimeColor.darkGreen, {
+      isDashed: true,
+      shape: 'triangle',
+      legendText: 'x=2'
+    }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.raspberry),
     new AsymptoteFragment(1, 'vertical', PrimeColor.darkGreen)
   ];
