@@ -14,7 +14,6 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -63,7 +62,6 @@
 </script>
 
 <Canvas2D
-  {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
