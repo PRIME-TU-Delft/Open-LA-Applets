@@ -35,7 +35,8 @@
     labels,
     enablePan = true,
     draggables = [],
-    defaultLeftDivision
+    defaultLeftDivision,
+    position = 'top-right'
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -122,6 +123,7 @@
   {formulas}
   {splitFormulas}
   {splitLegendItems}
+  {position}
 >
   {#snippet sceneChildren(width: number, height: number)}
     {@const defaultCanvasWidth = width / 2}

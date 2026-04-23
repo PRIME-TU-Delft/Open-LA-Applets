@@ -7,6 +7,8 @@
     logarithmicY?: boolean;
     scaleX?: number;
     scaleY?: number;
+    skipX?: number;
+    skipY?: number;
   };
 </script>
 
@@ -23,11 +25,14 @@
     logarithmicX = false,
     logarithmicY = false,
     scaleX = 1,
-    scaleY = 1
+    scaleY = 1,
+    skipX = 0,
+    skipY = 0
   }: AxisProps = $props();
 
   // Generate indeces for the grid lines from -length to length including 0
-  let axisIndeces = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
+  let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
+  let axisIndicesY = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
 
   function stokeWidth(index: number, logarithmic: boolean) {
     if (logarithmic) return 0.005;
@@ -45,11 +50,16 @@
     return `10^{${index}}`;
   }
 
+  function showSkippedTick(index: number, skip: number) {
+    if (index === 0) return true;
+    return Math.abs(index) % (skip + 1) === 0;
+  }
+
   let yAxisTextX = $derived(logarithmicY ? 0.2 : -0.2);
 </script>
 
 <g>
-  {#each axisIndeces as index, idx (idx)}
+  {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
     <line
       x1={index}
@@ -59,6 +69,26 @@
       stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
       stroke-width={stokeWidth(index, logarithmicX)}
     />
+
+    <!-- Tick marks -->
+    {#if showSkippedTick(index, skipX)}
+      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+    {/if}
+
+    {#if index != 0 && showAxisNumbers && showSkippedTick(index, skipX)}
+      <!-- X axis number labels -->
+      {#if index <= length && index >= -length}
+        <Latex2D
+          latex={getTickText(index / scaleX, 'x')}
+          position={new Vector2(index, -0.15)}
+          alignX="center"
+        />
+      {/if}
+    {/if}
+  {/each}
+
+  {#each axisIndicesY as index, idx (idx)}
+    <!-- Grid Lines -->
     <line
       x1={-length}
       y1={index}
@@ -69,28 +99,16 @@
     />
 
     <!-- Tick marks -->
-    {#if index % scaleX == 0}
-      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
-    {/if}
-    {#if index % scaleY == 0}
+    {#if showSkippedTick(index, skipY)}
       <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbers}
-      <!-- X axis number labels -->
-      {#if index * scaleX <= length && index * scaleX >= -length}
-        <Latex2D
-          latex={getTickText(index, 'x')}
-          position={new Vector2(index * scaleX, -0.15)}
-          alignX="center"
-        />
-      {/if}
-
+    {#if index != 0 && showAxisNumbers && showSkippedTick(index, skipY)}
       <!-- Y axis number labels -->
-      {#if index * scaleY <= length && index * scaleY >= -length}
+      {#if index <= length && index >= -length}
         <Latex2D
-          latex={getTickText(index, 'y')}
-          position={new Vector2(yAxisTextX, index * scaleY)}
+          latex={getTickText(index / scaleY, 'y')}
+          position={new Vector2(yAxisTextX, index)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
         />

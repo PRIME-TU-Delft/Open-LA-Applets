@@ -90,3 +90,15 @@
     </div>
   {/snippet}
 </Story>
+
+<!-- This story has a skipped X ticks -->
+<Story name="Skipped axis">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D axis={null}>
+        <Axis skipX={2} />
+        <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>

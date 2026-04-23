@@ -82,5 +82,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={4} scaleY={2} />
+  <Axis scaleX={4} scaleY={2} skipX={1} />
 </Canvas2D>

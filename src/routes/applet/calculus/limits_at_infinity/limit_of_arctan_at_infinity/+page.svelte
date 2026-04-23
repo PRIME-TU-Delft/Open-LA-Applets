@@ -38,10 +38,13 @@
   cameraPosition = new Vector2(3, 1);
   cameraZoom = 1.5;
 
+  const factorX = 1 / 3;
+  const factorY = 2;
+
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1, -1), // bottom-left
-    new Vector2(7, 6), // top-right
+    new Vector2(-21 * factorX, -3 * factorY), // bottom-left
+    new Vector2(21 * factorX, 2 * factorY), // top-right
     0.5 // margin
   );
 
@@ -56,36 +59,31 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(1, 0.05, 8, 0.05, PrimeColor.orange, {
+  const controls = Controls.addSlider(0.2, 0, 4, 0.05, PrimeColor.orange, {
     label: 'ε'
   });
+  let N = $derived(
+    controls[0] >= Math.PI
+      ? -30 / factorX
+      : Math.min(Math.max(-30 / factorX, Math.tan(Math.PI / 2 - controls[0])), 30 / factorX) // To make sure the vertical lines don't intersect with the function
+  );
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('x^2', PrimeColor.blue, {
+    new FunctionFragment(factorY + '*\\arctan(x*' + 1 / factorX + ')', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=x^2'
+      legendText: 'f(x)=\\arctan(x)'
     }),
-    new FunctionFragment('', PrimeColor.raspberry, {
-      isDashed: false,
-      shape: 'circle',
-      legendText: '\\left(2,4\\right)'
-    }).addIncludedPoints(new Vector2(2, 4)),
     new FunctionFragment('', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
-      legendText: 'x=2\\pm\\delta'
+      legendText: 'x=N'
     }),
     new FunctionFragment('', PrimeColor.orange, {
       isDashed: true,
       shape: 'triangle',
-      legendText: 'y=4\\pm\\varepsilon'
+      legendText: 'y=\\frac{\\pi}{2}-\\varepsilon'
     })
   ];
-  let delta = $derived(
-    controls[0] > 4
-      ? Math.min(2, Math.sqrt(4 + controls[0]) - 2)
-      : Math.min(2 - Math.sqrt(4 - controls[0]), Math.sqrt(4 + controls[0]) - 2)
-  );
 </script>
 
 <Canvas2D
@@ -95,29 +93,20 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  axis={null}
+  position="top-left"
 >
   <TemplateComponent objects={appletObjects} />
+  <Axis scaleX={factorX} scaleY={factorY} />
   <InfiniteLine2D
     direction={new Vector2(1, 0)}
-    origin={new Vector2(0, 4 + controls[0])}
-    color={PrimeColor.orange}
-    isDashed={true}
-  />
-  <InfiniteLine2D
-    direction={new Vector2(1, 0)}
-    origin={new Vector2(0, 4 - controls[0])}
+    origin={new Vector2(0, factorY * (Math.PI / 2 - controls[0]))}
     color={PrimeColor.orange}
     isDashed={true}
   />
   <InfiniteLine2D
     direction={new Vector2(0, 1)}
-    origin={new Vector2(2 + delta, 0)}
-    color={PrimeColor.darkGreen}
-    isDashed={true}
-  />
-  <InfiniteLine2D
-    direction={new Vector2(0, 1)}
-    origin={new Vector2(2 - delta, 0)}
+    origin={new Vector2(N * factorX, 0)}
     color={PrimeColor.darkGreen}
     isDashed={true}
   />

@@ -14,6 +14,9 @@
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import ParameterizedFunction2D, {
+    type ParameterizedFunction2DProps
+  } from '$lib/d3/ParameterizedFunction2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -49,16 +52,10 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('\\sqrt{1-x^2}', PrimeColor.blue, {
+    new FunctionFragment('', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=\\sqrt{1-x^2}',
-      domain: { xMin: 0, xMax: 1.0 }
-    }),
-    new FunctionFragment('(1-x)*10', PrimeColor.blue, {
-      isDashed: false,
-      shape: 'square',
-      domain: { xMin: 0.98, xMax: 1.0 }
+      legendText: 'f(x)=\\sqrt{1-x^2}'
     }),
     new FunctionFragment('x', PrimeColor.raspberry, {
       isDashed: true,
@@ -74,6 +71,15 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  position="top-left"
 >
   <TemplateComponent objects={appletObjects} />
+  <ParameterizedFunction2D
+    xFunc={(t) => Math.cos(t)}
+    yFunc={(t) => Math.sin(t)}
+    tStart={0}
+    tEnd={Math.PI / 2}
+    color={PrimeColor.blue}
+    showArrows={false}
+  />
 </Canvas2D>
