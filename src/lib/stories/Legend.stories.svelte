@@ -93,3 +93,43 @@ const legendItems = [
     </div>
   {/snippet}
 </Story>
+
+<!-- 
+This story showcases the position of the legend (default is "top-right").
+```typescript
+position = "top-right" | "top-left" ;
+```
+ -->
+<Story name="Legend position">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D
+        legendItems={[
+          new LegendItem('A', PrimeColor.blue),
+          new LegendItem('B', PrimeColor.raspberry, Shape.Circle, FillType.Border),
+          new LegendItem('C', PrimeColor.darkGreen, Shape.Circle, FillType.Dashed)
+        ]}
+        position="top-left"
+      >
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(1, 1)}
+          length={1}
+          color={PrimeColor.blue}
+        />
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(0, 1)}
+          length={1}
+          color={PrimeColor.raspberry}
+        />
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(1, -1)}
+          length={1}
+          color={PrimeColor.darkGreen}
+        />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
