@@ -32,8 +32,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-5, -5), // bottom-left
-    new Vector2(5, 5), // top-right
+    new Vector2(-4, -4), // bottom-left
+    new Vector2(4, 4), // top-right
     0.5 // margin
   );
 
@@ -49,15 +49,11 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('2^x', PrimeColor.blue, {
+    new FunctionFragment('1/x', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=2^x'
-    }),
-    new FunctionFragment('\\log_2(x)', PrimeColor.darkGreen, {
-      isDashed: false,
-      shape: 'circle',
-      legendText: 'f^{-1}(x)=\\log_2(x)'
+      legendText: 'f(x)=\\frac{1}{x}',
+      domain: { xMin: 0 }
     }),
     new FunctionFragment('x', PrimeColor.raspberry, {
       isDashed: true,

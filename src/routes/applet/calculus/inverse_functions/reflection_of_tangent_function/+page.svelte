@@ -74,6 +74,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  position="top-left"
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

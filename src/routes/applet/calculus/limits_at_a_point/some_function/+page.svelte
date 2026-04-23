@@ -69,7 +69,9 @@
       isDashed: false,
       shape: 'circle',
       domain: { xMin: -1, xMax: 1 }
-    }).addIncludedPoints([new Vector2(-1, 0), new Vector2(1, 0)]),
+    })
+      .addIncludedPoints([new Vector2(-1, 0)])
+      .addGaps([new Vector2(1, 0)]),
     new FunctionFragment('1-x', PrimeColor.blue, {
       isDashed: false,
       shape: 'circle',

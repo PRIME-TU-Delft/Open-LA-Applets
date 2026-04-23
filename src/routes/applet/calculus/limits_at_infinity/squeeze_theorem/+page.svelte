@@ -1,6 +1,5 @@
 <script lang="ts">
-  // For ease of creating the template applets
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
     AppletObject,
     AsymptoteFragment,
@@ -9,6 +8,7 @@
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import Axis from '$lib/d3/Axis.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
@@ -21,6 +21,12 @@
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
 
+  // ########################
+  // TUTORIAL / DOCUMENTATION
+  // ########################
+  // https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-template--docs
+  // on this page you can find documentation for the template objects and a tutorial on using them
+
   // ###############
   // CAMERA SETTINGS
   // ###############
@@ -30,10 +36,13 @@
   cameraPosition = new Vector2(3, 1);
   cameraZoom = 1.5;
 
+  const scaleX = 1;
+  const scaleY = 10;
+
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-4, -4), // bottom-left
-    new Vector2(4, 4), // top-right
+    new Vector2(-12, 1), // bottom-left
+    new Vector2(1, 1), // top-right
     0.5 // margin
   );
 
@@ -49,21 +58,28 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('1', PrimeColor.blue, {
+    new FunctionFragment(
+      scaleY + '\\frac{\\sin(' + 1 / scaleX + 'x)}{(' + 1 / scaleX + 'x)^2}',
+      PrimeColor.blue,
+      {
+        isDashed: false,
+        shape: 'circle',
+        legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
+      }
+    ),
+    new FunctionFragment(scaleY + '\\frac{1}{(' + 1 / scaleX + 'x)^2}', PrimeColor.darkGreen, {
       isDashed: false,
-      shape: 'square',
-      legendText: 'f(x)=1'
-    }),
-    new FunctionFragment('-1000000', PrimeColor.darkGreen, {
-      isDashed: true,
       shape: 'circle',
-      legendText: '\\text{Reflection of }f\\text{ in }y=x'
+      legendText: 'f(x)=\\pm\\frac{1}{x^2}'
     }),
-    new AsymptoteFragment(1, 'vertical', PrimeColor.darkGreen),
-    new FunctionFragment('x', PrimeColor.raspberry, {
+    new FunctionFragment(scaleY + '\\frac{-1}{(' + 1 / scaleX + 'x)^2}', PrimeColor.darkGreen, {
+      isDashed: false,
+      shape: 'circle'
+    }),
+    new FunctionFragment('0*' + scaleY, PrimeColor.raspberry, {
       isDashed: true,
       shape: 'triangle',
-      legendText: 'y=x'
+      legendText: 'y=0'
     })
   ];
 </script>
@@ -74,6 +90,9 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  axis={null}
+  position="top-left"
 >
   <TemplateComponent objects={appletObjects} />
+  <Axis {scaleX} {scaleY} />
 </Canvas2D>

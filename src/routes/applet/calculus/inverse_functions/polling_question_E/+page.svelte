@@ -49,18 +49,17 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('-1/x', PrimeColor.blue, {
+    new FunctionFragment('1', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=-\\frac{1}{x}',
-      domain: { xMin: 0 }
+      legendText: 'f(x)=1'
     }),
-    new FunctionFragment('-1/x', PrimeColor.darkGreen, {
+    new FunctionFragment('-1000000', PrimeColor.darkGreen, {
       isDashed: true,
-      shape: 'square',
-      legendText: '\\text{Reflection of }f\\text{ in }y=x',
-      domain: { xMax: 0 }
+      shape: 'circle',
+      legendText: '\\text{Reflection of }f\\text{ in }y=x'
     }),
+    new AsymptoteFragment(1, 'vertical', PrimeColor.darkGreen),
     new FunctionFragment('x', PrimeColor.raspberry, {
       isDashed: true,
       shape: 'triangle',
@@ -75,6 +74,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  position="top-left"
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

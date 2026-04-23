@@ -31,6 +31,7 @@
     showFormulas: boolean;
     hideButtons?: boolean;
     languages: LanguageInfo[];
+    position?: 'top-right' | 'top-left';
   };
 
   let {
@@ -42,7 +43,8 @@
     controls = undefined,
     showFormulas = false,
     languages,
-    hideButtons = false
+    hideButtons = false,
+    position = 'top-right'
   }: ActionButtonsAndFormulaProps = $props();
 
   // svelte-ignore state_referenced_locally
@@ -72,10 +74,10 @@
   );
 </script>
 
-<div class="absolute top-1 right-0 select-none">
+<div class="absolute top-1 select-none {position === 'top-left' ? 'left-0' : 'right-0'}">
   <!-- FORMULAE and LEGEND -->
   {#if formulasShown}
-    <div class="flex justify-end">
+    <div class="flex {position === 'top-left' ? 'justify-start' : 'justify-end'}">
       {#if (formulas && formulas.length >= 1) || (legendItems && legendItems.length >= 1)}
         <div
           class="mr-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
@@ -122,7 +124,7 @@
 
   {#if !hideButtons}
     <!-- ACTION BUTTON -->
-    <div class="top-0 right-0 float-end flex p-1">
+    <div class="top-0 flex p-1 {position === 'top-left' ? 'float-start' : 'right-0 float-end'}">
       {#if !controls || controls.length == 0}
         <Button.Action
           side="bottom"
