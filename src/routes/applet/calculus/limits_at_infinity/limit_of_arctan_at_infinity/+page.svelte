@@ -16,11 +16,19 @@
   import { toLatexText } from '$lib/utils/FormatString';
   import { Controls } from '$lib/controls/Controls';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import AxisProps from '$lib/d3/Axis.svelte';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
+  // svelte-ignore non_reactive_update
   let initialViewBox: ViewBox | undefined;
+  // svelte-ignore non_reactive_update
   let cameraPosition: Vector2 | undefined;
+  // svelte-ignore non_reactive_update
   let cameraZoom: number | undefined;
+  // svelte-ignore non_reactive_update
   let xAxisLabel: string | undefined;
+  // svelte-ignore non_reactive_update
   let yAxisLabel: string | undefined;
 
   // ########################
@@ -71,17 +79,22 @@
     new FunctionFragment(factorY + '*\\arctan(x*' + 1 / factorX + ')', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
-      legendText: 'f(x)=\\arctan(x)'
+      legendText: '\\arctan(x)'
+    }),
+    new FunctionFragment('', PrimeColor.black, {
+      isDashed: false,
+      shape: 'circle',
+      legendText: '\\tan(x)'
     }),
     new FunctionFragment('', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
-      legendText: 'x=N'
+      legendText: 'x\\text{ or }y=N'
     }),
     new FunctionFragment('', PrimeColor.orange, {
       isDashed: true,
       shape: 'triangle',
-      legendText: 'y=\\frac{\\pi}{2}-\\varepsilon'
+      legendText: 'y\\text{ or }x=\\frac{\\pi}{2}-\\varepsilon'
     })
   ];
 </script>
@@ -95,6 +108,13 @@
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   axis={null}
   position="top-left"
+  splitCanvas2DProps={{
+    labels: { xLabel: 'x', yLabel: 'y' },
+    axis: {
+      scaleX: factorY,
+      scaleY: factorX
+    }
+  }}
 >
   <TemplateComponent objects={appletObjects} />
   <Axis scaleX={factorX} scaleY={factorY} />
@@ -110,4 +130,25 @@
     color={PrimeColor.darkGreen}
     isDashed={true}
   />
+  // add a snippet that exactly mirrors the other part around the y=x line.
+  {#snippet splitCanvas2DChildren()}
+    <InfiniteLine2D
+      direction={new Vector2(0, 1)}
+      origin={new Vector2(factorY * (Math.PI / 2 - controls[0]), 0)}
+      color={PrimeColor.orange}
+      isDashed={true}
+    />
+    <InfiniteLine2D
+      direction={new Vector2(1, 0)}
+      origin={new Vector2(0, N * factorX)}
+      color={PrimeColor.darkGreen}
+      isDashed={true}
+    />
+    <ExplicitFunction2D
+      func={(x: number) => Math.tan(x / factorY) * factorX}
+      color={PrimeColor.black}
+      xMin={(-Math.PI / 2) * factorY}
+      xMax={(Math.PI / 2) * factorY}
+    />
+  {/snippet}
 </Canvas2D>
