@@ -154,9 +154,9 @@
     alignX="center"
     alignY="bottom"
   />
-  <Latex2D latex={'a'} position={new Vector2(a, -0.15)} alignX="center" />
-  <Latex2D latex={'b'} position={new Vector2(b, -0.15)} alignX="center" />
-  {#each leftPoints as obj, i}
+  <Latex2D latex="a" position={new Vector2(a, -0.15)} alignX="center" />
+  <Latex2D latex="b" position={new Vector2(b, -0.15)} alignX="center" />
+  {#each leftPoints as obj, i (i)}
     <Line2D
       start={new Vector2(obj, 0)}
       end={new Vector2(obj, func(midPoints[i]))}

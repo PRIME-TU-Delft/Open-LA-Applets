@@ -94,19 +94,19 @@
     additionalTicksX={[-0.5 * Math.PI * sX, Math.PI * sX, 0.5 * Math.PI * sX, -Math.PI * sX]}
   />
   <Latex2D
-    latex={'\\frac12\\pi'}
+    latex="\frac12\pi"
     position={new Vector2(0.5 * Math.PI * sX, -0.15)}
     alignX="right"
   />
-  <Latex2D latex={'\\pi'} position={new Vector2(Math.PI * sX, -0.15)} alignX="center" />
+  <Latex2D latex="\pi" position={new Vector2(Math.PI * sX, -0.15)} alignX="center" />
   <Latex2D
-    latex={'-\\frac12\\pi'}
+    latex="-\frac12\pi"
     position={new Vector2(-0.5 * Math.PI * sX, 0.15)}
     alignX="center"
     alignY="bottom"
   />
   <Latex2D
-    latex={'-\\pi'}
+    latex="-\pi"
     position={new Vector2(-Math.PI * sX, 0.15)}
     alignX="center"
     alignY="bottom"

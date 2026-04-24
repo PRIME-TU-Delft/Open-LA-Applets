@@ -163,14 +163,14 @@
     headLength={0.1}
   />
   <Latex2D
-    latex={'\\Delta x'}
+    latex="\Delta x"
     position={new Vector2(midPoints[pick], func(midPoints[pick]) + 1)}
     alignX="center"
     alignY="bottom"
   />
-  <Latex2D latex={'a'} position={new Vector2(a, -0.15)} alignX="center" />
-  <Latex2D latex={'b'} position={new Vector2(b, -0.15)} alignX="center" />
-  {#each leftPoints as obj, i}
+  <Latex2D latex="a" position={new Vector2(a, -0.15)} alignX="center" />
+  <Latex2D latex="b" position={new Vector2(b, -0.15)} alignX="center" />
+  {#each leftPoints as obj, i (i)}
     <Line2D
       start={new Vector2(obj, 0)}
       end={new Vector2(obj, func(midPoints[i]))}
@@ -188,7 +188,7 @@
     color={PrimeColor.raspberry}
     isDashed={true}
   />
-  {#each [1, 2, 3] as obj, i}
+  {#each [1, 2, 3] as obj, i (i)}
     <Latex2D
       latex={'x_{' + obj + '}'}
       position={new Vector2(leftPoints[obj], -0.15)}
@@ -226,7 +226,7 @@
     color={PrimeColor.black}
   />
   <Latex2D latex={'x_{i}^*'} position={new Vector2(midPoints[pick], -1.15)} alignX="center" />
-  {#each midPoints as obj, i}
+  {#each midPoints as obj, i (i)}
     <Line2D
       start={new Vector2(obj, 0)}
       end={new Vector2(obj, func(obj))}

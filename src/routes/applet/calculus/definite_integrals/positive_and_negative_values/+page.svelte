@@ -119,10 +119,10 @@
       0.5 * Math.PI * sX + shiftX * sX
     ]}
   />
-  <Latex2D latex={'a'} position={new Vector2(0 + shiftX * sX, -0.15)} alignX="center" />
+  <Latex2D latex="a" position={new Vector2(0 + shiftX * sX, -0.15)} alignX="center" />
 
   <Latex2D
-    latex={'b'}
+    latex="b"
     position={new Vector2(2 * Math.PI * sX + shiftX * sX, -0.15)}
     alignX="center"
   />

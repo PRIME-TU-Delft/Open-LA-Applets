@@ -92,6 +92,6 @@
     skipY={100}
     additionalTicksX={[1, 5]}
   />
-  <Latex2D latex={'a'} position={new Vector2(1, -0.15)} alignX="center" />
-  <Latex2D latex={'b'} position={new Vector2(5, -0.15)} alignX="center" />
+  <Latex2D latex="a" position={new Vector2(1, -0.15)} alignX="center" />
+  <Latex2D latex="b" position={new Vector2(5, -0.15)} alignX="center" />
 </Canvas2D>

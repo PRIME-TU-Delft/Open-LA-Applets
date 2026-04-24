@@ -98,7 +98,7 @@
     skipY={100}
     additionalTicksX={[a, b]}
   />
-  <Latex2D latex={'a'} position={new Vector2(a, -0.15)} alignX="center" />
-  <Latex2D latex={'b'} position={new Vector2(b, -0.15)} alignX="center" />
+  <Latex2D latex="a" position={new Vector2(a, -0.15)} alignX="center" />
+  <Latex2D latex="b" position={new Vector2(b, -0.15)} alignX="center" />
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
