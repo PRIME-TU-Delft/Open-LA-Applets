@@ -92,5 +92,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis showAxisNumbers={false} />
+  <Axis showAxisNumbersX={false} showAxisNumbersY={false} />
 </Canvas2D>

@@ -64,8 +64,12 @@
 <!-- This can be useful when you would like to show the applet at one specific location -->
 <Story name="Toggle pan" args={{ enablePan: false }} {template} />
 
-<!-- This can be useful when you would like to hide the axis numbers and put more attension to the applet.  -->
-<Story name="Toggle Axis Numbers" args={{ axis: { showAxisNumbers: false } }} {template} />
+<!-- This can be useful when you would like to hide the axis numbers and put more attention to the applet.  -->
+<Story
+  name="Toggle Axis Numbers"
+  args={{ axis: { showAxisNumbersX: false, showAxisNumbersY: false } }}
+  {template}
+/>
 
 <!-- This story has a logarithmic Y axis -->
 <Story name="Logarithmic axis">

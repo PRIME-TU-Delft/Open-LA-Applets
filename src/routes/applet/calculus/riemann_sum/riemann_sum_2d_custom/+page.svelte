@@ -253,7 +253,7 @@
 </script>
 
 <Canvas2D
-  axis={{ showAxisNumbers: true }}
+  axis={{ showAxisNumbersX: true, showAxisNumbersY: true }}
   {controls}
   {formulas}
   {draggables}

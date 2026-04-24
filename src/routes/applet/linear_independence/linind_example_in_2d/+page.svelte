@@ -35,11 +35,11 @@
   {controls}
   cameraZoom={2}
   cameraPosition={new Vector2(1, 1)}
-  axis={{ showAxisNumbers: false }}
+  axis={{ showAxisNumbersX: false, showAxisNumbersY: false }}
   enablePan={false}
   splitCanvas2DProps={{
     cameraZoom: 2,
-    axis: { showAxisNumbers: false },
+    axis: { showAxisNumbersX: false, showAxisNumbersY: false },
     enablePan: false,
     cameraPosition: new Vector2(1, 1)
   }}
