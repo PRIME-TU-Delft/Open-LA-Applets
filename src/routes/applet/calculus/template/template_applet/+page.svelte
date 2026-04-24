@@ -1,5 +1,5 @@
 <script lang="ts">
-    // For ease of creating the template applets
+  // For ease of creating the template applets
   import {
     AppletObject,
     AsymptoteFragment,

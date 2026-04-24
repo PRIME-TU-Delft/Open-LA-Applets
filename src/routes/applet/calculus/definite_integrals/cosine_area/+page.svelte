@@ -92,17 +92,8 @@
     showAxisNumbersX={false}
     additionalTicksX={[0.5 * Math.PI * sX, Math.PI * sX, 1.5 * Math.PI * sX, 2 * Math.PI * sX]}
   />
-  <Latex2D
-    latex="\frac12\pi"
-    position={new Vector2(0.5 * Math.PI * sX, -0.15)}
-    alignX="right"
-  />
-  <Latex2D
-    latex="\pi"
-    position={new Vector2(Math.PI * sX, 0.15)}
-    alignX="center"
-    alignY="bottom"
-  />
+  <Latex2D latex="\frac12\pi" position={new Vector2(0.5 * Math.PI * sX, -0.15)} alignX="right" />
+  <Latex2D latex="\pi" position={new Vector2(Math.PI * sX, 0.15)} alignX="center" alignY="bottom" />
   <Latex2D latex="\frac32\pi" position={new Vector2(1.5 * Math.PI * sX, -0.15)} alignX="left" />
   <Latex2D latex="2\pi" position={new Vector2(2 * Math.PI * sX, -0.15)} alignX="center" />
 </Canvas2D>
