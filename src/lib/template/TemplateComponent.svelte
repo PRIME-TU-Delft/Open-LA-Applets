@@ -19,7 +19,8 @@
         ? {
             xLeft: object.integral?.xLeft,
             xRight: object.integral?.xRight,
-            fillStyle: object.integral?.isDashed ? 'dashed' : 'full'
+            fillStyle: object.integral?.isDashed ? 'dashed' : 'full',
+            color: object.integral?.color?.toString()
           }
         : undefined}
       isDashed={object.isDashed}

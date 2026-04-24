@@ -1,6 +1,7 @@
 <script lang="ts">
   import { FillType, LegendItem, Shape } from '$lib/utils/Legend';
   import LatexUI from '$lib/components/Latex.svelte';
+  import { PrimeColor } from '$lib/utils/PrimeColors';
 
   const { legendI }: { legendI: LegendItem } = $props();
 
@@ -9,11 +10,16 @@
   const patternId = $derived(
     `legend-dashed-pattern-${legendI.color.toString().replace(/[^a-zA-Z0-9]/g, '')}`
   );
-  const fill = $derived(
-    isDashed ? `url(#${patternId})` : isBorder ? 'none' : legendI.color.toString()
-  );
-  const strokeWidth = 3;
-
+  const fill = $derived.by(() => {
+    if (isDashed) return `url(#${patternId})`;
+    if (isBorder) return 'none';
+    if (legendI.opacity < 1) {
+      return legendI.color.toString() + PrimeColor.opacity(legendI.opacity);
+    }
+    return legendI.color.toString();
+  });
+  const strokeWidth = $derived(legendI.strokeWidth);
+  const stroke = $derived(legendI.strokeColor?.toString() ?? legendI.color.toString());
   const triPoints = $derived.by(() => {
     const cx = 10,
       cy = 10,
@@ -48,26 +54,19 @@
         width={16 - strokeWidth}
         height={16 - strokeWidth}
         {fill}
-        stroke={legendI.color.toString()}
+        {stroke}
         stroke-width={strokeWidth}
       />
     {:else if legendI.shape === Shape.Triangle}
       <polygon
         points={triPoints}
         {fill}
-        stroke={legendI.color.toString()}
+        {stroke}
         stroke-width={strokeWidth}
         stroke-linejoin="round"
       />
     {:else}
-      <circle
-        r={8}
-        cx={10}
-        cy={10}
-        {fill}
-        stroke={legendI.color.toString()}
-        stroke-width={strokeWidth}
-      />
+      <circle r={8} cx={10} cy={10} {fill} {stroke} stroke-width={strokeWidth} />
     {/if}
   </svg>
   <LatexUI latex={legendI.label} />

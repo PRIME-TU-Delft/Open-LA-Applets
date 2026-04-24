@@ -12,6 +12,8 @@ type Integral = {
   xRight: number;
   isDashed?: boolean;
   legendText?: string;
+  color?: PrimeColor;
+  shape?: Shape;
 };
 
 type Shape = 'circle' | 'square' | 'triangle';

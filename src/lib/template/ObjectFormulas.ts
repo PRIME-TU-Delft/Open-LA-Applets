@@ -20,9 +20,12 @@ export function getLegend(objects: AppletObject[]): LegendItem[] {
         legendItems.push(
           new LegendItem(
             obj.integral.legendText,
+            obj.integral.color ?? obj.color,
+            obj.integral.shape ?? obj.shape,
+            obj.integral.isDashed ? FillType.Dashed : FillType.Full,
             obj.color,
-            obj.shape,
-            obj.integral.isDashed ? FillType.Dashed : FillType.Full
+            1.5,
+            0.5
           )
         );
       }

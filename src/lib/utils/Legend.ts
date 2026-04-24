@@ -27,6 +27,9 @@ export class LegendItem {
 
   label: string;
   color: PrimeColor;
+  strokeColor: PrimeColor | undefined;
+  strokeWidth: number = 3;
+  opacity: number = 1;
   shape: Shape;
   fillType: FillType = FillType.Full;
 
@@ -36,10 +39,24 @@ export class LegendItem {
    * @param color Color used for the concept in the applet
    * @param shape Shape used for the concept in the applet
    * @param fill Type of fill for the circle in the legend
+   * @param strokeColor Optional stroke color for the shape
+   * @param strokeWidth Optional stroke width for the shape (default: 3)
+   * @param opacity Optional opacity for the fill (default: 1)
    */
-  constructor(label: string, color: PrimeColor, shape?: Shape | string, fill?: FillType) {
+  constructor(
+    label: string,
+    color: PrimeColor,
+    shape?: Shape | string,
+    fill?: FillType,
+    strokeColor?: PrimeColor,
+    strokeWidth?: number,
+    opacity?: number
+  ) {
     this.label = label;
     this.color = color;
+    this.strokeColor = strokeColor;
+    this.strokeWidth = strokeWidth ?? 3;
+    this.opacity = opacity ?? 1;
 
     if (typeof shape == 'string') {
       shape = LegendItem.getShape(shape);
