@@ -8,11 +8,13 @@
     FunctionFragment,
     ImplicitFunctionFragment,
     ParameterizedFunctionFragment,
+    TextObject,
     type AppletObject
   } from './TemplateAppletObjects';
   import Point2D from '$lib/d3/Point2D.svelte';
   import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -81,5 +83,13 @@
         isDashed={true}
       />
     {/if}
+  {:else if object instanceof TextObject}
+    <Latex2D
+      position={object.position}
+      latex={object.latex}
+      color={object.color.toString()}
+      alignX={object.alignment?.alignX}
+      alignY={object.alignment?.alignY}
+    />
   {/if}
 {/each}

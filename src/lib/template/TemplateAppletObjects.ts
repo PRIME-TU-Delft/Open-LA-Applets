@@ -268,3 +268,36 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
     super(func, color, { isDashed: true, legendText: legendText });
   }
 }
+
+export class TextObject extends AppletObject {
+  latex: string;
+  position: Vector2;
+  color: PrimeColor;
+  alignment?: {
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
+  };
+
+  /**
+   * Text template object
+   * @param latex Latex string to display
+   * @param position Position of the text in the scene
+   * @param color Color of the text
+   */
+  constructor(
+    latex: string,
+    position: Vector2,
+    color: PrimeColor,
+    alignment?: {
+      alignX?: 'left' | 'right' | 'center' | null;
+      alignY?: 'top' | 'bottom' | 'center' | null;
+    }
+  ) {
+    super();
+
+    this.latex = latex;
+    this.position = position;
+    this.color = color;
+    this.alignment = alignment;
+  }
+}

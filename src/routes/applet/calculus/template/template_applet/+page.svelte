@@ -6,7 +6,8 @@
     FunctionFragment,
     ImplicitFunctionFragment,
     ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment
+    ParameterizedFunctionFragment,
+    TextObject
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -57,6 +58,9 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
+    new TextObject('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
+      alignX: 'center'
+    }),
     new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
       domain: {
         xMin: 1,
