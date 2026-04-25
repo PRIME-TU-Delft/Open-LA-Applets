@@ -7,10 +7,12 @@
     AsymptoteFragment,
     FunctionFragment,
     ImplicitFunctionFragment,
+    ParameterizedFunctionFragment,
     type AppletObject
   } from './TemplateAppletObjects';
   import Point2D from '$lib/d3/Point2D.svelte';
   import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
+  import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -23,6 +25,15 @@
         color={object.color.toString()}
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
+        isDashed={object.isDashed}
+      />
+    {:else if object instanceof ParameterizedFunctionFragment}
+      <ParameterizedFunction2D
+        xFunc={object.xFunc}
+        yFunc={object.yFunc}
+        color={object.color.toString()}
+        tStart={object.tDomain.start}
+        tEnd={object.tDomain.end}
         isDashed={object.isDashed}
       />
     {:else if object instanceof FunctionFragment}

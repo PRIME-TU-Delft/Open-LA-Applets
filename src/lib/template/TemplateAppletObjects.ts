@@ -16,7 +16,7 @@ type Integral = {
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject { }
+export class AppletObject {}
 
 export abstract class AbstractFunctionFragment extends AppletObject {
   color: PrimeColor;
@@ -136,7 +136,6 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
    * @param options.domain Domain on which the function should be drawn
    * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
-   * @param options.integral Properties of the integral
    * @param options.legendText Text to be shown in the legend item
    */
   constructor(
@@ -155,10 +154,10 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
       // For implicit equations like "x^2 + y^2 = 3", compile as f(x, y) = 0.
       const zeroForm = func.includes('=')
         ? (() => {
-          const [left, ...rightParts] = func.split('=');
-          const right = rightParts.join('=');
-          return `(${left}) - (${right})`;
-        })()
+            const [left, ...rightParts] = func.split('=');
+            const right = rightParts.join('=');
+            return `(${left}) - (${right})`;
+          })()
         : func;
 
       const parsed = parse(zeroForm);
@@ -170,6 +169,70 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
       };
     } else {
       this.func = func;
+    }
+  }
+}
+
+export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
+  xFunc: (t: number) => number;
+  yFunc: (t: number) => number;
+  tDomain: {
+    start?: number;
+    end?: number;
+  };
+
+  /**
+   * Parameterized function fragment template object
+   * @param xFunc A javascript function or a latex string, with t being the parameter
+   * @param yFunc A javascript function or a latex string, with t being the parameter
+   * @param color Color of the function graph
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.legendText Text to be shown in the legend item
+   * @param options.tStart Start value for t
+   * @param options.tEnd End value for t
+   */
+  constructor(
+    xFunc: ((t: number) => number) | string,
+    yFunc: ((t: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      isDashed?: boolean;
+      shape?: Shape;
+      legendText?: string;
+      tStart?: number;
+      tEnd?: number;
+    }
+  ) {
+    super(color, options);
+
+    this.tDomain = {
+      start: options?.tStart,
+      end: options?.tEnd
+    };
+
+    if (typeof xFunc == 'string') {
+      const parsed = parse(xFunc);
+      const compiled = compile(parsed);
+
+      this.xFunc = (t: number) => {
+        const result = compiled.run?.({ t });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.xFunc = xFunc;
+    }
+
+    if (typeof yFunc == 'string') {
+      const parsed = parse(yFunc);
+      const compiled = compile(parsed);
+
+      this.yFunc = (t: number) => {
+        const result = compiled.run?.({ t });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.yFunc = yFunc;
     }
   }
 }
