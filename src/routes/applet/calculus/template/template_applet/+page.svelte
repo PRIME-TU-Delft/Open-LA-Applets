@@ -1,6 +1,7 @@
 <script lang="ts">
   /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
+    AngleObject,
     AppletObject,
     AsymptoteFragment,
     FunctionFragment,
@@ -12,11 +13,12 @@
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Vector2 } from 'three';
+  import { Color, Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -61,6 +63,18 @@
     new TextObject('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
       alignX: 'center'
     }),
+    AngleObject.fromVectors(
+      new Vector2(1, 1),
+      new Vector2(1, 1),
+      new Vector2(-1, 1),
+      PrimeColor.cyan
+    ),
+    AngleObject.fromVectors(
+      new Vector2(6, 1),
+      new Vector2(1, 1),
+      new Vector2(0, 1),
+      PrimeColor.raspberry
+    ),
     new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
       domain: {
         xMin: 1,

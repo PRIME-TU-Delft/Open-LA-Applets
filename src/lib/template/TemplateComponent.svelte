@@ -4,6 +4,7 @@
   import { Vector2 } from 'three';
   import {
     AbstractFunctionFragment,
+    AngleObject,
     AsymptoteFragment,
     FunctionFragment,
     ImplicitFunctionFragment,
@@ -15,6 +16,8 @@
   import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
+  import Angle2D from '$lib/d3/Angle2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -91,5 +94,20 @@
       alignX={object.alignment?.alignX}
       alignY={object.alignment?.alignY}
     />
+  {:else if object instanceof AngleObject}
+    {#if object.isRight()}
+      <RightAngle2D
+        color={object.color.toString()}
+        origin={object.position}
+        vs={object.getVectors()}
+      />
+    {:else}
+      <Angle2D
+        origin={object.position}
+        color={object.color.toString()}
+        startAngle={object.startAngle}
+        endAngle={object.endAngle}
+      />
+    {/if}
   {/if}
 {/each}

@@ -1,5 +1,5 @@
 import type { PrimeColor } from '../utils/PrimeColors';
-import type { Vector2 } from 'three';
+import { Vector2 } from 'three';
 import { parse, compile } from '@cortex-js/compute-engine';
 
 type Domain = {
@@ -299,5 +299,53 @@ export class TextObject extends AppletObject {
     this.position = position;
     this.color = color;
     this.alignment = alignment;
+  }
+}
+
+export class AngleObject extends AppletObject {
+  position: Vector2;
+  startAngle: number;
+  endAngle: number;
+  color: PrimeColor;
+
+  /**
+   * Angle template object
+   * @param position Origin position of the angle
+   * @param startAngle Start angle of the angle (radians)
+   * @param endAngle End angle of the angle (radians)
+   * @param color Color of the angle
+   */
+  constructor(position: Vector2, startAngle: number, endAngle: number, color: PrimeColor) {
+    super();
+
+    this.position = position;
+    this.startAngle = startAngle;
+    this.endAngle = endAngle;
+    this.color = color;
+  }
+
+  /**
+   * Create an angle template object from 2 vectors
+   * @param position Origin position of the angle
+   * @param v1 First vector that describes the angle
+   * @param v2 Second vector that describes the angle
+   * @param color Color of the angle
+   */
+  static fromVectors(position: Vector2, v1: Vector2, v2: Vector2, color: PrimeColor): AngleObject {
+    const sAngle = v1.angle();
+    const eAngle = v2.angle();
+
+    return new AngleObject(position, sAngle, eAngle, color);
+  }
+
+  public isRight(): boolean {
+    return Math.abs(Math.abs(this.endAngle - this.startAngle) - Math.PI / 2) < 0.0001;
+  }
+
+  public getVectors(): [Vector2, Vector2] {
+    const v1 = new Vector2(Math.cos(this.startAngle), Math.sin(this.startAngle));
+    const v2 = new Vector2(Math.cos(this.endAngle), Math.sin(this.endAngle));
+
+    return [v1, v2];
   }
 }
