@@ -1,5 +1,5 @@
 import type { PrimeColor } from '../utils/PrimeColors';
-import type { Vector2 } from 'three';
+import { Vector2 } from 'three';
 import { parse, compile } from '@cortex-js/compute-engine';
 
 type Domain = {
@@ -16,10 +16,15 @@ type Integral = {
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject {}
+export abstract class AppletObject {
+  color: PrimeColor;
+
+  constructor(color: PrimeColor) {
+    this.color = color;
+  }
+}
 
 export abstract class AbstractFunctionFragment extends AppletObject {
-  color: PrimeColor;
   domain: Domain | undefined;
   gaps: Vector2[] = [];
   includedPoints: Vector2[] = [];
@@ -51,9 +56,8 @@ export abstract class AbstractFunctionFragment extends AppletObject {
       legendText?: string;
     }
   ) {
-    super();
+    super(color);
 
-    this.color = color;
     this.domain = options?.domain;
     this.legendText = options?.legendText;
     if (options?.isDashed) this.isDashed = options.isDashed;
@@ -238,7 +242,6 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
 }
 
 export class AsymptoteFragment extends AppletObject {
-  color: PrimeColor;
   position: number;
   type: 'vertical' | 'horizontal';
 
@@ -249,10 +252,9 @@ export class AsymptoteFragment extends AppletObject {
    * @param color color of the asymptote
    */
   constructor(position: number, type: 'vertical' | 'horizontal', color: PrimeColor) {
-    super();
+    super(color);
 
     this.type = type;
-    this.color = color;
     this.position = position;
   }
 }
@@ -266,5 +268,259 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
    */
   constructor(func: ((x: number) => number) | string, color: PrimeColor, legendText?: string) {
     super(func, color, { isDashed: true, legendText: legendText });
+  }
+}
+
+export class Text extends AppletObject {
+  latex: string;
+  position: Vector2;
+  alignment?: {
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
+  };
+
+  /**
+   * Text template object
+   * @param latex Latex string to display
+   * @param position Position of the text in the scene
+   * @param color Color of the text
+   */
+  constructor(
+    latex: string,
+    position: Vector2,
+    color: PrimeColor,
+    alignment?: {
+      alignX?: 'left' | 'right' | 'center' | null;
+      alignY?: 'top' | 'bottom' | 'center' | null;
+    }
+  ) {
+    super(color);
+
+    this.latex = latex;
+    this.position = position;
+    this.alignment = alignment;
+  }
+}
+
+export class Angle extends AppletObject {
+  position: Vector2;
+  startAngle: number;
+  endAngle: number;
+  hasHead?: boolean;
+  distance?: number;
+  latex?: string;
+
+  /**
+   * Angle template object
+   * @param position Origin position of the angle
+   * @param startAngle Start angle of the angle (radians)
+   * @param endAngle End angle of the angle (radians)
+   * @param color Color of the angle
+   * @param options.hasHead Whether the angle shuold have an arrow head
+   * @param options.distance Distance of the angle arch from the origin
+   * @param options.latex Latex shown next to the angle
+   */
+  constructor(
+    position: Vector2,
+    startAngle: number,
+    endAngle: number,
+    color: PrimeColor,
+    options?: {
+      hasHead?: boolean;
+      distance?: number;
+      latex?: string;
+    }
+  ) {
+    super(color);
+
+    this.position = position;
+    this.startAngle = startAngle;
+    this.endAngle = endAngle;
+    this.hasHead = options?.hasHead;
+    this.distance = options?.distance;
+    this.latex = options?.latex;
+  }
+
+  /**
+   * Create an angle template object from 2 vectors
+   * @param position Origin position of the angle
+   * @param v1 First vector that describes the angle
+   * @param v2 Second vector that describes the angle
+   * @param color Color of the angle
+   * @param options.hasHead Whether the angle shuold have an arrow head
+   * @param options.distance Distance of the angle arch from the origin
+   * @param options.latex Latex shown next to the angle
+   */
+  static fromVectors(
+    position: Vector2,
+    v1: Vector2,
+    v2: Vector2,
+    color: PrimeColor,
+    options?: {
+      hasHead?: boolean;
+      distance?: number;
+      latex?: string;
+    }
+  ): Angle {
+    const sAngle = v1.angle();
+    const eAngle = v2.angle();
+
+    return new Angle(position, sAngle, eAngle, color, options);
+  }
+
+  public isRight(): boolean {
+    return Math.abs(Math.abs(this.endAngle - this.startAngle) - Math.PI / 2) < 0.0001;
+  }
+
+  public getVectors(): [Vector2, Vector2] {
+    const v1 = new Vector2(Math.cos(this.startAngle), Math.sin(this.startAngle));
+    const v2 = new Vector2(Math.cos(this.endAngle), Math.sin(this.endAngle));
+
+    return [v1, v2];
+  }
+}
+
+export class Point extends AppletObject {
+  position: Vector2;
+  shape?: Shape;
+  latex?: string;
+  legendText?: string;
+
+  /**
+   * Point template object
+   * @param position Position of the points
+   * @param color Color of the points
+   * @param options.shape Shape of the point
+   * @param options.latex Latex shown next to the point
+   * @param options.legendText Legend text of the point
+   */
+  constructor(
+    position: Vector2,
+    color: PrimeColor,
+    options?: {
+      shape?: Shape;
+      latex?: string;
+      legendText?: string;
+    }
+  ) {
+    super(color);
+
+    this.position = position;
+    this.shape = options?.shape;
+    this.latex = options?.latex;
+    this.legendText = options?.legendText;
+  }
+}
+
+export class LineFragment extends AppletObject {
+  startPoint: Vector2;
+  endPoint: Vector2;
+  latex?: string;
+  latexAlign?: {
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
+  };
+  isDashed?: boolean;
+
+  /**
+   * Line fragment template object
+   * @param start Start point of the line
+   * @param end End point of the line
+   * @param color Color of the line
+   * @param options.latex Text shown next to the line
+   * @param options.latexAlign How the text next to the line shuold be aligned, can overwrite auto-alignment
+   * @param options.isDashed Whether the line should be dashed
+   */
+  constructor(
+    start: Vector2,
+    end: Vector2,
+    color: PrimeColor,
+    options?: {
+      latex?: string;
+      isDashed?: boolean;
+      latexAlign?: {
+        alignX?: 'left' | 'right' | 'center' | null;
+        alignY?: 'top' | 'bottom' | 'center' | null;
+      };
+    }
+  ) {
+    super(color);
+
+    this.startPoint = start;
+    this.endPoint = end;
+    this.latex = options?.latex;
+    this.isDashed = options?.isDashed;
+    this.latexAlign = options?.latexAlign;
+  }
+
+  public midpoint() {
+    const midX = (this.startPoint.x + this.endPoint.x) / 2;
+    const midY = (this.startPoint.y + this.endPoint.y) / 2;
+
+    return new Vector2(midX, midY);
+  }
+}
+
+export class Circle extends AppletObject {
+  origin: Vector2;
+  radius: number;
+  isDashed?: boolean;
+  radiiShown?: number[];
+  radiusLatex?: string;
+
+  /**
+   * Circle template object
+   * @param origin Origin point of the circle
+   * @param radius Radius of the circle
+   * @param color Color of the circle
+   * @param options.isDashed Whether the circle should be dashed
+   * @param options.radiiShown List of angles (radians) for which radius is drawn
+   * @param options.radiusLatex Latex drawn next to radii
+   */
+  constructor(
+    origin: Vector2,
+    radius: number,
+    color: PrimeColor,
+    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string }
+  ) {
+    super(color);
+
+    this.origin = origin;
+    this.radius = radius;
+    this.isDashed = options?.isDashed;
+    this.radiiShown = options?.radiiShown;
+    this.radiusLatex = options?.radiusLatex;
+  }
+}
+
+export class Polygon extends AppletObject {
+  points: Vector2[];
+  fillStyle: 'full' | 'dashed' | 'none' = 'none';
+  sideLatex?: string[];
+  verticesLatex?: string[];
+
+  /**
+   * Polygon template object
+   * @param points Points of the polygon (clockwise or anty-clockwise)
+   * @param color Color of the polygon
+   * @param options.fillStyle Style of the fill of the polygon
+   * @param options.sideLatex List of strings to put on the polygon sides, they are auto-aligned
+   * @param options.verticesLatex List of strings to put on the vertices, they are auto-aligned
+   */
+  constructor(
+    points: Vector2[],
+    color: PrimeColor,
+    options?: {
+      fillStyle?: 'full' | 'dashed' | 'none';
+      sideLatex?: string[];
+      verticesLatex?: string[];
+    }
+  ) {
+    super(color);
+
+    this.points = points;
+    if (options?.fillStyle) this.fillStyle = options?.fillStyle;
+    this.sideLatex = options?.sideLatex;
+    this.verticesLatex = options?.verticesLatex;
   }
 }
