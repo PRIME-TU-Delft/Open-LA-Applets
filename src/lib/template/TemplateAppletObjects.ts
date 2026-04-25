@@ -16,10 +16,15 @@ type Integral = {
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject {}
+export abstract class AppletObject {
+  color: PrimeColor;
+
+  constructor(color: PrimeColor) {
+    this.color = color;
+  }
+}
 
 export abstract class AbstractFunctionFragment extends AppletObject {
-  color: PrimeColor;
   domain: Domain | undefined;
   gaps: Vector2[] = [];
   includedPoints: Vector2[] = [];
@@ -51,9 +56,8 @@ export abstract class AbstractFunctionFragment extends AppletObject {
       legendText?: string;
     }
   ) {
-    super();
+    super(color);
 
-    this.color = color;
     this.domain = options?.domain;
     this.legendText = options?.legendText;
     if (options?.isDashed) this.isDashed = options.isDashed;
@@ -238,7 +242,6 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
 }
 
 export class AsymptoteFragment extends AppletObject {
-  color: PrimeColor;
   position: number;
   type: 'vertical' | 'horizontal';
 
@@ -249,10 +252,9 @@ export class AsymptoteFragment extends AppletObject {
    * @param color color of the asymptote
    */
   constructor(position: number, type: 'vertical' | 'horizontal', color: PrimeColor) {
-    super();
+    super(color);
 
     this.type = type;
-    this.color = color;
     this.position = position;
   }
 }
@@ -272,7 +274,6 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
 export class TextObject extends AppletObject {
   latex: string;
   position: Vector2;
-  color: PrimeColor;
   alignment?: {
     alignX?: 'left' | 'right' | 'center' | null;
     alignY?: 'top' | 'bottom' | 'center' | null;
@@ -293,11 +294,10 @@ export class TextObject extends AppletObject {
       alignY?: 'top' | 'bottom' | 'center' | null;
     }
   ) {
-    super();
+    super(color);
 
     this.latex = latex;
     this.position = position;
-    this.color = color;
     this.alignment = alignment;
   }
 }
@@ -306,7 +306,6 @@ export class AngleObject extends AppletObject {
   position: Vector2;
   startAngle: number;
   endAngle: number;
-  color: PrimeColor;
   hasHead?: boolean;
   distance?: number;
 
@@ -329,12 +328,11 @@ export class AngleObject extends AppletObject {
       distance?: number;
     }
   ) {
-    super();
+    super(color);
 
     this.position = position;
     this.startAngle = startAngle;
     this.endAngle = endAngle;
-    this.color = color;
     this.hasHead = options?.hasHead;
     this.distance = options?.distance;
   }
@@ -378,7 +376,6 @@ export class AngleObject extends AppletObject {
 
 export class PointObject extends AppletObject {
   position: Vector2;
-  color: PrimeColor;
   shape?: Shape;
   latex?: string;
   legendText?: string;
@@ -400,10 +397,9 @@ export class PointObject extends AppletObject {
       legendText?: string;
     }
   ) {
-    super();
+    super(color);
 
     this.position = position;
-    this.color = color;
     this.shape = options?.shape;
     this.latex = options?.latex;
     this.legendText = options?.legendText;
