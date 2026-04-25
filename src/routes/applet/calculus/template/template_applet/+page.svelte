@@ -21,12 +21,14 @@
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
+  let axis: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -49,6 +51,23 @@
     new Vector2(4, 7), // top-right
     0.5 // margin
   );
+
+  // ####
+  // AXIS
+  // ####
+  // here are the default settings for axis, you can change them
+
+  // (remove if unnecessary)
+  axis = {
+    showOrigin: true,
+    showAxisNumbers: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    scaleX: 1,
+    scaleY: 1,
+    skipX: 0,
+    skipY: 0
+  };
 
   // ###########
   // AXIS LABELS
@@ -130,6 +149,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  {axis}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
