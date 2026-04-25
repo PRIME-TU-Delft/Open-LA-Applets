@@ -8,6 +8,7 @@
     ImplicitFunctionFragment,
     ObliqueAsymptoteFragment,
     ParameterizedFunctionFragment,
+    PointObject,
     TextObject
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
@@ -64,17 +65,16 @@
       alignX: 'center'
     }),
     AngleObject.fromVectors(
-      new Vector2(1, 1),
-      new Vector2(1, 1),
-      new Vector2(-1, 1),
-      PrimeColor.cyan
-    ),
-    AngleObject.fromVectors(
       new Vector2(6, 1),
       new Vector2(1, 1),
       new Vector2(0, 1),
       PrimeColor.raspberry
     ),
+    new PointObject(new Vector2(5, 3), PrimeColor.yellow, {
+      latex: '\\sigma',
+      legendText: '\\sigma',
+      shape: 'square'
+    }),
     new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
       domain: {
         xMin: 1,

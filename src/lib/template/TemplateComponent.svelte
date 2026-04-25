@@ -9,6 +9,7 @@
     FunctionFragment,
     ImplicitFunctionFragment,
     ParameterizedFunctionFragment,
+    PointObject,
     TextObject,
     type AppletObject
   } from './TemplateAppletObjects';
@@ -111,6 +112,11 @@
         hasHead={object.hasHead}
         distance={object.distance}
       />
+    {/if}
+  {:else if object instanceof PointObject}
+    <Point2D position={object.position} color={object.color.toString()} shape={object.shape} />
+    {#if object.latex}
+      <Latex2D position={object.position} latex={object.latex} color={object.color.toString()} />
     {/if}
   {/if}
 {/each}

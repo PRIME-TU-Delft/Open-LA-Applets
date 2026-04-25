@@ -375,3 +375,37 @@ export class AngleObject extends AppletObject {
     return [v1, v2];
   }
 }
+
+export class PointObject extends AppletObject {
+  position: Vector2;
+  color: PrimeColor;
+  shape?: Shape;
+  latex?: string;
+  legendText?: string;
+
+  /**
+   * Point template object
+   * @param position Position of the points
+   * @param color Color of the points
+   * @param options.shape Shape of the point
+   * @param options.latex Latex shown next to the point
+   * @param options.legendText Legend text of the point
+   */
+  constructor(
+    position: Vector2,
+    color: PrimeColor,
+    options?: {
+      shape?: Shape;
+      latex?: string;
+      legendText?: string;
+    }
+  ) {
+    super();
+
+    this.position = position;
+    this.color = color;
+    this.shape = options?.shape;
+    this.latex = options?.latex;
+    this.legendText = options?.legendText;
+  }
+}
