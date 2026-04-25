@@ -72,8 +72,11 @@
 <Story name="Logarithmic axis">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
-      <Canvas2D axis={null}>
-        <Axis logarithmicY={true} />
+      <Canvas2D
+        axis={{
+          logarithmicY: true
+        }}
+      >
         <Vector2D direction={new Vector2(1, Math.log10(2))} color={PrimeColor.blue} />
       </Canvas2D>
     </div>
@@ -84,8 +87,11 @@
 <Story name="Scaled axis">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
-      <Canvas2D axis={null}>
-        <Axis scaleX={2} />
+      <Canvas2D
+        axis={{
+          scaleX: 2
+        }}
+      >
         <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
       </Canvas2D>
     </div>
@@ -96,8 +102,11 @@
 <Story name="Skipped axis">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
-      <Canvas2D axis={null}>
-        <Axis skipX={2} />
+      <Canvas2D
+        axis={{
+          skipX: 2
+        }}
+      >
         <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
       </Canvas2D>
     </div>
