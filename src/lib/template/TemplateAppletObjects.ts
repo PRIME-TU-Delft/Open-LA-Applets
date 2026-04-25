@@ -308,6 +308,7 @@ export class Angle extends AppletObject {
   endAngle: number;
   hasHead?: boolean;
   distance?: number;
+  latex?: string;
 
   /**
    * Angle template object
@@ -317,6 +318,7 @@ export class Angle extends AppletObject {
    * @param color Color of the angle
    * @param options.hasHead Whether the angle shuold have an arrow head
    * @param options.distance Distance of the angle arch from the origin
+   * @param options.latex Latex shown next to the angle
    */
   constructor(
     position: Vector2,
@@ -326,6 +328,7 @@ export class Angle extends AppletObject {
     options?: {
       hasHead?: boolean;
       distance?: number;
+      latex?: string;
     }
   ) {
     super(color);
@@ -335,6 +338,7 @@ export class Angle extends AppletObject {
     this.endAngle = endAngle;
     this.hasHead = options?.hasHead;
     this.distance = options?.distance;
+    this.latex = options?.latex;
   }
 
   /**
@@ -345,6 +349,7 @@ export class Angle extends AppletObject {
    * @param color Color of the angle
    * @param options.hasHead Whether the angle shuold have an arrow head
    * @param options.distance Distance of the angle arch from the origin
+   * @param options.latex Latex shown next to the angle
    */
   static fromVectors(
     position: Vector2,
@@ -354,6 +359,7 @@ export class Angle extends AppletObject {
     options?: {
       hasHead?: boolean;
       distance?: number;
+      latex?: string;
     }
   ): Angle {
     const sAngle = v1.angle();

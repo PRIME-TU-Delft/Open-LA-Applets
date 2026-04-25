@@ -119,6 +119,26 @@
         distance={object.distance}
       />
     {/if}
+
+    {#if object.latex}
+      {@const v = object.position
+        .clone()
+        .add(object.getVectors()[0].add(object.getVectors()[1]).divideScalar(5.5))}
+      {@const isVertical = Math.abs(v.x - object.position.x) < 1e-6}
+      {@const alignX = Math.abs(v.x) < 1e-6 ? 'center' : v.x > 0 ? 'left' : 'right'}
+      {@const alignY = Math.abs(v.y) < 1e-6 ? 'center' : v.y > 0 ? 'bottom' : 'top'}
+      {@const offset = isVertical
+        ? new Vector2(alignX === 'right' ? -0.08 : 0.08, 0)
+        : new Vector2(0, 0)}
+      <Latex2D
+        latex={object.latex}
+        position={v}
+        color={object.color.toString()}
+        {alignY}
+        {alignX}
+        {offset}
+      />
+    {/if}
   {:else if object instanceof Point}
     <Point2D position={object.position} color={object.color.toString()} shape={object.shape} />
     {#if object.latex}

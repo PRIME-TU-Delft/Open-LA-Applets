@@ -506,6 +506,7 @@ new Angle(position, startAngle, endAngle, color, options?);
 - `options` (optional):
   - `hasHead`: draw arrow head on arc
   - `distance`: distance of arc from origin
+  - `latex`: LaTeX label shown near the angle arc
 
 Alternative constructor:
 
@@ -516,7 +517,22 @@ Angle.fromVectors(position, v1, v2, color, options?)
 Example:
 
 ```ts
-new Angle(new Vector2(0, 0), 0, Math.PI / 3, PrimeColor.orange, { hasHead: true });
+new Angle(new Vector2(0, 0), 0, Math.PI / 3, PrimeColor.orange, {
+  hasHead: true,
+  latex: '\\alpha'
+});
+```
+
+Using `fromVectors` with a label:
+
+```ts
+Angle.fromVectors(
+  new Vector2(0, 0),
+  new Vector2(1, 0),
+  new Vector2(1, 1),
+  PrimeColor.blue,
+  { latex: '\\theta' }
+);
 ```
 
 ### 11) `Polygon`

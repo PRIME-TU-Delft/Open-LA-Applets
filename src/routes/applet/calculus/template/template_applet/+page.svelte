@@ -88,7 +88,10 @@
       new Vector2(6, 1),
       new Vector2(1, 1),
       new Vector2(0, 1),
-      PrimeColor.raspberry
+      PrimeColor.raspberry,
+      {
+        latex: '\\alpha'
+      }
     ),
     new Point(new Vector2(5, 3), PrimeColor.yellow, {
       latex: '\\sigma',

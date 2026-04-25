@@ -52,7 +52,7 @@
 <!-- Polygon with the fill style changed -->
 <Story
   name="Fill style"
-  args={{ points: [new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1)], fillStyle: "dashed" }}
+  args={{ points: [new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1)], fillStyle: 'dashed' }}
   {template}
 />
 
