@@ -224,5 +224,17 @@
         : new Vector2(0, 0)}
       <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
     {/each}
+    {@const center = object.points
+      .reduce((acc, p) => acc.add(p), new Vector2(0, 0))
+      .divideScalar(object.points.length)}
+    {#each object.verticesLatex as latex, i (i)}
+      {@const v = object.points[i].clone()}
+      {@const d = v.clone().sub(center)}
+      {@const alignX = Math.abs(d.x) < 1e-6 ? 'center' : d.x > 0 ? 'left' : 'right'}
+      {@const alignY = Math.abs(d.y) < 1e-6 ? 'center' : d.y > 0 ? 'bottom' : 'top'}
+      {@const offset =
+        d.lengthSq() < 1e-12 ? new Vector2(0, 0) : d.clone().normalize().multiplyScalar(0.08)}
+      <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
+    {/each}
   {/if}
 {/each}

@@ -141,7 +141,8 @@
       radiusLatex: 'r'
     }),
     new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
-      sideLatex: ['a', 'b', 'c']
+      sideLatex: ['a', 'b', 'c'],
+      verticesLatex: ['A', 'B', 'C']
     })
   ];
 </script>

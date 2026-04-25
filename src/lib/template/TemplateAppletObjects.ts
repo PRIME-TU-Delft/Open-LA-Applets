@@ -497,6 +497,7 @@ export class Polygon extends AppletObject {
   points: Vector2[];
   fillStyle: 'full' | 'dashed' | 'none' = 'none';
   sideLatex?: string[];
+  verticesLatex?: string[];
 
   /**
    * Polygon template object
@@ -504,16 +505,22 @@ export class Polygon extends AppletObject {
    * @param color Color of the polygon
    * @param options.fillStyle Style of the fill of the polygon
    * @param options.sideLatex List of strings to put on the polygon sides, they are auto-aligned
+   * @param options.verticesLatex List of strings to put on the vertices, they are auto-aligned
    */
   constructor(
     points: Vector2[],
     color: PrimeColor,
-    options?: { fillStyle?: 'full' | 'dashed' | 'none'; sideLatex?: string[] }
+    options?: {
+      fillStyle?: 'full' | 'dashed' | 'none';
+      sideLatex?: string[];
+      verticesLatex?: string[];
+    }
   ) {
     super(color);
 
     this.points = points;
     if (options?.fillStyle) this.fillStyle = options?.fillStyle;
     this.sideLatex = options?.sideLatex;
+    this.verticesLatex = options?.verticesLatex;
   }
 }

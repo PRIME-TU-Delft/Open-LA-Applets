@@ -200,7 +200,7 @@ The `appletObjects` array can contain the following types of objects:
 - `LineFragment`: a finite line segment with optional label and (optional) manual label alignment.
 - `Circle`: a circle, optionally with drawn radii and radius labels.
 - `Angle`: an angle arc (or right-angle marker).
-- `Polygon`: a polygon with optional fill and side labels.
+- `Polygon`: a polygon with optional fill, side labels, and vertex labels.
 
 ### 1) `FunctionFragment`
 
@@ -548,11 +548,17 @@ new Polygon(points, color, options?);
 - `options` (optional):
   - `fillStyle`: `'full' | 'dashed' | 'none'`
   - `sideLatex`: labels for polygon sides (in edge order)
+  - `verticesLatex`: labels for polygon vertices (in point order)
 
 Automatic side-label behavior:
 
 - Side labels are auto-aligned from each side midpoint direction.
 - For near-vertical sides, a small horizontal offset is added automatically to avoid overlap with the side.
+
+Automatic vertex-label behavior:
+
+- Vertex labels are auto-aligned using the vector from polygon center to the vertex.
+- Labels are nudged slightly outward along that same center-to-vertex direction.
 
 Example:
 
@@ -560,7 +566,11 @@ Example:
 new Polygon(
   [new Vector2(-2, -1), new Vector2(0, 2), new Vector2(2, -1)],
   PrimeColor.raspberry,
-  { fillStyle: 'none', sideLatex: ['a', 'b', 'c'] }
+  {
+    fillStyle: 'none',
+    sideLatex: ['a', 'b', 'c'],
+    verticesLatex: ['A', 'B', 'C']
+  }
 );
 ```
 
