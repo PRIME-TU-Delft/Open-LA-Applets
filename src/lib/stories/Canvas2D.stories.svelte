@@ -17,6 +17,7 @@
   import type { CanvasProps } from '$lib/d3/CanvasType';
   import Axis from '$lib/d3/Axis.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import { FillType, LegendItem, Shape } from '$lib/utils/Legend';
 
   onDestroy(() => {
     globalState.title = '';
@@ -98,6 +99,46 @@
       <Canvas2D axis={null}>
         <Axis skipX={2} />
         <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
+<!-- 
+This story showcases the position of the formula/legend (default is "top-right").
+```typescript
+legendFormulaPosition = "top-right" | "top-left" ;
+```
+ -->
+<Story name="Formula/Legend position">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D
+        legendItems={[
+          new LegendItem('A', PrimeColor.blue),
+          new LegendItem('B', PrimeColor.raspberry, Shape.Circle, FillType.Border),
+          new LegendItem('C', PrimeColor.darkGreen, Shape.Circle, FillType.Dashed)
+        ]}
+        legendFormulaPosition="top-left"
+      >
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(1, 1)}
+          length={1}
+          color={PrimeColor.blue}
+        />
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(0, 1)}
+          length={1}
+          color={PrimeColor.raspberry}
+        />
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={new Vector2(1, -1)}
+          length={1}
+          color={PrimeColor.darkGreen}
+        />
       </Canvas2D>
     </div>
   {/snippet}
