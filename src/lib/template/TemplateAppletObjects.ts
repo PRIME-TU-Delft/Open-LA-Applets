@@ -405,3 +405,52 @@ export class PointObject extends AppletObject {
     this.legendText = options?.legendText;
   }
 }
+
+export class LineFragment extends AppletObject {
+  startPoint: Vector2;
+  endPoint: Vector2;
+  latex?: string;
+  latexAlign?: {
+    alignX?: 'left' | 'right' | 'center' | null;
+    alignY?: 'top' | 'bottom' | 'center' | null;
+  };
+  isDashed?: boolean;
+
+  /**
+   * Line fragment template object
+   * @param start Start point of the line
+   * @param end End point of the line
+   * @param color Color of the line
+   * @param options.latex Text shown next to the line
+   * @param options.latexAlign How the text next to the line shuold be aligned
+   * @param options.isDashed Whether the line should be dashed
+   */
+  constructor(
+    start: Vector2,
+    end: Vector2,
+    color: PrimeColor,
+    options?: {
+      latex?: string;
+      isDashed?: boolean;
+      latexAlign?: {
+        alignX?: 'left' | 'right' | 'center' | null;
+        alignY?: 'top' | 'bottom' | 'center' | null;
+      };
+    }
+  ) {
+    super(color);
+
+    this.startPoint = start;
+    this.endPoint = end;
+    this.latex = options?.latex;
+    this.isDashed = options?.isDashed;
+    this.latexAlign = options?.latexAlign;
+  }
+
+  public midpoint() {
+    const midX = (this.startPoint.x + this.endPoint.x) / 2;
+    const midY = (this.startPoint.y + this.endPoint.y) / 2;
+
+    return new Vector2(midX, midY);
+  }
+}

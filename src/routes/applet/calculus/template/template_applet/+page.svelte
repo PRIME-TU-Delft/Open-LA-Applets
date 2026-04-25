@@ -6,6 +6,7 @@
     AsymptoteFragment,
     FunctionFragment,
     ImplicitFunctionFragment,
+    LineFragment,
     ObliqueAsymptoteFragment,
     ParameterizedFunctionFragment,
     PointObject,
@@ -20,6 +21,7 @@
   import { toLatexText } from '$lib/utils/FormatString';
   import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Vector3D from '$lib/threlte/Vector3D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -108,7 +110,10 @@
     }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
-    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
+    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
+    new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
+      latex: 'test'
+    })
   ];
 </script>
 

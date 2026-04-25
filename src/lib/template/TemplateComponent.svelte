@@ -8,6 +8,7 @@
     AsymptoteFragment,
     FunctionFragment,
     ImplicitFunctionFragment,
+    LineFragment,
     ParameterizedFunctionFragment,
     PointObject,
     TextObject,
@@ -19,6 +20,7 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -117,6 +119,22 @@
     <Point2D position={object.position} color={object.color.toString()} shape={object.shape} />
     {#if object.latex}
       <Latex2D position={object.position} latex={object.latex} color={object.color.toString()} />
+    {/if}
+  {:else if object instanceof LineFragment}
+    <Line2D
+      start={object.startPoint}
+      end={object.endPoint}
+      color={object.color.toString()}
+      isDashed={object.isDashed}
+    />
+    {#if object.latex}
+      <Latex2D
+        position={object.midpoint()}
+        latex={object.latex}
+        color={object.color.toString()}
+        alignX={object.latexAlign?.alignX}
+        alignY={object.latexAlign?.alignY}
+      />
     {/if}
   {/if}
 {/each}
