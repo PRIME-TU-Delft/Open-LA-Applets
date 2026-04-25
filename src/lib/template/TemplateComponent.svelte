@@ -4,14 +4,14 @@
   import { Vector2 } from 'three';
   import {
     AbstractFunctionFragment,
-    AngleObject,
+    Angle,
     AsymptoteFragment,
     FunctionFragment,
     ImplicitFunctionFragment,
     LineFragment,
     ParameterizedFunctionFragment,
-    PointObject,
-    TextObject,
+    Point,
+    Text,
     type AppletObject
   } from './TemplateAppletObjects';
   import Point2D from '$lib/d3/Point2D.svelte';
@@ -89,7 +89,7 @@
         isDashed={true}
       />
     {/if}
-  {:else if object instanceof TextObject}
+  {:else if object instanceof Text}
     <Latex2D
       position={object.position}
       latex={object.latex}
@@ -97,7 +97,7 @@
       alignX={object.alignment?.alignX}
       alignY={object.alignment?.alignY}
     />
-  {:else if object instanceof AngleObject}
+  {:else if object instanceof Angle}
     {#if object.isRight()}
       <RightAngle2D
         color={object.color.toString()}
@@ -115,7 +115,7 @@
         distance={object.distance}
       />
     {/if}
-  {:else if object instanceof PointObject}
+  {:else if object instanceof Point}
     <Point2D position={object.position} color={object.color.toString()} shape={object.shape} />
     {#if object.latex}
       <Latex2D position={object.position} latex={object.latex} color={object.color.toString()} />

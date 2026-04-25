@@ -271,7 +271,7 @@ export class ObliqueAsymptoteFragment extends FunctionFragment {
   }
 }
 
-export class TextObject extends AppletObject {
+export class Text extends AppletObject {
   latex: string;
   position: Vector2;
   alignment?: {
@@ -302,7 +302,7 @@ export class TextObject extends AppletObject {
   }
 }
 
-export class AngleObject extends AppletObject {
+export class Angle extends AppletObject {
   position: Vector2;
   startAngle: number;
   endAngle: number;
@@ -355,11 +355,11 @@ export class AngleObject extends AppletObject {
       hasHead?: boolean;
       distance?: number;
     }
-  ): AngleObject {
+  ): Angle {
     const sAngle = v1.angle();
     const eAngle = v2.angle();
 
-    return new AngleObject(position, sAngle, eAngle, color, options);
+    return new Angle(position, sAngle, eAngle, color, options);
   }
 
   public isRight(): boolean {
@@ -374,7 +374,7 @@ export class AngleObject extends AppletObject {
   }
 }
 
-export class PointObject extends AppletObject {
+export class Point extends AppletObject {
   position: Vector2;
   shape?: Shape;
   latex?: string;

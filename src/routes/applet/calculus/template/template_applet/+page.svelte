@@ -1,7 +1,7 @@
 <script lang="ts">
   /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
-    AngleObject,
+    Angle,
     AppletObject,
     AsymptoteFragment,
     FunctionFragment,
@@ -9,8 +9,8 @@
     LineFragment,
     ObliqueAsymptoteFragment,
     ParameterizedFunctionFragment,
-    PointObject,
-    TextObject
+    Point,
+    Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -63,16 +63,16 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new TextObject('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
+    new Text('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
       alignX: 'center'
     }),
-    AngleObject.fromVectors(
+    Angle.fromVectors(
       new Vector2(6, 1),
       new Vector2(1, 1),
       new Vector2(0, 1),
       PrimeColor.raspberry
     ),
-    new PointObject(new Vector2(5, 3), PrimeColor.yellow, {
+    new Point(new Vector2(5, 3), PrimeColor.yellow, {
       latex: '\\sigma',
       legendText: '\\sigma',
       shape: 'square'
