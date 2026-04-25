@@ -459,20 +459,31 @@ export class Circle extends AppletObject {
   origin: Vector2;
   radius: number;
   isDashed?: boolean;
+  radiiShown?: number[];
+  radiusLatex?: string;
 
   /**
    * Circle template object
    * @param origin Origin point of the circle
    * @param radius Radius of the circle
    * @param color Color of the circle
-   * @param isDashed Whether the circle should be dashed
+   * @param options.isDashed Whether the circle should be dashed
+   * @param options.radiiShown List of angles (radians) for which radius is drawn
+   * @param options.radiusLatex Latex drawn next to radii
    */
-  constructor(origin: Vector2, radius: number, color: PrimeColor, isDashed?: boolean) {
+  constructor(
+    origin: Vector2,
+    radius: number,
+    color: PrimeColor,
+    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string }
+  ) {
     super(color);
 
     this.origin = origin;
     this.radius = radius;
-    this.isDashed = isDashed;
+    this.isDashed = options?.isDashed;
+    this.radiiShown = options?.radiiShown;
+    this.radiusLatex = options?.radiusLatex;
   }
 }
 

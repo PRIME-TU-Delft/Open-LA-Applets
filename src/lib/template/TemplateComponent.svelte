@@ -158,6 +158,34 @@
       color={object.color.toString()}
       isDashed={object.isDashed}
     />
+    {#each object.radiiShown as angle, i (i)}
+      {@const endPoint = object.origin
+        .clone()
+        .addScaledVector(new Vector2(Math.cos(angle), Math.sin(angle)), object.radius)}
+      <Line2D
+        start={object.origin}
+        end={endPoint}
+        color={object.color.toString()}
+        isDashed={object.isDashed}
+      />
+      {#if object.radiusLatex}
+        {@const v = endPoint.clone().add(object.origin.clone()).divideScalar(2)}
+        {@const isVertical = Math.abs(endPoint.x - object.origin.x) < 1e-6}
+        {@const alignX = Math.abs(v.x) < 1e-6 ? 'center' : v.x > 0 ? 'left' : 'right'}
+        {@const alignY = Math.abs(v.y) < 1e-6 ? 'center' : v.y > 0 ? 'bottom' : 'top'}
+        {@const offset = isVertical
+          ? new Vector2(alignX === 'right' ? -0.08 : 0.08, 0)
+          : new Vector2(0, 0)}
+        <Latex2D
+          position={v}
+          {offset}
+          latex={object.radiusLatex}
+          color={object.color.toString()}
+          {alignX}
+          {alignY}
+        />
+      {/if}
+    {/each}
   {:else if object instanceof Polygon}
     <Polygon2D
       points={object.points}

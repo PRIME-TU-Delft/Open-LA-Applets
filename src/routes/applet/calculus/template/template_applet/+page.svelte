@@ -113,7 +113,11 @@
     new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
       latex: 'test'
     }),
-    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, true),
+    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, {
+      isDashed: true,
+      radiiShown: [Math.PI / 4, Math.PI / 2, (5 / 4) * Math.PI],
+      radiusLatex: 'r'
+    }),
     new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
       sideLatex: ['a', 'b', 'c']
     })
