@@ -15,7 +15,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { onDestroy } from 'svelte';
   import type { CanvasProps } from '$lib/d3/CanvasType';
-  import Axis from '$lib/d3/Axis.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { FillType, LegendItem, Shape } from '$lib/utils/Legend';
 
