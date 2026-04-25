@@ -149,6 +149,12 @@ The `appletObjects` array can contain the following types of objects:
 - `ParameterizedFunctionFragment`: a parametric curve defined by `x(t)` and `y(t)`.
 - `AsymptoteFragment`: a vertical or horizontal dashed asymptote.
 - `ObliqueAsymptoteFragment`: an oblique asymptote (defined by JavaScript function or LaTeX string).
+- `Text`: a standalone LaTeX label.
+- `Point`: a single point with optional shape and label.
+- `LineFragment`: a finite line segment with optional label and (optional) manual label alignment.
+- `Circle`: a circle, optionally with drawn radii and radius labels.
+- `Angle`: an angle arc (or right-angle marker).
+- `Polygon`: a polygon with optional fill and side labels.
 
 ### 1) `FunctionFragment`
 
@@ -339,6 +345,163 @@ new ObliqueAsymptoteFragment('x+2', PrimeColor.orange, "asymptote");
 new ObliqueAsymptoteFragment('-x', PrimeColor.raspberry);
 ```
 
+### 6) `Text`
+
+Constructor:
+
+```ts
+new Text(latex, position, color, alignment?);
+```
+
+- `latex`: LaTeX string to display.
+- `position`: `Vector2` position.
+- `color`: one of the `PrimeColor` values.
+- `alignment` (optional): `{ alignX?: 'left' | 'right' | 'center'; alignY?: 'top' | 'bottom' | 'center' }`.
+
+Examples:
+
+```ts
+new Text('x_0', new Vector2(1.2, -0.5), PrimeColor.black);
+new Text('A', new Vector2(-2, 3), PrimeColor.blue, { alignX: 'right', alignY: 'bottom' });
+```
+
+### 7) `Point`
+
+Constructor:
+
+```ts
+new Point(position, color, options?);
+```
+
+- `position`: `Vector2` position.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `shape`: `'circle' | 'square' | 'triangle'`
+  - `latex`: optional point label
+  - `legendText`: optional legend text
+
+Examples:
+
+```ts
+new Point(new Vector2(1, 2), PrimeColor.orange);
+new Point(new Vector2(-1, 0), PrimeColor.raspberry, { shape: 'square', latex: 'P' });
+```
+
+### 8) `LineFragment`
+
+Constructor:
+
+```ts
+new LineFragment(start, end, color, options?);
+```
+
+- `start`, `end`: `Vector2` endpoints.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `latex`: label near the midpoint
+  - `isDashed`: dashed segment
+  - `latexAlign`: optional manual alignment override
+
+Automatic label behavior:
+
+- If `latexAlign` is not provided, alignment is chosen from the midpoint direction (left/right and top/bottom).
+- For near-vertical lines, an extra small horizontal offset is automatically added so the label does not sit on the line.
+- If you provide `latexAlign.alignX` and/or `latexAlign.alignY`, your provided values override auto-alignment for those axes.
+
+Examples:
+
+```ts
+new LineFragment(new Vector2(-2, -1), new Vector2(2, 1), PrimeColor.darkGreen, {
+  latex: 'd'
+});
+
+new LineFragment(new Vector2(1, -2), new Vector2(1, 2), PrimeColor.blue, {
+  latex: 'x=1',
+  latexAlign: { alignX: 'left', alignY: 'center' }
+});
+```
+
+### 9) `Circle`
+
+Constructor:
+
+```ts
+new Circle(origin, radius, color, options?);
+```
+
+- `origin`: `Vector2` center.
+- `radius`: radius value.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `isDashed`: dashed circle
+  - `radiiShown`: list of angles (in radians) where radius segments are drawn
+  - `radiusLatex`: label drawn for each shown radius
+
+Example:
+
+```ts
+new Circle(new Vector2(0, 0), 2, PrimeColor.cyan, {
+  radiiShown: [0, Math.PI / 2, Math.PI],
+  radiusLatex: 'r'
+});
+```
+
+### 10) `Angle`
+
+Constructor:
+
+```ts
+new Angle(position, startAngle, endAngle, color, options?);
+```
+
+- `position`: origin point (`Vector2`).
+- `startAngle`, `endAngle`: radians.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `hasHead`: draw arrow head on arc
+  - `distance`: distance of arc from origin
+
+Alternative constructor:
+
+```ts
+Angle.fromVectors(position, v1, v2, color, options?)
+```
+
+Example:
+
+```ts
+new Angle(new Vector2(0, 0), 0, Math.PI / 3, PrimeColor.orange, { hasHead: true });
+```
+
+### 11) `Polygon`
+
+Constructor:
+
+```ts
+new Polygon(points, color, options?);
+```
+
+- `points`: `Vector2[]` in clockwise or anti-clockwise order.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `fillStyle`: `'full' | 'dashed' | 'none'`
+  - `sideLatex`: labels for polygon sides (in edge order)
+
+Automatic side-label behavior:
+
+- Side labels are auto-aligned from each side midpoint direction.
+- For near-vertical sides, a small horizontal offset is added automatically to avoid overlap with the side.
+
+Example:
+
+```ts
+new Polygon(
+  [new Vector2(-2, -1), new Vector2(0, 2), new Vector2(2, -1)],
+  PrimeColor.raspberry,
+  { fillStyle: 'none', sideLatex: ['a', 'b', 'c'] }
+);
+```
+
 ## Step-by-step: create an example applet
 
 In this section, we build a small applet from scratch using only `appletObjects`.
@@ -405,7 +568,7 @@ const appletObjects: AppletObject[] = [
 
 1. **Copy the template applet** and keep the structure.
 
-2. **Edit only `appletObjects`** — Add `FunctionFragment`, `ImplicitFunctionFragment`, `ParameterizedFunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` objects that represent your mathematical content.
+2. **Edit only `appletObjects`** — Add objects that represent your mathematical content.
 
 3. **Combine features freely** — You can mix and match:
    - Function domains (partial or full)
