@@ -16,7 +16,7 @@ type Integral = {
 
 type Shape = 'circle' | 'square' | 'triangle';
 
-export class AppletObject {}
+export class AppletObject { }
 
 export abstract class AbstractFunctionFragment extends AppletObject {
   color: PrimeColor;
@@ -152,17 +152,19 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
     super(color, options);
 
     if (typeof func == 'string') {
-      console.log('IMPLICIT');
-      console.log(func);
+      // For implicit equations like "x^2 + y^2 = 3", compile as f(x, y) = 0.
+      const zeroForm = func.includes('=')
+        ? (() => {
+          const [left, ...rightParts] = func.split('=');
+          const right = rightParts.join('=');
+          return `(${left}) - (${right})`;
+        })()
+        : func;
 
-      const parsed = parse(func);
+      const parsed = parse(zeroForm);
       const compiled = compile(parsed);
 
-      console.log(compiled);
-
       this.func = (x: number, y: number) => {
-        // CONVERT TO ZERO FUNCTION, or change implicit function 2d
-
         const result = compiled.run?.({ x, y });
         return typeof result === 'number' ? result : Number(result);
       };
