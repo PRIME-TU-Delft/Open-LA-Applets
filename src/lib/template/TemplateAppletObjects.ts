@@ -307,6 +307,8 @@ export class AngleObject extends AppletObject {
   startAngle: number;
   endAngle: number;
   color: PrimeColor;
+  hasHead?: boolean;
+  distance?: number;
 
   /**
    * Angle template object
@@ -314,14 +316,27 @@ export class AngleObject extends AppletObject {
    * @param startAngle Start angle of the angle (radians)
    * @param endAngle End angle of the angle (radians)
    * @param color Color of the angle
+   * @param options.hasHead Whether the angle shuold have an arrow head
+   * @param options.distance Distance of the angle arch from the origin
    */
-  constructor(position: Vector2, startAngle: number, endAngle: number, color: PrimeColor) {
+  constructor(
+    position: Vector2,
+    startAngle: number,
+    endAngle: number,
+    color: PrimeColor,
+    options?: {
+      hasHead?: boolean;
+      distance?: number;
+    }
+  ) {
     super();
 
     this.position = position;
     this.startAngle = startAngle;
     this.endAngle = endAngle;
     this.color = color;
+    this.hasHead = options?.hasHead;
+    this.distance = options?.distance;
   }
 
   /**
@@ -330,12 +345,23 @@ export class AngleObject extends AppletObject {
    * @param v1 First vector that describes the angle
    * @param v2 Second vector that describes the angle
    * @param color Color of the angle
+   * @param options.hasHead Whether the angle shuold have an arrow head
+   * @param options.distance Distance of the angle arch from the origin
    */
-  static fromVectors(position: Vector2, v1: Vector2, v2: Vector2, color: PrimeColor): AngleObject {
+  static fromVectors(
+    position: Vector2,
+    v1: Vector2,
+    v2: Vector2,
+    color: PrimeColor,
+    options?: {
+      hasHead?: boolean;
+      distance?: number;
+    }
+  ): AngleObject {
     const sAngle = v1.angle();
     const eAngle = v2.angle();
 
-    return new AngleObject(position, sAngle, eAngle, color);
+    return new AngleObject(position, sAngle, eAngle, color, options);
   }
 
   public isRight(): boolean {

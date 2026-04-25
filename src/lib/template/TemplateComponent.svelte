@@ -100,6 +100,7 @@
         color={object.color.toString()}
         origin={object.position}
         vs={object.getVectors()}
+        size={object.distance}
       />
     {:else}
       <Angle2D
@@ -107,6 +108,8 @@
         color={object.color.toString()}
         startAngle={object.startAngle}
         endAngle={object.endAngle}
+        hasHead={object.hasHead}
+        distance={object.distance}
       />
     {/if}
   {/if}
