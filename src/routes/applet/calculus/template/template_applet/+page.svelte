@@ -4,7 +4,9 @@
     AppletObject,
     AsymptoteFragment,
     FunctionFragment,
-    ObliqueAsymptoteFragment
+    ImplicitFunctionFragment,
+    ObliqueAsymptoteFragment,
+    ParameterizedFunctionFragment
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -13,6 +15,7 @@
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -54,6 +57,18 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
+    new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
+      domain: {
+        xMin: 1,
+        xMax: 1.3
+      }
+    }),
+    new ParameterizedFunctionFragment('\\sin{t}', '\\cos{t}', PrimeColor.cyan, {
+      tStart: 0,
+      tEnd: Math.PI,
+      legendText: 'parameterized',
+      shape: 'triangle'
+    }).addGaps(new Vector2(0, -1)),
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
       domain: { xMin: -1, xMax: 2.14 }
     }),

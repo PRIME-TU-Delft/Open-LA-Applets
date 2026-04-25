@@ -18,8 +18,7 @@ type Shape = 'circle' | 'square' | 'triangle';
 
 export class AppletObject {}
 
-export class FunctionFragment extends AppletObject {
-  func: (x: number) => number;
+export abstract class AbstractFunctionFragment extends AppletObject {
   color: PrimeColor;
   domain: Domain | undefined;
   gaps: Vector2[] = [];
@@ -35,7 +34,6 @@ export class FunctionFragment extends AppletObject {
 
   /**
    * Function fragment template object
-   * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
    * @param options.isDashed Whether the function line should be dashed
@@ -44,9 +42,8 @@ export class FunctionFragment extends AppletObject {
    * @param options.legendText Text to be shown in the legend item
    */
   constructor(
-    func: ((x: number) => number) | string,
     color: PrimeColor,
-    options: {
+    options?: {
       domain?: Domain;
       isDashed?: boolean;
       shape?: Shape;
@@ -56,23 +53,12 @@ export class FunctionFragment extends AppletObject {
   ) {
     super();
 
-    if (typeof func == 'string') {
-      const parsed = parse(func);
-      const compiled = compile(parsed);
-
-      this.func = (x: number) => {
-        const result = compiled.run?.({ x });
-        return typeof result === 'number' ? result : Number(result);
-      };
-    } else {
-      this.func = func;
-    }
     this.color = color;
-    this.domain = options.domain;
-    this.legendText = options.legendText;
-    if (options.isDashed) this.isDashed = options.isDashed;
-    if (options.shape) this.shape = options.shape;
-    if (options.integral) this.integral = options.integral;
+    this.domain = options?.domain;
+    this.legendText = options?.legendText;
+    if (options?.isDashed) this.isDashed = options.isDashed;
+    if (options?.shape) this.shape = options.shape;
+    if (options?.integral) this.integral = options.integral;
   }
 
   /**
@@ -97,6 +83,157 @@ export class FunctionFragment extends AppletObject {
     this.includedPoints = this.includedPoints.concat(positions);
     this.pointsLegendText.included = legendText;
     return this;
+  }
+}
+
+export class FunctionFragment extends AbstractFunctionFragment {
+  func: (x: number) => number;
+
+  /**
+   * Function fragment template object
+   * @param func A javascript function or a latex string describing the function
+   * @param color Color of the function graph
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.integral Properties of the integral
+   * @param options.legendText Text to be shown in the legend item
+   */
+  constructor(
+    func: ((x: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      integral?: Integral;
+      legendText?: string;
+    }
+  ) {
+    super(color, options);
+
+    if (typeof func == 'string') {
+      const parsed = parse(func);
+      const compiled = compile(parsed);
+
+      this.func = (x: number) => {
+        const result = compiled.run?.({ x });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.func = func;
+    }
+  }
+}
+
+export class ImplicitFunctionFragment extends AbstractFunctionFragment {
+  func: (x: number, y: number) => number;
+
+  /**
+   * Implicit function fragment template object
+   * @param func A javascript function or a latex string describing the function. If in JS, it has to be a zero func (=0)
+   * @param color Color of the function graph
+   * @param options.domain Domain on which the function should be drawn
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.legendText Text to be shown in the legend item
+   */
+  constructor(
+    func: ((x: number, y: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      domain?: Domain;
+      isDashed?: boolean;
+      shape?: Shape;
+      legendText?: string;
+    }
+  ) {
+    super(color, options);
+
+    if (typeof func == 'string') {
+      // For implicit equations like "x^2 + y^2 = 3", compile as f(x, y) = 0.
+      const zeroForm = func.includes('=')
+        ? (() => {
+            const [left, ...rightParts] = func.split('=');
+            const right = rightParts.join('=');
+            return `(${left}) - (${right})`;
+          })()
+        : func;
+
+      const parsed = parse(zeroForm);
+      const compiled = compile(parsed);
+
+      this.func = (x: number, y: number) => {
+        const result = compiled.run?.({ x, y });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.func = func;
+    }
+  }
+}
+
+export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
+  xFunc: (t: number) => number;
+  yFunc: (t: number) => number;
+  tDomain: {
+    start?: number;
+    end?: number;
+  };
+
+  /**
+   * Parameterized function fragment template object
+   * @param xFunc A javascript function or a latex string, with t being the parameter
+   * @param yFunc A javascript function or a latex string, with t being the parameter
+   * @param color Color of the function graph
+   * @param options.isDashed Whether the function line should be dashed
+   * @param options.shape Shape to use for legend and points
+   * @param options.legendText Text to be shown in the legend item
+   * @param options.tStart Start value for t
+   * @param options.tEnd End value for t
+   */
+  constructor(
+    xFunc: ((t: number) => number) | string,
+    yFunc: ((t: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      isDashed?: boolean;
+      shape?: Shape;
+      legendText?: string;
+      tStart?: number;
+      tEnd?: number;
+    }
+  ) {
+    super(color, options);
+
+    this.tDomain = {
+      start: options?.tStart,
+      end: options?.tEnd
+    };
+
+    if (typeof xFunc == 'string') {
+      const parsed = parse(xFunc);
+      const compiled = compile(parsed);
+
+      this.xFunc = (t: number) => {
+        const result = compiled.run?.({ t });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.xFunc = xFunc;
+    }
+
+    if (typeof yFunc == 'string') {
+      const parsed = parse(yFunc);
+      const compiled = compile(parsed);
+
+      this.yFunc = (t: number) => {
+        const result = compiled.run?.({ t });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.yFunc = yFunc;
+    }
   }
 }
 
