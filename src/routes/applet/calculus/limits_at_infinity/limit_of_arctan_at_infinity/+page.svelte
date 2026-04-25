@@ -107,7 +107,7 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   axis={null}
-  position="top-left"
+  legendFormulaPosition="top-left"
   splitCanvas2DProps={{
     labels: { xLabel: 'x', yLabel: 'y' },
     axis: {

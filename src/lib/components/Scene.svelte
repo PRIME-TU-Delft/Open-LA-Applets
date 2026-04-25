@@ -10,7 +10,7 @@
     draggables?: Draggable[];
     title?: string;
     sceneChildren?: Snippet<[number, number]>;
-    position?: 'top-right' | 'top-left';
+    legendFormulaPosition?: 'top-right' | 'top-left';
   };
 </script>
 
@@ -42,7 +42,7 @@
     draggables = [],
     title,
     sceneChildren,
-    position = 'top-right'
+    legendFormulaPosition
   }: SceneProps = $props();
 
   let height = $state(500);
@@ -196,7 +196,7 @@
       {controls}
       {hideButtons}
       {languages}
-      {position}
+      position={legendFormulaPosition}
       onReset={() => reset()}
     />
   </div>
