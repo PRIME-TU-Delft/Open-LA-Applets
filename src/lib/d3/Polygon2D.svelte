@@ -8,7 +8,7 @@
     strokeWidth?: number;
     opacity?: number;
     offset?: Vector2;
-    fillStyle?: 'full' | 'dashed';
+    fillStyle?: 'full' | 'dashed' | 'none';
   };
 
   let {
@@ -27,7 +27,9 @@
   );
 
   const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);
-  const fillValue = $derived(fillStyle === 'dashed' ? `url(#${patternId})` : color);
+  const fillValue = $derived(
+    fillStyle === 'dashed' ? `url(#${patternId})` : fillStyle === 'none' ? undefined : color
+  );
 </script>
 
 <!-- @component
@@ -52,6 +54,8 @@
   fill={fillValue}
   stroke={strokeColor}
   stroke-width={strokeWidth * 0.05}
+  stroke-linejoin="round"
   {opacity}
   points={pointsJoin}
+  fill-opacity={fillStyle === 'none' ? 0 : 1.0}
 />

@@ -6,11 +6,13 @@
     AbstractFunctionFragment,
     Angle,
     AsymptoteFragment,
+    Circle,
     FunctionFragment,
     ImplicitFunctionFragment,
     LineFragment,
     ParameterizedFunctionFragment,
     Point,
+    Polygon,
     Text,
     type AppletObject
   } from './TemplateAppletObjects';
@@ -21,6 +23,8 @@
   import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
+  import Circle2D from '$lib/d3/Circle2D.svelte';
+  import Polygon2D from '$lib/d3/Polygon2D.svelte';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -128,13 +132,49 @@
       isDashed={object.isDashed}
     />
     {#if object.latex}
+      {@const v = object.midpoint()}
+      {@const isVertical = Math.abs(object.endPoint.x - object.startPoint.x) < 1e-6}
+      {@const alignX =
+        object.latexAlign?.alignX ?? (Math.abs(v.x) < 1e-6 ? 'center' : v.x > 0 ? 'left' : 'right')}
+      {@const alignY =
+        object.latexAlign?.alignY ?? (Math.abs(v.y) < 1e-6 ? 'center' : v.y > 0 ? 'bottom' : 'top')}
+      {@const offset =
+        !object.latexAlign?.alignX && isVertical
+          ? new Vector2(alignX === 'right' ? -0.08 : 0.08, 0)
+          : new Vector2(0, 0)}
       <Latex2D
-        position={object.midpoint()}
+        position={v}
+        {offset}
         latex={object.latex}
         color={object.color.toString()}
-        alignX={object.latexAlign?.alignX}
-        alignY={object.latexAlign?.alignY}
+        {alignX}
+        {alignY}
       />
     {/if}
+  {:else if object instanceof Circle}
+    <Circle2D
+      position={object.origin}
+      radius={object.radius}
+      color={object.color.toString()}
+      isDashed={object.isDashed}
+    />
+  {:else if object instanceof Polygon}
+    <Polygon2D
+      points={object.points}
+      color={object.color.toString()}
+      fillStyle={object.fillStyle}
+    />
+    {#each object.sideLatex as latex, i (i)}
+      {@const pStart = object.points[i].clone()}
+      {@const pEnd = object.points[(i + 1) % object.points.length].clone()}
+      {@const v = pStart.add(pEnd).divideScalar(2)}
+      {@const isVertical = Math.abs(pEnd.x - pStart.x) < 1e-6}
+      {@const alignX = Math.abs(v.x) < 1e-6 ? 'center' : v.x > 0 ? 'left' : 'right'}
+      {@const alignY = Math.abs(v.y) < 1e-6 ? 'center' : v.y > 0 ? 'bottom' : 'top'}
+      {@const offset = isVertical
+        ? new Vector2(alignX === 'right' ? -0.08 : 0.08, 0)
+        : new Vector2(0, 0)}
+      <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
+    {/each}
   {/if}
 {/each}

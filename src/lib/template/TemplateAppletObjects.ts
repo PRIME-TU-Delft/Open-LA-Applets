@@ -422,7 +422,7 @@ export class LineFragment extends AppletObject {
    * @param end End point of the line
    * @param color Color of the line
    * @param options.latex Text shown next to the line
-   * @param options.latexAlign How the text next to the line shuold be aligned
+   * @param options.latexAlign How the text next to the line shuold be aligned, can overwrite auto-alignment
    * @param options.isDashed Whether the line should be dashed
    */
   constructor(
@@ -452,5 +452,51 @@ export class LineFragment extends AppletObject {
     const midY = (this.startPoint.y + this.endPoint.y) / 2;
 
     return new Vector2(midX, midY);
+  }
+}
+
+export class Circle extends AppletObject {
+  origin: Vector2;
+  radius: number;
+  isDashed?: boolean;
+
+  /**
+   * Circle template object
+   * @param origin Origin point of the circle
+   * @param radius Radius of the circle
+   * @param color Color of the circle
+   * @param isDashed Whether the circle should be dashed
+   */
+  constructor(origin: Vector2, radius: number, color: PrimeColor, isDashed?: boolean) {
+    super(color);
+
+    this.origin = origin;
+    this.radius = radius;
+    this.isDashed = isDashed;
+  }
+}
+
+export class Polygon extends AppletObject {
+  points: Vector2[];
+  fillStyle: 'full' | 'dashed' | 'none' = 'none';
+  sideLatex?: string[];
+
+  /**
+   * Polygon template object
+   * @param points Points of the polygon (clockwise or anty-clockwise)
+   * @param color Color of the polygon
+   * @param options.fillStyle Style of the fill of the polygon
+   * @param options.sideLatex List of strings to put on the polygon sides, they are auto-aligned
+   */
+  constructor(
+    points: Vector2[],
+    color: PrimeColor,
+    options?: { fillStyle?: 'full' | 'dashed' | 'none'; sideLatex?: string[] }
+  ) {
+    super(color);
+
+    this.points = points;
+    if (options?.fillStyle) this.fillStyle = options?.fillStyle;
+    this.sideLatex = options?.sideLatex;
   }
 }

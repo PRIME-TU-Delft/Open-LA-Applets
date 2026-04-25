@@ -4,24 +4,23 @@
     Angle,
     AppletObject,
     AsymptoteFragment,
+    Circle,
     FunctionFragment,
     ImplicitFunctionFragment,
     LineFragment,
     ObliqueAsymptoteFragment,
     ParameterizedFunctionFragment,
     Point,
+    Polygon,
     Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { Color, Vector2 } from 'three';
+  import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
-  import ParameterizedFunction2D from '$lib/d3/ParameterizedFunction2D.svelte';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
-  import Vector3D from '$lib/threlte/Vector3D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -113,6 +112,10 @@
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
     new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
       latex: 'test'
+    }),
+    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, true),
+    new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
+      sideLatex: ['a', 'b', 'c']
     })
   ];
 </script>
