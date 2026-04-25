@@ -80,7 +80,7 @@
     <div class="flex {position === 'top-left' ? 'justify-start' : 'justify-end'}">
       {#if (formulas && formulas.length >= 1) || (legendItems && legendItems.length >= 1)}
         <div
-          class="mr-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
+          class="mx-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
           {#each formulas as formula (formula.id)}
             {#key formula.stringFormula}
