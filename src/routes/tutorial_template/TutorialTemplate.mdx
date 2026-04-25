@@ -145,6 +145,8 @@ yAxisLabel = 'f(x)';
 The `appletObjects` array can contain the following types of objects:
 
 - `FunctionFragment`: a function graph (defined by JavaScript function or LaTeX string).
+- `ImplicitFunctionFragment`: an implicit curve defined by `f(x, y) = 0` or by an equation string such as `'x^2 + y^2 = 4'`.
+- `ParameterizedFunctionFragment`: a parametric curve defined by `x(t)` and `y(t)`.
 - `AsymptoteFragment`: a vertical or horizontal dashed asymptote.
 - `ObliqueAsymptoteFragment`: an oblique asymptote (defined by JavaScript function or LaTeX string).
 
@@ -230,7 +232,76 @@ new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.orange, {
 
 Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
 
-### 2) `AsymptoteFragment`
+### 2) `ImplicitFunctionFragment`
+
+Constructor:
+
+```ts
+new ImplicitFunctionFragment(func, color, options?)
+```
+
+- `func`: either `(x: number, y: number) => number` or a LaTeX string.
+- For LaTeX strings, you can pass either a zero-form expression (for example `'x^2 + y^2 - 4'`) or an equation (for example `'x^2 + y^2 = 4'`).
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `domain`: `{ xMin?: number; xMax?: number }`, limits x-range used during rendering.
+  - `isDashed`: `true` or (by default) `false`.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for legend and points.
+  - `legendText`: text to display in the legend.
+
+Examples:
+
+```ts
+// Implicit circle
+new ImplicitFunctionFragment('x^2 + y^2 = 4', PrimeColor.darkGreen, {
+  legendText: 'x^2 + y^2 = 4'
+});
+
+// Implicit hyperbola from JS function
+new ImplicitFunctionFragment((x: number, y: number) => x * x - y * y - 1, PrimeColor.blue, {
+  domain: { xMin: -3, xMax: 3 },
+  isDashed: true
+});
+```
+
+### 3) `ParameterizedFunctionFragment`
+
+Constructor:
+
+```ts
+new ParameterizedFunctionFragment(xFunc, yFunc, color, options?)
+```
+
+- `xFunc`: either `(t: number) => number` or a LaTeX string for $x(t)$.
+- `yFunc`: either `(t: number) => number` or a LaTeX string for $y(t)$.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `tStart`: start value for parameter `t`.
+  - `tEnd`: end value for parameter `t`.
+  - `isDashed`: `true` or (by default) `false`.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`.
+  - `legendText`: text to display in the legend.
+
+Examples:
+
+```ts
+// Unit circle, traversed once
+new ParameterizedFunctionFragment('cos(t)', 'sin(t)', PrimeColor.orange, {
+  tStart: 0,
+  tEnd: 2 * Math.PI,
+  legendText: 'unit circle'
+});
+
+// Spiral from JS functions
+new ParameterizedFunctionFragment(
+  (t: number) => t * Math.cos(t),
+  (t: number) => t * Math.sin(t),
+  PrimeColor.raspberry,
+  { tStart: 0, tEnd: 4 * Math.PI }
+);
+```
+
+### 4) `AsymptoteFragment`
 
 Constructor:
 
@@ -249,7 +320,7 @@ new AsymptoteFragment(1, 'vertical', PrimeColor.cyan);
 new AsymptoteFragment(-2, 'horizontal', PrimeColor.black);
 ```
 
-### 3) `ObliqueAsymptoteFragment`
+### 5) `ObliqueAsymptoteFragment`
 
 Constructor:
 
@@ -334,7 +405,7 @@ const appletObjects: AppletObject[] = [
 
 1. **Copy the template applet** and keep the structure.
 
-2. **Edit only `appletObjects`** — Add `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` objects that represent your mathematical content.
+2. **Edit only `appletObjects`** — Add `FunctionFragment`, `ImplicitFunctionFragment`, `ParameterizedFunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` objects that represent your mathematical content.
 
 3. **Combine features freely** — You can mix and match:
    - Function domains (partial or full)
