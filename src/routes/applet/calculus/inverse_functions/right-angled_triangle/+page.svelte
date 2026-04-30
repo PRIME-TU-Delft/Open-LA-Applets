@@ -60,7 +60,8 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbers: true,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
     scaleX: 1,
