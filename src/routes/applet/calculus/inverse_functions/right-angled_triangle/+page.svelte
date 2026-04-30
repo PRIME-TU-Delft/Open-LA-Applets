@@ -1,25 +1,34 @@
 <script lang="ts">
   /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
+    Angle,
     AppletObject,
     AsymptoteFragment,
+    Circle,
     FunctionFragment,
-    ObliqueAsymptoteFragment
+    ImplicitFunctionFragment,
+    LineFragment,
+    ObliqueAsymptoteFragment,
+    ParameterizedFunctionFragment,
+    Point,
+    Polygon,
+    Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Axis from '$lib/d3/Axis.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
+  let axis: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -34,67 +43,66 @@
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
-  const scaleX = 1;
-  const scaleY = 10;
+  cameraZoom = 2.0;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-12, 1), // bottom-left
-    new Vector2(1, 1), // top-right
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(4, 7), // top-right
     0.5 // margin
   );
+
+  // ####
+  // AXIS
+  // ####
+  // here are the default settings for axis, you can change them
+
+  // (remove if unnecessary)
+  axis = {
+    showOrigin: true,
+    showAxisNumbers: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    scaleX: 1,
+    scaleY: 1,
+    skipX: 0,
+    skipY: 0
+  };
 
   // ###########
   // AXIS LABELS
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 'x';
-  yAxisLabel = 'y';
+  xAxisLabel = '';
+  yAxisLabel = '';
 
   // ##############
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(
-      scaleY + '\\frac{\\sin(' + 1 / scaleX + 'x)}{(' + 1 / scaleX + 'x)^2}',
-      PrimeColor.blue,
-      {
-        isDashed: false,
-        shape: 'circle',
-        legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
-      }
+    new Polygon([new Vector2(0, 0), new Vector2(4, 0), new Vector2(4, 3)], PrimeColor.blue),
+    new Angle(new Vector2(4, 0), Math.PI / 2, Math.PI, PrimeColor.raspberry, { distance: 0.5 }),
+    new Angle(new Vector2(0, 0), 0, Math.atan2(3, 4), PrimeColor.darkGreen, { distance: 0.75 }),
+    new Text(
+      'y',
+      new Vector2(Math.cos((0.75 * Math.atan2(3, 4)) / 2), 0.75 * Math.sin(Math.atan2(3, 4) / 2)),
+      PrimeColor.darkGreen,
+      { alignX: 'left', alignY: 'bottom' }
     ),
-    new FunctionFragment(scaleY + '\\frac{1}{(' + 1 / scaleX + 'x)^2}', PrimeColor.darkGreen, {
-      isDashed: false,
-      shape: 'circle',
-      legendText: 'f(x)=\\pm\\frac{1}{x^2}'
-    }),
-    new FunctionFragment(scaleY + '\\frac{-1}{(' + 1 / scaleX + 'x)^2}', PrimeColor.darkGreen, {
-      isDashed: false,
-      shape: 'circle'
-    }),
-    new FunctionFragment('0*' + scaleY, PrimeColor.raspberry, {
-      isDashed: true,
-      shape: 'triangle',
-      legendText: 'y=0'
-    })
+    new Text('a', new Vector2(4.15, 1.5), PrimeColor.blue, { alignX: 'left', alignY: 'center' }),
+    new Text('b', new Vector2(2, -0.15), PrimeColor.blue, { alignX: 'center', alignY: 'top' }),
+    new Text('c', new Vector2(2.05, 1.55), PrimeColor.blue, { alignX: 'right', alignY: 'bottom' })
   ];
 </script>
 
 <Canvas2D
-  {initialViewBox}
+  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleX,
-    scaleY
-  }}
-  legendFormulaPosition="top-left"
+  axis={null}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

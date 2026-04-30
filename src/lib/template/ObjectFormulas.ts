@@ -1,11 +1,11 @@
 import { FillType, LegendItem } from '$lib/utils/Legend';
-import { AppletObject, FunctionFragment } from './TemplateAppletObjects';
+import { AbstractFunctionFragment, AppletObject, Point } from './TemplateAppletObjects';
 
 export function getLegend(objects: AppletObject[]): LegendItem[] {
   const legendItems: LegendItem[] = [];
 
   for (const obj of objects) {
-    if (obj instanceof FunctionFragment) {
+    if (obj instanceof AbstractFunctionFragment) {
       if (obj.legendText) {
         legendItems.push(
           new LegendItem(
@@ -38,6 +38,10 @@ export function getLegend(objects: AppletObject[]): LegendItem[] {
         legendItems.push(
           new LegendItem(obj.pointsLegendText.gaps, obj.color, obj.shape, FillType.Border)
         );
+      }
+    } else if (obj instanceof Point) {
+      if (obj.legendText) {
+        legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
       }
     }
   }

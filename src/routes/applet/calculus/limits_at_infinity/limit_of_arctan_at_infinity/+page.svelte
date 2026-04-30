@@ -106,8 +106,11 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={null}
-  position="top-left"
+  axis={{
+    scaleX: factorX,
+    scaleY: factorY
+  }}
+  legendFormulaPosition="top-left"
   splitCanvas2DProps={{
     labels: { xLabel: 'x', yLabel: 'y' },
     axis: {
@@ -117,7 +120,6 @@
   }}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={factorX} scaleY={factorY} />
   <InfiniteLine2D
     direction={new Vector2(1, 0)}
     origin={new Vector2(0, factorY * (Math.PI / 2 - controls[0]))}

@@ -1,10 +1,18 @@
 <script lang="ts">
   // For ease of creating the template applets
   import {
+    Angle,
     AppletObject,
     AsymptoteFragment,
+    Circle,
     FunctionFragment,
-    ObliqueAsymptoteFragment
+    ImplicitFunctionFragment,
+    LineFragment,
+    ObliqueAsymptoteFragment,
+    ParameterizedFunctionFragment,
+    Point,
+    Polygon,
+    Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -13,12 +21,14 @@
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
+  let axis: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -42,6 +52,23 @@
     0.5 // margin
   );
 
+  // ####
+  // AXIS
+  // ####
+  // here are the default settings for axis, you can change them
+
+  // (remove if unnecessary)
+  axis = {
+    showOrigin: true,
+    showAxisNumbers: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    scaleX: 1,
+    scaleY: 1,
+    skipX: 0,
+    skipY: 0
+  };
+
   // ###########
   // AXIS LABELS
   // ###########
@@ -54,6 +81,35 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
+    new Text('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
+      alignX: 'center'
+    }),
+    Angle.fromVectors(
+      new Vector2(6, 1),
+      new Vector2(1, 1),
+      new Vector2(0, 1),
+      PrimeColor.raspberry,
+      {
+        latex: '\\alpha'
+      }
+    ),
+    new Point(new Vector2(5, 3), PrimeColor.yellow, {
+      latex: '\\sigma',
+      legendText: '\\sigma',
+      shape: 'square'
+    }),
+    new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
+      domain: {
+        xMin: 1,
+        xMax: 1.3
+      }
+    }),
+    new ParameterizedFunctionFragment('\\sin{t}', '\\cos{t}', PrimeColor.cyan, {
+      tStart: 0,
+      tEnd: Math.PI,
+      legendText: 'parameterized',
+      shape: 'triangle'
+    }).addGaps(new Vector2(0, -1)),
     new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
       domain: { xMin: -1, xMax: 2.14 }
     }),
@@ -75,7 +131,19 @@
     }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
     new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
-    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange)
+    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
+    new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
+      latex: 'test'
+    }),
+    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, {
+      isDashed: true,
+      radiiShown: [Math.PI / 4, Math.PI / 2, (5 / 4) * Math.PI],
+      radiusLatex: 'r'
+    }),
+    new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
+      sideLatex: ['a', 'b', 'c'],
+      verticesLatex: ['A', 'B', 'C']
+    })
   ];
 </script>
 
@@ -85,6 +153,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  {axis}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

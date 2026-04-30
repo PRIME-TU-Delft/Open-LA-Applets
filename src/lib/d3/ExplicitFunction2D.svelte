@@ -292,6 +292,6 @@
     stroke={color ?? 'black'}
     stroke-width={width ?? LINE_WIDTH}
     fill="none"
-    stroke-dasharray="{width} {isDashed ? width : 0}"
+    stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
   />
 {/each}

@@ -36,7 +36,7 @@
     enablePan = true,
     draggables = [],
     defaultLeftDivision,
-    position = 'top-right'
+    legendFormulaPosition = 'top-right'
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -97,6 +97,7 @@
   - axis: AxisProps - The properties of the axis.
   - labels: LabelProps - Axis labels and their positions.
   - enablePan: boolean - Whether the pan is enabled. 
+  - legendFormulaPosition - Position of the legend/formula panel
 
 @description
   A component that renders a 2D canvas with draggables and formulas.
@@ -123,7 +124,7 @@
   {formulas}
   {splitFormulas}
   {splitLegendItems}
-  {position}
+  {legendFormulaPosition}
 >
   {#snippet sceneChildren(width: number, height: number)}
     {@const defaultCanvasWidth = width / 2}

@@ -47,6 +47,23 @@ This is the complete page component for the template applet (`src/routes/applet/
     0.5 // margin
   );
 
+  // ####
+  // AXIS
+  // ####
+  // here are the default settings for axis, you can change them
+
+  // (remove if unnecessary)
+  axis = {
+    showOrigin: true,
+    showAxisNumbers: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    scaleX: 1,
+    scaleY: 1,
+    skipX: 0,
+    skipY: 0
+  };
+
   // ###########
   // AXIS LABELS
   // ###########
@@ -76,6 +93,7 @@ This is the complete page component for the template applet (`src/routes/applet/
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  {axis}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
@@ -125,6 +143,34 @@ Notes:
 
 - Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
 
+## Optional: configure axis
+
+You can configure axis display by setting the `axis` object.
+
+```ts
+axis = {
+  showOrigin: true,
+  showAxisNumbers: true,
+  logarithmicX: false,
+  logarithmicY: false,
+  scaleX: 1,
+  scaleY: 1,
+  skipX: 0,
+  skipY: 0
+};
+```
+
+What each option does:
+
+- `showOrigin`: show or hide the origin marker.
+- `showAxisNumbers`: show or hide axis tick labels.
+- `logarithmicX`: use logarithmic scaling on x-axis.
+- `logarithmicY`: use logarithmic scaling on y-axis.
+- `scaleX`: multiply x-axis values by this factor.
+- `scaleY`: multiply y-axis values by this factor.
+- `skipX`: skip every n-th x-axis label/tick according to axis renderer settings.
+- `skipY`: skip every n-th y-axis label/tick according to axis renderer settings.
+
 ## Optional: set axis labels
 
 If you want to also have dynamic axis labels in your applet, you can define them in the `axis labels` part. They are rendered with LaTeX.
@@ -145,8 +191,16 @@ yAxisLabel = 'f(x)';
 The `appletObjects` array can contain the following types of objects:
 
 - `FunctionFragment`: a function graph (defined by JavaScript function or LaTeX string).
+- `ImplicitFunctionFragment`: an implicit curve defined by `f(x, y) = 0` or by an equation string such as `'x^2 + y^2 = 4'`.
+- `ParameterizedFunctionFragment`: a parametric curve defined by `x(t)` and `y(t)`.
 - `AsymptoteFragment`: a vertical or horizontal dashed asymptote.
 - `ObliqueAsymptoteFragment`: an oblique asymptote (defined by JavaScript function or LaTeX string).
+- `Text`: a standalone LaTeX label.
+- `Point`: a single point with optional shape and label.
+- `LineFragment`: a finite line segment with optional label and (optional) manual label alignment.
+- `Circle`: a circle, optionally with drawn radii and radius labels.
+- `Angle`: an angle arc (or right-angle marker).
+- `Polygon`: a polygon with optional fill, side labels, and vertex labels.
 
 ### 1) `FunctionFragment`
 
@@ -230,7 +284,76 @@ new FunctionFragment((x: number) => x ** 2 - 1, PrimeColor.orange, {
 
 Use JavaScript functions when you want logic (for example piecewise behavior), and use LaTeX strings when you want concise math notation.
 
-### 2) `AsymptoteFragment`
+### 2) `ImplicitFunctionFragment`
+
+Constructor:
+
+```ts
+new ImplicitFunctionFragment(func, color, options?)
+```
+
+- `func`: either `(x: number, y: number) => number` or a LaTeX string.
+- For LaTeX strings, you can pass either a zero-form expression (for example `'x^2 + y^2 - 4'`) or an equation (for example `'x^2 + y^2 = 4'`).
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `domain`: `{ xMin?: number; xMax?: number }`, limits x-range used during rendering.
+  - `isDashed`: `true` or (by default) `false`.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for legend and points.
+  - `legendText`: text to display in the legend.
+
+Examples:
+
+```ts
+// Implicit circle
+new ImplicitFunctionFragment('x^2 + y^2 = 4', PrimeColor.darkGreen, {
+  legendText: 'x^2 + y^2 = 4'
+});
+
+// Implicit hyperbola from JS function
+new ImplicitFunctionFragment((x: number, y: number) => x * x - y * y - 1, PrimeColor.blue, {
+  domain: { xMin: -3, xMax: 3 },
+  isDashed: true
+});
+```
+
+### 3) `ParameterizedFunctionFragment`
+
+Constructor:
+
+```ts
+new ParameterizedFunctionFragment(xFunc, yFunc, color, options?)
+```
+
+- `xFunc`: either `(t: number) => number` or a LaTeX string for $x(t)$.
+- `yFunc`: either `(t: number) => number` or a LaTeX string for $y(t)$.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `tStart`: start value for parameter `t`.
+  - `tEnd`: end value for parameter `t`.
+  - `isDashed`: `true` or (by default) `false`.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`.
+  - `legendText`: text to display in the legend.
+
+Examples:
+
+```ts
+// Unit circle, traversed once
+new ParameterizedFunctionFragment('cos(t)', 'sin(t)', PrimeColor.orange, {
+  tStart: 0,
+  tEnd: 2 * Math.PI,
+  legendText: 'unit circle'
+});
+
+// Spiral from JS functions
+new ParameterizedFunctionFragment(
+  (t: number) => t * Math.cos(t),
+  (t: number) => t * Math.sin(t),
+  PrimeColor.raspberry,
+  { tStart: 0, tEnd: 4 * Math.PI }
+);
+```
+
+### 4) `AsymptoteFragment`
 
 Constructor:
 
@@ -249,7 +372,7 @@ new AsymptoteFragment(1, 'vertical', PrimeColor.cyan);
 new AsymptoteFragment(-2, 'horizontal', PrimeColor.black);
 ```
 
-### 3) `ObliqueAsymptoteFragment`
+### 5) `ObliqueAsymptoteFragment`
 
 Constructor:
 
@@ -266,6 +389,189 @@ Example:
 ```ts
 new ObliqueAsymptoteFragment('x+2', PrimeColor.orange, "asymptote");
 new ObliqueAsymptoteFragment('-x', PrimeColor.raspberry);
+```
+
+### 6) `Text`
+
+Constructor:
+
+```ts
+new Text(latex, position, color, alignment?);
+```
+
+- `latex`: LaTeX string to display.
+- `position`: `Vector2` position.
+- `color`: one of the `PrimeColor` values.
+- `alignment` (optional): `{ alignX?: 'left' | 'right' | 'center'; alignY?: 'top' | 'bottom' | 'center' }`.
+
+Examples:
+
+```ts
+new Text('x_0', new Vector2(1.2, -0.5), PrimeColor.black);
+new Text('A', new Vector2(-2, 3), PrimeColor.blue, { alignX: 'right', alignY: 'bottom' });
+```
+
+### 7) `Point`
+
+Constructor:
+
+```ts
+new Point(position, color, options?);
+```
+
+- `position`: `Vector2` position.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `shape`: `'circle' | 'square' | 'triangle'`
+  - `latex`: optional point label
+  - `legendText`: optional legend text
+
+Examples:
+
+```ts
+new Point(new Vector2(1, 2), PrimeColor.orange);
+new Point(new Vector2(-1, 0), PrimeColor.raspberry, { shape: 'square', latex: 'P' });
+```
+
+### 8) `LineFragment`
+
+Constructor:
+
+```ts
+new LineFragment(start, end, color, options?);
+```
+
+- `start`, `end`: `Vector2` endpoints.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `latex`: label near the midpoint
+  - `isDashed`: dashed segment
+  - `latexAlign`: optional manual alignment override
+
+Automatic label behavior:
+
+- If `latexAlign` is not provided, alignment is chosen from the midpoint direction (left/right and top/bottom).
+- For near-vertical lines, an extra small horizontal offset is automatically added so the label does not sit on the line.
+- If you provide `latexAlign.alignX` and/or `latexAlign.alignY`, your provided values override auto-alignment for those axes.
+
+Examples:
+
+```ts
+new LineFragment(new Vector2(-2, -1), new Vector2(2, 1), PrimeColor.darkGreen, {
+  latex: 'd'
+});
+
+new LineFragment(new Vector2(1, -2), new Vector2(1, 2), PrimeColor.blue, {
+  latex: 'x=1',
+  latexAlign: { alignX: 'left', alignY: 'center' }
+});
+```
+
+### 9) `Circle`
+
+Constructor:
+
+```ts
+new Circle(origin, radius, color, options?);
+```
+
+- `origin`: `Vector2` center.
+- `radius`: radius value.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `isDashed`: dashed circle
+  - `radiiShown`: list of angles (in radians) where radius segments are drawn
+  - `radiusLatex`: label drawn for each shown radius
+
+Example:
+
+```ts
+new Circle(new Vector2(0, 0), 2, PrimeColor.cyan, {
+  radiiShown: [0, Math.PI / 2, Math.PI],
+  radiusLatex: 'r'
+});
+```
+
+### 10) `Angle`
+
+Constructor:
+
+```ts
+new Angle(position, startAngle, endAngle, color, options?);
+```
+
+- `position`: origin point (`Vector2`).
+- `startAngle`, `endAngle`: radians.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `hasHead`: draw arrow head on arc
+  - `distance`: distance of arc from origin
+  - `latex`: LaTeX label shown near the angle arc
+
+Alternative constructor:
+
+```ts
+Angle.fromVectors(position, v1, v2, color, options?)
+```
+
+Example:
+
+```ts
+new Angle(new Vector2(0, 0), 0, Math.PI / 3, PrimeColor.orange, {
+  hasHead: true,
+  latex: '\\alpha'
+});
+```
+
+Using `fromVectors` with a label:
+
+```ts
+Angle.fromVectors(
+  new Vector2(0, 0),
+  new Vector2(1, 0),
+  new Vector2(1, 1),
+  PrimeColor.blue,
+  { latex: '\\theta' }
+);
+```
+
+### 11) `Polygon`
+
+Constructor:
+
+```ts
+new Polygon(points, color, options?);
+```
+
+- `points`: `Vector2[]` in clockwise or anti-clockwise order.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional):
+  - `fillStyle`: `'full' | 'dashed' | 'none'`
+  - `sideLatex`: labels for polygon sides (in edge order)
+  - `verticesLatex`: labels for polygon vertices (in point order)
+
+Automatic side-label behavior:
+
+- Side labels are auto-aligned from each side midpoint direction.
+- For near-vertical sides, a small horizontal offset is added automatically to avoid overlap with the side.
+
+Automatic vertex-label behavior:
+
+- Vertex labels are auto-aligned using the vector from polygon center to the vertex.
+- Labels are nudged slightly outward along that same center-to-vertex direction.
+
+Example:
+
+```ts
+new Polygon(
+  [new Vector2(-2, -1), new Vector2(0, 2), new Vector2(2, -1)],
+  PrimeColor.raspberry,
+  {
+    fillStyle: 'none',
+    sideLatex: ['a', 'b', 'c'],
+    verticesLatex: ['A', 'B', 'C']
+  }
+);
 ```
 
 ## Step-by-step: create an example applet
@@ -334,7 +640,7 @@ const appletObjects: AppletObject[] = [
 
 1. **Copy the template applet** and keep the structure.
 
-2. **Edit only `appletObjects`** — Add `FunctionFragment`, `AsymptoteFragment`, and `ObliqueAsymptoteFragment` objects that represent your mathematical content.
+2. **Edit only `appletObjects`** — Add objects that represent your mathematical content.
 
 3. **Combine features freely** — You can mix and match:
    - Function domains (partial or full)
