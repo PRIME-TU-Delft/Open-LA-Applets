@@ -4,6 +4,7 @@
   import { qr } from '@svelte-put/qr/svg';
   import { error } from '@sveltejs/kit';
 
+  // eslint-disable-next-line local-rules/require-url-params-info
   const queryParams = new URLSearchParams(page.url.searchParams);
   const showQR = queryParams.get('qr') === 'true';
 
