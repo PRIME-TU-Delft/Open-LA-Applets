@@ -1,5 +1,5 @@
 <script lang="ts">
-    // For ease of creating the template applets
+  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
   import {
     Angle,
     AppletObject,
@@ -43,7 +43,7 @@
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
+  cameraZoom = 2.0;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -81,79 +81,28 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new Text('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
-      alignX: 'center'
-    }),
-    Angle.fromVectors(
-      new Vector2(6, 1),
-      new Vector2(1, 1),
-      new Vector2(0, 1),
-      PrimeColor.raspberry,
-      {
-        latex: '\\alpha'
-      }
+    new Polygon([new Vector2(0, 0), new Vector2(4, 0), new Vector2(4, 3)], PrimeColor.blue),
+    new Angle(new Vector2(4, 0), Math.PI / 2, Math.PI, PrimeColor.raspberry, { distance: 0.5 }),
+    new Angle(new Vector2(0, 0), 0, Math.atan2(3, 4), PrimeColor.darkGreen, { distance: 0.75 }),
+    new Text(
+      'y',
+      new Vector2(Math.cos((0.75 * Math.atan2(3, 4)) / 2), 0.75 * Math.sin(Math.atan2(3, 4) / 2)),
+      PrimeColor.darkGreen,
+      { alignX: 'left', alignY: 'bottom' }
     ),
-    new Point(new Vector2(5, 3), PrimeColor.yellow, {
-      latex: '\\sigma',
-      legendText: '\\sigma',
-      shape: 'square'
-    }),
-    new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
-      domain: {
-        xMin: 1,
-        xMax: 1.3
-      }
-    }),
-    new ParameterizedFunctionFragment('\\sin{t}', '\\cos{t}', PrimeColor.cyan, {
-      tStart: 0,
-      tEnd: Math.PI,
-      legendText: 'parameterized',
-      shape: 'triangle'
-    }).addGaps(new Vector2(0, -1)),
-    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
-      domain: { xMin: -1, xMax: 2.14 }
-    }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, {
-      domain: { xMax: 3 },
-      isDashed: false,
-      shape: 'square',
-      legendText: 'f(x)'
-    })
-      .addGaps(new Vector2(-1, 0), toLatexText('gaps'))
-      .addIncludedPoints(new Vector2(3, 4), toLatexText('included')),
-    new FunctionFragment('e^x', PrimeColor.darkGreen, {
-      integral: {
-        xLeft: -4,
-        xRight: -1.25,
-        isDashed: true
-      },
-      legendText: 'g(x)'
-    }),
-    new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
-    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
-    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
-    new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
-      latex: 'test'
-    }),
-    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, {
-      isDashed: true,
-      radiiShown: [Math.PI / 4, Math.PI / 2, (5 / 4) * Math.PI],
-      radiusLatex: 'r'
-    }),
-    new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
-      sideLatex: ['a', 'b', 'c'],
-      verticesLatex: ['A', 'B', 'C']
-    })
+    new Text('a', new Vector2(4.15, 1.5), PrimeColor.blue, { alignX: 'left', alignY: 'center' }),
+    new Text('b', new Vector2(2, -0.15), PrimeColor.blue, { alignX: 'center', alignY: 'top' }),
+    new Text('c', new Vector2(2.05, 1.55), PrimeColor.blue, { alignX: 'right', alignY: 'bottom' })
   ];
 </script>
 
 <Canvas2D
-  {initialViewBox}
+  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  {axis}
+  axis={null}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
