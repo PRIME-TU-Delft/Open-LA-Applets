@@ -4,7 +4,6 @@
   import { qr } from '@svelte-put/qr/svg';
   import { error } from '@sveltejs/kit';
 
-   
   const queryParams = new URLSearchParams(page.url.searchParams);
   const showQR = queryParams.get('qr') === 'true';
 
