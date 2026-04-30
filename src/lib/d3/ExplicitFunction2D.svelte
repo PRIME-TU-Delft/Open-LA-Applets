@@ -15,7 +15,7 @@
     showArrows?: boolean;
     width?: number;
     isDashed?: boolean;
-    integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed' };
+    integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed'; color?: string };
     maxSlope?: number;
     curvatureThreshold?: number;
     maxDepth?: number;
@@ -238,9 +238,12 @@
     return paths.length > 0 ? paths.join(' ') : null;
   });
 
-  const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);
+  const integralColor = $derived(integral?.color ?? color);
+  const patternId = $derived(`dashed-pattern-${integralColor.replace(/[^a-zA-Z0-9]/g, '')}`);
   const integralFillValue = $derived(
-    integral?.fillStyle === 'dashed' ? `url(#${patternId})` : color + PrimeColor.opacity(0.5)
+    integral?.fillStyle === 'dashed'
+      ? `url(#${patternId})`
+      : integralColor + PrimeColor.opacity(0.5)
   );
 </script>
 
@@ -253,7 +256,7 @@
       height="0.08"
       patternTransform="rotate(45)"
     >
-      <line x1="0" y1="0" x2="0" y2="0.08" stroke={color} stroke-width="0.03" />
+      <line x1="0" y1="0" x2="0" y2="0.08" stroke={integralColor} stroke-width="0.03" />
     </pattern>
   </defs>
 {/if}

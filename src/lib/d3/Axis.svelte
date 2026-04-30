@@ -2,13 +2,20 @@
   export type AxisProps = {
     length?: number;
     showOrigin?: boolean;
-    showAxisNumbers?: boolean;
+    showAxisNumbersX?: boolean;
+    showAxisNumbersY?: boolean;
+    showGridLinesX?: boolean;
+    showGridLinesY?: boolean;
+    showAxisX?: boolean;
+    showAxisY?: boolean;
     logarithmicX?: boolean;
     logarithmicY?: boolean;
     scaleX?: number;
     scaleY?: number;
     skipX?: number;
     skipY?: number;
+    additionalTicksX?: number[];
+    additionalTicksY?: number[];
   };
 </script>
 
@@ -21,13 +28,20 @@
   let {
     length = GRID_SIZE_2D,
     showOrigin = true,
-    showAxisNumbers = true,
+    showAxisNumbersX = true,
+    showAxisNumbersY = true,
     logarithmicX = false,
     logarithmicY = false,
     scaleX = 1,
     scaleY = 1,
     skipX = 0,
-    skipY = 0
+    skipY = 0,
+    showGridLinesX = true,
+    showGridLinesY = true,
+    showAxisX = true,
+    showAxisY = true,
+    additionalTicksX = [],
+    additionalTicksY = []
   }: AxisProps = $props();
 
   // Generate indeces for the grid lines from -length to length including 0
@@ -50,8 +64,9 @@
     return `10^{${index}}`;
   }
 
-  function showSkippedTick(index: number, skip: number) {
+  function showSkippedTick(index: number, skip: number, additionalTicks: number[]) {
     if (index === 0) return true;
+    if (additionalTicks.includes(index)) return true;
     return Math.abs(index) % (skip + 1) === 0;
   }
 
@@ -61,21 +76,75 @@
 <g>
   {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
-    <line
-      x1={index}
-      y1={-length}
-      x2={index}
-      y2={length}
-      stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
-      stroke-width={stokeWidth(index, logarithmicX)}
-    />
+    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, additionalTicksX)}
+      <line
+        x1={index}
+        y1={-length}
+        x2={index}
+        y2={length}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicX)}
+      />
+    {/if}
+    {#if index == 0 && showAxisY}
+      <!-- Y axis -->
+      <line
+        x1={index}
+        y1={-length}
+        x2={index}
+        y2={length}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicX)}
+      />
+    {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipX)}
+    {#if showSkippedTick(index, skipX, additionalTicksX)}
       <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbers && showSkippedTick(index, skipX)}
+    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, additionalTicksX)}
+      <!-- X axis number labels -->
+      {#if index <= length && index >= -length}
+        <Latex2D
+          latex={getTickText(index / scaleX, 'x')}
+          position={new Vector2(index, -0.15)}
+          alignX="center"
+        />
+      {/if}
+    {/if}
+  {/each}
+
+  {#each additionalTicksX as index, idx (idx)}
+    <!-- Grid Lines -->
+    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, additionalTicksX)}
+      <line
+        x1={index}
+        y1={-length}
+        x2={index}
+        y2={length}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicX)}
+      />
+    {/if}
+    {#if index == 0 && showAxisY}
+      <!-- Y axis -->
+      <line
+        x1={index}
+        y1={-length}
+        x2={index}
+        y2={length}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicX)}
+      />
+    {/if}
+
+    <!-- Tick marks -->
+    {#if showSkippedTick(index, skipX, additionalTicksX)}
+      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+    {/if}
+
+    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, additionalTicksX)}
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
@@ -89,21 +158,76 @@
 
   {#each axisIndicesY as index, idx (idx)}
     <!-- Grid Lines -->
-    <line
-      x1={-length}
-      y1={index}
-      x2={length}
-      y2={index}
-      stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
-      stroke-width={stokeWidth(index, logarithmicY)}
-    />
+    {#if index != 0 && showGridLinesY}
+      <line
+        x1={-length}
+        y1={index}
+        x2={length}
+        y2={index}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicY)}
+      />
+    {/if}
+    {#if index == 0 && showAxisX}
+      <!-- X axis -->
+      <line
+        x1={-length}
+        y1={index}
+        x2={length}
+        y2={index}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicY)}
+      />
+    {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipY)}
+    {#if showSkippedTick(index, skipY, additionalTicksY)}
       <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbers && showSkippedTick(index, skipY)}
+    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, additionalTicksY)}
+      <!-- Y axis number labels -->
+      {#if index <= length && index >= -length}
+        <Latex2D
+          latex={getTickText(index / scaleY, 'y')}
+          position={new Vector2(yAxisTextX, index)}
+          alignX={logarithmicY ? 'left' : 'right'}
+          alignY="center"
+        />
+      {/if}
+    {/if}
+  {/each}
+
+  {#each additionalTicksY as index, idx (idx)}
+    <!-- Grid Lines -->
+    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, additionalTicksY)}
+      <line
+        x1={-length}
+        y1={index}
+        x2={length}
+        y2={index}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicY)}
+      />
+    {/if}
+    {#if index == 0 && showAxisX}
+      <!-- X axis -->
+      <line
+        x1={-length}
+        y1={index}
+        x2={length}
+        y2={index}
+        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke-width={stokeWidth(index, logarithmicY)}
+      />
+    {/if}
+
+    <!-- Tick marks -->
+    {#if showSkippedTick(index, skipY, additionalTicksY)}
+      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+    {/if}
+
+    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, additionalTicksY)}
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D

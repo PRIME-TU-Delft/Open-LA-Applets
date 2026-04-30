@@ -8,6 +8,7 @@
     hideHead?: boolean;
     isDashed?: boolean;
     noNormalise?: boolean;
+    headLength?: number;
     children?: Snippet<[Vector2]>;
   };
 </script>
@@ -30,6 +31,7 @@
     hideHead = false,
     isDashed = false,
     noNormalise: noNormalise = false,
+    headLength,
     children
   }: VectorProps = $props();
 
@@ -39,7 +41,7 @@
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
 
   const endPoint = $derived(origin.clone().add(normalizedDirection.clone().multiplyScalar(length))); // store with tip of the vector
-  const coneHeight = $derived(hideHead ? 0 : CONE_HEIGHT);
+  const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
   const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
 
@@ -58,6 +60,7 @@
 - hideHead: boolean - Whether to hide the head of the vector.
 - isDashed: boolean - Whether the vector is dashed or not.
 - noNormalise: boolean - Whether to normalize the vector or not.
+- headLength: number - The length of the head of the vector. If not specified, it will be determined by the radius.
 - children: Snippet<[Vector2]> - The children to render at the end of the vector. Slot prop is the endPoint of the vector.
 
 @example
