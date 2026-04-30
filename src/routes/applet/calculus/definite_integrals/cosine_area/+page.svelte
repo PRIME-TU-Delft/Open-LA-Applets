@@ -80,7 +80,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  position="top-right"
+  legendFormulaPosition="top-right"
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />

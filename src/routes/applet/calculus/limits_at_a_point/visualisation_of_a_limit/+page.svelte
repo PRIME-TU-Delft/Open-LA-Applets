@@ -90,7 +90,8 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   axis={{
-    showAxisNumbers: false
+    showAxisNumbersX: false,
+    showAxisNumbersY: false
   }}
 >
   <TemplateComponent objects={appletObjects} />

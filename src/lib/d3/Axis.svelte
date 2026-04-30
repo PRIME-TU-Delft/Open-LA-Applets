@@ -158,7 +158,7 @@
 
   {#each axisIndicesY as index, idx (idx)}
     <!-- Grid Lines -->
-    {#if index != 0 && showGridLinesY}
+    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, additionalTicksY)}
       <line
         x1={-length}
         y1={index}

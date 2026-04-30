@@ -1,5 +1,6 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
+  // For ease of creating the template applets
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   import {
     Angle,
     AppletObject,
@@ -22,6 +23,9 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import { number } from 'svelte-i18n';
+  import type { float } from 'three/tsl';
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -42,21 +46,27 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 2.0;
+  cameraPosition = new Vector2(6, 4);
+  cameraZoom = 0.85;
 
   // (remove if unnecessary)
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-2, -2), // bottom-left
+    new Vector2(12, 12), // top-right
     0.5 // margin
   );
+  /* eslint-disable @typescript-eslint/no-unused-vars */
 
   // ####
   // AXIS
   // ####
   // here are the default settings for axis, you can change them
 
+  let sX: number | undefined;
+  let sY: number | undefined;
+  sX = 1 / 2;
+  sY = 1 / 2;
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
@@ -64,8 +74,8 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: 1,
-    scaleY: 1,
+    scaleX: sX,
+    scaleY: sY,
     skipX: 0,
     skipY: 0
   };
@@ -75,28 +85,59 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = '';
-  yAxisLabel = '';
+  xAxisLabel = 't';
+  yAxisLabel = 'v';
 
   // ##############
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new Polygon([new Vector2(0, 0), new Vector2(4, 0), new Vector2(4, 3)], PrimeColor.blue),
-    new Angle(new Vector2(4, 0), Math.PI / 2, Math.PI, PrimeColor.raspberry, { distance: 0.5 }),
-    new Angle(new Vector2(0, 0), 0, Math.atan2(3, 4), PrimeColor.darkGreen, { distance: 0.75 }),
-    new Text(
-      'y',
-      new Vector2(Math.cos((0.75 * Math.atan2(3, 4)) / 2), 0.75 * Math.sin(Math.atan2(3, 4) / 2)),
-      PrimeColor.darkGreen,
-      { alignX: 'left', alignY: 'bottom' }
-    ),
-    new Text('x', new Vector2(4.15, 1.5), PrimeColor.blue, { alignX: 'left', alignY: 'center' }),
-    new Text('\\sqrt{1-x^2}', new Vector2(2, -0.15), PrimeColor.blue, {
-      alignX: 'center',
-      alignY: 'top'
+    new FunctionFragment('5*' + sY, PrimeColor.blue, {
+      domain: { xMin: 0, xMax: 5 * sX },
+      legendText: 'v(t)',
+      integral: {
+        xLeft: 0,
+        xRight: 5 * sX,
+        isDashed: false,
+        color: PrimeColor.darkGreen
+      }
     }),
-    new Text('1', new Vector2(2.05, 1.55), PrimeColor.blue, { alignX: 'right', alignY: 'bottom' })
+    new FunctionFragment('15*' + sY, PrimeColor.blue, {
+      domain: { xMin: 5 * sX, xMax: 7 * sX },
+      integral: {
+        xLeft: 5 * sX,
+        xRight: 7 * sX,
+        isDashed: false,
+        color: PrimeColor.raspberry
+      }
+    }),
+    new FunctionFragment('6*' + sY, PrimeColor.blue, {
+      domain: { xMin: 7 * sX, xMax: 11 * sX },
+      integral: {
+        xLeft: 7 * sX,
+        xRight: 11 * sX,
+        isDashed: false,
+        color: PrimeColor.yellow
+      }
+    }),
+    new FunctionFragment('20*' + sY, PrimeColor.blue, {
+      domain: { xMin: 11 * sX, xMax: 14 * sX },
+      integral: {
+        xLeft: 11 * sX,
+        xRight: 14 * sX,
+        isDashed: false,
+        color: PrimeColor.cyan
+      }
+    }),
+    new FunctionFragment('4*' + sY, PrimeColor.blue, {
+      domain: { xMin: 14 * sX, xMax: 20 * sX },
+      integral: {
+        xLeft: 14 * sX,
+        xRight: 20 * sX,
+        isDashed: false,
+        color: PrimeColor.orange
+      }
+    })
   ];
 </script>
 
@@ -106,7 +147,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={null}
+  {axis}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
