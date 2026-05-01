@@ -53,7 +53,7 @@
     "puppeteer-cluster": "^0.25.0",
     "storybook": "^10.3.6",
     "svelte": "^5.55.5",
-    "svelte-check": "^4.4.6",
+    "svelte-check": "^4.4.7",
     "tailwind-merge": "^3.5.0",
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.2.4",

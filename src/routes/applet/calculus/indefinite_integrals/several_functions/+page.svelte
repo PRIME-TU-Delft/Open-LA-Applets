@@ -23,6 +23,9 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import Legend from '$lib/stories/Legend.stories.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -44,19 +47,15 @@
 
   // (remove if unnecessary)
   cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
-    0.5 // margin
-  );
+  cameraZoom = 1.25;
 
   // ####
   // AXIS
   // ####
   // here are the default settings for axis, you can change them
+
+  const scaleX = 1;
+  const scaleY = 1 / 2;
 
   // (remove if unnecessary)
   axis = {
@@ -65,8 +64,8 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: 1,
-    scaleY: 1,
+    scaleX: scaleX,
+    scaleY: scaleY,
     skipX: 0,
     skipY: 0
   };
@@ -76,86 +75,82 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = '';
-  yAxisLabel = '';
+  xAxisLabel = 'x';
+  yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS
   // ##############
+  let a = -1;
+  let b = 2;
+  let c = 4;
+  let scale = 0.2;
+  let C = -4;
+  let shift = 1;
+  let G = (x: number) =>
+    scale *
+    (x ** 4 / 4 -
+      ((a + b + c) / 3) * x ** 3 +
+      ((a * b + b * c + c * a) / 2) * x ** 2 -
+      a * b * c * x);
+  let K = (x: number) => G(x) + C;
+  let F = (x: number) => -G(x);
+  let H = (x: number) => G(x - shift);
+  let L = (x: number) => G(x - shift) + C;
+
+  const toggleControls = Controls.addToggle(true, 'F', PrimeColor.blue)
+    .addToggle(true, 'G', PrimeColor.orange)
+    .addToggle(true, 'H', PrimeColor.darkGreen)
+    .addToggle(true, 'K', PrimeColor.raspberry)
+    .addToggle(true, 'L', PrimeColor.yellow);
+
   const appletObjects: AppletObject[] = [
-    new Text('\\pi', new Vector2(3, 3.14), PrimeColor.orange, {
-      alignX: 'center'
+    new FunctionFragment('', PrimeColor.blue, {
+      legendText: `y=F(x)`,
+      isDashed: false
     }),
-    Angle.fromVectors(
-      new Vector2(6, 1),
-      new Vector2(1, 1),
-      new Vector2(0, 1),
-      PrimeColor.raspberry,
-      {
-        latex: '\\alpha'
-      }
-    ),
-    new Point(new Vector2(5, 3), PrimeColor.yellow, {
-      latex: '\\sigma',
-      legendText: '\\sigma',
-      shape: 'square'
+    new FunctionFragment('', PrimeColor.orange, {
+      legendText: `y=G(x)`,
+      isDashed: false
     }),
-    new ImplicitFunctionFragment('x^2 + y^2 = 3', PrimeColor.orange, {
-      domain: {
-        xMin: 1,
-        xMax: 1.3
-      }
+    new FunctionFragment('', PrimeColor.darkGreen, {
+      legendText: `y=H(x)`,
+      isDashed: false
     }),
-    new ParameterizedFunctionFragment('\\sin{t}', '\\cos{t}', PrimeColor.cyan, {
-      tStart: 0,
-      tEnd: Math.PI,
-      legendText: 'parameterized',
-      shape: 'triangle'
-    }).addGaps(new Vector2(0, -1)),
-    new FunctionFragment((x: number) => x ** 2 - 2, PrimeColor.raspberry, {
-      domain: { xMin: -1, xMax: 2.14 }
+    new FunctionFragment('', PrimeColor.raspberry, {
+      legendText: `y=K(x)`,
+      isDashed: false
     }),
-    new FunctionFragment('\\frac{{x+1}^2}{x+1}', PrimeColor.blue, {
-      domain: { xMax: 3 },
-      isDashed: false,
-      shape: 'square',
-      legendText: 'f(x)'
-    })
-      .addGaps(new Vector2(-1, 0), toLatexText('gaps'))
-      .addIncludedPoints(new Vector2(3, 4), toLatexText('included')),
-    new FunctionFragment('e^x', PrimeColor.darkGreen, {
-      integral: {
-        xLeft: -4,
-        xRight: -1.25,
-        isDashed: true
-      },
-      legendText: 'g(x)'
-    }),
-    new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
-    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
-    new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
-    new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
-      latex: 'test'
-    }),
-    new Circle(new Vector2(-5, 3), 3, PrimeColor.blue, {
-      isDashed: true,
-      radiiShown: [Math.PI / 4, Math.PI / 2, (5 / 4) * Math.PI],
-      radiusLatex: 'r'
-    }),
-    new Polygon([new Vector2(-5, 3), new Vector2(-2, 3), new Vector2(-5, 0)], PrimeColor.cyan, {
-      sideLatex: ['a', 'b', 'c'],
-      verticesLatex: ['A', 'B', 'C']
+    new FunctionFragment('', PrimeColor.yellow, {
+      legendText: `y=L(x)`,
+      isDashed: false
     })
   ];
 </script>
 
 <Canvas2D
-  {initialViewBox}
+  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
+  controls={toggleControls}
 >
   <TemplateComponent objects={appletObjects} />
+  {#if toggleControls[0]}
+    <ExplicitFunction2D func={(x: number) => F(x / scaleX) * scaleY} color={PrimeColor.blue} />
+  {/if}
+  {#if toggleControls[1]}
+    <ExplicitFunction2D func={(x: number) => G(x / scaleX) * scaleY} color={PrimeColor.orange} />
+  {/if}
+  {#if toggleControls[2]}
+    <ExplicitFunction2D func={(x: number) => H(x / scaleX) * scaleY} color={PrimeColor.darkGreen} />
+  {/if}
+  {#if toggleControls[3]}
+    <ExplicitFunction2D func={(x: number) => K(x / scaleX) * scaleY} color={PrimeColor.raspberry} />
+  {/if}
+  {#if toggleControls[4]}
+    <ExplicitFunction2D func={(x: number) => L(x / scaleX) * scaleY} color={PrimeColor.yellow} />
+  {/if}
 </Canvas2D>
