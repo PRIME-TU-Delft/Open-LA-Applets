@@ -14,7 +14,11 @@
       rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
     )
     .filter(
-      (s) => s !== '[...applet]/static' && !s.startsWith('calculus/') && !s.startsWith('other/') && !s.startsWith('pts/')
+      (s) =>
+        s !== '[...applet]/static' &&
+        !s.startsWith('calculus/') &&
+        !s.startsWith('other/') &&
+        !s.startsWith('pts/')
     );
 
   let { data }: PageProps = $props();
