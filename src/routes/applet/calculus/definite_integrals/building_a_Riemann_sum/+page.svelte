@@ -216,7 +216,7 @@
     headLength={0.15}
     color={PrimeColor.black}
   />
-  <Latex2D latex={'x_{n}^*'} position={new Vector2(midPoints[N - 1], -1.15)} alignX="center" />
+  <Latex2D latex={'x_{N}^*'} position={new Vector2(midPoints[N - 1], -1.15)} alignX="center" />
   <Vector2D
     origin={new Vector2(midPoints[pick], -1)}
     direction={new Vector2(0, 1)}
@@ -225,7 +225,7 @@
     headLength={0.15}
     color={PrimeColor.black}
   />
-  <Latex2D latex={'x_{i}^*'} position={new Vector2(midPoints[pick], -1.15)} alignX="center" />
+  <Latex2D latex={'x_{n}^*'} position={new Vector2(midPoints[pick], -1.15)} alignX="center" />
   {#each midPoints as obj, i (i)}
     <Line2D
       start={new Vector2(obj, 0)}
@@ -234,10 +234,18 @@
       isDashed={true}
     />
   {/each}
-  <Latex2D latex={'x_{i-1}'} position={new Vector2(leftPoints[pick], -0.15)} alignX="center" />
+  <Latex2D
+    latex={'x_{n-1}'}
+    position={new Vector2(leftPoints[pick] - 0.15, -0.15)}
+    alignX="center"
+  />
 
-  <Latex2D latex={'x_{i}'} position={new Vector2(leftPoints[pick + 1], -0.15)} alignX="center" />
+  <Latex2D latex={'x_{n}'} position={new Vector2(leftPoints[pick + 1], -0.15)} alignX="center" />
 
-  <Latex2D latex={'x_{n-1}'} position={new Vector2(rightPoints[N - 2], -0.15)} alignX="center" />
+  <Latex2D
+    latex={'x_{N-1}'}
+    position={new Vector2(rightPoints[N - 2] - 0.15, -0.15)}
+    alignX="center"
+  />
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

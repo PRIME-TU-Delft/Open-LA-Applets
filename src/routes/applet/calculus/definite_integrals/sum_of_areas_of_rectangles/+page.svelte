@@ -19,6 +19,7 @@
   import { midpoint } from '@cortex-js/compute-engine/interval';
   import Latex from '$lib/components/Latex.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Latex3D from '$lib/threlte/Latex3D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -70,9 +71,13 @@
   let midPoints = [];
 
   for (let i = 0; i <= N - 1; i++) {
-    leftPoints.push(a + i * ((b - a) / N));
-    rightPoints.push(a + (i + 1) * ((b - a) / N));
-    midPoints.push(a + (i + 0.5) * ((b - a) / N));
+    leftPoints.push(a + (i * (b - a)) / N);
+    rightPoints.push(a + ((i + 1) * (b - a)) / N);
+    if (i == pick) {
+      midPoints.push(a + ((i + 0.5) * (b - a)) / N);
+    } else {
+      midPoints.push((0.25 + Math.random() / 2) * (rightPoints[i] - leftPoints[i]) + leftPoints[i]);
+    }
   }
 
   // ##############
@@ -120,7 +125,16 @@
     showGridLinesY={false}
     skipX={100}
     skipY={100}
-    additionalTicksX={[a, b, midPoints[pick]]}
+    additionalTicksX={[
+      a,
+      b,
+      leftPoints[pick],
+      leftPoints[pick + 1],
+      leftPoints[1],
+      leftPoints[2],
+      leftPoints[3],
+      leftPoints[N - 1]
+    ]}
   />
   <Line2D
     start={new Vector2(leftPoints[pick], func(midPoints[pick]))}
@@ -149,7 +163,7 @@
     headLength={0.1}
   />
   <Latex2D
-    latex={'\\Delta x_{i}'}
+    latex="\Delta x_n"
     position={new Vector2(midPoints[pick], func(midPoints[pick]) + 1)}
     alignX="center"
     alignY="bottom"
@@ -174,6 +188,30 @@
     color={PrimeColor.raspberry}
     isDashed={true}
   />
-  <Latex2D latex={'x_{i}^{*}'} position={new Vector2(midPoints[pick], -0.15)} alignX="center" />
+  <Vector2D
+    origin={new Vector2(midPoints[pick], -1)}
+    direction={new Vector2(0, 1)}
+    length={1}
+    radius={0.01}
+    headLength={0.15}
+    color={PrimeColor.black}
+  />
+  <Latex2D latex={'x_{n}^*'} position={new Vector2(midPoints[pick], -1.15)} alignX="center" />
+  {#each [midPoints[pick]] as obj, i (i)}
+    <Line2D
+      start={new Vector2(obj, 0)}
+      end={new Vector2(obj, func(obj))}
+      color={PrimeColor.raspberry}
+      isDashed={true}
+    />
+  {/each}
+  <Latex2D
+    latex={'x_{n-1}'}
+    position={new Vector2(leftPoints[pick] - 0.15, -0.15)}
+    alignX="center"
+  />
+
+  <Latex2D latex={'x_{n}'} position={new Vector2(leftPoints[pick + 1], -0.15)} alignX="center" />
+
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
