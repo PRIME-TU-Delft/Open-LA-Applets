@@ -1,7 +1,6 @@
 FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 
-RUN npm install --global corepack@latest
 RUN corepack enable
 RUN corepack prepare pnpm@latest --activate
 
