@@ -1,4 +1,6 @@
 allowBuilds:
+  es5-ext: true
+  esbuild: true
   puppeteer: false
 minimumReleaseAgeExclude:
   - esbuild@0.24.3
