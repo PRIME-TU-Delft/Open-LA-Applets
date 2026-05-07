@@ -56,14 +56,15 @@ export class Camera2D {
   constructor(
     public x: number,
     public y: number,
-    public zoom: number
+    public zoom: number,
+    public defaultZoom: number
   ) {}
 
-  static new(transform: Transform2D, enablePan = false) {
+  static new(transform: Transform2D, defaultZoom: number, enablePan = false) {
     if (enablePan) {
-      return new Camera2D(transform.x, transform.y, transform.k);
+      return new Camera2D(transform.x, transform.y, transform.k, defaultZoom);
     }
-    return new Camera2D(0, 0, transform.k);
+    return new Camera2D(0, 0, transform.k, defaultZoom);
   }
 
   static toCoordinateSystem(num: number, width: number) {
