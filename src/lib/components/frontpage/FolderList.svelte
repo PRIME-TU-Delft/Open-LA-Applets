@@ -5,6 +5,7 @@
   import Switch from '../ui/switch/switch.svelte';
   import * as Tooltip from '$lib/components/ui/tooltip/index.js';
   import type { BookAppletUsage } from '$lib/server/bookApplets';
+  import { onMount } from 'svelte';
 
   let showUnused: boolean = $state(false);
 
@@ -56,6 +57,12 @@
         {} as Record<string, File[]>
       )
   );
+
+  onMount(() => {
+    if (Object.keys(folders).length === 0 && !showUnused) {
+      showUnused = true;
+    }
+  });
 </script>
 
 <div class="mx-auto my-10 flex flex-col">
