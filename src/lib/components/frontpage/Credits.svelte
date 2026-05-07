@@ -8,7 +8,7 @@
     { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
     { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
     { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
-    { name: "Dennis den Ouden-van der Horst", title: "Book Author/Developer" },
+    { name: 'Dennis den Ouden-van der Horst', title: 'Book Author/Developer' },
     { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];
 
