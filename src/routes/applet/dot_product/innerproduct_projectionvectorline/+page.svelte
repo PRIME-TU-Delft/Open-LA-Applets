@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { orthogonalProjection } from '$lib/utils/MathLib';

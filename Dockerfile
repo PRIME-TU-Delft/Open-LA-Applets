@@ -2,7 +2,7 @@ FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 
 RUN corepack enable
-RUN corepack prepare pnpm@latest --activate
+RUN corepack prepare pnpm@11 --activate
 
 # Install Chromium dependencies for Puppeteer on Debian
 RUN apt-get update && apt-get install -y \
@@ -36,6 +36,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 COPY .gitignore .gitignore
 COPY package.json package.json
 COPY pnpm-lock.yaml pnpm-lock.yaml
+COPY pnpm-workspace.yaml pnpm-workspace.yaml
 RUN pnpm install --frozen-lockfile
 
 COPY . .

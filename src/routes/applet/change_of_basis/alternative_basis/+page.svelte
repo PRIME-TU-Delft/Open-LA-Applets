@@ -1,4 +1,7 @@
 <script>
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { Vector2 } from 'three';
   import TransformedAxis from './TransformedAxis.svelte';

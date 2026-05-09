@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { onDestroy, type Snippet } from 'svelte';
+  import { onDestroy, setContext, type Snippet } from 'svelte';
   import { Vector2 } from 'three';
 
   export type Canvas2DProps = {
@@ -65,10 +65,14 @@
 
   let currentCameraTransform = $state<Transform2D>();
 
+  // svelte-ignore state_referenced_locally
+  setContext('is-split', isSplit);
+  setContext('default-zoom', cameraZoom);
+
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
-    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, enablePan);
-    else cameraState.camera2D = Camera2D.new(transform2d, enablePan);
+    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, cameraZoom, enablePan);
+    else cameraState.camera2D = Camera2D.new(transform2d, cameraZoom, enablePan);
   }
 
   const debouncedUpdate2DCamera = debounce(update2DCamera, 100);
@@ -133,8 +137,8 @@
       .call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
 
     // Update camera
-    if (isSplit) cameraState.splitCamera2D = new Camera2D(0, 0, 1);
-    else cameraState.camera2D = new Camera2D(0, 0, 1);
+    if (isSplit) cameraState.splitCamera2D = new Camera2D(0, 0, 1, cameraZoom);
+    else cameraState.camera2D = new Camera2D(0, 0, 1, cameraZoom);
   }
 
   $effect(() => {

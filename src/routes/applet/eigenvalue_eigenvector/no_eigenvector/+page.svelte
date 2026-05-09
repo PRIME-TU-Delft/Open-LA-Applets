@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   /* eslint-disable no-restricted-syntax */
   import { Controls } from '$lib/controls/Controls';
   import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';

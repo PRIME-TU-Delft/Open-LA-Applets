@@ -4,7 +4,15 @@
 
   const { Story } = defineMeta({
     title: '2D Components/Latex2D',
-    component: Latex2D
+    component: Latex2D,
+    parameters: {
+      docs: {
+        description: {
+          component:
+            'Latex2D is a component that is scaled down/up depending on the default zoom of the applet. This is done to ensure that the size of text is consistent across different applets on initial load. This behaviour can be disabled by setting the context `dontScaleWithDefaultZoom` to true.'
+        }
+      }
+    }
   });
 </script>
 
@@ -22,7 +30,6 @@
   </div>
 {/snippet}
 
-<!-- Dynamic snippet should be disabled for this story -->
 <Story name="With color" args={{ latex: 'E=mc^2', color: PrimeColor.raspberry }} {template} />
 
 <!-- A LaTeX text with different content defined -->
@@ -62,6 +69,21 @@
         <Latex2D latex="Text 3" alignX="right" position={new Vector2(0, 3)} />
         <Latex2D latex="Text 4" alignY="center" position={new Vector2(1, 0)} />
         <Latex2D latex="Text 5" alignY="bottom" position={new Vector2(3, 0)} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
+<!-- This story showcases how the latex text scales with default zoom. This behaviour can be disabled by setting the `dontScaleWithDefaultZoom` context to true. The left scene has default cameraZoom 2 and the left one has the default value 1, but the text size on both is consistent. -->
+<Story name="Scaling with default zoom">
+  {#snippet template()}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D cameraZoom={2} splitCanvas2DProps={{ cameraZoom: 1 }}>
+        <Latex2D latex="Text 1" alignX="center" position={new Vector2(2, 1)} />
+
+        {#snippet splitCanvas2DChildren()}
+          <Latex2D latex="Text 2" alignX="center" position={new Vector2(2, 1)} />
+        {/snippet}
       </Canvas2D>
     </div>
   {/snippet}

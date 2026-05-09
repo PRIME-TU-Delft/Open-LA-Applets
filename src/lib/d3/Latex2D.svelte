@@ -15,6 +15,8 @@
 
 <script lang="ts">
   import Latex from '$lib/components/Latex.svelte';
+  import { cameraState } from '$lib/stores/camera.svelte';
+  import { getContext } from 'svelte';
   import { Vector2 } from 'three';
 
   let {
@@ -47,13 +49,30 @@
   });
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  const defZoom = $derived.by(() => {
+    const contextZoom = getContext('default-zoom') as number | undefined;
+    if (contextZoom !== undefined) return contextZoom;
+
+    if (getContext('is-split')) return cameraState.splitCamera2D?.defaultZoom || 1;
+
+    return cameraState.camera2D?.defaultZoom || 1;
+  });
+
+  const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+
+  const scale = $derived.by(() => {
+    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+
+    return (0.02 * fontSize) / defZoom;
+  });
 </script>
 
 <g
   class={dimOnHover ? 'latex-dim' : ''}
   transform="translate({position.x + offset.x + extendedOffset.x}, {position.y +
     offset.y +
-    extendedOffset.y}) rotate({rotation}) scale({0.02 * fontSize},{-0.02 * fontSize})"
+    extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
