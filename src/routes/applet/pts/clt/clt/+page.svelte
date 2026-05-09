@@ -3,6 +3,7 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { clamp } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
@@ -125,8 +126,18 @@
         return [];
     }
   });
+
+  const formulas = $derived.by(() => {
+    const expected_value = 0; // TODO
+    const variance = 0; // TOOD
+
+    return new Formulas(
+      new Formula('E[X] &= \\$1').addAutoParam(expected_value),
+      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(variance)
+    ).align();
+  });
 </script>
 
-<Canvas2D {controls} {draggables}>
+<Canvas2D {controls} {draggables} {formulas}>
   <Vector2D />
 </Canvas2D>
