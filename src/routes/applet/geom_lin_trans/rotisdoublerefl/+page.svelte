@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Controls } from '$lib/controls/Controls';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';

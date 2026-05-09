@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { MathVector3 } from '$lib/utils/MathVector';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';

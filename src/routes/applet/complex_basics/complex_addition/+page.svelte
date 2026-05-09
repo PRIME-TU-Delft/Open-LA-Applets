@@ -1,4 +1,7 @@
 <script>
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';

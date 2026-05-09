@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   /* eslint-disable no-restricted-syntax */
   import { Controls } from '$lib/controls/Controls';
   import Angle2D from '$lib/d3/Angle2D.svelte';

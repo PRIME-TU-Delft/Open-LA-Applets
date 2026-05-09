@@ -10,6 +10,9 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
 
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   const draggables = [
     new Draggable(new Vector2(-3, 4), PrimeColor.darkGreen, 'v', Draggable.snapToGrid)
   ];

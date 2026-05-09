@@ -1,4 +1,7 @@
 <script>
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Controls } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { MathVector3 } from '$lib/utils/MathVector';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Axis3D from '$lib/threlte/Axis3D.svelte';

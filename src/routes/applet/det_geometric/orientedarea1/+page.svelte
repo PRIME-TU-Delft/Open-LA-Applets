@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { MathVector3 } from '$lib/utils/MathVector';
   import Arc2D from '$lib/d3/Arc2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
