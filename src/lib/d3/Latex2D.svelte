@@ -56,7 +56,13 @@
     return cameraState.camera2D?.defaultZoom || 1;
   });
 
-  const scale = $derived((0.02 * fontSize) / defZoom);
+  const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+
+  const scale = $derived.by(() => {
+    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+
+    return (0.02 * fontSize) / defZoom;
+  });
 </script>
 
 <g
