@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Controls } from '$lib/controls/Controls';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';

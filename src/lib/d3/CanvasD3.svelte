@@ -65,9 +65,9 @@
 
   let currentCameraTransform = $state<Transform2D>();
 
-  $effect(() => {
-    setContext('is-split', isSplit);
-  });
+  // svelte-ignore state_referenced_locally
+  setContext('is-split', isSplit);
+  setContext('default-zoom', cameraZoom);
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera

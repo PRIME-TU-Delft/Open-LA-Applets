@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  setContext('dontScaleWithDefaultZoom', true);
+
   import { Formula } from '$lib/utils/Formulas';
   import { round, snapPointToLine } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';

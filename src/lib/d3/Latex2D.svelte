@@ -51,12 +51,21 @@
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const defZoom = $derived.by(() => {
+    const contextZoom = getContext('default-zoom') as number | undefined;
+    if (contextZoom !== undefined) return contextZoom;
+
     if (getContext('is-split')) return cameraState.splitCamera2D?.defaultZoom || 1;
 
     return cameraState.camera2D?.defaultZoom || 1;
   });
 
-  const scale = $derived((0.02 * fontSize) / defZoom);
+  const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+
+  const scale = $derived.by(() => {
+    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+
+    return (0.02 * fontSize) / defZoom;
+  });
 </script>
 
 <g
