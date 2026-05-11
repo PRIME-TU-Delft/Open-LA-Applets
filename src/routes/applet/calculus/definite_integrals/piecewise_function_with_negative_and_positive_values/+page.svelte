@@ -61,7 +61,7 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment('1', PrimeColor.blue, {
       legendText:
-        'f(x)=\\left\\{\\begin{array}{ll}1, &-2\\leq x<0\\\\2x-4, & 0\\leq x<2,\\\\-x+4, & 2\\leq x\\leq 5,\\end{array}\\right.',
+        'f(x)=\\left\\{\\begin{array}{rl}1, &-2\\leq x<0,\\\\2x-4, & \\phantom{-}0\\leq x<2,\\\\-x+4, & \\phantom{-}2\\leq x\\leq 5,\\end{array}\\right.',
       domain: { xMin: -2, xMax: 0 },
       integral: {
         xLeft: -2,
