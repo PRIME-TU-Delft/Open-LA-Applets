@@ -34,15 +34,15 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
+  cameraPosition = new Vector2(-0, 1);
+  cameraZoom = 1.8;
 
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-4, -1), // bottom-left
-    new Vector2(4, 8), // top-right
-    0.5 // margin
-  );
+  // // (remove if unnecessary)
+  // initialViewBox = new ViewBox(
+  //   new Vector2(-5, -1), // bottom-left
+  //   new Vector2(4, 4), // top-right
+  //   0.5 // margin
+  // );
 
   // ###########
   // AXIS LABELS
@@ -52,8 +52,8 @@
   xAxisLabel = 'x';
   yAxisLabel = 'y';
 
-  let sX = 2;
-  let sY = 3;
+  let sX = 1;
+  let sY = 1;
 
   // ##############
   // APPLET OBJECTS
@@ -101,7 +101,7 @@
 </script>
 
 <Canvas2D
-  {initialViewBox}
+  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
@@ -110,5 +110,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={sX} skipX={1} scaleY={sY} skipY={2} />
+  <Axis scaleX={sX} skipX={0} scaleY={sY} skipY={0} />
 </Canvas2D>

@@ -56,12 +56,12 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('2(x/2)+1', PrimeColor.blue, {
+    new FunctionFragment('2(x)+1', PrimeColor.blue, {
       legendText: 'f(x)=2x+1',
-      domain: { xMin: 0, xMax: 6 },
+      domain: { xMin: 0, xMax: 3 },
       integral: {
         xLeft: 0,
-        xRight: 6,
+        xRight: 3,
         legendText: '\\int_{0}^{3} f(x) dx',
         isDashed: false,
         color: PrimeColor.darkGreen,
@@ -81,5 +81,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={2} skipX={1} />
+  <Axis scaleX={1} skipX={0} />
 </Canvas2D>
