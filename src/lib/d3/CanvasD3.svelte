@@ -13,6 +13,8 @@
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
+    scaleX?: number;
+    scaleY?: number;
     children: Snippet;
   };
 </script>
@@ -53,6 +55,8 @@
     isSplit = false,
     axis,
     labels,
+    scaleX = 1,
+    scaleY = 1,
     children
   }: Canvas2DProps = $props();
 
@@ -68,6 +72,8 @@
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
+  // svelte-ignore state_referenced_locally
+  setContext('scale2D', { x: scaleX, y: scaleY });
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera

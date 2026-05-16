@@ -10,8 +10,6 @@
     showAxisY?: boolean;
     logarithmicX?: boolean;
     logarithmicY?: boolean;
-    scaleX?: number;
-    scaleY?: number;
     skipX?: number;
     skipY?: number;
     additionalTicksX?: number[];
@@ -24,6 +22,7 @@
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex2D from './Latex2D.svelte';
+  import { getContext } from 'svelte';
 
   let {
     length = GRID_SIZE_2D,
@@ -32,8 +31,6 @@
     showAxisNumbersY = true,
     logarithmicX = false,
     logarithmicY = false,
-    scaleX = 1,
-    scaleY = 1,
     skipX = 0,
     skipY = 0,
     showGridLinesX = true,
@@ -43,6 +40,10 @@
     additionalTicksX = [],
     additionalTicksY = []
   }: AxisProps = $props();
+
+  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const scaleX = scale2D?.x ?? 1;
+  const scaleY = scale2D?.y ?? 1;
 
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
