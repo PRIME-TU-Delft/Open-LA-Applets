@@ -57,13 +57,13 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('(5+15\\cdot e^{-x})*' + sY, PrimeColor.blue, {
+    new FunctionFragment('5+15\\cdot e^{-x}', PrimeColor.blue, {
       domain: { xMin: 0 },
       isDashed: false,
       shape: 'circle',
       legendText: 'T(t)=5+15e^{-t}'
-    }).addIncludedPoints(new Vector2(0, 20 * sY)),
-    new FunctionFragment('5*' + sY, PrimeColor.darkGreen, {
+    }).addIncludedPoints(new Vector2(0, 20)),
+    new FunctionFragment('5', PrimeColor.darkGreen, {
       domain: { xMin: 0 },
       isDashed: true,
       shape: 'triangle',
@@ -78,9 +78,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleY: sY
-  }}
+  scaleY={sY}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

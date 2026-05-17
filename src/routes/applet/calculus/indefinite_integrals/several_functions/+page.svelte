@@ -64,8 +64,6 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: scaleX,
-    scaleY: scaleY,
     skipX: 0,
     skipY: 0
   };
@@ -134,23 +132,25 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  {scaleX}
+  {scaleY}
   {axis}
   controls={toggleControls}
 >
   <TemplateComponent objects={appletObjects} />
   {#if toggleControls[0]}
-    <ExplicitFunction2D func={(x: number) => F(x / scaleX) * scaleY} color={PrimeColor.blue} />
+    <ExplicitFunction2D func={F} color={PrimeColor.blue} />
   {/if}
   {#if toggleControls[1]}
-    <ExplicitFunction2D func={(x: number) => G(x / scaleX) * scaleY} color={PrimeColor.orange} />
+    <ExplicitFunction2D func={G} color={PrimeColor.orange} />
   {/if}
   {#if toggleControls[2]}
-    <ExplicitFunction2D func={(x: number) => H(x / scaleX) * scaleY} color={PrimeColor.darkGreen} />
+    <ExplicitFunction2D func={H} color={PrimeColor.darkGreen} />
   {/if}
   {#if toggleControls[3]}
-    <ExplicitFunction2D func={(x: number) => K(x / scaleX) * scaleY} color={PrimeColor.raspberry} />
+    <ExplicitFunction2D func={K} color={PrimeColor.raspberry} />
   {/if}
   {#if toggleControls[4]}
-    <ExplicitFunction2D func={(x: number) => L(x / scaleX) * scaleY} color={PrimeColor.yellow} />
+    <ExplicitFunction2D func={L} color={PrimeColor.yellow} />
   {/if}
 </Canvas2D>

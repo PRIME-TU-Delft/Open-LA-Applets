@@ -72,11 +72,11 @@
   });
   let N = $derived(
     controls[0] >= Math.PI
-      ? -30 / factorX
-      : Math.min(Math.max(-30 / factorX, Math.tan(Math.PI / 2 - controls[0])), 30 / factorX) // To make sure the vertical lines don't intersect with the function
+      ? -30
+      : Math.min(Math.max(-30, Math.tan(Math.PI / 2 - controls[0])), 30) // To make sure the vertical lines don't intersect with the function
   );
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(factorY + '*\\arctan(x*' + 1 / factorX + ')', PrimeColor.blue, {
+    new FunctionFragment('\\arctan(x)', PrimeColor.blue, {
       isDashed: false,
       shape: 'square',
       legendText: '\\arctan(x)'
@@ -106,29 +106,25 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleX: factorX,
-    scaleY: factorY
-  }}
+  scaleX={factorX}
+  scaleY={factorY}
   legendFormulaPosition="top-left"
   splitCanvas2DProps={{
     labels: { xLabel: 'x', yLabel: 'y' },
-    axis: {
-      scaleX: factorY,
-      scaleY: factorX
-    }
+    scaleX: factorY,
+    scaleY: factorX
   }}
 >
   <TemplateComponent objects={appletObjects} />
   <InfiniteLine2D
     direction={new Vector2(1, 0)}
-    origin={new Vector2(0, factorY * (Math.PI / 2 - controls[0]))}
+    origin={new Vector2(0, Math.PI / 2 - controls[0])}
     color={PrimeColor.orange}
     isDashed={true}
   />
   <InfiniteLine2D
     direction={new Vector2(0, 1)}
-    origin={new Vector2(N * factorX, 0)}
+    origin={new Vector2(N, 0)}
     color={PrimeColor.darkGreen}
     isDashed={true}
   />
@@ -136,21 +132,21 @@
   {#snippet splitCanvas2DChildren()}
     <InfiniteLine2D
       direction={new Vector2(0, 1)}
-      origin={new Vector2(factorY * (Math.PI / 2 - controls[0]), 0)}
+      origin={new Vector2(Math.PI / 2 - controls[0], 0)}
       color={PrimeColor.orange}
       isDashed={true}
     />
     <InfiniteLine2D
       direction={new Vector2(1, 0)}
-      origin={new Vector2(0, N * factorX)}
+      origin={new Vector2(0, N)}
       color={PrimeColor.darkGreen}
       isDashed={true}
     />
     <ExplicitFunction2D
-      func={(x: number) => Math.tan(x / factorY) * factorX}
+      func={(x: number) => Math.tan(x)}
       color={PrimeColor.black}
-      xMin={(-Math.PI / 2) * factorY}
-      xMax={(Math.PI / 2) * factorY}
+      xMin={-Math.PI / 2}
+      xMax={Math.PI / 2}
     />
   {/snippet}
 </Canvas2D>

@@ -59,7 +59,7 @@
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment(
-      scaleY + '\\frac{4+\\frac{1}{' + 1 / scaleX + ' x}}{2-\\frac{3}{(' + 1 / scaleX + ' x)^2}}',
+      '\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}',
       PrimeColor.blue,
       {
         isDashed: false,
@@ -67,7 +67,7 @@
         legendText: 'f(x)=\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}'
       }
     ).addGaps(new Vector2(0, 0)),
-    new FunctionFragment('2*' + scaleY, PrimeColor.darkGreen, {
+    new FunctionFragment('2', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
       legendText: 'y=2'
@@ -77,8 +77,8 @@
       shape: 'triangle',
       legendText: 'x=\\pm\\sqrt{\\frac{3}{2}}'
     }),
-    new AsymptoteFragment(Math.sqrt(1.5) * scaleX, 'vertical', PrimeColor.raspberry),
-    new AsymptoteFragment(-Math.sqrt(1.5) * scaleX, 'vertical', PrimeColor.raspberry)
+    new AsymptoteFragment(Math.sqrt(1.5), 'vertical', PrimeColor.raspberry),
+    new AsymptoteFragment(-Math.sqrt(1.5), 'vertical', PrimeColor.raspberry)
   ];
 </script>
 
@@ -88,10 +88,8 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleX,
-    scaleY
-  }}
+  {scaleX}
+  {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
