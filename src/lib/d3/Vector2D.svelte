@@ -39,25 +39,27 @@
   const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
   const sx = _scale2D?.x ?? 1;
   const sy = _scale2D?.y ?? 1;
-  // Prevent child components (Line2D, Triangle2D, Point2D) from applying scale again
   setContext('scale2D', { x: 1, y: 1 });
-
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
   const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
 
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
-
-  const endPoint = $derived(
-    scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(length))
-  ); // store with tip of the vector
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
-
   const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
 
-  const coneStartPos = $derived(
-    scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
+  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+  const displayEnd = $derived(
+    origin.clone().add(normalizedDirection.clone().multiplyScalar(length))
+  );
+  const endPoint = $derived(new Vector2(displayEnd.x * sx, displayEnd.y * sy));
+  const displayConeStart = $derived(
+    origin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
+  );
+  const coneStartPos = $derived(new Vector2(displayConeStart.x * sx, displayConeStart.y * sy));
+
+  const worldDirection = $derived(
+    new Vector2(normalizedDirection.x * sx, normalizedDirection.y * sy)
   );
 </script>
 
@@ -79,14 +81,14 @@
 -->
 
 <!-- Line 2D -->
-<Line2D start={origin} end={coneStartPos} {color} width={radius} {isDashed} />
+<Line2D start={scaledOrigin} end={coneStartPos} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
   {#if length == 0}
-    <Point2D position={new Vector2()} {color} />
+    <Point2D position={scaledOrigin} {color} />
   {:else}
     <g
-      transform={`translate(${scaledOrigin.x}, ${scaledOrigin.y}) rotate(${(normalizedDirection.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
+      transform={`translate(${coneStartPos.x}, ${coneStartPos.y}) rotate(${(worldDirection.angle() * 180) / Math.PI + (length < 0 ? 90 : -90)})`}
     >
       <Triangle2D
         points={[

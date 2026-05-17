@@ -26,7 +26,7 @@
   const sy = _scale2D?.y ?? 1;
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
-  const dir = $derived(direction.clone().normalize());
+  const dir = $derived(new Vector2(direction.x * sx, direction.y * sy).normalize());
   const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(scaledOrigin));
   const end = $derived(
     dir
