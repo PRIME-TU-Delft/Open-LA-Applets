@@ -69,6 +69,15 @@
     skipY: 0
   };
 
+  // #####
+  // SCALE
+  // #####
+  // All child components (functions, points, lines, etc.) will auto-scale accordingly.
+  // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
+  // Formulas and positions should be written in display (mathematical) space.
+  let scaleX = 1;
+  let scaleY = 1;
+
   // ###########
   // AXIS LABELS
   // ###########
@@ -154,6 +163,8 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
+  {scaleX}
+  {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
