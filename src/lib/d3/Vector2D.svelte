@@ -21,6 +21,7 @@
   import Line2D from './Line2D.svelte';
   import Point2D from './Point2D.svelte';
   import Triangle2D from './Triangle2D.svelte';
+  import { getContext, setContext } from 'svelte';
 
   let {
     color = PrimeColor.getRandomColor(),
@@ -35,18 +36,26 @@
     children
   }: VectorProps = $props();
 
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  // Prevent child components (Line2D, Triangle2D, Point2D) from applying scale again
+  setContext('scale2D', { x: 1, y: 1 });
+
+  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+
   const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
 
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
 
-  const endPoint = $derived(origin.clone().add(normalizedDirection.clone().multiplyScalar(length))); // store with tip of the vector
+  const endPoint = $derived(scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(length))); // store with tip of the vector
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
   const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
 
   const coneStartPos = $derived(
-    origin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
+    scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
   );
 </script>
 
@@ -75,7 +84,7 @@
     <Point2D position={new Vector2()} {color} />
   {:else}
     <g
-      transform={`translate(${origin.x}, ${origin.y}) rotate(${(normalizedDirection.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
+      transform={`translate(${scaledOrigin.x}, ${scaledOrigin.y}) rotate(${(normalizedDirection.angle() * 180) / Math.PI}) translate(${coneStart - coneHeight / 2}, 0) rotate(${length < 0 ? 90 : -90})`}
     >
       <Triangle2D
         points={[

@@ -19,6 +19,7 @@
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { getContext } from 'svelte';
 
   let {
     position = new Vector2(0, 0),
@@ -33,13 +34,18 @@
     offset = new Vector2(0, 0),
     showTextOnlyOnHover = false
   }: Point2DProps = $props();
+
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  const scaledPos = $derived(new Vector2(position.x * sx, position.y * sy));
 </script>
 
 <g class="point2d" {opacity}>
   {#if shape == 'square'}
     <rect
-      x={position.x - radius}
-      y={position.y - radius}
+      x={scaledPos.x - radius}
+      y={scaledPos.y - radius}
       height={radius * 2}
       width={radius * 2}
       stroke={color}
@@ -50,9 +56,9 @@
     {#if pulse}
       <rect
         class="pulse"
-        style="transform-origin: {position.x}px {position.y}px;"
-        x={position.x - radius}
-        y={position.y - radius}
+        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
+        x={scaledPos.x - radius}
+        y={scaledPos.y - radius}
         height={radius * 2}
         width={radius * 2}
         stroke={color}
@@ -62,8 +68,8 @@
     {/if}
   {:else if shape == 'circle'}
     <circle
-      cx={position.x}
-      cy={position.y}
+      cx={scaledPos.x}
+      cy={scaledPos.y}
       r={radius}
       stroke={color}
       stroke-width={LINE_WIDTH}
@@ -73,9 +79,9 @@
     {#if pulse}
       <circle
         class="pulse"
-        style="transform-origin: {position.x}px {position.y}px;"
-        cx={position.x}
-        cy={position.y}
+        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
+        cx={scaledPos.x}
+        cy={scaledPos.y}
         r={radius}
         stroke={color}
         stroke-width={LINE_WIDTH}
@@ -87,7 +93,7 @@
     {@const dx = (triRadius * Math.sqrt(3)) / 2}
     {@const dy = triRadius / 2}
     <polygon
-      points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+      points={`${scaledPos.x},${scaledPos.y + triRadius} ${scaledPos.x + dx},${scaledPos.y - dy} ${scaledPos.x - dx},${scaledPos.y - dy}`}
       stroke={color}
       stroke-width={LINE_WIDTH}
       fill={fill ?? color}
@@ -96,8 +102,8 @@
     {#if pulse}
       <polygon
         class="pulse"
-        style="transform-origin: {position.x}px {position.y}px;"
-        points={`${position.x},${position.y + triRadius} ${position.x + dx},${position.y - dy} ${position.x - dx},${position.y - dy}`}
+        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
+        points={`${scaledPos.x},${scaledPos.y + triRadius} ${scaledPos.x + dx},${scaledPos.y - dy} ${scaledPos.x - dx},${scaledPos.y - dy}`}
         stroke={color}
         stroke-width={LINE_WIDTH}
         fill={fill ?? color}
@@ -108,10 +114,10 @@
 {#if text}
   {#if showTextOnlyOnHover}
     <g class="hoverText">
-      <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
+      <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
     </g>
   {:else}
-    <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
+    <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
   {/if}
 {/if}
 

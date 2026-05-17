@@ -3,6 +3,7 @@
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
+  import { getContext, setContext } from 'svelte';
 
   export type ParameterizedFunction2DProps = {
     xFunc: (t: number) => number;
@@ -30,6 +31,12 @@
     isDashed = false
   }: ParameterizedFunction2DProps = $props();
 
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  // Prevent Triangle2D children (arrow heads) from applying scale to visual-space coords
+  setContext('scale2D', { x: 1, y: 1 });
+
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const points: Vector2[] = [];
@@ -38,8 +45,8 @@
       let y: number;
 
       try {
-        x = xFunc(t);
-        y = yFunc(t);
+        x = xFunc(t) * sx;
+        y = yFunc(t) * sy;
         if (!isFinite(x)) continue;
         if (!isFinite(y)) continue;
       } catch {
