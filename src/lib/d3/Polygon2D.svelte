@@ -28,7 +28,9 @@
 
   // Points joined by commas [(1,0,), (0,1)] => "1,0 0,1"
   const pointsJoin = $derived(
-    points.map((p) => new Vector2((p.x + offset.x) * sx, (p.y + offset.y) * sy).toArray().join(',')).join(' ')
+    points
+      .map((p) => new Vector2((p.x + offset.x) * sx, (p.y + offset.y) * sy).toArray().join(','))
+      .join(' ')
   );
 
   const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);

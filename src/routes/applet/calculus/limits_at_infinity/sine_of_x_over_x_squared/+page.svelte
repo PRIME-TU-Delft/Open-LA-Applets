@@ -58,15 +58,11 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(
-      '\\frac{\\sin(x)}{x^2}',
-      PrimeColor.blue,
-      {
-        isDashed: false,
-        shape: 'circle',
-        legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
-      }
-    ),
+    new FunctionFragment('\\frac{\\sin(x)}{x^2}', PrimeColor.blue, {
+      isDashed: false,
+      shape: 'circle',
+      legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
+    }),
     new FunctionFragment('0', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',

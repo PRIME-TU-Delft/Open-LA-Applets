@@ -49,7 +49,9 @@
 
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
 
-  const endPoint = $derived(scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(length))); // store with tip of the vector
+  const endPoint = $derived(
+    scaledOrigin.clone().add(normalizedDirection.clone().multiplyScalar(length))
+  ); // store with tip of the vector
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
   const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));

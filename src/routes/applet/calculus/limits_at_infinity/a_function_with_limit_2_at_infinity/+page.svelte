@@ -58,15 +58,11 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(
-      '\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}',
-      PrimeColor.blue,
-      {
-        isDashed: false,
-        shape: 'circle',
-        legendText: 'f(x)=\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}'
-      }
-    ).addGaps(new Vector2(0, 0)),
+    new FunctionFragment('\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}', PrimeColor.blue, {
+      isDashed: false,
+      shape: 'circle',
+      legendText: 'f(x)=\\frac{4+\\frac{1}{x}}{2-\\frac{3}{x^2}}'
+    }).addGaps(new Vector2(0, 0)),
     new FunctionFragment('2', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
