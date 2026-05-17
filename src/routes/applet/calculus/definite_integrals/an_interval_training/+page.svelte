@@ -74,8 +74,6 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: sX,
-    scaleY: sY,
     skipX: 0,
     skipY: 0
   };
@@ -92,48 +90,48 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('5*' + sY, PrimeColor.blue, {
-      domain: { xMin: 0, xMax: 5 * sX },
+    new FunctionFragment('5', PrimeColor.blue, {
+      domain: { xMin: 0, xMax: 5 },
       legendText: 'v(t)',
       integral: {
         xLeft: 0,
-        xRight: 5 * sX,
+        xRight: 5,
         isDashed: false,
         color: PrimeColor.darkGreen
       }
     }),
-    new FunctionFragment('15*' + sY, PrimeColor.blue, {
-      domain: { xMin: 5 * sX, xMax: 7 * sX },
+    new FunctionFragment('15', PrimeColor.blue, {
+      domain: { xMin: 5, xMax: 7 },
       integral: {
-        xLeft: 5 * sX,
-        xRight: 7 * sX,
+        xLeft: 5,
+        xRight: 7,
         isDashed: false,
         color: PrimeColor.raspberry
       }
     }),
-    new FunctionFragment('6*' + sY, PrimeColor.blue, {
-      domain: { xMin: 7 * sX, xMax: 11 * sX },
+    new FunctionFragment('6', PrimeColor.blue, {
+      domain: { xMin: 7, xMax: 11 },
       integral: {
-        xLeft: 7 * sX,
-        xRight: 11 * sX,
+        xLeft: 7,
+        xRight: 11,
         isDashed: false,
         color: PrimeColor.yellow
       }
     }),
-    new FunctionFragment('20*' + sY, PrimeColor.blue, {
-      domain: { xMin: 11 * sX, xMax: 14 * sX },
+    new FunctionFragment('20', PrimeColor.blue, {
+      domain: { xMin: 11, xMax: 14 },
       integral: {
-        xLeft: 11 * sX,
-        xRight: 14 * sX,
+        xLeft: 11,
+        xRight: 14,
         isDashed: false,
         color: PrimeColor.cyan
       }
     }),
-    new FunctionFragment('4*' + sY, PrimeColor.blue, {
-      domain: { xMin: 14 * sX, xMax: 20 * sX },
+    new FunctionFragment('4', PrimeColor.blue, {
+      domain: { xMin: 14, xMax: 20 },
       integral: {
-        xLeft: 14 * sX,
-        xRight: 20 * sX,
+        xLeft: 14,
+        xRight: 20,
         isDashed: false,
         color: PrimeColor.orange
       }
@@ -147,6 +145,8 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  scaleX={sX}
+  scaleY={sY}
   {axis}
 >
   <TemplateComponent objects={appletObjects} />

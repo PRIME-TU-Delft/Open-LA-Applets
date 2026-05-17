@@ -52,9 +52,6 @@
   xAxisLabel = 'x';
   yAxisLabel = 'y';
 
-  let sX = 1;
-  let sY = 1;
-
   // ##############
   // APPLET OBJECTS
   // ##############
@@ -111,5 +108,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={sX} skipX={0} scaleY={sY} skipY={0} />
+  <Axis skipX={0} skipY={0} />
 </Canvas2D>

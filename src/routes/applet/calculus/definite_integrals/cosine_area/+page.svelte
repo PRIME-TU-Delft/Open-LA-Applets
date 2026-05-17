@@ -60,11 +60,11 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(sY + '\\cos(x/' + sX + ')', PrimeColor.blue, {
-      domain: { xMin: 0, xMax: 2 * Math.PI * sX },
+    new FunctionFragment('\\cos(x)', PrimeColor.blue, {
+      domain: { xMin: 0, xMax: 2 * Math.PI },
       integral: {
         xLeft: 0,
-        xRight: 2 * Math.PI * sX,
+        xRight: 2 * Math.PI,
         legendText: '\\int_{0}^{2\\pi} \\cos(x) dx',
         isDashed: false,
         color: PrimeColor.darkGreen,
@@ -81,13 +81,13 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   legendFormulaPosition="top-right"
+  scaleX={sX}
+  scaleY={sY}
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
   <Axis
-    scaleX={sX}
     skipX={100}
-    scaleY={sY}
     skipY={2}
     showAxisNumbersX={false}
     additionalTicksX={[0.5 * Math.PI * sX, Math.PI * sX, 1.5 * Math.PI * sX, 2 * Math.PI * sX]}
