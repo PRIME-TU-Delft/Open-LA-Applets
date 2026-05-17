@@ -5,6 +5,8 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - esbuild@0.24.3
   - cookie@0.7.0
+  - svelte@5.55.7
+  - devalue@5.8.1
 overrides:
   cookie@<0.7.0: ^0.7.0
   esbuild@<=0.24.2: ^0.25.0
