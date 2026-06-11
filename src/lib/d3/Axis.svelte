@@ -65,7 +65,7 @@
   }
 
   function showSkippedTick(index: number, skip: number, additionalTicks: number[]) {
-    if (index === 0) return true;
+    if (index === 0 && skipX != -1) return true;
     if (additionalTicks.includes(index)) return true;
     return Math.abs(index) % (skip + 1) === 0;
   }
