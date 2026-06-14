@@ -58,17 +58,17 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(scaleY + '\\frac{1}{1+e^{-' + 1 / scaleX + 'x}}', PrimeColor.blue, {
+    new FunctionFragment('\\frac{1}{1+e^{-x}}', PrimeColor.blue, {
       isDashed: false,
       shape: 'circle',
       legendText: 'f(x)=\\frac{1}{1+e^{-x}}'
     }),
-    new FunctionFragment('0*' + scaleY, PrimeColor.darkGreen, {
+    new FunctionFragment('0', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
       legendText: 'y=0'
     }),
-    new FunctionFragment('1*' + scaleY, PrimeColor.raspberry, {
+    new FunctionFragment('1', PrimeColor.raspberry, {
       isDashed: true,
       shape: 'triangle',
       legendText: 'y=1'
@@ -82,10 +82,8 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleX,
-    scaleY
-  }}
+  {scaleX}
+  {scaleY}
   legendFormulaPosition="top-left"
 >
   <TemplateComponent objects={appletObjects} />

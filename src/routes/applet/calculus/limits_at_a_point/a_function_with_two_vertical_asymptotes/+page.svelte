@@ -55,7 +55,7 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('\\frac{1}{(x-1)(x-2)^2}/3', PrimeColor.blue, {
+    new FunctionFragment('\\frac{1}{(x-1)(x-2)^2}', PrimeColor.blue, {
       isDashed: false,
       shape: 'circle',
       legendText: 'f(x)=\\frac{1}{(x-1)(x-2)^2}'
@@ -81,9 +81,7 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleY: 1 / 3
-  }}
+  scaleY={1 / 3}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

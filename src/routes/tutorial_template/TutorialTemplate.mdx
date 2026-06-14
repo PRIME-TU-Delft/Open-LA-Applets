@@ -56,14 +56,21 @@ This is the complete page component for the template applet (`src/routes/applet/
   axis = {
     showOrigin: true,
     showAxisNumbersX: true,
-    showAxisNumbersY: true
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: 1,
-    scaleY: 1,
     skipX: 0,
     skipY: 0
   };
+
+  // #####
+  // SCALE
+  // #####
+  // All child components (functions, points, lines, etc.) will auto-scale accordingly.
+  // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
+  // Formulas and positions should be written in display (mathematical) space.
+  let scaleX = 1;
+  let scaleY = 1;
 
   // ###########
   // AXIS LABELS
@@ -95,6 +102,8 @@ This is the complete page component for the template applet (`src/routes/applet/
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
+  {scaleX}
+  {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
@@ -155,8 +164,6 @@ axis = {
   showAxisNumbersY: true,
   logarithmicX: false,
   logarithmicY: false,
-  scaleX: 1,
-  scaleY: 1,
   skipX: 0,
   skipY: 0
 };
@@ -168,10 +175,30 @@ What each option does:
 - `showAxisNumbers`: show or hide axis tick labels.
 - `logarithmicX`: use logarithmic scaling on x-axis.
 - `logarithmicY`: use logarithmic scaling on y-axis.
-- `scaleX`: multiply x-axis values by this factor.
-- `scaleY`: multiply y-axis values by this factor.
 - `skipX`: skip every n-th x-axis label/tick according to axis renderer settings.
 - `skipY`: skip every n-th y-axis label/tick according to axis renderer settings.
+
+## Optional: set scale
+
+To change the coordinate system scale, pass `scaleX` and/or `scaleY` to `Canvas2D`:
+
+```html
+<Canvas2D scaleX={1.5} scaleY={3} {axis}>
+  <TemplateComponent objects={appletObjects} />
+</Canvas2D>
+```
+
+- `scaleX`: how many SVG (world-space) units correspond to 1 display unit on the x-axis. Default: `1`.
+- `scaleY`: how many SVG (world-space) units correspond to 1 display unit on the y-axis. Default: `1`.
+
+All child components (functions, points, lines, axis, etc.) automatically read the scale from context and adjust accordingly. This means:
+
+- **Formulas** should be written in pure mathematical (display) space. For example, use `'\\cos(x)'` instead of manually pre-scaling like `'3\\cos(x/1.5)'`.
+- **Domains and integral bounds** should be in display space. For example, `domain: { xMin: 0, xMax: 2 * Math.PI }` instead of `{ xMin: 0, xMax: 2 * Math.PI * scaleX }`.
+- **Point positions** (gaps, included points) should be in display space.
+- **Axis tick labels** automatically show display-space values.
+- **`Latex2D` positions** are in display space. They automatically scale based on the active scale context.
+- **`additionalTicksX`/`additionalTicksY`** values should be in display space. The Axis component automatically converts them to world space internally.
 
 ## Optional: set axis labels
 

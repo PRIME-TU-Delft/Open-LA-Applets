@@ -36,7 +36,9 @@
     enablePan = true,
     draggables = [],
     defaultLeftDivision,
-    legendFormulaPosition = 'top-right'
+    legendFormulaPosition = 'top-right',
+    scaleX = 1,
+    scaleY = 1
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -141,6 +143,8 @@
       {labels}
       {enablePan}
       {draggables}
+      {scaleX}
+      {scaleY}
     >
       {@render children()}
     </CanvasD3>

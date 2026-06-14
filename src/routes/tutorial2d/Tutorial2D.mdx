@@ -335,3 +335,20 @@ With the addition of controls and formulas, we have made the applet more interac
 Users can now manipulate the vectors using the sliders and see the results in real-time, while also having a clear
 understanding of the underlying mathematics. Each of these components can be further customized and you can read
 more about them in the 2D components documentation.
+
+## Scaling the coordinate system
+
+If your applet needs a different coordinate scale (for example, showing values from 0 to 2π on the x-axis but only using a few SVG units of space), you can pass `scaleX` and/or `scaleY` to `Canvas2D`:
+
+```html
+<Canvas2D scaleX={1.5} scaleY={3} title="Scaled applet">
+  <!-- All children auto-scale: positions, functions, points, axis labels, etc. -->
+  <Vector2D direction={new Vector2(1, 1)} length={1} color={PrimeColor.blue} />
+</Canvas2D>
+```
+
+- `scaleX` / `scaleY`: how many SVG (world-space) units correspond to 1 display unit. Default: `1`.
+- All child components read the scale from context and adjust automatically.
+- Specify positions and formulas in display (mathematical) space — the scaling is handled for you.
+
+For more details and examples, see the [Canvas2D documentation](./?path=/docs/initialize-canvas2d--docs).

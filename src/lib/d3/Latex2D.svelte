@@ -32,7 +32,13 @@
     dimOnHover = false
   }: Latex2DProps = $props();
 
-  let extendedOffset = $derived(position.clone().normalize().multiplyScalar(extend));
+  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const scaleX = scale2D?.x ?? 1;
+  const scaleY = scale2D?.y ?? 1;
+
+  const scaledPosition = $derived(new Vector2(position.x * scaleX, position.y * scaleY));
+
+  let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
 
   let style = $derived.by(() => {
     const base = 'display: inline-block; width: max-content;';
@@ -70,7 +76,7 @@
 
 <g
   class={dimOnHover ? 'latex-dim' : ''}
-  transform="translate({position.x + offset.x + extendedOffset.x}, {position.y +
+  transform="translate({scaledPosition.x + offset.x + extendedOffset.x}, {scaledPosition.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >

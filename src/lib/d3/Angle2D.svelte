@@ -15,6 +15,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { arc, symbol, symbolTriangle } from 'd3';
   import { Vector2 } from 'three';
+  import { getContext } from 'svelte';
 
   let {
     color = PrimeColor.black,
@@ -25,6 +26,11 @@
     distance = 0.8,
     hasHead = false
   }: Angle2DProps = $props();
+
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
   const inverted = $derived.by(() => startAngle > endAngle);
   const rotation = $derived.by(() => {
@@ -75,7 +81,7 @@
 
 -->
 
-<g transform="translate({origin.x}, {origin.y}) rotate({rotation})">
+<g transform="translate({scaledOrigin.x}, {scaledOrigin.y}) rotate({rotation})">
   <path {d} fill={color} />
 
   {#if hasHead}

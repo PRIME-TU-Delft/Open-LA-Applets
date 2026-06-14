@@ -137,11 +137,11 @@
   {controls}
   {formulas}
   {legendItems}
+  scaleX={2}
   axis={{
     showOrigin: false,
     logarithmicX: true,
-    logarithmicY: true,
-    scaleX: 2
+    logarithmicY: true
   }}
   cameraZoom={1.15}
   cameraPosition={new Vector2(-1.4, -2.4)}
@@ -156,7 +156,7 @@
   }}
 >
   {#each errorsPredefined as pE (pE.pointX)}
-    {@const x = 2 * Math.log10(pE.pointX)}
+    {@const x = Math.log10(pE.pointX)}
     {@const left = Math.log10(pE.errors['left'])}
     {@const right = Math.log10(pE.errors['right'])}
     {@const trapezoid = Math.log10(pE.errors['trapezoid'])}
@@ -185,7 +185,7 @@
     {/if}
   {/each}
 
-  {@const hX = 2 * Math.log10(h)}
+  {@const hX = Math.log10(h)}
   {@const opacity = animationOn ? 1 : 0.5}
 
   {#if controls[1]}

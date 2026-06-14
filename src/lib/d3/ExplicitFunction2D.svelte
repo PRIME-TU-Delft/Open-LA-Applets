@@ -4,6 +4,7 @@
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { getContext, setContext } from 'svelte';
 
   export type ExplicitFunction2DProps = {
     func: (x: number) => number;
@@ -47,6 +48,12 @@
     verticalLimit = GRID_SIZE_2D
   }: ExplicitFunction2DProps = $props();
 
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  // Prevent Triangle2D children (arrow heads) from applying scale to visual-space coords
+  setContext('scale2D', { x: 1, y: 1 });
+
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const segments: Vector2[][] = [];
@@ -61,7 +68,7 @@
 
     const safeVal = (x: number) => {
       try {
-        return func(x);
+        return func(x / sx) * sy;
       } catch {
         return NaN;
       }
@@ -83,7 +90,7 @@
         const xm = (x0 + x1) / 2;
         let ym: number;
         try {
-          ym = func(xm);
+          ym = func(xm / sx) * sy;
         } catch {
           ym = NaN;
         }
@@ -116,7 +123,7 @@
       return false;
     };
 
-    let prevX = xMin;
+    let prevX = xMin * sx;
     let prevY: number | null = null;
 
     const firstY = (() => {
@@ -129,7 +136,7 @@
       currentSegment.push(new Vector2(prevX, prevY));
     }
 
-    for (let x = xMin + stepSize; x <= xMax + 1e-9; x += stepSize) {
+    for (let x = xMin * sx + stepSize; x <= xMax * sx + 1e-9; x += stepSize) {
       const y = safeVal(x);
 
       if (!isFinite(y)) {
@@ -184,13 +191,14 @@
   const integralPath = $derived.by(() => {
     if (!integral) return null;
 
-    const { xLeft, xRight } = integral;
+    const xLeft = integral.xLeft * sx;
+    const xRight = integral.xRight * sx;
     const segments: Vector2[][] = [];
     let current: Vector2[] = [];
 
     const safeVal = (x: number) => {
       try {
-        return func(x);
+        return func(x / sx) * sy;
       } catch {
         return NaN;
       }

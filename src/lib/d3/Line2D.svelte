@@ -11,8 +11,13 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import { getContext } from 'svelte';
 
   let { start, end, color = 'black', width = LINE_WIDTH, isDashed = false }: Line2DProps = $props();
+
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
 </script>
 
 <!-- @component
@@ -29,10 +34,10 @@
 -->
 
 <line
-  x1={start.x}
-  y1={start.y}
-  x2={end.x}
-  y2={end.y}
+  x1={start.x * sx}
+  y1={start.y * sy}
+  x2={end.x * sx}
+  y2={end.y * sy}
   stroke={color}
   stroke-width={width}
   stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}

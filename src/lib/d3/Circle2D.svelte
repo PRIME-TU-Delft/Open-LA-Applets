@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import { getContext } from 'svelte';
 
   export type Circle2DProps = {
     position?: Vector2;
@@ -19,6 +20,10 @@
     isDashed = false,
     fill = 'none'
   }: Circle2DProps = $props();
+
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
 </script>
 
 <!-- @component
@@ -35,12 +40,25 @@
 
 -->
 
-<circle
-  cx={position.x}
-  cy={position.y}
-  r={radius}
-  {fill}
-  stroke={color}
-  stroke-width={width}
-  stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
-/>
+{#if sx === sy}
+  <circle
+    cx={position.x * sx}
+    cy={position.y * sy}
+    r={radius * sx}
+    {fill}
+    stroke={color}
+    stroke-width={width}
+    stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
+  />
+{:else}
+  <ellipse
+    cx={position.x * sx}
+    cy={position.y * sy}
+    rx={radius * sx}
+    ry={radius * sy}
+    {fill}
+    stroke={color}
+    stroke-width={width}
+    stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
+  />
+{/if}

@@ -86,15 +86,14 @@
   {/snippet}
 </Story>
 
-<!-- This story has a scaled X axis -->
+<!-- This story has a scaled X axis. Pass scaleX and/or scaleY to Canvas2D to change the coordinate system scale.
+All child components (axis, functions, points, lines, vectors) auto-scale accordingly.
+scaleX/scaleY define how many SVG units correspond to 1 display unit.
+With scaleX=2, the axis label "1" appears at SVG position x=2. Positions and formulas should use display (math) space. -->
 <Story name="Scaled axis">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
-      <Canvas2D
-        axis={{
-          scaleX: 2
-        }}
-      >
+      <Canvas2D scaleX={2}>
         <Vector2D direction={new Vector2(2, 2)} color={PrimeColor.blue} length={2} />
       </Canvas2D>
     </div>
@@ -102,6 +101,17 @@
 </Story>
 
 <!-- This story has a skipped X ticks -->
+<!-- This story has a non-uniform scale: scaleX=1.5, scaleY=3. The vector position (1, 1) in display space maps to (1.5, 3) in SVG space. -->
+<Story name="Non-uniform scale">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D scaleX={1.5} scaleY={3}>
+        <Vector2D direction={new Vector2(1, 1)} color={PrimeColor.blue} length={1} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
 <Story name="Skipped axis">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">
