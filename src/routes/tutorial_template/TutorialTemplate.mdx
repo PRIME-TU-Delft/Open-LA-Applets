@@ -197,8 +197,8 @@ All child components (functions, points, lines, axis, etc.) automatically read t
 - **Domains and integral bounds** should be in display space. For example, `domain: { xMin: 0, xMax: 2 * Math.PI }` instead of `{ xMin: 0, xMax: 2 * Math.PI * scaleX }`.
 - **Point positions** (gaps, included points) should be in display space.
 - **Axis tick labels** automatically show display-space values.
-
-**Note:** `Latex2D` positions and `additionalTicksX`/`additionalTicksY` values remain in world space (SVG coordinates). If you use custom tick labels with scaling, multiply positions by scaleX/scaleY.
+- **`Latex2D` positions** are in display space. They automatically scale based on the active scale context.
+- **`additionalTicksX`/`additionalTicksY`** values should be in display space. The Axis component automatically converts them to world space internally.
 
 ## Optional: set axis labels
 

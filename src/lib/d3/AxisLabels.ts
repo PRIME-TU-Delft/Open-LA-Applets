@@ -43,10 +43,11 @@ export function getXLabelX(
   cameraTransform: Transform2D | undefined,
   width: number,
   cameraZoom: number,
-  labels: LabelProps | undefined
+  labels: LabelProps | undefined,
+  scaleX: number = 1
 ): number {
   const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.8;
+  if (!cameraTransform || !normalizedCamera) return 6.8 / scaleX;
 
   const baselineX = cameraBaselineX ?? 0;
   const normalizedPanX = normalizedCamera.x;
@@ -56,7 +57,7 @@ export function getXLabelX(
   const worldXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
 
   if (labels && labels.xLabelPosition == 'center') {
-    return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
+    return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
   }
 
   const edgeMarginPx = 48;
@@ -66,7 +67,7 @@ export function getXLabelX(
   const worldPostAtRight =
     baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
 
-  return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D);
+  return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
 }
 
 export function getYabelY(
@@ -74,10 +75,11 @@ export function getYabelY(
   width: number,
   height: number,
   cameraZoom: number,
-  labels: LabelProps | undefined
+  labels: LabelProps | undefined,
+  scaleY: number = 1
 ): number {
   const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.25;
+  if (!cameraTransform || !normalizedCamera) return 6.25 / scaleY;
 
   const baselineY = cameraBaselineY ?? 0;
   const normalizedPanY = normalizedCamera.y;
@@ -90,7 +92,7 @@ export function getYabelY(
     baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
 
   if (labels && labels.yLabelPosition == 'center') {
-    return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D);
+    return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
   }
 
   const edgeMarginPx = 30;
@@ -98,5 +100,5 @@ export function getYabelY(
   const worldYAtTopMargin =
     baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
 
-  return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D);
+  return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
 }

@@ -91,19 +91,19 @@
     skipX={100}
     skipY={2}
     showAxisNumbersX={false}
-    additionalTicksX={[-0.5 * Math.PI * sX, Math.PI * sX, 0.5 * Math.PI * sX, -Math.PI * sX]}
+    additionalTicksX={[-0.5 * Math.PI, Math.PI, 0.5 * Math.PI, -Math.PI]}
   />
-  <Latex2D latex="\frac12\pi" position={new Vector2(0.5 * Math.PI * sX, -0.15)} alignX="right" />
-  <Latex2D latex="\pi" position={new Vector2(Math.PI * sX, -0.15)} alignX="center" />
+  <Latex2D latex="\frac12\pi" position={new Vector2(0.5 * Math.PI, -0.15)} alignX="right" />
+  <Latex2D latex="\pi" position={new Vector2(Math.PI, -0.15)} alignX="center" />
   <Latex2D
     latex="-\frac12\pi"
-    position={new Vector2(-0.5 * Math.PI * sX, 0.15)}
+    position={new Vector2(-0.5 * Math.PI, 0.15)}
     alignX="center"
     alignY="bottom"
   />
   <Latex2D
     latex="-\pi"
-    position={new Vector2(-Math.PI * sX, 0.15)}
+    position={new Vector2(-Math.PI, 0.15)}
     alignX="center"
     alignY="bottom"
   />
