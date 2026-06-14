@@ -10,6 +10,7 @@
   import Play from '@lucide/svelte/icons/play';
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import { _ } from 'svelte-i18n';
+  import ControlLabel from './ControlLabel.svelte';
 
   type SliderProps = {
     value: number;
@@ -170,12 +171,12 @@
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
-        >{slider.label}:
+        ><ControlLabel label={slider.label + ':'} checkLatex={label} />
         <p class="absolute left-full flex text-sm" style="color:{slider.color};">
           {#if slider.labelFormat}
             {@render slider.labelFormat(value)}
           {:else}
-            {label}
+            <ControlLabel {label} color={slider.color} />
           {/if}
         </p>
       </Label>

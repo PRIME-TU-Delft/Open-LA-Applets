@@ -16,12 +16,13 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import NumberFlow from '@number-flow/svelte';
+  import Latex from '$lib/components/Latex.svelte';
 
   const controls = Controls.addSlider(0.5, 0, Math.PI, 0.1, PrimeColor.cyan, {
-    label: 'ϕ/2',
+    label: '\\varphi/2',
     labelFormat
   }).addSlider(0.4, 0, Math.PI * 0.75, 0.1, PrimeColor.blue, {
-    label: 'θ/2',
+    label: '\\theta/2',
     labelFormat
   });
 
@@ -59,7 +60,7 @@
 
 {#snippet labelFormat(value: number)}
   <NumberFlow value={value / Math.PI} />
-  <p>π</p>
+  <Latex latex="\pi" />
 {/snippet}
 
 <Canvas2D {draggables} {formulas} {controls} showFormulasDefault>
