@@ -43,20 +43,22 @@
     return angle;
   });
 
+  const endAngleCalculated = $derived(hasHead ? endAngle - 0.1 : endAngle);
+
   let d = $derived.by(() => {
     if (inverted) {
       return arc()({
         innerRadius: distance - width / 2,
         outerRadius: distance + width / 2,
         startAngle: 0,
-        endAngle: 2 * Math.PI - startAngle + endAngle
+        endAngle: 2 * Math.PI - startAngle + endAngleCalculated
       });
     } else {
       return arc()({
         innerRadius: distance - width / 2,
         outerRadius: distance + width / 2,
         startAngle: startAngle,
-        endAngle: endAngle
+        endAngle: endAngleCalculated
       });
     }
   });
@@ -87,7 +89,7 @@
   {#if hasHead}
     <g
       transform="rotate({(endAngle / Math.PI) * 180 -
-        90}) translate({distance}, 0) rotate(180) translate(0, {2 * Math.PI * width})"
+        90}) translate({distance}, 0) rotate(180) translate(0, {1.5 * Math.PI * width})"
     >
       <path transform="" d={triangle} fill={color} />
     </g>
