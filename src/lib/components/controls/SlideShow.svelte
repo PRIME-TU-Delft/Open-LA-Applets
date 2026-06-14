@@ -8,6 +8,7 @@
   import { scale } from 'svelte/transition';
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import { _ } from 'svelte-i18n';
+  import ControlLabel from './ControlLabel.svelte';
 
   type SlideShowProps = {
     controller: SlideShow<State>;
@@ -19,7 +20,9 @@
 
 <Label class="inline-flex items-center" for="checkbox-{uuid}">
   {#if controller.label != undefined}
-    <span>{controller.label}</span>
+    <span>
+      <ControlLabel label={controller.label} />
+    </span>
   {:else if controller.label == null}
     <span>{$_('ui.slideshow_original_state')}</span>
   {/if}
