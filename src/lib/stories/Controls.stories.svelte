@@ -274,3 +274,32 @@ const function: (x: number) => number = functionControl[0];
     </Canvas2D>
   </div>
 </Story>
+
+<!-- 
+Labels of the controls in some controls depend on whether you use LaTeX symbols in them ({, \). In some like Function or Matrix, it always parses the label as LaTeX.
+
+```typescript
+<Canvas2D
+  controls={Controls.addSlider(1, 0, 2, 0.5, undefined, {
+    label: '\\theta'
+  })
+    .addToggle(true, 'Normal', PrimeColor.raspberry)
+    .addToggle(true, 'x^{2}', PrimeColor.cyan)
+    .addFunction("y", "f(x)", undefined, "y")}
+>
+```
+-->
+<Story name="Labels">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D
+      controls={Controls.addSlider(1, 0, 2, 0.5, undefined, {
+        label: '\\theta'
+      })
+        .addToggle(true, 'Normal', PrimeColor.raspberry)
+        .addToggle(true, 'x^{2}', PrimeColor.cyan)
+        .addFunction('y', 'f(x)', undefined, 'y')}
+    >
+      <Vector2D />
+    </Canvas2D>
+  </div>
+</Story>

@@ -61,31 +61,31 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(sY + '\\cos((x-' + shiftX * sX + ')/' + sX + ')', PrimeColor.blue, {
-      domain: { xMin: 0 + shiftX * sX, xMax: 0.5 * Math.PI * sX + shiftX * sX },
+    new FunctionFragment('\\cos(x-' + shiftX + ')', PrimeColor.blue, {
+      domain: { xMin: 0 + shiftX, xMax: 0.5 * Math.PI + shiftX },
       legendText: 'f(x)',
       integral: {
-        xLeft: 0 + shiftX * sX,
-        xRight: 0.5 * Math.PI * sX + shiftX * sX,
+        xLeft: 0 + shiftX,
+        xRight: 0.5 * Math.PI + shiftX,
         isDashed: false,
         color: PrimeColor.darkGreen
       }
     }),
-    new FunctionFragment(sY + '\\cos((x-' + shiftX * sX + ')/' + sX + ')', PrimeColor.blue, {
-      domain: { xMin: 0.5 * Math.PI * sX + shiftX * sX, xMax: 1.5 * Math.PI * sX + shiftX * sX },
+    new FunctionFragment('\\cos(x-' + shiftX + ')', PrimeColor.blue, {
+      domain: { xMin: 0.5 * Math.PI + shiftX, xMax: 1.5 * Math.PI + shiftX },
       integral: {
-        xLeft: 0.5 * Math.PI * sX + shiftX * sX,
-        xRight: 1.5 * Math.PI * sX + shiftX * sX,
+        xLeft: 0.5 * Math.PI + shiftX,
+        xRight: 1.5 * Math.PI + shiftX,
         isDashed: false,
         color: PrimeColor.raspberry,
         shape: 'square'
       }
     }),
-    new FunctionFragment(sY + '\\cos((x-' + shiftX * sX + ')/' + sX + ')', PrimeColor.blue, {
-      domain: { xMin: 1.5 * Math.PI * sX + shiftX * sX, xMax: 2 * Math.PI * sX + shiftX * sX },
+    new FunctionFragment('\\cos(x-' + shiftX + ')', PrimeColor.blue, {
+      domain: { xMin: 1.5 * Math.PI + shiftX, xMax: 2 * Math.PI + shiftX },
       integral: {
-        xLeft: 1.5 * Math.PI * sX + shiftX * sX,
-        xRight: 2 * Math.PI * sX + shiftX * sX,
+        xLeft: 1.5 * Math.PI + shiftX,
+        xRight: 2 * Math.PI + shiftX,
         isDashed: false,
         color: PrimeColor.darkGreen,
         shape: 'square'
@@ -101,46 +101,38 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   legendFormulaPosition="top-right"
+  scaleX={sX}
+  scaleY={sY}
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
   <Axis
-    scaleX={sX}
     skipX={100}
-    scaleY={sY}
     skipY={300}
     showAxisNumbersX={false}
     showAxisNumbersY={false}
     showGridLinesX={false}
     showGridLinesY={false}
-    additionalTicksX={[
-      0 + shiftX * sX,
-      2 * Math.PI * sX + shiftX * sX,
-      0.5 * Math.PI * sX + shiftX * sX
-    ]}
+    additionalTicksX={[0 + shiftX, 2 * Math.PI + shiftX, 0.5 * Math.PI + shiftX]}
   />
-  <Latex2D latex="a" position={new Vector2(0 + shiftX * sX, -0.15)} alignX="center" />
+  <Latex2D latex="a" position={new Vector2(0 + shiftX, -0.15)} alignX="center" />
 
-  <Latex2D
-    latex="b"
-    position={new Vector2(2 * Math.PI * sX + shiftX * sX, -0.15)}
-    alignX="center"
-  />
+  <Latex2D latex="b" position={new Vector2(2 * Math.PI + shiftX, -0.15)} alignX="center" />
   <Latex2D
     latex={'\\boldsymbol{+}'}
-    position={new Vector2((2 / Math.PI) * sX + shiftX * sX, 0.5 * sY)}
+    position={new Vector2(2 / Math.PI + shiftX, 0.5)}
     alignX="center"
     alignY="top"
   />
   <Latex2D
     latex={'\\boldsymbol{+}'}
-    position={new Vector2((-2 / Math.PI) * sX + 2 * Math.PI * sX + shiftX * sX, 0.5 * sY)}
+    position={new Vector2(-2 / Math.PI + 2 * Math.PI + shiftX, 0.5)}
     alignX="center"
     alignY="top"
   />
   <Latex2D
     latex={'\\boldsymbol{-}'}
-    position={new Vector2(Math.PI * sX + shiftX * sX, -0.5 * sY)}
+    position={new Vector2(Math.PI + shiftX, -0.5)}
     alignX="center"
     alignY="bottom"
   />

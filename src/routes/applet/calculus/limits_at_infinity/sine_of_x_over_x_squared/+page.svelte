@@ -58,16 +58,12 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(
-      scaleY + '\\frac{\\sin(x/' + scaleX + ')}{(x/' + scaleX + ')^2}',
-      PrimeColor.blue,
-      {
-        isDashed: false,
-        shape: 'circle',
-        legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
-      }
-    ),
-    new FunctionFragment('0*' + scaleY, PrimeColor.darkGreen, {
+    new FunctionFragment('\\frac{\\sin(x)}{x^2}', PrimeColor.blue, {
+      isDashed: false,
+      shape: 'circle',
+      legendText: 'f(x)=\\frac{\\sin(x)}{x^2}'
+    }),
+    new FunctionFragment('0', PrimeColor.darkGreen, {
       isDashed: true,
       shape: 'triangle',
       legendText: 'y=0'
@@ -77,7 +73,7 @@
       shape: 'triangle',
       legendText: 'x=0'
     }),
-    new AsymptoteFragment(0 * scaleX, 'vertical', PrimeColor.raspberry)
+    new AsymptoteFragment(0, 'vertical', PrimeColor.raspberry)
   ];
 </script>
 
@@ -87,10 +83,8 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={{
-    scaleX,
-    scaleY
-  }}
+  {scaleX}
+  {scaleY}
   legendFormulaPosition="top-left"
 >
   <TemplateComponent objects={appletObjects} />

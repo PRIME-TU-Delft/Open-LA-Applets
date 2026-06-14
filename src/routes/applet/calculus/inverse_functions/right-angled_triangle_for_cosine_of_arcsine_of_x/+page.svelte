@@ -64,8 +64,6 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    scaleX: 1,
-    scaleY: 1,
     skipX: 0,
     skipY: 0
   };

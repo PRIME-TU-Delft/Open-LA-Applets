@@ -55,17 +55,17 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('-(x/4)^2*2', PrimeColor.blue, {
+    new FunctionFragment('-x^2', PrimeColor.blue, {
       isDashed: false,
       shape: 'circle',
       legendText: 'f(x)=-x^2'
     }),
-    new FunctionFragment('(x/4)^2\\sin\\left(\\frac{1}{x/4}\\right)*2', PrimeColor.raspberry, {
+    new FunctionFragment('x^2\\sin\\left(\\frac{1}{x}\\right)', PrimeColor.raspberry, {
       isDashed: false,
       shape: 'square',
       legendText: 'g(x)=x^2\\sin\\left(\\frac{1}{x}\\right)'
     }),
-    new FunctionFragment('(x/4)^2*2', PrimeColor.darkGreen, {
+    new FunctionFragment('x^2', PrimeColor.darkGreen, {
       isDashed: false,
       shape: 'square',
       legendText: 'h(x)=x^2'
@@ -79,9 +79,9 @@
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+  scaleX={4}
+  scaleY={2}
   axis={{
-    scaleX: 4,
-    scaleY: 2,
     skipX: 1
   }}
 >

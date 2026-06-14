@@ -34,15 +34,15 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
+  cameraPosition = new Vector2(-0, 1);
+  cameraZoom = 1.8;
 
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-4, -1), // bottom-left
-    new Vector2(4, 8), // top-right
-    0.5 // margin
-  );
+  // // (remove if unnecessary)
+  // initialViewBox = new ViewBox(
+  //   new Vector2(-5, -1), // bottom-left
+  //   new Vector2(4, 4), // top-right
+  //   0.5 // margin
+  // );
 
   // ###########
   // AXIS LABELS
@@ -52,47 +52,44 @@
   xAxisLabel = 'x';
   yAxisLabel = 'y';
 
-  let sX = 2;
-  let sY = 3;
-
   // ##############
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(sY + '*(x/' + sX + ')', PrimeColor.blue, {
+    new FunctionFragment('x', PrimeColor.blue, {
       legendText:
         'f(x)=\\left\\{\\begin{array}{ll}x, & 0\\leq x<1,\\\\2, & 1\\leq x\\leq 2,\\\\x-1, & 2<x\\leq 3.\\end{array}\\right.',
-      domain: { xMin: 0, xMax: 1 * sX },
+      domain: { xMin: 0, xMax: 1 },
       integral: {
         xLeft: 0,
-        xRight: 1 * sX,
+        xRight: 1,
         legendText: '\\int_{0}^{3} f(x) dx',
         isDashed: false,
         color: PrimeColor.darkGreen,
         shape: 'square'
       }
     })
-      .addGaps([new Vector2(1 * sX, 1 * sY), new Vector2(2 * sX, 1 * sY)])
+      .addGaps([new Vector2(1, 1), new Vector2(2, 1)])
       .addIncludedPoints([
-        new Vector2(0 * sX, 0 * sY),
-        new Vector2(1 * sX, 2 * sY),
-        new Vector2(2 * sX, 2 * sY),
-        new Vector2(3 * sX, 2 * sY)
+        new Vector2(0, 0),
+        new Vector2(1, 2),
+        new Vector2(2, 2),
+        new Vector2(3, 2)
       ]),
-    new FunctionFragment(sY + '*2', PrimeColor.blue, {
-      domain: { xMin: 1 * sX, xMax: 2 * sX },
+    new FunctionFragment('2', PrimeColor.blue, {
+      domain: { xMin: 1, xMax: 2 },
       integral: {
-        xLeft: 1 * sX,
-        xRight: 2 * sX,
+        xLeft: 1,
+        xRight: 2,
         isDashed: false,
         color: PrimeColor.darkGreen
       }
     }),
-    new FunctionFragment(sY + '*(x/' + sX + '-1)', PrimeColor.blue, {
-      domain: { xMin: 2 * sX, xMax: 3 * sX },
+    new FunctionFragment('x-1', PrimeColor.blue, {
+      domain: { xMin: 2, xMax: 3 },
       integral: {
-        xLeft: 2 * sX,
-        xRight: 3 * sX,
+        xLeft: 2,
+        xRight: 3,
         isDashed: false,
         color: PrimeColor.darkGreen
       }
@@ -101,7 +98,7 @@
 </script>
 
 <Canvas2D
-  {initialViewBox}
+  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
@@ -110,5 +107,5 @@
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
-  <Axis scaleX={sX} skipX={1} scaleY={sY} skipY={2} />
+  <Axis skipX={0} skipY={0} />
 </Canvas2D>

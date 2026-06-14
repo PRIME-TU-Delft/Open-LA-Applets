@@ -4,6 +4,7 @@
   import { Vector2 } from 'three';
   import Point2D from './Point2D.svelte';
   import Triangle2D from './Triangle2D.svelte';
+  import { getContext, setContext } from 'svelte';
 
   type Trajectory2DProps = {
     start: Vector2;
@@ -23,13 +24,19 @@
     tension = 0.5
   }: Trajectory2DProps = $props();
 
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  // Prevent children (Point2D, Triangle2D) from applying scale again
+  setContext('scale2D', { x: 1, y: 1 });
+
   const c1 = $derived(0.25 * start.x + 0.5 * start.y);
   const c2 = $derived(0.25 * start.x - 0.5 * start.y);
   const v1 = new Vector2(2, 1);
   const v2 = new Vector2(2, -1);
 
   const trajectoryPoints = $derived.by(() => {
-    const points = [start.clone()];
+    const points = [new Vector2(start.x * sx, start.y * sy)];
     let currentPoint = start.clone();
 
     function xt(t: number) {
@@ -61,7 +68,7 @@
 
       currentPoint = point;
 
-      points.push(currentPoint);
+      points.push(new Vector2(currentPoint.x * sx, currentPoint.y * sy));
       iterations++;
     }
 

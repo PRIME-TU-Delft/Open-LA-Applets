@@ -12,6 +12,7 @@
   import { Vector2 } from 'three';
   import Line from './Line2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { getContext, setContext } from 'svelte';
 
   let {
     vs,
@@ -20,6 +21,14 @@
     color = PrimeColor.black,
     lineWidth = 0.02
   }: RightAngle2DProps = $props();
+
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  // Prevent Line2D children from applying scale again (coordinates are passed in world space)
+  setContext('scale2D', { x: 1, y: 1 });
+
+  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
   //resize vectors
   const u1 = $derived(vs[0].clone().multiplyScalar(size / vs[0].length()));
@@ -45,13 +54,13 @@
   <Line
     {color}
     width={lineWidth}
-    start={u1.clone().add(origin)}
-    end={u1.clone().add(u2).add(origin)}
+    start={u1.clone().add(scaledOrigin)}
+    end={u1.clone().add(u2).add(scaledOrigin)}
   />
   <Line
     {color}
     width={lineWidth}
-    start={u2.clone().add(origin)}
-    end={u1.clone().add(u2).add(origin)}
+    start={u2.clone().add(scaledOrigin)}
+    end={u1.clone().add(u2).add(scaledOrigin)}
   />
 {/if}

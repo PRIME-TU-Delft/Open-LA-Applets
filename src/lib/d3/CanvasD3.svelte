@@ -13,6 +13,8 @@
     enablePan?: boolean;
     draggables?: Draggable[];
     isSplit?: boolean;
+    scaleX?: number;
+    scaleY?: number;
     children: Snippet;
   };
 </script>
@@ -53,6 +55,8 @@
     isSplit = false,
     axis,
     labels,
+    scaleX = 1,
+    scaleY = 1,
     children
   }: Canvas2DProps = $props();
 
@@ -68,6 +72,8 @@
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
+  // svelte-ignore state_referenced_locally
+  setContext('scale2D', { x: scaleX, y: scaleY });
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -168,8 +174,10 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels));
-  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, cameraZoom, labels));
+  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX));
+  const yLabelY = $derived(
+    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
+  );
 </script>
 
 <div class="relative overflow-hidden">
@@ -204,7 +212,7 @@
                 fontSize={labels.size || 1}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
-                  0.75 + (labels?.xLabelOffset?.y ?? 0)
+                  0.75 / scaleY + (labels?.xLabelOffset?.y ?? 0)
                 )}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
               />
@@ -215,7 +223,9 @@
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
-                  0.25 + (labels.yLabelRotate ? 0.5 : 0) + (labels?.yLabelOffset?.x ?? 0),
+                  0.25 / scaleX +
+                    (labels.yLabelRotate ? 0.5 / scaleX : 0) +
+                    (labels?.yLabelOffset?.x ?? 0),
                   yLabelY + +(labels?.yLabelOffset?.y ?? 0)
                 )}
                 rotation={labels.yLabelRotate ? -90 : 0}

@@ -57,8 +57,8 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1.5, 0.05, 8, 0.05, PrimeColor.orange, {
-    label: 'ε'
-  }).addSlider(1, 0.05, 8, 0.05, PrimeColor.raspberry, { label: 'δ' });
+    label: '\\varepsilon'
+  }).addSlider(1, 0.05, 8, 0.05, PrimeColor.raspberry, { label: '\\delta' });
   const appletObjects: AppletObject[] = [
     new FunctionFragment('\\frac{|x|}{x}', PrimeColor.blue, {
       isDashed: false,

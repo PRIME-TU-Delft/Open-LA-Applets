@@ -2,6 +2,7 @@
   import * as Select from '$lib/components/ui/select/index.js';
   import type { Dropdown } from '$lib/controls/Dropdown.svelte';
   import { _ } from 'svelte-i18n';
+  import ControlLabel from './ControlLabel.svelte';
 
   type DropdownProps = {
     controller: Dropdown;
@@ -21,7 +22,9 @@
   <Select.Content>
     <Select.Group>
       {#if dropdown.label}
-        <Select.GroupHeading>{dropdown.label}</Select.GroupHeading>
+        <Select.GroupHeading>
+          <ControlLabel label={dropdown.label} />
+        </Select.GroupHeading>
       {/if}
       {#each dropdown.values as item, index (item)}
         <Select.Item value={item} label={localizedValues[index]}>

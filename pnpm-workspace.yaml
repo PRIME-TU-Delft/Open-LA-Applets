@@ -5,6 +5,14 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - esbuild@0.24.3
   - cookie@0.7.0
+  - svelte@5.55.7
+  - devalue@5.8.1
+  - brace-expansion@5.0.6
+  - ws@8.20.1
+  - '@sveltejs/kit@2.60.1'
+  - '@vitest/browser@4.1.6'
+  - esbuild@0.28.1
 overrides:
   cookie@<0.7.0: ^0.7.0
   esbuild@<=0.24.2: ^0.25.0
+  esbuild@>=0.17.0 <0.28.1: ^0.28.1
