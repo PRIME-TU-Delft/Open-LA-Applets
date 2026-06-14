@@ -175,7 +175,9 @@
   });
 
   const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX));
-  const yLabelY = $derived(getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY));
+  const yLabelY = $derived(
+    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
+  );
 </script>
 
 <div class="relative overflow-hidden">
@@ -221,7 +223,9 @@
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
-                  0.25 / scaleX + (labels.yLabelRotate ? 0.5 / scaleX : 0) + (labels?.yLabelOffset?.x ?? 0),
+                  0.25 / scaleX +
+                    (labels.yLabelRotate ? 0.5 / scaleX : 0) +
+                    (labels?.yLabelOffset?.x ?? 0),
                   yLabelY + +(labels?.yLabelOffset?.y ?? 0)
                 )}
                 rotation={labels.yLabelRotate ? -90 : 0}

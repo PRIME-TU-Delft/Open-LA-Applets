@@ -101,10 +101,5 @@
     alignX="center"
     alignY="bottom"
   />
-  <Latex2D
-    latex="-\pi"
-    position={new Vector2(-Math.PI, 0.15)}
-    alignX="center"
-    alignY="bottom"
-  />
+  <Latex2D latex="-\pi" position={new Vector2(-Math.PI, 0.15)} alignX="center" alignY="bottom" />
 </Canvas2D>

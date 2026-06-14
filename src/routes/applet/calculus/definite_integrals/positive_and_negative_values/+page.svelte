@@ -113,28 +113,20 @@
     showAxisNumbersY={false}
     showGridLinesX={false}
     showGridLinesY={false}
-    additionalTicksX={[
-      0 + shiftX,
-      2 * Math.PI + shiftX,
-      0.5 * Math.PI + shiftX
-    ]}
+    additionalTicksX={[0 + shiftX, 2 * Math.PI + shiftX, 0.5 * Math.PI + shiftX]}
   />
   <Latex2D latex="a" position={new Vector2(0 + shiftX, -0.15)} alignX="center" />
 
-  <Latex2D
-    latex="b"
-    position={new Vector2(2 * Math.PI + shiftX, -0.15)}
-    alignX="center"
-  />
+  <Latex2D latex="b" position={new Vector2(2 * Math.PI + shiftX, -0.15)} alignX="center" />
   <Latex2D
     latex={'\\boldsymbol{+}'}
-    position={new Vector2((2 / Math.PI) + shiftX, 0.5)}
+    position={new Vector2(2 / Math.PI + shiftX, 0.5)}
     alignX="center"
     alignY="top"
   />
   <Latex2D
     latex={'\\boldsymbol{+}'}
-    position={new Vector2((-2 / Math.PI) + 2 * Math.PI + shiftX, 0.5)}
+    position={new Vector2(-2 / Math.PI + 2 * Math.PI + shiftX, 0.5)}
     alignX="center"
     alignY="top"
   />

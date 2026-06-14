@@ -1,5 +1,4 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   // For ease of creating the template applets
   import {
     Angle,

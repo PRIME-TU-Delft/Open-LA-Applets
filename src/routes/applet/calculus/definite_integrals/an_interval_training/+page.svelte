@@ -56,7 +56,6 @@
     new Vector2(12, 12), // top-right
     0.5 // margin
   );
-  /* eslint-disable @typescript-eslint/no-unused-vars */
 
   // ####
   // AXIS

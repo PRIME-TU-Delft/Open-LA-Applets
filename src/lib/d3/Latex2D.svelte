@@ -16,7 +16,7 @@
 <script lang="ts">
   import Latex from '$lib/components/Latex.svelte';
   import { cameraState } from '$lib/stores/camera.svelte';
-  import { getContext, setContext } from 'svelte';
+  import { getContext } from 'svelte';
   import { Vector2 } from 'three';
 
   let {
@@ -36,9 +36,7 @@
   const scaleX = scale2D?.x ?? 1;
   const scaleY = scale2D?.y ?? 1;
 
-  const scaledPosition = $derived(
-    new Vector2(position.x * scaleX, position.y * scaleY)
-  );
+  const scaledPosition = $derived(new Vector2(position.x * scaleX, position.y * scaleY));
 
   let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
 

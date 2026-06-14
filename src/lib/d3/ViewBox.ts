@@ -15,7 +15,13 @@ export class ViewBox {
    * @param scaleX Scale factor for X axis (optional, default 1)
    * @param scaleY Scale factor for Y axis (optional, default 1)
    */
-  constructor(bottomLeft: Vector2, topRight: Vector2, margin?: number, scaleX?: number, scaleY?: number) {
+  constructor(
+    bottomLeft: Vector2,
+    topRight: Vector2,
+    margin?: number,
+    scaleX?: number,
+    scaleY?: number
+  ) {
     this.scaleX = scaleX ?? 1;
     this.scaleY = scaleY ?? 1;
     // Apply scales to convert from display-space to world-space
