@@ -40,9 +40,11 @@
   let sY = 0.2; // scale for y-axis to make the graph look better
 
   initialViewBox = new ViewBox(
-    new Vector2(-1, -1 * sY), // bottom-left
-    new Vector2(15, 25 * sY), // top-right
-    0.5 // margin
+    new Vector2(-1, -1), // bottom-left
+    new Vector2(15, 25), // top-right
+    0.5, // margin
+    1, // scaleX
+    sY // scaleY
   );
 
   // ###########

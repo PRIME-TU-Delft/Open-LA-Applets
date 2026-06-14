@@ -4,16 +4,23 @@ export class ViewBox {
   bottomLeft: Vector2;
   topRight: Vector2;
   margin: number;
+  scaleX: number;
+  scaleY: number;
 
   /**
    * ViewBox automatically sets the camera position and zoom in order to make the area defined by it always visible on any screen
    * @param bottomLeft Bottom left corner of the view box
    * @param topRight Top right corner of the view box
    * @param margin Margin of the box to extend the sides with
+   * @param scaleX Scale factor for X axis (optional, default 1)
+   * @param scaleY Scale factor for Y axis (optional, default 1)
    */
-  constructor(bottomLeft: Vector2, topRight: Vector2, margin?: number) {
-    this.bottomLeft = bottomLeft;
-    this.topRight = topRight;
+  constructor(bottomLeft: Vector2, topRight: Vector2, margin?: number, scaleX?: number, scaleY?: number) {
+    this.scaleX = scaleX ?? 1;
+    this.scaleY = scaleY ?? 1;
+    // Apply scales to convert from display-space to world-space
+    this.bottomLeft = new Vector2(bottomLeft.x * this.scaleX, bottomLeft.y * this.scaleY);
+    this.topRight = new Vector2(topRight.x * this.scaleX, topRight.y * this.scaleY);
     this.margin = margin ?? 0;
   }
 
