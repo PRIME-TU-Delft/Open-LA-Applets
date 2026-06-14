@@ -13,5 +13,7 @@
 {#if latex || label.includes('{') || label.includes('\\') || checkLatex?.includes('{') || checkLatex?.includes('\\')}
   <Latex latex={label} color={color?.toString()} />
 {:else}
-  {label}
+  <span style="color: {color?.toString()}">
+    {label}
+  </span>
 {/if}
