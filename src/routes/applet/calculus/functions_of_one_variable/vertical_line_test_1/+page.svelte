@@ -1,9 +1,6 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    AppletObject,
-    FunctionFragment
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
