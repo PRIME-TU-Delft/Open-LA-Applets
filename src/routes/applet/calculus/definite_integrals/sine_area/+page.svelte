@@ -60,12 +60,12 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(sY + '\\sin(x/' + sX + ')', PrimeColor.blue, {
-      domain: { xMin: -Math.PI * sX, xMax: Math.PI * sX },
+    new FunctionFragment('\\sin(x)', PrimeColor.blue, {
+      domain: { xMin: -Math.PI, xMax: Math.PI },
       legendText: '\\sin(x)',
       integral: {
-        xLeft: (-1 / 2) * Math.PI * sX,
-        xRight: (1 / 2) * Math.PI * sX,
+        xLeft: (-1 / 2) * Math.PI,
+        xRight: (1 / 2) * Math.PI,
         legendText: '\\int_{-\\frac12\\pi}^{\\frac12\\pi} \\sin(x) dx',
         isDashed: false,
         color: PrimeColor.darkGreen,
@@ -82,29 +82,24 @@
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   legendFormulaPosition="top-left"
+  scaleX={sX}
+  scaleY={sY}
   axis={null}
 >
   <TemplateComponent objects={appletObjects} />
   <Axis
-    scaleX={sX}
     skipX={100}
-    scaleY={sY}
     skipY={2}
     showAxisNumbersX={false}
-    additionalTicksX={[-0.5 * Math.PI * sX, Math.PI * sX, 0.5 * Math.PI * sX, -Math.PI * sX]}
+    additionalTicksX={[-0.5 * Math.PI, Math.PI, 0.5 * Math.PI, -Math.PI]}
   />
-  <Latex2D latex="\frac12\pi" position={new Vector2(0.5 * Math.PI * sX, -0.15)} alignX="right" />
-  <Latex2D latex="\pi" position={new Vector2(Math.PI * sX, -0.15)} alignX="center" />
+  <Latex2D latex="\frac12\pi" position={new Vector2(0.5 * Math.PI, -0.15)} alignX="right" />
+  <Latex2D latex="\pi" position={new Vector2(Math.PI, -0.15)} alignX="center" />
   <Latex2D
     latex="-\frac12\pi"
-    position={new Vector2(-0.5 * Math.PI * sX, 0.15)}
+    position={new Vector2(-0.5 * Math.PI, 0.15)}
     alignX="center"
     alignY="bottom"
   />
-  <Latex2D
-    latex="-\pi"
-    position={new Vector2(-Math.PI * sX, 0.15)}
-    alignX="center"
-    alignY="bottom"
-  />
+  <Latex2D latex="-\pi" position={new Vector2(-Math.PI, 0.15)} alignX="center" alignY="bottom" />
 </Canvas2D>

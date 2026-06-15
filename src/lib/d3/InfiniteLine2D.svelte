@@ -11,6 +11,7 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
+  import { getContext } from 'svelte';
 
   let {
     origin = new Vector2(0, 0),
@@ -20,13 +21,18 @@
     isDashed = false
   }: InfiniteLine2DProps = $props();
 
-  const dir = $derived(direction.clone().normalize());
-  const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(origin));
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+
+  const dir = $derived(new Vector2(direction.x * sx, direction.y * sy).normalize());
+  const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(scaledOrigin));
   const end = $derived(
     dir
       .clone()
       .multiplyScalar(GRID_SIZE_2D * -1)
-      .add(origin)
+      .add(scaledOrigin)
   );
 </script>
 

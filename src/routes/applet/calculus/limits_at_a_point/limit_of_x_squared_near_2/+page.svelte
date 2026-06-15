@@ -57,7 +57,7 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, 0.05, 8, 0.05, PrimeColor.orange, {
-    label: 'ε'
+    label: '\\varepsilon'
   });
   const appletObjects: AppletObject[] = [
     new FunctionFragment('x^2', PrimeColor.blue, {

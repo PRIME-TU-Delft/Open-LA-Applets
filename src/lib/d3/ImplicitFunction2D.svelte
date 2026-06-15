@@ -2,6 +2,7 @@
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
+  import { getContext, setContext } from 'svelte';
 
   export type ImplicitFunction2DProps = {
     // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
@@ -107,6 +108,16 @@
     isDashed = false
   }: ImplicitFunction2DProps = $props();
 
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+  setContext('scale2D', { x: 1, y: 1 });
+
+  const worldXMin = $derived(xMin * sx);
+  const worldXMax = $derived(xMax * sx);
+  const worldYMin = $derived(yMin * sy);
+  const worldYMax = $derived(yMax * sy);
+
   function interpolate(p1: Vector2, p2: Vector2, v1: number, v2: number): Vector2 {
     if (Math.abs(v1 - v2) < 1e-10) return p1.clone();
     const t = -v1 / (v2 - v1);
@@ -117,17 +128,17 @@
   const contourLines = $derived.by(() => {
     const lines: StartEndLine[] = [];
 
-    const gridWidth = Math.ceil((xMax - xMin) / stepSize);
-    const gridHeight = Math.ceil((yMax - yMin) / stepSize);
+    const gridWidth = Math.ceil((worldXMax - worldXMin) / stepSize);
+    const gridHeight = Math.ceil((worldYMax - worldYMin) / stepSize);
 
     const values: number[][] = [];
     for (let i = 0; i <= gridWidth; i++) {
       values[i] = [];
       for (let j = 0; j <= gridHeight; j++) {
-        const x = xMin + i * stepSize;
-        const y = yMin + j * stepSize;
+        const x = worldXMin + i * stepSize;
+        const y = worldYMin + j * stepSize;
         try {
-          const val = zeroFunc(x, y);
+          const val = zeroFunc(x / sx, y / sy);
           values[i][j] = isFinite(val) ? val : 0;
         } catch {
           values[i][j] = 0;
@@ -137,8 +148,8 @@
 
     for (let i = 0; i < gridWidth; i++) {
       for (let j = 0; j < gridHeight; j++) {
-        const x = xMin + i * stepSize;
-        const y = yMin + j * stepSize;
+        const x = worldXMin + i * stepSize;
+        const y = worldYMin + j * stepSize;
 
         // Get the four corner values
         const v00 = values[i][j];

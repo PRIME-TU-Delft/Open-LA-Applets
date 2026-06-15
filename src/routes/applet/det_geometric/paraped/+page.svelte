@@ -19,7 +19,7 @@
   let controls = Controls.addSlider(2, 1, 6, 0.25, PrimeColor.blue, { label: '||a||' })
     .addSlider(2, 1, 6, 0.25, PrimeColor.cyan, { label: '||b||' })
     .addSlider(0.5, 0, 1, 0.1, PrimeColor.darkGreen, {
-      label: 'θ',
+      label: '\\theta',
       valueFn: (v) => (v / Math.PI).toFixed(2)
     })
     .addToggle(true, '\\text{' + $_('applets.common.fill') + '}');
@@ -111,7 +111,7 @@
       .add(new MathVector3(0, 0, -0.25))}
   />
 
-  <!-- MARK: θ -->
+  <!-- MARK: theta -->
   <Angle3D vs={[new MathVector3(0, 0, 1), c]} size={2} />
   <Latex3D
     latex={String.raw`\theta`}

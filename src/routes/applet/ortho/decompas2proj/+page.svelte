@@ -36,7 +36,7 @@
   <!-- U_v_perp -->
   <Vector3D direction={new Vector3(0, 1, 0)} length={u.y} color={PrimeColor.orange} />
   <Latex3D
-    latex={String.raw`\mathbf{u}_{\mathcal{V}^{\perp}}`}
+    latex={String.raw`\mathbf{u}_{V^{\perp}}`}
     position={new Vector3(0, u.y, 0)}
     extend={0.3}
     color={PrimeColor.orange}
@@ -80,7 +80,7 @@
     alwaysOnTop
   />
   <Latex3D
-    latex={String.raw`\mathbf{u}_{\mathcal{V}}`}
+    latex={String.raw`\mathbf{u}_{V}`}
     position={proj_v1.clone().add(proj_v2)}
     color={PrimeColor.raspberry}
   />
@@ -95,11 +95,7 @@
 
   <!-- MARK: V -->
   <PlaneFromNormal normal={new Vector3(0, 1, 0)} color={PrimeColor.darkGreen} />
-  <Latex3D
-    latex={String.raw`\mathcal{V}`}
-    position={new Vector3(5.3, 0, 5.4)}
-    color={PrimeColor.darkGreen}
-  />
+  <Latex3D latex={String.raw`V`} position={new Vector3(5.3, 0, 5.4)} color={PrimeColor.darkGreen} />
 </Canvas3D>
 
 {#snippet helperVector(origin: Vector3, direction: Vector3)}
