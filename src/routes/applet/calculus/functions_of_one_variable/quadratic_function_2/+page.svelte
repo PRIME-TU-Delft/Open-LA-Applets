@@ -165,7 +165,7 @@
       const yVertex = func(xVertex);
       list.push(new Vector2(xVertex, yVertex));
     } else {
-      list.push(undefined);
+      list.push(new Vector2(-100, -100)); // placeholder point that won't be shown
     }
 
     const D = b * b - 4 * a * c;
@@ -193,9 +193,7 @@
   <TemplateComponent objects={appletObjects} />
   <Point2D position={points()[0]} color={PrimeColor.raspberry} shape="circle" />
   {#if points().length > 1}
-    {#if points()[1] !== undefined}
-      <Point2D position={points()[1]} color={PrimeColor.darkGreen} shape="triangle" />
-    {/if}
+    <Point2D position={points()[1]} color={PrimeColor.darkGreen} shape="triangle" />
   {/if}
   {#if points().length > 2}
     <Point2D position={points()[2]} color={PrimeColor.orange} shape="square" />
