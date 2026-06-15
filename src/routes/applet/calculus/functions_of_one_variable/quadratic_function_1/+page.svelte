@@ -10,6 +10,7 @@
   import { Controls } from '$lib/controls/Controls';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
+  import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -77,15 +78,15 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: 'a',
+    label: toLatexText('$a$'),
     valueFn: (v: number) => v.toFixed(1)
   }) // a
     .addSlider(-4, -5, 5, 0.1, PrimeColor.orange, {
-      label: 'b',
+      label: toLatexText('$b$'),
       valueFn: (v: number) => v.toFixed(1)
     }) // b
     .addSlider(3, -5, 5, 0.1, PrimeColor.raspberry, {
-      label: 'c',
+      label: toLatexText('$c$'),
       valueFn: (v: number) => v.toFixed(1)
     }); // c
   function func(x: number) {
@@ -100,14 +101,18 @@
     const a = controls[0];
     const b = controls[1];
     const c = controls[2];
-    let value = 'f(x) = ';
+    let value = 'h(x) = ';
     if (a === 0 && b === 0 && c === 0) {
       value += 0;
       return value;
     }
     if (a !== 0) {
       if (a !== 1 && a !== -1) {
-        value += a.toFixed(1);
+        let astr = a.toFixed(1);
+        if (astr.endsWith('.0')) {
+          astr = astr.slice(0, -2);
+        }
+        value += astr;
       } else if (a === -1) {
         value += '-';
       } else if (a === 1) {
@@ -120,7 +125,11 @@
         value += '+';
       }
       if (b !== 1 && b !== -1) {
-        value += b.toFixed(1);
+        let bstr = b.toFixed(1);
+        if (bstr.endsWith('.0')) {
+          bstr = bstr.slice(0, -2);
+        }
+        value += bstr;
       } else if (b === -1) {
         value += '-';
       } else if (b === 1) {
@@ -132,7 +141,11 @@
       if (c > 0) {
         value += '+';
       }
-      value += c.toFixed(1);
+      let cstr = c.toFixed(1);
+      if (cstr.endsWith('.0')) {
+        cstr = cstr.slice(0, -2);
+      }
+      value += cstr;
     }
     return value;
   }
@@ -147,10 +160,12 @@
 
     let list = [new Vector2(0, c)]; // y-intercept
 
-    if (a !== 0) {
+    if (a !== 0 && b !== 0) {
       const xVertex = -b / (2 * a);
       const yVertex = func(xVertex);
       list.push(new Vector2(xVertex, yVertex));
+    } else {
+      list.push(undefined);
     }
 
     const D = b * b - 4 * a * c;
@@ -178,7 +193,9 @@
   <TemplateComponent objects={appletObjects} />
   <Point2D position={points()[0]} color={PrimeColor.raspberry} shape="circle" />
   {#if points().length > 1}
-    <Point2D position={points()[1]} color={PrimeColor.darkGreen} shape="triangle" />
+    {#if points()[1] !== undefined}
+      <Point2D position={points()[1]} color={PrimeColor.darkGreen} shape="triangle" />
+    {/if}
   {/if}
   {#if points().length > 2}
     <Point2D position={points()[2]} color={PrimeColor.orange} shape="square" />

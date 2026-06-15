@@ -38,7 +38,7 @@
     10,
     1,
     PrimeColor.raspberry,
-    { label: 'n', valueFn: (v) => roundString(v, 0) }
+    { label: toLatexText('$n$'), valueFn: (v) => roundString(v, 0) }
   );
 
   const currentMethod = $derived(

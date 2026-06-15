@@ -9,7 +9,6 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
   import Point2D from '$lib/d3/Point2D.svelte';
-  import Line2D from '$lib/d3/Line2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
   import { toLatexText } from '$lib/utils/FormatString';
 
@@ -37,7 +36,7 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
+    new Vector2(-1, -4), // bottom-left
     new Vector2(4, 7), // top-right
     0.5 // margin
   );
@@ -78,47 +77,106 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(3, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: toLatexText('$y$-intercept'),
+  const controls = Controls.addSlider(-3, -5, 5, 0.1, PrimeColor.darkGreen, {
+    label: toLatexText('$a$'),
     valueFn: (v: number) => v.toFixed(1)
-  }) // y-intercept
-    .addSlider(2, -5, 5, 0.1, PrimeColor.orange, {
-      label: toLatexText('slope'),
+  }) // a
+    .addSlider(0, -5, 5, 0.1, PrimeColor.orange, {
+      label: toLatexText('$b$'),
       valueFn: (v: number) => v.toFixed(1)
-    }); // slope
+    }) // b
+    .addSlider(2, -5, 5, 0.1, PrimeColor.raspberry, {
+      label: toLatexText('$c$'),
+      valueFn: (v: number) => v.toFixed(1)
+    }); // c
   function func(x: number) {
-    const slope = controls[1];
-    const intercept = controls[0];
-    return slope * x + intercept;
+    const a = controls[0];
+    const b = controls[1];
+    const c = controls[2];
+    return a * x * x + b * x + c;
   }
   const appletObjects: AppletObject[] = [new FunctionFragment(func, PrimeColor.blue)];
 
   function textFormula() {
-    const slope = controls[1];
-    const intercept = controls[0];
-    let value = `f(x)=`;
-    if (slope === 0 && intercept === 0) {
-      value += '0';
+    const a = controls[0];
+    const b = controls[1];
+    const c = controls[2];
+    let value = 'h(x) = ';
+    if (a === 0 && b === 0 && c === 0) {
+      value += 0;
+      return value;
     }
-    if (slope !== 0) {
-      if (slope === 1) {
-        value += 'x';
-      } else if (slope === -1) {
-        value += '-x';
-      } else {
-        value += slope.toFixed(1) + 'x';
+    if (a !== 0) {
+      if (a !== 1 && a !== -1) {
+        let astr = a.toFixed(1);
+        if (astr.endsWith('.0')) {
+          astr = astr.slice(0, -2);
+        }
+        value += astr;
+      } else if (a === -1) {
+        value += '-';
+      } else if (a === 1) {
+        value += '';
       }
+      value += 'x^2';
     }
-    if (intercept !== 0) {
-      if (intercept > 0 && slope !== 0) {
+    if (b !== 0) {
+      if (b > 0) {
         value += '+';
       }
-      value += intercept.toFixed(1);
+      if (b !== 1 && b !== -1) {
+        let bstr = b.toFixed(1);
+        if (bstr.endsWith('.0')) {
+          bstr = bstr.slice(0, -2);
+        }
+        value += bstr;
+      } else if (b === -1) {
+        value += '-';
+      } else if (b === 1) {
+        value += '';
+      }
+      value += 'x';
+    }
+    if (c !== 0) {
+      if (c > 0) {
+        value += '+';
+      }
+      let cstr = c.toFixed(1);
+      if (cstr.endsWith('.0')) {
+        cstr = cstr.slice(0, -2);
+      }
+      value += cstr;
     }
     return value;
   }
 
   const legendItems = $derived([new LegendItem(textFormula(), PrimeColor.blue)]);
+
+  function points() {
+    // Returns y-intercept, then global max/min, then local max/min (if they exist)
+    const a = controls[0];
+    const b = controls[1];
+    const c = controls[2];
+
+    let list = [new Vector2(0, c)]; // y-intercept
+
+    if (a !== 0 && b !== 0) {
+      const xVertex = -b / (2 * a);
+      const yVertex = func(xVertex);
+      list.push(new Vector2(xVertex, yVertex));
+    } else {
+      list.push(undefined);
+    }
+
+    const D = b * b - 4 * a * c;
+    if (D > 0) {
+      const sqrtD = Math.sqrt(D);
+      const x1 = (-b + sqrtD) / (2 * a);
+      const x2 = (-b - sqrtD) / (2 * a);
+      list.push(new Vector2(x1, func(x1)), new Vector2(x2, func(x2)));
+    }
+    return list;
+  }
 </script>
 
 <Canvas2D
@@ -133,23 +191,14 @@
   {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
-  <Point2D position={new Vector2(0, controls[0])} color={PrimeColor.darkGreen} shape="circle" />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(0))}
-    color={PrimeColor.orange}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(1, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    width={0.06}
-  />
+  <Point2D position={points()[0]} color={PrimeColor.raspberry} shape="circle" />
+  {#if points().length > 1}
+    {#if points()[1] !== undefined}
+      <Point2D position={points()[1]} color={PrimeColor.darkGreen} shape="triangle" />
+    {/if}
+  {/if}
+  {#if points().length > 2}
+    <Point2D position={points()[2]} color={PrimeColor.orange} shape="square" />
+    <Point2D position={points()[3]} color={PrimeColor.orange} shape="square" />
+  {/if}
 </Canvas2D>

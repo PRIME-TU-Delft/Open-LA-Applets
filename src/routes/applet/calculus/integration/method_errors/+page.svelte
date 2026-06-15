@@ -48,7 +48,7 @@
   let animationOn = $state(false);
 
   const controls = Controls.addSlider(6, 1, 50, 1, PrimeColor.raspberry, {
-    label: 'h',
+    label: toLatexText('$h$'),
     valueFn: (v: number) => round(1 / (4 * Math.round(v)), 4) + '\\pi',
     onStartChanging: () => {
       animationOn = true;
