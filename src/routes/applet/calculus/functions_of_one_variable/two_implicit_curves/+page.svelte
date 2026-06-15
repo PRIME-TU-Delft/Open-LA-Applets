@@ -36,8 +36,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-5, -5), // bottom-left
-    new Vector2(5, 5), // top-right
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(4, 7), // top-right
     0.5 // margin
   );
 
@@ -77,7 +77,15 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  let f = (x: number) => Math.sin(2 * x) + x;
+  let C1y = (x: number) => (x ** 2) ** (1 / 3);
+  let C2y1 = (x: number) => x;
+  let C2y2 = (x: number) => -x;
+  const appletObjects: AppletObject[] = [
+    new FunctionFragment(C1y, PrimeColor.blue, { legendText: 'C_1' }),
+    new FunctionFragment(C2y1, PrimeColor.raspberry, { legendText: 'C_2' }),
+    new FunctionFragment(C2y2, PrimeColor.raspberry)
+  ];
+
   function snapToFunction(position: Vector2) {
     let x = position.x;
     let y = 0;
@@ -85,11 +93,9 @@
   }
 
   const draggables = [
-    new Draggable(new Vector2(1, 0), PrimeColor.orange, undefined, snapToFunction)
+    new Draggable(new Vector2(2, 0), PrimeColor.orange, undefined, snapToFunction)
   ];
   let xD = $derived(draggables[0].position.x);
-
-  const appletObjects: AppletObject[] = [new FunctionFragment(f, PrimeColor.blue)];
 </script>
 
 <Canvas2D
@@ -105,9 +111,11 @@
 >
   <TemplateComponent objects={appletObjects} />
   <InfiniteLine2D
-    origin={new Vector2(xD, 0)}
+    origin={new Vector2(draggables[0].position.x, 0)}
     direction={new Vector2(0, 1)}
     color={PrimeColor.darkGreen}
   />
-  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, f(xD))} shape="square" />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, C1y(xD))} shape="square" />
+  <Point2D color={PrimeColor.cyan} position={new Vector2(xD, C2y1(xD))} shape="triangle" />
+  <Point2D color={PrimeColor.cyan} position={new Vector2(xD, C2y2(xD))} shape="triangle" />
 </Canvas2D>

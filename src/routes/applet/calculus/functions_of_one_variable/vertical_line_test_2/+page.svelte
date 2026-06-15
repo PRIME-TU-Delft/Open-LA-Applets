@@ -154,7 +154,7 @@
     direction={new Vector2(0, 1)}
     color={PrimeColor.darkGreen}
   />
-  <Point2D color={PrimeColor.orange} position={new Vector2(xD, yDs[0])} shape="square" />
-  <Point2D color={PrimeColor.orange} position={new Vector2(xD, yDs[1])} shape="square" />
-  <Point2D color={PrimeColor.orange} position={new Vector2(xD, yDs[2])} shape="square" />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, yDs[0])} shape="square" />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, yDs[1])} shape="square" />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, yDs[2])} shape="square" />
 </Canvas2D>
