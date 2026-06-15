@@ -1,17 +1,11 @@
 <script lang="ts">
   // For ease of creating the template applets
   import {
-    Angle,
     AppletObject,
     AsymptoteFragment,
-    Circle,
     FunctionFragment,
-    ImplicitFunctionFragment,
     LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
     Point,
-    Polygon,
     Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
@@ -20,7 +14,6 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
 
