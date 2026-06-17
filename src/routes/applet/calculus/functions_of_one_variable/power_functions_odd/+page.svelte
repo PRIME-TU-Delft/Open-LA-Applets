@@ -6,12 +6,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import Point2D from '$lib/d3/Point2D.svelte';
-  import Line2D from '$lib/d3/Line2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
-  import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -37,8 +35,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-3, -3), // bottom-left
+    new Vector2(4, 8), // top-right
     0.5 // margin
   );
 
@@ -78,49 +76,22 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(3, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: toLatexText('$y$-intercept'),
-    valueFn: (v: number) => v.toFixed(1),
-    animationStep: 0.1
-  }) // y-intercept
-    .addSlider(2, -5, 5, 0.1, PrimeColor.orange, {
-      label: toLatexText('slope'),
-      valueFn: (v: number) => v.toFixed(1),
-      animationStep: 0.1
-    }); // slope
-  function func(x: number) {
-    const slope = controls[1];
-    const intercept = controls[0];
-    return slope * x + intercept;
-  }
-  const appletObjects: AppletObject[] = [new FunctionFragment(func, PrimeColor.blue)];
-
+  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
+    label: toLatexText('$n$'),
+    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
+    animationStep: 1
+  });
+  const appletObjects: AppletObject[] = [
+    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
+    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
+  ];
   function textFormula() {
-    const slope = controls[1];
-    const intercept = controls[0];
-    let value = `f(x)=`;
-    if (slope === 0 && intercept === 0) {
-      value += '0';
-    }
-    if (slope !== 0) {
-      if (slope === 1) {
-        value += 'x';
-      } else if (slope === -1) {
-        value += '-x';
-      } else {
-        value += slope.toFixed(1) + 'x';
-      }
-    }
-    if (intercept !== 0) {
-      if (intercept > 0 && slope !== 0) {
-        value += '+';
-      }
-      value += intercept.toFixed(1);
-    }
-    return value;
+    return `g(x) = x^{${1 + 2 * controls[0]}}`;
   }
-
-  const legendItems = $derived([new LegendItem(textFormula(), PrimeColor.blue)]);
+  const legendItems = $derived([
+    new LegendItem(`y = x^3`, PrimeColor.orange),
+    new LegendItem(textFormula(), PrimeColor.blue)
+  ]);
 </script>
 
 <Canvas2D
@@ -135,23 +106,4 @@
   {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
-  <Point2D position={new Vector2(0, controls[0])} color={PrimeColor.darkGreen} shape="circle" />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(0))}
-    color={PrimeColor.orange}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(1, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    width={0.06}
-  />
 </Canvas2D>

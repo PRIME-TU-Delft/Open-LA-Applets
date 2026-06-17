@@ -92,15 +92,18 @@
 
   const controls = Controls.addSlider(2, 2, 9, 1, PrimeColor.darkGreen, {
     label: toLatexText('$p$'),
-    valueFn: (v: number) => v.toFixed(0)
+    valueFn: (v: number) => v.toFixed(0),
+    animationStep: 1
   })
     .addSlider(5, 2, 9, 1, PrimeColor.orange, {
       label: toLatexText('$q$'),
-      valueFn: (v: number) => v.toFixed(0)
+      valueFn: (v: number) => v.toFixed(0),
+      animationStep: 1
     })
     .addSlider(2, -3, 3, 1, PrimeColor.raspberry, {
       label: toLatexText('$b$'),
-      valueFn: (v: number) => (Math.sign(v) * v ** 2).toFixed(0)
+      valueFn: (v: number) => (Math.sign(v) * v ** 2).toFixed(0),
+      animationStep: 1
     });
 
   function curve(x: number, y: number) {
