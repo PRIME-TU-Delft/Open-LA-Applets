@@ -134,16 +134,10 @@ export class FunctionFragment extends AbstractFunctionFragment {
 
 export class ImplicitFunctionFragment extends AbstractFunctionFragment {
   func: (x: number, y: number) => number;
+  stepSize: number = 0.15;
+  tension: number = -0.5;
+  maxDepth: number = 6;
 
-  /**
-   * Implicit function fragment template object
-   * @param func A javascript function or a latex string describing the function. If in JS, it has to be a zero func (=0)
-   * @param color Color of the function graph
-   * @param options.domain Domain on which the function should be drawn
-   * @param options.isDashed Whether the function line should be dashed
-   * @param options.shape Shape to use for legend and points
-   * @param options.legendText Text to be shown in the legend item
-   */
   constructor(
     func: ((x: number, y: number) => number) | string,
     color: PrimeColor,
@@ -152,6 +146,9 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
       isDashed?: boolean;
       shape?: Shape;
       legendText?: string;
+      stepSize?: number;
+      tension?: number;
+      maxDepth?: number;
     }
   ) {
     super(color, options);
@@ -176,6 +173,9 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
     } else {
       this.func = func;
     }
+    if (options?.stepSize !== undefined) this.stepSize = options.stepSize;
+    if (options?.tension !== undefined) this.tension = options.tension;
+    if (options?.maxDepth !== undefined) this.maxDepth = options.maxDepth;
   }
 }
 

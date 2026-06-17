@@ -1,29 +1,18 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    Angle,
-    AppletObject,
-    AsymptoteFragment,
-    Circle,
-    FunctionFragment,
-    ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
-    Point,
-    Polygon,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, ImplicitFunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
   import { LegendItem } from '$lib/utils/Legend';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -49,8 +38,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(3, 3), // top-right
+    new Vector2(-4, -4), // bottom-left
+    new Vector2(4, 4), // top-right
     0.5 // margin
   );
 
@@ -90,41 +79,66 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(4, 2, 9, 1, PrimeColor.darkGreen, {
+
+  function snapToFunction(position: Vector2) {
+    let x = position.x;
+    let y = 0;
+    return new Vector2(x, y);
+  }
+  const draggables = [
+    new Draggable(new Vector2(1, 0), PrimeColor.orange, undefined, snapToFunction)
+  ];
+  let xD = $derived(draggables[0].position.x);
+
+  const controls = Controls.addSlider(2, 2, 9, 1, PrimeColor.darkGreen, {
     label: toLatexText('$p$'),
     valueFn: (v: number) => v.toFixed(0)
   })
-  .addSlider(4, 2, 9, 1, PrimeColor.orange, {
-    label: toLatexText('$q$'),
-    valueFn: (v: number) => v.toFixed(0)
-  }).addSlider(1, -3, 3, 1, PrimeColor.raspberry, {
-    label: toLatexText('$b$'),
-    valueFn: (v: number) => ((Math.sign(v))*(v**2)).toFixed(0)
-  });
+    .addSlider(5, 2, 9, 1, PrimeColor.orange, {
+      label: toLatexText('$q$'),
+      valueFn: (v: number) => v.toFixed(0)
+    })
+    .addSlider(2, -3, 3, 1, PrimeColor.raspberry, {
+      label: toLatexText('$b$'),
+      valueFn: (v: number) => (Math.sign(v) * v ** 2).toFixed(0)
+    });
 
-  function curve(x:number, y:number) {
+  function curve(x: number, y: number) {
     let p = controls[0];
     let q = controls[1];
     let b = controls[2];
-    return Math.pow(x, p) + Math.pow(y, q) - b;
+    return Math.pow(x, p) + Math.pow(y, q) - Math.sign(b) * b ** 2;
   }
-  
+
   function curveLegend() {
     let p = controls[0];
     let q = controls[1];
     let b = controls[2];
-    return toLatexText(`$x^{${p}} + y^{${q}} = ${b}$`);
+    return toLatexText(`$x^{${p}} + y^{${q}} = ${Math.sign(b) * b ** 2}$`);
   }
+
+  function roots(x: number) {
+    const p = controls[0];
+    const q = controls[1];
+    const b = controls[2];
+    const rhs = Math.sign(b) * b ** 2 - Math.pow(x, p);
+    if (q % 2 === 0 && rhs < 0) return [-100, -100]; // no real roots for even q if rhs is negative
+    if (q % 2 === 0) return [Math.pow(rhs, 1 / q), -Math.pow(rhs, 1 / q)]; // two real roots for even q
+    if (q % 2 === 1 && rhs >= 0) return [Math.pow(rhs, 1 / q), Math.pow(rhs, 1 / q)]; // one real root for odd q
+    if (q % 2 === 1 && rhs < 0) return [-Math.pow(-rhs, 1 / q), -Math.pow(-rhs, 1 / q)]; // one real root for odd q
+    return [-100, -100];
+  }
+  const yDs = $derived(roots(xD));
 
   const legendItems = $derived([new LegendItem(curveLegend(), PrimeColor.blue)]);
 
   const appletObjects: AppletObject[] = [
-    new ImplicitFunctionFragment(curve, PrimeColor.blue)
-    ];
-
+    new ImplicitFunctionFragment(curve, PrimeColor.blue, { maxDepth: 3 })
+  ];
 </script>
 
 <Canvas2D
+  {draggables}
   {controls}
   {initialViewBox}
   {cameraPosition}
@@ -136,4 +150,11 @@
   {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
+  <InfiniteLine2D
+    origin={new Vector2(xD, 0)}
+    direction={new Vector2(0, 1)}
+    color={PrimeColor.darkGreen}
+  />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, yDs[0])} shape="square" />
+  <Point2D color={PrimeColor.yellow} position={new Vector2(xD, yDs[1])} shape="square" />
 </Canvas2D>

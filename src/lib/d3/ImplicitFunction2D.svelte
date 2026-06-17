@@ -16,6 +16,7 @@
     yMax?: number;
     width?: number;
     isDashed?: boolean;
+    maxDepth?: number;
   };
 
   class StartEndLine {
@@ -105,7 +106,8 @@
     yMin = -GRID_SIZE_2D,
     yMax = GRID_SIZE_2D,
     width = LINE_WIDTH,
-    isDashed = false
+    isDashed = false,
+    maxDepth = 6
   }: ImplicitFunction2DProps = $props();
 
   const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
@@ -124,118 +126,187 @@
     return p1.clone().lerp(p2, t);
   }
 
-  // Marching squares algorithm to find contour lines
+  // Helper function to evaluate function with caching
+  function getOrEvalFunc(valueCache: Map<string, number>, x: number, y: number): number {
+    const key = `${x},${y}`;
+    if (valueCache.has(key)) {
+      return valueCache.get(key)!;
+    }
+    try {
+      const val = zeroFunc(x / sx, y / sy);
+      const result = isFinite(val) ? val : 0;
+      valueCache.set(key, result);
+      return result;
+    } catch {
+      valueCache.set(key, 0);
+      return 0;
+    }
+  }
+
+  // Detect if a cell needs refinement based on curvature
+  function needsRefinement(
+    v00: number,
+    v10: number,
+    v01: number,
+    v11: number,
+    cellSize: number
+  ): boolean {
+    // Check for zero crossing
+    const hasZeroCrossing =
+      (v00 > 0 && v10 < 0) ||
+      (v00 < 0 && v10 > 0) ||
+      (v10 > 0 && v11 < 0) ||
+      (v10 < 0 && v11 > 0) ||
+      (v11 > 0 && v01 < 0) ||
+      (v11 < 0 && v01 > 0) ||
+      (v01 > 0 && v00 < 0) ||
+      (v01 < 0 && v00 > 0);
+
+    if (!hasZeroCrossing) return false;
+
+    // Don't refine cells that are already at minimum size
+    // Use a reasonable minimum based on stepSize
+    const minCellSize = stepSize / Math.pow(2, 5); // ~3% of original stepSize
+    if (cellSize <= minCellSize) return false;
+
+    // For cells with zero crossing, always refine until hitting minimum
+    return true;
+  }
+
+  // Recursive function to process cells with adaptive refinement
+  function marchingSquaresAdaptive(
+    lines: StartEndLine[],
+    valueCache: Map<string, number>,
+    xStart: number,
+    yStart: number,
+    currentStepSize: number,
+    maxDepth: number
+  ): void {
+    const x = xStart;
+    const y = yStart;
+
+    // Get the four corner values
+    const p00 = new Vector2(x, y);
+    const p10 = new Vector2(x + currentStepSize, y);
+    const p01 = new Vector2(x, y + currentStepSize);
+    const p11 = new Vector2(x + currentStepSize, y + currentStepSize);
+
+    const v00 = getOrEvalFunc(valueCache, x / sx, y / sy);
+    const v10 = getOrEvalFunc(valueCache, (x + currentStepSize) / sx, y / sy);
+    const v01 = getOrEvalFunc(valueCache, x / sx, (y + currentStepSize) / sy);
+    const v11 = getOrEvalFunc(valueCache, (x + currentStepSize) / sx, (y + currentStepSize) / sy);
+
+    // Create marching squares case
+    let caseIndex = 0;
+    if (v00 > 0) caseIndex |= 1;
+    if (v10 > 0) caseIndex |= 2;
+    if (v11 > 0) caseIndex |= 4;
+    if (v01 > 0) caseIndex |= 8;
+
+    // Skip if all same sign or zero
+    if (caseIndex === 0 || caseIndex === 15) return;
+
+    // Check if this cell needs refinement and we still have depth to refine
+    if (needsRefinement(v00, v10, v01, v11, currentStepSize) && maxDepth > 0) {
+      // Subdivide into 4 quadrants
+      const halfStep = currentStepSize / 2;
+      marchingSquaresAdaptive(lines, valueCache, x, y, halfStep, maxDepth - 1);
+      marchingSquaresAdaptive(lines, valueCache, x + halfStep, y, halfStep, maxDepth - 1);
+      marchingSquaresAdaptive(lines, valueCache, x, y + halfStep, halfStep, maxDepth - 1);
+      marchingSquaresAdaptive(
+        lines,
+        valueCache,
+        x + halfStep,
+        y + halfStep,
+        halfStep,
+        maxDepth - 1
+      );
+      return;
+    }
+
+    // Apply standard marching squares
+    // Edge midpoints (interpolated)
+    const edges: Vector2[] = [];
+    edges[0] = interpolate(p00, p10, v00, v10); // bottom edge
+    edges[1] = interpolate(p10, p11, v10, v11); // right edge
+    edges[2] = interpolate(p01, p11, v01, v11); // top edge
+    edges[3] = interpolate(p00, p01, v00, v01); // left edge
+
+    // Determine line segments based on case
+    const segments: [number, number][] = [];
+    switch (caseIndex) {
+      case 1:
+      case 14:
+        segments.push([3, 0]);
+        break;
+      case 2:
+      case 13:
+        segments.push([0, 1]);
+        break;
+      case 3:
+      case 12:
+        segments.push([3, 1]);
+        break;
+      case 4:
+      case 11:
+        segments.push([1, 2]);
+        break;
+      case 5:
+        segments.push([3, 0], [1, 2]);
+        break;
+      case 6:
+      case 9:
+        segments.push([0, 2]);
+        break;
+      case 7:
+      case 8:
+        segments.push([3, 2]);
+        break;
+      case 10:
+        segments.push([3, 1], [0, 2]);
+        break;
+    }
+
+    for (const [start, end] of segments) {
+      // Check if it can be added to any StartEndLine
+      let canBeAdded = false;
+      const s = edges[start];
+      const e = edges[end];
+      for (const line of lines) {
+        if (line.addEdge([s, e])) {
+          canBeAdded = true;
+          break;
+        }
+      }
+
+      if (!canBeAdded) {
+        // Create a new StartEndLine if it cannot be added
+        const newLine = new StartEndLine(s, e);
+        lines.push(newLine);
+      }
+    }
+  }
+
+  // Marching squares algorithm with adaptive refinement
   const contourLines = $derived.by(() => {
     const lines: StartEndLine[] = [];
+    const valueCache = new Map<string, number>();
 
-    const gridWidth = Math.ceil((worldXMax - worldXMin) / stepSize);
-    const gridHeight = Math.ceil((worldYMax - worldYMin) / stepSize);
+    let xPos = worldXMin;
+    while (xPos < worldXMax) {
+      let yPos = worldYMin;
+      while (yPos < worldYMax) {
+        // Calculate actual cell size (may be smaller at boundaries)
+        const currentStepSize = Math.min(stepSize, worldXMax - xPos, worldYMax - yPos);
 
-    const values: number[][] = [];
-    for (let i = 0; i <= gridWidth; i++) {
-      values[i] = [];
-      for (let j = 0; j <= gridHeight; j++) {
-        const x = worldXMin + i * stepSize;
-        const y = worldYMin + j * stepSize;
-        try {
-          const val = zeroFunc(x / sx, y / sy);
-          values[i][j] = isFinite(val) ? val : 0;
-        } catch {
-          values[i][j] = 0;
-        }
+        marchingSquaresAdaptive(lines, valueCache, xPos, yPos, currentStepSize, maxDepth);
+
+        yPos += stepSize;
       }
+      xPos += stepSize;
     }
 
-    for (let i = 0; i < gridWidth; i++) {
-      for (let j = 0; j < gridHeight; j++) {
-        const x = worldXMin + i * stepSize;
-        const y = worldYMin + j * stepSize;
-
-        // Get the four corner values
-        const v00 = values[i][j];
-        const v10 = values[i + 1][j];
-        const v01 = values[i][j + 1];
-        const v11 = values[i + 1][j + 1];
-
-        // Create marching squares case
-        let caseIndex = 0;
-        if (v00 > 0) caseIndex |= 1;
-        if (v10 > 0) caseIndex |= 2;
-        if (v11 > 0) caseIndex |= 4;
-        if (v01 > 0) caseIndex |= 8;
-
-        // Skip if all same sign or zero
-        if (caseIndex === 0 || caseIndex === 15) continue;
-
-        // Corner points
-        const p00 = new Vector2(x, y);
-        const p10 = new Vector2(x + stepSize, y);
-        const p01 = new Vector2(x, y + stepSize);
-        const p11 = new Vector2(x + stepSize, y + stepSize);
-
-        // Edge midpoints (interpolated)
-        const edges: Vector2[] = [];
-        edges[0] = interpolate(p00, p10, v00, v10); // bottom edge
-        edges[1] = interpolate(p10, p11, v10, v11); // right edge
-        edges[2] = interpolate(p01, p11, v01, v11); // top edge
-        edges[3] = interpolate(p00, p01, v00, v01); // left edge
-
-        // Determine line segments based on case
-        const segments: [number, number][] = [];
-        switch (caseIndex) {
-          case 1:
-          case 14:
-            segments.push([3, 0]);
-            break;
-          case 2:
-          case 13:
-            segments.push([0, 1]);
-            break;
-          case 3:
-          case 12:
-            segments.push([3, 1]);
-            break;
-          case 4:
-          case 11:
-            segments.push([1, 2]);
-            break;
-          case 5:
-            segments.push([3, 0], [1, 2]);
-            break;
-          case 6:
-          case 9:
-            segments.push([0, 2]);
-            break;
-          case 7:
-          case 8:
-            segments.push([3, 2]);
-            break;
-          case 10:
-            segments.push([3, 1], [0, 2]);
-            break;
-        }
-
-        for (const [start, end] of segments) {
-          // Check if it can be added to any StartEndLine
-          let canBeAdded = false;
-          const s = edges[start];
-          const e = edges[end];
-          for (const line of lines) {
-            if (line.addEdge([s, e])) {
-              canBeAdded = true;
-              break;
-            }
-          }
-
-          if (!canBeAdded) {
-            // Create a new StartEndLine if it cannot be added
-            const newLine = new StartEndLine(s, e);
-            lines.push(newLine);
-          }
-        }
-      }
-    }
-
+    // Merge connected lines
     let merged = true;
     while (merged) {
       merged = false;

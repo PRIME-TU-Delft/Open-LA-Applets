@@ -38,6 +38,9 @@
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
         isDashed={object.isDashed}
+        stepSize={object.stepSize}
+        tension={object.tension}
+        maxDepth={object.maxDepth}
       />
     {:else if object instanceof ParameterizedFunctionFragment}
       <ParameterizedFunction2D
