@@ -5,7 +5,6 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
@@ -101,7 +100,6 @@
 
 <Canvas2D
   {controls}
-  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   {legendItems}
