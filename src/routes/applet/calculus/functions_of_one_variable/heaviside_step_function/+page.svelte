@@ -83,10 +83,10 @@
   ];
   const controls = Controls.addDropdown(Conventions[2], Conventions, PrimeColor.yellow);
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => 0, PrimeColor.blue, {
+    new FunctionFragment('0', PrimeColor.blue, {
       domain: { xMax: 0 }
     }).addGaps(new Vector2(0, 0)),
-    new FunctionFragment((x: number) => 1, PrimeColor.blue, {
+    new FunctionFragment('1', PrimeColor.blue, {
       domain: { xMin: 0 }
     }).addGaps(new Vector2(0, 1))
   ];
