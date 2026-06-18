@@ -96,11 +96,11 @@
   let H = (x: number) => G(x - shift);
   let L = (x: number) => G(x - shift) + C;
 
-  const toggleControls = Controls.addToggle(true, 'F', PrimeColor.blue)
-    .addToggle(true, 'G', PrimeColor.orange)
-    .addToggle(true, 'H', PrimeColor.darkGreen)
-    .addToggle(true, 'K', PrimeColor.raspberry)
-    .addToggle(true, 'L', PrimeColor.yellow);
+  const toggleControls = Controls.addToggle(true, toLatexText('$F$'), PrimeColor.blue)
+    .addToggle(true, toLatexText('$G$'), PrimeColor.orange)
+    .addToggle(true, toLatexText('$H$'), PrimeColor.darkGreen)
+    .addToggle(true, toLatexText('$K$'), PrimeColor.raspberry)
+    .addToggle(true, toLatexText('$L$'), PrimeColor.yellow);
 
   const appletObjects: AppletObject[] = [
     new FunctionFragment('', PrimeColor.blue, {
