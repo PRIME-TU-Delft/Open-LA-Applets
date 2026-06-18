@@ -12,7 +12,6 @@
   import { LegendItem } from '$lib/utils/Legend';
   import { Formula } from '$lib/utils/Formulas';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -33,13 +32,6 @@
   // (remove if unnecessary)
   cameraPosition = new Vector2(6, 2);
   cameraZoom = 1.0;
-
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-1, -3), // bottom-left
-    new Vector2(7, 7), // top-right
-    0.5 // margin
-  );
 
   // ####
   // AXIS
@@ -94,7 +86,6 @@
 
   function textFormula() {
     const m1m2 = controls[0];
-    const G = 6.6743e-11;
     let value = `F(r)=\\frac{10^{${m1m2.toFixed(1).replace('.0', '')}}\\cdot G }{r^2}`;
     return value;
   }
