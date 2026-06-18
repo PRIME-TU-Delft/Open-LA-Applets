@@ -146,7 +146,7 @@
     <ExplicitFunction2D func={h} color={PrimeColor.darkGreen} />
   {/if}
   {#if controls[4]}
-    {#each Array.from({ length: maxAsymptotes }) as _, i}
+    {#each Array.from({ length: maxAsymptotes }) as _, i (i)}
       <InfiniteLine2D
         direction={new Vector2(0, 1)}
         color={PrimeColor.orange}
