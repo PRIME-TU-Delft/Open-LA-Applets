@@ -45,8 +45,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1.5, -1.5), // bottom-left
-    new Vector2(7.5, 7.5), // top-right
+    new Vector2(-0.5, -1.5), // bottom-left
+    new Vector2(9.5, 8.5), // top-right
     0.5 // margin
   );
 
@@ -57,7 +57,7 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: false,
+    showOrigin: true,
     showAxisNumbersX: false,
     showAxisNumbersY: false,
     logarithmicX: false,
@@ -92,13 +92,13 @@
   // ##############
 
   const appletObjects: AppletObject[] = [
-    new Text('a', new Vector2(a + 0.1, 0.1), PrimeColor.orange, {
-      alignX: 'left',
+    new Text('a', new Vector2(a, 0.05), PrimeColor.orange, {
+      alignX: 'center',
       alignY: 'top'
     }),
-    new Text('f(a)', new Vector2(-0.1, fa + 0.1), PrimeColor.orange, {
+    new Text('f(a)', new Vector2(-0.15, fa), PrimeColor.orange, {
       alignX: 'right',
-      alignY: 'bottom'
+      alignY: 'center'
     }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.blue),
     new AsymptoteFragment(7, 'vertical', PrimeColor.blue),
@@ -106,18 +106,19 @@
     new AsymptoteFragment(37865 / 6048, 'horizontal', PrimeColor.raspberry),
     new FunctionFragment(
       '-\\frac{72}{875}x^4 + \\frac{1352}{875}x^3 - \\frac{9054}{875}x^2 + \\frac{25596}{875}x - \\frac{604}{25}',
-      PrimeColor.darkGreen
+      PrimeColor.darkGreen,
+      { domain: { xMin: 2, xMax: 7 }, legendText: 'y=f(x)' }
     ),
     new LineFragment(new Vector2(a, 0), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
     new LineFragment(new Vector2(0, fa), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
     new Point(new Vector2(a, fa), PrimeColor.orange),
-    new Text('\\text{Range}', new Vector2(-1.1, 62057 / 12096), PrimeColor.raspberry, {
-      alignX: 'right',
+    new Text('\\text{Range}', new Vector2(7.7, 62057 / 12096), PrimeColor.raspberry, {
+      alignX: 'left',
       alignY: 'center'
     }),
-    new Text('\\text{Domain}', new Vector2((2 + 7) / 2, -0.5), PrimeColor.blue, {
+    new Text('\\text{Domain}', new Vector2((2 + 7) / 2, 37865 / 6048 + 0.7), PrimeColor.blue, {
       alignX: 'center',
-      alignY: 'top'
+      alignY: 'bottom'
     })
   ];
 </script>
@@ -134,25 +135,25 @@
 >
   <Vector2D
     color={PrimeColor.blue}
-    origin={new Vector2((2 + 7) / 2 - 0.1, -0.5)}
+    origin={new Vector2((2 + 7) / 2 - 0.1, 37865 / 6048 + 0.5)}
     direction={new Vector2(5, 0)}
     length={Math.sqrt(5 ** 2 + 0 ** 2) / 2 + 0.1}
   ></Vector2D>
   <Vector2D
     color={PrimeColor.blue}
-    origin={new Vector2((2 + 7) / 2, -0.5)}
+    origin={new Vector2((2 + 7) / 2, 37865 / 6048 + 0.5)}
     direction={new Vector2(-5, 0)}
     length={Math.sqrt(5 ** 2 + 0 ** 2) / 2}
   ></Vector2D>
   <Vector2D
     color={PrimeColor.raspberry}
-    origin={new Vector2(-0.9, 62057 / 12096 - 0.1)}
+    origin={new Vector2(7.5, 62057 / 12096 - 0.1)}
     direction={new Vector2(0, 1)}
     length={Math.sqrt((13673 / 6048) ** 2 + 0 ** 2) / 2 + 0.1}
   ></Vector2D>
   <Vector2D
     color={PrimeColor.raspberry}
-    origin={new Vector2(-0.9, 62057 / 12096)}
+    origin={new Vector2(7.5, 62057 / 12096)}
     direction={new Vector2(0, -1)}
     length={Math.sqrt((13673 / 6048) ** 2 + 0 ** 2) / 2}
   ></Vector2D>

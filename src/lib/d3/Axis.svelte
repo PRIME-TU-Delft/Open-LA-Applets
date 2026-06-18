@@ -252,6 +252,6 @@
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D latex="O" offset={new Vector2(-0.28, -0.11)} />
+    <Latex2D latex="O" alignX="right" alignY="top" offset={new Vector2(-0.15, -0.15)} />
   {/if}
 </g>
