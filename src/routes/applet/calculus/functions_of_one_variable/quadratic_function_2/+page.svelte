@@ -124,7 +124,7 @@
       value += 'x^2';
     }
     if (b !== 0) {
-      if (b > 0) {
+      if (b > 0 && a !== 0) {
         value += '+';
       }
       if (b !== 1 && b !== -1) {
@@ -141,7 +141,7 @@
       value += 'x';
     }
     if (c !== 0) {
-      if (c > 0) {
+      if (c > 0 && (a !== 0 || b !== 0)) {
         value += '+';
       }
       let cstr = c.toFixed(1);

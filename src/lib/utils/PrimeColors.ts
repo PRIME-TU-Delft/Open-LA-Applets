@@ -11,6 +11,8 @@ export class PrimeColor {
   static black: ColorString = '#565656';
   static orange: ColorString = '#EC6842';
   static cyan: ColorString = '#00A6D6';
+  static transparent: ColorString = '#00000000'; // Transparent color
+  static white: ColorString = '#FFFFFF';
 
   // Opacity is a value between 0 and 1
   static opacity(opacity: number): string {
