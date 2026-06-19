@@ -13,8 +13,6 @@
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -98,7 +96,7 @@
     new FunctionFragment('', PrimeColor.yellow, {
       legendText: 's(t) = \\frac{1}{t}'
     }),
-    new FunctionFragment('', PrimeColor.darkGreen, { legendText: 'rs(t) = r(t) \\cdot s(t)' })
+    new FunctionFragment('', PrimeColor.darkGreen, { legendText: '(rs)(t) = r(t)s(t)' })
   ];
   function snapToFunctionR(position: Vector2) {
     const oldx = position.x;
@@ -109,16 +107,52 @@
     let y = r(x);
     return new Vector2(x, y);
   }
+  function snapToFunctionS(position: Vector2) {
+    const oldx = position.x;
+    let x = Number(position.x.toFixed(1));
+    if (x === 0) {
+      x = Math.sign(oldx) * 0.1;
+    }
+    let y = s(x);
+    return new Vector2(x, y);
+  }
   const xDstart = 1.5;
   const draggables = [
-    new Draggable(new Vector2(xDstart, r(xDstart)), PrimeColor.blue, undefined, snapToFunctionR)
+    new Draggable(new Vector2(xDstart, r(xDstart)), PrimeColor.blue, undefined, snapToFunctionR),
+    new Draggable(new Vector2(xDstart, s(xDstart)), PrimeColor.yellow, undefined, snapToFunctionS)
   ];
-  let xD = $derived(draggables[0].position.x);
-  let yD = $derived(draggables[0].position.y);
+
+  // Store original snap functions
+  const originalSnapFnR = draggables[0].snapFn;
+  const originalSnapFnS = draggables[1].snapFn;
+
+  // Wrap snap functions to sync x-coordinates between both draggables
+  draggables[0].snapFn = (position: Vector2) => {
+    const snapped = originalSnapFnR(position);
+    const syncedY = originalSnapFnS(new Vector2(snapped.x, draggables[1].position.y)).y;
+    draggables[1].value = new Vector2(snapped.x, syncedY);
+    return snapped;
+  };
+
+  draggables[1].snapFn = (position: Vector2) => {
+    const snapped = originalSnapFnS(position);
+    const syncedY = originalSnapFnR(new Vector2(snapped.x, draggables[0].position.y)).y;
+    draggables[0].value = new Vector2(snapped.x, syncedY);
+    return snapped;
+  };
+
+  // Filter draggables based on control visibility
+  let visibleDraggables = $derived(
+    draggables.filter((_, index) => {
+      if (index === 0) return controls[0]; // blue draggable
+      if (index === 1) return controls[1]; // yellow draggable
+      return true;
+    })
+  );
 </script>
 
 <Canvas2D
-  {draggables}
+  draggables={visibleDraggables}
   {controls}
   {initialViewBox}
   {cameraPosition}
@@ -138,11 +172,17 @@
       color={PrimeColor.darkGreen}
       fill={PrimeColor.white}
       shape="square"
+      radius={0.12}
+    />
+    <Point2D
+      position={new Vector2(draggables[0].position.x, rs(draggables[0].position.x))}
+      color={PrimeColor.darkGreen}
+      shape="square"
+      radius={0.12}
     />
   {/if}
   {#if controls[0]}
     <ExplicitFunction2D func={r} color={PrimeColor.blue} />
-    <Point2D position={new Vector2(0, 0)} color={PrimeColor.blue} fill={PrimeColor.white} />
   {/if}
   {#if controls[1]}
     <ExplicitFunction2D func={s} color={PrimeColor.yellow} />
