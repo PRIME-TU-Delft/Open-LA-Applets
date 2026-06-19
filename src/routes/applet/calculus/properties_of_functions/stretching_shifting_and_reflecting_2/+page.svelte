@@ -90,71 +90,72 @@
   type S = typeof state;
 
   const transitions = [
-    // Step 1: A: 1 -> 2
-    (t: number, state: S) => {
-      state.A = 1 + t * (2 - 1);
-      state.label = toLatexText(
-        '$y=\\sin(' + (state.A > 1 ? state.A.toFixed(1).replace('.0', '') : '') + 'x)$'
-      );
-      return {
-        state,
-        labelNext: toLatexText('$y=\\sin(2x)$'),
-        labelPrev: toLatexText('$\\sin(x)$')
-      };
-    },
-    // Step 2: B: 0 -> 1
-    (t: number, state: S) => {
-      state.B = 0 + t * (1 - 0);
-      state.label = toLatexText(
-        '$y=\\sin(2' +
-          (state.B > 0 ? '(' : '') +
-          'x' +
-          (state.B > 0 ? '-' + state.B.toFixed(1).replace('.0', '') + ')' : '') +
-          ')$'
-      );
-      return {
-        state,
-        labelNext: toLatexText('$y=\\sin(2(x-1))$'),
-        labelPrev: toLatexText('$y=\\sin(2x)$')
-      };
-    },
-    // Step 3: C: 1 -> -1
-    (t: number, state: S) => {
-      state.C = 1 + t * (-1 - 1);
-      state.label = toLatexText(
-        '$y=' +
-          (state.C < 0 ? '-' : '') +
-          (Math.abs(state.C) < 1 ? Math.abs(state.C).toFixed(1).replace('.0', '') : '') +
-          '\\sin(2(x-1))$'
-      );
-      return {
-        state,
-        labelNext: toLatexText('$y=-\\sin(2(x-1))$'),
-        labelPrev: toLatexText('$y=\\sin(2(x-1))$')
-      };
-    },
-    // Step 4: D: 1 -> 3
-    (t: number, state: S) => {
-      state.D = 1 + t * (3 - 1);
-      state.label = toLatexText(
-        '$y=-' + (state.D > 1 ? state.D.toFixed(1).replace('.0', '') : '') + '\\sin(2(x-1))$'
-      );
-      return {
-        state,
-        labelNext: toLatexText('$y=-3\\sin(2(x-1))$'),
-        labelPrev: toLatexText('$y=-\\sin(2(x-1))$')
-      };
-    },
-    // Step 5: E: 0 -> 4
+    // Step 1: E: 0 -> 4
     (t: number, state: S) => {
       state.E = 0 + t * (4 - 0);
       state.label = toLatexText(
-        '$y=-3\\sin(2(x-1))' + (state.E > 0 ? '+' + state.E.toFixed(1).replace('.0', '') : '') + '$'
+        '$y=\\sin(x)' + (state.E > 0 ? '+' + state.E.toFixed(1).replace('.0', '') : '') + '$'
       );
       return {
         state,
-        labelNext: toLatexText('$y=-3\\sin(2(x-1))+4$'),
-        labelPrev: toLatexText('$y=-3\\sin(2(x-1))$')
+        labelNext: toLatexText('$y=\\sin(x)+4$'),
+        labelPrev: toLatexText('$y=\\sin(x)$')
+      };
+    },
+    // Step 2: C: 1 -> -1
+    (t: number, state: S) => {
+      state.C = 1 + t * (-1 - 1);
+      state.label = toLatexText(
+        '$y=' +(state.C < 0 ? '-' : '') +
+          (Math.abs(state.C) < 1 ? Math.abs(state.C).toFixed(1).replace('.0', '') : '') +
+          '(\\sin(x)+4)$'
+      );
+      return {
+        state,
+        labelNext: toLatexText('$y=-(\\sin(x)+4)$'),
+        labelPrev: toLatexText('$y=\\sin(x)+4$')
+      };
+    },
+    // Step 3: D: 1 -> 3
+    (t: number, state: S) => {
+      state.D = 1 + t * (3 - 1);
+      state.label = toLatexText(
+        '$y=-' +
+  (state.D > 1 ? state.D.toFixed(1).replace('.0', '') : '') +
+          '(\\sin(x)+4)$'
+      );
+      return {
+        state,
+        labelNext: toLatexText('$y=-3(\\sin(x)+4)$'),
+        labelPrev: toLatexText('$y=-(\\sin(x)+4)$')
+      };
+    },
+    // Step 4: B: 0 -> 1
+    (t: number, state: S) => {
+      state.B = 0 + t * (1 - 0);
+      state.label = toLatexText(
+        '$y=-3(\\sin(x'+
+        (state.B>0 ? '-' + state.B.toFixed(1).replace('.0', '') : '') +
+        ')+4)$'
+      );
+      return {
+        state,
+        labelNext: toLatexText('$y=-3(\\sin(x-1)+4)$'),
+        labelPrev: toLatexText('$y=-3(\\sin(x)+4)$')
+      };
+    },
+    // Step 5: A: 1 -> 2
+    (t: number, state: S) => {
+      state.A = 1 + t * (2 - 1);
+      state.label = toLatexText(
+        '$y=-3(\\sin(' +
+        (state.A>1 ? state.A.toFixed(1).replace('.0', '') : '') +
+        'x-1)+4)$'
+      );
+      return {
+        state,
+        labelNext: toLatexText('$y=-3(\\sin(2(x-1))+4)$'),
+        labelPrev: toLatexText('$y=-3(\\sin(x-1)+4)$')
       };
     }
   ];
@@ -177,7 +178,7 @@
 >
   {@const state = controls[0]}
   <ExplicitFunction2D
-    func={(x: number) => state.D * state.C * Math.sin(state.A * (x - state.B)) + state.E}
+    func={(x: number) => state.D * state.C * (Math.sin(state.A * x - state.B) + state.E)}
     color={PrimeColor.blue}
   />
 </Canvas2D>
