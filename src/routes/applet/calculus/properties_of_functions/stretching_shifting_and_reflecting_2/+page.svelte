@@ -106,7 +106,8 @@
     (t: number, state: S) => {
       state.C = 1 + t * (-1 - 1);
       state.label = toLatexText(
-        '$y=' +(state.C < 0 ? '-' : '') +
+        '$y=' +
+          (state.C < 0 ? '-' : '') +
           (Math.abs(state.C) < 1 ? Math.abs(state.C).toFixed(1).replace('.0', '') : '') +
           '(\\sin(x)+4)$'
       );
@@ -120,9 +121,7 @@
     (t: number, state: S) => {
       state.D = 1 + t * (3 - 1);
       state.label = toLatexText(
-        '$y=-' +
-  (state.D > 1 ? state.D.toFixed(1).replace('.0', '') : '') +
-          '(\\sin(x)+4)$'
+        '$y=-' + (state.D > 1 ? state.D.toFixed(1).replace('.0', '') : '') + '(\\sin(x)+4)$'
       );
       return {
         state,
@@ -134,9 +133,7 @@
     (t: number, state: S) => {
       state.B = 0 + t * (1 - 0);
       state.label = toLatexText(
-        '$y=-3(\\sin(x'+
-        (state.B>0 ? '-' + state.B.toFixed(1).replace('.0', '') : '') +
-        ')+4)$'
+        '$y=-3(\\sin(x' + (state.B > 0 ? '-' + state.B.toFixed(1).replace('.0', '') : '') + ')+4)$'
       );
       return {
         state,
@@ -148,9 +145,7 @@
     (t: number, state: S) => {
       state.A = 1 + t * (2 - 1);
       state.label = toLatexText(
-        '$y=-3(\\sin(' +
-        (state.A>1 ? state.A.toFixed(1).replace('.0', '') : '') +
-        'x-1)+4)$'
+        '$y=-3(\\sin(' + (state.A > 1 ? state.A.toFixed(1).replace('.0', '') : '') + 'x-1)+4)$'
       );
       return {
         state,
