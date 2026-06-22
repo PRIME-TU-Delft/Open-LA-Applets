@@ -79,9 +79,9 @@
   // ##############
 
   const controls = Controls.addFunction('\\frac{1}{3}x^3-x^2+2', 'f(x)', PrimeColor.blue, 'x')
-    .addToggle(true, toLatexText('Even extension'), PrimeColor.yellow)
-    .addToggle(true, toLatexText('Odd extension'), PrimeColor.raspberry)
-    .addToggle(true, toLatexText('Original function'), PrimeColor.blue);
+    .addToggle(true, toLatexText('Even'), PrimeColor.yellow)
+    .addToggle(true, toLatexText('Odd'), PrimeColor.raspberry)
+    .addToggle(true, toLatexText('Original'), PrimeColor.blue);
   function OriginalFunction(x: number) {
     return controls[0](x);
   }
@@ -118,7 +118,6 @@
 
   $effect(() => {
     // Whenever the function changes, re-snap the draggable position
-    controls[0];
     draggables[0].position = new Vector2(xD, yD);
   });
 </script>
