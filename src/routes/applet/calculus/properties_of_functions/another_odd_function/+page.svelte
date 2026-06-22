@@ -1,18 +1,16 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    AppletObject,
-    FunctionFragment,
-    LineFragment,
-    Point,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import { getLegend } from '$lib/template/ObjectFormulas';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -33,13 +31,13 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 1);
-  cameraZoom = 1.2;
+  cameraPosition = new Vector2(3, 1);
+  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(3, 4), // top-right
+    new Vector2(-3, -6), // bottom-left
+    new Vector2(4, 7), // top-right
     0.5 // margin
   );
 
@@ -51,14 +49,12 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: false,
-    showAxisNumbersY: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: -1,
-    skipY: -1,
-    additionalTicksX: [Math.sqrt(3), -Math.sqrt(3)],
-    additionalTicksY: [3, -3]
+    skipX: 0,
+    skipY: 0
   };
 
   // #####
@@ -67,7 +63,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 2;
+  let scaleX = 1;
   let scaleY = 1;
 
   // ###########
@@ -81,55 +77,47 @@
   // ##############
   // APPLET OBJECTS
   // ##############
+  function AbsSin(x: number): number {
+    return Math.abs(x) * Math.sin(x);
+  }
+  function snapToFunction(position: Vector2) {
+    let x = position.x;
+    let y = AbsSin(x);
+    return new Vector2(x, y);
+  }
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('|x|x', PrimeColor.blue),
-    new Text('a', new Vector2(Math.sqrt(3), 0), PrimeColor.raspberry, {
-      alignX: 'center',
-      alignY: 'top'
-    }),
-    new Text('-a', new Vector2(-Math.sqrt(3), 0), PrimeColor.orange, {
-      alignX: 'center',
-      alignY: 'bottom'
-    }),
-    new Text('(-a,f(-a))', new Vector2(-Math.sqrt(3) - 0.1, -3), PrimeColor.orange, {
-      alignX: 'right',
-      alignY: 'bottom'
-    }),
-    new Text('(a,f(a))', new Vector2(Math.sqrt(3) + 0.1, 3), PrimeColor.raspberry, {
-      alignX: 'left',
-      alignY: 'top'
-    }),
-    new Point(new Vector2(Math.sqrt(3), 3), PrimeColor.raspberry),
-    new Point(new Vector2(-Math.sqrt(3), -3), PrimeColor.orange),
-    new LineFragment(
-      new Vector2(Math.sqrt(3), 0),
-      new Vector2(Math.sqrt(3), 3),
-      PrimeColor.raspberry,
-      { isDashed: true }
-    ),
-    new LineFragment(new Vector2(Math.sqrt(3), 3), new Vector2(0, 0), PrimeColor.raspberry, {
-      isDashed: true
-    }),
-    new LineFragment(
-      new Vector2(-Math.sqrt(3), -3),
-      new Vector2(-Math.sqrt(3), 0),
-      PrimeColor.orange,
-      { isDashed: true }
-    ),
-    new LineFragment(new Vector2(-Math.sqrt(3), -3), new Vector2(0, 0), PrimeColor.orange, {
-      isDashed: true
+    new FunctionFragment(AbsSin, PrimeColor.blue, {
+      isDashed: false,
+      legendText: 'f(x)=|x|\\sin(x)'
     })
+  ];
+
+  const draggables = [
+    new Draggable(new Vector2(2.5, AbsSin(2.5)), PrimeColor.orange, undefined, snapToFunction)
   ];
 </script>
 
 <Canvas2D
+  {draggables}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
+  legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
+  <Point2D
+    color={PrimeColor.yellow}
+    position={new Vector2(-draggables[0].position.x, AbsSin(-draggables[0].position.x))}
+    shape="square"
+  />
+  <Line2D
+    start={new Vector2(-draggables[0].position.x, AbsSin(-draggables[0].position.x))}
+    end={new Vector2(draggables[0].position.x, AbsSin(draggables[0].position.x))}
+    color={PrimeColor.darkGreen}
+    isDashed={true}
+  />
 </Canvas2D>
