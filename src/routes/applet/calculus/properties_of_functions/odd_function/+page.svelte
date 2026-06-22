@@ -58,7 +58,7 @@
     skipX: -1,
     skipY: -1,
     additionalTicksX: [Math.sqrt(3), -Math.sqrt(3)],
-    additionalTicksY: [3]
+    additionalTicksY: [3, -3]
   };
 
   // #####
@@ -82,25 +82,25 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new FunctionFragment('x^2', PrimeColor.blue),
+    new FunctionFragment('|x|x', PrimeColor.blue),
     new Text('a', new Vector2(Math.sqrt(3), 0), PrimeColor.raspberry, {
       alignX: 'center',
       alignY: 'top'
     }),
     new Text('-a', new Vector2(-Math.sqrt(3), 0), PrimeColor.orange, {
       alignX: 'center',
-      alignY: 'top'
+      alignY: 'bottom'
     }),
-    new Text('(-a,f(-a))', new Vector2(-Math.sqrt(3) - 0.1, 3), PrimeColor.orange, {
+    new Text('(-a,f(-a))', new Vector2(-Math.sqrt(3) - 0.1, -3), PrimeColor.orange, {
       alignX: 'right',
-      alignY: 'top'
+      alignY: 'bottom'
     }),
     new Text('(a,f(a))', new Vector2(Math.sqrt(3) + 0.1, 3), PrimeColor.raspberry, {
       alignX: 'left',
       alignY: 'top'
     }),
     new Point(new Vector2(Math.sqrt(3), 3), PrimeColor.raspberry),
-    new Point(new Vector2(-Math.sqrt(3), 3), PrimeColor.orange),
+    new Point(new Vector2(-Math.sqrt(3), -3), PrimeColor.orange),
     new LineFragment(
       new Vector2(Math.sqrt(3), 0),
       new Vector2(Math.sqrt(3), 3),
@@ -111,12 +111,12 @@
       isDashed: true
     }),
     new LineFragment(
-      new Vector2(-Math.sqrt(3), 3),
+      new Vector2(-Math.sqrt(3), -3),
       new Vector2(-Math.sqrt(3), 0),
       PrimeColor.orange,
       { isDashed: true }
     ),
-    new LineFragment(new Vector2(-Math.sqrt(3), 3), new Vector2(0, 3), PrimeColor.orange, {
+    new LineFragment(new Vector2(-Math.sqrt(3), -3), new Vector2(0, -3), PrimeColor.orange, {
       isDashed: true
     })
   ];
