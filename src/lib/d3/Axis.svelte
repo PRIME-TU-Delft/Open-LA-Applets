@@ -84,7 +84,7 @@
 <g>
   {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
-    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, additionalTicksX)}
+    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, worldAdditionalTicksX)}
       <line
         x1={index}
         y1={-length}
@@ -107,11 +107,11 @@
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipX, additionalTicksX)}
+    {#if showSkippedTick(index, skipX, worldAdditionalTicksX)}
       <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, additionalTicksX)}
+    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, worldAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
@@ -167,7 +167,7 @@
 
   {#each axisIndicesY as index, idx (idx)}
     <!-- Grid Lines -->
-    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, additionalTicksY)}
+    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, worldAdditionalTicksY)}
       <line
         x1={-length}
         y1={index}
@@ -190,11 +190,11 @@
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipY, additionalTicksY)}
+    {#if showSkippedTick(index, skipY, worldAdditionalTicksY)}
       <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, additionalTicksY)}
+    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, worldAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
