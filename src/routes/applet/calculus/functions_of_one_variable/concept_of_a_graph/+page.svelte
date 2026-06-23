@@ -180,8 +180,8 @@
     color={PrimeColor.orange}
     position={new Vector2(draggablePoint[0].position.x, 0.05)}
     latex="a"
-    alignX={'center'}
-    alignY={'top'}
+    alignX="center"
+    alignY="top"
   />
   <Latex2D
     color={PrimeColor.orange}

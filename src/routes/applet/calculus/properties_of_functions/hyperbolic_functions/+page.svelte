@@ -7,7 +7,6 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
