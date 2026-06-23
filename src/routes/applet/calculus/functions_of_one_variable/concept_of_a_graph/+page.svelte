@@ -179,16 +179,16 @@
   <Latex2D
     color={PrimeColor.orange}
     position={new Vector2(draggablePoint[0].position.x, 0.05)}
-    latex={'a'}
+    latex='a'
     alignX={'center'}
     alignY={'top'}
   />
   <Latex2D
     color={PrimeColor.orange}
     position={new Vector2(-0.15, draggablePoint[0].position.y)}
-    latex={'f(a)'}
-    alignX={'right'}
-    alignY={'center'}
+    latex='f(a)'
+    alignX='right'
+    alignY='center'
   />
   <Line2D
     start={new Vector2(draggablePoint[0].position.x, -0.1)}
