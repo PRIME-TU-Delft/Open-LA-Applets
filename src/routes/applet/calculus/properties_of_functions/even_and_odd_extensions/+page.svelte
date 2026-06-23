@@ -123,7 +123,7 @@
 </script>
 
 <Canvas2D
-  {draggables}
+  draggables={controls[1] || controls[2] || controls[3] ? draggables : []}
   {controls}
   {initialViewBox}
   {cameraPosition}
