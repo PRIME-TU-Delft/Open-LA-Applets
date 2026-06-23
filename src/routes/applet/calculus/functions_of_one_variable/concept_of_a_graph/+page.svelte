@@ -92,7 +92,13 @@
   // ##############
 
   const func = (x: number) => {
-    return (-72 / 875) * x ** 4 + (1352 / 875) * x ** 3 - (9054 / 875) * x ** 2 + (25596 / 875) * x - 604 / 25;
+    return (
+      (-72 / 875) * x ** 4 +
+      (1352 / 875) * x ** 3 -
+      (9054 / 875) * x ** 2 +
+      (25596 / 875) * x -
+      604 / 25
+    );
   };
 
   const appletObjects: AppletObject[] = [
@@ -112,7 +118,9 @@
       '-\\frac{72}{875}x^4 + \\frac{1352}{875}x^3 - \\frac{9054}{875}x^2 + \\frac{25596}{875}x - \\frac{604}{25}',
       PrimeColor.darkGreen,
       { domain: { xMin: 2, xMax: 7 }, legendText: 'y=f(x)' }
-    ).addGaps(new Vector2(2, 4)).addIncludedPoints(new Vector2(7, func(7))),
+    )
+      .addGaps(new Vector2(2, 4))
+      .addIncludedPoints(new Vector2(7, func(7))),
     new LineFragment(new Vector2(a, 0), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
     new LineFragment(new Vector2(0, fa), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
     new Point(new Vector2(a, fa), PrimeColor.orange),
@@ -124,11 +132,11 @@
       alignX: 'center',
       alignY: 'bottom'
     }),
-    new Text('L', new Vector2(2-0.1, 0), PrimeColor.darkGreen, {
+    new Text('L', new Vector2(2 - 0.1, 0), PrimeColor.darkGreen, {
       alignX: 'right',
       alignY: 'top'
     }),
-    new Text('R', new Vector2(7+0.1, 0), PrimeColor.darkGreen, {
+    new Text('R', new Vector2(7 + 0.1, 0), PrimeColor.darkGreen, {
       alignX: 'left',
       alignY: 'top'
     })
