@@ -11,6 +11,7 @@
   import Parallelogram2D from '$lib/d3/Parallelogram2D.svelte';
   import { page } from '$app/state';
   import { appletState } from '$lib/stores/applet.svelte';
+  import { toLatexText } from '$lib/utils/FormatString';
 
   const searchParams = page?.url?.searchParams;
   const ruleParam = searchParams.get('rule');
@@ -38,7 +39,7 @@
     10,
     1,
     PrimeColor.raspberry,
-    { label: 'n', valueFn: (v) => roundString(v, 0) }
+    { label: toLatexText('$n$'), valueFn: (v) => roundString(v, 0) }
   );
 
   const currentMethod = $derived(
