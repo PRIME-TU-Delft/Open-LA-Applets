@@ -183,7 +183,7 @@
     {/each}
   {/if}
   {#if controls[1]}
-    {#each periodStarts.slice(0, -1) as xStart (xStart) (xStart)}
+    {#each periodStarts.slice(0, -1) as xStart (xStart)}
       <Line2D
         start={new Vector2(xStart + 2, 1)}
         end={new Vector2(xStart + 3, 1)}
