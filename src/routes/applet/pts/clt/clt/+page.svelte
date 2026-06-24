@@ -2,7 +2,8 @@
   import { Controls } from '$lib/controls/Controls';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Histogram from '$lib/d3/Histogram.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { clamp } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -14,9 +15,14 @@
 
   const discrete = $derived(baseControls[0] === 'Discrete');
 
+  let savedCategory: string = $state('');
+  let savedDistrType: string = $state('');
+
   const contDiscControls = $derived.by(() => {
+    let cont;
+
     if (discrete) {
-      return baseControls.addDropdown('Bernouli', [
+      cont = baseControls.addDropdown('Bernouli', [
         'Bernouli',
         'Binomial',
         'Geometric',
@@ -25,7 +31,7 @@
         'Free input'
       ]);
     } else {
-      return baseControls.addDropdown('Normal', [
+      cont = baseControls.addDropdown('Normal', [
         'Normal',
         'Exponential',
         'Pareto',
@@ -33,23 +39,37 @@
         'Free input'
       ]);
     }
-  });
 
-  const distrType = $derived(contDiscControls[1]);
+    return cont.addButton('Next', PrimeColor.raspberry, () => {
+      savedCategory = cont[0];
+      savedDistrType = cont[1];
+    });
+  });
 
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
+  let inDistrControls = Controls.addButton('Back', PrimeColor.raspberry, () => {
+    savedCategory = '';
+    savedDistrType = '';
+  })
+    .addDropdown('Average', ['Average', 'Sum'])
+    .addSlider(100, 0, 300, 1, PrimeColor.blue, { label: 'N' });
+
   const controls = $derived.by(() => {
-    switch (distrType) {
+    if (!savedCategory || !savedDistrType) {
+      return contDiscControls;
+    }
+
+    switch (savedDistrType) {
       // discrete
       case 'Bernouli':
-        return contDiscControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
+        return inDistrControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
           label: 'p',
           valueFn
         });
       case 'Binomial':
-        return contDiscControls
+        return inDistrControls
           .addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
             label: 'p',
             valueFn
@@ -59,33 +79,33 @@
             valueFn: valueFnInt
           });
       case 'Geometric':
-        return contDiscControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
+        return inDistrControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
           label: 'p',
           valueFn
         });
       case 'Poisson':
-        return contDiscControls.addSlider(3, 0, 10, 0.5, PrimeColor.raspberry, {
+        return inDistrControls.addSlider(3, 0, 10, 0.5, PrimeColor.raspberry, {
           label: 'gamma',
           valueFn
         });
       case 'Uniform (die)':
-        return contDiscControls.addSlider(10, 2, 20, 1, PrimeColor.blue, {
+        return inDistrControls.addSlider(10, 2, 20, 1, PrimeColor.blue, {
           label: 'n',
           valueFn: valueFnInt
         });
       // continous
       case 'Normal':
-        return contDiscControls.addSlider(2, 0, 4, 0.1, PrimeColor.raspberry, {
+        return inDistrControls.addSlider(2, 0, 4, 0.1, PrimeColor.raspberry, {
           label: 'sigma',
           valueFn
         });
       case 'Exponential':
-        return contDiscControls.addSlider(4, 0, 10, 0.5, PrimeColor.raspberry, {
+        return inDistrControls.addSlider(4, 0, 10, 0.5, PrimeColor.raspberry, {
           label: 'lambda',
           valueFn
         });
       case 'Pareto':
-        return contDiscControls
+        return inDistrControls
           .addSlider(4, 0, 10, 0.5, PrimeColor.blue, {
             label: 'x_0',
             valueFn
@@ -95,15 +115,15 @@
             valueFn
           });
       case 'Uniform':
-        return contDiscControls; // this just has draggables
+        return undefined; // this just has draggables
       // TODO: add free input
       default: // TO REMOVE
-        return contDiscControls;
+        return undefined;
     }
   });
 
   const draggables = $derived.by(() => {
-    switch (distrType) {
+    switch (savedDistrType) {
       // continous
       case 'Normal':
         return [
@@ -138,6 +158,18 @@
   });
 </script>
 
-<Canvas2D {controls} {draggables} {formulas}>
-  <Vector2D />
+<Canvas2D
+  {controls}
+  {draggables}
+  {formulas}
+  onReset={() => {
+    savedCategory = '';
+    savedDistrType = '';
+  }}
+>
+  {#if savedCategory == 'Continous' && savedDistrType == 'Normal'}
+    <Histogram />
+  {:else}
+    <Latex2D latex="empty" />
+  {/if}
 </Canvas2D>
