@@ -25,7 +25,7 @@ export class PrimeColor {
 
   static getRandomColor(): ColorString {
     const colors = Object.values(PrimeColor);
-    const randomIndex = Math.round(Math.random() * colors.length);
+    const randomIndex = Math.floor(Math.random() * (colors.length -2)); // Exclude transparent and white
     return colors[randomIndex];
   }
 
