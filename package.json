@@ -80,5 +80,5 @@
     "svelte-i18n": "^4.0.1",
     "three": "^0.184.0"
   },
-  "packageManager": "pnpm@11.8.0"
+  "packageManager": "pnpm@11.9.0"
 }
