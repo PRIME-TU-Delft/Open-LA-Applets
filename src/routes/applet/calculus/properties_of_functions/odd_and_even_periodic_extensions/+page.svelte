@@ -1,18 +1,15 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
-  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { FillType } from '$lib/utils/Legend';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -31,15 +28,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
+  cameraPosition = new Vector2(1, 0);
   cameraZoom = 1.5;
-
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(4, 8), // top-right
-    0.5 // margin
-  );
 
   // ####
   // AXIS
@@ -77,34 +67,69 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
-    animationStep: 1
-  });
-  const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
-    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
-  ];
-  function textFormula() {
-    return `g(x) = x^{${1 + 2 * controls[0]}}`;
-  }
-  const legendItems = $derived([
-    new LegendItem(`y = x^3`, PrimeColor.orange, undefined, FillType.Dashed),
-    new LegendItem(textFormula(), PrimeColor.blue)
-  ]);
+  const BaseFunction = (x: number) => 2 * x;
+  const controls = Controls.addToggle(
+    true,
+    toLatexText('$f(x)=2x,0\\leq x\\leq 1$'),
+    PrimeColor.blue
+  )
+    .addToggle(true, toLatexText('$f_{\\text{odd}}(x)$'), PrimeColor.raspberry)
+    .addToggle(false, toLatexText('$f_{\\text{even}}(x)$'), PrimeColor.darkGreen);
+  const periodStarts = Array.from({ length: 31 }, (_, i) => -31 + i * 2);
 </script>
 
 <Canvas2D
   {controls}
-  {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
 >
-  <TemplateComponent objects={appletObjects} />
+  {#if controls[1]}
+    // make a loop over the range of x values to plot the odd extension
+    {#each periodStarts as xStart (xStart)}
+      <Line2D
+        start={new Vector2(xStart, -2)}
+        end={new Vector2(xStart + 2, 2)}
+        color={PrimeColor.raspberry}
+      />
+      <Point2D
+        position={new Vector2(xStart, -2)}
+        color={PrimeColor.raspberry}
+        fill={PrimeColor.white}
+      />
+      <Point2D
+        position={new Vector2(xStart + 2, 2)}
+        color={PrimeColor.raspberry}
+        fill={PrimeColor.raspberry}
+      />
+    {/each}
+  {/if}
+  {#if controls[2]}
+    {#each periodStarts as xStart (xStart)}
+      <Line2D
+        start={new Vector2(xStart, 2)}
+        end={new Vector2(xStart + 1, 0)}
+        color={PrimeColor.darkGreen}
+      />
+      <Line2D
+        start={new Vector2(xStart + 2, 2)}
+        end={new Vector2(xStart + 1, 0)}
+        color={PrimeColor.darkGreen}
+      />
+    {/each}
+  {/if}
+  {#if controls[0]}
+    <ExplicitFunction2D
+      func={BaseFunction}
+      color={PrimeColor.blue}
+      xMin={0}
+      xMax={1}
+      isDashed={false}
+    />
+    <Point2D position={new Vector2(0, 0)} color={PrimeColor.blue} fill={PrimeColor.blue} />
+    <Point2D position={new Vector2(1, 2)} color={PrimeColor.blue} fill={PrimeColor.blue} />
+  {/if}
 </Canvas2D>

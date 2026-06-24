@@ -68,12 +68,12 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(2, 1, 10, 0.5, PrimeColor.blue, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => v.toFixed(1),
+    label: toLatexText('$a$'),
+    valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
     animationStep: 0.5
   }).addSlider(3, 1, 10, 0.5, PrimeColor.raspberry, {
-    label: toLatexText('$m$'),
-    valueFn: (v: number) => v.toFixed(1),
+    label: toLatexText('$b$'),
+    valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
     animationStep: 0.5
   });
   function Exponential(x: number) {
@@ -90,9 +90,9 @@
   ];
 
   const legendItems = $derived([
-    new LegendItem('A(t)=' + controls[0].toFixed(0) + '^t', PrimeColor.blue),
+    new LegendItem('A(t)=' + controls[0].toFixed(1).replace('.0', '') + '^t', PrimeColor.blue),
     new LegendItem(
-      'B(t)=\\left(\\frac{1}{' + controls[1].toFixed(0) + '}\\right)^{t}',
+      'B(t)=\\left(\\frac{1}{' + controls[1].toFixed(1).replace('.0', '') + '}\\right)^{t}',
       PrimeColor.raspberry
     )
   ]);

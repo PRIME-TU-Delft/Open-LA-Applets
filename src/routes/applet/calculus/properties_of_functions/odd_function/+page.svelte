@@ -1,16 +1,18 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
+  import {
+    AppletObject,
+    FunctionFragment,
+    LineFragment,
+    Point,
+    Text
+  } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { Controls } from '$lib/controls/Controls';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { FillType } from '$lib/utils/Legend';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -31,13 +33,13 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
+  cameraPosition = new Vector2(0, 1);
+  cameraZoom = 1.2;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(4, 8), // top-right
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(3, 4), // top-right
     0.5 // margin
   );
 
@@ -49,12 +51,14 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: -1,
+    skipY: -1,
+    additionalTicksX: [Math.sqrt(3), -Math.sqrt(3)],
+    additionalTicksY: [3, -3]
   };
 
   // #####
@@ -63,7 +67,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 1;
+  let scaleX = 2;
   let scaleY = 1;
 
   // ###########
@@ -77,30 +81,51 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
-    animationStep: 1
-  });
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
-    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
+    new FunctionFragment('|x|x', PrimeColor.blue),
+    new Text('a', new Vector2(Math.sqrt(3), 0), PrimeColor.raspberry, {
+      alignX: 'center',
+      alignY: 'top'
+    }),
+    new Text('-a', new Vector2(-Math.sqrt(3), 0), PrimeColor.orange, {
+      alignX: 'center',
+      alignY: 'bottom'
+    }),
+    new Text('(-a,f(-a))', new Vector2(-Math.sqrt(3) - 0.1, -3), PrimeColor.orange, {
+      alignX: 'right',
+      alignY: 'bottom'
+    }),
+    new Text('(a,f(a))', new Vector2(Math.sqrt(3) + 0.1, 3), PrimeColor.raspberry, {
+      alignX: 'left',
+      alignY: 'top'
+    }),
+    new Point(new Vector2(Math.sqrt(3), 3), PrimeColor.raspberry),
+    new Point(new Vector2(-Math.sqrt(3), -3), PrimeColor.orange),
+    new LineFragment(
+      new Vector2(Math.sqrt(3), 0),
+      new Vector2(Math.sqrt(3), 3),
+      PrimeColor.raspberry,
+      { isDashed: true }
+    ),
+    new LineFragment(new Vector2(Math.sqrt(3), 3), new Vector2(0, 0), PrimeColor.raspberry, {
+      isDashed: true
+    }),
+    new LineFragment(
+      new Vector2(-Math.sqrt(3), -3),
+      new Vector2(-Math.sqrt(3), 0),
+      PrimeColor.orange,
+      { isDashed: true }
+    ),
+    new LineFragment(new Vector2(-Math.sqrt(3), -3), new Vector2(0, 0), PrimeColor.orange, {
+      isDashed: true
+    })
   ];
-  function textFormula() {
-    return `g(x) = x^{${1 + 2 * controls[0]}}`;
-  }
-  const legendItems = $derived([
-    new LegendItem(`y = x^3`, PrimeColor.orange, undefined, FillType.Dashed),
-    new LegendItem(textFormula(), PrimeColor.blue)
-  ]);
 </script>
 
 <Canvas2D
-  {controls}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}

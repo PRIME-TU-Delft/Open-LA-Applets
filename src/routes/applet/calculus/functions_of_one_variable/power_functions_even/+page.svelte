@@ -10,6 +10,7 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
   import { LegendItem } from '$lib/utils/Legend';
+  import { FillType } from '$lib/utils/Legend';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -89,7 +90,7 @@
     return `g(x) = x^{${2 * controls[0]}}`;
   }
   const legendItems = $derived([
-    new LegendItem(`y = x^2`, PrimeColor.orange),
+    new LegendItem(`y = x^2`, PrimeColor.orange, undefined, FillType.Dashed),
     new LegendItem(textFormula(), PrimeColor.blue)
   ]);
 </script>
