@@ -11,6 +11,8 @@ export class PrimeColor {
   static black: ColorString = '#565656';
   static orange: ColorString = '#EC6842';
   static cyan: ColorString = '#00A6D6';
+  static transparent: ColorString = '#00000000'; // Transparent color
+  static white: ColorString = '#FFFFFF';
 
   // Opacity is a value between 0 and 1
   static opacity(opacity: number): string {
@@ -23,7 +25,7 @@ export class PrimeColor {
 
   static getRandomColor(): ColorString {
     const colors = Object.values(PrimeColor);
-    const randomIndex = Math.round(Math.random() * colors.length);
+    const randomIndex = Math.floor(Math.random() * (colors.length - 2)); // Exclude transparent and white
     return colors[randomIndex];
   }
 

@@ -1,16 +1,13 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, ImplicitFunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { toLatexText } from '$lib/utils/FormatString';
+  import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { Controls } from '$lib/controls/Controls';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { FillType } from '$lib/utils/Legend';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -36,8 +33,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(4, 8), // top-right
+    new Vector2(-1, -1), // bottom-left
+    new Vector2(10, 2), // top-right
     0.5 // margin
   );
 
@@ -77,30 +74,19 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
-    animationStep: 1
-  });
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
-    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
+    new ImplicitFunctionFragment('y = e^{-\\sqrt{x}}', PrimeColor.blue, {
+      legendText: 'f(x)=e^{-\\sqrt{x}}',
+      domain: { xMin: 0 }
+    }).addIncludedPoints(new Vector2(0, 1))
   ];
-  function textFormula() {
-    return `g(x) = x^{${1 + 2 * controls[0]}}`;
-  }
-  const legendItems = $derived([
-    new LegendItem(`y = x^3`, PrimeColor.orange, undefined, FillType.Dashed),
-    new LegendItem(textFormula(), PrimeColor.blue)
-  ]);
 </script>
 
 <Canvas2D
-  {controls}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
+  legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}

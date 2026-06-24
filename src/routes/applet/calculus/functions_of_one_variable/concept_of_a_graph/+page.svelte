@@ -4,8 +4,6 @@
     AppletObject,
     AsymptoteFragment,
     FunctionFragment,
-    LineFragment,
-    Point,
     Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
@@ -16,6 +14,9 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -23,10 +24,6 @@
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
-
-  // Extra variables
-  let a = 4.5;
-  let fa = 5;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -64,8 +61,6 @@
     logarithmicY: false,
     skipX: -1,
     skipY: -1,
-    additionalTicksX: [a],
-    additionalTicksY: [fa],
     showGridLinesX: false,
     showGridLinesY: false
   };
@@ -90,16 +85,31 @@
   // ##############
   // APPLET OBJECTS
   // ##############
+  // Extra variables
+  let aStart = 4.5;
+  let faStart = 5;
+
+  function SnapToFunction(point: Vector2) {
+    const x = Number(Math.max(2.01, Math.min(7, point.x)).toFixed(2));
+    const y = func(x);
+    return new Vector2(x, y);
+  }
+
+  const draggablePoint = [
+    new Draggable(new Vector2(aStart, faStart), PrimeColor.orange, undefined, SnapToFunction)
+  ];
+
+  const func = (x: number) => {
+    return (
+      (-72 / 875) * x ** 4 +
+      (1352 / 875) * x ** 3 -
+      (9054 / 875) * x ** 2 +
+      (25596 / 875) * x -
+      604 / 25
+    );
+  };
 
   const appletObjects: AppletObject[] = [
-    new Text('a', new Vector2(a, 0.05), PrimeColor.orange, {
-      alignX: 'center',
-      alignY: 'top'
-    }),
-    new Text('f(a)', new Vector2(-0.15, fa), PrimeColor.orange, {
-      alignX: 'right',
-      alignY: 'center'
-    }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.blue),
     new AsymptoteFragment(7, 'vertical', PrimeColor.blue),
     new AsymptoteFragment(4, 'horizontal', PrimeColor.raspberry),
@@ -108,10 +118,9 @@
       '-\\frac{72}{875}x^4 + \\frac{1352}{875}x^3 - \\frac{9054}{875}x^2 + \\frac{25596}{875}x - \\frac{604}{25}',
       PrimeColor.darkGreen,
       { domain: { xMin: 2, xMax: 7 }, legendText: 'y=f(x)' }
-    ),
-    new LineFragment(new Vector2(a, 0), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
-    new LineFragment(new Vector2(0, fa), new Vector2(a, fa), PrimeColor.orange, { isDashed: true }),
-    new Point(new Vector2(a, fa), PrimeColor.orange),
+    )
+      .addGaps(new Vector2(2, 4))
+      .addIncludedPoints(new Vector2(7, func(7))),
     new Text('\\text{Range}', new Vector2(7.7, 62057 / 12096), PrimeColor.raspberry, {
       alignX: 'left',
       alignY: 'center'
@@ -119,11 +128,20 @@
     new Text('\\text{Domain}', new Vector2((2 + 7) / 2, 37865 / 6048 + 0.7), PrimeColor.blue, {
       alignX: 'center',
       alignY: 'bottom'
+    }),
+    new Text('L', new Vector2(2 - 0.1, 0), PrimeColor.darkGreen, {
+      alignX: 'right',
+      alignY: 'top'
+    }),
+    new Text('R', new Vector2(7 + 0.1, 0), PrimeColor.darkGreen, {
+      alignX: 'left',
+      alignY: 'top'
     })
   ];
 </script>
 
 <Canvas2D
+  draggables={draggablePoint}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
@@ -158,4 +176,30 @@
     length={Math.sqrt((13673 / 6048) ** 2 + 0 ** 2) / 2}
   ></Vector2D>
   <TemplateComponent objects={appletObjects} />
+  <Latex2D
+    color={PrimeColor.orange}
+    position={new Vector2(draggablePoint[0].position.x, 0.05)}
+    latex="a"
+    alignX="center"
+    alignY="top"
+  />
+  <Latex2D
+    color={PrimeColor.orange}
+    position={new Vector2(-0.15, draggablePoint[0].position.y)}
+    latex="f(a)"
+    alignX="right"
+    alignY="center"
+  />
+  <Line2D
+    start={new Vector2(draggablePoint[0].position.x, -0.1)}
+    end={new Vector2(draggablePoint[0].position.x, draggablePoint[0].position.y)}
+    color={PrimeColor.orange}
+    isDashed={true}
+  />
+  <Line2D
+    start={new Vector2(draggablePoint[0].position.x, draggablePoint[0].position.y)}
+    end={new Vector2(-0.1, draggablePoint[0].position.y)}
+    color={PrimeColor.orange}
+    isDashed={true}
+  />
 </Canvas2D>

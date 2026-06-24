@@ -1,18 +1,13 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
-  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { FillType } from '$lib/utils/Legend';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -31,15 +26,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
+  cameraPosition = new Vector2(1, -0.5);
   cameraZoom = 1.5;
-
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(4, 8), // top-right
-    0.5 // margin
-  );
 
   // ####
   // AXIS
@@ -77,34 +65,30 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
-    animationStep: 1
-  });
-  const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
-    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
-  ];
-  function textFormula() {
-    return `g(x) = x^{${1 + 2 * controls[0]}}`;
-  }
-  const legendItems = $derived([
-    new LegendItem(`y = x^3`, PrimeColor.orange, undefined, FillType.Dashed),
-    new LegendItem(textFormula(), PrimeColor.blue)
-  ]);
+  const controls = Controls.addToggle(true, toLatexText('$f(x)=\\cos(4x)$'), PrimeColor.blue)
+    .addToggle(true, toLatexText('$g(x)=\\sin(6x)$'), PrimeColor.raspberry)
+    .addToggle(true, toLatexText('$h(x)=f(x)+g(x)$'), PrimeColor.darkGreen);
 </script>
 
 <Canvas2D
   {controls}
-  {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
 >
-  <TemplateComponent objects={appletObjects} />
+  {#if controls[0]}
+    <ExplicitFunction2D func={(x: number) => Math.cos(4 * x)} color={PrimeColor.blue} />
+  {/if}
+  {#if controls[1]}
+    <ExplicitFunction2D func={(x: number) => Math.sin(6 * x)} color={PrimeColor.raspberry} />
+  {/if}
+  {#if controls[2]}
+    <ExplicitFunction2D
+      func={(x: number) => Math.cos(4 * x) + Math.sin(6 * x)}
+      color={PrimeColor.darkGreen}
+    />
+  {/if}
 </Canvas2D>

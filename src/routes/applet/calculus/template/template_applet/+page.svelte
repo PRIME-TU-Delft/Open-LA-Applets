@@ -82,8 +82,8 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = '';
-  yAxisLabel = '';
+  xAxisLabel = 'x';
+  yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS

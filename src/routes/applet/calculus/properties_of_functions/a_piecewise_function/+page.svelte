@@ -5,14 +5,9 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
-  import { toLatexText } from '$lib/utils/FormatString';
+  import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { Controls } from '$lib/controls/Controls';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { FillType } from '$lib/utils/Legend';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -31,15 +26,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
-  // (remove if unnecessary)
-  initialViewBox = new ViewBox(
-    new Vector2(-3, -3), // bottom-left
-    new Vector2(4, 8), // top-right
-    0.5 // margin
-  );
+  cameraPosition = new Vector2(-2, 1);
+  cameraZoom = 0.5;
 
   // ####
   // AXIS
@@ -53,8 +41,8 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
@@ -71,40 +59,36 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 'x';
+  xAxisLabel = 't';
   yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$n$'),
-    valueFn: (v: number) => (1 + 2 * v).toFixed(0),
-    animationStep: 1
-  });
   const appletObjects: AppletObject[] = [
-    new FunctionFragment((x: number) => x ** 3, PrimeColor.orange, { isDashed: true }),
-    new FunctionFragment((x: number) => x ** (1 + 2 * controls[0]), PrimeColor.blue)
+    new FunctionFragment('x-3', PrimeColor.blue, {
+      legendText:
+        'k(t)=\\left\\{\\begin{array}{ll}t-3,\\quad&\\text{if }t<0,\\\\ 2,\\quad&\\text{if }0\\leq t\\leq 1,\\\\ t+4,\\quad&\\text{if }t>1.\\end{array}\\right.',
+      domain: { xMax: 0 }
+    }).addGaps(new Vector2(0, -3)),
+    new FunctionFragment('2', PrimeColor.blue, {
+      domain: { xMin: 0, xMax: 1 }
+    }).addIncludedPoints([new Vector2(0, 2), new Vector2(1, 2)]),
+    new FunctionFragment('x+4', PrimeColor.blue, {
+      domain: { xMin: 1 }
+    }).addGaps(new Vector2(1, 5))
   ];
-  function textFormula() {
-    return `g(x) = x^{${1 + 2 * controls[0]}}`;
-  }
-  const legendItems = $derived([
-    new LegendItem(`y = x^3`, PrimeColor.orange, undefined, FillType.Dashed),
-    new LegendItem(textFormula(), PrimeColor.blue)
-  ]);
 </script>
 
 <Canvas2D
-  {controls}
-  {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
+  legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
+  legendFormulaPosition="top-left"
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
