@@ -27,8 +27,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(1, 1);
-  cameraZoom = 0.75;
+  cameraPosition = new Vector2(1, -1);
+  cameraZoom = 0.6;
 
   // ####
   // AXIS
