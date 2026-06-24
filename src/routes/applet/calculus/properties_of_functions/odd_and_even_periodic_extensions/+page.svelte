@@ -89,7 +89,7 @@
 >
   {#if controls[1]}
     // make a loop over the range of x values to plot the odd extension
-    {#each periodStarts as xStart}
+    {#each periodStarts as xStart (xStart)}
       <Line2D
         start={new Vector2(xStart, -2)}
         end={new Vector2(xStart + 2, 2)}
@@ -108,7 +108,7 @@
     {/each}
   {/if}
   {#if controls[2]}
-    {#each periodStarts as xStart}
+    {#each periodStarts as xStart (xStart)}
       <Line2D
         start={new Vector2(xStart, 2)}
         end={new Vector2(xStart + 1, 0)}
