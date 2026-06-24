@@ -47,7 +47,7 @@
   let playInterval: ReturnType<typeof setInterval> | undefined = $state();
 
   function round() {
-    value = Math.round(value / slider.stepSize) * slider.stepSize;
+    value = Math.round((value - slider.min) / slider.stepSize) * slider.stepSize + slider.min;
   }
 
   function stopPlaying() {
