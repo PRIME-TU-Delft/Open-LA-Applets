@@ -55,12 +55,12 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: -1,
+    skipY: -1
   };
 
   // #####
@@ -87,11 +87,13 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment('0', PrimeColor.blue, {
       domain: { xMax: 0 },
+      width: 0.1,
       legendText: 'i(t)'
-    }).addGaps(new Vector2(0, 0)),
+    }).addGaps(new Vector2(0, 0), undefined, 0.125),
     new FunctionFragment((x: number) => i0 * Math.exp(-x), PrimeColor.blue, {
-      domain: { xMin: 0 }
-    }).addIncludedPoints([new Vector2(0, i0)]),
+      domain: { xMin: 0 },
+      width: 0.1
+    }).addIncludedPoints([new Vector2(0, i0)], undefined, 0.125),
     new Polygon(
       [new Vector2(-2, 1), new Vector2(-2, 6), new Vector2(-7, 6), new Vector2(-7, 1)],
       PrimeColor.blue

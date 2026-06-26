@@ -28,8 +28,11 @@ export abstract class AppletObject {
 
 export abstract class AbstractFunctionFragment extends AppletObject {
   domain: Domain | undefined;
+  width?: number;
   gaps: Vector2[] = [];
+  gapRadius: number = 0.075;
   includedPoints: Vector2[] = [];
+  includedPointRadius: number = 0.075;
   integral: Integral | undefined;
   legendText: string | undefined;
   isDashed: boolean = false;
@@ -43,6 +46,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
    * Function fragment template object
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
+   * @param options.width Width of the function line
    * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
    * @param options.integral Properties of the integral
@@ -52,6 +56,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      width?: number;
       isDashed?: boolean;
       shape?: Shape;
       integral?: Integral;
@@ -61,6 +66,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     super(color);
 
     this.domain = options?.domain;
+    this.width = options?.width;
     this.legendText = options?.legendText;
     if (options?.isDashed) this.isDashed = options.isDashed;
     if (options?.shape) this.shape = options.shape;
@@ -71,11 +77,13 @@ export abstract class AbstractFunctionFragment extends AppletObject {
    * Add gaps to the function fragment
    * @param positions List of Vector2 coordinates of the gaps
    * @param legendText (optional) Text shown in the legend for all the gap points
+   * @param radius (optional) Radius of all gap points for this function fragment
    * @returns this
    */
-  addGaps(positions: Vector2 | Vector2[], legendText?: string) {
+  addGaps(positions: Vector2 | Vector2[], legendText?: string, radius?: number) {
     this.gaps = this.gaps.concat(positions);
     this.pointsLegendText.gaps = legendText;
+    if (radius !== undefined) this.gapRadius = radius;
     return this;
   }
 
@@ -83,11 +91,13 @@ export abstract class AbstractFunctionFragment extends AppletObject {
    * Add included points to the function fragment
    * @param positions List of Vector2 coordinates of the included points
    * @param legendText (optional) Text shown in the legend for all the included points
+   * @param radius (optional) Radius of all included points for this function fragment
    * @returns this
    */
-  addIncludedPoints(positions: Vector2 | Vector2[], legendText?: string) {
+  addIncludedPoints(positions: Vector2 | Vector2[], legendText?: string, radius?: number) {
     this.includedPoints = this.includedPoints.concat(positions);
     this.pointsLegendText.included = legendText;
+    if (radius !== undefined) this.includedPointRadius = radius;
     return this;
   }
 }
@@ -100,6 +110,7 @@ export class FunctionFragment extends AbstractFunctionFragment {
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
+   * @param options.width Width of the function line
    * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
    * @param options.integral Properties of the integral
@@ -110,6 +121,7 @@ export class FunctionFragment extends AbstractFunctionFragment {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      width?: number;
       isDashed?: boolean;
       shape?: Shape;
       integral?: Integral;
@@ -143,6 +155,7 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      width?: number;
       isDashed?: boolean;
       shape?: Shape;
       legendText?: string;
@@ -192,6 +205,7 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
    * @param xFunc A javascript function or a latex string, with t being the parameter
    * @param yFunc A javascript function or a latex string, with t being the parameter
    * @param color Color of the function graph
+   * @param options.width Width of the function line
    * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
    * @param options.legendText Text to be shown in the legend item
@@ -203,6 +217,7 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
     yFunc: ((t: number) => number) | string,
     color: PrimeColor,
     options?: {
+      width?: number;
       isDashed?: boolean;
       shape?: Shape;
       legendText?: string;
