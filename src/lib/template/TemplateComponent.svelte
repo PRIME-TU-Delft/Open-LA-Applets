@@ -155,6 +155,7 @@
       start={object.startPoint}
       end={object.endPoint}
       color={object.color.toString()}
+      width={object.width}
       isDashed={object.isDashed}
     />
     {#if object.latex}

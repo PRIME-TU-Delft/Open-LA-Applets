@@ -417,6 +417,7 @@ export class Point extends AppletObject {
 export class LineFragment extends AppletObject {
   startPoint: Vector2;
   endPoint: Vector2;
+  width?: number;
   latex?: string;
   latexAlign?: {
     alignX?: 'left' | 'right' | 'center' | null;
@@ -429,6 +430,7 @@ export class LineFragment extends AppletObject {
    * @param start Start point of the line
    * @param end End point of the line
    * @param color Color of the line
+   * @param options.width Width of the line
    * @param options.latex Text shown next to the line
    * @param options.latexAlign How the text next to the line shuold be aligned, can overwrite auto-alignment
    * @param options.isDashed Whether the line should be dashed
@@ -438,6 +440,7 @@ export class LineFragment extends AppletObject {
     end: Vector2,
     color: PrimeColor,
     options?: {
+      width?: number;
       latex?: string;
       isDashed?: boolean;
       latexAlign?: {
@@ -450,6 +453,7 @@ export class LineFragment extends AppletObject {
 
     this.startPoint = start;
     this.endPoint = end;
+    this.width = options?.width;
     this.latex = options?.latex;
     this.isDashed = options?.isDashed;
     this.latexAlign = options?.latexAlign;
