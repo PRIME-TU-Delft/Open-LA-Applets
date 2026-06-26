@@ -190,7 +190,7 @@
     position={new Vector2(-7, 3.5)}
   />
   <Latex2D
-    latex="\begin{'{'}array{'}'}{'{'}c{'}'}\boldsymbol{'{'}+{'}'}\\\boldsymbol{'{'}-{'}'}\end{'{'}array{'}'}"
+    latex={String.raw`\begin{array}{c}\boldsymbol{+}\\\boldsymbol{-}\end{array}`}
     position={new Vector2(-7, 3.5)}
     alignX="center"
     alignY="center"
