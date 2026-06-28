@@ -112,7 +112,6 @@
   {scaleX}
   {scaleY}
   legendFormulaPosition="top-left"
-  ,
 >
   <TemplateComponent objects={appletObjects} />
   <InfiniteLine2D
