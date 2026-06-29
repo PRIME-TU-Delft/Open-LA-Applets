@@ -37,6 +37,7 @@
         color={object.color.toString()}
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
+        width={object.width}
         isDashed={object.isDashed}
         stepSize={object.stepSize}
         tension={object.tension}
@@ -49,6 +50,7 @@
         color={object.color.toString()}
         tStart={object.tDomain.start}
         tEnd={object.tDomain.end}
+        width={object.width}
         isDashed={object.isDashed}
       />
     {:else if object instanceof FunctionFragment}
@@ -57,6 +59,7 @@
         color={object.color.toString()}
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
+        width={object.width}
         integral={object.integral
           ? {
               xLeft: object.integral?.xLeft,
@@ -76,12 +79,17 @@
         {position}
         color={object.color.toString()}
         fill="white"
-        radius={0.075}
+        radius={object.gapRadius}
         shape={object.shape}
       />
     {/each}
     {#each object.includedPoints as position, idx (idx)}
-      <Point2D {position} color={object.color.toString()} radius={0.075} shape={object.shape} />
+      <Point2D
+        {position}
+        color={object.color.toString()}
+        radius={object.includedPointRadius}
+        shape={object.shape}
+      />
     {/each}
   {:else if object instanceof AsymptoteFragment}
     {#if object.type == 'vertical'}
@@ -155,6 +163,7 @@
       start={object.startPoint}
       end={object.endPoint}
       color={object.color.toString()}
+      width={object.width}
       isDashed={object.isDashed}
     />
     {#if object.latex}
