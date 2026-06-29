@@ -52,7 +52,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0
   };
 
@@ -62,7 +62,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 1;
+  let scaleX = 2;
   let scaleY = 1;
 
   // ###########
@@ -77,27 +77,44 @@
   // APPLET OBJECTS
   // ##############
   function generateLegendItems() {
-    const part1 =
-      '2^x' +
-      (controls[0] !== 0
-        ? (controls[0] > 0 ? '+' : '') + controls[0].toFixed(1).replace('.0', '')
-        : '');
-    const part2 = (2 * controls[0] + 10).toFixed(1).replace('.0', '');
-    const part3 = 'x^2-3x';
+    const b = controls[0];
+    let part1 = '';
+    if (b === 0) {
+      part1 += '0';
+    } else if (b === 1) {
+      part1 += '-x^4';
+    } else if (b === -1) {
+      part1 += 'x^4';
+    } else if (b > 0) {
+      part1 += '-' + b.toFixed(0) + 'x^4';
+    } else {
+      part1 += (-1 * b).toFixed(0) + 'x^4';
+    }
+    const part2 = (b ** 2).toFixed(0);
+    let part3 = '';
+    if (b + 1 === 1) {
+      part3 += 'x+1';
+    } else if (b + 1 === -1) {
+      part3 += '-x-1';
+    } else if (b + 1 === 0) {
+      part3 += '1';
+    } else {
+      part3 += (b + 1).toFixed(0) + 'x+1';
+    }
     const complete =
       'f(x)=\\left\\{\\begin{array}{ll}' +
       part1 +
-      ',&x<2,\\\\' +
+      ',&x<1,\\\\' +
       part2 +
-      ',&x=2,\\\\' +
+      ',&x=1,\\\\' +
       part3 +
-      ',&x> 2.\\end{array}\\right.';
+      ',&x> 1.\\end{array}\\right.';
     return [new LegendItem(complete, PrimeColor.blue)];
   }
-  const controls = Controls.addSlider(-2, -10, 10, 0.5, PrimeColor.raspberry, {
+  const controls = Controls.addSlider(1, -3, 3, 1, PrimeColor.raspberry, {
     label: toLatexText('$b$'),
-    valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
-    animationStep: 0.5
+    valueFn: (v: number) => v.toFixed(0),
+    animationStep: 1
   });
   const legendItems = $derived(generateLegendItems());
 </script>
@@ -115,19 +132,19 @@
   legendFormulaPosition="top-left"
 >
   {@const b = controls[0]}
-  <ExplicitFunction2D func={(x: number) => 2 ** x + b} xMax={2} color={PrimeColor.blue} />
-  <ExplicitFunction2D func={(x: number) => x ** 2 - 3 * x} xMin={2} color={PrimeColor.blue} />
-  {#if b !== -6}
+  <ExplicitFunction2D func={(x: number) => -1 * b * x ** 4} xMax={1} color={PrimeColor.blue} />
+  <ExplicitFunction2D func={(x: number) => (b + 1) * x + 1} xMin={1} color={PrimeColor.blue} />
+  {#if b !== -1}
     <Point2D
-      position={new Vector2(2, 2 ** 2 + b)}
+      position={new Vector2(1, -1 * b * 1 ** 4)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
     />
     <Point2D
-      position={new Vector2(2, 2 ** 2 - 3 * 2)}
+      position={new Vector2(1, (b + 1) * 1 + 1)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
     />
-    <Point2D position={new Vector2(2, 2 * b + 10)} color={PrimeColor.blue} />
+    <Point2D position={new Vector2(1, b ** 2)} color={PrimeColor.blue} />
   {/if}
 </Canvas2D>
