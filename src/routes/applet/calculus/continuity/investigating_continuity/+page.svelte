@@ -35,8 +35,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-4, -8), // bottom-left
+    new Vector2(4, 8), // top-right
     0.5 // margin
   );
 
@@ -94,10 +94,10 @@
       ',&x> 2.\\end{array}\\right.';
     return [new LegendItem(complete, PrimeColor.blue)];
   }
-  const controls = Controls.addSlider(-2, -10, 10, 0.1, PrimeColor.raspberry, {
+  const controls = Controls.addSlider(-2, -10, 10, 0.5, PrimeColor.raspberry, {
     label: toLatexText('$b$'),
     valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
-    animationStep: 0.1
+    animationStep: 0.5
   });
   const legendItems = $derived(generateLegendItems());
 </script>
@@ -112,6 +112,7 @@
   {axis}
   {scaleX}
   {scaleY}
+  legendFormulaPosition="top-left"
 >
   {@const b = controls[0]}
   <ExplicitFunction2D func={(x: number) => 2 ** x + b} xMax={2} color={PrimeColor.blue} />
