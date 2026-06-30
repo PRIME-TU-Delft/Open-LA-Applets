@@ -69,5 +69,5 @@
       <circle r={8} cx={10} cy={10} {fill} {stroke} stroke-width={strokeWidth} />
     {/if}
   </svg>
-  <LatexUI latex={legendI.label} />
+  <LatexUI latex={legendI.latex} />
 </div>

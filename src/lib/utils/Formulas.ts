@@ -19,21 +19,21 @@ export class Formula {
   id = crypto.randomUUID();
 
   illegalCharacters = /&/g;
-  stringFormula: string;
+  latex: string;
   invalidFormula = false;
   autoIndex = 0;
 
   /**
    * Create new instance of Formulas.
-   * @param stringFormula The formula to be used.
+   * @param latex The formula to be used.
    * @param param The value(s) to be replaced in the formula.
    * @param color The color(s) of the value.
    * @returns A new instance of Formulas.
    */
-  constructor(stringFormula: string, param?: number | string, color?: PrimeColor) {
-    this.stringFormula = stringFormula || '';
+  constructor(latex: string, param?: number | string, color?: PrimeColor) {
+    this.latex = latex || '';
 
-    if (!stringFormula) {
+    if (!latex) {
       this.invalidFormula = true;
       return;
     }
@@ -42,26 +42,26 @@ export class Formula {
 
     const value = parseFloat('' + param).toFixed(2) || param;
 
-    this.stringFormula = this.stringFormula.replaceAll(
+    this.latex = this.latex.replaceAll(
       '\\$',
       `\\textcolor{${color || PrimeColor.black}}{${value}}`
     );
   }
 
   raw() {
-    return this.stringFormula;
+    return this.latex;
   }
 
   addParam(index: number, param: number | string, color?: PrimeColor) {
     const value = param;
 
     if (index <= 0) {
-      this.stringFormula = this.stringFormula.replaceAll(
+      this.latex = this.latex.replaceAll(
         `\\$`,
         `\\textcolor{${color || PrimeColor.black}}{${value}}`
       );
     } else {
-      this.stringFormula = this.stringFormula.replaceAll(
+      this.latex = this.latex.replaceAll(
         `\\$${index}`,
         `\\textcolor{${color || PrimeColor.black}}{${value}}`
       );
@@ -85,7 +85,7 @@ export class Formula {
   }
 
   clone(): Formula {
-    return new Formula(this.stringFormula);
+    return new Formula(this.latex);
   }
 
   removeColor(): this {
@@ -93,13 +93,13 @@ export class Formula {
     const regex = /\\textcolor{#[0-9a-fA-F]{6}}{(.+?)}/g;
 
     // Remove the color from the formula but keep its value
-    this.stringFormula = this.stringFormula.replace(regex, '$1');
+    this.latex = this.latex.replace(regex, '$1');
 
     return this;
   }
 
   stripInvalid(): this {
-    this.stringFormula = this.stringFormula.replace(this.illegalCharacters, '');
+    this.latex = this.latex.replace(this.illegalCharacters, '');
 
     return this;
   }
@@ -124,7 +124,7 @@ export class Formulas extends Array<Formula> {
 
   align(): this {
     const fomulas = this.map((formula) => {
-      return formula.stringFormula;
+      return formula.latex;
     }).join(' \\\\ ');
 
     const alignFormulas = `\\begin{aligned} ${fomulas} \\end{aligned}`;
