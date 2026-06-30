@@ -144,14 +144,14 @@
     logarithmicY: true
   }}
   cameraZoom={1.15}
-  cameraPosition={new Vector2(-1.4, -2.4)}
+  cameraPosition={new Vector2(0, -3)}
   title={$_('applets.calculus.integration.method_errors.title')}
   labels={{
     xLabel: 'h',
     xLabelPosition: 'center',
     yLabel: `\\text{${$_('applets.calculus.integration.method_errors.absolute_error')}}`,
     yLabelPosition: 'center',
-    yLabelOffset: new Vector2(1, 0),
+    yLabelOffset: new Vector2(0.4, 0),
     yLabelRotate: true
   }}
 >
