@@ -13,7 +13,7 @@
   ];
 </script>
 
-<Canvas2D scaleX={1 / 1.5} scaleY={1 / 3} {draggables}>
+<Canvas2D scaleX={1 / 1.5} scaleY={1 / 3} {draggables} cameraPosition={new Vector2(4, 4)}>
   <Vector2D direction={draggables[0].position} length={draggables[0].position.length() - 0.8} />
 
   <Point2D position={new Vector2(4, 4)} />
