@@ -61,9 +61,9 @@
   }: Canvas2DProps = $props();
 
   // svelte-ignore state_referenced_locally
-  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height) : cameraZoomProp;
+  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, scaleX, scaleY) : cameraZoomProp;
   // svelte-ignore state_referenced_locally
-  let cameraPosition = viewBox ? viewBox.getCameraPos() : cameraPositionProp;
+  let cameraPosition = viewBox ? viewBox.getCameraPos(scaleX, scaleY) : cameraPositionProp;
 
   let id = 'canvas-' + generateUUID();
 
