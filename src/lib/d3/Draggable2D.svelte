@@ -4,7 +4,7 @@
   import { globalState } from '$lib/stores/globalState.svelte';
   import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { drag, select } from 'd3';
-  import type { Snippet } from 'svelte';
+  import { getContext, type Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
 
@@ -12,6 +12,10 @@
     draggable: Draggable;
     children?: Snippet;
   };
+
+  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const scaleX = scale2D?.x ?? 1;
+  const scaleY = scale2D?.y ?? 1;
 
   let { draggable, children }: DraggableProps = $props();
 
@@ -29,7 +33,7 @@
   }
 
   function dragged(event: DragEvent) {
-    dragPosition = new Vector2(event.x, event.y);
+    dragPosition = new Vector2(event.x / scaleX, event.y / scaleY);
 
     const newPoint = draggable.snapFn(dragPosition);
     draggable.value = new Vector2(newPoint.x, newPoint.y);
@@ -86,16 +90,26 @@
   role="button"
   tabindex="0"
   onmousedown={() => activityState.enable()}
-  style="--x:{dragPosition.x}; --y:{dragPosition.y}"
+  style="--x:{dragPosition.x * scaleX}; --y:{dragPosition.y * scaleY}"
 />
-<circle cx={draggable.value.x} cy={draggable.value.y} r={POINT_SIZE} fill={draggable.color} />
+<circle
+  cx={draggable.value.x * scaleX}
+  cy={draggable.value.y * scaleY}
+  r={POINT_SIZE}
+  fill={draggable.color}
+/>
 
 {#if children}
   {@render children()}
 {/if}
 
 <g bind:this={g}>
-  <circle cx={draggable.value.x} cy={draggable.value.y} r={INTERACTIVITY_RADIUS} opacity="0" />
+  <circle
+    cx={draggable.value.x * scaleX}
+    cy={draggable.value.y * scaleY}
+    r={INTERACTIVITY_RADIUS}
+    opacity="0"
+  />
 </g>
 
 {#if draggable.label}
