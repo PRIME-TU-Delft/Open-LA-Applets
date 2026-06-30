@@ -108,7 +108,9 @@
   }
   function legendB() {
     const point = draggablePoint[0].position;
-    return `(a+h,f(a+h))\\approx(${point.x.toFixed(2).replace(/\.00$/, '')}, ${point.y.toFixed(2).replace(/\.00$/, '')})`;
+    const x = point.x + controls[0];
+    const y = baseFunction(x);
+    return `(a+h,f(a+h))\\approx(${x.toFixed(2).replace(/\.00$/, '')}, ${y.toFixed(2).replace(/\.00$/, '')})`;
   }
   const legendItems = $derived([
     new LegendItem('f(x)=\\frac{1}{8}x^3', PrimeColor.blue),
