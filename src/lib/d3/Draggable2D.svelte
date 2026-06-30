@@ -80,7 +80,7 @@
 
 <circle
   class="pulse"
-  r={INTERACTIVITY_RADIUS}
+  r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
   opacity="0.5"
   fill={draggable.color}
   role="button"
@@ -88,7 +88,7 @@
   onmousedown={() => activityState.enable()}
   style="--x:{dragPosition.x}; --y:{dragPosition.y}"
 />
-<circle cx={draggable.value.x} cy={draggable.value.y} r={POINT_SIZE} fill={draggable.color} />
+<circle cx={draggable.value.x} cy={draggable.value.y} r={draggable.radius} fill={draggable.color} />
 
 {#if children}
   {@render children()}
