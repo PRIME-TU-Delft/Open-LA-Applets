@@ -76,47 +76,23 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  function generateLegendItems() {
-    const b = controls[0];
-    let part1 = '';
-    if (b === 0) {
-      part1 += '0';
-    } else if (b === 1) {
-      part1 += '-x^4';
-    } else if (b === -1) {
-      part1 += 'x^4';
-    } else if (b > 0) {
-      part1 += '-' + b.toFixed(0) + 'x^4';
-    } else {
-      part1 += (-1 * b).toFixed(0) + 'x^4';
-    }
-    const part2 = (b ** 2).toFixed(0);
-    let part3 = '';
-    if (b + 1 === 1) {
-      part3 += 'x+1';
-    } else if (b + 1 === -1) {
-      part3 += '-x-1';
-    } else if (b + 1 === 0) {
-      part3 += '1';
-    } else {
-      part3 += (b + 1).toFixed(0) + 'x+1';
-    }
-    const complete =
-      'f(x)=\\left\\{\\begin{array}{ll}' +
-      part1 +
-      ',&x<1,\\\\' +
-      part2 +
-      ',&x=1,\\\\' +
-      part3 +
-      ',&x> 1.\\end{array}\\right.';
-    return [new LegendItem(complete, PrimeColor.blue)];
-  }
   const controls = Controls.addSlider(1, -3, 3, 1, PrimeColor.raspberry, {
     label: toLatexText('$b$'),
     valueFn: (v: number) => v.toFixed(0),
     animationStep: 1
   });
-  const legendItems = $derived(generateLegendItems());
+  const legendItems = $derived.by(() => {
+    const b = controls[0];
+    return [
+      new LegendItem(
+        'f(x)=\\left\\{\\begin{array}{ll}\\$1 x^4,&x<1,\\\\\\$2,&x=1,\\\\\\$3x+1,&x> 1.\\end{array}\\right.',
+        PrimeColor.blue
+      )
+        .addAutoParam(-b, PrimeColor.raspberry)
+        .addAutoParam((b ** 2).toFixed(0), PrimeColor.raspberry)
+        .addAutoParam(b + 1, PrimeColor.raspberry)
+    ];
+  });
 </script>
 
 <Canvas2D

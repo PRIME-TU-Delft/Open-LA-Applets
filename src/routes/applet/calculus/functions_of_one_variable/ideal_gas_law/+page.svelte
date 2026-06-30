@@ -88,14 +88,16 @@
     new FunctionFragment(idealGasLaw, PrimeColor.blue, { domain: { xMin: 0 } })
   ];
 
-  function textFormula() {
+  const legendItems = $derived.by(() => {
     const n = controls[0];
     const T = controls[1];
-    let value = `P(V)=\\frac{${n} \\cdot R \\cdot ${(T + 273.15).toFixed(2)}}{V}`;
-    return value;
-  }
 
-  const legendItems = $derived([new LegendItem(textFormula(), PrimeColor.blue)]);
+    return [
+      new LegendItem('P(V)=\\frac{\\$1 \\cdot R \\cdot \\$2}{V}', PrimeColor.blue)
+        .addAutoParam(n, PrimeColor.darkGreen)
+        .addAutoParam((T + 273.15).toFixed(2), PrimeColor.orange)
+    ];
+  });
 
   const formula = [
     new Formula('R\\approx8.31446\\,\\,\\frac{\\text{Pa}}{\\text{K} \\cdot \\text{mol}}')
