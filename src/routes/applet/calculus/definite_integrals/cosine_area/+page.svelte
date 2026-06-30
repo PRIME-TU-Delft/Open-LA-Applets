@@ -18,8 +18,6 @@
   import Latex from '$lib/components/Latex.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
 
@@ -35,13 +33,9 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
-  // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-2, -4), // bottom-left
-    new Vector2(11, 6), // top-right
+    new Vector2(-2 / 1.5, -4 / 3), // bottom-left
+    new Vector2(11 / 1.5, 6 / 3), // top-right
     0.5 // margin
   );
 
@@ -76,8 +70,6 @@
 
 <Canvas2D
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   legendFormulaPosition="top-right"

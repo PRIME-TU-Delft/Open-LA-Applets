@@ -4,42 +4,31 @@ export class ViewBox {
   bottomLeft: Vector2;
   topRight: Vector2;
   margin: number;
-  scaleX: number;
-  scaleY: number;
 
   /**
    * ViewBox automatically sets the camera position and zoom in order to make the area defined by it always visible on any screen
    * @param bottomLeft Bottom left corner of the view box
    * @param topRight Top right corner of the view box
    * @param margin Margin of the box to extend the sides with
-   * @param scaleX Scale factor for X axis (optional, default 1)
-   * @param scaleY Scale factor for Y axis (optional, default 1)
    */
-  constructor(
-    bottomLeft: Vector2,
-    topRight: Vector2,
-    margin?: number,
-    scaleX?: number,
-    scaleY?: number
-  ) {
-    this.scaleX = scaleX ?? 1;
-    this.scaleY = scaleY ?? 1;
-    // Apply scales to convert from display-space to world-space
-    this.bottomLeft = new Vector2(bottomLeft.x * this.scaleX, bottomLeft.y * this.scaleY);
-    this.topRight = new Vector2(topRight.x * this.scaleX, topRight.y * this.scaleY);
+  constructor(bottomLeft: Vector2, topRight: Vector2, margin?: number) {
+    this.bottomLeft = bottomLeft;
+    this.topRight = topRight;
     this.margin = margin ?? 0;
   }
 
-  getCameraPos(): Vector2 {
+  getCameraPos(scaleX: number = 1, scaleY: number = 1): Vector2 {
+    const scaledBottomLeft = new Vector2(this.bottomLeft.x * scaleX, this.bottomLeft.y * scaleY);
+    const scaledTopRight = new Vector2(this.topRight.x * scaleX, this.topRight.y * scaleY);
     return new Vector2(
-      (this.bottomLeft.x + this.topRight.x + 2 * this.margin) / 2 - this.margin,
-      (this.bottomLeft.y + this.topRight.y + 2 * this.margin) / 2 - this.margin
+      (scaledBottomLeft.x + scaledTopRight.x + 2 * this.margin) / 2 - this.margin,
+      (scaledBottomLeft.y + scaledTopRight.y + 2 * this.margin) / 2 - this.margin
     );
   }
 
-  getCameraZoom(width: number, height: number): number {
-    const boxWidth = this.topRight.x - this.bottomLeft.x + 2 * this.margin;
-    const boxHeight = this.topRight.y - this.bottomLeft.y + 2 * this.margin;
+  getCameraZoom(width: number, height: number, scaleX: number = 1, scaleY: number = 1): number {
+    const boxWidth = (this.topRight.x - this.bottomLeft.x) * scaleX + 2 * this.margin;
+    const boxHeight = (this.topRight.y - this.bottomLeft.y) * scaleY + 2 * this.margin;
 
     if (boxWidth <= 0 || boxHeight <= 0 || width <= 0 || height <= 0) {
       return 1;

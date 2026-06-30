@@ -27,7 +27,6 @@
   import type { float } from 'three/tsl';
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -46,16 +45,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(6, 4);
+  cameraPosition = new Vector2(12, 8);
   cameraZoom = 0.85;
-
-  // (remove if unnecessary)
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  initialViewBox = new ViewBox(
-    new Vector2(-2, -2), // bottom-left
-    new Vector2(12, 12), // top-right
-    0.5 // margin
-  );
 
   // ####
   // AXIS
@@ -139,7 +130,6 @@
 </script>
 
 <Canvas2D
-  // {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
