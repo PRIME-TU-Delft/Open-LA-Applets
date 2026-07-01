@@ -114,7 +114,7 @@
   const controls = Controls.addSlider(InitialDeltaX, -5, 5, 0.01, PrimeColor.raspberry, {
     label: '\\Delta x',
     animationStep: 0.01,
-    valueFn: (v: number) => ''
+    valueFn: () => ''
   });
 </script>
 
@@ -203,7 +203,7 @@
   />
   <Latex2D
     position={new Vector2(draggables[0].position.x + controls[0] / 2, -1)}
-    latex={'\\Delta x'}
+    latex="\Delta x"
     alignX="center"
     alignY="top"
     color={PrimeColor.raspberry}
@@ -223,19 +223,19 @@
   // Delta y
   <Latex2D
     position={new Vector2(
-      draggables[0].position.x + controls[0] + 1.1,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 1.1 : -1.1),
       (BaseFunction(draggables[0].position.x) +
         BaseFunction(draggables[0].position.x + controls[0])) /
         2
     )}
-    latex={'\\Delta y'}
-    alignX="left"
+    latex="\Delta y"
+    alignX={controls[0] > 0 ? 'left' : 'right'}
     alignY="center"
     color={PrimeColor.yellow}
   />
   <Vector2D
     origin={new Vector2(
-      draggables[0].position.x + controls[0] + 1,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 1 : -1),
       BaseFunction(draggables[0].position.x) +
         0.1 *
           (BaseFunction(draggables[0].position.x + controls[0]) -
@@ -249,7 +249,7 @@
   />
   <Vector2D
     origin={new Vector2(
-      draggables[0].position.x + controls[0] + 1,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 1 : -1),
       BaseFunction(draggables[0].position.x) +
         0.5 *
           (BaseFunction(draggables[0].position.x + controls[0]) -
@@ -264,18 +264,18 @@
   // Delta L
   <Latex2D
     position={new Vector2(
-      draggables[0].position.x + controls[0] + 2.5,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 2.5 : -2.5),
       BaseFunction(draggables[0].position.x) +
-        (BaseDerivative(draggables[0].position.x) * controls[0]) / 2
+        BaseDerivative(draggables[0].position.x) * controls[0] * 0.5
     )}
-    latex={"f'(a)\\Delta x"}
-    alignX="left"
+    latex="f'(a)\Delta x"
+    alignX={controls[0] > 0 ? 'left' : 'right'}
     alignY="center"
     color={PrimeColor.purple}
   />
   <Vector2D
     origin={new Vector2(
-      draggables[0].position.x + controls[0] + 2.4,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 2.4 : -2.4),
       BaseFunction(draggables[0].position.x) +
         0.1 * (BaseDerivative(draggables[0].position.x) * controls[0])
     )}
@@ -285,7 +285,7 @@
   />
   <Vector2D
     origin={new Vector2(
-      draggables[0].position.x + controls[0] + 2.4,
+      draggables[0].position.x + controls[0] + (controls[0] > 0 ? 2.4 : -2.4),
       BaseFunction(draggables[0].position.x) +
         0.5 * (BaseDerivative(draggables[0].position.x) * controls[0])
     )}
