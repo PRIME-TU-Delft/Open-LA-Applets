@@ -40,7 +40,7 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
+    new Vector2(-3, -5), // bottom-left
     new Vector2(4, 7), // top-right
     0.5 // margin
   );
@@ -53,8 +53,8 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
     logarithmicX: false,
     logarithmicY: false,
     skipX: 0,
@@ -81,17 +81,17 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const initialA = 0.4;
-  const InitialDeltaX = 1.2;
+  const initialA = 0.6;
+  const InitialDeltaX = 2.5;
   function BaseFunction(x: number): number {
-    return Math.atan(3 * x - 1) + 2;
+    return Math.atan(1.5 * x - 1 / 2) + 2;
   }
   function BaseDerivative(x: number): number {
-    return 3 / (1 + Math.pow(3 * x - 1, 2));
+    return 1.5 / (1 + Math.pow(1.5 * x - 1 / 2, 2));
   }
   const appletObjects: AppletObject[] = [
     new FunctionFragment(BaseFunction, PrimeColor.blue, {
-      legendText: 'f(x)',
+      legendText: 'y=f(x)',
       width: 0.1
     })
   ];
@@ -127,15 +127,15 @@
   legendItems={[
     ...getLegend(appletObjects),
     ...[
-      new LegendItem('(a,f(a))', PrimeColor.orange),
-      new LegendItem('(a+\\Delta x,f(a+\\Delta x))', PrimeColor.yellow),
-      new LegendItem("(a+\\Delta x,f(a)+\\Delta x f'(a))", PrimeColor.purple)
+      new LegendItem("y=f(a)+f'(a)(x-a)", PrimeColor.darkGreen),
+      new LegendItem('(a,f(a))', PrimeColor.orange)
     ]
   ]}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
+  legendFormulaPosition="top-left"
 >
   <TemplateComponent objects={appletObjects} />
   <InfiniteLine2D
