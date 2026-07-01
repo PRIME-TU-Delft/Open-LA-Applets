@@ -11,6 +11,11 @@ export class PrimeColor {
   static black: ColorString = '#565656';
   static orange: ColorString = '#EC6842';
   static cyan: ColorString = '#00A6D6';
+  static purple: ColorString = '#6F1D77';
+  static pink: ColorString = '#EF60A3';
+  static red: ColorString = '#E03C31';
+  static green: ColorString = '#6CC24A';
+  static darkBlue: ColorString = '#0C2340';
   static transparent: ColorString = '#00000000'; // Transparent color
   static white: ColorString = '#FFFFFF';
 
