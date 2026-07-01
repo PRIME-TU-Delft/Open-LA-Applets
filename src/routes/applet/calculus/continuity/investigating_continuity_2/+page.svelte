@@ -83,14 +83,21 @@
   });
   const legendItems = $derived.by(() => {
     const b = controls[0];
+    const Dollar1 = Math.abs(b) !== 1 ? '\\$1' : '\\$4';
+    const Dollar3 = b === -1 ? '1' : '\\$3 x+1';
     return [
       new LegendItem(
-        'f(x)=\\left\\{\\begin{array}{ll}\\$1 x^4,&x<1,\\\\\\$2,&x=1,\\\\\\$3x+1,&x> 1.\\end{array}\\right.',
+        'f(x)=\\left\\{\\begin{array}{ll}' +
+          (b === 0 ? '\\$4' : Dollar1 + ' x^4') +
+          ',&x<1,\\\\\\$2,&x=1,\\\\' +
+          Dollar3 +
+          ',&x> 1.\\end{array}\\right.',
         PrimeColor.blue
       )
         .addAutoParam(-b, PrimeColor.raspberry)
         .addAutoParam((b ** 2).toFixed(0), PrimeColor.raspberry)
-        .addAutoParam(b + 1, PrimeColor.raspberry)
+        .addAutoParam((b + 1).toFixed(0).replace('1', ''), PrimeColor.raspberry)
+        .addAutoParam((-b).toFixed(0).replace('1', ''), PrimeColor.raspberry)
     ];
   });
 </script>

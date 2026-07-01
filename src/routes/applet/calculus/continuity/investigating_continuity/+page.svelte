@@ -78,12 +78,15 @@
   // ##############
   const legendItems = $derived.by(() => {
     const b = controls[0];
+    const Dollar1 = b != 0 ? '$1' : '';
     return [
       new LegendItem(
-        'f(x)=\\left\\{\\begin{array}{ll}2^x\\$1,&x<2,\\\\\\$2,&x=2,\\\\x^2-3x,&x> 2.\\end{array}\\right.',
+        'f(x)=\\left\\{\\begin{array}{ll}2^x\\' +
+          Dollar1 +
+          ',&x<2,\\\\\\$2,&x=2,\\\\x^2-3x,&x> 2.\\end{array}\\right.',
         PrimeColor.blue
       )
-        .addAutoParam(withSign(b, 1), PrimeColor.raspberry)
+        .addAutoParam(withSign(b, 1).replace('.0', ''), PrimeColor.raspberry)
         .addAutoParam((2 * b + 10).toFixed(1).replace('.0', ''), PrimeColor.raspberry)
     ];
   });
