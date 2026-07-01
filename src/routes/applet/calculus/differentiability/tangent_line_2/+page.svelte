@@ -60,8 +60,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 6), // top-right
+    new Vector2(-4, -4), // bottom-left
+    new Vector2(4, 9), // top-right
     0.5 // margin
   );
 
