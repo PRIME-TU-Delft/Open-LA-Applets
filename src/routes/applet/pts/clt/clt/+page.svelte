@@ -3,10 +3,11 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Histogram from '$lib/d3/Histogram.svelte';
-  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { clamp } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { randomExponential, randomNormal, randomPareto, randomUniform } from 'd3';
   import { Vector2 } from 'three';
 
   // TODO: create translations
@@ -49,12 +50,14 @@
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
-  let inDistrControls = Controls.addButton('Back', PrimeColor.raspberry, () => {
-    savedCategory = '';
-    savedDistrType = '';
-  })
-    .addDropdown('Average', ['Average', 'Sum'])
-    .addSlider(100, 0, 300, 1, PrimeColor.blue, { label: 'N' });
+  let inDistrControls = Controls.addDropdown('Average', ['Average', 'Sum']).addSlider(
+    100,
+    0,
+    300,
+    1,
+    PrimeColor.blue,
+    { label: 'N' }
+  );
 
   const controls = $derived.by(() => {
     if (!savedCategory || !savedDistrType) {
@@ -93,7 +96,7 @@
           label: 'n',
           valueFn: valueFnInt
         });
-      // continous
+      // Continuous
       case 'Normal':
         return inDistrControls.addSlider(2, 0, 4, 0.1, PrimeColor.raspberry, {
           label: 'sigma',
@@ -105,30 +108,33 @@
           valueFn
         });
       case 'Pareto':
-        return inDistrControls
-          .addSlider(4, 0, 10, 0.5, PrimeColor.blue, {
-            label: 'x_0',
-            valueFn
-          })
-          .addSlider(2, 0, 4, 0.2, PrimeColor.raspberry, {
-            label: 'alpha',
-            valueFn
-          });
+        return inDistrControls.addSlider(2, 0, 4, 0.2, PrimeColor.raspberry, {
+          label: 'alpha',
+          valueFn
+        });
       case 'Uniform':
-        return undefined; // this just has draggables
+        return inDistrControls; // this just has draggables
       // TODO: add free input
       default: // TO REMOVE
         return undefined;
     }
   });
 
+  const N = $derived((controls?.[1] as number) || 0);
+
   const draggables = $derived.by(() => {
     switch (savedDistrType) {
-      // continous
+      // Continuous
       case 'Normal':
         return [
           new Draggable(new Vector2(0, 0), PrimeColor.blue, '\\mu', (v) => {
             return new Vector2(clamp(v.x, -10, 10), 0);
+          })
+        ];
+      case 'Pareto':
+        return [
+          new Draggable(new Vector2(1, 0), PrimeColor.blue, 'x_0', (v) => {
+            return new Vector2(clamp(v.x, 0, 10), 0);
           })
         ];
       case 'Uniform': {
@@ -156,6 +162,56 @@
       new Formula('\\text{Var}(X) &= \\$1').addAutoParam(variance)
     ).align();
   });
+
+  function addFreq(map: { [x: number]: number }, x: number) {
+    map[x] = (map[x] ?? 0) + 1;
+    return map;
+  }
+
+  const randomFn = $derived.by(() => {
+    switch (savedDistrType) {
+      case 'Normal': {
+        const mean_ = draggables?.[0].position.x ?? 0;
+        const sigma = (controls?.[2] as number) ?? 0;
+
+        return randomNormal(mean_, sigma);
+      }
+      case 'Exponential': {
+        const lambda = (controls?.[2] as number) ?? 0;
+
+        return randomExponential(lambda);
+      }
+      case 'Pareto': {
+        const x0 = draggables?.[0].position.x ?? 0;
+        const alpha = (controls?.[2] as number) ?? 0;
+
+        const d3Pareto = randomPareto(alpha);
+        return () => x0 * d3Pareto();
+      }
+      case 'Uniform': {
+        const a = draggables?.[0].position.x ?? 0;
+        const b = draggables?.[1].position.x ?? 0;
+
+        return randomUniform(a, b);
+      }
+      default: {
+        // console.log({ savedDistrType });
+
+        return () => 0;
+      }
+    }
+  });
+
+  const freqMap = $derived.by(() => {
+    let m: Record<number, number> = {};
+
+    for (let i = 0; i < N; i++) {
+      const res = Math.floor(randomFn() ?? 0);
+      m = addFreq(m, res);
+    }
+
+    return m;
+  });
 </script>
 
 <Canvas2D
@@ -166,10 +222,7 @@
     savedCategory = '';
     savedDistrType = '';
   }}
+  initialViewBox={new ViewBox(new Vector2(-10, 0), new Vector2(10, 10), 0.5)}
 >
-  {#if savedCategory == 'Continous' && savedDistrType == 'Normal'}
-    <Histogram />
-  {:else}
-    <Latex2D latex="empty" />
-  {/if}
+  <Histogram {freqMap} color={PrimeColor.cyan} normalizedHeight={10} />
 </Canvas2D>
