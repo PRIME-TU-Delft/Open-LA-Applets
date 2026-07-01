@@ -83,8 +83,8 @@
           class="mx-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
           {#each formulas as formula (formula.id)}
-            {#key formula.stringFormula}
-              <LatexUI latex={formula.stringFormula} />
+            {#key formula.latex}
+              <LatexUI latex={formula.latex} />
             {/key}
           {/each}
 
@@ -93,7 +93,7 @@
           {/if}
 
           {#each legendItems as legendI (legendI.id)}
-            {#key legendI.label}
+            {#key legendI.latex}
               <LegendItemComponent {legendI} />
             {/key}
           {/each}
@@ -103,8 +103,8 @@
       {#if (splitFormulas && splitFormulas.length) >= 1 || (splitLegendItems && splitLegendItems.length >= 1)}
         <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
           {#each splitFormulas as formula (formula.id)}
-            {#key formula.stringFormula}
-              <LatexUI latex={formula.stringFormula} />
+            {#key formula.latex}
+              <LatexUI latex={formula.latex} />
             {/key}
           {/each}
 
@@ -113,7 +113,7 @@
           {/if}
 
           {#each splitLegendItems as legendI (legendI.id)}
-            {#key legendI.label}
+            {#key legendI.latex}
               <LegendItemComponent {legendI} />
             {/key}
           {/each}

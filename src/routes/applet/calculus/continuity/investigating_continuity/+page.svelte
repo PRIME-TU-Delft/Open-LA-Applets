@@ -4,7 +4,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { toLatexText } from '$lib/utils/FormatString';
+  import { toLatexText, withSign } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
@@ -76,30 +76,26 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  function generateLegendItems() {
-    const part1 =
-      '2^x' +
-      (controls[0] !== 0
-        ? (controls[0] > 0 ? '+' : '') + controls[0].toFixed(1).replace('.0', '')
-        : '');
-    const part2 = (2 * controls[0] + 10).toFixed(1).replace('.0', '');
-    const part3 = 'x^2-3x';
-    const complete =
-      'f(x)=\\left\\{\\begin{array}{ll}' +
-      part1 +
-      ',&x<2,\\\\' +
-      part2 +
-      ',&x=2,\\\\' +
-      part3 +
-      ',&x> 2.\\end{array}\\right.';
-    return [new LegendItem(complete, PrimeColor.blue)];
-  }
+  const legendItems = $derived.by(() => {
+    const b = controls[0];
+    const Dollar1 = b != 0 ? '$1' : '';
+    return [
+      new LegendItem(
+        'f(x)=\\left\\{\\begin{array}{ll}2^x\\' +
+          Dollar1 +
+          ',&x<2,\\\\\\$2,&x=2,\\\\x^2-3x,&x> 2.\\end{array}\\right.',
+        PrimeColor.blue
+      )
+        .addAutoParam(withSign(b, 1).replace('.0', ''), PrimeColor.raspberry)
+        .addAutoParam((2 * b + 10).toFixed(1).replace('.0', ''), PrimeColor.raspberry)
+    ];
+  });
+
   const controls = Controls.addSlider(-2, -10, 10, 0.5, PrimeColor.raspberry, {
     label: toLatexText('$b$'),
     valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
     animationStep: 0.5
   });
-  const legendItems = $derived(generateLegendItems());
 </script>
 
 <Canvas2D
