@@ -42,9 +42,7 @@
   initialViewBox = new ViewBox(
     new Vector2(-1, -1), // bottom-left
     new Vector2(15, 25), // top-right
-    0.5, // margin
-    1, // scaleX
-    sY // scaleY
+    0.5 // margin
   );
 
   // ###########

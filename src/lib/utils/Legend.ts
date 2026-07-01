@@ -1,3 +1,4 @@
+import { Formula } from './Formulas';
 import type { PrimeColor } from './PrimeColors';
 
 export enum FillType {
@@ -22,10 +23,9 @@ export enum Shape {
  *  new LegendItem('Trapezoid', PrimeColor.darkGreen)
  * ];
  */
-export class LegendItem {
+export class LegendItem extends Formula {
   id = crypto.randomUUID();
 
-  label: string;
   color: PrimeColor;
   strokeColor: PrimeColor | undefined;
   strokeWidth: number = 3;
@@ -44,7 +44,7 @@ export class LegendItem {
    * @param opacity Optional opacity for the fill (default: 1)
    */
   constructor(
-    label: string,
+    latex: string,
     color: PrimeColor,
     shape?: Shape | string,
     fill?: FillType,
@@ -52,7 +52,8 @@ export class LegendItem {
     strokeWidth?: number,
     opacity?: number
   ) {
-    this.label = label;
+    super(latex, undefined, color);
+
     this.color = color;
     this.strokeColor = strokeColor;
     this.strokeWidth = strokeWidth ?? 3;
