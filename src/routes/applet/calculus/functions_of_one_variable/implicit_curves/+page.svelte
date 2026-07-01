@@ -113,13 +113,6 @@
     return Math.pow(x, p) + Math.pow(y, q) - Math.sign(b) * b ** 2;
   }
 
-  function curveLegend() {
-    let p = controls[0];
-    let q = controls[1];
-    let b = controls[2];
-    return toLatexText(`$x^{${p}} + y^{${q}} = ${Math.sign(b) * b ** 2}$`);
-  }
-
   function roots(x: number) {
     const p = controls[0];
     const q = controls[1];
@@ -133,7 +126,18 @@
   }
   const yDs = $derived(roots(xD));
 
-  const legendItems = $derived([new LegendItem(curveLegend(), PrimeColor.blue)]);
+  const legendItems = $derived.by(() => {
+    let p = controls[0];
+    let q = controls[1];
+    let b = controls[2];
+
+    return [
+      new LegendItem('x^{\\$1} + y^{\\$2} = \\$3', PrimeColor.blue)
+        .addAutoParam(p, PrimeColor.darkGreen)
+        .addAutoParam(q, PrimeColor.orange)
+        .addAutoParam(Math.sign(b) * b ** 2, PrimeColor.raspberry)
+    ];
+  });
 
   const appletObjects: AppletObject[] = [
     new ImplicitFunctionFragment(curve, PrimeColor.blue, { maxDepth: 3 })
