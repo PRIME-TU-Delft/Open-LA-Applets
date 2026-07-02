@@ -29,7 +29,7 @@ export class Controls<
   private readonly _controls: T;
   _width: number; // width of the controls
 
-  MAX_WIDTH = 100;
+  MAX_WIDTH = 120;
 
   constructor(controls: T, width = 0) {
     this._controls = controls;

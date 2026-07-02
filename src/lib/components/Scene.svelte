@@ -11,6 +11,7 @@
     title?: string;
     sceneChildren?: Snippet<[number, number]>;
     legendFormulaPosition?: 'top-right' | 'top-left';
+    onReset?: () => void;
   };
 </script>
 
@@ -42,7 +43,8 @@
     draggables = [],
     title,
     sceneChildren,
-    legendFormulaPosition
+    legendFormulaPosition,
+    onReset
   }: SceneProps = $props();
 
   let height = $state(500);
@@ -84,6 +86,10 @@
     globalState.resetKey = Symbol(); // Update the key to reset the camera component
 
     draggables.forEach((d) => d.reset(750));
+
+    if (onReset) {
+      onReset();
+    }
   }
 
   /**
