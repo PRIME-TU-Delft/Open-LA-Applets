@@ -21,6 +21,7 @@
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
     legendItems?: LegendItem[];
+    legendFormulaPosition?: 'top-right' | 'top-left';
     children: Snippet;
   };
 </script>
@@ -35,6 +36,7 @@
     controls,
     formulas = [],
     legendItems = [],
+    legendFormulaPosition,
     children
   }: CanvasGridProps = $props();
 
@@ -50,7 +52,14 @@
   });
 </script>
 
-<Scene {title} draggables={allDraggables} {controls} {formulas} {legendItems}>
+<Scene
+  {title}
+  draggables={allDraggables}
+  {controls}
+  {formulas}
+  {legendItems}
+  {legendFormulaPosition}
+>
   {#snippet sceneChildren(width: number, height: number)}
     <div
       style="display: grid; grid-template-rows: repeat({rows}, 1fr); grid-template-columns: repeat({columns}, 1fr); width: {width}px; height: {height}px;"
