@@ -67,7 +67,7 @@
     color={PrimeColor.orange}
   />
   <Vector3D color={PrimeColor.green} origin={BE} direction={WidthDiff} alwaysOnTop={true} />
-  <Vector3D color={PrimeColor.yellow} origin={CE} direction={LengthDiff} alwaysOnTop={true} />
+  <Vector3D color={PrimeColor.pink} origin={CE} direction={LengthDiff} alwaysOnTop={true} />
   <Latex3D
     latex={toLatexText('$w(x)$')}
     position={WidthPosition}
@@ -78,6 +78,6 @@
     latex={toLatexText('$l(x)$')}
     position={LengthPosition}
     offset={new MathVector3(0.2, 0.2, -0.2)}
-    color={PrimeColor.yellow}
+    color={PrimeColor.pink}
   />
 </Canvas3D>
