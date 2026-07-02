@@ -75,7 +75,7 @@
     color={PrimeColor.green}
   />
   <Latex3D
-    latex={toLatexText('$l(x)$')}
+    latex={toLatexText('$\\ell(x)$')}
     position={LengthPosition}
     offset={new MathVector3(0.2, 0.2, -0.2)}
     color={PrimeColor.pink}
