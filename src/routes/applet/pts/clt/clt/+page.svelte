@@ -111,12 +111,12 @@
       // Continuous
       case 'Normal':
         return inDistrControls.addSlider(2, 0, 4, 0.1, PrimeColor.raspberry, {
-          label: 'sigma',
+          label: '\\sigma',
           valueFn
         });
       case 'Exponential':
-        return inDistrControls.addSlider(4, 0, 10, 0.5, PrimeColor.raspberry, {
-          label: 'lambda',
+        return inDistrControls.addSlider(1 / 2, 0.1, 3, 0.1, PrimeColor.raspberry, {
+          label: '\\lambda',
           valueFn
         });
       case 'Pareto':
@@ -145,7 +145,7 @@
       // Continuous
       case 'Normal':
         return [
-          new Draggable(new Vector2(0, 0), PrimeColor.blue, '\\mu', (v) => {
+          new Draggable(new Vector2(0, 0), PrimeColor.orange, '\\mu', (v) => {
             return new Vector2(clamp(v.x, -10, 10), 0);
           })
         ];
@@ -172,12 +172,49 @@
   });
 
   const formulas = $derived.by(() => {
-    const expected_value = 0; // TODO
-    const variance = 0; // TOOD
+    let expected_value: string | number = 0;
+    let variance: string | number = 0;
+
+    let exp_color: PrimeColor = PrimeColor.black;
+    let var_color: PrimeColor = PrimeColor.black;
+
+    switch (curDistrType) {
+      case 'Normal': {
+        const mean_ = draggables?.[0]?.position.x ?? 0;
+        const sigma = (controls?.[2] as number) ?? 2;
+
+        expected_value = mean_.toFixed(2);
+        variance = Math.pow(sigma, 2).toFixed(2);
+
+        exp_color = PrimeColor.orange;
+        var_color = PrimeColor.raspberry;
+
+        break;
+      }
+      case 'Exponential': {
+        const lambda = (controls?.[2] as number) ?? 1;
+
+        expected_value = Math.pow(lambda, -1).toFixed(2);
+        variance = Math.pow(lambda, -2).toFixed(2);
+
+        exp_color = var_color = PrimeColor.raspberry;
+
+        break;
+      }
+      case 'Pareto': {
+        const x0 = draggables?.[0]?.position.x ?? 1;
+        const alpha = (controls?.[2] as number) ?? 1;
+
+        expected_value = ((alpha * x0) / (alpha - 1)).toFixed(2);
+        variance = (alpha * x0 ** 2) / ((alpha - 1) ** 2 * (alpha - 2));
+
+        break;
+      }
+    }
 
     return new Formulas(
-      new Formula('E[X] &= \\$1').addAutoParam(expected_value),
-      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(variance)
+      new Formula('E[X] &= \\$1').addAutoParam(expected_value, exp_color),
+      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(variance, var_color)
     ).align();
   });
 

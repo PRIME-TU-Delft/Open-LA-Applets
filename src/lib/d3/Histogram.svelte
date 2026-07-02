@@ -1,4 +1,4 @@
-<script module>
+<script module lang="ts">
   export type HistogramProps = {
     freqMap: { [x: number]: number };
     normalizedHeight?: number;
