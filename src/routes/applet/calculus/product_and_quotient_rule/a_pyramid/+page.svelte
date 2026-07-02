@@ -6,7 +6,6 @@
   import Line3D from '$lib/threlte/Line3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { MathVector3 } from '$lib/utils/MathVector';
-  import { Vector3 } from 'three';
   import { Controls } from '$lib/controls/Controls';
   import { toLatexText } from '$lib/utils/FormatString';
 
