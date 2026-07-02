@@ -56,6 +56,9 @@
     });
   });
 
+  const curDistrType: string = $derived(savedDistrType || contDiscControls?.[1]);
+  const curCategory: string = $derived(savedCategory || contDiscControls?.[0]);
+
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
@@ -129,7 +132,13 @@
     }
   });
 
-  const N = $derived((controls?.[1] as number) || 0);
+  const N = $derived.by(() => {
+    if (typeof controls?.[1] === 'number') {
+      return controls?.[1];
+    }
+
+    return 200;
+  });
 
   const draggables = $derived.by(() => {
     switch (savedDistrType) {
@@ -178,56 +187,56 @@
   }
 
   const randomFn = $derived.by(() => {
-    switch (savedDistrType) {
+    switch (curDistrType) {
       // continuous
       case 'Normal': {
-        const mean_ = draggables?.[0].position.x ?? 0;
-        const sigma = (controls?.[2] as number) ?? 0;
+        const mean_ = draggables?.[0]?.position.x ?? 0;
+        const sigma = (controls?.[2] as number) ?? 2;
 
         return randomNormal(mean_, sigma);
       }
       case 'Exponential': {
-        const lambda = (controls?.[2] as number) ?? 0;
+        const lambda = (controls?.[2] as number) ?? 1;
 
         return randomExponential(lambda);
       }
       case 'Pareto': {
-        const x0 = draggables?.[0].position.x ?? 0;
-        const alpha = (controls?.[2] as number) ?? 0;
+        const x0 = draggables?.[0]?.position.x ?? 1;
+        const alpha = (controls?.[2] as number) ?? 1;
 
         const d3Pareto = randomPareto(alpha);
         return () => x0 * d3Pareto();
       }
       case 'Uniform': {
-        const a = draggables?.[0].position.x ?? 0;
-        const b = draggables?.[1].position.x ?? 0;
+        const a = draggables?.[0]?.position.x ?? -5;
+        const b = draggables?.[1]?.position.x ?? 5;
 
         return randomUniform(a, b);
       }
       // discrete
       case 'Bernouli': {
-        const p = (controls?.[2] as number) ?? 0;
+        const p = (controls?.[2] as number) ?? 0.5;
 
         return randomBernoulli(p);
       }
       case 'Binomial': {
-        const p = (controls?.[2] as number) ?? 0;
-        const n = (controls?.[3] as number) ?? 0;
+        const p = (controls?.[2] as number) ?? 0.5;
+        const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
 
         return randomBinomial(n, p);
       }
       case 'Geometric': {
-        const p = (controls?.[2] as number) ?? 0;
+        const p = (controls?.[2] as number) ?? 0.5;
 
         return randomGeometric(p);
       }
       case 'Poisson': {
-        const gamma = (controls?.[2] as number) ?? 0;
+        const gamma = (controls?.[2] as number) ?? 3;
 
         return randomPoisson(gamma);
       }
       case 'Uniform (die)': {
-        const n = (controls?.[2] as number) ?? 0;
+        const n = (controls?.[2] as number) ?? 6;
 
         const f = randomUniform(1, n + 1);
         return () => Math.floor(f());
@@ -262,7 +271,7 @@
 >
   <Histogram
     {freqMap}
-    isInteger={savedCategory === 'Discrete'}
+    isInteger={curCategory === 'Discrete'}
     color={PrimeColor.cyan}
     normalizedHeight={10}
   />
