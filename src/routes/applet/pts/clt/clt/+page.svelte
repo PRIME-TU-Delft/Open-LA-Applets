@@ -260,5 +260,10 @@
   }}
   initialViewBox={new ViewBox(new Vector2(-10, 0), new Vector2(10, 10), 0.5)}
 >
-  <Histogram {freqMap} color={PrimeColor.cyan} normalizedHeight={10} />
+  <Histogram
+    {freqMap}
+    isInteger={savedCategory === 'Discrete'}
+    color={PrimeColor.cyan}
+    normalizedHeight={10}
+  />
 </Canvas2D>
