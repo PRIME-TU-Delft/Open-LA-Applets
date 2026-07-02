@@ -189,6 +189,7 @@
       onchange={() => {
         if (logPan && orbitControlsRef) {
           const { x, y, z } = orbitControlsRef.target;
+          /* eslint-disable-next-line no-console */
           console.log('Pan target:', { x, y, z });
         }
         debounceHandleCameraChange();
