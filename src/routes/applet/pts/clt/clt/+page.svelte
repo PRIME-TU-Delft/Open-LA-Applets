@@ -7,7 +7,16 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { clamp } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { randomExponential, randomNormal, randomPareto, randomUniform } from 'd3';
+  import {
+    randomBernoulli,
+    randomBinomial,
+    randomExponential,
+    randomGeometric,
+    randomNormal,
+    randomPareto,
+    randomPoisson,
+    randomUniform
+  } from 'd3';
   import { Vector2 } from 'three';
 
   // TODO: create translations
@@ -170,6 +179,7 @@
 
   const randomFn = $derived.by(() => {
     switch (savedDistrType) {
+      // continuous
       case 'Normal': {
         const mean_ = draggables?.[0].position.x ?? 0;
         const sigma = (controls?.[2] as number) ?? 0;
@@ -194,9 +204,35 @@
 
         return randomUniform(a, b);
       }
-      default: {
-        // console.log({ savedDistrType });
+      // discrete
+      case 'Bernouli': {
+        const p = (controls?.[2] as number) ?? 0;
 
+        return randomBernoulli(p);
+      }
+      case 'Binomial': {
+        const p = (controls?.[2] as number) ?? 0;
+        const n = (controls?.[3] as number) ?? 0;
+
+        return randomBinomial(n, p);
+      }
+      case 'Geometric': {
+        const p = (controls?.[2] as number) ?? 0;
+
+        return randomGeometric(p);
+      }
+      case 'Poisson': {
+        const gamma = (controls?.[2] as number) ?? 0;
+
+        return randomPoisson(gamma);
+      }
+      case 'Uniform (die)': {
+        const n = (controls?.[2] as number) ?? 0;
+
+        const f = randomUniform(1, n + 1);
+        return () => Math.floor(f());
+      }
+      default: {
         return () => 0;
       }
     }
