@@ -46,8 +46,10 @@
 
     // Canvas2DProps
     cameraPosition = new Vector3(10, 10, 10),
+    cameraTarget = new Vector3(0, 0, 0),
     cameraZoom = 29,
     enablePan = false,
+    logPan = false,
     defaultLeftDivision
   }: CanvasProps = $props();
 
@@ -135,7 +137,7 @@
       {/if}
 
       <Canvas {renderMode} toneMapping={NoToneMapping}>
-        <Camera3D {cameraPosition} {cameraZoom} {enablePan} />
+        <Camera3D {cameraPosition} {cameraTarget} {cameraZoom} {enablePan} {logPan} />
 
         {@render children()}
 

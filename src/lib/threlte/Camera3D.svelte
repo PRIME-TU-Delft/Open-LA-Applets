@@ -1,7 +1,9 @@
 <script module lang="ts">
   export type Camera3DProps = {
     cameraPosition?: Vector3;
+    cameraTarget?: Vector3;
     enablePan?: boolean;
+    logPan?: boolean;
     cameraZoom?: number;
     isSplit?: boolean;
   };
@@ -21,8 +23,10 @@
 
   let {
     enablePan = true,
+    logPan = false,
     cameraZoom: zoom = 29,
     cameraPosition = new Vector3(10, 10, 10),
+    cameraTarget = new Vector3(0, 0, 0),
     isSplit = false
   }: Camera3DProps = $props();
 
@@ -65,7 +69,7 @@
       const delta = rot.slerp(new Quaternion(), 0.85); // Slerp to the original position
       currentPosition.applyQuaternion(delta); // Apply the rotation
 
-      cameraStore.lookAt(0, 0, 0); // Keep the camera looking at the origin
+      cameraStore.lookAt(cameraTarget.x, cameraTarget.y, cameraTarget.z); // Keep the camera looking at the target
       cameraStore.zoom += zoomDelta / INTERVALS; // Zoom usion the interval
 
       // Update the projection matrix to reflect the changes for the camera
@@ -85,11 +89,12 @@
 
       cameraStore.zoom = originalZoom;
       cameraStore.position.copy(originalPosition.clone());
-      cameraStore.lookAt(0, 0, 0);
+      cameraStore.lookAt(cameraTarget.x, cameraTarget.y, cameraTarget.z);
       cameraStore.updateProjectionMatrix();
 
       // OrbitControls has to be updated, because it stores camera state
       if (orbitControlsRef) {
+        orbitControlsRef.target.copy(cameraTarget);
         orbitControlsRef.update();
       }
 
@@ -104,7 +109,7 @@
   function handleCameraChange() {
     const cam = $camera as OrthographicCamera;
 
-    cam.lookAt(0, 0, 0);
+    cam.lookAt(cameraTarget.x, cameraTarget.y, cameraTarget.z);
 
     const splitCamera3D = new Camera3D(cam);
 
@@ -116,6 +121,17 @@
   }
 
   const debounceHandleCameraChange = debounce(handleCameraChange, 100);
+
+  let targetInitialized = false;
+
+  $effect(() => {
+    if (orbitControlsRef && !targetInitialized) {
+      orbitControlsRef.target.copy(cameraTarget);
+      orbitControlsRef.update();
+      advance();
+      targetInitialized = true;
+    }
+  });
 
   $effect(() => {
     const _ = globalState.resetKey;
@@ -170,7 +186,13 @@
       maxZoom={zoom * 10}
       minZoom={Math.max(zoom / 5, 1)}
       maxPolarAngle={Math.PI * 0.6}
-      onchange={() => debounceHandleCameraChange()}
+      onchange={() => {
+        if (logPan && orbitControlsRef) {
+          const { x, y, z } = orbitControlsRef.target;
+          console.log('Pan target:', { x, y, z });
+        }
+        debounceHandleCameraChange();
+      }}
     />
   {/if}
 </T.OrthographicCamera>

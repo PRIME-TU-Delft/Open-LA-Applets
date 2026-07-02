@@ -15,12 +15,12 @@
   let D = new MathVector3(-1.8, 1, 0);
   let E = new MathVector3(0, 0, 3);
 
-  const controls = Controls.addSlider(0.3, 0, 1, 0.01, PrimeColor.orange, {
+  const controls = Controls.addSlider(0.7, 0, 1, 0.01, PrimeColor.orange, {
     label: toLatexText('$x$'),
     valueFn: () => ''
   });
 
-  let x = $derived(controls[0]); // Relative position of horizontal intersection along a side edge, from the bottom
+  let x = $derived(1 - controls[0]); // Relative position of horizontal intersection along a side edge, from the bottom
   let AE = $derived(E.clone().sub(A).multiplyScalar(x).add(A)); // Point along edge AE based on x
   let BE = $derived(E.clone().sub(B).multiplyScalar(x).add(B)); // Point along edge BE based on x
   let CE = $derived(E.clone().sub(C).multiplyScalar(x).add(C)); // Point along edge CE based on x
@@ -38,7 +38,12 @@
   let LengthPosition = $derived(CE.clone().add(LengthDiff.clone().multiplyScalar(0.5)));
 </script>
 
-<Canvas3D cameraZoom={100} cameraPosition={new MathVector3(25, 10, 4)} {controls}>
+<Canvas3D
+  cameraZoom={80}
+  cameraPosition={new MathVector3(25, 10, 4)}
+  {controls}
+  cameraTarget={new MathVector3(0.2, 0, 1.2)}
+>
   <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
   <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
   <Line3D origin={B} endPoint={C} color={PrimeColor.pstBlack} radius={0.8} />
