@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Axis3D from '$lib/threlte/Axis3D.svelte';
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
   import Vector3D from '$lib/threlte/Vector3D.svelte';
@@ -19,7 +18,7 @@
 
   const controls = Controls.addSlider(0.3, 0, 1, 0.01, PrimeColor.orange, {
     label: toLatexText('$x$'),
-    valueFn: (v: number) => ''
+    valueFn: () => ''
   });
 
   let x = $derived(controls[0]); // Relative position of horizontal intersection along a side edge, from the bottom
@@ -40,8 +39,7 @@
   let LengthPosition = $derived(CE.clone().add(LengthDiff.clone().multiplyScalar(0.5)));
 </script>
 
-<Canvas3D cameraZoom={100} cameraPosition={new Vector3(10, 4, 25)} {controls}>
-  <!-- <Axis3D showNumbers={true}/> -->
+<Canvas3D cameraZoom={100} cameraPosition={new MathVector3(25, 10, 4)} {controls}>
   <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
   <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
   <Line3D origin={B} endPoint={C} color={PrimeColor.pstBlack} radius={0.8} />
