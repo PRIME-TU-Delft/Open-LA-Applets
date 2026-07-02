@@ -116,7 +116,6 @@
   let DF2 = $derived(new Vector2(DF.mathX, DF.mathY));
 
   let shift = $derived(AF2.clone().sub(AE2));
-  let AF2shift = $derived(AF2.clone().sub(shift));
   let BF2shift = $derived(BF2.clone().sub(shift));
   let CF2shift = $derived(CF2.clone().sub(shift));
   let DF2shift = $derived(DF2.clone().sub(shift));
