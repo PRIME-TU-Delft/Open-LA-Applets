@@ -84,7 +84,7 @@
 
 <circle
   class="pulse"
-  r={INTERACTIVITY_RADIUS}
+  r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
   opacity="0.5"
   fill={draggable.color}
   role="button"
@@ -95,7 +95,7 @@
 <circle
   cx={draggable.value.x * scaleX}
   cy={draggable.value.y * scaleY}
-  r={POINT_SIZE}
+  r={draggable.radius}
   fill={draggable.color}
 />
 
@@ -107,7 +107,7 @@
   <circle
     cx={draggable.value.x * scaleX}
     cy={draggable.value.y * scaleY}
-    r={INTERACTIVITY_RADIUS}
+    r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
     opacity="0"
   />
 </g>
