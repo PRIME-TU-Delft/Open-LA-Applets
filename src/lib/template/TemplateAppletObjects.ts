@@ -16,7 +16,7 @@ type Integral = {
   shape?: Shape;
 };
 
-type Shape = 'circle' | 'square' | 'triangle';
+type Shape = 'circle' | 'square' | 'triangle' | 'diamond';
 
 export abstract class AppletObject {
   color: PrimeColor;
@@ -402,6 +402,7 @@ export class Point extends AppletObject {
   shape?: Shape;
   latex?: string;
   legendText?: string;
+  radius?: number;
 
   /**
    * Point template object
@@ -410,6 +411,7 @@ export class Point extends AppletObject {
    * @param options.shape Shape of the point
    * @param options.latex Latex shown next to the point
    * @param options.legendText Legend text of the point
+   * @param options.radius Radius of the point
    */
   constructor(
     position: Vector2,
@@ -418,6 +420,7 @@ export class Point extends AppletObject {
       shape?: Shape;
       latex?: string;
       legendText?: string;
+      radius?: number;
     }
   ) {
     super(color);
@@ -426,6 +429,7 @@ export class Point extends AppletObject {
     this.shape = options?.shape;
     this.latex = options?.latex;
     this.legendText = options?.legendText;
+    this.radius = options?.radius;
   }
 }
 
