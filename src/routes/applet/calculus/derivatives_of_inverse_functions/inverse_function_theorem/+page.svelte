@@ -78,7 +78,6 @@
   // ##############
   const Function = (x: number) => 5 * Math.pow(31 + x ** 2, 1 / 5) - 8;
   const Derivative = (x: number) => 5 * (((1 / 5) * (2 * x)) / Math.pow(31 + x ** 2, 4 / 5));
-  const TangentLine = (x: number, a: number) => Function(a) + Derivative(a) * (x - a);
 
   function snapToFuncA(point: Vector2): Vector2 {
     const x = Math.max(0, point.x);
