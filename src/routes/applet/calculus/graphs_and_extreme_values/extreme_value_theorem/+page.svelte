@@ -78,7 +78,7 @@
   function Function2left(x: number): number {
     return x;
   }
-  function Function2right(x: number): number {
+  function Function2right(_x: number): number {
     return 1;
   }
   const appletObjects1: AppletObject[] = [
@@ -91,7 +91,7 @@
   const appletObjects2: AppletObject[] = [
     new FunctionFragment((x: number) => Function2left(x), PrimeColor.raspberry, {
       legendText:
-        'g(x)=\\left\\{\\begin{array}{l}x,\\qquad &\\text{if}\ 0\\leq x<2,\\\\ 1,\\qquad &\\text{if}\\ 2\\leq x\\leq 4\\end{array}\\right.',
+        'g(x)=\\left\\{\\begin{array}{l}x,\\qquad &\\text{if~}0\\leq x<2,\\\\ 1,\\qquad &\\text{if~}2\\leq x\\leq 4\\end{array}\\right.',
       width: 0.08,
       domain: { xMin: 0, xMax: 2 }
     })

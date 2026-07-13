@@ -68,8 +68,6 @@
   const b = Math.PI / 3;
   const c = (2 * Math.PI) / 3;
   const d = 2.6;
-  const DeltaX = 0.4;
-  const DeltaY = 0.2;
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Function, PrimeColor.blue, {
       domain: { xMin: a, xMax: d },
