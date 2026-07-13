@@ -1,7 +1,7 @@
 <script module lang="ts">
   export type HistogramProps = {
     freqMap: { [x: number]: number };
-    normalizedHeight?: number;
+    normalized?: boolean;
     color?: PrimeColor;
     isInteger?: boolean;
   };
@@ -15,14 +15,18 @@
   import Line2D from './Line2D.svelte';
   import Point2D from './Point2D.svelte';
 
-  const { freqMap, normalizedHeight, color, isInteger = false }: HistogramProps = $props();
+  const { freqMap, normalized = false, color, isInteger = false }: HistogramProps = $props();
 
-  const highestFreq = $derived(Math.max(...Object.values(freqMap)));
+  const totalFreq = $derived(Object.values(freqMap).reduce((total, current) => {
+    return total + current;
+  }, 0));
+
+
 </script>
 
 {#each Object.entries(freqMap) as [x, freq], _ (x)}
   {@const x_num = +x}
-  {@const height = normalizedHeight === undefined ? freq : (freq / highestFreq) * normalizedHeight}
+  {@const height = normalized ? (freq / totalFreq) : freq}
 
   {#if !isInteger}
     <Rect2D
