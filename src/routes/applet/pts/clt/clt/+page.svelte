@@ -145,7 +145,7 @@
       // Continuous
       case 'Normal':
         return [
-          new Draggable(new Vector2(0, 0), PrimeColor.orange, '\\mu', (v) => {
+          new Draggable(new Vector2(4, 0), PrimeColor.orange, '\\mu', (v) => {
             return new Vector2(clamp(v.x, -10, 10), 0);
           })
         ];
@@ -156,8 +156,8 @@
           })
         ];
       case 'Uniform': {
-        const a = new Draggable(new Vector2(-5, 0), PrimeColor.raspberry, 'a');
-        const b = new Draggable(new Vector2(5, 0), PrimeColor.blue, 'b', (v) => {
+        const a = new Draggable(new Vector2(-2, 0), PrimeColor.raspberry, 'a');
+        const b = new Draggable(new Vector2(8, 0), PrimeColor.blue, 'b', (v) => {
           return new Vector2(clamp(v.x, Math.max(-10, a.value.x), 10), 0);
         });
 
@@ -180,7 +180,7 @@
 
     switch (curDistrType) {
       case 'Normal': {
-        const mean_ = draggables?.[0]?.position.x ?? 0;
+        const mean_ = draggables?.[0]?.position.x ?? 4;
         const sigma = (controls?.[2] as number) ?? 2;
 
         expected_value = mean_.toFixed(2);
@@ -227,7 +227,7 @@
     switch (curDistrType) {
       // continuous
       case 'Normal': {
-        const mean_ = draggables?.[0]?.position.x ?? 0;
+        const mean_ = draggables?.[0]?.position.x ?? 4;
         const sigma = (controls?.[2] as number) ?? 2;
 
         return randomNormal(mean_, sigma);
@@ -245,8 +245,8 @@
         return () => x0 * d3Pareto();
       }
       case 'Uniform': {
-        const a = draggables?.[0]?.position.x ?? -5;
-        const b = draggables?.[1]?.position.x ?? 5;
+        const a = draggables?.[0]?.position.x ?? -2;
+        const b = draggables?.[1]?.position.x ?? 8;
 
         return randomUniform(a, b);
       }
@@ -304,12 +304,13 @@
     savedCategory = '';
     savedDistrType = '';
   }}
-  initialViewBox={new ViewBox(new Vector2(-10, 0), new Vector2(10, 10), 0.5)}
+  initialViewBox={new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5)}
+  scaleY={10}
 >
   <Histogram
     {freqMap}
     isInteger={curCategory === 'Discrete'}
     color={PrimeColor.cyan}
-    normalizedHeight={10}
+    normalized={true}
   />
 </Canvas2D>
