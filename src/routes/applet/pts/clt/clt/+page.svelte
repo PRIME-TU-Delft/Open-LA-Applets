@@ -2,7 +2,7 @@
   import { Controls } from '$lib/controls/Controls';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import Histogram from '$lib/d3/Histogram.svelte';
+  import Histogram from '$lib/d3/Histogram2D.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { clamp } from '$lib/utils/MathLib';

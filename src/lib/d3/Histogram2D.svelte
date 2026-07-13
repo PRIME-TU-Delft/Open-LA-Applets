@@ -1,5 +1,5 @@
 <script module lang="ts">
-  export type HistogramProps = {
+  export type Histogram2DProps = {
     freqMap: { [x: number]: number };
     normalized?: boolean;
     color?: PrimeColor;
@@ -24,7 +24,7 @@
     isInteger = false,
     width = 1,
     xOffset = 0
-  }: HistogramProps = $props();
+  }: Histogram2DProps = $props();
 
   const totalFreq = $derived(
     Object.values(freqMap).reduce((total, current) => {
