@@ -27,6 +27,7 @@ export class Draggable implements Controller<Vector2> {
   snapFn: (value: Vector2) => Vector2;
   releaseFn: (value: Vector2) => Vector2;
   labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right';
+  radius: number = 0.1;
 
   constructor(
     defaultValue: Vector2,
@@ -34,7 +35,8 @@ export class Draggable implements Controller<Vector2> {
     label: string = '',
     snapFn: (value: Vector2) => Vector2 = (v) => v,
     releaseFn: ((value: Vector2) => Vector2) | undefined = undefined,
-    labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right'
+    labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right',
+    radius: number = 0.1
   ) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
@@ -43,6 +45,7 @@ export class Draggable implements Controller<Vector2> {
     this.snapFn = snapFn;
     this.releaseFn = releaseFn ?? snapFn;
     this.labelPosition = labelPosition;
+    this.radius = radius;
   }
 
   static Default = new Draggable(new Vector2(0, 0));
@@ -97,7 +100,9 @@ export class Draggable implements Controller<Vector2> {
       this.color,
       this.label,
       this.snapFn,
-      this.releaseFn
+      this.releaseFn,
+      this.labelPosition,
+      this.radius
     );
   }
 }
