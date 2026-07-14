@@ -61,7 +61,7 @@
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
   let scaleX = 1;
-  let scaleY = 1;
+  let scaleY = 2;
 
   // ###########
   // AXIS LABELS
