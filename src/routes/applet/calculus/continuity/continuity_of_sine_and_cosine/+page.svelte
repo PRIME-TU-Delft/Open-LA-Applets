@@ -11,6 +11,7 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -120,6 +121,12 @@
   {scaleX}
   {scaleY}
 >
+  <RightAngle2D
+    vs={[new Vector2(0, 1), new Vector2(-1, 0)]}
+    origin={new Vector2(draggablePoint[1].position.x, 0)}
+    lineWidth={0.05}
+    color={PrimeColor.yellow}
+  />
   <Circle2D
     position={new Vector2(0, 0)}
     radius={draggablePoint[0].position.x}
