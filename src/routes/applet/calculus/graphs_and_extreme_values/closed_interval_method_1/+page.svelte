@@ -5,11 +5,9 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -112,7 +110,6 @@
 </script>
 
 <Canvas2D
-  {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   legendItems={getLegend(appletObjects)}
