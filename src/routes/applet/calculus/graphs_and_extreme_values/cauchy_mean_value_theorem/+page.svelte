@@ -123,11 +123,6 @@
     return 2 + (282 / 130) * u - (33 / 130) * u * u + (11 / 130) * u * u * u;
   }
 
-  function LinearFunction(x: number): number {
-    const slope = (FunctionY(6) - FunctionY(0)) / (FunctionX(6) - FunctionX(0));
-    return slope * (x - FunctionX(0)) + FunctionY(0);
-  }
-
   const t1 = (5 * Math.sqrt(477) - 53) / 38;
   const x1 = FunctionX(t1);
   const y1 = FunctionY(t1);
