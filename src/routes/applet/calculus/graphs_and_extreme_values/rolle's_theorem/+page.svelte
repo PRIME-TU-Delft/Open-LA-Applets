@@ -99,7 +99,7 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((x: number) => Function2(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function2(c), PrimeColor.pstBlack, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
@@ -117,7 +117,7 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((x: number) => Function3(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function3(c), PrimeColor.pstBlack, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
@@ -135,7 +135,7 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((x: number) => Function4(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function4(c), PrimeColor.pstBlack, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
@@ -143,7 +143,7 @@
     new Point(new Vector2(c, Function4(c)), PrimeColor.pstBlack, {
       radius: 0.08
     }),
-    new FunctionFragment((x: number) => Function4(d), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function4(d), PrimeColor.pstBlack, {
       width: 0.04,
       domain: { xMin: d - 0.5, xMax: d + 0.5 },
       isDashed: true
