@@ -63,7 +63,7 @@
     return 0.5 * (x - c) ** 3 + (B + A) / 2;
   }
   function Function4(x: number): number {
-    return -0.5 * (x - c) ** 3 + (B + A) / 2 + A/2;
+    return -0.5 * (x - c) ** 3 + (B + A) / 2 + A / 2;
   }
   function Derivative1(x: number): number {
     return 2 * (x - c);
