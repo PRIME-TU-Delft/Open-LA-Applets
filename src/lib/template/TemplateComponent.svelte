@@ -154,7 +154,12 @@
       />
     {/if}
   {:else if object instanceof Point}
-    <Point2D position={object.position} color={object.color.toString()} shape={object.shape} />
+    <Point2D
+      position={object.position}
+      color={object.color.toString()}
+      shape={object.shape}
+      radius={object.radius}
+    />
     {#if object.latex}
       <Latex2D position={object.position} latex={object.latex} color={object.color.toString()} />
     {/if}

@@ -16,7 +16,7 @@ type Integral = {
   shape?: Shape;
 };
 
-type Shape = 'circle' | 'square' | 'triangle';
+type Shape = 'circle' | 'square' | 'triangle' | 'diamond';
 
 export abstract class AppletObject {
   color: PrimeColor;
@@ -402,6 +402,7 @@ export class Point extends AppletObject {
   shape?: Shape;
   latex?: string;
   legendText?: string;
+  radius?: number;
 
   /**
    * Point template object
@@ -410,6 +411,7 @@ export class Point extends AppletObject {
    * @param options.shape Shape of the point
    * @param options.latex Latex shown next to the point
    * @param options.legendText Legend text of the point
+   * @param options.radius Radius of the point
    */
   constructor(
     position: Vector2,
@@ -418,6 +420,7 @@ export class Point extends AppletObject {
       shape?: Shape;
       latex?: string;
       legendText?: string;
+      radius?: number;
     }
   ) {
     super(color);
@@ -426,6 +429,7 @@ export class Point extends AppletObject {
     this.shape = options?.shape;
     this.latex = options?.latex;
     this.legendText = options?.legendText;
+    this.radius = options?.radius;
   }
 }
 
@@ -519,6 +523,8 @@ export class Polygon extends AppletObject {
   fillStyle: 'full' | 'dashed' | 'none' = 'none';
   sideLatex?: string[];
   verticesLatex?: string[];
+  legendText?: string;
+  legendShape: Shape;
 
   /**
    * Polygon template object
@@ -527,6 +533,8 @@ export class Polygon extends AppletObject {
    * @param options.fillStyle Style of the fill of the polygon
    * @param options.sideLatex List of strings to put on the polygon sides, they are auto-aligned
    * @param options.verticesLatex List of strings to put on the vertices, they are auto-aligned
+   * @param options.legendText Text to be shown in the legend item
+   * @param options.legendShape Shape to use for the legend item (default: 'square')
    */
   constructor(
     points: Vector2[],
@@ -535,6 +543,8 @@ export class Polygon extends AppletObject {
       fillStyle?: 'full' | 'dashed' | 'none';
       sideLatex?: string[];
       verticesLatex?: string[];
+      legendText?: string;
+      legendShape?: Shape;
     }
   ) {
     super(color);
@@ -543,5 +553,9 @@ export class Polygon extends AppletObject {
     if (options?.fillStyle) this.fillStyle = options?.fillStyle;
     this.sideLatex = options?.sideLatex;
     this.verticesLatex = options?.verticesLatex;
+    this.legendText = options?.legendText;
+    this.legendShape =
+      options?.legendShape ??
+      (points.length === 3 ? 'triangle' : points.length === 4 ? 'square' : 'circle');
   }
 }
