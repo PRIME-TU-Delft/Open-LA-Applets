@@ -1,5 +1,5 @@
 import { FillType, LegendItem } from '$lib/utils/Legend';
-import { AbstractFunctionFragment, AppletObject, Point } from './TemplateAppletObjects';
+import { AbstractFunctionFragment, AppletObject, Point, Polygon } from './TemplateAppletObjects';
 
 export function getLegend(objects: AppletObject[]): LegendItem[] {
   const legendItems: LegendItem[] = [];
@@ -42,6 +42,17 @@ export function getLegend(objects: AppletObject[]): LegendItem[] {
     } else if (obj instanceof Point) {
       if (obj.legendText) {
         legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
+      }
+    } else if (obj instanceof Polygon) {
+      if (obj.legendText) {
+        legendItems.push(
+          new LegendItem(
+            obj.legendText,
+            obj.color,
+            obj.legendShape,
+            obj.fillStyle === 'dashed' ? FillType.Dashed : FillType.Full
+          )
+        );
       }
     }
   }
