@@ -70,7 +70,7 @@
   const Function = (x: number) => x ** 4 + 2 * Math.cos(x);
   const Derivative = (x: number) => 4 * x ** 3 - 2 * Math.sin(x);
   const SecondDerivative = (x: number) => 12 * x ** 2 - 2 * Math.cos(x);
-  const x1 = -0.67996445284233461634;
+  const x1 = 0.6799644528423346;
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Function, PrimeColor.blue, {
       legendText: 'f(x)=x^4 + 2\\cos(x)',
