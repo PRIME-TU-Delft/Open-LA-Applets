@@ -3,7 +3,6 @@
   import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
@@ -14,7 +13,6 @@
   import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
 
-  let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -146,7 +144,6 @@
 >
   <GridCanvas2D
     draggables={[draggablePoint[0]]}
-    {initialViewBox}
     {cameraPosition}
     {cameraZoom}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
@@ -181,7 +178,6 @@
 
   <GridCanvas2D
     draggables={[draggablePoint[1]]}
-    {initialViewBox}
     {cameraPosition}
     {cameraZoom}
     labels={{ xLabel: 'x', yLabel: yAxisLabel ?? undefined }}
