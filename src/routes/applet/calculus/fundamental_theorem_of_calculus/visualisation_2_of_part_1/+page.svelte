@@ -31,7 +31,7 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2, 1);
+  cameraPosition = new Vector2(2, 2);
   cameraZoom = 2.5;
 
   // ####
@@ -70,17 +70,33 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const Integrand = (x: number) => Math.cos(x) * Math.exp(Math.sin(x));
-  const Integral = (x: number) => Math.exp(Math.sin(x)) - 1; // Integral of Integrand from 0 to x
+  function fresnelC(x: number): number {
+    if (x === 0) return 0;
+
+    const ax = Math.abs(x);
+
+    // Abramowitz & Stegun rational approximations for auxiliary functions f(x) and g(x)
+    const f = (1.0 + 0.926 * ax) / (2.0 + 1.792 * ax + 3.104 * ax * ax);
+    const g = 1.0 / (2.0 + 4.142 * ax + 3.492 * ax * ax + 6.67 * ax * ax * ax);
+
+    const angle = (Math.PI * ax * ax) / 2.0;
+    const result = 0.5 + f * Math.sin(angle) - g * Math.cos(angle);
+
+    // C(x) is an odd function: C(-x) = -C(x)
+    return x >= 0 ? result : -result;
+  }
+  const Integrand = (x: number) => Math.cos(x) / (2 * Math.sqrt(x));
+  const Integral = (x: number) =>
+    Math.sqrt(Math.PI / 2) * fresnelC(Math.sqrt(x) * Math.sqrt(2 / Math.PI)); // Integral of Integrand from 0 to x
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Integrand, PrimeColor.raspberry, {
-      legendText: "F'(x)=\\cos(x)e^{\\sin(x)}",
+      legendText: "G'(x)=\\frac{\\cos(x)}{2\\sqrt{x}}",
       domain: { xMin: 0 },
       width: 0.06,
       integral: {
         xLeft: 0,
         xRight: 0,
-        legendText: 'F(x)=\\displaystyle\\int_0^x\\cos(t)e^{\\sin(t)}\\,dt',
+        legendText: 'G(x)=\\displaystyle\\int_0^{\\sqrt{x}}\\cos(t^2)\\,dt',
         color: PrimeColor.darkGreen
       }
     })

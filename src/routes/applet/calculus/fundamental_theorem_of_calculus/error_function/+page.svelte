@@ -31,8 +31,8 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2, 1);
-  cameraZoom = 2.5;
+  cameraPosition = new Vector2(1, 1);
+  cameraZoom = 4;
 
   // ####
   // AXIS
@@ -70,17 +70,35 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const Integrand = (x: number) => Math.cos(x) * Math.exp(Math.sin(x));
-  const Integral = (x: number) => Math.exp(Math.sin(x)) - 1; // Integral of Integrand from 0 to x
+  // 2. Pure JS implementation (Abramowitz and Stegun approximation)
+  function calculateErf(x: number): number {
+    const sign = x >= 0 ? 1 : -1;
+    const absX = Math.abs(x);
+
+    // Constants
+    const p = 0.3275911;
+    const a1 = 0.254829592;
+    const a2 = -0.284496736;
+    const a3 = 1.421413741;
+    const a4 = -1.453152027;
+    const a5 = 1.061405429;
+
+    const t = 1.0 / (1.0 + p * absX);
+    const y = 1.0 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-absX * absX);
+
+    return sign * y;
+  }
+  const Integrand = (x: number) => (2 / Math.sqrt(Math.PI)) * Math.exp(-1 * x ** 2);
+  const Integral = (x: number) => calculateErf(x);
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Integrand, PrimeColor.raspberry, {
-      legendText: "F'(x)=\\cos(x)e^{\\sin(x)}",
+      legendText: "\\mathrm{erf}'(x)",
       domain: { xMin: 0 },
       width: 0.06,
       integral: {
         xLeft: 0,
         xRight: 0,
-        legendText: 'F(x)=\\displaystyle\\int_0^x\\cos(t)e^{\\sin(t)}\\,dt',
+        legendText: '\\mathrm{erf}(x)',
         color: PrimeColor.darkGreen
       }
     })
