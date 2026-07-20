@@ -138,7 +138,7 @@
       legendText: 'g(x)'
     }),
     new AsymptoteFragment(2, 'vertical', PrimeColor.cyan),
-    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.black),
+    new AsymptoteFragment(-1.5, 'horizontal', PrimeColor.grey),
     new ObliqueAsymptoteFragment('x+2', PrimeColor.orange),
     new LineFragment(new Vector2(2, -3), new Vector2(5, -3), PrimeColor.raspberry, {
       latex: 'test'

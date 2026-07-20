@@ -72,19 +72,19 @@
     0.5 * Math.sqrt((c + d) ** 2 + (4 / 3) * (a ** 2 + a * b + b ** 2) - 2 * (c + d) * (a + b));
 
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\huge a', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\huge a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge b', new Vector2(b, -0.1), PrimeColor.black, {
+    new Text('\\huge b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge c', new Vector2(x1, -0.1), PrimeColor.black, {
+    new Text('\\huge c', new Vector2(x1, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge d', new Vector2(x2, -0.1), PrimeColor.black, {
+    new Text('\\huge d', new Vector2(x2, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })

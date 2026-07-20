@@ -158,25 +158,25 @@
     start={new Vector2(0, 0)}
     end={draggablePoint[1].position}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Line2D
     start={draggablePoint[0].position}
     end={draggablePoint[1].position}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Line2D
     start={draggablePoint[0].position}
     end={new Vector2(0, 0)}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Line2D
     start={draggablePoint[1].position}
     end={new Vector2(draggablePoint[1].position.x, 0)}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     isDashed={true}
   />
   <Point2D position={new Vector2(draggablePoint[1].position.x, 0)} color={PrimeColor.yellow} />

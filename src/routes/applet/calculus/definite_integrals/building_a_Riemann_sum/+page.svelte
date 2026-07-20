@@ -151,7 +151,7 @@
     direction={new Vector2(1, 0)}
     length={(b - a) / N}
     radius={0.01}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     headLength={0.1}
   />
   <Vector2D
@@ -159,7 +159,7 @@
     direction={new Vector2(-1, 0)}
     length={(b - a) / N}
     radius={0.01}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     headLength={0.1}
   />
   <Latex2D
@@ -200,7 +200,7 @@
       length={1}
       radius={0.01}
       headLength={0.15}
-      color={PrimeColor.black}
+      color={PrimeColor.grey}
     />
     <Latex2D
       latex={'x_{' + (i + 1) + '}^*'}
@@ -214,7 +214,7 @@
     length={1}
     radius={0.01}
     headLength={0.15}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Latex2D latex={'x_{N}^*'} position={new Vector2(midPoints[N - 1], -1.15)} alignX="center" />
   <Vector2D
@@ -223,7 +223,7 @@
     length={1}
     radius={0.01}
     headLength={0.15}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Latex2D latex={'x_{n}^*'} position={new Vector2(midPoints[pick], -1.15)} alignX="center" />
   {#each midPoints as obj, i (i)}

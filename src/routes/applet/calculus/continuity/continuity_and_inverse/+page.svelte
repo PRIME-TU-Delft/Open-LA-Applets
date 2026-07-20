@@ -82,10 +82,10 @@
     })
       .addGaps(Gaps, undefined, 0.11)
       .addIncludedPoints(Points, undefined, 0.11),
-    new Text('1', new Vector2(1, 0), PrimeColor.black, { alignX: 'center', alignY: 'top' }),
-    new Text('-1', new Vector2(-1, 0), PrimeColor.black, { alignX: 'center', alignY: 'top' }),
-    new Text('1', new Vector2(0, 1), PrimeColor.black, { alignX: 'right', alignY: 'center' }),
-    new Text('-1', new Vector2(0, -1), PrimeColor.black, { alignX: 'right', alignY: 'center' })
+    new Text('1', new Vector2(1, 0), PrimeColor.grey, { alignX: 'center', alignY: 'top' }),
+    new Text('-1', new Vector2(-1, 0), PrimeColor.grey, { alignX: 'center', alignY: 'top' }),
+    new Text('1', new Vector2(0, 1), PrimeColor.grey, { alignX: 'right', alignY: 'center' }),
+    new Text('-1', new Vector2(0, -1), PrimeColor.grey, { alignX: 'right', alignY: 'center' })
   ];
 </script>
 

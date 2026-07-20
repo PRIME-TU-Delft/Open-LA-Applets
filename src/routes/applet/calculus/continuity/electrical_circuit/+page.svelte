@@ -125,8 +125,8 @@
       alignY: 'bottom'
     }),
     new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6), PrimeColor.white, { width: 0.06 }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6.5), PrimeColor.black, { width: 0.05 }),
-    new Text('t<0', new Vector2(-3.5, 6.5), PrimeColor.black, {
+    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6.5), PrimeColor.grey, { width: 0.05 }),
+    new Text('t<0', new Vector2(-3.5, 6.5), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'bottom'
     }),

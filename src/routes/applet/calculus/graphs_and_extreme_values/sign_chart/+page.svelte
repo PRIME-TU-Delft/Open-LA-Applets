@@ -245,18 +245,18 @@
         alignY: 'center'
       }
     ),
-    new Text('0', new Vector2(0, 0.5 * LabelHeight), PrimeColor.pstBlack, {
+    new Text('0', new Vector2(0, 0.5 * LabelHeight), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     }),
-    new Text('2\\pi', new Vector2(2 * Math.PI, 0.5 * LabelHeight), PrimeColor.pstBlack, {
+    new Text('2\\pi', new Vector2(2 * Math.PI, 0.5 * LabelHeight), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     }),
     new Text(
       '\\tfrac{1}{3}\\pi',
       new Vector2(Math.PI / 3, 0.5 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'center',
         alignY: 'center'
@@ -265,7 +265,7 @@
     new Text(
       '\\tfrac{2}{3}\\pi',
       new Vector2((2 * Math.PI) / 3, 0.5 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'center',
         alignY: 'center'
@@ -274,7 +274,7 @@
     new Text(
       '\\tfrac{4}{3}\\pi',
       new Vector2((4 * Math.PI) / 3, 0.5 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'center',
         alignY: 'center'
@@ -283,7 +283,7 @@
     new Text(
       '\\tfrac{5}{3}\\pi',
       new Vector2((5 * Math.PI) / 3, 0.5 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'center',
         alignY: 'center'
@@ -292,7 +292,7 @@
     new Text(
       'x',
       new Vector2(2 * Math.PI - 2 * LabelHeight, 0.5 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'center',
         alignY: 'center'
@@ -301,7 +301,7 @@
     new Text(
       "\\text{Sign of~}f'",
       new Vector2(2 * Math.PI - 2 * LabelHeight, -2 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'left',
         alignY: 'center'
@@ -310,7 +310,7 @@
     new Text(
       '\\text{Behaviour of~}f',
       new Vector2(2 * Math.PI - 2 * LabelHeight, 2 * LabelHeight),
-      PrimeColor.pstBlack,
+      PrimeColor.black,
       {
         alignX: 'left',
         alignY: 'center'
