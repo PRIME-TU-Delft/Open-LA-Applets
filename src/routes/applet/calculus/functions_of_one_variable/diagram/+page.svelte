@@ -136,7 +136,7 @@
     new Point(new Vector2(2.6, -0.8), PrimeColor.orange, { shape: 'triangle' }),
     new Point(new Vector2(2.5, 0.8), PrimeColor.orange, { shape: 'triangle' }),
     new Point(new Vector2(2, 0.1), PrimeColor.orange, { shape: 'triangle' }),
-    new Text('f', new Vector2(0, 1.6), PrimeColor.black, { alignX: 'center', alignY: 'bottom' }),
+    new Text('f', new Vector2(0, 1.6), PrimeColor.grey, { alignX: 'center', alignY: 'bottom' }),
     new Text('D_f', new Vector2(-2, -2), PrimeColor.blue, { alignX: 'center', alignY: 'center' }),
     new Text('C_f', new Vector2(2, -2), PrimeColor.darkGreen, {
       alignX: 'center',
@@ -163,32 +163,32 @@
 >
   <TemplateComponent objects={appletObjects} />
   <Vector2D
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     origin={new Vector2(-1, 1.5)}
     direction={new Vector2(2, 0)}
     length={2}
     isDashed
   ></Vector2D>
   <Vector2D
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     origin={new Vector2(-2.5, 1)}
     direction={new Vector2(4, -0.1)}
     length={Math.sqrt(4 ** 2 + 0.1 ** 2)}
   ></Vector2D>
   <Vector2D
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     origin={new Vector2(-1.5, 0.6)}
     direction={new Vector2(3.2, -1.1)}
     length={Math.sqrt(3.2 ** 2 + 1.1 ** 2)}
   ></Vector2D>
   <Vector2D
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     origin={new Vector2(-2, -0.2)}
     direction={new Vector2(3.7, -0.3)}
     length={Math.sqrt(3.7 ** 2 + 0.3 ** 2)}
   ></Vector2D>
   <Vector2D
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     origin={new Vector2(-2.6, -0.8)}
     direction={new Vector2(3.8, -0.1)}
     length={Math.sqrt(3.8 ** 2 + 0.1 ** 2)}

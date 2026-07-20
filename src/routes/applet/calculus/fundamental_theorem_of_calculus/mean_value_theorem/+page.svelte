@@ -77,7 +77,7 @@
         xRight: 5,
         legendText: '(b-a)f(c)',
         isDashed: true,
-        color: PrimeColor.black,
+        color: PrimeColor.grey,
         shape: 'diamond'
       }
     }),

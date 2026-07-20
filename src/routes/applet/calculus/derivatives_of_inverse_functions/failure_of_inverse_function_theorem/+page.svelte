@@ -88,7 +88,7 @@
     new FunctionFragment(InverseFunction, PrimeColor.darkGreen, {
       legendText: 'f^{-1}(x)=\\sqrt[3]{x}+1'
     }),
-    new FunctionFragment('x', PrimeColor.black, {
+    new FunctionFragment('x', PrimeColor.grey, {
       legendText: 'y=x',
       isDashed: true
     })
@@ -149,7 +149,7 @@
   <Line2D
     start={draggablePoints[0].position}
     end={draggablePoints[1].position}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     isDashed={true}
   />
   <InfiniteLine2D

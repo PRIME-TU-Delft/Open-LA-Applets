@@ -78,15 +78,15 @@
     return -1.5 * (x - c) ** 2;
   }
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.black, {
+    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.black, {
+    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })

@@ -67,15 +67,15 @@
     );
   }
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.black, {
+    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.black, {
+    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })
@@ -99,12 +99,12 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((_x: number) => Function2(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function2(c), PrimeColor.black, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
     }),
-    new Point(new Vector2(c, Function2(c)), PrimeColor.pstBlack, {
+    new Point(new Vector2(c, Function2(c)), PrimeColor.black, {
       radius: 0.08
     })
   ];
@@ -117,12 +117,12 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((_x: number) => Function3(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function3(c), PrimeColor.black, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
     }),
-    new Point(new Vector2(c, Function3(c)), PrimeColor.pstBlack, {
+    new Point(new Vector2(c, Function3(c)), PrimeColor.black, {
       radius: 0.08
     })
   ];
@@ -135,20 +135,20 @@
       undefined,
       0.1
     ),
-    new FunctionFragment((_x: number) => Function4(c), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function4(c), PrimeColor.black, {
       width: 0.04,
       domain: { xMin: c - 0.5, xMax: c + 0.5 },
       isDashed: true
     }),
-    new Point(new Vector2(c, Function4(c)), PrimeColor.pstBlack, {
+    new Point(new Vector2(c, Function4(c)), PrimeColor.black, {
       radius: 0.08
     }),
-    new FunctionFragment((_x: number) => Function4(d), PrimeColor.pstBlack, {
+    new FunctionFragment((_x: number) => Function4(d), PrimeColor.black, {
       width: 0.04,
       domain: { xMin: d - 0.5, xMax: d + 0.5 },
       isDashed: true
     }),
-    new Point(new Vector2(d, Function4(d)), PrimeColor.pstBlack, {
+    new Point(new Vector2(d, Function4(d)), PrimeColor.black, {
       radius: 0.08
     })
   ];
