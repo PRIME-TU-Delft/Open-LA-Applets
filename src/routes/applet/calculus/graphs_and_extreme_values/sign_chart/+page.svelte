@@ -253,15 +253,10 @@
       alignX: 'center',
       alignY: 'center'
     }),
-    new Text(
-      '\\tfrac{1}{3}\\pi',
-      new Vector2(Math.PI / 3, 0.5 * LabelHeight),
-      PrimeColor.black,
-      {
-        alignX: 'center',
-        alignY: 'center'
-      }
-    ),
+    new Text('\\tfrac{1}{3}\\pi', new Vector2(Math.PI / 3, 0.5 * LabelHeight), PrimeColor.black, {
+      alignX: 'center',
+      alignY: 'center'
+    }),
     new Text(
       '\\tfrac{2}{3}\\pi',
       new Vector2((2 * Math.PI) / 3, 0.5 * LabelHeight),
@@ -289,15 +284,10 @@
         alignY: 'center'
       }
     ),
-    new Text(
-      'x',
-      new Vector2(2 * Math.PI - 2 * LabelHeight, 0.5 * LabelHeight),
-      PrimeColor.black,
-      {
-        alignX: 'center',
-        alignY: 'center'
-      }
-    ),
+    new Text('x', new Vector2(2 * Math.PI - 2 * LabelHeight, 0.5 * LabelHeight), PrimeColor.black, {
+      alignX: 'center',
+      alignY: 'center'
+    }),
     new Text(
       "\\text{Sign of~}f'",
       new Vector2(2 * Math.PI - 2 * LabelHeight, -2 * LabelHeight),
