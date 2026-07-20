@@ -49,7 +49,7 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const c = 1.671916807021192081;
+  const c = 1.6719168070211921;
   const fc = ((52 / 7) * 1) / (5 - 1);
   const appletObjects: AppletObject[] = [
     new FunctionFragment(
