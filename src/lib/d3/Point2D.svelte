@@ -1,7 +1,7 @@
 <script lang="ts" module>
   export type Point2DProps = {
     position: Vector2;
-    shape?: 'circle' | 'square' | 'triangle';
+    shape?: 'circle' | 'square' | 'triangle' | 'diamond';
     radius?: number;
     color?: string;
     fill?: string | undefined;
@@ -104,6 +104,25 @@
         class="pulse"
         style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
         points={`${scaledPos.x},${scaledPos.y + triRadius} ${scaledPos.x + dx},${scaledPos.y - dy} ${scaledPos.x - dx},${scaledPos.y - dy}`}
+        stroke={color}
+        stroke-width={LINE_WIDTH}
+        fill={fill ?? color}
+      />
+    {/if}
+  {:else if shape == 'diamond'}
+    {@const diaRadius = radius * 1.2}
+    <polygon
+      points={`${scaledPos.x},${scaledPos.y - diaRadius} ${scaledPos.x + diaRadius},${scaledPos.y} ${scaledPos.x},${scaledPos.y + diaRadius} ${scaledPos.x - diaRadius},${scaledPos.y}`}
+      stroke={color}
+      stroke-width={LINE_WIDTH}
+      fill={fill ?? color}
+    />
+
+    {#if pulse}
+      <polygon
+        class="pulse"
+        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
+        points={`${scaledPos.x},${scaledPos.y - diaRadius} ${scaledPos.x + diaRadius},${scaledPos.y} ${scaledPos.x},${scaledPos.y + diaRadius} ${scaledPos.x - diaRadius},${scaledPos.y}`}
         stroke={color}
         stroke-width={LINE_WIDTH}
         fill={fill ?? color}

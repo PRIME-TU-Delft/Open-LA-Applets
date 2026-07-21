@@ -10,7 +10,8 @@ export enum FillType {
 export enum Shape {
   Circle,
   Square,
-  Triangle
+  Triangle,
+  Diamond
 }
 
 /**
@@ -78,6 +79,8 @@ export class LegendItem extends Formula {
         return Shape.Square;
       case 'triangle':
         return Shape.Triangle;
+      case 'diamond':
+        return Shape.Diamond;
       default:
         return Shape.Circle;
     }

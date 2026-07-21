@@ -44,16 +44,16 @@
   {controls}
   cameraTarget={new MathVector3(0.2, 0, 1.2)}
 >
-  <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={A} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={B} endPoint={C} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={C} endPoint={D} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={D} endPoint={A} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={E} endPoint={A} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={E} endPoint={B} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={E} endPoint={C} color={PrimeColor.pstBlack} radius={0.8} />
-  <Line3D origin={E} endPoint={D} color={PrimeColor.pstBlack} radius={0.8} />
-  <Polygon3D points={[A, B, C, D]} color={PrimeColor.pstBlack} opacity={0.2} />
+  <Line3D origin={A} endPoint={B} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={A} endPoint={B} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={B} endPoint={C} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={C} endPoint={D} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={D} endPoint={A} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={E} endPoint={A} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={E} endPoint={B} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={E} endPoint={C} color={PrimeColor.black} radius={0.8} />
+  <Line3D origin={E} endPoint={D} color={PrimeColor.black} radius={0.8} />
+  <Polygon3D points={[A, B, C, D]} color={PrimeColor.black} opacity={0.2} />
   <Line3D origin={AE} endPoint={BE} color={PrimeColor.blue} radius={0.8} />
   <Line3D origin={BE} endPoint={CE} color={PrimeColor.blue} radius={0.8} />
   <Line3D origin={CE} endPoint={DE} color={PrimeColor.blue} radius={0.8} />

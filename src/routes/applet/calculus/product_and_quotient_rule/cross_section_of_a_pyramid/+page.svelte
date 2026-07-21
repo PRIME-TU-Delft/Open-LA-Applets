@@ -85,7 +85,7 @@
   let D = new MathVector3(-1.8, 1, 0);
   let E = new MathVector3(0, 0, 3);
 
-  const controls = Controls.addSlider(0.3, 0, 1, 0.01, PrimeColor.pstBlack, {
+  const controls = Controls.addSlider(0.3, 0, 1, 0.01, PrimeColor.black, {
     label: toLatexText('$\\Delta x$'),
     valueFn: () => ''
   }).addSlider(0.7, 0, 1, 0.01, PrimeColor.orange, {
@@ -171,14 +171,14 @@
   />
   <Polygon2D
     points={[CE2, F2, CF2shift, G2]}
-    color={PrimeColor.pstBlack}
+    color={PrimeColor.black}
     opacity={0.6}
     fillStyle="full"
     strokeWidth={0}
   />
   <Polygon2D
     points={[CE2, F2, CF2shift, G2]}
-    color={PrimeColor.pstBlack}
+    color={PrimeColor.black}
     fillStyle="none"
     strokeWidth={0.5}
   />

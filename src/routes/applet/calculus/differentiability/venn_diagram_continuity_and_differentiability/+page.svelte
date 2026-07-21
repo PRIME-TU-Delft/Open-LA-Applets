@@ -68,19 +68,19 @@
   // APPLET OBJECTS
   // ##############
   const appletObjects: AppletObject[] = [
-    new Text('\\text{Twice differentiable}', new Vector2(0, 0), PrimeColor.pstBlack, {
+    new Text('\\text{Twice differentiable}', new Vector2(0, 0), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     }),
-    new Text('\\text{Continuously differentiable}', new Vector2(0, 0.65), PrimeColor.pstBlack, {
+    new Text('\\text{Continuously differentiable}', new Vector2(0, 0.65), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     }),
-    new Text('\\text{Differentiable}', new Vector2(0, 1.3), PrimeColor.pstBlack, {
+    new Text('\\text{Differentiable}', new Vector2(0, 1.3), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     }),
-    new Text('\\text{Continuous}', new Vector2(0, 1.95), PrimeColor.pstBlack, {
+    new Text('\\text{Continuous}', new Vector2(0, 1.95), PrimeColor.black, {
       alignX: 'center',
       alignY: 'center'
     })

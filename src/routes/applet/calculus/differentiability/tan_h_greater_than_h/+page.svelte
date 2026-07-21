@@ -12,6 +12,7 @@
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import RightAngle2D from '$lib/d3/RightAngle2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -117,6 +118,19 @@
   {@const Cx = draggablePoint[0].position.x * Math.cos(angle)}
   {@const Cy = draggablePoint[0].position.x * Math.sin(angle)}
   {@const Dy = (A ** 2 - Cx * A) / Cy}
+
+  <RightAngle2D
+    vs={[new Vector2(0, 1), new Vector2(-1, 0)]}
+    origin={new Vector2(draggablePoint[1].position.x, 0)}
+    lineWidth={0.05}
+    color={PrimeColor.orange}
+  />
+  <RightAngle2D
+    vs={[new Vector2(A - Cx, Dy - Cy), new Vector2(Cy - Dy, A - Cx)]}
+    origin={new Vector2(Cx, Cy)}
+    lineWidth={0.05}
+    color={PrimeColor.yellow}
+  />
   <Circle2D
     position={new Vector2(0, 0)}
     radius={draggablePoint[0].position.x}
@@ -148,25 +162,25 @@
     start={new Vector2(0, 0)}
     end={draggablePoint[1].position}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Line2D
     start={draggablePoint[0].position}
     end={draggablePoint[1].position}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <Line2D
     start={draggablePoint[0].position}
     end={new Vector2(0, 0)}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
   />
   <InfiniteLine2D
     origin={new Vector2(Cx, Cy)}
     direction={new Vector2(-Cy, Cx)}
     width={0.05}
-    color={PrimeColor.black}
+    color={PrimeColor.grey}
     isDashed={true}
   />
   <Point2D position={new Vector2(Cx, Cy)} color={PrimeColor.yellow} />

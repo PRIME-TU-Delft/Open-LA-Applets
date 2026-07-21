@@ -65,6 +65,14 @@
         stroke-width={strokeWidth}
         stroke-linejoin="round"
       />
+    {:else if legendI.shape === Shape.Diamond}
+      <polygon
+        points="10,2 18,10 10,18 2,10"
+        {fill}
+        {stroke}
+        stroke-width={strokeWidth}
+        stroke-linejoin="round"
+      />
     {:else}
       <circle r={8} cx={10} cy={10} {fill} {stroke} stroke-width={strokeWidth} />
     {/if}

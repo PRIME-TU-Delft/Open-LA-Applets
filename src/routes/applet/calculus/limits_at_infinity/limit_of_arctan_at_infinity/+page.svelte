@@ -80,7 +80,7 @@
       shape: 'square',
       legendText: '\\arctan(x)'
     }),
-    new FunctionFragment('', PrimeColor.black, {
+    new FunctionFragment('', PrimeColor.grey, {
       isDashed: false,
       shape: 'circle',
       legendText: '\\tan(x)'
@@ -143,7 +143,7 @@
     />
     <ExplicitFunction2D
       func={(x: number) => Math.tan(x)}
-      color={PrimeColor.black}
+      color={PrimeColor.grey}
       xMin={-Math.PI / 2}
       xMax={Math.PI / 2}
     />

@@ -96,7 +96,7 @@
       legendText: 'f(x)',
       width: 0.08
     }),
-    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })
@@ -106,7 +106,7 @@
       legendText: 'g(x)',
       width: 0.08
     }),
-    new Text('\\Huge b', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\Huge b', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })
@@ -121,7 +121,7 @@
       domain: { xMin: a },
       width: 0.08
     }).addGaps(new Vector2(a, Function3right(0) + b), undefined, 0.1),
-    new Text('\\Huge c', new Vector2(a, -0.1), PrimeColor.black, {
+    new Text('\\Huge c', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })

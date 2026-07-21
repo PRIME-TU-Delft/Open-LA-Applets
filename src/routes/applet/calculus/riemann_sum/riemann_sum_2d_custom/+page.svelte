@@ -289,7 +289,7 @@
   {#each sampledPoints as point, index (index)}
     <Point2D
       position={point}
-      color={PrimeColor.black}
+      color={PrimeColor.grey}
       radius={0.05}
       text={`x_{${index + 1}}^*`}
       fontSize={0.4}
