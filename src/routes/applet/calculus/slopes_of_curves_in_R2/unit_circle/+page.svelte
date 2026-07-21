@@ -73,7 +73,7 @@
     new ImplicitFunctionFragment('x^2 + y^2 = 1', PrimeColor.blue, {
       legendText: 'x^2 + y^2 = 1',
       maxDepth: 2,
-      width: 0.08,
+      width: 0.08
     })
   ];
   const initX = 1 / 2;
