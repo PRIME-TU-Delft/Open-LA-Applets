@@ -10,7 +10,7 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import FillBetweenFunctions2D from '$lib/d3/FillBetweenFunctions2D.svelte';
-  
+
   let cameraPosition: Vector2 | undefined;
   let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
@@ -110,24 +110,8 @@
     })
   ];
   const draggables = [
-    new Draggable(
-      new Vector2(a, 0),
-      PrimeColor.yellow,
-      'a',
-      snapTop,
-      undefined,
-      "bottom",
-      0.08
-    ),
-    new Draggable(
-      new Vector2(b, 0),
-      PrimeColor.purple,
-      'b',
-      snapTop,
-      undefined,
-      "bottom",
-      0.08
-    )
+    new Draggable(new Vector2(a, 0), PrimeColor.yellow, 'a', snapTop, undefined, 'bottom', 0.08),
+    new Draggable(new Vector2(b, 0), PrimeColor.purple, 'b', snapTop, undefined, 'bottom', 0.08)
   ];
   function snapTop(position: Vector2): Vector2 {
     const x = position.x;
