@@ -40,7 +40,11 @@
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const points: Vector2[] = [];
-    for (let t = tStart; t <= tEnd; t += stepSize) {
+    const numSteps = Math.ceil((tEnd - tStart) / stepSize);
+    for (let i = 0; i <= numSteps; i++) {
+      // Compute t independently per step to avoid floating-point drift;
+      // clamp the last step to tEnd so the endpoint is always included.
+      const t = i < numSteps ? tStart + i * stepSize : tEnd;
       let x: number;
       let y: number;
 
