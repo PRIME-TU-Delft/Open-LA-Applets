@@ -265,3 +265,132 @@ export function integral(
 
   return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
 }
+
+/**
+ * Projects a point onto the nearest point on an implicit curve defined by zeroFunc(x, y) = 0.
+ * Uses alternating Newton projection (onto the constraint) and tangent-direction minimisation steps.
+ * @param zeroFunc - Implicit function; the curve is the zero set f(x, y) = 0
+ * @param startPoint - The point to project
+ * @param maxIterations - Maximum number of iterations (default: 1000)
+ * @param tolerance - Convergence tolerance for the KKT residual (default: 1e-6)
+ * @returns The closest point on the implicit curve to startPoint
+ */
+export function projectToImplicitFunction2D(
+  zeroFunc: (x: number, y: number) => number,
+  startPoint: Vector2,
+  maxIterations: number = 1000,
+  tolerance: number = 1e-6
+): Vector2 {
+  const h = 1e-5;
+
+  const gradient = (x: number, y: number): [number, number] => [
+    (zeroFunc(x + h, y) - zeroFunc(x - h, y)) / (2 * h),
+    (zeroFunc(x, y + h) - zeroFunc(x, y - h)) / (2 * h)
+  ];
+
+  let qx = startPoint.x;
+  let qy = startPoint.y;
+
+  for (let i = 0; i < maxIterations; i++) {
+    // Step 1: Newton step to project q onto the curve f(q) = 0
+    const [gx, gy] = gradient(qx, qy);
+    const gradNorm2 = gx * gx + gy * gy;
+    if (gradNorm2 < 1e-20) break;
+
+    const fVal = zeroFunc(qx, qy);
+    qx -= (fVal * gx) / gradNorm2;
+    qy -= (fVal * gy) / gradNorm2;
+
+    // Step 2: Check KKT condition — (q - p) should be parallel to ∇f at the minimum
+    const [gx2, gy2] = gradient(qx, qy);
+    const gradNorm2_2 = gx2 * gx2 + gy2 * gy2;
+    if (gradNorm2_2 < 1e-20) break;
+
+    const dx = qx - startPoint.x;
+    const dy = qy - startPoint.y;
+
+    // Tangential component of (q - startPoint): diff minus its projection onto ∇f
+    const dotProd = (dx * gx2 + dy * gy2) / gradNorm2_2;
+    const tangX = dx - dotProd * gx2;
+    const tangY = dy - dotProd * gy2;
+
+    if (Math.sqrt(tangX * tangX + tangY * tangY) < tolerance) break;
+
+    // Move q in the negative tangential direction to reduce distance to startPoint
+    qx -= tangX;
+    qy -= tangY;
+  }
+
+  return new Vector2(qx, qy);
+}
+
+/**
+ * Projects a point onto the nearest point on a parametrized curve (xFunc(t), yFunc(t)).
+ * Uses a coarse grid search to find a good initial parameter, then refines with Newton's
+ * method on D'(t) = 0 where D(t) = ½‖(x(t),y(t)) − startPoint‖².
+ * @param xFunc - x component of the parametric curve
+ * @param yFunc - y component of the parametric curve
+ * @param startPoint - The point to project
+ * @param tStart - Start of the parameter domain
+ * @param tEnd - End of the parameter domain
+ * @param maxIterations - Maximum Newton iterations (default: 1000)
+ * @param tolerance - Convergence tolerance on D'(t) (default: 1e-6)
+ * @returns The closest point on the parametrized curve to startPoint
+ */
+export function projectToParametrizedFunction2D(
+  xFunc: (t: number) => number,
+  yFunc: (t: number) => number,
+  startPoint: Vector2,
+  tStart: number,
+  tEnd: number,
+  maxIterations: number = 1000,
+  tolerance: number = 1e-6
+): [Vector2, number] {
+  const h = 1e-5;
+
+  const xPrime = (t: number) => (xFunc(t + h) - xFunc(t - h)) / (2 * h);
+  const yPrime = (t: number) => (yFunc(t + h) - yFunc(t - h)) / (2 * h);
+  const xDoublePrime = (t: number) => (xFunc(t + h) - 2 * xFunc(t) + xFunc(t - h)) / (h * h);
+  const yDoublePrime = (t: number) => (yFunc(t + h) - 2 * yFunc(t) + yFunc(t - h)) / (h * h);
+
+  // Coarse grid search for a good initial t
+  const numSamples = 100;
+  let bestT = tStart;
+  let bestDist2 = Infinity;
+  for (let i = 0; i <= numSamples; i++) {
+    const t = tStart + (i / numSamples) * (tEnd - tStart);
+    const dx = xFunc(t) - startPoint.x;
+    const dy = yFunc(t) - startPoint.y;
+    const dist2 = dx * dx + dy * dy;
+    if (dist2 < bestDist2) {
+      bestDist2 = dist2;
+      bestT = t;
+    }
+  }
+
+  // Newton's method: find t* minimising D(t) = ½‖curve(t) − p‖²
+  // D'(t)  = (x−px)·x' + (y−py)·y'
+  // D''(t) = x'² + (x−px)·x'' + y'² + (y−py)·y''
+  let t = bestT;
+  for (let i = 0; i < maxIterations; i++) {
+    const x = xFunc(t);
+    const y = yFunc(t);
+    const xp = xPrime(t);
+    const yp = yPrime(t);
+
+    const dPrime = (x - startPoint.x) * xp + (y - startPoint.y) * yp;
+    if (Math.abs(dPrime) < tolerance) break;
+
+    const dDoublePrime =
+      xp * xp +
+      (x - startPoint.x) * xDoublePrime(t) +
+      yp * yp +
+      (y - startPoint.y) * yDoublePrime(t);
+
+    if (Math.abs(dDoublePrime) < 1e-20) break;
+
+    t = Math.max(tStart, Math.min(tEnd, t - dPrime / dDoublePrime));
+  }
+
+  return [new Vector2(xFunc(t), yFunc(t)), t];
+}

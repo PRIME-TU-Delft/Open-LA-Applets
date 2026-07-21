@@ -191,10 +191,10 @@
     const p01 = new Vector2(x, y + currentStepSize);
     const p11 = new Vector2(x + currentStepSize, y + currentStepSize);
 
-    const v00 = getOrEvalFunc(valueCache, x / sx, y / sy);
-    const v10 = getOrEvalFunc(valueCache, (x + currentStepSize) / sx, y / sy);
-    const v01 = getOrEvalFunc(valueCache, x / sx, (y + currentStepSize) / sy);
-    const v11 = getOrEvalFunc(valueCache, (x + currentStepSize) / sx, (y + currentStepSize) / sy);
+    const v00 = getOrEvalFunc(valueCache, x, y);
+    const v10 = getOrEvalFunc(valueCache, x + currentStepSize, y);
+    const v01 = getOrEvalFunc(valueCache, x, y + currentStepSize);
+    const v11 = getOrEvalFunc(valueCache, x + currentStepSize, y + currentStepSize);
 
     // Create marching squares case
     let caseIndex = 0;
