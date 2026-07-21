@@ -6,17 +6,30 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras';
-  import { Vector3 } from 'three';
+  import { BufferAttribute, BufferGeometry, DoubleSide, Vector3 } from 'three';
   import vectorField from './vector_field.json';
 
   let elevation = -2;
   let azimuth = 180;
   let grid = true;
 
-  let position = new Vector3(10, 3, 7);
+  let position = new Vector3(10, 2, 8);
   let zoom = 30;
 
-  const points = vectorField as { x: number; y: number; u: number; v: number }[];
+  const WORLD_SCALE = 1.5;
+  const X_STRETCH = 5;
+  const X_OFFSET = -6;
+  const GRID_CENTER_X = X_OFFSET * WORLD_SCALE;
+  const GRID_CENTER_Z = 0;
+  const GRID_RADIUS = 30;
+
+  const vectorFieldPoints = vectorField as { x: number; y: number; u: number; v: number }[];
+
+  function isInsideGrid(x: number, z: number): boolean {
+    const dx = x - GRID_CENTER_X;
+    const dz = z - GRID_CENTER_Z;
+    return dx * dx + dz * dz <= GRID_RADIUS * GRID_RADIUS;
+  }
 
   function f(x: number, labda: number, gamma: number): number {
     if (Math.abs(x - labda) <= 1) {
@@ -79,57 +92,117 @@
     y0: number,
     tend: number
   ) {
-    const solution = solveMyIVP(x0, y0, tend, labda, gamma, mu);
-
-    // console.log(solution);
-    return solution;
+    return solveMyIVP(x0, y0, tend, labda, gamma, mu);
   }
 
-  function toPoints(equation: { t: number[]; x: number[]; y: number[] }) {
-    const points = [];
+  function toCurveSegments(equation: { t: number[]; x: number[]; y: number[] }) {
+    const segments: Vector3[][] = [];
+    let segment: Vector3[] = [];
+
     for (let i = 0; i < equation.t.length; i += 50) {
-      points.push(
-        new Vector3(
-          equation.x[i] * 5 - 6,
-          equation.y[i],
-          Math.sin(equation.t[i] * 5) * 3
-        ).multiplyScalar(1.5)
-      );
+      const y_up_down = Math.sin(equation.t[i] * 5) * 4 - 8;
+      const worldX = (equation.x[i] * X_STRETCH + X_OFFSET) * WORLD_SCALE;
+      const worldZ = equation.y[i] * WORLD_SCALE;
+
+      if (isInsideGrid(worldX, worldZ)) {
+        segment.push(new Vector3(worldX, y_up_down * WORLD_SCALE, worldZ));
+      } else if (segment.length > 1) {
+        segments.push(segment);
+        segment = [];
+      } else {
+        segment = [];
+      }
     }
 
-    return points;
+    if (segment.length > 1) {
+      segments.push(segment);
+    }
+
+    return segments;
   }
 
   const equation = Van_der_Pol_like_equation(2, 0.67, 2, 0, 4, 7);
+  const curveSegments = toCurveSegments(equation);
+  const visibleVectors = vectorFieldPoints.filter(({ x, y }) => {
+    const worldX = (x * X_STRETCH + X_OFFSET) * WORLD_SCALE;
+    const worldZ = y * WORLD_SCALE;
+    return isInsideGrid(worldX, worldZ);
+  });
+  const integralBaseY = -15.001;
+
+  const integralGeometry = $derived.by(() => {
+    const geometry = new BufferGeometry();
+    const vertices: number[] = [];
+
+    for (const segment of curveSegments) {
+      for (let i = 0; i < segment.length - 1; i++) {
+        const start = segment[i];
+        const end = segment[i + 1];
+        const startBase = new Vector3(start.x, integralBaseY, start.z);
+        const endBase = new Vector3(end.x, integralBaseY, end.z);
+
+        vertices.push(
+          ...start.toArray(),
+          ...startBase.toArray(),
+          ...end.toArray(),
+          ...end.toArray(),
+          ...startBase.toArray(),
+          ...endBase.toArray()
+        );
+      }
+    }
+
+    geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
+    geometry.computeVertexNormals();
+
+    return geometry;
+  });
 </script>
 
-{#each points as { x, y, u, v } ([x, y, u, v])}
+{#if curveSegments.length > 0}
+  <T.Mesh geometry={integralGeometry}>
+    <T.MeshBasicMaterial
+      color={PrimeColor.yellow}
+      side={DoubleSide}
+      transparent={true}
+      opacity={0.08}
+      depthWrite={false}
+      toneMapped={false}
+    />
+  </T.Mesh>
+{/if}
+
+{#each visibleVectors as { x, y, u, v } (`${x},${y},${u.toFixed(2)},${v.toFixed(2)}`)}
   <Vector3D
     color={PrimeColor.raspberry}
     length={1.5}
-    origin={new Vector3(x * 5 - 6, y, 0).multiplyScalar(1.5)}
-    direction={new Vector3(u, v, 0)}
+    origin={new Vector3(x * X_STRETCH + X_OFFSET, -7.9, y).multiplyScalar(WORLD_SCALE)}
+    direction={new Vector3(u, 0, v)}
     radius={0.75}
   />
 {/each}
 
-<T.Mesh>
-  <MeshLineGeometry points={toPoints(equation)} />
-  <MeshLineMaterial
-    depthTest={true}
-    width={0.01}
-    color={PrimeColor.blue}
-    dashOffset={0.1}
-    dashArray={0.1 * 0.01}
-  />
-</T.Mesh>
+{#each curveSegments as segment, idx (`${idx}-${segment.length}`)}
+  <T.Mesh>
+    <MeshLineGeometry points={segment} />
+    <MeshLineMaterial
+      depthTest={true}
+      width={0.01}
+      color={PrimeColor.blue}
+      dashOffset={0.1}
+      dashArray={0.1 * 0.01}
+    />
+  </T.Mesh>
+{/each}
 
 <T.OrthographicCamera makeDefault position={[position.x, position.y, position.z]} fov={10} {zoom}>
   <OrbitControls
     enableZoom
     maxZoom={zoom * 10}
-    minZoom={0.01}
-    maxPolarAngle={Math.PI * 0.6}
+    minZoom={zoom}
+    minPolarAngle={Math.PI * 0.1}
+    maxPolarAngle={Math.PI * 0.9}
+    target={[-9, -12, 0]}
     autoRotate={true}
     autoRotateSpeed={0.3}
   />
