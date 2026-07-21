@@ -31,7 +31,7 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 3);
+  cameraPosition = new Vector2(2, 3.5);
   cameraZoom = 1.0;
 
   // ####
@@ -70,8 +70,8 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const tMin = -1;
-  const tMax = 1;
+  const tMin = -1 / 2;
+  const tMax = 1 / 2;
   const xEquation = (t: number) => Math.exp(2 * t) - Math.exp(t);
   const yEquation = (t: number) => Math.exp(3 * t) + 4 * Math.exp(-2 * t) - 3;
   const xDerivative = (t: number) => 2 * Math.exp(2 * t) - Math.exp(t);
@@ -82,7 +82,10 @@
       width: 0.08,
       tStart: tMin,
       tEnd: tMax
-    })
+    }).addIncludedPoints([
+      new Vector2(xEquation(tMin), yEquation(tMin)),
+      new Vector2(xEquation(tMax), yEquation(tMax))
+    ])
   ];
   const initT = 0;
   const initX = xEquation(initT);
@@ -90,12 +93,12 @@
   const draggables = [
     new Draggable(
       new Vector2(initX, initY),
-      PrimeColor.orange,
+      PrimeColor.raspberry,
       undefined,
       snapCurve,
       undefined,
       undefined,
-      0.12
+      0.05
     )
   ];
 
@@ -112,8 +115,8 @@
   {cameraZoom}
   legendItems={[
     ...getLegend(appletObjects),
-    new LegendItem('\\text{Tangent line}', PrimeColor.darkGreen),
-    new LegendItem('\\mathcal{T}', PrimeColor.yellow)
+    new LegendItem('\\text{Tangent line}', PrimeColor.yellow),
+    new LegendItem('\\mathcal{T}', PrimeColor.raspberry)
   ]}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
@@ -136,13 +139,13 @@
   <InfiniteLine2D
     origin={new Vector2(x, y)}
     direction={new Vector2(dxdt, dydt)}
-    color={PrimeColor.darkGreen}
+    color={PrimeColor.yellow}
     width={0.08}
   />
 
   <Vector2D
     origin={new Vector2(x, y)}
-    color={PrimeColor.yellow}
+    color={PrimeColor.raspberry}
     direction={new Vector2(dxdt, dydt)}
   />
 </Canvas2D>
