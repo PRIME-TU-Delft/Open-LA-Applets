@@ -80,8 +80,8 @@
   const fillPath = $derived.by(() => {
     if (!integral) return null;
 
-    const xLeft = integral.xLeft * sx;
-    const xRight = integral.xRight * sx;
+    const xLeft = Math.min(integral.xLeft, integral.xRight) * sx;
+    const xRight = Math.max(integral.xLeft, integral.xRight) * sx;
 
     if (xLeft >= xRight) return null;
 
