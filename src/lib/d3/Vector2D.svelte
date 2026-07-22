@@ -46,21 +46,20 @@
 
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
-  const coneStart = $derived(length + coneHeight * (length > 0 ? -0.5 : 1.5));
 
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
   const displayEnd = $derived(
     origin.clone().add(normalizedDirection.clone().multiplyScalar(length))
   );
   const endPoint = $derived(new Vector2(displayEnd.x * sx, displayEnd.y * sy));
-  const displayConeStart = $derived(
-    origin.clone().add(normalizedDirection.clone().multiplyScalar(coneStart - coneHeight / 2))
-  );
-  const coneStartPos = $derived(new Vector2(displayConeStart.x * sx, displayConeStart.y * sy));
 
   const worldDirection = $derived(
     new Vector2(normalizedDirection.x * sx, normalizedDirection.y * sy)
   );
+  const screenDirSign = $derived(length > 0 ? 1 : -1);
+  const screenDir = $derived(worldDirection.clone().normalize().multiplyScalar(screenDirSign));
+
+  const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
 </script>
 
 <!--@component
@@ -88,7 +87,7 @@
     <Point2D position={scaledOrigin} {color} />
   {:else}
     <g
-      transform={`translate(${coneStartPos.x}, ${coneStartPos.y}) rotate(${(worldDirection.angle() * 180) / Math.PI + (length < 0 ? 90 : -90)})`}
+      transform={`translate(${coneStartPos.x}, ${coneStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI - 90})`}
     >
       <Triangle2D
         points={[
