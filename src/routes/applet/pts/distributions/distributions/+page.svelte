@@ -105,7 +105,7 @@
         });
       case 'poisson':
         return inDistrControls.addSlider(3, 0, 10, 0.5, PrimeColor.raspberry, {
-          label: 'gamma',
+          label: '\\lambda',
           valueFn
         });
       case 'uniform_die':
@@ -126,7 +126,7 @@
         });
       case 'pareto':
         return inDistrControls.addSlider(2, 0, 4, 0.2, PrimeColor.raspberry, {
-          label: 'alpha',
+          label: '\\alpha',
           valueFn
         });
       case 'uniform':
@@ -263,10 +263,10 @@
         break;
       }
       case 'poisson': {
-        const gamma = (controls?.[2] as number) ?? 3;
+        const lambda = (controls?.[2] as number) ?? 3;
 
-        expected_value = gamma.toFixed(2);
-        variance = gamma.toFixed(2);
+        expected_value = lambda.toFixed(2);
+        variance = lambda.toFixed(2);
 
         exp_color = var_color = PrimeColor.raspberry;
 
@@ -285,7 +285,7 @@
     }
 
     return new Formulas(
-      new Formula('E[X] &= \\$1').addAutoParam(expected_value, exp_color),
+      new Formula('E(X) &= \\$1').addAutoParam(expected_value, exp_color),
       new Formula('\\text{Var}(X) &= \\$1').addAutoParam(variance, var_color)
     ).align();
   });
@@ -340,9 +340,9 @@
         return randomGeometric(p);
       }
       case 'poisson': {
-        const gamma = (controls?.[2] as number) ?? 3;
+        const lambda = (controls?.[2] as number) ?? 3;
 
-        return randomPoisson(gamma);
+        return randomPoisson(lambda);
       }
       case 'uniform_die': {
         const n = (controls?.[2] as number) ?? 6;
