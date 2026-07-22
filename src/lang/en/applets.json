@@ -176,9 +176,12 @@
         "exponential": "Exponential",
         "pareto": "Pareto",
         "uniform": "Uniform",
-        "average": "Average",
-        "sum": "Sum",
         "next": "Next"
+      },
+      "central_limit_theorem": {
+        "title": "Central Limit Theorem",
+        "average": "Average",
+        "sum": "Sum"
       }
     }
   },

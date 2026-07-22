@@ -176,9 +176,12 @@
         "exponential": "Exponentieel",
         "pareto": "Pareto",
         "uniform": "Uniform",
-        "average": "Gemiddelde",
-        "sum": "Som",
         "next": "Volgende"
+      },
+      "central_limit_theorem": {
+        "title": "Centrale limietstelling",
+        "sum": "Som",
+        "average": "Gemiddelde"
       }
     }
   },

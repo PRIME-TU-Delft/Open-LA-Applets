@@ -21,6 +21,7 @@
   import { Vector2 } from 'three';
 
   const NS = 'applets.pts.distributions.distributions.';
+  const NSC = 'applets.pts.distributions.central_limit_theorem.';
 
   const baseControls = Controls.addDropdown(`${NS}continuous`, [
     `${NS}continuous`,
@@ -64,7 +65,10 @@
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
-  let inDistrControls = Controls.addSlider(
+  let inDistrControls = Controls.addDropdown(`${NSC}average`, [
+    `${NSC}average`,
+    `${NSC}sum`
+  ]).addSlider(
     100,
     0,
     300,
@@ -134,8 +138,8 @@
   });
 
   const N = $derived.by(() => {
-    if (typeof controls?.[0] === 'number') {
-      return controls?.[0];
+    if (typeof controls?.[1] === 'number') {
+      return controls?.[1];
     }
 
     return 200;
@@ -179,12 +183,10 @@
     let exp_color: PrimeColor = PrimeColor.black;
     let var_color: PrimeColor = PrimeColor.black;
 
-    const isInDistr = savedDistrType !== '' && savedCategory !== '';
-
     switch (curDistrType?.replace(NS, '')) {
       case 'normal': {
-        const mean_ = isInDistr ? draggables?.[0]?.position.x ?? 4 : 4;
-        const sigma = isInDistr ? (controls?.[1] as number) ?? 2 : 2;
+        const mean_ = draggables?.[0]?.position.x ?? 4;
+        const sigma = (controls?.[2] as number) ?? 2;
 
         expected_value = mean_.toFixed(2);
         variance = Math.pow(sigma, 2).toFixed(2);
@@ -195,7 +197,7 @@
         break;
       }
       case 'exponential': {
-        const lambda = isInDistr ? (controls?.[1] as number) ?? 1 : 1;
+        const lambda = (controls?.[2] as number) ?? 1;
 
         expected_value = Math.pow(lambda, -1).toFixed(2);
         variance = Math.pow(lambda, -2).toFixed(2);
@@ -205,8 +207,8 @@
         break;
       }
       case 'pareto': {
-        const x0 = isInDistr ? draggables?.[0]?.position.x ?? 1 : 1;
-        const alpha = isInDistr ? (controls?.[1] as number) ?? 2 : 2;
+        const x0 = draggables?.[0]?.position.x ?? 1;
+        const alpha = (controls?.[2] as number) ?? 2;
 
         expected_value = ((alpha * x0) / (alpha - 1)).toFixed(2);
         variance = ((alpha * x0 ** 2) / ((alpha - 1) ** 2 * (alpha - 2))).toFixed(2);
@@ -224,8 +226,8 @@
         break;
       }
       case 'uniform': {
-        const a = isInDistr ? draggables?.[0]?.position.x ?? -2 : -2;
-        const b = isInDistr ? draggables?.[1]?.position.x ?? 8 : 8;
+        const a = draggables?.[0]?.position.x ?? -2;
+        const b = draggables?.[1]?.position.x ?? 8;
 
         expected_value = ((a + b) / 2).toFixed(2);
         variance = (Math.pow(b - a, 2) / 12).toFixed(2);
@@ -234,7 +236,7 @@
       }
       // discrete
       case 'bernouli': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
+        const p = (controls?.[2] as number) ?? 0.5;
         expected_value = p.toFixed(2);
         variance = (p * (1 - p)).toFixed(2);
 
@@ -243,8 +245,8 @@
         break;
       }
       case 'binomial': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
-        const n = isInDistr ? (controls?.length ?? 0) > 2 ? ((controls?.[2] as number) ?? 10) : 10 : 10;
+        const p = (controls?.[2] as number) ?? 0.5;
+        const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
 
         expected_value = (n * p).toFixed(2);
         variance = (n * p * (1 - p)).toFixed(2);
@@ -252,7 +254,7 @@
         break;
       }
       case 'geometric': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
+        const p = (controls?.[2] as number) ?? 0.5;
 
         expected_value = (1 / p).toFixed(2);
         variance = ((1 - p) / Math.pow(p, 2)).toFixed(2);
@@ -262,7 +264,7 @@
         break;
       }
       case 'poisson': {
-        const lambda = isInDistr ? (controls?.[1] as number) ?? 3 : 3;
+        const lambda = (controls?.[2] as number) ?? 3;
 
         expected_value = lambda.toFixed(2);
         variance = lambda.toFixed(2);
@@ -272,7 +274,7 @@
         break;
       }
       case 'uniform_die': {
-        const n = isInDistr ? (controls?.[1] as number) ?? 6 : 6;
+        const n = (controls?.[2] as number) ?? 6;
 
         expected_value = ((n + 1) / 2).toFixed(2);
         variance = ((Math.pow(n, 2) - 1) / 12).toFixed(2);
@@ -295,59 +297,56 @@
   }
 
   const randomFn = $derived.by(() => {
-
-    const isInDistr = savedDistrType !== '' && savedCategory !== '';
-
     switch (curDistrType?.replace(NS, '')) {
       // continuous
       case 'normal': {
-        const mean_ = isInDistr ? draggables?.[0]?.position.x ?? 4 : 4;
-        const sigma = isInDistr ? (controls?.[1] as number) ?? 2 : 2;
+        const mean_ = draggables?.[0]?.position.x ?? 4;
+        const sigma = (controls?.[2] as number) ?? 2;
 
         return randomNormal(mean_, sigma);
       }
       case 'exponential': {
-        const lambda = isInDistr ? (controls?.[1] as number) ?? 1 : 1;
+        const lambda = (controls?.[2] as number) ?? 1;
 
         return randomExponential(lambda);
       }
       case 'pareto': {
-        const x0 = isInDistr ? draggables?.[0]?.position.x ?? 1 : 1;
-        const alpha = isInDistr ? (controls?.[1] as number) ?? 2 : 2;
+        const x0 = draggables?.[0]?.position.x ?? 1;
+        const alpha = (controls?.[2] as number) ?? 2;
 
         const d3Pareto = randomPareto(alpha);
         return () => x0 * d3Pareto();
       }
       case 'uniform': {
-        const a = isInDistr ? draggables?.[0]?.position.x ?? -2 : -2;
-        const b = isInDistr ? draggables?.[1]?.position.x ?? 8 : 8;
+        const a = draggables?.[0]?.position.x ?? -2;
+        const b = draggables?.[1]?.position.x ?? 8;
 
         return randomUniform(a, b);
       }
       // discrete
       case 'bernouli': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
+        const p = (controls?.[2] as number) ?? 0.5;
 
         return randomBernoulli(p);
       }
       case 'binomial': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
-        const n = isInDistr ? (controls?.length ?? 0) > 2 ? ((controls?.[2] as number) ?? 10) : 10 : 10;
+        const p = (controls?.[2] as number) ?? 0.5;
+        const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
 
         return randomBinomial(n, p);
       }
       case 'geometric': {
-        const p = isInDistr ? (controls?.[1] as number) ?? 0.5 : 0.5;
+        const p = (controls?.[2] as number) ?? 0.5;
 
         return randomGeometric(p);
       }
       case 'poisson': {
-        const lambda = isInDistr ? (controls?.[1] as number) ?? 3 : 3;
+        const lambda = (controls?.[2] as number) ?? 3;
 
         return randomPoisson(lambda);
       }
       case 'uniform_die': {
-        const n = isInDistr ? (controls?.[1] as number) ?? 6 : 6;
+        const n = (controls?.[2] as number) ?? 6;
 
         const f = randomUniform(1, n + 1);
         return () => Math.floor(f());
@@ -380,6 +379,7 @@
   }}
   initialViewBox={new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5)}
   scaleY={10}
+  title={$_(`${NSC}title`)}
 >
   <Histogram
     {freqMap}
