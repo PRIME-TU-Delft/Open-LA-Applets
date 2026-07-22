@@ -13,7 +13,6 @@
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Canvas2D from '../Canvas2D.svelte';
-  import { ViewBox } from '../ViewBox';
   import type { VectorProps } from '../Vector2D.svelte';
 </script>
 
@@ -133,30 +132,3 @@ distinguish different vectors. -->
   }}
   {template}
 />
-
-<!-- Vectors under anisotropic scale (scaleX=2, scaleY=3). The head should stay
-  a fixed pixel size and stay attached to the shaft in every direction. -->
-<Story
-  name="Anisotropic Scale"
-  args={{
-    color: PrimeColor.black,
-    origin: new Vector2(0, 0),
-    direction: new Vector2(1, 0),
-    length: 2,
-    radius: 0.02
-  }}
->
-  {#snippet template(args: VectorProps)}
-    <div class="h-150 w-150 overflow-hidden rounded-lg">
-      <Canvas2D
-        scaleX={2}
-        scaleY={3}
-        initialViewBox={new ViewBox(new Vector2(-2, -2), new Vector2(2, 2))}
-      >
-        <Vector2D {...args} />
-        <Vector2D {...args} direction={new Vector2(0, 1)} color={PrimeColor.orange} />
-        <Vector2D {...args} direction={new Vector2(-1, -1)} color={PrimeColor.raspberry} />
-      </Canvas2D>
-    </div>
-  {/snippet}
-</Story>
