@@ -4,26 +4,27 @@
   import Credits from '$lib/components/frontpage/Credits.svelte';
   import FrontpageList from '$lib/components/frontpage/FrontpageList.svelte';
 
-  const modules = import.meta.glob('/src/routes/applet/other/**/+page.svelte');
+  const modules = import.meta.glob('/src/routes/applet/pts/**/+page.svelte');
 
   const fileUrls = Object.keys(modules).map((rawUrl) =>
     // Remove head of path and extension
-    rawUrl.replace('/src/routes/applet/other/', '').replace('/+page.svelte', '')
+    rawUrl.replace('/src/routes/applet/pts/', '').replace('/+page.svelte', '')
   );
 </script>
 
-<NavBar
-  bookTitle="Open LA book"
-  bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"
-  {fileUrls}
-  directory="other/"
-/>
+<NavBar bookTitle="Probability Theory and Statistics" {fileUrls} directory="pts/" />
 
 <div class="mx-auto my-32 max-w-4xl rounded-xl bg-blue-50 p-10">
   <div class="prose w-full max-w-full">
-    <h1>Other interactive applets</h1>
+    <h1>Interactive Probability Theory and Statistics applets</h1>
+    These applets were created for the TU Delft Probability Theory and Statistics course. Abstract concepts
+    are visualized in an interactive way to help students understand the material better. Using 2D and
+    3D graphics, the applets provide a hands-on experience to explore the concepts.
 
-    These are development applets.
+    <p>
+      The applets are sorted by the paragraph that they are associated with in the book. Feel free
+      to explore each applet by clicking on the links below.
+    </p>
 
     <FrontpageList />
 
@@ -38,7 +39,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="other/" />
+  <FolderList {fileUrls} directory="pts/" />
 
   <Credits />
 

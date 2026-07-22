@@ -28,6 +28,9 @@
     "@lucide/svelte": "^1.24.0",
     "@storybook/addon-a11y": "^10.5.0",
     "@storybook/addon-docs": "^10.5.0",
+    "@lucide/svelte": "^1.24.0",
+    "@storybook/addon-a11y": "^10.5.0",
+    "@storybook/addon-docs": "^10.5.0",
     "@storybook/addon-svelte-csf": "^5.1.2",
     "@storybook/addon-vitest": "^10.5.0",
     "@storybook/sveltekit": "^10.5.0",
@@ -80,5 +83,5 @@
     "svelte-i18n": "^4.0.1",
     "three": "^0.184.0"
   },
-  "packageManager": "pnpm@11.9.0"
+  "packageManager": "pnpm@11.11.0"
 }
