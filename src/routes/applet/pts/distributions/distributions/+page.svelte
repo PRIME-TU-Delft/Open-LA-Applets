@@ -203,10 +203,78 @@
       }
       case 'Pareto': {
         const x0 = draggables?.[0]?.position.x ?? 1;
-        const alpha = (controls?.[2] as number) ?? 1;
+        const alpha = (controls?.[2] as number) ?? 2;
 
         expected_value = ((alpha * x0) / (alpha - 1)).toFixed(2);
-        variance = (alpha * x0 ** 2) / ((alpha - 1) ** 2 * (alpha - 2));
+        variance = ((alpha * x0 ** 2) / ((alpha - 1) ** 2 * (alpha - 2))).toFixed(2);
+
+        if (alpha <= 1) {
+          expected_value = '\\infty';
+        }
+        if (alpha <= 2) {
+          variance = '\\infty';
+        }
+        if (alpha <= 1) {
+          variance = 'DNE';
+        }
+
+        break;
+      }
+      case 'Uniform': {
+        const a = draggables?.[0]?.position.x ?? -2;
+        const b = draggables?.[1]?.position.x ?? 8;
+
+        expected_value = ((a + b) / 2).toFixed(2);
+        variance = (Math.pow(b - a, 2) / 12).toFixed(2);
+
+        break;
+      }
+      // discrete
+      case 'Bernouli': {
+        const p = (controls?.[2] as number) ?? 0.5;
+        expected_value = p.toFixed(2);
+        variance = (p * (1 - p)).toFixed(2);
+
+        exp_color = var_color = PrimeColor.raspberry;
+
+        break;
+      }
+      case 'Binomial': {
+        const p = (controls?.[2] as number) ?? 0.5;
+        const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
+
+        expected_value = (n * p).toFixed(2);
+        variance = (n * p * (1 - p)).toFixed(2);
+
+        break;
+      }
+      case 'Geometric': {
+        const p = (controls?.[2] as number) ?? 0.5;
+
+        expected_value = (1 / p).toFixed(2);
+        variance = ((1 - p) / Math.pow(p, 2)).toFixed(2);
+
+        exp_color = var_color = PrimeColor.raspberry;
+
+        break;
+      }
+      case 'Poisson': {
+        const gamma = (controls?.[2] as number) ?? 3;
+
+        expected_value = gamma.toFixed(2);
+        variance = gamma.toFixed(2);
+
+        exp_color = var_color = PrimeColor.raspberry;
+
+        break;
+      }
+      case 'Uniform (die)': {
+        const n = (controls?.[2] as number) ?? 6;
+
+        expected_value = ((n + 1) / 2).toFixed(2);
+        variance = ((Math.pow(n, 2) - 1) / 12).toFixed(2);
+
+        exp_color = var_color = PrimeColor.blue;
 
         break;
       }
@@ -239,7 +307,7 @@
       }
       case 'Pareto': {
         const x0 = draggables?.[0]?.position.x ?? 1;
-        const alpha = (controls?.[2] as number) ?? 1;
+        const alpha = (controls?.[2] as number) ?? 2;
 
         const d3Pareto = randomPareto(alpha);
         return () => x0 * d3Pareto();
