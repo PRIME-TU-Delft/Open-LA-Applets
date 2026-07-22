@@ -1,7 +1,7 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   export type Circle2DProps = {
     position?: Vector2;
@@ -21,9 +21,8 @@
     fill = 'none'
   }: Circle2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
+  const scaledPos = $derived(projection.toScreen(position));
 </script>
 
 <!-- @component
@@ -40,11 +39,11 @@
 
 -->
 
-{#if sx === sy}
+{#if projection.scaleX === projection.scaleY}
   <circle
-    cx={position.x * sx}
-    cy={position.y * sy}
-    r={radius * sx}
+    cx={scaledPos.x}
+    cy={scaledPos.y}
+    r={radius * projection.scaleX}
     {fill}
     stroke={color}
     stroke-width={width}
@@ -52,10 +51,10 @@
   />
 {:else}
   <ellipse
-    cx={position.x * sx}
-    cy={position.y * sy}
-    rx={radius * sx}
-    ry={radius * sy}
+    cx={scaledPos.x}
+    cy={scaledPos.y}
+    rx={radius * projection.scaleX}
+    ry={radius * projection.scaleY}
     {fill}
     stroke={color}
     stroke-width={width}

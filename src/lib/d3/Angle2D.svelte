@@ -15,7 +15,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { arc, symbol, symbolTriangle } from 'd3';
   import { Vector2 } from 'three';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   let {
     color = PrimeColor.black,
@@ -27,10 +27,11 @@
     hasHead = false
   }: Angle2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+  const projection = getProjection2D();
+  // NOTE: only the origin is projected. Angle2D draws a circular arc with a
+  // world-space radius; under non-uniform scale a true arc becomes an ellipse
+  // arc, which projecting endpoints alone cannot express. Known limitation.
+  const scaledOrigin = $derived(projection.toScreen(origin));
 
   const inverted = $derived.by(() => startAngle > endAngle);
   const rotation = $derived.by(() => {

@@ -1,4 +1,6 @@
 <script lang="ts" module>
+  import type { Vector2 } from 'three';
+
   export type Line2DProps = {
     start: Vector2;
     end: Vector2;
@@ -10,14 +12,13 @@
 
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { Vector2 } from 'three';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   let { start, end, color = 'black', width = LINE_WIDTH, isDashed = false }: Line2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
+  const startS = $derived(projection.toScreen(start));
+  const endS = $derived(projection.toScreen(end));
 </script>
 
 <!-- @component
@@ -34,10 +35,10 @@
 -->
 
 <line
-  x1={start.x * sx}
-  y1={start.y * sy}
-  x2={end.x * sx}
-  y2={end.y * sy}
+  x1={startS.x}
+  y1={startS.y}
+  x2={endS.x}
+  y2={endS.y}
   stroke={color}
   stroke-width={width}
   stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}

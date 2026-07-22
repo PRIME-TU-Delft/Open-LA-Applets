@@ -19,7 +19,7 @@
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   let {
     position = new Vector2(0, 0),
@@ -35,10 +35,8 @@
     showTextOnlyOnHover = false
   }: Point2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  const scaledPos = $derived(new Vector2(position.x * sx, position.y * sy));
+  const projection = getProjection2D();
+  const scaledPos = $derived(projection.toScreen(position));
 </script>
 
 <g class="point2d" {opacity}>

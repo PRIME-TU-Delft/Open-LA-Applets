@@ -22,10 +22,12 @@
 ## File Structure
 
 **New files:**
+
 - `src/lib/utils/Projection2D.ts` — the module: `Projection2D` class + `IDENTITY_PROJECTION` + `setProjection2D`/`getProjection2D` context helpers. One responsibility: the world↔screen transform and its seam.
 - `src/lib/utils/Projection2D.test.ts` — unit tests, no component mount.
 
 **Modified files (23):**
+
 - `src/lib/d3/CanvasD3.svelte` — constructs and publishes the projection.
 - 18 primitives that currently read `getContext('scale2D')` (migrate to `getProjection2D()`):
   Point2D, Line2D, Rect2D, Circle2D, Triangle2D, Polygon2D, Vector2D, Axis, Draggable2D,
@@ -42,16 +44,17 @@ class Projection2D {
   readonly scaleX: number;
   readonly scaleY: number;
   constructor(scaleX: number, scaleY: number);
-  toScreen(p: Vector2): Vector2;     // world point  -> screen point   (p.x*sx, p.y*sy)
-  toWorld(p: Vector2): Vector2;      // screen point -> world point    (p.x/sx, p.y/sy)  (inverse; for drag input)
-  toScreenDir(d: Vector2): Vector2;  // world direction -> UNIT screen-space direction  normalize(d.x*sx, d.y*sy)
+  toScreen(p: Vector2): Vector2; // world point  -> screen point   (p.x*sx, p.y*sy)
+  toWorld(p: Vector2): Vector2; // screen point -> world point    (p.x/sx, p.y/sy)  (inverse; for drag input)
+  toScreenDir(d: Vector2): Vector2; // world direction -> UNIT screen-space direction  normalize(d.x*sx, d.y*sy)
 }
-const IDENTITY_PROJECTION: Projection2D;              // scaleX=scaleY=1
-function setProjection2D(p: Projection2D): void;      // context publish (call in CanvasD3)
-function getProjection2D(): Projection2D;             // context read; returns IDENTITY_PROJECTION if unset
+const IDENTITY_PROJECTION: Projection2D; // scaleX=scaleY=1
+function setProjection2D(p: Projection2D): void; // context publish (call in CanvasD3)
+function getProjection2D(): Projection2D; // context read; returns IDENTITY_PROJECTION if unset
 ```
 
 **Design notes for the implementer (read before Task 1):**
+
 - `toScreenDir` returns a **unit** vector: it collapses Vector2D's `worldDirection` / `screenDir` / `screenDirSign` trio into one call. The signed-length handling stays in Vector2D (multiply the unit dir by the signed cone length as today).
 - Sizes stay untouched: in Vector2D, `CONE_HEIGHT`/`CONE_DIAMETER`/`radius` are NOT projected. Only origin, endpoint, and direction go through the projection.
 - The deleted reset hack is replaced by a **discipline**, not a runtime guard: a container must hand **world** coordinates to any child primitive (the child projects once) and only call `toScreen` for geometry it emits as its own SVG. Grep after migration confirms zero `setContext('scale2D'` remain.
@@ -61,10 +64,12 @@ function getProjection2D(): Projection2D;             // context read; returns I
 ## Task 1: Projection2D module + unit tests
 
 **Files:**
+
 - Create: `src/lib/utils/Projection2D.ts`
 - Test: `src/lib/utils/Projection2D.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Vector2` from `three`; `getContext`/`setContext` from `svelte`.
 - Produces: the full interface listed above. Every later task depends on these exact names.
 
@@ -196,9 +201,11 @@ git commit -m "feat: add Projection2D world<->screen seam module"
 ## Task 2: Publish Projection2D from CanvasD3 (dual-publish, non-breaking)
 
 **Files:**
+
 - Modify: `src/lib/d3/CanvasD3.svelte:78`
 
 **Interfaces:**
+
 - Consumes: `Projection2D`, `setProjection2D` from Task 1; existing `scaleX`/`scaleY` props (default `1`).
 - Produces: a `Projection2D` on context key `projection2D`. Old `scale2D` context stays published until Task 9.
 
@@ -215,10 +222,10 @@ import { Projection2D, setProjection2D } from '$lib/utils/Projection2D';
 At `src/lib/d3/CanvasD3.svelte:78`, keep the existing line and add the new publish immediately after it:
 
 ```ts
-  // svelte-ignore state_referenced_locally
-  setContext('scale2D', { x: scaleX, y: scaleY });
-  // svelte-ignore state_referenced_locally
-  setProjection2D(new Projection2D(scaleX, scaleY));
+// svelte-ignore state_referenced_locally
+setContext('scale2D', { x: scaleX, y: scaleY });
+// svelte-ignore state_referenced_locally
+setProjection2D(new Projection2D(scaleX, scaleY));
 ```
 
 - [ ] **Step 3: Verify types**
@@ -256,6 +263,7 @@ const projection = getProjection2D();
 Add `import { getProjection2D } from '$lib/utils/Projection2D';` and remove `getContext` from the `svelte` import if it becomes unused (`pnpm check` / `pnpm lint` will tell you).
 
 **B. Replace the multiplies.**
+
 - A full point `new Vector2(p.x * sx, p.y * sy)` → `projection.toScreen(p)`.
 - A scalar in markup like `x1={start.x * sx}` → introduce `const startS = $derived(projection.toScreen(start));` in the script and use `x1={startS.x}`, `y1={startS.y}`.
 - A world-space scalar tick `tick * scaleX` → `tick * projection.scaleX` (a single-axis scalar with no paired `Vector2` stays a raw `scaleX`/`scaleY` access; do NOT force it through `toScreen`).
@@ -274,6 +282,7 @@ Add `import { getProjection2D } from '$lib/utils/Projection2D';` and remove `get
 These read `scale2D` and emit their own SVG; none set the identity reset. Batch them — they are independent and mechanical.
 
 **Files (migrate each per recipe A–C, E):**
+
 - `src/lib/d3/Point2D.svelte:38-41` — `scaledPos = new Vector2(position.x*sx, position.y*sy)` → `projection.toScreen(position)`.
 - `src/lib/d3/Line2D.svelte:18-20` + template `x1/y1/x2/y2` (lines ~30-33) — add `const startS = $derived(projection.toScreen(start)); const endS = $derived(projection.toScreen(end));` and use `startS.x`/`startS.y`/`endS.x`/`endS.y`.
 - `src/lib/d3/Rect2D.svelte:12-14` — replace the two multiply sites.
@@ -286,6 +295,7 @@ These read `scale2D` and emit their own SVG; none set the identity reset. Batch 
 - `src/lib/d3/FillBetweenFunctions2D.svelte` — replace the 6 multiply sites (sampled curve points → `toScreen`).
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()` from Task 1.
 - Produces: no new exports; behavior unchanged.
 
@@ -311,60 +321,60 @@ git commit -m "refactor: migrate leaf 2D primitives to Projection2D"
 The sharpest win. Vector2D currently keeps `scaledOrigin`, `endPoint`, `worldDirection`, `screenDir`, `screenDirSign` and sets the identity reset so its `Line2D`/`Triangle2D`/`Point2D` children don't double-scale. New shape: project origin/end via `toScreen`, get the on-screen unit direction via `toScreenDir`, keep the signed-length handling, drop the reset, and pass **world** coords to children.
 
 **Files:**
+
 - Modify: `src/lib/d3/Vector2D.svelte:41-68` (script) and `:90-133` (template).
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()`, `Projection2D.toScreen`, `Projection2D.toScreenDir`.
 - Produces: behavior unchanged (arrowhead points along the on-screen line under non-uniform scale, as today).
 
 - [ ] **Step 1: Replace the script block.** Replace `src/lib/d3/Vector2D.svelte:41-68` with:
 
 ```ts
-  const projection = getProjection2D();
+const projection = getProjection2D();
 
-  const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
-  const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
+const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
+const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
 
-  const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
-  const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
+const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
+const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
-  const displayEnd = $derived(
-    origin.clone().add(normalizedDirection.clone().multiplyScalar(length))
-  );
+const displayEnd = $derived(origin.clone().add(normalizedDirection.clone().multiplyScalar(length)));
 
-  // world coords projected once, in screen space
-  const scaledOrigin = $derived(projection.toScreen(origin));
-  const endPoint = $derived(projection.toScreen(displayEnd));
+// world coords projected once, in screen space
+const scaledOrigin = $derived(projection.toScreen(origin));
+const endPoint = $derived(projection.toScreen(displayEnd));
 
-  // on-screen unit direction; sign carries a negative length
-  const screenDirSign = $derived(length < 0 ? -1 : 1);
-  const screenDir = $derived(
-    projection.toScreenDir(normalizedDirection).multiplyScalar(screenDirSign)
-  );
+// on-screen unit direction; sign carries a negative length
+const screenDirSign = $derived(length < 0 ? -1 : 1);
+const screenDir = $derived(
+  projection.toScreenDir(normalizedDirection).multiplyScalar(screenDirSign)
+);
 
-  const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
-  const secondConeStartPos = $derived(
-    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
-  );
+const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
+const secondConeStartPos = $derived(
+  scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
+);
 ```
 
 Add `import { getProjection2D } from '$lib/utils/Projection2D';`. Remove the now-unused `getContext` import and the deleted `worldDirection` binding.
 
 - [ ] **Step 2: Fix the children to receive world/screen coords correctly.**
-  The reset is gone, so `Line2D` (Task 3) now projects whatever points it receives. `coneStartPos`/`scaledOrigin`/`secondConeStartPos` are already **screen-space** points — passing them to a now-projecting `Line2D` would double-scale. Two valid fixes; use option (a):
+      The reset is gone, so `Line2D` (Task 3) now projects whatever points it receives. `coneStartPos`/`scaledOrigin`/`secondConeStartPos` are already **screen-space** points — passing them to a now-projecting `Line2D` would double-scale. Two valid fixes; use option (a):
   - **(a)** Keep Vector2D emitting the line itself in screen space by inlining a raw `<line>` (screen coords, no child projection), OR pass **world** endpoints to `Line2D` and let it project. Simplest behavior-preserving choice: pass world coords to `Line2D`.
     Compute world-space line endpoints and hand those to `Line2D`:
 
 ```ts
-  // world-space endpoints for the shaft (Line2D projects them itself)
-  const shaftStartWorld = $derived(
-    doubleEnded
-      ? displayEnd.clone().sub(screenDirWorld(coneHeight)) // see note
-      : origin.clone()
-  );
+// world-space endpoints for the shaft (Line2D projects them itself)
+const shaftStartWorld = $derived(
+  doubleEnded
+    ? displayEnd.clone().sub(screenDirWorld(coneHeight)) // see note
+    : origin.clone()
+);
 ```
 
-  **Because the cone offset is defined in screen space, the clean, behavior-identical move is the opposite:** keep all of Vector2D's geometry in screen space (as the code above produces) and make the shaft a raw inline `<line>` instead of a `Line2D` child, so nothing re-projects. Replace the `<Line2D ... />` block at `:90-96` with:
+**Because the cone offset is defined in screen space, the clean, behavior-identical move is the opposite:** keep all of Vector2D's geometry in screen space (as the code above produces) and make the shaft a raw inline `<line>` instead of a `Line2D` child, so nothing re-projects. Replace the `<Line2D ... />` block at `:90-96` with:
 
 ```svelte
 <line
@@ -378,10 +388,10 @@ Add `import { getProjection2D } from '$lib/utils/Projection2D';`. Remove the now
 />
 ```
 
-  The `Triangle2D` cones at `:105-112` and `:121-128` are wrapped in a `<g transform="translate(...) rotate(...)">` whose translate is already screen-space and whose triangle points are sizes (cone dimensions) — those must NOT project. Wrap them so they render at identity: since the reset is gone, the cleanest fix is to build the triangles as raw inline `<polygon>` elements (screen-space translate + size points, no projection). Convert each `<Triangle2D>` cone to an inline `<polygon points="...">` using `CONE_DIAMETER`/`coneHeight` directly.
-  The `Point2D` at `:100` (`length == 0` case) receives `scaledOrigin` (screen space) — replace with an inline `<circle cx={scaledOrigin.x} cy={scaledOrigin.y} r={radius} .../>` to avoid double projection.
+The `Triangle2D` cones at `:105-112` and `:121-128` are wrapped in a `<g transform="translate(...) rotate(...)">` whose translate is already screen-space and whose triangle points are sizes (cone dimensions) — those must NOT project. Wrap them so they render at identity: since the reset is gone, the cleanest fix is to build the triangles as raw inline `<polygon>` elements (screen-space translate + size points, no projection). Convert each `<Triangle2D>` cone to an inline `<polygon points="...">` using `CONE_DIAMETER`/`coneHeight` directly.
+The `Point2D` at `:100` (`length == 0` case) receives `scaledOrigin` (screen space) — replace with an inline `<circle cx={scaledOrigin.x} cy={scaledOrigin.y} r={radius} .../>` to avoid double projection.
 
-  > **Implementer note:** the theme of Step 2 is "Vector2D computes final screen geometry, so it must emit raw SVG, not projecting child primitives." Confirm by grepping the final file for `<Line2D`/`<Triangle2D`/`<Point2D` — none should remain. If you prefer keeping child components, the alternative is to pass every child **world** coordinates and let them project; that requires recomputing cone geometry in world space, which is messier because cone size is screen-defined. Prefer inline SVG.
+> **Implementer note:** the theme of Step 2 is "Vector2D computes final screen geometry, so it must emit raw SVG, not projecting child primitives." Confirm by grepping the final file for `<Line2D`/`<Triangle2D`/`<Point2D` — none should remain. If you prefer keeping child components, the alternative is to pass every child **world** coordinates and let them project; that requires recomputing cone geometry in world space, which is messier because cone size is screen-defined. Prefer inline SVG.
 
 - [ ] **Step 3: Delete the identity reset.** Confirm `setContext('scale2D', { x: 1, y: 1 });` (was `:44`) is gone.
 
@@ -401,9 +411,11 @@ git commit -m "refactor: collapse Vector2D dual coords into Projection2D.toScree
 The only inverse consumer. `event.x / scaleX` becomes `projection.toWorld(...)`.
 
 **Files:**
+
 - Modify: `src/lib/d3/Draggable2D.svelte:16-18` and `:36`.
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()`, `Projection2D.toWorld`.
 - Produces: drag output in world space, unchanged.
 
@@ -411,7 +423,7 @@ The only inverse consumer. `event.x / scaleX` becomes `projection.toWorld(...)`.
 - [ ] **Step 2:** Replace `:36`:
 
 ```ts
-    dragPosition = projection.toWorld(new Vector2(event.x, event.y));
+dragPosition = projection.toWorld(new Vector2(event.x, event.y));
 ```
 
 - [ ] **Step 3:** `pnpm check`. Visual check: drag a point in a non-uniform-scale applet; confirm the dragged point tracks the cursor and snaps correctly (world coords must match `main`).
@@ -429,9 +441,11 @@ git commit -m "refactor: migrate Draggable2D inverse transform to Projection2D.t
 Axis pre-computes `worldAdditionalTicksX = additionalTicksX.map(t => t * scaleX)` and sets the identity reset so its internal tick labels don't double-scale.
 
 **Files:**
+
 - Modify: `src/lib/d3/Axis.svelte:44-53` (+ tick usage).
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()`.
 - Produces: unchanged axis rendering.
 
@@ -439,9 +453,9 @@ Axis pre-computes `worldAdditionalTicksX = additionalTicksX.map(t => t * scaleX)
 - [ ] **Step 2:** Replace the tick conversions at `:48-50`:
 
 ```ts
-  // Convert additionalTicks from display-space to world-space
-  const worldAdditionalTicksX = $derived(additionalTicksX.map((tick) => tick * projection.scaleX));
-  const worldAdditionalTicksY = $derived(additionalTicksY.map((tick) => tick * projection.scaleY));
+// Convert additionalTicks from display-space to world-space
+const worldAdditionalTicksX = $derived(additionalTicksX.map((tick) => tick * projection.scaleX));
+const worldAdditionalTicksY = $derived(additionalTicksY.map((tick) => tick * projection.scaleY));
 ```
 
 - [ ] **Step 3:** Delete the identity reset at `:52-53`. Then audit every child primitive Axis renders (grid `Line2D`s, tick `Latex2D`/label components): each must receive **world** coordinates so it projects once. Where Axis previously relied on the identity reset + world coords, the values are already world-space and are now correct automatically; where Axis handed a child a pre-scaled value, revert that to world space. Verify by reading the template top-to-bottom.
@@ -460,6 +474,7 @@ git commit -m "refactor: migrate Axis to Projection2D, remove identity-reset hac
 `Trajectory2D`, `RightAngle2D`, `ExplicitFunction2D`, `ImplicitFunction2D`, `ParameterizedFunction2D` — each reads scale, pre-scales its sampled points, and sets the identity reset for child `Point2D`/`Triangle2D`/etc.
 
 **Files:**
+
 - `src/lib/d3/Trajectory2D.svelte:27-31` (+ sampled-point building, e.g. `:41` `new Vector2(start.x*sx, start.y*sy)` and subsequent pushes).
 - `src/lib/d3/RightAngle2D.svelte:25-29`.
 - `src/lib/d3/ExplicitFunction2D.svelte:~53-55`.
@@ -467,10 +482,12 @@ git commit -m "refactor: migrate Axis to Projection2D, remove identity-reset hac
 - `src/lib/d3/ParameterizedFunction2D.svelte:34-38`.
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()`, `Projection2D.toScreen`.
 - Produces: unchanged.
 
 Per file, apply recipe A + B + D:
+
 - Replace the context read with `const projection = getProjection2D();`.
 - Replace each sampled-point `new Vector2(pt.x * sx, pt.y * sy)` with `projection.toScreen(pt)`.
 - Delete the `setContext('scale2D', { x: 1, y: 1 });` line.
@@ -496,12 +513,14 @@ git commit -m "refactor: migrate function/trajectory containers to Projection2D,
 The 5 primitives that never read `scale2D` are thin wrappers. Once their delegates project (Tasks 3–7), most inherit correct non-uniform behavior **for free** — verify, don't rewrite.
 
 **Files (inspect; edit only where needed):**
+
 - `src/lib/d3/Parallelogram2D.svelte` — delegates to `Polygon2D` with world points. Now correct for free. **No change**; verify visually.
 - `src/lib/d3/Arc2D.svelte` and `src/lib/d3/SmallestArc2D.svelte` — delegate to `Angle2D`, which draws a **circular** arc via SVG arc/path. Under non-uniform scale a true circular arc becomes an **ellipse** arc; projecting the two endpoints does not bend the curve between them. This is a genuine geometry limitation the pure coordinate seam does NOT solve. **Do not fake it.** Add a code comment in `Angle2D.svelte` documenting that the arc radius/curvature assumes uniform scale, and open/annotate a follow-up (this is out of scope for the seam — the seam's job was to make endpoints correct, which it now does).
 - `src/lib/d3/PolarGrid.svelte` — read the file; if it emits circles/radial lines from world coords, route coordinate emission through `getProjection2D().toScreen`. Circles become ellipses under non-uniform scale (same limitation as arcs) — document rather than distort. If it currently ignores scale entirely and lives inside a `Canvas2D` that may be non-uniform, at minimum project the grid vertices.
 - `src/lib/d3/Histogram2D.svelte` — read the file; project bar corner coordinates via `toScreen`; bar widths that are meant as world-space spans use `toScreen` on corners (so they scale), bar strokes stay raw.
 
 **Interfaces:**
+
 - Consumes: `getProjection2D()` where a file gains projection.
 
 - [ ] **Step 1:** Verify `Parallelogram2D` renders correctly under non-uniform scale (no code change expected).
@@ -522,6 +541,7 @@ git commit -m "refactor: give scale-blind 2D primitives correct coordinate proje
 Every consumer now reads `Projection2D`. Delete the old context.
 
 **Files:**
+
 - Modify: `src/lib/d3/CanvasD3.svelte` (remove the `setContext('scale2D', ...)` line added-around at `:78`).
 
 - [ ] **Step 1: Prove no readers remain.**
@@ -539,6 +559,7 @@ pnpm test
 pnpm check
 pnpm lint
 ```
+
 Expected: all pass. Then a final visual pass in `pnpm dev` across a uniform-scale applet AND a non-uniform-scale applet.
 
 - [ ] **Step 4: Commit**
@@ -555,6 +576,7 @@ git commit -m "refactor: remove legacy scale2D context, Projection2D is the only
 `src/lib/d3/AxisLabels.ts` re-derives the same transform with module-global state (issue #492). Once `Projection2D` exists it "mostly dissolves."
 
 **Files:**
+
 - Modify: `src/lib/d3/AxisLabels.ts`.
 
 - [ ] **Step 1:** Read `AxisLabels.ts`; identify where it re-derives world→screen scaling from module-global state.

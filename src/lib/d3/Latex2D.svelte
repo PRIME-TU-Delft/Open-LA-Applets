@@ -17,6 +17,7 @@
   import Latex from '$lib/components/Latex.svelte';
   import { cameraState } from '$lib/stores/camera.svelte';
   import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
   import { Vector2 } from 'three';
 
   let {
@@ -32,11 +33,9 @@
     dimOnHover = false
   }: Latex2DProps = $props();
 
-  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const scaleX = scale2D?.x ?? 1;
-  const scaleY = scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
-  const scaledPosition = $derived(new Vector2(position.x * scaleX, position.y * scaleY));
+  const scaledPosition = $derived(projection.toScreen(position));
 
   let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
 
