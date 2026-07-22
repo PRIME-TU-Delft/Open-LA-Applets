@@ -37,6 +37,7 @@
   import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import { Projection2D, setProjection2D } from '$lib/utils/Projection2D';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
@@ -76,6 +77,8 @@
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
   setContext('scale2D', { x: scaleX, y: scaleY });
+  // svelte-ignore state_referenced_locally
+  setProjection2D(new Projection2D(scaleX, scaleY));
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
