@@ -160,3 +160,16 @@ distinguish different vectors. -->
     </div>
   {/snippet}
 </Story>
+
+<!-- Double-Ended Vector -->
+<Story
+  name="Double-Ended Vector"
+  args={{
+    color: PrimeColor.black,
+    origin: new Vector2(0, 0),
+    direction: new Vector2(1, 3),
+    length: new Vector2(1, 3).length(),
+    doubleEnded: true
+  }}
+  {template}
+/>

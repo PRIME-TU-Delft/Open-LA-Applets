@@ -6,6 +6,7 @@
     length?: number;
     radius?: number;
     hideHead?: boolean;
+    doubleEnded?: boolean;
     isDashed?: boolean;
     noNormalise?: boolean;
     headLength?: number;
@@ -30,6 +31,7 @@
     length = 1,
     radius = VECTOR_WIDTH,
     hideHead = false,
+    doubleEnded = false,
     isDashed = false,
     noNormalise: noNormalise = false,
     headLength,
@@ -60,6 +62,10 @@
   const screenDir = $derived(worldDirection.clone().normalize().multiplyScalar(screenDirSign));
 
   const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
+
+  const secondConeStartPos = $derived(
+    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
+  );
 </script>
 
 <!--@component
@@ -70,6 +76,7 @@
 - length: number - The length of the vector.
 - radius: number - The width of the vector.
 - hideHead: boolean - Whether to hide the head of the vector.
+- doubleEnded: boolean - Whether the vector is double-ended or not.
 - isDashed: boolean - Whether the vector is dashed or not.
 - noNormalise: boolean - Whether to normalize the vector or not.
 - headLength: number - The length of the head of the vector. If not specified, it will be determined by the radius.
@@ -80,7 +87,13 @@
 -->
 
 <!-- Line 2D -->
-<Line2D start={scaledOrigin} end={coneStartPos} {color} width={radius} {isDashed} />
+<Line2D
+  start={doubleEnded ? secondConeStartPos : scaledOrigin}
+  end={coneStartPos}
+  {color}
+  width={radius}
+  {isDashed}
+/>
 
 {#if !hideHead}
   {#if length == 0}
@@ -99,6 +112,21 @@
       />
     </g>
   {/if}
+{/if}
+
+{#if doubleEnded}
+  <g
+    transform={`translate(${secondConeStartPos.x}, ${secondConeStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI + 90})`}
+  >
+    <Triangle2D
+      points={[
+        new Vector2(CONE_DIAMETER, 0),
+        new Vector2(-CONE_DIAMETER, 0),
+        new Vector2(0, coneHeight)
+      ]}
+      {color}
+    />
+  </g>
 {/if}
 
 {#if children}
