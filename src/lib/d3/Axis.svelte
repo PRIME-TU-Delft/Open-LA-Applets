@@ -22,7 +22,7 @@
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex2D from './Latex2D.svelte';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
 
   let {
     length = GRID_SIZE_2D,
@@ -41,16 +41,15 @@
     additionalTicksY = []
   }: AxisProps = $props();
 
-  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const scaleX = scale2D?.x ?? 1;
-  const scaleY = scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
   // Convert additionalTicks from display-space to world-space
-  const worldAdditionalTicksX = $derived(additionalTicksX.map((tick) => tick * scaleX));
-  const worldAdditionalTicksY = $derived(additionalTicksY.map((tick) => tick * scaleY));
+  const worldAdditionalTicksX = $derived(additionalTicksX.map((tick) => tick * projection.scaleX));
+  const worldAdditionalTicksY = $derived(additionalTicksY.map((tick) => tick * projection.scaleY));
 
-  // Set scale2D context to {x:1, y:1} to prevent double-scaling of internal labels
-  setContext('scale2D', { x: 1, y: 1 });
+  // The axis grid is drawn in screen/index space; its Latex2D children must NOT
+  // re-project, so publish an identity projection to the subtree.
+  setProjection2D(IDENTITY_PROJECTION);
 
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
@@ -115,7 +114,7 @@
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
-          latex={getTickText(index / scaleX, 'x')}
+          latex={getTickText(index / projection.scaleX, 'x')}
           position={new Vector2(index, -0.15)}
           alignX="center"
         />
@@ -198,7 +197,7 @@
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
-          latex={getTickText(index / scaleY, 'y')}
+          latex={getTickText(index / projection.scaleY, 'y')}
           position={new Vector2(yAxisTextX, index)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
