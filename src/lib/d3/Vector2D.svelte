@@ -19,10 +19,8 @@
   import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
-  import Line2D from './Line2D.svelte';
   import Point2D from './Point2D.svelte';
-  import Triangle2D from './Triangle2D.svelte';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   let {
     color = PrimeColor.getRandomColor(),
@@ -38,10 +36,7 @@
     children
   }: VectorProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
 
   const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
@@ -49,17 +44,19 @@
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
   const displayEnd = $derived(
     origin.clone().add(normalizedDirection.clone().multiplyScalar(length))
   );
-  const endPoint = $derived(new Vector2(displayEnd.x * sx, displayEnd.y * sy));
 
-  const worldDirection = $derived(
-    new Vector2(normalizedDirection.x * sx, normalizedDirection.y * sy)
-  );
+  // world coords projected once, in screen space
+  const scaledOrigin = $derived(projection.toScreen(origin));
+  const endPoint = $derived(projection.toScreen(displayEnd));
+
+  // on-screen UNIT direction of the shaft; sign carries a negative length
   const screenDirSign = $derived(length > 0 ? 1 : -1);
-  const screenDir = $derived(worldDirection.clone().normalize().multiplyScalar(screenDirSign));
+  const screenDir = $derived(
+    projection.toScreenDir(normalizedDirection).multiplyScalar(screenDirSign)
+  );
 
   const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
 
@@ -86,30 +83,30 @@
 <Vector2D origin={new Vector2(1, 1)} direction={new Vector2(2, 0)} noNormalise />
 -->
 
-<!-- Line 2D -->
-<Line2D
-  start={doubleEnded ? secondConeStartPos : scaledOrigin}
-  end={coneStartPos}
-  {color}
-  width={radius}
-  {isDashed}
+<!--
+  Vector2D computes final screen geometry itself (shaft end and cones are
+  screen-space, sizes must not distort under non-uniform scale), so it emits raw
+  SVG instead of Line2D/Triangle2D children, which would re-project.
+-->
+<!-- Shaft -->
+<line
+  x1={(doubleEnded ? secondConeStartPos : scaledOrigin).x}
+  y1={(doubleEnded ? secondConeStartPos : scaledOrigin).y}
+  x2={coneStartPos.x}
+  y2={coneStartPos.y}
+  stroke={color}
+  stroke-width={radius}
+  stroke-dasharray={isDashed ? `${4 * radius} ${4 * radius}` : undefined}
 />
 
 {#if !hideHead}
   {#if length == 0}
-    <Point2D position={scaledOrigin} {color} />
+    <Point2D position={origin} {color} />
   {:else}
     <g
       transform={`translate(${coneStartPos.x}, ${coneStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI - 90})`}
     >
-      <Triangle2D
-        points={[
-          new Vector2(CONE_DIAMETER, 0),
-          new Vector2(-CONE_DIAMETER, 0),
-          new Vector2(0, coneHeight)
-        ]}
-        {color}
-      />
+      <polygon points={`${CONE_DIAMETER},0 ${-CONE_DIAMETER},0 0,${coneHeight}`} fill={color} />
     </g>
   {/if}
 {/if}
@@ -118,17 +115,10 @@
   <g
     transform={`translate(${secondConeStartPos.x}, ${secondConeStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI + 90})`}
   >
-    <Triangle2D
-      points={[
-        new Vector2(CONE_DIAMETER, 0),
-        new Vector2(-CONE_DIAMETER, 0),
-        new Vector2(0, coneHeight)
-      ]}
-      {color}
-    />
+    <polygon points={`${CONE_DIAMETER},0 ${-CONE_DIAMETER},0 0,${coneHeight}`} fill={color} />
   </g>
 {/if}
 
 {#if children}
-  {@render children(endPoint)}
+  {@render children(displayEnd)}
 {/if}
