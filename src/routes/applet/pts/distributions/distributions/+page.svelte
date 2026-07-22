@@ -17,13 +17,17 @@
     randomPoisson,
     randomUniform
   } from 'd3';
+  import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
 
-  // TODO: create translations
+  const NS = 'applets.pts.distributions.distributions.';
 
-  const baseControls = Controls.addDropdown('Continuous', ['Continuous', 'Discrete']);
+  const baseControls = Controls.addDropdown(`${NS}continuous`, [
+    `${NS}continuous`,
+    `${NS}discrete`
+  ]);
 
-  const discrete = $derived(baseControls[0] === 'Discrete');
+  const discrete = $derived(baseControls[0] === `${NS}discrete`);
 
   let savedCategory: string = $state('');
   let savedDistrType: string = $state('');
@@ -32,25 +36,23 @@
     let cont;
 
     if (discrete) {
-      cont = baseControls.addDropdown('Bernouli', [
-        'Bernouli',
-        'Binomial',
-        'Geometric',
-        'Poisson',
-        'Uniform (die)',
-        'Free input'
+      cont = baseControls.addDropdown(`${NS}bernouli`, [
+        `${NS}bernouli`,
+        `${NS}binomial`,
+        `${NS}geometric`,
+        `${NS}poisson`,
+        `${NS}uniform_die`
       ]);
     } else {
-      cont = baseControls.addDropdown('Normal', [
-        'Normal',
-        'Exponential',
-        'Pareto',
-        'Uniform',
-        'Free input'
+      cont = baseControls.addDropdown(`${NS}normal`, [
+        `${NS}normal`,
+        `${NS}exponential`,
+        `${NS}pareto`,
+        `${NS}uniform`
       ]);
     }
 
-    return cont.addButton('Next', PrimeColor.raspberry, () => {
+    return cont.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
       savedCategory = cont[0];
       savedDistrType = cont[1];
     });
@@ -62,7 +64,10 @@
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
-  let inDistrControls = Controls.addDropdown('Average', ['Average', 'Sum']).addSlider(
+  let inDistrControls = Controls.addDropdown(`${NS}average`, [
+    `${NS}average`,
+    `${NS}sum`
+  ]).addSlider(
     100,
     0,
     300,
@@ -76,14 +81,14 @@
       return contDiscControls;
     }
 
-    switch (savedDistrType) {
+    switch (savedDistrType?.replace(NS, '')) {
       // discrete
-      case 'Bernouli':
+      case 'bernouli':
         return inDistrControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
           label: 'p',
           valueFn
         });
-      case 'Binomial':
+      case 'binomial':
         return inDistrControls
           .addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
             label: 'p',
@@ -93,41 +98,40 @@
             label: 'n',
             valueFn: valueFnInt
           });
-      case 'Geometric':
+      case 'geometric':
         return inDistrControls.addSlider(0.5, 0, 1, 0.05, PrimeColor.raspberry, {
           label: 'p',
           valueFn
         });
-      case 'Poisson':
+      case 'poisson':
         return inDistrControls.addSlider(3, 0, 10, 0.5, PrimeColor.raspberry, {
           label: 'gamma',
           valueFn
         });
-      case 'Uniform (die)':
+      case 'uniform_die':
         return inDistrControls.addSlider(10, 2, 20, 1, PrimeColor.blue, {
           label: 'n',
           valueFn: valueFnInt
         });
       // Continuous
-      case 'Normal':
+      case 'normal':
         return inDistrControls.addSlider(2, 0, 4, 0.1, PrimeColor.raspberry, {
           label: '\\sigma',
           valueFn
         });
-      case 'Exponential':
+      case 'exponential':
         return inDistrControls.addSlider(1 / 2, 0.1, 3, 0.1, PrimeColor.raspberry, {
           label: '\\lambda',
           valueFn
         });
-      case 'Pareto':
+      case 'pareto':
         return inDistrControls.addSlider(2, 0, 4, 0.2, PrimeColor.raspberry, {
           label: 'alpha',
           valueFn
         });
-      case 'Uniform':
+      case 'uniform':
         return inDistrControls; // this just has draggables
-      // TODO: add free input
-      default: // TO REMOVE
+      default:
         return undefined;
     }
   });
@@ -141,21 +145,21 @@
   });
 
   const draggables = $derived.by(() => {
-    switch (savedDistrType) {
+    switch (savedDistrType?.replace(NS, '')) {
       // Continuous
-      case 'Normal':
+      case 'normal':
         return [
           new Draggable(new Vector2(4, 0), PrimeColor.orange, '\\mu', (v) => {
             return new Vector2(clamp(v.x, -10, 10), 0);
           })
         ];
-      case 'Pareto':
+      case 'pareto':
         return [
           new Draggable(new Vector2(1, 0), PrimeColor.blue, 'x_0', (v) => {
             return new Vector2(clamp(v.x, 0, 10), 0);
           })
         ];
-      case 'Uniform': {
+      case 'uniform': {
         const a = new Draggable(new Vector2(-2, 0), PrimeColor.raspberry, 'a');
         const b = new Draggable(new Vector2(8, 0), PrimeColor.blue, 'b', (v) => {
           return new Vector2(clamp(v.x, Math.max(-10, a.value.x), 10), 0);
@@ -178,8 +182,8 @@
     let exp_color: PrimeColor = PrimeColor.black;
     let var_color: PrimeColor = PrimeColor.black;
 
-    switch (curDistrType) {
-      case 'Normal': {
+    switch (curDistrType?.replace(NS, '')) {
+      case 'normal': {
         const mean_ = draggables?.[0]?.position.x ?? 4;
         const sigma = (controls?.[2] as number) ?? 2;
 
@@ -191,7 +195,7 @@
 
         break;
       }
-      case 'Exponential': {
+      case 'exponential': {
         const lambda = (controls?.[2] as number) ?? 1;
 
         expected_value = Math.pow(lambda, -1).toFixed(2);
@@ -201,7 +205,7 @@
 
         break;
       }
-      case 'Pareto': {
+      case 'pareto': {
         const x0 = draggables?.[0]?.position.x ?? 1;
         const alpha = (controls?.[2] as number) ?? 2;
 
@@ -220,7 +224,7 @@
 
         break;
       }
-      case 'Uniform': {
+      case 'uniform': {
         const a = draggables?.[0]?.position.x ?? -2;
         const b = draggables?.[1]?.position.x ?? 8;
 
@@ -230,7 +234,7 @@
         break;
       }
       // discrete
-      case 'Bernouli': {
+      case 'bernouli': {
         const p = (controls?.[2] as number) ?? 0.5;
         expected_value = p.toFixed(2);
         variance = (p * (1 - p)).toFixed(2);
@@ -239,7 +243,7 @@
 
         break;
       }
-      case 'Binomial': {
+      case 'binomial': {
         const p = (controls?.[2] as number) ?? 0.5;
         const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
 
@@ -248,7 +252,7 @@
 
         break;
       }
-      case 'Geometric': {
+      case 'geometric': {
         const p = (controls?.[2] as number) ?? 0.5;
 
         expected_value = (1 / p).toFixed(2);
@@ -258,7 +262,7 @@
 
         break;
       }
-      case 'Poisson': {
+      case 'poisson': {
         const gamma = (controls?.[2] as number) ?? 3;
 
         expected_value = gamma.toFixed(2);
@@ -268,7 +272,7 @@
 
         break;
       }
-      case 'Uniform (die)': {
+      case 'uniform_die': {
         const n = (controls?.[2] as number) ?? 6;
 
         expected_value = ((n + 1) / 2).toFixed(2);
@@ -292,55 +296,55 @@
   }
 
   const randomFn = $derived.by(() => {
-    switch (curDistrType) {
+    switch (curDistrType?.replace(NS, '')) {
       // continuous
-      case 'Normal': {
+      case 'normal': {
         const mean_ = draggables?.[0]?.position.x ?? 4;
         const sigma = (controls?.[2] as number) ?? 2;
 
         return randomNormal(mean_, sigma);
       }
-      case 'Exponential': {
+      case 'exponential': {
         const lambda = (controls?.[2] as number) ?? 1;
 
         return randomExponential(lambda);
       }
-      case 'Pareto': {
+      case 'pareto': {
         const x0 = draggables?.[0]?.position.x ?? 1;
         const alpha = (controls?.[2] as number) ?? 2;
 
         const d3Pareto = randomPareto(alpha);
         return () => x0 * d3Pareto();
       }
-      case 'Uniform': {
+      case 'uniform': {
         const a = draggables?.[0]?.position.x ?? -2;
         const b = draggables?.[1]?.position.x ?? 8;
 
         return randomUniform(a, b);
       }
       // discrete
-      case 'Bernouli': {
+      case 'bernouli': {
         const p = (controls?.[2] as number) ?? 0.5;
 
         return randomBernoulli(p);
       }
-      case 'Binomial': {
+      case 'binomial': {
         const p = (controls?.[2] as number) ?? 0.5;
         const n = (controls?.length ?? 0) > 3 ? ((controls?.[3] as number) ?? 10) : 10;
 
         return randomBinomial(n, p);
       }
-      case 'Geometric': {
+      case 'geometric': {
         const p = (controls?.[2] as number) ?? 0.5;
 
         return randomGeometric(p);
       }
-      case 'Poisson': {
+      case 'poisson': {
         const gamma = (controls?.[2] as number) ?? 3;
 
         return randomPoisson(gamma);
       }
-      case 'Uniform (die)': {
+      case 'uniform_die': {
         const n = (controls?.[2] as number) ?? 6;
 
         const f = randomUniform(1, n + 1);
@@ -377,7 +381,7 @@
 >
   <Histogram
     {freqMap}
-    isInteger={curCategory === 'Discrete'}
+    isInteger={curCategory === `${NS}discrete`}
     color={PrimeColor.cyan}
     normalized={true}
   />

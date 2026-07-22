@@ -162,6 +162,26 @@
       "expand_on_x1": "Uitbreiden op x1"
     }
   },
+  "pts": {
+    "distributions": {
+      "distributions": {
+        "continuous": "Continu",
+        "discrete": "Discreet",
+        "bernouli": "Bernoulli",
+        "binomial": "Binomiaal",
+        "geometric": "Geometrisch",
+        "poisson": "Poisson",
+        "uniform_die": "Uniform (dobbelsteen)",
+        "normal": "Normaal",
+        "exponential": "Exponentieel",
+        "pareto": "Pareto",
+        "uniform": "Uniform",
+        "average": "Gemiddelde",
+        "sum": "Som",
+        "next": "Volgende"
+      }
+    }
+  },
   "subspaces_in_rn": {
     "the_game": {
       "disc": "Schijf",

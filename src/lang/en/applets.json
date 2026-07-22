@@ -162,6 +162,26 @@
       "expand_on_x1": "Expand on x1"
     }
   },
+  "pts": {
+    "distributions": {
+      "distributions": {
+        "continuous": "Continuous",
+        "discrete": "Discrete",
+        "bernouli": "Bernouli",
+        "binomial": "Binomial",
+        "geometric": "Geometric",
+        "poisson": "Poisson",
+        "uniform_die": "Uniform (die)",
+        "normal": "Normal",
+        "exponential": "Exponential",
+        "pareto": "Pareto",
+        "uniform": "Uniform",
+        "average": "Average",
+        "sum": "Sum",
+        "next": "Next"
+      }
+    }
+  },
   "subspaces_in_rn": {
     "the_game": {
       "disc": "Disc",
