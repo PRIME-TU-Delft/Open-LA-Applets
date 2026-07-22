@@ -176,7 +176,9 @@
   <Vector3D
     color={PrimeColor.raspberry}
     length={1.5}
-    origin={new Vector3(x * X_STRETCH + X_OFFSET, -7.9, y).multiplyScalar(WORLD_SCALE)}
+    origin={new Vector3(x * X_STRETCH + X_OFFSET, -9.9, y)
+      .multiplyScalar(WORLD_SCALE)
+      .sub(new Vector3(u, 0, v).normalize().multiplyScalar(0.75))}
     direction={new Vector3(u, 0, v)}
     radius={0.75}
   />
