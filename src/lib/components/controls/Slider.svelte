@@ -74,6 +74,7 @@
       // console.log('is playing');
       // Bounce the slider back and forth
       value += (moveRight ? -1 : 1) * slider.stepSize * slider.animationStep;
+      slider.onChange(value);
 
       if (slider.loop) {
         // Slider moves to min val
