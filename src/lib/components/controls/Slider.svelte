@@ -188,6 +188,7 @@
         step={slider.stepSize}
         bind:value
         onchange={stopPlaying}
+        oninput={() => slider.onChange(value)}
         onmousedown={startChanging}
         onmouseup={slider.onStopChanging}
         ontouchstart={startChanging}
@@ -204,6 +205,7 @@
       step={slider.stepSize}
       bind:value
       onchange={stopPlaying}
+      oninput={() => slider.onChange(value)}
       onmousedown={startChanging}
       onmouseup={slider.onStopChanging}
       ontouchstart={startChanging}
