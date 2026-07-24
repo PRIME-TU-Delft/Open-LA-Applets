@@ -67,7 +67,6 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 'x';
   yAxisLabel = 'y';
 
   // ##############

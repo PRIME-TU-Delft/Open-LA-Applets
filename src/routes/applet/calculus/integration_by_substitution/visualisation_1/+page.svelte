@@ -121,7 +121,7 @@
   ];
   const LegendIntegral = $derived.by(() => {
     const C = controls[0];
-    const Dollar1 = C != 0 ? '\\\$1' : '';
+    const Dollar1 = C != 0 ? '\\$1' : '';
     const latex = `\\int f(x)\\,dx= e^{\\sin(x)}${Dollar1}`;
     return new LegendItem(latex, PrimeColor.darkGreen).addAutoParam(
       withSign(C, 1).replace('.0', ''),
