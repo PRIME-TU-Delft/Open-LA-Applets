@@ -136,7 +136,11 @@
       currentSegment.push(new Vector2(prevX, prevY));
     }
 
-    for (let x = xMin * sx + stepSize; x <= xMax * sx + 1e-9; x += stepSize) {
+    const xMinScaled = xMin * sx;
+    const xMaxScaled = xMax * sx;
+    const steps = Math.ceil((xMaxScaled - xMinScaled) / stepSize);
+    for (let i = 1; i <= steps; i++) {
+      const x = Math.min(xMinScaled + i * stepSize, xMaxScaled);
       const y = safeVal(x);
 
       if (!isFinite(y)) {
@@ -214,7 +218,9 @@
     const startY = safeVal(xLeft);
     if (isFinite(startY)) current.push(new Vector2(xLeft, startY));
 
-    for (let x = xLeft + stepSize; x < xRight + 1e-9; x += stepSize) {
+    const integralSteps = Math.ceil((xRight - xLeft) / stepSize);
+    for (let i = 1; i < integralSteps; i++) {
+      const x = xLeft + i * stepSize;
       const y = safeVal(x);
       if (!isFinite(y)) {
         pushCurrent();
