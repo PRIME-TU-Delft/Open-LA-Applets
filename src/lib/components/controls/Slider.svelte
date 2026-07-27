@@ -74,6 +74,7 @@
       // console.log('is playing');
       // Bounce the slider back and forth
       value += (moveRight ? -1 : 1) * slider.stepSize * slider.animationStep;
+      slider.onChange(value);
 
       if (slider.loop) {
         // Slider moves to min val
@@ -188,6 +189,7 @@
         step={slider.stepSize}
         bind:value
         onchange={stopPlaying}
+        oninput={() => slider.onChange(value)}
         onmousedown={startChanging}
         onmouseup={slider.onStopChanging}
         ontouchstart={startChanging}
@@ -204,6 +206,7 @@
       step={slider.stepSize}
       bind:value
       onchange={stopPlaying}
+      oninput={() => slider.onChange(value)}
       onmousedown={startChanging}
       onmouseup={slider.onStopChanging}
       ontouchstart={startChanging}
