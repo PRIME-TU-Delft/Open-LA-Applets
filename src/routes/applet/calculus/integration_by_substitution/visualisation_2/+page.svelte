@@ -98,8 +98,8 @@
       state.xLabel = t > 0.5 ? 'u' : 'x';
       return {
         state,
-        labelPrev: 'f(x)=\\cos(x)e^{\\sin(x)}',
-        labelNext: 'f(u)=e^{\\sin(u)}'
+        labelPrev: '\\cos(x)e^{\\sin(x)}',
+        labelNext: 'e^{\\sin(u)}'
       };
     },
     // Step 2: fu -> Fu
@@ -108,8 +108,8 @@
       state.Fu = t;
       return {
         state,
-        labelPrev: 'f(u)=e^{\\sin(u)}',
-        labelNext: '\\int f(u)\\,du = e^{\\sin(u)} + \\frac{1}{2}'
+        labelPrev: 'e^{\\sin(u)}',
+        labelNext: '\\int e^{\\sin(u)}\\,du = e^{\\sin(u)} + \\frac{1}{2}'
       };
     },
     // Step 3: Fu -> Fx
@@ -121,13 +121,13 @@
       state.xLabel = t > 0.5 ? 'x' : 'u';
       return {
         state,
-        labelPrev: '\\int f(u)\\,du = e^{\\sin(u)} + \\frac{1}{2}',
-        labelNext: '\\int f(x)\\,dx = e^{\\sin(x)} + \\frac{1}{2}'
+        labelPrev: '\\int e^{\\sin(u)}\\,du = e^{\\sin(u)} + \\frac{1}{2}',
+        labelNext: '\\int \\cos(x)e^{\\sin(x)}\\,dx = e^{\\sin(x)} + \\frac{1}{2}'
       };
     }
   ];
 
-  const controls = Controls.addSlideShow(state, transitions, 'f(x)=\\cos(x)e^{\\sin(x)}');
+  const controls = Controls.addSlideShow(state, transitions, '\\cos(x)e^{\\sin(x)}');
 
   function blendColor(s: S): string {
     const cols = [
