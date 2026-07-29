@@ -37,8 +37,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-4, -1), // bottom-left
+    new Vector2(4, 6), // top-right
     0.5 // margin
   );
 
@@ -175,7 +175,6 @@
       const b = 5 / 4 + (5 / 4) * q;
       const c = 1 / 4 - 2 * q;
       const d = q;
-      const e = 1;
       return 4 * a * (t - 1) ** 3 + 3 * b * (t - 1) ** 2 + 2 * c * (t - 1) + d;
     }
     if (t > 3) {
@@ -212,7 +211,7 @@
       SnapToCurve,
       undefined,
       undefined,
-      0.05
+      undefined
     )
   ];
 </script>
