@@ -102,7 +102,7 @@
       if (Im !== -1) {
         str += '\\$2i';
       } else {
-        str += 'i';
+        str += '-i';
       }
     }
     return [
