@@ -300,4 +300,23 @@
     alignX="center"
     alignY="center"
   />
+  <Angle2D
+    startAngle={phi}
+    endAngle={thetaphi}
+    hasHead={true}
+    distance={0.6 * s}
+    color={PrimeColor.darkGreen}
+    width={0.05}
+  />
+  <Latex2D
+    latex="\theta"
+    color={PrimeColor.darkGreen}
+    position={new Vector2(
+      0.6 * s * Math.cos(theta / 2 + phi),
+      0.6 * s * Math.sin(theta / 2 + phi)
+    ).add(new Vector2(Math.cos(theta / 2 + phi), Math.sin(theta / 2 + phi)).multiplyScalar(0.3))}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white + PrimeColor.opacity(0.5)}
+  />
 </Canvas2D>
