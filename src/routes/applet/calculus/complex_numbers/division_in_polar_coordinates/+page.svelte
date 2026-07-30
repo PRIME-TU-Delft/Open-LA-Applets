@@ -123,10 +123,10 @@
     const phi = Math.atan2(jn, sf);
     const rs = r / s;
     const thetaphi = theta - phi;
-    const rsround = Number(rs.toFixed(2))
-    let symbol = '\\approx'
-    if (Math.abs(rsround-rs)<1e-6) {
-      symbol = '='
+    const rsround = Number(rs.toFixed(2));
+    let symbol = '\\approx';
+    if (Math.abs(rsround - rs) < 1e-6) {
+      symbol = '=';
     }
     return [
       new Formula('|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.green),
@@ -154,7 +154,7 @@
         PrimeColor.blue
       ),
       new Formula(
-        '|\\frac{z}{w}|'+symbol + rs.toFixed(2).replace(/\.?0+$/, ''),
+        '|\\frac{z}{w}|' + symbol + rs.toFixed(2).replace(/\.?0+$/, ''),
         undefined,
         undefined,
         PrimeColor.yellow
@@ -278,8 +278,14 @@
   {@const resf = rs * Math.cos(thetaphi)}
   {@const imjn = rs * Math.sin(thetaphi)}
   {@const quotient = new Vector2(resf, imjn)}
-  {@const maxr = Math.max(Math.max(r,s),rs)}
-    <Line2D start={new Vector2(maxr*Math.cos(thetaphi),maxr*Math.sin(thetaphi))} end={new Vector2(0, 0)} color={PrimeColor.yellow} width={0.05} isDashed />
+  {@const maxr = Math.max(Math.max(r, s), rs)}
+  <Line2D
+    start={new Vector2(maxr * Math.cos(thetaphi), maxr * Math.sin(thetaphi))}
+    end={new Vector2(0, 0)}
+    color={PrimeColor.yellow}
+    width={0.05}
+    isDashed
+  />
   <Point2D position={quotient} color={PrimeColor.yellow} />
   <Latex2D
     latex="zw"
@@ -288,7 +294,7 @@
     alignX={quotient.x < 0 ? 'right' : 'left'}
     alignY={quotient.y < 0 ? 'top' : 'bottom'}
     offset={new Vector2(quotient.x < 0 ? -0.1 : 0.1, quotient.y < 0 ? -0.1 : 0.1)}
-    background={PrimeColor.white+PrimeColor.opacity(0.5)}
+    background={PrimeColor.white + PrimeColor.opacity(0.5)}
   />
   <Line2D start={quotient} end={new Vector2(0, 0)} color={PrimeColor.yellow} width={0.05} />
   <Angle2D
@@ -320,9 +326,9 @@
     latex="-\phi"
     color={PrimeColor.blue}
     position={new Vector2(
-      0.8 * r * Math.cos(theta - phi/2),
-      0.8 * r * Math.sin(theta  - phi/2)
-    ).add(new Vector2(Math.cos(theta  - phi/2), Math.sin(theta  - phi/2)).multiplyScalar(0.3))}
+      0.8 * r * Math.cos(theta - phi / 2),
+      0.8 * r * Math.sin(theta - phi / 2)
+    ).add(new Vector2(Math.cos(theta - phi / 2), Math.sin(theta - phi / 2)).multiplyScalar(0.3))}
     alignX="center"
     alignY="center"
     background={PrimeColor.white + PrimeColor.opacity(0.5)}
