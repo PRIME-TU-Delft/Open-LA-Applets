@@ -7,6 +7,7 @@
     width?: number;
     distance?: number;
     hasHead?: boolean;
+    headLength?: number;
   };
 </script>
 
@@ -25,7 +26,8 @@
     origin = new Vector2(0, 0),
     width = LINE_WIDTH,
     distance = 0.8,
-    hasHead = false
+    hasHead = false,
+    headLength = undefined
   }: Angle2DProps = $props();
 
   const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
@@ -33,7 +35,8 @@
   const sy = _scale2D?.y ?? 1;
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
-  const CONE_HEIGHT = $derived(Math.max(7 * width, 0.4));
+  const CONE_HEIGHT = $derived(
+  headLength !== undefined ? headLength : Math.max(7 * width, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * width, 0.1));
 
   const inverted = $derived.by(() => startAngle > endAngle);

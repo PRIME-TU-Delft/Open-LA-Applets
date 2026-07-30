@@ -105,14 +105,14 @@
 
   <Angle2D
     endAngle={z_angle}
-    startAngle={2 * Math.PI}
+    startAngle={0}
     color={PrimeColor.yellow}
     distance={Math.min(0.8, d1.position.length() * 0.5)}
   />
 
   <Angle2D
     endAngle={zinv_angle}
-    startAngle={2 * Math.PI}
+    startAngle={0}
     color={PrimeColor.raspberry}
     distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
   />
@@ -139,14 +139,14 @@
 
     <Angle2D
       endAngle={z_angle}
-      startAngle={2 * Math.PI}
+      startAngle={0}
       color={PrimeColor.yellow}
       distance={Math.min(0.8, d1.position.length() * 0.5)}
     />
 
     <Angle2D
       endAngle={zinv_angle}
-      startAngle={2 * Math.PI}
+      startAngle={0}
       color={PrimeColor.raspberry}
       distance={Math.min(0.8, Math.max(0.15, v_inverse.length() * 0.5))}
     />
