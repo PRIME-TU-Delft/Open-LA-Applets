@@ -11,7 +11,7 @@
   import Line2D from '$lib/d3/Line2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
-    import PolarGrid from '$lib/d3/PolarGrid.svelte';
+  import PolarGrid from '$lib/d3/PolarGrid.svelte';
   import { Controls } from '$lib/controls/Controls';
   import { toLatexText } from '$lib/utils/FormatString';
 
@@ -127,7 +127,12 @@
       )
     ];
   });
-  const toggleControls = Controls.addToggle(false,toLatexText('Cartesian grid') , PrimeColor.black,{isSwitch:true,switchRightSide:toLatexText('Polar grid')});
+  const toggleControls = Controls.addToggle(
+    false,
+    toLatexText('Cartesian grid'),
+    PrimeColor.black,
+    { isSwitch: true, switchRightSide: toLatexText('Polar grid') }
+  );
 </script>
 
 <Canvas2D
@@ -143,9 +148,9 @@
   {formulas}
   showFormulasDefault={true}
 >
-{#if toggleControls[0]}
-  <PolarGrid showAngleTicks showRadiiTicks={false}/>
-{/if}
+  {#if toggleControls[0]}
+    <PolarGrid showAngleTicks showRadiiTicks={false} />
+  {/if}
   {@const re = draggablePoint[0].position.x}
   {@const im = draggablePoint[0].position.y}
   {@const r = Math.sqrt(re * re + im * im)}
@@ -191,7 +196,7 @@
     doubleEnded={true}
   />
   <Latex2D
-    latex={'r'}
+    latex="r"
     color={PrimeColor.blue}
     position={shift
       .clone()
@@ -209,7 +214,7 @@
     width={0.05}
   />
   <Latex2D
-    latex={'\\theta'}
+    latex="\\theta"
     color={PrimeColor.orange}
     position={new Vector2(0.5 * r * Math.cos(theta / 2), 0.5 * r * Math.sin(theta / 2)).add(
       new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.3 : -0.3)
