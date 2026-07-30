@@ -63,7 +63,7 @@
   )
     .addDropdown(defaultRule, methods, PrimeColor.yellow)
     .addSlider(defaultN, 1, 10, 1, PrimeColor.raspberry, {
-      label: 'n',
+      label: 'n=',
       valueFn: (v) => roundString(v, 0)
     });
 

@@ -68,7 +68,7 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, 0.1, 5, 0.1, PrimeColor.yellow, {
-    label: toLatexText('$n$'),
+    label: toLatexText('$n=$'),
     valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
     animationStep: 0.1
   })

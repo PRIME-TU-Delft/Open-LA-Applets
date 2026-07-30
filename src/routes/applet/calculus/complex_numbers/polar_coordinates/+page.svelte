@@ -11,6 +11,9 @@
   import Line2D from '$lib/d3/Line2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
+    import PolarGrid from '$lib/d3/PolarGrid.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -18,6 +21,7 @@
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let axisP: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -55,6 +59,17 @@
     logarithmicY: false,
     skipX: 0,
     skipY: 0
+  };
+  axisP = {
+    showOrigin: true,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 0,
+    skipY: 0,
+    showGridLinesX: false,
+    showGridLinesY: false
   };
 
   // #####
@@ -112,20 +127,25 @@
       )
     ];
   });
+  const toggleControls = Controls.addToggle(false,toLatexText('Cartesian grid') , PrimeColor.black,{isSwitch:true,switchRightSide:toLatexText('Polar grid')});
 </script>
 
 <Canvas2D
+  controls={toggleControls}
   draggables={draggablePoint}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  {axis}
+  axis={toggleControls[0] ? axisP : axis}
   {scaleX}
   {scaleY}
   {formulas}
   showFormulasDefault={true}
 >
+{#if toggleControls[0]}
+  <PolarGrid showAngleTicks showRadiiTicks={false}/>
+{/if}
   {@const re = draggablePoint[0].position.x}
   {@const im = draggablePoint[0].position.y}
   {@const r = Math.sqrt(re * re + im * im)}

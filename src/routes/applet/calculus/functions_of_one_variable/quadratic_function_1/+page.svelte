@@ -78,17 +78,17 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: toLatexText('$a$'),
+    label: toLatexText('$a=$'),
     valueFn: (v: number) => v.toFixed(1),
     animationStep: 0.1
   }) // a
     .addSlider(-4, -5, 5, 0.1, PrimeColor.orange, {
-      label: toLatexText('$b$'),
+      label: toLatexText('$b=$'),
       valueFn: (v: number) => v.toFixed(1),
       animationStep: 0.1
     }) // b
     .addSlider(3, -5, 5, 0.1, PrimeColor.raspberry, {
-      label: toLatexText('$c$'),
+      label: toLatexText('$c=$'),
       valueFn: (v: number) => v.toFixed(1),
       animationStep: 0.1
     }); // c

@@ -120,6 +120,7 @@
       stopPlaying();
     }
   });
+  console.log('slider label', slider.label);
 </script>
 
 {#if !isExpanded}
@@ -172,7 +173,7 @@
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
-        ><ControlLabel label={slider.label + ':'} checkLatex={label} />
+        ><ControlLabel label={slider.label + (slider.label.endsWith('=$}') ? '' : slider.label.endsWith('=') ? '' : ':')} checkLatex={label} />
         <p class="absolute left-full flex text-sm" style="color:{slider.color};">
           {#if slider.labelFormat}
             {@render slider.labelFormat(value)}
