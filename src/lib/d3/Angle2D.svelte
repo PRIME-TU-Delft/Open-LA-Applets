@@ -35,8 +35,7 @@
   const sy = _scale2D?.y ?? 1;
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
-  const CONE_HEIGHT = $derived(
-  headLength !== undefined ? headLength : Math.max(7 * width, 0.4));
+  const CONE_HEIGHT = $derived(headLength !== undefined ? headLength : Math.max(7 * width, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * width, 0.1));
 
   const inverted = $derived.by(() => startAngle > endAngle);
