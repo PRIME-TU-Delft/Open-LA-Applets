@@ -7,13 +7,13 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import PolarGrid from '$lib/d3/PolarGrid.svelte';
   import { Controls } from '$lib/controls/Controls';
   import { toLatexText } from '$lib/utils/FormatString';
+  import Point2D from '$lib/d3/Point2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -100,33 +100,13 @@
     const snappedY = snappedR * Math.sin(snappedTheta);
     return new Vector2(snappedX, snappedY);
   }
-  const r = 3;
-  const theta = 0.67 * Math.PI;
+  const r = 3 * Math.sqrt(2);
+  const theta = 0.25 * Math.PI;
   const re = r * Math.cos(theta);
   const im = r * Math.sin(theta);
   const draggablePoint = [
     new Draggable(new Vector2(re, im), PrimeColor.green, undefined, SnapToGrid)
   ];
-  const formulas = $derived.by(() => {
-    const re = draggablePoint[0].position.x;
-    const im = draggablePoint[0].position.y;
-    const r = Math.sqrt(re * re + im * im);
-    const theta = Math.atan2(im, re);
-    return [
-      new Formula('r=|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.blue),
-      new Formula(
-        '\\theta=\\arg(z)=' +
-          (theta / Math.PI)
-            .toFixed(2)
-            .replace('1.00', '')
-            .replace(/\.?0+$/, '') +
-          '\\pi',
-        undefined,
-        undefined,
-        PrimeColor.orange
-      )
-    ];
-  });
   const toggleControls = Controls.addToggle(
     false,
     toLatexText('Cartesian grid'),
@@ -137,7 +117,6 @@
 
 <Canvas2D
   controls={toggleControls}
-  draggables={draggablePoint}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
@@ -145,7 +124,6 @@
   axis={toggleControls[0] ? axisP : axis}
   {scaleX}
   {scaleY}
-  {formulas}
   showFormulasDefault={true}
 >
   {#if toggleControls[0]}
@@ -158,7 +136,7 @@
   {@const phi = theta + Math.PI / 2}
   {@const shift = new Vector2(Math.cos(phi), Math.sin(phi)).multiplyScalar(0.5)}
   <Latex2D
-    latex="z"
+    latex="3+3i"
     position={draggablePoint[0].position}
     color={PrimeColor.green}
     alignX={draggablePoint[0].position.x < 0 ? 'right' : 'left'}
@@ -196,14 +174,14 @@
     doubleEnded={true}
   />
   <Latex2D
-    latex='r'
+    latex="3\sqrt{2}"
     color={PrimeColor.blue}
     position={shift
       .clone()
       .multiplyScalar(theta > 0 ? 1.5 : -1.5)
       .add(draggablePoint[0].position.clone().multiplyScalar(0.5))}
-    alignX="center"
-    alignY="center"
+    alignX="right"
+    alignY="bottom"
   />
   <Angle2D
     startAngle={0}
@@ -214,12 +192,27 @@
     width={0.05}
   />
   <Latex2D
-    latex='\theta'
+    latex={String.raw`\frac{1}{4}\pi`}
     color={PrimeColor.orange}
     position={new Vector2(0.5 * r * Math.cos(theta / 2), 0.5 * r * Math.sin(theta / 2)).add(
-      new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.3 : -0.3)
+      new Vector2(Math.cos(theta / 2), Math.sin(theta / 2)).multiplyScalar(0.5)
     )}
-    alignX="center"
+    alignX="left"
     alignY="center"
+  />
+  <Point2D position={draggablePoint[0].position} color={PrimeColor.green} />
+  <Line2D
+    start={draggablePoint[0].position}
+    end={new Vector2(draggablePoint[0].position.x, 0)}
+    color={PrimeColor.green}
+    width={0.05}
+    isDashed={true}
+  />
+  <Line2D
+    start={draggablePoint[0].position}
+    end={new Vector2(0, draggablePoint[0].position.y)}
+    color={PrimeColor.green}
+    width={0.05}
+    isDashed={true}
   />
 </Canvas2D>
