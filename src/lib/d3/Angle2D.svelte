@@ -48,7 +48,8 @@
   const headAngleOffset = $derived(
     hasHead ? (inverted ? -CONE_HEIGHT : CONE_HEIGHT) / Math.max(distance, 1e-6) : 0
   );
-  const endAngleCalculated = $derived(endAngle - headAngleOffset);
+  // Slightly reduce the angle of the arc to force a minimal overlap with the arrowhead
+  const endAngleCalculated = $derived(endAngle - 0.95 * headAngleOffset);
   const headAngleOffsetDeg = $derived(((headAngleOffset / Math.PI) * 180) / 2);
 
   let d = $derived.by(() => {
