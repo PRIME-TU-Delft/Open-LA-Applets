@@ -128,12 +128,10 @@
       )
     ];
   });
-  const toggleControls = Controls.addToggle(
-    true,
-    toLatexText('Cartesian grid'),
-    PrimeColor.black,
-    { isSwitch: true, switchRightSide: toLatexText('Polar grid') }
-  );
+  const toggleControls = Controls.addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
+    isSwitch: true,
+    switchRightSide: toLatexText('Polar grid')
+  });
 </script>
 
 <Canvas2D
