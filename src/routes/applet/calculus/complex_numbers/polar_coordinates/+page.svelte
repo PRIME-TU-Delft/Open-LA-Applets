@@ -196,7 +196,7 @@
     doubleEnded={true}
   />
   <Latex2D
-    latex='r'
+    latex="r"
     color={PrimeColor.blue}
     position={shift
       .clone()
@@ -214,7 +214,7 @@
     width={0.05}
   />
   <Latex2D
-    latex='\theta'
+    latex="\theta"
     color={PrimeColor.orange}
     position={new Vector2(0.5 * r * Math.cos(theta / 2), 0.5 * r * Math.sin(theta / 2)).add(
       new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.3 : -0.3)
