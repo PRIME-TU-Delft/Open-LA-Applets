@@ -13,9 +13,10 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { arc, symbol, symbolTriangle } from 'd3';
+  import { arc } from 'd3';
   import { Vector2 } from 'three';
   import { getContext } from 'svelte';
+  import Triangle2D from './Triangle2D.svelte';
 
   let {
     color = PrimeColor.black,
@@ -32,38 +33,30 @@
   const sy = _scale2D?.y ?? 1;
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
+  const CONE_HEIGHT = $derived(Math.max(7 * width, 0.4));
+  const CONE_DIAMETER = $derived(Math.max(1.5 * width, 0.1));
+
   const inverted = $derived.by(() => startAngle > endAngle);
   const rotation = $derived.by(() => {
     let angle = 90;
 
-    if (inverted) {
-      angle += (startAngle / Math.PI) * 180;
-    }
-
     return angle;
   });
 
-  const endAngleCalculated = $derived(hasHead ? endAngle - 0.1 : endAngle);
+  const headAngleOffset = $derived(
+    hasHead ? (inverted ? -CONE_HEIGHT : CONE_HEIGHT) / Math.max(distance, 1e-6) : 0
+  );
+  const endAngleCalculated = $derived(endAngle - headAngleOffset);
+  const headAngleOffsetDeg = $derived(((headAngleOffset / Math.PI) * 180) / 2);
 
   let d = $derived.by(() => {
-    if (inverted) {
-      return arc()({
-        innerRadius: distance - width / 2,
-        outerRadius: distance + width / 2,
-        startAngle: 0,
-        endAngle: 2 * Math.PI - startAngle + endAngleCalculated
-      });
-    } else {
-      return arc()({
-        innerRadius: distance - width / 2,
-        outerRadius: distance + width / 2,
-        startAngle: startAngle,
-        endAngle: endAngleCalculated
-      });
-    }
+    return arc()({
+      innerRadius: distance - width / 2,
+      outerRadius: distance + width / 2,
+      startAngle: startAngle,
+      endAngle: endAngleCalculated
+    });
   });
-
-  let triangle = $derived(symbol().type(symbolTriangle).size(width)());
 </script>
 
 <!-- @component
@@ -89,9 +82,16 @@
   {#if hasHead}
     <g
       transform="rotate({(endAngle / Math.PI) * 180 -
-        90}) translate({distance}, 0) rotate(180) translate(0, {1.5 * Math.PI * width})"
+        90}) translate({distance}, 0) rotate({-headAngleOffsetDeg}) rotate({inverted ? 180 : 0})"
     >
-      <path transform="" d={triangle} fill={color} />
+      <Triangle2D
+        points={[
+          new Vector2(CONE_DIAMETER, -CONE_HEIGHT),
+          new Vector2(-CONE_DIAMETER, -CONE_HEIGHT),
+          new Vector2(0, 0)
+        ]}
+        {color}
+      />
     </g>
   {/if}
 </g>
