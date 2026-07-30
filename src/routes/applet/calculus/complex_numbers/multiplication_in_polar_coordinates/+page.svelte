@@ -9,7 +9,6 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import { Formula } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
-  import Vector2D from '$lib/d3/Vector2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import PolarGrid from '$lib/d3/PolarGrid.svelte';
   import { Controls } from '$lib/controls/Controls';
@@ -101,23 +100,63 @@
     const snappedY = snappedR * Math.sin(snappedTheta);
     return new Vector2(snappedX, snappedY);
   }
-  const r = 4;
-  const theta = 0.25 * Math.PI;
+  const r = 1.5;
+  const theta = (1 / 5) * Math.PI;
   const re = r * Math.cos(theta);
   const im = r * Math.sin(theta);
+  const s = 2;
+  const phi = (3 / 5) * Math.PI;
+  const sf = s * Math.cos(phi);
+  const jn = s * Math.sin(phi);
   const draggablePoint = [
-    new Draggable(new Vector2(re, im), PrimeColor.green, undefined, SnapToGrid)
+    new Draggable(new Vector2(re, im), PrimeColor.green, undefined, SnapToGrid),
+    new Draggable(new Vector2(sf, jn), PrimeColor.cyan, undefined, SnapToGrid)
   ];
   const formulas = $derived.by(() => {
     const re = draggablePoint[0].position.x;
     const im = draggablePoint[0].position.y;
     const r = Math.sqrt(re * re + im * im);
     const theta = Math.atan2(im, re);
+    const sf = draggablePoint[1].position.x;
+    const jn = draggablePoint[1].position.y;
+    const s = Math.sqrt(sf * sf + jn * jn);
+    const phi = Math.atan2(jn, sf);
+    const rs = r * s;
+    const thetaphi = theta + phi;
     return [
-      new Formula('r=|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.blue),
+      new Formula('|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.green),
       new Formula(
-        '\\theta=\\arg(z)=' +
+        '\\theta=' +
           (theta / Math.PI)
+            .toFixed(2)
+            .replace('1.00', '')
+            .replace(/\.?0+$/, '') +
+          '\\pi',
+        undefined,
+        undefined,
+        PrimeColor.darkGreen
+      ),
+      new Formula('|w|=' + s.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.cyan),
+      new Formula(
+        '\\phi=' +
+          (phi / Math.PI)
+            .toFixed(2)
+            .replace('1.00', '')
+            .replace(/\.?0+$/, '') +
+          '\\pi',
+        undefined,
+        undefined,
+        PrimeColor.blue
+      ),
+      new Formula(
+        '|zw|=' + rs.toFixed(2).replace(/\.?0+$/, ''),
+        undefined,
+        undefined,
+        PrimeColor.yellow
+      ),
+      new Formula(
+        '\\theta+\\phi=' +
+          (thetaphi / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
             .replace(/\.?0+$/, '') +
@@ -128,12 +167,10 @@
       )
     ];
   });
-  const toggleControls = Controls.addToggle(
-    true,
-    toLatexText('Cartesian grid'),
-    PrimeColor.black,
-    { isSwitch: true, switchRightSide: toLatexText('Polar grid') }
-  );
+  const toggleControls = Controls.addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
+    isSwitch: true,
+    switchRightSide: toLatexText('Polar grid')
+  });
 </script>
 
 <Canvas2D
@@ -156,8 +193,6 @@
   {@const im = draggablePoint[0].position.y}
   {@const r = Math.sqrt(re * re + im * im)}
   {@const theta = Math.atan2(im, re)}
-  {@const phi = theta + Math.PI / 2}
-  {@const shift = new Vector2(Math.cos(phi), Math.sin(phi)).multiplyScalar(0.5)}
   <Latex2D
     latex="z"
     position={draggablePoint[0].position}
@@ -175,113 +210,94 @@
     color={PrimeColor.green}
     width={0.05}
   />
-  <Line2D
-    start={draggablePoint[0].position}
-    end={draggablePoint[0].position.clone().add(shift.clone().multiplyScalar(theta > 0 ? 2 : -2))}
-    color={PrimeColor.blue}
-    width={0.05}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(0, 0)}
-    end={shift.clone().multiplyScalar(theta > 0 ? 2 : -2)}
-    color={PrimeColor.blue}
-    width={0.05}
-    isDashed={true}
-  />
-  <Vector2D
-    direction={draggablePoint[0].position.clone()}
-    origin={shift.clone().multiplyScalar(theta > 0 ? 1 : -1)}
-    color={PrimeColor.blue}
-    length={r}
-    doubleEnded={true}
-  />
-  <Latex2D
-    latex="r"
-    color={PrimeColor.blue}
-    position={shift
-      .clone()
-      .multiplyScalar(theta > 0 ? 1.5 : -1.5)
-      .add(draggablePoint[0].position.clone().multiplyScalar(0.5))}
-    alignX="center"
-    alignY="center"
-  />
   <Angle2D
     startAngle={0}
     endAngle={theta}
     hasHead={true}
-    distance={0.5 * r}
-    color={PrimeColor.orange}
+    distance={0.9 * r}
+    color={PrimeColor.darkGreen}
     width={0.05}
   />
   <Latex2D
     latex="\theta"
-    color={PrimeColor.orange}
-    position={new Vector2(0.5 * r * Math.cos(theta / 2), 0.5 * r * Math.sin(theta / 2)).add(
-      new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.4 : -0.4)
-    )}
-    alignX="left"
-    alignY="center"
-  />
-  {@const ConjugateZ = new Vector2(draggablePoint[0].position.x, -draggablePoint[0].position.y)}
-  {@const phi2 = -theta + Math.PI / 2}
-  {@const shiftC = new Vector2(Math.cos(phi2), Math.sin(phi2)).multiplyScalar(0.5)}
-  <Line2D start={new Vector2(0, 0)} end={ConjugateZ} color={PrimeColor.darkGreen} width={0.05} />
-  <Latex2D
-    latex={String.raw`\overline{z}`}
-    position={ConjugateZ}
     color={PrimeColor.darkGreen}
-    alignX={ConjugateZ.x < 0 ? 'right' : 'left'}
-    alignY={ConjugateZ.y < 0 ? 'top' : 'bottom'}
-    offset={new Vector2(ConjugateZ.x < 0 ? -0.1 : 0.1, ConjugateZ.y < 0 ? -0.1 : 0.1)}
-  />
-  <Line2D
-    start={ConjugateZ}
-    end={ConjugateZ.clone().add(shiftC.clone().multiplyScalar(theta > 0 ? -2 : 2))}
-    color={PrimeColor.cyan}
-    width={0.05}
-    isDashed={true}
-  />
-  <Line2D
-    start={new Vector2(0, 0)}
-    end={shiftC.clone().multiplyScalar(theta > 0 ? -2 : 2)}
-    color={PrimeColor.cyan}
-    width={0.05}
-    isDashed={true}
-  />
-  <Vector2D
-    direction={ConjugateZ}
-    origin={shiftC.clone().multiplyScalar(theta > 0 ? -1 : 1)}
-    color={PrimeColor.cyan}
-    length={r}
-    doubleEnded={true}
-  />
-  <Latex2D
-    latex="r"
-    color={PrimeColor.cyan}
-    position={shiftC
-      .clone()
-      .multiplyScalar(theta > 0 ? -1.5 : 1.5)
-      .add(ConjugateZ.clone().multiplyScalar(0.5))}
+    position={new Vector2(0.9 * r * Math.cos(theta / 2), 0.9 * r * Math.sin(theta / 2)).add(
+      new Vector2(Math.cos(theta / 2), Math.sin(theta / 2)).multiplyScalar(0.3)
+    )}
     alignX="center"
     alignY="center"
+    background={PrimeColor.white + PrimeColor.opacity(0.5)}
+  />
+  <!-- w -->
+  {@const sf = draggablePoint[1].position.x}
+  {@const jn = draggablePoint[1].position.y}
+  {@const s = Math.sqrt(sf * sf + jn * jn)}
+  {@const phi = Math.atan2(jn, sf)}
+  <Latex2D
+    latex="w"
+    position={draggablePoint[1].position}
+    color={PrimeColor.cyan}
+    alignX={draggablePoint[1].position.x < 0 ? 'right' : 'left'}
+    alignY={draggablePoint[1].position.y < 0 ? 'top' : 'bottom'}
+    offset={new Vector2(
+      draggablePoint[1].position.x < 0 ? -0.1 : 0.1,
+      draggablePoint[1].position.y < 0 ? -0.1 : 0.1
+    )}
+  />
+  <Line2D
+    start={draggablePoint[1].position}
+    end={new Vector2(0, 0)}
+    color={PrimeColor.cyan}
+    width={0.05}
   />
   <Angle2D
     startAngle={0}
-    endAngle={-theta}
+    endAngle={phi}
     hasHead={true}
-    distance={0.5 * r}
-    color={PrimeColor.raspberry}
+    distance={0.9 * s}
+    color={PrimeColor.blue}
     width={0.05}
   />
   <Latex2D
-    latex="-\theta"
-    color={PrimeColor.raspberry}
-    position={new Vector2(0.5 * r * Math.cos(-theta / 2), 0.5 * r * Math.sin(-theta / 2)).add(
-      new Vector2(Math.sin(-theta), -Math.cos(-theta)).multiplyScalar(theta > 0 ? -0.4 : 0.4)
+    latex="\phi"
+    color={PrimeColor.blue}
+    position={new Vector2(0.9 * s * Math.cos(phi / 2), 0.9 * s * Math.sin(phi / 2)).add(
+      new Vector2(Math.cos(phi / 2), Math.sin(phi / 2)).multiplyScalar(0.3)
     )}
-    alignX="left"
+    alignX="center"
     alignY="center"
   />
-  <Point2D position={ConjugateZ} color={PrimeColor.darkGreen} />
+  <!-- zw -->
+  {@const rs = r * s}
+  {@const thetaphi = theta + phi}
+  {@const resf = rs * Math.cos(thetaphi)}
+  {@const imjn = rs * Math.sin(thetaphi)}
+  {@const product = new Vector2(resf, imjn)}
+  <Point2D position={product} color={PrimeColor.yellow} />
+  <Latex2D
+    latex="zw"
+    position={product}
+    color={PrimeColor.yellow}
+    alignX={product.x < 0 ? 'right' : 'left'}
+    alignY={product.y < 0 ? 'top' : 'bottom'}
+    offset={new Vector2(product.x < 0 ? -0.1 : 0.1, product.y < 0 ? -0.1 : 0.1)}
+  />
+  <Line2D start={product} end={new Vector2(0, 0)} color={PrimeColor.yellow} width={0.05} />
+  <Angle2D
+    startAngle={0}
+    endAngle={thetaphi}
+    hasHead={true}
+    distance={0.9 * rs}
+    color={PrimeColor.orange}
+    width={0.05}
+  />
+  <Latex2D
+    latex="\theta+\phi"
+    color={PrimeColor.orange}
+    position={new Vector2(0.9 * rs * Math.cos(thetaphi / 2), 0.9 * rs * Math.sin(thetaphi / 2)).add(
+      new Vector2(Math.cos(thetaphi / 2), Math.sin(thetaphi / 2)).multiplyScalar(0.3)
+    )}
+    alignX="center"
+    alignY="center"
+  />
 </Canvas2D>
