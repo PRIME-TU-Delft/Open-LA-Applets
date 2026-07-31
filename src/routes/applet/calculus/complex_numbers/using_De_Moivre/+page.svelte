@@ -18,8 +18,8 @@
   let initialViewBox: ViewBox | undefined;
 
   initialViewBox = new ViewBox(
-    new Vector2(-3, -6), // bottom-left
-    new Vector2(6, 4), // top-right
+    new Vector2(-5, -6), // bottom-left
+    new Vector2(10, 4), // top-right
     0.5 // margin
   );
 
@@ -72,11 +72,12 @@
       .addAutoParam(m, PrimeColor.blue)
       .addAutoParam(a, PrimeColor.darkGreen)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(round(radius), PrimeColor.blue);
-    const f3 = new Formula('\\phi &= \\arg(\\$1 + \\$2i)\\approx\\$3\\pi')
+      .addAutoParam(round(radius), PrimeColor.purple);
+    const f3 = new Formula('\\phi &= \\frac{1}{\\$4}\\arg(\\$1 + \\$2i)\\approx\\$3{\\color{'+PrimeColor.orange+'}\\pi}')
       .addAutoParam(a, PrimeColor.darkGreen)
       .addAutoParam(b, PrimeColor.raspberry)
-      .addAutoParam(round(phi / Math.PI), PrimeColor.blue);
+      .addAutoParam(round(phi / Math.PI), PrimeColor.orange)
+      .addAutoParam(m, PrimeColor.blue);
 
     return new Formulas(f1, f2, f3).align();
   });
@@ -89,13 +90,14 @@
   showFormulasDefault
   {initialViewBox}
 >
+<Line2D start={new Vector2(0,0)} end={polarToCartesian(radius, phi)} color={PrimeColor.purple} />
   <!-- K-th ANGLE -->
   {#each new Array(m - 1) as _, i (i)}
     {@const kPosition = polarToCartesian(radius, phi + deltaAngle * i)}
     {@const kNextPosition = polarToCartesian(radius, phi + deltaAngle * (i + 1))}
     {@const anglePosition = kPosition.clone().add(kNextPosition).normalize().multiplyScalar(radius)}
 
-    <Line2D start={kPosition} end={kNextPosition} color={PrimeColor.cyan} />
+    <Line2D start={kPosition} end={kNextPosition} color={PrimeColor.cyan} isDashed />
 
     <Latex2D
       latex={`\\frac{2}{${m}}\\pi`}
@@ -124,9 +126,9 @@
   {@const kLastPosition = polarToCartesian(radius, kLast)}
   <Point2D position={polarToCartesian(radius, phi)} color={PrimeColor.cyan} />
 
-  <Line2D start={kLastPosition} end={polarToCartesian(radius, phi)} color={PrimeColor.cyan} />
+  <Line2D start={kLastPosition} end={polarToCartesian(radius, phi)} color={PrimeColor.cyan} isDashed />
 
-  <Angle2D color={PrimeColor.darkGreen} hasHead distance={radius} startAngle={0} endAngle={phi} />
+  <Angle2D color={PrimeColor.orange} hasHead distance={radius} startAngle={0} endAngle={phi} />
 
   {@const anglePosition = polarToCartesian(radius, phi)
     .add(new Vector2(radius, 0))
@@ -136,7 +138,7 @@
     latex={`${round(phi / Math.PI)}\\pi`}
     position={anglePosition}
     extend={0.2}
-    color={PrimeColor.darkGreen}
+    color={PrimeColor.orange}
     alignX={anglePosition.x > 0 ? 'left' : 'right'}
     alignY={anglePosition.y > 0 ? 'bottom' : 'top'}
   />
@@ -158,7 +160,7 @@
     .normalize()
     .multiplyScalar(radius)}
   <Latex2D
-    latex={`${round((deltaAngle - phi) / Math.PI)}\\pi`}
+    latex={`\\frac{2}{${m}}\\pi-${round(phi / Math.PI)}\\pi`}
     position={lastAnglePosition}
     extend={0.2}
     color={PrimeColor.yellow}
