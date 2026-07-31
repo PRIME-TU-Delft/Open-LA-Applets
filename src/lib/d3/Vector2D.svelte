@@ -62,9 +62,15 @@
   const screenDir = $derived(worldDirection.clone().normalize().multiplyScalar(screenDirSign));
 
   const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
+  const lineEndPos = $derived(
+    endPoint.clone().sub(screenDir.clone().multiplyScalar(0.95 * coneHeight))
+  );
 
   const secondConeStartPos = $derived(
     scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
+  );
+  const lineStartPos = $derived(
+    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(0.95 * coneHeight))
   );
 </script>
 
@@ -88,8 +94,8 @@
 
 <!-- Line 2D -->
 <Line2D
-  start={doubleEnded ? secondConeStartPos : scaledOrigin}
-  end={coneStartPos}
+  start={doubleEnded ? lineStartPos : scaledOrigin}
+  end={lineEndPos}
   {color}
   width={radius}
   {isDashed}

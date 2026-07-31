@@ -44,7 +44,7 @@
 
     const result = integral((x) => integral((y) => func(x, y), a, b), a, b);
 
-    const f1 = new Formula('\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} f(x,y) \\,dx \\,dy = \\$5')
+    const f1 = new Formula('\\int_{\\$1}^{\\$2} \\int_{\\$3}^{\\$4} f(x,y) \\,dx \\,dy &= \\$5')
       .addAutoParam(a, PrimeColor.raspberry)
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(a, PrimeColor.raspberry)
@@ -53,14 +53,14 @@
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.samplePosition.y * dx * dy, 0);
     const riemann_display =
-      '\\sum_{i=1}^{\\$2} \\sum_{j=1}^{\\$2} f(x_i^*, y_j^*) \\Delta x \\Delta y = \\$1, ~~\\Delta x= \\Delta y = \\$3';
+      '\\sum_{i=1}^{\\$2} \\sum_{j=1}^{\\$2} f(x_i^*, y_j^*) \\Delta x \\Delta y &= \\$1\\\\ ~~\\Delta x= \\Delta y &= \\$3';
 
     const f2 = new Formula(riemann_display)
       .addAutoParam(riemannSum.toFixed(7), PrimeColor.orange)
       .addAutoParam(numRectangles, PrimeColor.blue)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
-    return new Formulas(f1, f2);
+    return new Formulas(f1, f2).align();
   });
 
   const rects = $derived.by(() => {
@@ -164,7 +164,7 @@
   <NumberFlow {value} />
 {/snippet}
 
-<Canvas3D {controls} {formulas} cameraZoom={40}>
+<Canvas3D {controls} {formulas} cameraZoom={40} showFormulasDefault>
   <Axis3D showNumbers={true} axisLength={5} axisSpacing={1} />
   <Surface3D
     {func}

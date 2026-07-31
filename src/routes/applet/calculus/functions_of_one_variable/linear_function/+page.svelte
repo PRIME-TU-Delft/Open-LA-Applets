@@ -79,12 +79,12 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(3, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: toLatexText('$y$-intercept'),
+    label: toLatexText('$y$-intercept$=$'),
     valueFn: (v: number) => v.toFixed(1),
     animationStep: 0.1
   }) // y-intercept
     .addSlider(2, -5, 5, 0.1, PrimeColor.orange, {
-      label: toLatexText('slope'),
+      label: toLatexText('slope$=$'),
       valueFn: (v: number) => v.toFixed(1),
       animationStep: 0.1
     }); // slope

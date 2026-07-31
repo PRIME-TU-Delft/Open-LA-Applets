@@ -1,15 +1,13 @@
 <script lang="ts">
   // For ease of creating the template applets
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
+  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { toLatexText, withSign } from '$lib/utils/FormatString';
+  import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { Controls } from '$lib/controls/Controls';
-  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
-  import { LegendItem } from '$lib/utils/Legend';
-  import Point2D from '$lib/d3/Point2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -35,8 +33,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-4, -8), // bottom-left
-    new Vector2(4, 8), // top-right
+    new Vector2(-3, -4), // bottom-left
+    new Vector2(4, 7), // top-right
     0.5 // margin
   );
 
@@ -70,60 +68,37 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 'x';
+  xAxisLabel = 't';
   yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS
   // ##############
-  const legendItems = $derived.by(() => {
-    const b = controls[0];
-    const Dollar1 = b != 0 ? '$1' : '';
-    return [
-      new LegendItem(
-        'f(x)=\\left\\{\\begin{array}{ll}2^x\\' +
-          Dollar1 +
-          ',&x<2,\\\\\\$2,&x=2,\\\\x^2-3x,&x> 2.\\end{array}\\right.',
-        PrimeColor.blue
-      )
-        .addAutoParam(withSign(b, 1).replace('.0', ''), PrimeColor.raspberry)
-        .addAutoParam((2 * b + 10).toFixed(1).replace('.0', ''), PrimeColor.raspberry)
-    ];
-  });
-
-  const controls = Controls.addSlider(-2, -10, 10, 0.5, PrimeColor.raspberry, {
-    label: toLatexText('$b=$'),
-    valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
-    animationStep: 0.5
-  });
+  const f1 = '\\cos(2x)';
+  const f2 = '\\sqrt{3}\\sin(2x)';
+  const f3 = f1 + '+' + f2;
+  const appletObjects: AppletObject[] = [
+    new FunctionFragment(f1, PrimeColor.blue, {
+      legendText: 'y=' + f1.replace('2x', '2t')
+    }),
+    new FunctionFragment(f2, PrimeColor.orange, {
+      legendText: 'y=' + f2.replace('2x', '2t')
+    }),
+    new FunctionFragment(f3, PrimeColor.darkGreen, {
+      legendText: 'y=' + f3.replace('2x', '2t')
+    })
+  ];
 </script>
 
 <Canvas2D
-  {controls}
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
+  legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
-  legendFormulaPosition="top-left"
 >
-  {@const b = controls[0]}
-  <ExplicitFunction2D func={(x: number) => 2 ** x + b} xMax={2} color={PrimeColor.blue} />
-  <ExplicitFunction2D func={(x: number) => x ** 2 - 3 * x} xMin={2} color={PrimeColor.blue} />
-  {#if b !== -6}
-    <Point2D
-      position={new Vector2(2, 2 ** 2 + b)}
-      color={PrimeColor.blue}
-      fill={PrimeColor.white}
-    />
-    <Point2D
-      position={new Vector2(2, 2 ** 2 - 3 * 2)}
-      color={PrimeColor.blue}
-      fill={PrimeColor.white}
-    />
-    <Point2D position={new Vector2(2, 2 * b + 10)} color={PrimeColor.blue} />
-  {/if}
+  <TemplateComponent objects={appletObjects} />
 </Canvas2D>

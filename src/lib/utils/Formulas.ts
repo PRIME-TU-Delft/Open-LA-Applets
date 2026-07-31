@@ -51,7 +51,16 @@ export class Formula {
 
     if (textColor != undefined) {
       this.textColor = textColor;
-      this.latex = `\\textcolor{${textColor}}{${this.latex}}`;
+      // Take care of possible & for alignment
+      let new_latex = ``;
+      const parts = this.latex.split('&');
+      parts.forEach((part, index, array) => {
+        new_latex += `\\textcolor{${textColor}}{${part}}`;
+        if (index != array.length - 1) {
+          new_latex += `&`;
+        }
+      });
+      this.latex = new_latex;
     }
   }
 

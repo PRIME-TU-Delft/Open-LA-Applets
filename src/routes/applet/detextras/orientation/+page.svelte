@@ -122,6 +122,7 @@
       distance={0.5}
       width={0.015}
       hasHead
+      headLength={0.15}
     />
   </g>
 {/snippet}

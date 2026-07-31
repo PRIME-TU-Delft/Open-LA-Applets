@@ -10,7 +10,7 @@
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { appletState } from '$lib/stores/applet.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
@@ -93,22 +93,15 @@
   });
 
   const formulas = $derived.by(() => {
-    let f = [
-      new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx = \\$3')
+    let f = new Formulas(
+      new Formula('\\int_{\\$1}^{\\$2} f(x) \\,dx &= \\$3')
         .addAutoParam(round(xL), PrimeColor.orange)
         .addAutoParam(round(xR), PrimeColor.orange)
         .addAutoParam(round(intFunc(xR) - intFunc(xL), 7), PrimeColor.blue),
-      new Formula('\\text{\\$1} = \\$2')
+      new Formula('\\text{\\$1} &= \\$2')
         .addAutoParam($_('applets.common.area'))
         .addAutoParam(round(area, 7), PrimeColor.orange)
-    ];
-
-    if (currentRule == 'simpson') {
-      f[1] = new Formula('\\frac{x_R - x_L}{6}(f(x_L) + 4f(x_M) + f(x_R)) = \\$1').addAutoParam(
-        round(area, 7),
-        PrimeColor.orange
-      );
-    }
+    ).align();
 
     return f;
   });
@@ -129,6 +122,7 @@
   {controls}
   cameraPosition={new Vector2(4, 2)}
   labels={{ xLabel: 'x', yLabel: 'f(x)' }}
+  showFormulasDefault
 >
   <ExplicitFunction2D
     {func}
