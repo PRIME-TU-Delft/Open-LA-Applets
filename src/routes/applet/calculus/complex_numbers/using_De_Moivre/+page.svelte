@@ -14,14 +14,38 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { toLatexText } from '$lib/utils/FormatString';
+  import PolarGrid from '$lib/d3/PolarGrid.svelte';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
+  let axis: AxisProps | undefined;
+  let axisP: AxisProps | undefined;
 
   initialViewBox = new ViewBox(
     new Vector2(-5, -6), // bottom-left
     new Vector2(10, 4), // top-right
     0.5 // margin
   );
+  axis = {
+    showOrigin: true,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 0,
+    skipY: 0
+  };
+  axisP = {
+    showOrigin: true,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 0,
+    skipY: 0,
+    showGridLinesX: false,
+    showGridLinesY: false
+  };
 
   const controls = Controls.addSlider(3, 3, 8, 1, PrimeColor.blue, {
     label: toLatexText('$m=$')
@@ -31,7 +55,11 @@
     }) // a
     .addSlider(16, 8, 64, 8, PrimeColor.raspberry, {
       label: toLatexText('$b=$')
-    }); // b
+    }) // b
+    .addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
+      isSwitch: true,
+      switchRightSide: toLatexText('Polar grid')
+    });
 
   const m = $derived(Math.round(controls[0]));
 
@@ -73,7 +101,11 @@
       .addAutoParam(a, PrimeColor.darkGreen)
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(round(radius), PrimeColor.purple);
-    const f3 = new Formula('\\phi &= \\frac{1}{\\$4}\\arg(\\$1 + \\$2i)\\approx\\$3{\\color{'+PrimeColor.orange+'}\\pi}')
+    const f3 = new Formula(
+      '\\phi &= \\frac{1}{\\$4}\\arg(\\$1 + \\$2i)\\approx\\$3{\\color{' +
+        PrimeColor.orange +
+        '}\\pi}'
+    )
       .addAutoParam(a, PrimeColor.darkGreen)
       .addAutoParam(b, PrimeColor.raspberry)
       .addAutoParam(round(phi / Math.PI), PrimeColor.orange)
@@ -84,13 +116,16 @@
 </script>
 
 <Canvas2D
-  axis={{ showAxisNumbersX: true, showAxisNumbersY: true }}
+  axis={controls[3] ? axisP : axis}
   {controls}
   {formulas}
   showFormulasDefault
   {initialViewBox}
 >
-<Line2D start={new Vector2(0,0)} end={polarToCartesian(radius, phi)} color={PrimeColor.purple} />
+  {#if controls[3]}
+    <PolarGrid showAngleTicks showRadiiTicks={false} />
+  {/if}
+  <Line2D start={new Vector2(0, 0)} end={polarToCartesian(radius, phi)} color={PrimeColor.purple} />
   <!-- K-th ANGLE -->
   {#each new Array(m - 1) as _, i (i)}
     {@const kPosition = polarToCartesian(radius, phi + deltaAngle * i)}
@@ -113,8 +148,8 @@
     <Angle2D
       color={PrimeColor.raspberry}
       distance={radius}
-      startAngle={phi + deltaAngle * i}
-      endAngle={phi + deltaAngle * (i + 1)}
+      startAngle={phi + deltaAngle * i + 0.1 / radius}
+      endAngle={phi + deltaAngle * (i + 1) - 0.1 / radius}
       hasHead
     />
 
@@ -126,9 +161,20 @@
   {@const kLastPosition = polarToCartesian(radius, kLast)}
   <Point2D position={polarToCartesian(radius, phi)} color={PrimeColor.cyan} />
 
-  <Line2D start={kLastPosition} end={polarToCartesian(radius, phi)} color={PrimeColor.cyan} isDashed />
+  <Line2D
+    start={kLastPosition}
+    end={polarToCartesian(radius, phi)}
+    color={PrimeColor.cyan}
+    isDashed
+  />
 
-  <Angle2D color={PrimeColor.orange} hasHead distance={radius} startAngle={0} endAngle={phi} />
+  <Angle2D
+    color={PrimeColor.orange}
+    hasHead
+    distance={radius}
+    startAngle={0}
+    endAngle={phi - 0.1 / radius}
+  />
 
   {@const anglePosition = polarToCartesian(radius, phi)
     .add(new Vector2(radius, 0))
@@ -149,7 +195,7 @@
   <Angle2D
     color={PrimeColor.yellow}
     distance={radius}
-    startAngle={kLast}
+    startAngle={kLast + 0.1 / radius}
     endAngle={2 * Math.PI}
     hasHead
   />
