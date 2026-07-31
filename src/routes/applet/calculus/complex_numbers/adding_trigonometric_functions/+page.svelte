@@ -1,26 +1,12 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    Angle,
-    AppletObject,
-    AsymptoteFragment,
-    Circle,
-    FunctionFragment,
-    ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
-    Point,
-    Polygon,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
@@ -93,13 +79,13 @@
   const f3 = f1 + '+' + f2;
   const appletObjects: AppletObject[] = [
     new FunctionFragment(f1, PrimeColor.blue, {
-      legendText: 'y='+f1.replace('2x','2t')
+      legendText: 'y=' + f1.replace('2x', '2t')
     }),
     new FunctionFragment(f2, PrimeColor.orange, {
-      legendText: 'y='+f2.replace('2x','2t')
+      legendText: 'y=' + f2.replace('2x', '2t')
     }),
     new FunctionFragment(f3, PrimeColor.darkGreen, {
-      legendText: 'y='+f3.replace('2x','2t')
+      legendText: 'y=' + f3.replace('2x', '2t')
     })
   ];
 </script>
