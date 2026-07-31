@@ -48,7 +48,7 @@
   };
 
   const controls = Controls.addSlider(3, 3, 8, 1, PrimeColor.blue, {
-    label: toLatexText('$m=$')
+    label: toLatexText('$n=$')
   }) // m
     .addSlider(-16, -64, -8, 8, PrimeColor.darkGreen, {
       label: toLatexText('$a=$')
