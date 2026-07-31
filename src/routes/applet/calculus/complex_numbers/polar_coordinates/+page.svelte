@@ -7,7 +7,7 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
@@ -112,10 +112,15 @@
     const im = draggablePoint[0].position.y;
     const r = Math.sqrt(re * re + im * im);
     const theta = Math.atan2(im, re);
-    return [
-      new Formula('r=|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.blue),
+    return new Formulas(
       new Formula(
-        '\\theta=\\arg(z)=' +
+        'r=|z|&=' + r.toFixed(1).replace('.0', ''),
+        undefined,
+        undefined,
+        PrimeColor.blue
+      ),
+      new Formula(
+        '\\theta=\\arg(z)&=' +
           (theta / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
@@ -125,7 +130,7 @@
         undefined,
         PrimeColor.orange
       )
-    ];
+    ).align();
   });
   const toggleControls = Controls.addToggle(
     false,

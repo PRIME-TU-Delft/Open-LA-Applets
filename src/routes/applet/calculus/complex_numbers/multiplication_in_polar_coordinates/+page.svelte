@@ -7,7 +7,7 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import PolarGrid from '$lib/d3/PolarGrid.svelte';
@@ -123,10 +123,10 @@
     const phi = Math.atan2(jn, sf);
     const rs = r * s;
     const thetaphi = theta + phi;
-    return [
-      new Formula('|z|=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.green),
+    return new Formulas(
+      new Formula('|z|&=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.green),
       new Formula(
-        '\\theta=' +
+        '\\theta&=' +
           (theta / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
@@ -136,9 +136,9 @@
         undefined,
         PrimeColor.darkGreen
       ),
-      new Formula('|w|=' + s.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.cyan),
+      new Formula('|w|&=' + s.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.cyan),
       new Formula(
-        '\\phi=' +
+        '\\phi&=' +
           (phi / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
@@ -149,13 +149,13 @@
         PrimeColor.blue
       ),
       new Formula(
-        '|zw|=' + rs.toFixed(2).replace(/\.?0+$/, ''),
+        '|zw|&=' + rs.toFixed(2).replace(/\.?0+$/, ''),
         undefined,
         undefined,
         PrimeColor.yellow
       ),
       new Formula(
-        '\\theta+\\phi=' +
+        '\\theta+\\phi&=' +
           (thetaphi / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
@@ -165,7 +165,7 @@
         undefined,
         PrimeColor.orange
       )
-    ];
+    ).align();
   });
   const toggleControls = Controls.addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
     isSwitch: true,

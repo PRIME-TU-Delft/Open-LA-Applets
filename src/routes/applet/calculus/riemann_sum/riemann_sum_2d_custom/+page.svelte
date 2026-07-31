@@ -107,7 +107,7 @@
 
   const func = $derived(controls[0]);
 
-  const func_display = '\\int_{\\$1}^{\\$2} \\$4 \\, d' + xAxisLetter + ' = \\$3';
+  const func_display = '\\int_{\\$1}^{\\$2} \\$4 \\, d' + xAxisLetter + ' &= \\$3';
   const numRectangles = $derived(round(controls[2], 0));
 
   const formulas = $derived.by(() => {
@@ -124,16 +124,16 @@
     const riemann_display =
       '\\sum_{i=1}^{\\$2} f(x_i^*) \\Delta ' +
       xAxisLetter +
-      ' = \\$1, ~~\\Delta ' +
+      ' &= \\$1\\\\ ~~\\Delta ' +
       xAxisLetter +
-      '=\\$3';
+      '&=\\$3';
 
     const f2 = new Formula(riemann_display)
       .addAutoParam(round(riemannSum, 7), PrimeColor.orange)
       .addAutoParam(numRectangles, PrimeColor.raspberry)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
-    return new Formulas(f1, f2);
+    return new Formulas(f1, f2).align();
   });
 
   const rects = $derived.by(() => {
@@ -260,6 +260,7 @@
   cameraPosition={new Vector2(cameraX, 2)}
   {cameraZoom}
   labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
+  showFormulasDefault
 >
   <ExplicitFunction2D
     {func}

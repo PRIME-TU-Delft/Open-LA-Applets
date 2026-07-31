@@ -7,7 +7,7 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
 
@@ -114,23 +114,26 @@
       return str;
     }
     const Sum = draggablePoint[0].position.clone().add(draggablePoint[1].position);
-
-    return [
-      new Formula(
-        'z=' + getStr(draggablePoint[0].position),
-        undefined,
-        undefined,
-        PrimeColor.orange
-      )
-        .addAutoParam(draggablePoint[0].position.x.toFixed(1).replace('.0', ''))
-        .addAutoParam(draggablePoint[0].position.y.toFixed(1).replace('.0', '')),
-      new Formula('w=' + getStr(draggablePoint[1].position), undefined, undefined, PrimeColor.blue)
-        .addAutoParam(draggablePoint[1].position.x.toFixed(1).replace('.0', ''))
-        .addAutoParam(draggablePoint[1].position.y.toFixed(1).replace('.0', '')),
-      new Formula('z+w=' + getStr(Sum), undefined, undefined, PrimeColor.green)
-        .addAutoParam(Sum.x.toFixed(1).replace('.0', ''))
-        .addAutoParam(Sum.y.toFixed(1).replace('.0', ''))
-    ];
+    const f1 = new Formula(
+      'z &= ' + getStr(draggablePoint[0].position),
+      undefined,
+      undefined,
+      PrimeColor.orange
+    )
+      .addAutoParam(draggablePoint[0].position.x.toFixed(1).replace('.0', ''))
+      .addAutoParam(draggablePoint[0].position.y.toFixed(1).replace('.0', ''));
+    const f2 = new Formula(
+      'w &=' + getStr(draggablePoint[1].position),
+      undefined,
+      undefined,
+      PrimeColor.blue
+    )
+      .addAutoParam(draggablePoint[1].position.x.toFixed(1).replace('.0', ''))
+      .addAutoParam(draggablePoint[1].position.y.toFixed(1).replace('.0', ''));
+    const f3 = new Formula('z+w &=' + getStr(Sum), undefined, undefined, PrimeColor.green)
+      .addAutoParam(Sum.x.toFixed(1).replace('.0', ''))
+      .addAutoParam(Sum.y.toFixed(1).replace('.0', ''));
+    return new Formulas(f1, f2, f3).align();
   });
 </script>
 

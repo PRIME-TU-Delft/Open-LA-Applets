@@ -3,7 +3,7 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { LegendItem, Shape } from '$lib/utils/Legend';
   import { round } from '$lib/utils/MathLib';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -75,10 +75,10 @@
     );
 
   const formulas = $derived.by(() => {
-    return [
-      new Formula('f(t) = \\sqrt{1+\\cos^2(t)}'),
-      new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t \\approx 1.058')
-    ];
+    return new Formulas(
+      new Formula('f(t) &= \\sqrt{1+\\cos^2(t)}'),
+      new Formula('\\int_0^{\\frac{\\pi}{4}} f(t) \\; \\text{d}t &\\approx 1.058')
+    ).align();
   });
 
   const legendItems = $derived([
