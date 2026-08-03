@@ -1,13 +1,13 @@
 <script lang="ts">
-  // For ease of creating the template applets
-  import { AppletObject, LineFragment, Point, Polygon } from '$lib/template/TemplateAppletObjects';
-  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import MassSpring2D from '$lib/d3/MassSpring2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -45,13 +45,14 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: true,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
+    showOrigin: false,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: -1,
+    skipY: 0,
+    showAxisX: false
   };
 
   // #####
@@ -69,173 +70,38 @@
 
   // (remove if unnecessary)
   xAxisLabel = '';
-  yAxisLabel = 'x';
-
-  // ##############
-  // APPLET OBJECTS
-  // ##############
-  const ceilingWidth = 3;
-  const ceilingTop = 4;
-  const ceilingThickness = 0.2;
-  const straightPart = 0.3;
-  const massWidth = 0.5;
-  const springRadius = 0.25;
-  const ZigZags = 8;
-  const springThickness = 0.1;
-  const ceilingStartLeft = new Vector2(-4, ceilingTop);
-  const ceilingStartRight = new Vector2(1, ceilingTop);
-  const startSpringLeft = new Vector2(ceilingWidth / 2, -ceilingThickness).add(ceilingStartLeft);
-  const startSpringRight = new Vector2(ceilingWidth / 2, -ceilingThickness).add(ceilingStartRight);
-  const startZigZagLeft = new Vector2(0, -straightPart).add(startSpringLeft);
-  const startZigZagRight = new Vector2(0, -straightPart).add(startSpringRight);
-  const endSpringLeft = new Vector2(startSpringLeft.x, massWidth / 2);
-  const endSpringRight = new Vector2(startSpringRight.x, -3 + massWidth / 2);
-  const endZigZagLeft = new Vector2(startSpringLeft.x, endSpringLeft.y + straightPart);
-  const endZigZagRight = new Vector2(startSpringRight.x, endSpringRight.y + straightPart);
-  let listZigZagLeft = [startSpringLeft, startZigZagLeft];
-  let listZigZagRight = [startSpringRight, startZigZagRight];
-  const jumpLeft = (startZigZagLeft.y - endZigZagLeft.y) / ZigZags;
-  const jumpRight = (startZigZagRight.y - endZigZagRight.y) / ZigZags;
-  const quarterJumpLeft = jumpLeft / 4;
-  const quarterJumpRight = jumpRight / 4;
-  for (let i = 0; i < ZigZags; i++) {
-    listZigZagLeft.push(
-      new Vector2(
-        startZigZagLeft.x - springRadius,
-        startZigZagLeft.y - quarterJumpLeft - i * jumpLeft
-      )
-    );
-    listZigZagLeft.push(
-      new Vector2(
-        startZigZagLeft.x + springRadius,
-        startZigZagLeft.y - quarterJumpLeft - (i + 0.5) * jumpLeft
-      )
-    );
-    listZigZagRight.push(
-      new Vector2(
-        startZigZagRight.x - springRadius,
-        startZigZagRight.y - quarterJumpRight - i * jumpRight
-      )
-    );
-    listZigZagRight.push(
-      new Vector2(
-        startZigZagRight.x + springRadius,
-        startZigZagRight.y - quarterJumpRight - (i + 0.5) * jumpRight
-      )
-    );
-  }
-  listZigZagLeft.push(endZigZagLeft);
-  listZigZagRight.push(endZigZagRight);
-  listZigZagLeft.push(endSpringLeft);
-  listZigZagRight.push(endSpringRight);
-  const appletObjects: AppletObject[] = [];
-  listZigZagLeft.forEach((point, index) => {
-    if (index > 0 && index < listZigZagLeft.length - 1) {
-      appletObjects.push(
-        new Point(point, PrimeColor.blue, { radius: (springThickness - 0.02) / 2 })
-      );
-    }
-  });
-  listZigZagRight.forEach((point, index) => {
-    if (index > 0 && index < listZigZagRight.length - 1) {
-      appletObjects.push(
-        new Point(point, PrimeColor.blue, { radius: (springThickness - 0.02) / 2 })
-      );
-    }
-  });
-  appletObjects.push(
-    new LineFragment(startSpringLeft, startZigZagLeft, PrimeColor.blue, { width: springThickness }),
-    new LineFragment(startSpringRight, startZigZagRight, PrimeColor.blue, {
-      width: springThickness
-    })
-  );
-  for (let i = 2; i < 2 * ZigZags + 2; i += 2) {
-    const start = listZigZagLeft.at(i);
-    const end = listZigZagLeft.at(i + 1);
-    if (start !== undefined && end !== undefined) {
-      appletObjects.push(
-        new LineFragment(start, end, PrimeColor.blue + PrimeColor.opacity(0.8), {
-          width: springThickness
-        })
-      );
-    }
-    const startR = listZigZagRight.at(i);
-    const endR = listZigZagRight.at(i + 1);
-    if (startR !== undefined && endR !== undefined) {
-      appletObjects.push(
-        new LineFragment(startR, endR, PrimeColor.blue + PrimeColor.opacity(0.8), {
-          width: springThickness
-        })
-      );
-    }
-  }
-  for (let i = 1; i < 2 * ZigZags + 2; i += 2) {
-    const start = listZigZagLeft.at(i);
-    const end = listZigZagLeft.at(i + 1);
-    if (start !== undefined && end !== undefined) {
-      appletObjects.push(new LineFragment(start, end, PrimeColor.blue, { width: springThickness }));
-    }
-    const startR = listZigZagRight.at(i);
-    const endR = listZigZagRight.at(i + 1);
-    if (startR !== undefined && endR !== undefined) {
-      appletObjects.push(
-        new LineFragment(startR, endR, PrimeColor.blue, { width: springThickness })
-      );
-    }
-  }
-  const massLeft = [
-    new Vector2(-massWidth / 2, 0).add(endSpringLeft),
-    new Vector2(massWidth / 2, 0).add(endSpringLeft),
-    new Vector2(massWidth / 2, -massWidth).add(endSpringLeft),
-    new Vector2(-massWidth / 2, -massWidth).add(endSpringLeft)
-  ];
-  const massRight = [
-    new Vector2(-massWidth / 2, 0).add(endSpringRight),
-    new Vector2(massWidth / 2, 0).add(endSpringRight),
-    new Vector2(massWidth / 2, -massWidth).add(endSpringRight),
-    new Vector2(-massWidth / 2, -massWidth).add(endSpringRight)
-  ];
-  appletObjects.push(
-    new LineFragment(endZigZagLeft, endSpringLeft, PrimeColor.blue, { width: springThickness }),
-    new LineFragment(endZigZagRight, endSpringRight, PrimeColor.blue, { width: springThickness }),
-    new Polygon(massLeft, PrimeColor.yellow + PrimeColor.opacity(0.7), { fillStyle: 'full' }),
-    new Polygon(massRight, PrimeColor.yellow + PrimeColor.opacity(0.7), { fillStyle: 'full' }),
-    new Polygon(massLeft, PrimeColor.yellow, { fillStyle: 'none' }),
-    new Polygon(massRight, PrimeColor.yellow, { fillStyle: 'none' })
-  );
-  appletObjects.push(
-    new Polygon(
-      [
-        ceilingStartLeft,
-        new Vector2(ceilingWidth, 0).add(ceilingStartLeft),
-        new Vector2(ceilingWidth, -ceilingThickness).add(ceilingStartLeft),
-        new Vector2(0, -ceilingThickness).add(ceilingStartLeft)
-      ],
-      PrimeColor.black,
-      { fillStyle: 'dashed' }
-    ),
-    new Polygon(
-      [
-        ceilingStartRight,
-        new Vector2(ceilingWidth, 0).add(ceilingStartRight),
-        new Vector2(ceilingWidth, -ceilingThickness).add(ceilingStartRight),
-        new Vector2(0, -ceilingThickness).add(ceilingStartRight)
-      ],
-      PrimeColor.black,
-      { fillStyle: 'dashed' }
-    )
-  );
+  yAxisLabel = '';
 </script>
 
 <Canvas2D
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
 >
-  <TemplateComponent objects={appletObjects} />
+  <InfiniteLine2D
+    direction={new Vector2(1, 0)}
+    color={PrimeColor.black + PrimeColor.opacity(0.5)}
+  />
+  <MassSpring2D massLabel="m" />
+  <MassSpring2D center={3} massLocation={-2} ceilingTop={4} massLabel="m" />
+  <Vector2D color={PrimeColor.black} origin={new Vector2(-1, -1)} direction={new Vector2(0, -1)} />
+  <Latex2D
+    latex="u"
+    color={PrimeColor.black}
+    position={new Vector2(-1.35, -1.3)}
+    alignX="center"
+    alignY="center"
+  />
+  <Latex2D
+    latex="0"
+    color={PrimeColor.black}
+    position={new Vector2(-0.35, 0.05)}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white}
+  />
 </Canvas2D>
