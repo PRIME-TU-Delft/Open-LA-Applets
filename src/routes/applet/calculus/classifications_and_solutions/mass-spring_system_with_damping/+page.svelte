@@ -119,7 +119,7 @@
     background={PrimeColor.white}
   />
   <FillBetweenFunctions2D
-    func1={(x: number) => -3}
+    func1={(_x: number) => -3}
     func2={(x: number) => 2 + 0.1 * Math.sin((3 / 2) * Math.PI * x)}
     // Curve that has two local maxima and one local minimum in the interval (2, 4), has negative slope at x=2 and positive slope at x=4 and oscillates around 2
     color1={PrimeColor.blue}
@@ -136,7 +136,7 @@
     }}
   />
   <FillBetweenFunctions2D
-    func1={(x: number) => -3}
+    func1={(_x: number) => -3}
     func2={(x: number) => 2 + 0.1 * Math.sin((3 / 2) * Math.PI * (x - -6))}
     // Curve that has two local maxima and one local minimum in the interval (2, 4), has negative slope at x=2 and positive slope at x=4 and oscillates around 2
     color1={PrimeColor.blue}
