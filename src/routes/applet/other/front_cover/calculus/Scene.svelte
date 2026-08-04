@@ -6,15 +6,20 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
   import { MeshLineGeometry, MeshLineMaterial, OrbitControls } from '@threlte/extras';
+  import { onMount } from 'svelte';
   import { BufferAttribute, BufferGeometry, DoubleSide, Vector3 } from 'three';
+  import { OrthographicCamera } from 'three';
+  import { OrbitControls as OrbitControlsJS } from 'three/addons/controls/OrbitControls.js';
   import vectorField from './vector_field.json';
 
   let elevation = -2;
   let azimuth = 180;
   let grid = true;
+  let position = new Vector3(15.767101260667971, -5.914369353771287, -4.0388711259116725);
+  const CAMERA_TARGET = new Vector3(-7.696125054506335, -13.769150686936293, 4.055745671137663);
+  let zoom = 40;
 
-  let position = new Vector3(10, 2, 8);
-  let zoom = 30;
+  const ROTATE = false;
 
   const WORLD_SCALE = 1.5;
   const X_STRETCH = 5;
@@ -157,6 +162,39 @@
 
     return geometry;
   });
+
+  let orbitControlsRef = $state<OrbitControlsJS>();
+
+  onMount(() => {
+    if (!orbitControlsRef) return;
+
+    orbitControlsRef.target.copy(CAMERA_TARGET);
+    orbitControlsRef.update();
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleCameraChange(event: any): void {
+    const camera = event?.target?.object as OrthographicCamera;
+
+    if (!camera) return;
+
+    /* eslint-disable-next-line no-console */
+    console.log('Camera position:', {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    });
+
+    /* eslint-disable-next-line no-console */
+    console.log('Camera target:', {
+      x: orbitControlsRef?.target.x,
+      y: orbitControlsRef?.target.y,
+      z: orbitControlsRef?.target.z
+    });
+
+    /* eslint-disable-next-line no-console */
+    console.log('Camera zoom:', camera.zoom);
+  }
 </script>
 
 {#if curveSegments.length > 0}
@@ -199,13 +237,15 @@
 
 <T.OrthographicCamera makeDefault position={[position.x, position.y, position.z]} fov={10} {zoom}>
   <OrbitControls
+    bind:ref={orbitControlsRef}
     enableZoom
     maxZoom={zoom * 10}
     minZoom={zoom}
     minPolarAngle={Math.PI * 0.1}
     maxPolarAngle={Math.PI * 0.9}
-    target={[-9, -12, 0]}
-    autoRotate={true}
+    target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
+    onchange={handleCameraChange}
+    autoRotate={ROTATE}
     autoRotateSpeed={0.3}
   />
 </T.OrthographicCamera>
