@@ -29,6 +29,7 @@
   const GRID_RADIUS = 30;
 
   const vectorFieldPoints = vectorField as { x: number; y: number; u: number; v: number }[];
+  const CURVE_SAMPLE_STEP = 10;
 
   function isInsideGrid(x: number, z: number): boolean {
     const dx = x - GRID_CENTER_X;
@@ -104,7 +105,7 @@
     const segments: Vector3[][] = [];
     let segment: Vector3[] = [];
 
-    for (let i = 0; i < equation.t.length; i += 50) {
+    for (let i = 0; i < equation.t.length; i += CURVE_SAMPLE_STEP) {
       const y_up_down = Math.sin(equation.t[i] * 5) * 4 - 8;
       const worldX = (equation.x[i] * X_STRETCH + X_OFFSET) * WORLD_SCALE;
       const worldZ = equation.y[i] * WORLD_SCALE;
