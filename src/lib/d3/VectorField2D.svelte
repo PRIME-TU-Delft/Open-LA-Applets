@@ -39,16 +39,16 @@
     }
 
     const values: number[] = [];
-    let current = min;
-
-    while (current < max - 1e-12) {
-      values.push(current);
-      current += stepSize;
+    values.push(min); // Ensure the min value is included explicitly
+    
+    // Instead of using floating point arithmetic, we calculate explicitly 
+    // the number of steps to avoid precision issues.
+    const steps = Math.round((max - min) / stepSize); // round, assuming stepSize divides the range evenly
+    for (let i = 1; i <= steps-1; i++) { // Use 1:steps-1 to avoid min and max due to floating point errors
+      values.push(min + i * stepSize);
     }
 
-    if (values.length === 0 || Math.abs(values.at(-1)! - max) > 1e-12) {
-      values.push(max);
-    }
+    values.push(max); // Ensure the max value is included explicitly
 
     return values;
   };
