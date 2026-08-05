@@ -3,7 +3,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Vector2D from './Vector2D.svelte';
-  import Point2D from './Point2D.svelte';
 
   export type VectorField2DProps = {
     f: (x: number, y: number) => Vector2;
