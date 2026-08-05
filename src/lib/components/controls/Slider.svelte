@@ -74,6 +74,7 @@
       // console.log('is playing');
       // Bounce the slider back and forth
       value += (moveRight ? -1 : 1) * slider.stepSize * slider.animationStep;
+      slider.onChange(value);
 
       if (slider.loop) {
         // Slider moves to min val
@@ -171,7 +172,11 @@
       <Label
         class="relative flex w-fit items-center gap-1 pr-1 text-xs text-slate-700"
         for="range-{uuid}"
-        ><ControlLabel label={slider.label + ':'} checkLatex={label} />
+        ><ControlLabel
+          label={slider.label +
+            (slider.label.endsWith('=$}') ? '' : slider.label.endsWith('=') ? '' : ':')}
+          checkLatex={label}
+        />
         <p class="absolute left-full flex text-sm" style="color:{slider.color};">
           {#if slider.labelFormat}
             {@render slider.labelFormat(value)}
@@ -188,6 +193,7 @@
         step={slider.stepSize}
         bind:value
         onchange={stopPlaying}
+        oninput={() => slider.onChange(value)}
         onmousedown={startChanging}
         onmouseup={slider.onStopChanging}
         ontouchstart={startChanging}
@@ -204,6 +210,7 @@
       step={slider.stepSize}
       bind:value
       onchange={stopPlaying}
+      oninput={() => slider.onChange(value)}
       onmousedown={startChanging}
       onmouseup={slider.onStopChanging}
       ontouchstart={startChanging}

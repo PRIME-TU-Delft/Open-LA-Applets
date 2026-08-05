@@ -10,6 +10,8 @@
     alignX?: 'left' | 'right' | 'center' | null;
     alignY?: 'top' | 'bottom' | 'center' | null;
     dimOnHover?: boolean;
+    background?: string;
+    padding?: string;
   };
 </script>
 
@@ -30,7 +32,9 @@
     color = 'black',
     alignX = null,
     alignY = null,
-    dimOnHover = false
+    dimOnHover = false,
+    background = undefined,
+    padding = '0.2em'
   }: Latex2DProps = $props();
 
   const projection = getProjection2D();
@@ -40,7 +44,7 @@
   let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
 
   let style = $derived.by(() => {
-    const base = 'display: inline-block; width: max-content;';
+    const base = `display: inline-block; width: max-content;${background !== undefined ? ` background-color: ${background}; padding: ${padding};` : ''}`;
 
     const translateX = alignX === 'right' ? '-100%' : alignX === 'center' ? '-50%' : null;
 
@@ -81,9 +85,9 @@
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" {style} />
+      <Latex {latex} {color} outputType="mathml" {style} compact={background !== undefined} />
     {:else}
-      <Latex {latex} {color} outputType="html" {style} />
+      <Latex {latex} {color} outputType="html" {style} compact={background !== undefined} />
     {/if}
   </foreignObject>
 </g>

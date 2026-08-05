@@ -59,9 +59,15 @@
   );
 
   const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
+  const lineEndPos = $derived(
+    endPoint.clone().sub(screenDir.clone().multiplyScalar(0.95 * coneHeight))
+  );
 
   const secondConeStartPos = $derived(
     scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
+  );
+  const lineStartPos = $derived(
+    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(0.95 * coneHeight))
   );
 </script>
 
@@ -87,13 +93,14 @@
   Vector2D computes final screen geometry itself (shaft end and cones are
   screen-space, sizes must not distort under non-uniform scale), so it emits raw
   SVG instead of Line2D/Triangle2D children, which would re-project.
+  The shaft runs 5% into the cone so no gap shows between shaft and arrowhead.
 -->
 <!-- Shaft -->
 <line
-  x1={(doubleEnded ? secondConeStartPos : scaledOrigin).x}
-  y1={(doubleEnded ? secondConeStartPos : scaledOrigin).y}
-  x2={coneStartPos.x}
-  y2={coneStartPos.y}
+  x1={(doubleEnded ? lineStartPos : scaledOrigin).x}
+  y1={(doubleEnded ? lineStartPos : scaledOrigin).y}
+  x2={lineEndPos.x}
+  y2={lineEndPos.y}
   stroke={color}
   stroke-width={radius}
   stroke-dasharray={isDashed ? `${4 * radius} ${4 * radius}` : undefined}

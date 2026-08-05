@@ -39,7 +39,7 @@
     10,
     1,
     PrimeColor.raspberry,
-    { label: toLatexText('$n$'), valueFn: (v) => roundString(v, 0) }
+    { label: toLatexText('$n=$'), valueFn: (v) => roundString(v, 0) }
   );
 
   const currentMethod = $derived(
@@ -73,7 +73,7 @@
     return 8 * Math.sqrt(x + 1);
   };
 
-  const func_display = '\\int_{\\$1}^{\\$2} f(x) \\, dx = \\$3';
+  const func_display = '\\int_{\\$1}^{\\$2} f(x) \\, dx &= \\$3';
   const numRectangles = $derived(round(controls[1], 0));
 
   const formulas = $derived.by(() => {
@@ -86,14 +86,14 @@
       .addAutoParam(round(integralResult, 7), PrimeColor.blue);
 
     const riemannSum = rects.reduce((sum, rect) => sum + rect.height * dx, 0);
-    const riemann_display = '\\sum_{i=1}^{\\$2} f(x_i^*) \\Delta x = \\$1, ~~\\Delta x=\\$3';
+    const riemann_display = '\\sum_{i=1}^{\\$2} f(x_i^*) \\Delta x &= \\$1\\\\ ~~\\Delta x&=\\$3';
 
     const f2 = new Formula(riemann_display)
       .addAutoParam(round(riemannSum, 7), PrimeColor.orange)
       .addAutoParam(numRectangles, PrimeColor.raspberry)
       .addAutoParam(round(dx, 4), PrimeColor.raspberry);
 
-    return new Formulas(f1, f2);
+    return new Formulas(f1, f2).align();
   });
 
   const rects = $derived.by(() => {
@@ -183,6 +183,7 @@
   {draggables}
   cameraPosition={new Vector2(4, 2)}
   labels={{ xLabel: 'x', yLabel: 'f(x)' }}
+  showFormulasDefault
 >
   <ExplicitFunction2D
     {func}

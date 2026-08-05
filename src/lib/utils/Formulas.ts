@@ -22,15 +22,17 @@ export class Formula {
   latex: string;
   invalidFormula = false;
   autoIndex = 0;
+  textColor: PrimeColor | undefined = undefined;
 
   /**
    * Create new instance of Formulas.
    * @param latex The formula to be used.
    * @param param The value(s) to be replaced in the formula.
    * @param color The color(s) of the value.
+   * @param textColor Optional color applied to the entire formula.
    * @returns A new instance of Formulas.
    */
-  constructor(latex: string, param?: number | string, color?: PrimeColor) {
+  constructor(latex: string, param?: number | string, color?: PrimeColor, textColor?: PrimeColor) {
     this.latex = latex || '';
 
     if (!latex) {
@@ -38,14 +40,28 @@ export class Formula {
       return;
     }
 
-    if (param == undefined || param == null) return;
+    if (param != undefined && param != null) {
+      const value = parseFloat('' + param).toFixed(2) || param;
 
-    const value = parseFloat('' + param).toFixed(2) || param;
+      this.latex = this.latex.replaceAll(
+        '\\$',
+        `\\textcolor{${color || PrimeColor.black}}{${value}}`
+      );
+    }
 
-    this.latex = this.latex.replaceAll(
-      '\\$',
-      `\\textcolor{${color || PrimeColor.black}}{${value}}`
-    );
+    if (textColor != undefined) {
+      this.textColor = textColor;
+      // Take care of possible & for alignment
+      let new_latex = ``;
+      const parts = this.latex.split('&');
+      parts.forEach((part, index, array) => {
+        new_latex += `\\textcolor{${textColor}}{${part}}`;
+        if (index != array.length - 1) {
+          new_latex += `&`;
+        }
+      });
+      this.latex = new_latex;
+    }
   }
 
   raw() {
@@ -54,17 +70,12 @@ export class Formula {
 
   addParam(index: number, param: number | string, color?: PrimeColor) {
     const value = param;
+    const resolvedColor = color ?? this.textColor ?? PrimeColor.black;
 
     if (index <= 0) {
-      this.latex = this.latex.replaceAll(
-        `\\$`,
-        `\\textcolor{${color || PrimeColor.black}}{${value}}`
-      );
+      this.latex = this.latex.replaceAll(`\\$`, `\\textcolor{${resolvedColor}}{${value}}`);
     } else {
-      this.latex = this.latex.replaceAll(
-        `\\$${index}`,
-        `\\textcolor{${color || PrimeColor.black}}{${value}}`
-      );
+      this.latex = this.latex.replaceAll(`\\$${index}`, `\\textcolor{${resolvedColor}}{${value}}`);
     }
 
     return this;

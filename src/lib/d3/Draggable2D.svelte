@@ -86,7 +86,7 @@
 
 <circle
   class="pulse"
-  r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
+  r={draggable.radius * 2}
   opacity="0.5"
   fill={draggable.color}
   role="button"
@@ -129,8 +129,8 @@
       scale: 1;
       opacity: 0.5;
     }
-    70% {
-      scale: 0.5;
+    50% {
+      scale: 0.75;
       opacity: 0.25;
     }
     100% {

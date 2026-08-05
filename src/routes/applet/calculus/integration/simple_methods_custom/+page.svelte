@@ -10,7 +10,7 @@
   import Point2D from '$lib/d3/Point2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { appletState } from '$lib/stores/applet.svelte';
-  import { Formula } from '$lib/utils/Formulas';
+  import { Formula, Formulas } from '$lib/utils/Formulas';
   import { integral, round } from '$lib/utils/MathLib';
   import { parseNumericalOrLatex } from '$lib/utils/Params';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -151,7 +151,7 @@
   const formulas = $derived.by(() => {
     let I = intFunc(xL, xR);
 
-    let f = [
+    let f = new Formulas(
       new Formula(`\\int_{\\$1}^{\\$2} \\$4 \\,d${xAxisLetter} = \\$3`)
         .addAutoParam(isXLLatex && xL == defaultXL ? urlXL || '' : round(xL), PrimeColor.orange)
         .addAutoParam(isXRLatex && xR == defaultXR ? urlXR || '' : round(xR), PrimeColor.orange)
@@ -160,7 +160,7 @@
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
         .addAutoParam(round(area, 7), PrimeColor.orange)
-    ];
+    ).align();
 
     if (currentRule == 'simpson') {
       f[1] = new Formula(
@@ -218,6 +218,7 @@
   cameraPosition={new Vector2(cameraX, 2)}
   {cameraZoom}
   labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
+  showFormulasDefault
 >
   <ExplicitFunction2D
     {func}

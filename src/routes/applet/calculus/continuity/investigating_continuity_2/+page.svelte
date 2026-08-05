@@ -77,7 +77,7 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, -3, 3, 1, PrimeColor.raspberry, {
-    label: toLatexText('$b$'),
+    label: toLatexText('$b=$'),
     valueFn: (v: number) => v.toFixed(0),
     animationStep: 1
   });

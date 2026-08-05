@@ -14,7 +14,13 @@
     xMin?: number;
     xMax?: number;
     width?: number;
-    integral?: { xLeft: number; xRight: number; fillStyle: 'full' | 'dashed'; color?: string };
+    integral?: {
+      xLeft: number;
+      xRight: number;
+      fillStyle: 'full' | 'dashed';
+      color?: string;
+      opacity?: number;
+    };
   };
 
   const {
@@ -103,9 +109,12 @@
   });
 
   const fillColor = $derived(integral?.color ?? color1);
+  const fillOpacity = $derived(integral?.opacity ?? 0.5);
   const patternId = $derived(`fill-between-pattern-${fillColor.replace(/[^a-zA-Z0-9]/g, '')}`);
   const fillValue = $derived(
-    integral?.fillStyle === 'dashed' ? `url(#${patternId})` : fillColor + PrimeColor.opacity(0.5)
+    integral?.fillStyle === 'dashed'
+      ? `url(#${patternId})`
+      : fillColor + PrimeColor.opacity(fillOpacity)
   );
 </script>
 

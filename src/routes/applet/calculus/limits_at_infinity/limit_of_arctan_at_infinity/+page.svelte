@@ -68,7 +68,7 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(0.2, 0, 4, 0.05, PrimeColor.orange, {
-    label: toLatexText('$\\varepsilon$'),
+    label: toLatexText('$\\varepsilon=$'),
     valueFn: (x) => x.toFixed(2)
   });
   let N = $derived(
