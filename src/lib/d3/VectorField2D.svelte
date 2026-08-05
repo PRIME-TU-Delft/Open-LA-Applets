@@ -73,9 +73,8 @@
                 .multiplyScalar(length / 2)
             )}
 
-    {#if x < 1e-12 && x > -1e-12 && y < 1e-12 && y > -1e-12}
-      <Point2D position={origin} color={colorFn ? colorFn(x, y) : color} />
-    {:else}
+    {#if Math.sqrt(f(x, y).x ** 2 + f(x, y).y ** 2) > 1e-6}
+      // Only draw non-near-zero vectors
       <Vector2D
         {origin}
         direction={f(x, y)}
