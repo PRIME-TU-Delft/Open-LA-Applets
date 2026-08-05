@@ -141,14 +141,14 @@
   />
   {#if toggleControls[0]}
     <ExplicitFunction2D
-      func={(t: number) => -1}
+      func={(_t: number) => -1}
       xMin={-30 / scaleX}
       xMax={30 / scaleX}
       color={PrimeColor.orange}
       width={0.08}
     />
     <ExplicitFunction2D
-      func={(t: number) => 2}
+      func={(_t: number) => 2}
       xMin={-30 / scaleX}
       xMax={30 / scaleX}
       color={PrimeColor.purple}
