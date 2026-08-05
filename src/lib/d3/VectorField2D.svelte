@@ -19,10 +19,15 @@
 </script>
 
 <script>
+  import { getContext } from 'svelte';
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+
   let {
     f,
-    xRange = [-GRID_SIZE_2D, GRID_SIZE_2D],
-    yRange = [-GRID_SIZE_2D, GRID_SIZE_2D],
+    xRange = [-GRID_SIZE_2D / sx, GRID_SIZE_2D / sx],
+    yRange = [-GRID_SIZE_2D / sy, GRID_SIZE_2D / sy],
     step = 1,
     color = PrimeColor.black,
     normalize = true,
