@@ -141,7 +141,7 @@
 >
   {@const state = controls[0]}
   <VectorField2D
-    f={(x: number, y: number) => new Vector2(1, -x + 2 * y)}
+    f={(x: number, y: number) => new Vector2(1, x + 2 * y)}
     xRange={[state.xMin, state.xMax]}
     yRange={[state.yMin, state.yMax]}
     color={PrimeColor.blue}

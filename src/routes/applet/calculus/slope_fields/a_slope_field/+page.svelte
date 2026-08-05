@@ -82,5 +82,5 @@
   {scaleX}
   {scaleY}
 >
-  <VectorField2D f={(x: number, y: number) => new Vector2(1, -x + 2 * y)} color={PrimeColor.blue} />
+  <VectorField2D f={(x: number, y: number) => new Vector2(1, x + 2 * y)} color={PrimeColor.blue} />
 </Canvas2D>
