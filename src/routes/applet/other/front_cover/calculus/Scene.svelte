@@ -139,8 +139,12 @@
   const integralGeometry = $derived.by(() => {
     const geometry = new BufferGeometry();
     const vertices: number[] = [];
-
+    let skip = true;
     for (const segment of curveSegments) {
+      if (skip) {
+        skip = false; // skip the first segment
+        continue;
+      }
       for (let i = 0; i < segment.length - 1; i++) {
         const start = segment[i];
         const end = segment[i + 1];
@@ -224,6 +228,7 @@
 {/each}
 
 {#each curveSegments as segment, idx (`${idx}-${segment.length}`)}
+{#if idx !== 0}
   <T.Mesh>
     <MeshLineGeometry points={segment} />
     <MeshLineMaterial
@@ -234,6 +239,7 @@
       dashArray={0.1 * 0.01}
     />
   </T.Mesh>
+  {/if}
 {/each}
 
 <T.OrthographicCamera makeDefault position={[position.x, position.y, position.z]} fov={10} {zoom}>
