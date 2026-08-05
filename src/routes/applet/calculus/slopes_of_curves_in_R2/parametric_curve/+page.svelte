@@ -116,7 +116,7 @@
   legendItems={[
     ...getLegend(appletObjects),
     new LegendItem('\\text{Tangent line}', PrimeColor.yellow),
-    new LegendItem('\\mathcal{T}', PrimeColor.raspberry)
+    new LegendItem('\\mathbf{T}', PrimeColor.raspberry)
   ]}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}

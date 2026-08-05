@@ -1,9 +1,8 @@
 <script lang="ts">
-  import ExternalLink from '@lucide/svelte/icons/external-link';
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
-  import { resolve } from '$app/paths';
   import Credits from '$lib/components/frontpage/Credits.svelte';
+  import FrontpageList from '$lib/components/frontpage/FrontpageList.svelte';
 
   const modules = import.meta.glob('/src/routes/applet/other/**/+page.svelte');
 
@@ -26,21 +25,7 @@
 
     These are development applets.
 
-    <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
-      <span class="font-bold">Hint:</span>
-      Looking for Linear Algebra applets? Go to the
-      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/')}
-        >main page <ExternalLink class="h-4 w-4" /></a
-      >
-    </blockquote>
-
-    <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
-      <span class="font-bold">Hint:</span>
-      Looking for Calculus applets? Go to
-      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/calculus')}
-        >/calculus <ExternalLink class="h-4 w-4" /></a
-      >
-    </blockquote>
+    <FrontpageList />
 
     <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
       <span class="font-bold">Hint:</span>

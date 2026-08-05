@@ -12,6 +12,7 @@
     class?: string;
     fontSize?: number;
     style?: string;
+    compact?: boolean;
   };
 
   let {
@@ -22,7 +23,8 @@
     outputType = 'html',
     class: classes = '',
     fontSize = 1,
-    style = ''
+    style = '',
+    compact = false
   }: LatexProps = $props();
 
   let strOutput = $derived.by(() => {
@@ -55,9 +57,13 @@
   });
 
   let latexClasses = $derived(cn('latex select-none', classes));
+
+  let strOutputFinal = $derived(
+    compact ? strOutput.replace('class="katex"', 'class="katex" style="line-height:0"') : strOutput
+  );
 </script>
 
 <div style={`font-size: ${fontSize}rem; color: ${color};` + style} class={latexClasses}>
   <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-  {@html strOutput}
+  {@html strOutputFinal}
 </div>

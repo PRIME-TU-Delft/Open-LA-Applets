@@ -29,7 +29,7 @@ export class Controls<
   private readonly _controls: T;
   _width: number; // width of the controls
 
-  MAX_WIDTH = 100;
+  MAX_WIDTH = 120;
 
   constructor(controls: T, width = 0) {
     this._controls = controls;
@@ -103,6 +103,7 @@ export class Controls<
       onRelease?: (v: number) => void;
       onStartChanging?: () => void;
       onStopChanging?: () => void;
+      onChange?: (v: number) => void;
     }
   ) {
     const colors = PrimeColor.asArray();
@@ -122,7 +123,8 @@ export class Controls<
       {
         onRelease: options?.onRelease,
         onStartChanging: options?.onStartChanging,
-        onStopChanging: options?.onStopChanging
+        onStopChanging: options?.onStopChanging,
+        onChange: options?.onChange
       }
     );
 
@@ -159,6 +161,7 @@ export class Controls<
       onRelease?: (v: number) => void;
       onStartChanging?: () => void;
       onStopChanging?: () => void;
+      onChange?: (v: number) => void;
     }
   ) {
     const newSlider = new Slider(
@@ -175,7 +178,8 @@ export class Controls<
       {
         onRelease: options?.onRelease,
         onStartChanging: options?.onStartChanging,
-        onStopChanging: options?.onStopChanging
+        onStopChanging: options?.onStopChanging,
+        onChange: options?.onChange
       }
     );
     return new Controls([newSlider] as const, newSlider.width);

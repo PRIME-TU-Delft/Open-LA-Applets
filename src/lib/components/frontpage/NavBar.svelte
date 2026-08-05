@@ -3,8 +3,8 @@
   import CommandPrompt from './CommandPrompt.svelte';
 
   export type NavBarProps = {
-    bookTitle: string;
-    bookURL: string;
+    bookTitle?: string;
+    bookURL?: string;
     fileUrls: string[];
     directory?: string;
   };

@@ -57,7 +57,7 @@
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(1, 0.05, 8, 0.05, PrimeColor.orange, {
-    label: toLatexText('$\\varepsilon$'),
+    label: toLatexText('$\\varepsilon=$'),
     valueFn: (v) => v.toFixed(2)
   });
   const appletObjects: AppletObject[] = [

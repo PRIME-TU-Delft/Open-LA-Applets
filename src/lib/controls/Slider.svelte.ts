@@ -6,6 +6,7 @@ type ChangeFunctions = {
   onRelease?: (v: number) => void;
   onStartChanging?: () => void;
   onStopChanging?: () => void;
+  onChange?: (v: number) => void;
 };
 
 /**
@@ -37,6 +38,7 @@ export class Slider implements Controller<number> {
   onRelease: (v: number) => void;
   onStartChanging: () => void;
   onStopChanging: () => void;
+  onChange: (v: number) => void;
 
   constructor(
     defaultValue: number,
@@ -75,6 +77,11 @@ export class Slider implements Controller<number> {
     this.onStopChanging =
       changeFunctions.onStopChanging ??
       (() => {
+        return;
+      });
+    this.onChange =
+      changeFunctions.onChange ??
+      ((_v) => {
         return;
       });
   }

@@ -2,9 +2,9 @@
   import ExternalLink from '@lucide/svelte/icons/external-link';
   import FolderList from '$lib/components/frontpage/FolderList.svelte';
   import NavBar from '$lib/components/frontpage/NavBar.svelte';
-  import { resolve } from '$app/paths';
   import Credits from '$lib/components/frontpage/Credits.svelte';
   import type { PageProps } from './$types';
+  import FrontpageList from '$lib/components/frontpage/FrontpageList.svelte';
 
   const modules = import.meta.glob('/src/routes/applet/**/+page.svelte');
 
@@ -14,7 +14,11 @@
       rawUrl.replace('/src/routes/applet/', '').replace('/+page.svelte', '')
     )
     .filter(
-      (s) => s !== '[...applet]/static' && !s.startsWith('calculus/') && !s.startsWith('other/')
+      (s) =>
+        s !== '[...applet]/static' &&
+        !s.startsWith('calculus/') &&
+        !s.startsWith('other/') &&
+        !s.startsWith('pts/')
     );
 
   let { data }: PageProps = $props();
@@ -44,21 +48,7 @@
       to explore each applet by clicking on the links below.
     </p>
 
-    <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
-      <span class="font-bold">Hint:</span>
-      Looking for Calculus applets? Go to
-      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/calculus')}
-        >/calculus <ExternalLink class="h-4 w-4" /></a
-      >
-    </blockquote>
-
-    <blockquote class="border-yellow-400/50 bg-yellow-400/10 py-2 text-yellow-800">
-      <span class="font-bold">Hint:</span>
-      Looking for other applets? Go to
-      <a class="inline-flex items-center gap-1 hover:underline" href={resolve('/other')}
-        >/other <ExternalLink class="h-4 w-4" /></a
-      >
-    </blockquote>
+    <FrontpageList />
 
     <blockquote class="border-green-400/50 bg-green-400/10 py-2 text-green-800">
       <span class="font-bold">Hint:</span>

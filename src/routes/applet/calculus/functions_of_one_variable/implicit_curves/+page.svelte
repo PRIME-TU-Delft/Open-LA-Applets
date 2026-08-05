@@ -91,17 +91,17 @@
   let xD = $derived(draggables[0].position.x);
 
   const controls = Controls.addSlider(2, 2, 9, 1, PrimeColor.darkGreen, {
-    label: toLatexText('$p$'),
+    label: toLatexText('$p=$'),
     valueFn: (v: number) => v.toFixed(0),
     animationStep: 1
   })
     .addSlider(5, 2, 9, 1, PrimeColor.orange, {
-      label: toLatexText('$q$'),
+      label: toLatexText('$q=$'),
       valueFn: (v: number) => v.toFixed(0),
       animationStep: 1
     })
     .addSlider(2, -3, 3, 1, PrimeColor.raspberry, {
-      label: toLatexText('$b$'),
+      label: toLatexText('$b=$'),
       valueFn: (v: number) => (Math.sign(v) * v ** 2).toFixed(0),
       animationStep: 1
     });

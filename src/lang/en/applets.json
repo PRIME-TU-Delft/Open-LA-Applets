@@ -162,6 +162,29 @@
       "expand_on_x1": "Expand on x1"
     }
   },
+  "pts": {
+    "distributions": {
+      "distributions": {
+        "continuous": "Continuous",
+        "discrete": "Discrete",
+        "bernouli": "Bernouli",
+        "binomial": "Binomial",
+        "geometric": "Geometric",
+        "poisson": "Poisson",
+        "uniform_die": "Uniform (die)",
+        "normal": "Normal",
+        "exponential": "Exponential",
+        "pareto": "Pareto",
+        "uniform": "Uniform",
+        "next": "Next"
+      },
+      "central_limit_theorem": {
+        "title": "Central Limit Theorem",
+        "average": "Average",
+        "sum": "Sum"
+      }
+    }
+  },
   "subspaces_in_rn": {
     "the_game": {
       "disc": "Disc",

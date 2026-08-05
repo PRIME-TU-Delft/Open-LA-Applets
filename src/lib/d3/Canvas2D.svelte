@@ -26,6 +26,7 @@
     children,
     splitCanvas2DChildren,
     splitCanvas3DChildren,
+    onReset,
 
     // Canvas2DProps
     cameraPosition = new Vector2(0, 0),
@@ -127,6 +128,7 @@
   {splitFormulas}
   {splitLegendItems}
   {legendFormulaPosition}
+  {onReset}
 >
   {#snippet sceneChildren(width: number, height: number)}
     {@const defaultCanvasWidth = width / 2}
