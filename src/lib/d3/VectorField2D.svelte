@@ -43,9 +43,10 @@
     // Instead of using floating point arithmetic, we calculate explicitly
     // the number of steps to avoid precision issues.
     const steps = Math.round((max - min) / stepSize); // round, assuming stepSize divides the range evenly
+    const newStepSize = (max - min) / steps; // recalculate step size to avoid floating point errors
     for (let i = 1; i <= steps - 1; i++) {
       // Use 1:steps-1 to avoid min and max due to floating point errors
-      values.push(min + i * stepSize);
+      values.push(min + i * newStepSize);
     }
 
     values.push(max); // Ensure the max value is included explicitly
