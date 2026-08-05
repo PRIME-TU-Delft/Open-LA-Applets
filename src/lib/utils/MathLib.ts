@@ -394,3 +394,255 @@ export function projectToParametrizedFunction2D(
 
   return [new Vector2(xFunc(t), yFunc(t)), t];
 }
+
+/** Dormand-Prince RK45 Butcher tableau (c nodes, a coefficients, 5th/4th order weights) */
+const DP45_C = [0, 1 / 5, 3 / 10, 4 / 5, 8 / 9, 1, 1];
+const DP45_A = [
+  [],
+  [1 / 5],
+  [3 / 40, 9 / 40],
+  [44 / 45, -56 / 15, 32 / 9],
+  [19372 / 6561, -25360 / 2187, 64448 / 6561, -212 / 729],
+  [9017 / 3168, -355 / 33, 46732 / 5247, 49 / 176, -5103 / 18656],
+  [35 / 384, 0, 500 / 1113, 125 / 192, -2187 / 6784, 11 / 84]
+];
+const DP45_B5 = [35 / 384, 0, 500 / 1113, 125 / 192, -2187 / 6784, 11 / 84, 0];
+const DP45_B4 = [5179 / 57600, 0, 7571 / 16695, 393 / 640, -92097 / 339200, 187 / 2100, 1 / 40];
+
+/** Takes a single Dormand-Prince RK45 step, returning the 5th order update and the embedded error estimate */
+function dormandPrinceStep(f: (t: number, y: number) => number, t: number, y: number, h: number) {
+  const k: number[] = [f(t, y)];
+  for (let i = 1; i < 7; i++) {
+    let ySum = y;
+    for (let j = 0; j < i; j++) ySum += h * DP45_A[i][j] * k[j];
+    k.push(f(t + DP45_C[i] * h, ySum));
+  }
+
+  let y5 = y;
+  let y4 = y;
+  for (let i = 0; i < 7; i++) {
+    y5 += h * DP45_B5[i] * k[i];
+    y4 += h * DP45_B4[i] * k[i];
+  }
+
+  return { y5, error: y5 - y4 };
+}
+
+/** Settings controlling the accuracy and step-size behaviour of {@link solveInitialValueProblem} */
+export interface IVPAccuracyOptions {
+  /** Relative error tolerance used for adaptive step-size control (default: 1e-6) */
+  tolerance?: number;
+  /** Absolute error tolerance used for adaptive step-size control (default: 1e-9) */
+  absoluteTolerance?: number;
+  /** Initial step size to try (default: length of the sub-range being integrated / 100) */
+  initialStep?: number;
+  /** Smallest step size allowed before giving up (default: 1e-12) */
+  minStep?: number;
+  /** Largest step size allowed (default: length of the sub-range being integrated) */
+  maxStep?: number;
+  /** Safety limit on the number of accepted steps per integration direction (default: 10000) */
+  maxSteps?: number;
+}
+
+interface SolutionNode {
+  t: number;
+  y: number;
+  dy: number;
+}
+
+/** Evaluates the cubic Hermite segment between two nodes at normalized position s in [0, 1] */
+function hermiteEval(p0: SolutionNode, p1: SolutionNode, s: number): number {
+  const h = p1.t - p0.t;
+  const h00 = 2 * s ** 3 - 3 * s ** 2 + 1;
+  const h10 = s ** 3 - 2 * s ** 2 + s;
+  const h01 = -2 * s ** 3 + 3 * s ** 2;
+  const h11 = s ** 3 - s ** 2;
+  return h00 * p0.y + h10 * h * p0.dy + h01 * p1.y + h11 * h * p1.dy;
+}
+
+/** Bisects the Hermite segment between two nodes to find where it crosses the given y boundary, assuming p0 is within range and p1 is not */
+function findBoundaryCrossing(p0: SolutionNode, p1: SolutionNode, boundary: number): number {
+  let sLo = 0;
+  let sHi = 1;
+  let fLo = hermiteEval(p0, p1, sLo) - boundary;
+  const fHi = hermiteEval(p0, p1, sHi) - boundary;
+  if (fLo === 0) return sLo;
+  if (fHi === 0 || Math.sign(fLo) === Math.sign(fHi)) return sHi;
+
+  for (let i = 0; i < 60; i++) {
+    const sMid = (sLo + sHi) / 2;
+    const fMid = hermiteEval(p0, p1, sMid) - boundary;
+    if (fMid === 0) return sMid;
+    if (Math.sign(fMid) === Math.sign(fLo)) {
+      sLo = sMid;
+      fLo = fMid;
+    } else {
+      sHi = sMid;
+    }
+  }
+  return (sLo + sHi) / 2;
+}
+
+/** Result of integrating in one direction: the accepted solution nodes, and whether the sweep stopped early because y left [yMin, yMax] (as opposed to reaching tEnd) */
+interface DirectionResult {
+  nodes: SolutionNode[];
+  exitedYRange: boolean;
+}
+
+/** Integrates from t0 towards tEnd with adaptive Dormand-Prince RK45, returning the accepted solution nodes in the direction of travel. Stops as soon as y leaves [yMin, yMax], adding an accurate boundary-crossing node as the last one. */
+function integrateDirection(
+  f: (t: number, y: number) => number,
+  t0: number,
+  y0: number,
+  tEnd: number,
+  yMin: number,
+  yMax: number,
+  options: Required<IVPAccuracyOptions>
+): DirectionResult {
+  const direction = Math.sign(tEnd - t0);
+  const nodes: SolutionNode[] = [{ t: t0, y: y0, dy: f(t0, y0) }];
+  if (direction === 0) return { nodes, exitedYRange: false };
+
+  const maxStep = Math.min(options.maxStep, Math.abs(tEnd - t0));
+  let t = t0;
+  let y = y0;
+  let h = direction * Math.min(options.initialStep, maxStep);
+  let steps = 0;
+
+  while (direction > 0 ? t < tEnd : t > tEnd) {
+    if (steps++ > options.maxSteps) {
+      throw new Error('solveInitialValueProblem: exceeded the maximum number of steps');
+    }
+    if (direction > 0 ? t + h > tEnd : t + h < tEnd) h = tEnd - t;
+
+    const { y5, error } = dormandPrinceStep(f, t, y, h);
+    if (!Number.isFinite(y5)) {
+      throw new Error(`solveInitialValueProblem: solution diverged near t=${t}`);
+    }
+
+    const scale =
+      options.absoluteTolerance + options.tolerance * Math.max(Math.abs(y), Math.abs(y5));
+    const errNorm = Math.abs(error) / scale;
+    // standard RK45 step-size controller: shrink/grow h based on the ratio of tolerance to estimated error
+    const factor = Math.min(5, Math.max(0.2, 0.9 * Math.pow(Math.max(errNorm, 1e-12), -0.2)));
+
+    if (errNorm <= 1) {
+      const tNew = t + h;
+      if (y5 < yMin || y5 > yMax) {
+        const boundary = y5 > yMax ? yMax : yMin;
+        const prevNode = nodes[nodes.length - 1];
+        const candidate: SolutionNode = { t: tNew, y: y5, dy: f(tNew, y5) };
+        const s = findBoundaryCrossing(prevNode, candidate, boundary);
+        const tBoundary = prevNode.t + s * (candidate.t - prevNode.t);
+        nodes.push({ t: tBoundary, y: boundary, dy: f(tBoundary, boundary) });
+        return { nodes, exitedYRange: true };
+      }
+
+      t = tNew;
+      y = y5;
+      nodes.push({ t, y, dy: f(t, y) });
+      h = direction * Math.min(maxStep, Math.abs(h) * factor);
+    } else {
+      const shrunk = Math.abs(h) * factor;
+      if (shrunk <= options.minStep) {
+        throw new Error(
+          `solveInitialValueProblem: step size underflow while meeting accuracy at t=${t}`
+        );
+      }
+      h = direction * Math.max(options.minStep, shrunk);
+    }
+  }
+
+  return { nodes, exitedYRange: false };
+}
+
+/** Builds a C1-continuous cubic Hermite interpolant through solution nodes, using the known derivative f(t,y) at each node */
+function buildHermiteInterpolant(nodes: SolutionNode[]): (t: number) => number {
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+
+  return function solution(t: number): number {
+    if (t <= first.t) return first.y + (t - first.t) * first.dy;
+    if (t >= last.t) return last.y + (t - last.t) * last.dy;
+
+    let lo = 0;
+    let hi = nodes.length - 1;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (nodes[mid].t <= t) lo = mid;
+      else hi = mid;
+    }
+
+    return hermiteEval(nodes[lo], nodes[hi], (t - nodes[lo].t) / (nodes[hi].t - nodes[lo].t));
+  };
+}
+
+/**
+ * Numerically solves the initial value problem y' = f(t, y), y(t0) = y0 with an adaptive
+ * Dormand-Prince RK45 method, then returns a continuous function that best resembles the exact
+ * solution by cubic-Hermite-interpolating the numerical solution (matching value and derivative
+ * at every accepted step). If t0 lies strictly inside tRange, the ODE is integrated both forward
+ * and backward from t0 so the returned function covers the whole range. Each sweep stops as soon
+ * as the solution would leave yRange. The returned function is NaN beyond the point where a sweep
+ * left yRange, so plotting it stops there instead of continuing flat along the boundary.
+ * @param f - Right-hand side of the ODE, f(t, y)
+ * @param t0 - Initial time
+ * @param y0 - Initial value, y(t0); must lie within yRange
+ * @param tRange - [start, end] of the time range the solution must cover; must contain t0
+ * @param yRange - [min, max] bound the solution is not allowed to leave; each sweep stops at the first crossing
+ * @param options - Optional accuracy and step-size settings
+ * @returns The solution function (returning NaN once t is past where the solution left yRange), and the
+ * sub-range of tRange it actually covers (narrowed from tRange if a sweep left yRange before reaching an end)
+ */
+export function solveInitialValueProblem(
+  f: (t: number, y: number) => number,
+  t0: number,
+  y0: number,
+  tRange: [number, number],
+  yRange: [number, number],
+  options: IVPAccuracyOptions = {}
+): { solution: (t: number) => number; tRange: [number, number] } {
+  const [tMin, tMax] = tRange[0] <= tRange[1] ? tRange : [tRange[1], tRange[0]];
+  if (t0 < tMin || t0 > tMax) {
+    throw new Error('solveInitialValueProblem: t0 must lie within tRange');
+  }
+
+  const [yMin, yMax] = yRange[0] <= yRange[1] ? yRange : [yRange[1], yRange[0]];
+  if (y0 < yMin || y0 > yMax) {
+    throw new Error('solveInitialValueProblem: y0 must lie within yRange');
+  }
+
+  const resolvedOptions: Required<IVPAccuracyOptions> = {
+    tolerance: options.tolerance ?? 1e-6,
+    absoluteTolerance: options.absoluteTolerance ?? 1e-9,
+    initialStep: options.initialStep ?? ((tMax - tMin) / 100 || 1e-3),
+    minStep: options.minStep ?? 1e-12,
+    maxStep: options.maxStep ?? (tMax - tMin || 1e-3),
+    maxSteps: options.maxSteps ?? 10000
+  };
+
+  const forwardResult: DirectionResult =
+    t0 < tMax
+      ? integrateDirection(f, t0, y0, tMax, yMin, yMax, resolvedOptions)
+      : { nodes: [{ t: t0, y: y0, dy: f(t0, y0) }], exitedYRange: false };
+  const backwardResult: DirectionResult =
+    t0 > tMin
+      ? integrateDirection(f, t0, y0, tMin, yMin, yMax, resolvedOptions)
+      : { nodes: [], exitedYRange: false };
+  const backwardNodes = [...backwardResult.nodes].reverse();
+
+  const nodes = [...backwardNodes.slice(0, -1), ...forwardResult.nodes];
+  const rawSolution = buildHermiteInterpolant(nodes);
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+
+  const solution = (t: number) => {
+    // stop reporting values once t is past the point where a sweep left yRange, instead of extrapolating along the boundary
+    if (t < first.t && backwardResult.exitedYRange) return NaN;
+    if (t > last.t && forwardResult.exitedYRange) return NaN;
+    // clamp so any remaining interpolation overshoot can never leave yRange
+    return Math.min(yMax, Math.max(yMin, rawSolution(t)));
+  };
+
+  return { solution, tRange: [first.t, last.t] };
+}
