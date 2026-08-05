@@ -228,17 +228,17 @@
 {/each}
 
 {#each curveSegments as segment, idx (`${idx}-${segment.length}`)}
-{#if idx !== 0}
-  <T.Mesh>
-    <MeshLineGeometry points={segment} />
-    <MeshLineMaterial
-      depthTest={true}
-      width={0.01}
-      color={PrimeColor.blue}
-      dashOffset={0.1}
-      dashArray={0.1 * 0.01}
-    />
-  </T.Mesh>
+  {#if idx !== 0}
+    <T.Mesh>
+      <MeshLineGeometry points={segment} />
+      <MeshLineMaterial
+        depthTest={true}
+        width={0.01}
+        color={PrimeColor.blue}
+        dashOffset={0.1}
+        dashArray={0.1 * 0.01}
+      />
+    </T.Mesh>
   {/if}
 {/each}
 
