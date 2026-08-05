@@ -22,8 +22,8 @@
 <script>
   let {
     f,
-    xRange = [-GRID_SIZE_2D / 2, GRID_SIZE_2D / 2],
-    yRange = [-GRID_SIZE_2D / 2, GRID_SIZE_2D / 2],
+    xRange = [-GRID_SIZE_2D, GRID_SIZE_2D],
+    yRange = [-GRID_SIZE_2D, GRID_SIZE_2D],
     step = 1,
     color = PrimeColor.black,
     normalize = true,
