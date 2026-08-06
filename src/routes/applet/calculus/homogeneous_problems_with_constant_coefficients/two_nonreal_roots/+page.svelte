@@ -34,7 +34,7 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 0);
+  cameraPosition = new Vector2(3, 0);
   cameraZoom = 1.5;
   cameraPosition2 = new Vector2(0, 0);
   cameraZoom2 = 1.5;
