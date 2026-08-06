@@ -120,7 +120,7 @@
   ];
   const maxRadius = 2.25 * (1 / 8);
   function SnapToGrid(position: Vector2): Vector2 {
-    const snappedX = Number(position.x.toFixed(1));
+    const snappedX = Number(position.x.toFixed(2));
     const snappedY = Number(position.y.toFixed(1));
     const checkInEllips =
       Math.pow(snappedX, 2) + Math.pow(snappedY / r, 2) <= Math.pow(maxRadius, 2);
