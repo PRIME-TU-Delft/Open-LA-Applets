@@ -136,40 +136,12 @@
     new Text('t\\geq0', new Vector2(-3.5, 6.0), PrimeColor.orange, {
       alignX: 'center',
       alignY: 'top'
-    })
+    }),
+    new Polygon(
+      [new Vector2(-6, 6.25), new Vector2(-6, 5.75), new Vector2(-5, 5.75), new Vector2(-5, 6.25)],
+      PrimeColor.darkGreen
+    )
   ];
-  const DeltaX = 1 / 16;
-  const DeltaY = 1 / 4;
-  for (let i = 1; i < 16; i += 4) {
-    const Zig = new LineFragment(
-      new Vector2(-6 + (i - 1) * DeltaX, 6),
-      new Vector2(-6 + i * DeltaX, 6 + DeltaY),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zig);
-    const Zag = new LineFragment(
-      new Vector2(-6 + i * DeltaX, 6 + DeltaY),
-      new Vector2(-6 + (i + 1) * DeltaX, 6),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zag);
-    const Zig2 = new LineFragment(
-      new Vector2(-6 + (i + 1) * DeltaX, 6),
-      new Vector2(-6 + (i + 2) * DeltaX, 6 - DeltaY),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zig2);
-    const Zag2 = new LineFragment(
-      new Vector2(-6 + (i + 2) * DeltaX, 6 - DeltaY),
-      new Vector2(-6 + (i + 3) * DeltaX, 6),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zag2);
-  }
 </script>
 
 <Canvas2D
