@@ -244,7 +244,11 @@
     />
   </GridCanvas2D>
   <GridCanvas2D
-    initialViewBox={new ViewBox(new Vector2(0, -Math.PI / 2), new Vector2(10, Math.PI / 2), 2)}
+    initialViewBox={new ViewBox(
+      new Vector2(0, -Math.PI / 2 / 2),
+      new Vector2(10, Math.PI / 2 / 2),
+      2
+    )}
     labels={{ xLabel: 't', yLabel: '\\theta(t)' }}
     axis={axis3}
     scaleX={2}
