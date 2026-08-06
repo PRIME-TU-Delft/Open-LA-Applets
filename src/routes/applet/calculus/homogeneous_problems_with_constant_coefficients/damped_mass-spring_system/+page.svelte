@@ -159,8 +159,6 @@
     return maxAbsBound - maxRadius;
   }
 
-  const r = 6;
-
   const state = {
     time: 0
   };
@@ -245,7 +243,7 @@
     {/each}
     <FillBetweenFunctions2D
       func1={(_x: number) => -3}
-      func2={(x: number) => 4}
+      func2={(_x: number) => 4}
       color1={PrimeColor.blue}
       color2={PrimeColor.raspberry}
       width={0.05}
