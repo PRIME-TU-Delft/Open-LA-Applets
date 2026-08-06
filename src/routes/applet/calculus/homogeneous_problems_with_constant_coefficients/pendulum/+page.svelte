@@ -115,7 +115,7 @@
       new Vector2(0, 5),
       new Vector2(0, -1),
       PrimeColor.black + PrimeColor.opacity(0.8),
-      { width: 0.03, isDashed: true }
+      { width: 0.05, isDashed: true }
     )
   );
 
@@ -194,7 +194,7 @@
       startAngle={-Math.PI / 2 - maxRadius}
       endAngle={-Math.PI / 2 + maxRadius}
       origin={new Vector2(0, 5)}
-      width={0.02}
+      width={0.05}
       distance={5}
       hasHead={true}
     />
@@ -241,6 +241,7 @@
       tStart={0}
       tEnd={2 * Math.PI}
       isDashed
+      width={0.05}
     />
   </GridCanvas2D>
   <GridCanvas2D
