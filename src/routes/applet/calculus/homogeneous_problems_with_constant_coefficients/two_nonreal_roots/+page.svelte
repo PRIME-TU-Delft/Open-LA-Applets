@@ -86,8 +86,8 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const Sol1 = (x: number) => Math.exp(-2 * x)*Math.cos(3 * x);
-  const Sol2 = (x: number) => Math.exp(-2 * x)*Math.sin(3 * x);
+  const Sol1 = (x: number) => Math.exp(-2 * x) * Math.cos(3 * x);
+  const Sol2 = (x: number) => Math.exp(-2 * x) * Math.sin(3 * x);
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Sol1, PrimeColor.blue, {
       legendText: 'y_1(t)=e^{-2t}\\cos(3t)',
