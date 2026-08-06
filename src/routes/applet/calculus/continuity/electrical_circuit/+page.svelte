@@ -88,15 +88,16 @@
     new FunctionFragment('0', PrimeColor.blue, {
       domain: { xMax: 0 },
       width: 0.1,
-      legendText: 'i(t)'
+      legendText: 'i(t) \\text{ for } t<0'
     }).addGaps(new Vector2(0, 0), undefined, 0.125),
-    new FunctionFragment((x: number) => i0 * Math.exp(-x), PrimeColor.blue, {
+    new FunctionFragment((x: number) => i0 * Math.exp(-x), PrimeColor.orange, {
       domain: { xMin: 0 },
-      width: 0.1
+      width: 0.1,
+      legendText: 'i(t) \\text{ for } t\\geq0'
     }).addIncludedPoints([new Vector2(0, i0)], undefined, 0.125),
     new Polygon(
       [new Vector2(-2, 1), new Vector2(-2, 6), new Vector2(-7, 6), new Vector2(-7, 1)],
-      PrimeColor.blue
+      PrimeColor.black
     ),
     new LineFragment(new Vector2(-2, 3.4), new Vector2(-2, 3.6), PrimeColor.white, { width: 0.06 }),
     new LineFragment(new Vector2(-2.5, 3.4), new Vector2(-1.5, 3.4), PrimeColor.darkGreen, {
@@ -119,14 +120,14 @@
       alignX: 'right',
       alignY: 'center'
     }),
-    new LineFragment(new Vector2(-6, 6), new Vector2(-5, 6), PrimeColor.white, { width: 0.06 }),
+    new LineFragment(new Vector2(-6, 6), new Vector2(-5, 6), PrimeColor.white, { width: 0.07 }),
     new Text('R', new Vector2(-5.5, 6.3), PrimeColor.darkGreen, {
       alignX: 'center',
       alignY: 'bottom'
     }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6), PrimeColor.white, { width: 0.06 }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6.5), PrimeColor.grey, { width: 0.05 }),
-    new Text('t<0', new Vector2(-3.5, 6.5), PrimeColor.grey, {
+    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6), PrimeColor.white, { width: 0.07 }),
+    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6.5), PrimeColor.blue, { width: 0.05 }),
+    new Text('t<0', new Vector2(-3.5, 6.5), PrimeColor.blue, {
       alignX: 'center',
       alignY: 'bottom'
     }),
@@ -136,40 +137,12 @@
     new Text('t\\geq0', new Vector2(-3.5, 6.0), PrimeColor.orange, {
       alignX: 'center',
       alignY: 'top'
-    })
+    }),
+    new Polygon(
+      [new Vector2(-6, 6.25), new Vector2(-6, 5.75), new Vector2(-5, 5.75), new Vector2(-5, 6.25)],
+      PrimeColor.darkGreen
+    )
   ];
-  const DeltaX = 1 / 16;
-  const DeltaY = 1 / 4;
-  for (let i = 1; i < 16; i += 4) {
-    const Zig = new LineFragment(
-      new Vector2(-6 + (i - 1) * DeltaX, 6),
-      new Vector2(-6 + i * DeltaX, 6 + DeltaY),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zig);
-    const Zag = new LineFragment(
-      new Vector2(-6 + i * DeltaX, 6 + DeltaY),
-      new Vector2(-6 + (i + 1) * DeltaX, 6),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zag);
-    const Zig2 = new LineFragment(
-      new Vector2(-6 + (i + 1) * DeltaX, 6),
-      new Vector2(-6 + (i + 2) * DeltaX, 6 - DeltaY),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zig2);
-    const Zag2 = new LineFragment(
-      new Vector2(-6 + (i + 2) * DeltaX, 6 - DeltaY),
-      new Vector2(-6 + (i + 3) * DeltaX, 6),
-      PrimeColor.darkGreen,
-      { width: 0.05 }
-    );
-    appletObjects.push(Zag2);
-  }
 </script>
 
 <Canvas2D
@@ -198,13 +171,13 @@
   />
   <Point2D
     position={new Vector2(-4, 6.0)}
-    color={PrimeColor.blue}
+    color={PrimeColor.black}
     radius={0.1}
     fill={PrimeColor.white}
   />
   <Point2D
     position={new Vector2(-3, 6.0)}
-    color={PrimeColor.blue}
+    color={PrimeColor.black}
     radius={0.1}
     fill={PrimeColor.white}
   />
