@@ -5,7 +5,6 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import MassSpring2D from '$lib/d3/MassSpring2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { AppletObject, LineFragment } from '$lib/template/TemplateAppletObjects';
   import CanvasGrid from '$lib/common/CanvasGrid.svelte';
   import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
@@ -107,16 +106,6 @@
   // (remove if unnecessary)
   xAxisLabel = '';
   yAxisLabel = '';
-
-  let appletObjects: AppletObject[] = [];
-  appletObjects.push(
-    new LineFragment(
-      new Vector2(0, 5),
-      new Vector2(0, -1),
-      PrimeColor.black + PrimeColor.opacity(0.8),
-      { width: 0.05, isDashed: true }
-    )
-  );
 
   const draggables = [
     new Draggable(
