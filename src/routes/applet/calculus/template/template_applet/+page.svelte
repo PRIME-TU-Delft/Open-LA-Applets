@@ -64,7 +64,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 2,
+    skipX: 0,
     skipY: 0
   };
 
@@ -74,7 +74,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 4;
+  let scaleX = 1;
   let scaleY = 1;
 
   // ###########
