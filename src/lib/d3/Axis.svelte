@@ -70,7 +70,9 @@
 
   function getTickText(index: number, axis: 'x' | 'y') {
     if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
-      return index.toLocaleString();
+      // Forced en-GB locale string
+      return index.toLocaleString('en-GB');
+      // todo: make aware of embedding page or used url in iframe
     }
 
     return `10^{${index}}`;
