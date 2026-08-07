@@ -13,7 +13,6 @@
   import Point2D from '$lib/d3/Point2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
@@ -233,11 +232,11 @@
   const formulas = $derived.by(() => {
     let Type = '';
     if (c < 10) {
-      Type = 'Underdamped';
+      Type += 'Underdamped';
     } else if (c === 10) {
-      Type = 'Critically damped';
+      Type += 'Critically damped';
     } else {
-      Type = 'Overdamped';
+      Type += 'Overdamped';
     }
     return [new Formula(toLatexText(Type))];
   });
