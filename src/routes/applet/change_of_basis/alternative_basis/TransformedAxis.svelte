@@ -81,9 +81,15 @@
     {#if index != 0 && showAxisNumbers}
       <!-- X axis number labels -->
       {#if index > 0 && index % 2 == 0}
-        <Latex2D latex={index.toLocaleString('en-GB')} position={new Vector2(index - 0.07, -0.15)} />
+        <Latex2D
+          latex={index.toLocaleString('en-GB')}
+          position={new Vector2(index - 0.07, -0.15)}
+        />
       {:else if index % 2 == 0}
-        <Latex2D latex={index.toLocaleString('en-GB')} position={new Vector2(index - 0.15, -0.15)} />
+        <Latex2D
+          latex={index.toLocaleString('en-GB')}
+          position={new Vector2(index - 0.15, -0.15)}
+        />
       {/if}
 
       <!-- Y axis number labels -->
