@@ -13,6 +13,7 @@ import { Vector2 } from 'three';
  * @param snapFn The function to snap the draggable to the grid
  * @param valueFn The function to format the value
  * @param labelPosition Position of the label
+ * @param shape The shape of the draggable, default is circle
  */
 
 export class Draggable implements Controller<Vector2> {
@@ -28,6 +29,7 @@ export class Draggable implements Controller<Vector2> {
   releaseFn: (value: Vector2) => Vector2;
   labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right';
   radius: number = 0.1;
+  shape: 'circle' | 'square' | 'triangle' | 'diamond' = 'circle';
 
   constructor(
     defaultValue: Vector2,
@@ -36,7 +38,8 @@ export class Draggable implements Controller<Vector2> {
     snapFn: (value: Vector2) => Vector2 = (v) => v,
     releaseFn: ((value: Vector2) => Vector2) | undefined = undefined,
     labelPosition: 'top' | 'right' | 'bottom' | 'left' = 'right',
-    radius: number = 0.1
+    radius: number = 0.1,
+    shape: 'circle' | 'square' | 'triangle' | 'diamond' = 'circle'
   ) {
     this.defaultValue = defaultValue.clone();
     this.value = defaultValue;
@@ -46,6 +49,7 @@ export class Draggable implements Controller<Vector2> {
     this.releaseFn = releaseFn ?? snapFn;
     this.labelPosition = labelPosition;
     this.radius = radius;
+    this.shape = shape;
   }
 
   static Default = new Draggable(new Vector2(0, 0));
@@ -102,7 +106,8 @@ export class Draggable implements Controller<Vector2> {
       this.snapFn,
       this.releaseFn,
       this.labelPosition,
-      this.radius
+      this.radius,
+      this.shape
     );
   }
 }
