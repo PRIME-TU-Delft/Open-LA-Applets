@@ -673,4 +673,3 @@ export function solveInitialValueProblem(
 
   return { solution, tRange: [first.t, last.t] };
 }
-
