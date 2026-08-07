@@ -55,12 +55,12 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: false,
-    showAxisNumbersY: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: -1,
-    skipY: -1
+    skipX: 0,
+    skipY: 0
   };
 
   // #####
@@ -99,11 +99,17 @@
       [new Vector2(-2, 1), new Vector2(-2, 6), new Vector2(-7, 6), new Vector2(-7, 1)],
       PrimeColor.black
     ),
-    new LineFragment(new Vector2(-2, 3.4), new Vector2(-2, 3.6), PrimeColor.white, { width: 0.06 }),
+    new LineFragment(new Vector2(-2, 2.5), new Vector2(-2, 4.5), PrimeColor.white, { width: 0.07 }),
     new LineFragment(new Vector2(-2.5, 3.4), new Vector2(-1.5, 3.4), PrimeColor.darkGreen, {
       width: 0.05
     }),
     new LineFragment(new Vector2(-2.5, 3.6), new Vector2(-1.5, 3.6), PrimeColor.darkGreen, {
+      width: 0.05
+    }),
+    new LineFragment(new Vector2(-2, 2.5), new Vector2(-2, 3.4), PrimeColor.darkGreen, {
+      width: 0.05
+    }),
+    new LineFragment(new Vector2(-2, 3.6), new Vector2(-2, 4.5), PrimeColor.darkGreen, {
       width: 0.05
     }),
     new Text(
@@ -120,28 +126,51 @@
       alignX: 'right',
       alignY: 'center'
     }),
-    new LineFragment(new Vector2(-6, 6), new Vector2(-5, 6), PrimeColor.white, { width: 0.07 }),
-    new Text('R', new Vector2(-5.5, 6.3), PrimeColor.darkGreen, {
+    new LineFragment(new Vector2(-6.75, 6), new Vector2(-4.75, 6), PrimeColor.white, {
+      width: 0.07
+    }),
+    new Text('R', new Vector2(-5.75, 6.3), PrimeColor.darkGreen, {
       alignX: 'center',
       alignY: 'bottom'
     }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6), PrimeColor.white, { width: 0.07 }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-3, 6.5), PrimeColor.blue, { width: 0.05 }),
-    new Text('t<0', new Vector2(-3.5, 6.5), PrimeColor.blue, {
-      alignX: 'center',
-      alignY: 'bottom'
+    new LineFragment(new Vector2(-4.25, 6), new Vector2(-2.25, 6), PrimeColor.white, {
+      width: 0.07
     }),
-    new LineFragment(new Vector2(-4, 6), new Vector2(-2.9, 6.15), PrimeColor.orange, {
+    new LineFragment(new Vector2(-3.75, 6), new Vector2(-2.75, 6.5), PrimeColor.blue, {
       width: 0.05
     }),
-    new Text('t\\geq0', new Vector2(-3.5, 6.0), PrimeColor.orange, {
+    new Text('t<0', new Vector2(-3.25, 6.5), PrimeColor.blue, {
+      alignX: 'center',
+      alignY: 'bottom'
+    }),
+    new LineFragment(new Vector2(-3.75, 6), new Vector2(-2.7, 6.15), PrimeColor.orange, {
+      width: 0.05
+    }),
+    new Text('t\\geq0', new Vector2(-3.25, 6.0), PrimeColor.orange, {
       alignX: 'center',
       alignY: 'top'
     }),
     new Polygon(
-      [new Vector2(-6, 6.25), new Vector2(-6, 5.75), new Vector2(-5, 5.75), new Vector2(-5, 6.25)],
+      [
+        new Vector2(-6.5, 6.25),
+        new Vector2(-6.5, 5.75),
+        new Vector2(-5, 5.75),
+        new Vector2(-5, 6.25)
+      ],
       PrimeColor.darkGreen
-    )
+    ),
+    new LineFragment(new Vector2(-6.75, 6), new Vector2(-6.5, 6), PrimeColor.darkGreen, {
+      width: 0.05
+    }),
+    new LineFragment(new Vector2(-5, 6), new Vector2(-4.75, 6), PrimeColor.darkGreen, {
+      width: 0.05
+    }),
+    new LineFragment(new Vector2(-4.25, 6), new Vector2(-3.75, 6), PrimeColor.darkGreen, {
+      width: 0.05
+    }),
+    new LineFragment(new Vector2(-2.75, 6), new Vector2(-2.25, 6), PrimeColor.darkGreen, {
+      width: 0.05
+    })
   ];
 </script>
 
@@ -170,14 +199,14 @@
     color={PrimeColor.raspberry}
   />
   <Point2D
-    position={new Vector2(-4, 6.0)}
-    color={PrimeColor.black}
+    position={new Vector2(-3.75, 6.0)}
+    color={PrimeColor.darkGreen}
     radius={0.1}
     fill={PrimeColor.white}
   />
   <Point2D
-    position={new Vector2(-3, 6.0)}
-    color={PrimeColor.black}
+    position={new Vector2(-2.75, 6.0)}
+    color={PrimeColor.darkGreen}
     radius={0.1}
     fill={PrimeColor.white}
   />

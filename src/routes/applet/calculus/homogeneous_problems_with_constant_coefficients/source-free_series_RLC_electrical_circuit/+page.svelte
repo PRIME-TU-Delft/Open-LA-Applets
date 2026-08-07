@@ -47,7 +47,7 @@
       [new Vector2(4, 1), new Vector2(4, 6), new Vector2(-4, 6), new Vector2(-4, 1)],
       PrimeColor.black
     ),
-    new LineFragment(new Vector2(4, 2.5), new Vector2(4, 4.5), PrimeColor.white, { width: 0.06 }),
+    new LineFragment(new Vector2(4, 2.5), new Vector2(4, 4.5), PrimeColor.white, { width: 0.07 }),
     new LineFragment(new Vector2(3.5, 3.4), new Vector2(4.5, 3.4), PrimeColor.darkGreen, {
       width: 0.05
     }),
