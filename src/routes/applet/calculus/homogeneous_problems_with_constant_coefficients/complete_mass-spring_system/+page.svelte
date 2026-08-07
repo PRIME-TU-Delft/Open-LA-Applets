@@ -221,34 +221,6 @@
     draggables2[0].position = SnapToGrid2(currentPosition);
   });
 
-  function zeroFunction(A: number, B: number): number {
-    const Bounds = findMaxAmplitude(A, B);
-    const maxAbsBound = Math.max(Math.abs(Bounds.min), Math.abs(Bounds.max));
-    return maxAbsBound - maxRadius;
-  }
-
-  const state = {
-    time: 0
-  };
-
-  type S = typeof state;
-
-  const transitions: SlideShowSteps<S> = [
-    // Step 1: time increases to 5
-    {
-      transition: (t: number, state: S) => {
-        state.time = 5 * t;
-        return {
-          state,
-          labelPrev: toLatexText('Initial state'),
-          labelNext: toLatexText('Final state')
-        };
-      },
-      duration: 5000,
-      timeSteps: 500
-    }
-  ];
-
   const floatArray: number[] = Array.from({ length: 61 }, (_, i) => -30 + i);
 
   const appletObjects: AppletObject[] = [
