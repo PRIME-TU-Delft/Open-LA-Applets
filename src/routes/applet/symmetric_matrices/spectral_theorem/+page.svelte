@@ -16,8 +16,8 @@
   let transformed_e1 = direction_e1.clone().applyMatrix3(t);
   let transformed_e2 = direction_e2.clone().applyMatrix3(t);
 
-  let direction_q1 = new Vector2(2/Math.sqrt(5), 1/Math.sqrt(5));
-  let direction_q2 = new Vector2(-1/Math.sqrt(5), 2/Math.sqrt(5));
+  let direction_q1 = new Vector2(2 / Math.sqrt(5), 1 / Math.sqrt(5));
+  let direction_q2 = new Vector2(-1 / Math.sqrt(5), 2 / Math.sqrt(5));
 
   let transformed_q1 = direction_q1.clone().applyMatrix3(t);
   let transformed_q2 = direction_q2.clone().applyMatrix3(t);
@@ -84,36 +84,36 @@
 
     <Circle2D color={PrimeColor.darkGreen} />
     <ImplicitFunction2D
-        zeroFunc={(x, y) => 8 * x * x + 4 * x * y + 5 * y * y - 36}
-        color="#A50034"
-        stepSize={0.15}
-        width={0.06}
-        maxDepth={6}
+      zeroFunc={(x, y) => 8 * x * x + 4 * x * y + 5 * y * y - 36}
+      color="#A50034"
+      stepSize={0.15}
+      width={0.06}
+      maxDepth={6}
     />
 
     <Latex2D
-    latex={'\\text{q}_1'}
-    position={direction_q1}
-    offset={new Vector2(0.15, 0)}
-    color={PrimeColor.cyan}
-  />
-  <Latex2D
-    latex={'\\text{q}_2'}
-    position={direction_q2}
-    offset={new Vector2(-0.3, 0.6)}
-    color={PrimeColor.cyan}
-  />
-  <Latex2D
-    latex={'\\text{T}(\\text{q}_1)'}
-    position={transformed_q1}
-    offset={new Vector2(0.15, 0.15)}
-    color={PrimeColor.red}
-  />
-  <Latex2D
-    latex={'\\text{T}(\\text{q}_2)'}
-    position={transformed_q2}
-    offset={new Vector2(0.15, 0)}
-    color={PrimeColor.red}
-  />
+      latex={'\\text{q}_1'}
+      position={direction_q1}
+      offset={new Vector2(0.15, 0)}
+      color={PrimeColor.cyan}
+    />
+    <Latex2D
+      latex={'\\text{q}_2'}
+      position={direction_q2}
+      offset={new Vector2(-0.3, 0.6)}
+      color={PrimeColor.cyan}
+    />
+    <Latex2D
+      latex={'\\text{T}(\\text{q}_1)'}
+      position={transformed_q1}
+      offset={new Vector2(0.15, 0.15)}
+      color={PrimeColor.red}
+    />
+    <Latex2D
+      latex={'\\text{T}(\\text{q}_2)'}
+      position={transformed_q2}
+      offset={new Vector2(0.15, 0)}
+      color={PrimeColor.red}
+    />
   {/snippet}
 </Canvas2D>
