@@ -1,4 +1,3 @@
-import { ComputeEngine } from '@cortex-js/compute-engine';
 import { Vector2, Vector3 } from 'three';
 
 /**
@@ -294,59 +293,156 @@ export function integral(
   return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
 }
 
-/**
- * Relative-error cutoff below which the Compute Engine's `.N()` estimate of a definite
- * integral is trusted as a confident value. Tune this to trade off false '?' results
- * against false confident values.
- */
-export const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 0.01;
-
 export type ReferenceIntegralResult = { confident: true; value: number } | { confident: false };
 
 /**
- * Computes a definite integral's reference value using the Compute Engine, symbolically
- * where possible. Returns `{ confident: false }` rather than a claim of divergence when the
- * result can't be trusted (e.g. divergent integrals, or singularities that make CE's
- * `evaluate()` silently return a wrong finite value) — see issue #375.
- * @param functionLatex - LaTeX source of the integrand, in terms of `variable`
- * @param variable - Name of the integration variable (matches the integrand's free variable)
+ * Relative difference, between a normal-budget and a generous-budget adaptive Simpson pass,
+ * below which the two are considered to agree — see `referenceIntegral`.
+ */
+const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 1e-3;
+
+/** Tiny inward nudge used to sample just off a bound, in case the integrand is undefined
+ * (but otherwise bounded) exactly at that point — e.g. sin(1/x) at x = 0. */
+const INTEGRAL_BOUNDARY_EPSILON = 1e-9;
+
+type SimpsonPassResult = { value: number; diverged: boolean; unresolved: boolean };
+
+/**
+ * Adaptive Simpson's rule that, unlike `integral`, distinguishes *why* a subinterval failed
+ * to resolve: a genuine blow-up (integrand exceeds `blowupThreshold`, or is non-finite once
+ * nudged off the boundary — a real singularity) sets `diverged`, while merely exhausting the
+ * depth/evaluation budget (e.g. because the integrand oscillates rapidly but stays bounded)
+ * sets `unresolved` and falls back to the coarse estimate for that subinterval instead of NaN.
+ */
+function adaptiveSimpsonPass(
+  f: (x: number) => number,
+  a: number,
+  b: number,
+  tolerance: number,
+  maxDepth: number,
+  maxEvaluations: number
+): SimpsonPassResult {
+  const blowupThreshold = 1e12;
+  let evalCount = 0;
+  let diverged = false;
+  let unresolved = false;
+
+  const safeEval = (x: number): number => {
+    const v = f(x);
+    evalCount++;
+    if (!Number.isFinite(v) || Math.abs(v) > blowupThreshold) {
+      diverged = true;
+      return NaN;
+    }
+    return v;
+  };
+
+  // Sample just inside the bound rather than exactly on it, so an integrand that's undefined
+  // only at the boundary itself (but bounded nearby) isn't mistaken for a divergence.
+  const safeEvalBoundary = (x: number, direction: 1 | -1): number => {
+    const v = f(x);
+    if (Number.isFinite(v)) {
+      evalCount++;
+      return Math.abs(v) > blowupThreshold ? ((diverged = true), NaN) : v;
+    }
+    return safeEval(x + direction * INTEGRAL_BOUNDARY_EPSILON * Math.max(Math.abs(b - a), 1));
+  };
+
+  const simpsonRule = (a: number, b: number, fa: number, fm: number, fb: number): number =>
+    ((b - a) / 6) * (fa + 4 * fm + fb);
+
+  const recurse = (
+    a: number,
+    b: number,
+    tolerance: number,
+    fa: number,
+    fm: number,
+    fb: number,
+    whole: number,
+    depth: number
+  ): number => {
+    if (diverged) return NaN;
+
+    if (depth > maxDepth || evalCount > maxEvaluations) {
+      unresolved = true;
+      return whole;
+    }
+
+    const m = (a + b) / 2;
+    const lm = (a + m) / 2;
+    const rm = (m + b) / 2;
+
+    const flm = safeEval(lm);
+    const frm = safeEval(rm);
+
+    if (diverged) return NaN;
+
+    const left = simpsonRule(a, m, fa, flm, fm);
+    const right = simpsonRule(m, b, fm, frm, fb);
+    const total = left + right;
+
+    const error = Math.abs(total - whole) / 15;
+
+    if (error < tolerance) return total + (total - whole) / 15;
+
+    return (
+      recurse(a, m, tolerance / 2, fa, flm, fm, left, depth + 1) +
+      recurse(m, b, tolerance / 2, fm, frm, fb, right, depth + 1)
+    );
+  };
+
+  if (!Number.isFinite(a) || !Number.isFinite(b))
+    return { value: NaN, diverged: true, unresolved: false };
+
+  const m = (a + b) / 2;
+  const fa = safeEvalBoundary(a, 1);
+  const fm = safeEval(m);
+  const fb = safeEvalBoundary(b, -1);
+
+  if (diverged) return { value: NaN, diverged: true, unresolved: false };
+
+  const whole = simpsonRule(a, b, fa, fm, fb);
+  const value = recurse(a, b, tolerance, fa, fm, fb, whole, 0);
+
+  return { value, diverged, unresolved };
+}
+
+/**
+ * Computes a definite integral's reference value using pure numeric adaptive quadrature, with
+ * a confidence flag instead of a bare NaN-as-divergence signal. Returns `{ confident: false }`
+ * rather than a claim of divergence when the result can't be trusted, and doesn't misreport a
+ * bounded-but-hard-to-resolve integrand (e.g. sin(1/x) near 0) as divergent — see issue #375.
+ * @param f - Integrand, as a plain numeric function
  * @param xL - Lower bound of integration
  * @param xR - Upper bound of integration
  */
 export function referenceIntegral(
-  functionLatex: string,
-  variable: string,
+  f: (x: number) => number,
   xL: number,
   xR: number
 ): ReferenceIntegralResult {
-  if (!Number.isFinite(xL) || !Number.isFinite(xR)) return { confident: false };
+  if (!Number.isFinite(xL) || !Number.isFinite(xR) || xL === xR) return { confident: false };
 
-  const ce = new ComputeEngine();
-  const expr = ce.parse(`\\int_{${xL}}^{${xR}} ${functionLatex} \\,d${variable}`);
+  const primary = adaptiveSimpsonPass(f, xL, xR, 1e-8, 25, 8000);
 
-  if (!expr.isValid) return { confident: false };
+  if (primary.diverged || !Number.isFinite(primary.value)) return { confident: false };
 
-  const numeric = expr.N();
-  // `.op1`/`.op2` are only declared on the compute-engine's function-expression type, but
-  // `numeric` is narrowed to a "PlusMinus" function expression by the operator check below.
-  const numericOps = numeric as unknown as { op1: { re: number }; op2: { re: number } };
-  const [numericValue, numericError] =
-    numeric.operator === 'PlusMinus' ? [numericOps.op1.re, numericOps.op2.re] : [numeric.re, 0];
+  if (!primary.unresolved) return { confident: true, value: primary.value };
 
-  const isNumericConfident =
-    Number.isFinite(numericValue) &&
-    Number.isFinite(numericError) &&
-    Math.abs(numericError) <=
-      INTEGRAL_CONFIDENCE_RELATIVE_ERROR * Math.max(Math.abs(numericValue), 1e-9);
+  // The primary pass exhausted its budget without ever detecting a genuine blow-up — likely a
+  // bounded but rapidly oscillating integrand near a boundary. Cross-check against a second,
+  // more generous pass; if the two estimates agree, the oscillation just needed a coarser
+  // tolerance rather than more resolution, and the value can be trusted.
+  const secondary = adaptiveSimpsonPass(f, xL, xR, 1e-6, 30, 30000);
 
-  if (!isNumericConfident) return { confident: false };
+  if (secondary.diverged || !Number.isFinite(secondary.value)) return { confident: false };
 
-  // A wrong finite value from evaluate() (e.g. through an interior singularity) is only
-  // trusted because we've already confirmed .N() independently agrees above.
-  const exact = expr.evaluate().N();
-  const value = Number.isFinite(exact.re) ? exact.re : numericValue;
+  const scale = Math.max(Math.abs(primary.value), Math.abs(secondary.value), 1e-9);
+  const relativeDifference = Math.abs(primary.value - secondary.value) / scale;
 
-  return { confident: true, value };
+  if (relativeDifference > INTEGRAL_CONFIDENCE_RELATIVE_ERROR) return { confident: false };
+
+  return { confident: true, value: secondary.unresolved ? primary.value : secondary.value };
 }
 
 /**

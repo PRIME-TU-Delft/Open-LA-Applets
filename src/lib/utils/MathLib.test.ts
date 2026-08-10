@@ -99,20 +99,20 @@ describe('integral', () => {
 describe('referenceIntegral', () => {
   it('gives a confident value for a bounded oscillatory integrand (issue #375)', () => {
     // sin(1/x) is bounded (|sin| <= 1) and convergent, ~0.5 on [0, 1]
-    const result = referenceIntegral('\\sin(1/x)', 'x', 0, 1);
+    const result = referenceIntegral((x) => Math.sin(1 / x), 0, 1);
     expect(result.confident).toBe(true);
     if (result.confident) expect(result.value).toBeCloseTo(0.5, 1);
   });
 
   it('is not confident for a genuinely divergent integrand', () => {
     // 1/x has a non-integrable singularity at x = 0
-    const result = referenceIntegral('1/x', 'x', 0, 1);
+    const result = referenceIntegral((x) => 1 / x, 0, 1);
     expect(result.confident).toBe(false);
   });
 
-  it('prefers the exact symbolic value for a polynomial', () => {
+  it('gives an exact value for a polynomial', () => {
     // integral of x^2 from 0 to 3 = 9, exactly
-    const result = referenceIntegral('x^2', 'x', 0, 3);
+    const result = referenceIntegral((x) => x * x, 0, 3);
     expect(result.confident).toBe(true);
     if (result.confident) expect(result.value).toBeCloseTo(9, 6);
   });

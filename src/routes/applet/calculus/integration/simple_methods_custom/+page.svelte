@@ -11,7 +11,7 @@
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { appletState } from '$lib/stores/applet.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { referenceIntegral, round, type ReferenceIntegralResult } from '$lib/utils/MathLib';
+  import { referenceIntegral, round } from '$lib/utils/MathLib';
   import { parseNumericalOrLatex } from '$lib/utils/Params';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
@@ -144,30 +144,8 @@
     return 0;
   });
 
-  // referenceIntegral() runs a Compute Engine symbolic parse/evaluate, which is too heavy to
-  // call on every drag-frame update of xL/xR — debounce it so dragging stays smooth and the
-  // reference value settles shortly after the user stops moving.
-  let debouncedRef: ReferenceIntegralResult = $state({ confident: false });
-
-  $effect(() => {
-    // Force the function control to resolve first: it's what sets currentFuctionString
-    // via the setLatexValue callback passed to Controls.addFunction above.
-    func(xL);
-
-    const latex = currentFuctionString;
-    const variable = xAxisLetter;
-    const l = xL;
-    const r = xR;
-
-    const timeout = setTimeout(() => {
-      debouncedRef = referenceIntegral(latex, variable, l, r);
-    }, 200);
-
-    return () => clearTimeout(timeout);
-  });
-
   const formulas = $derived.by(() => {
-    const ref = debouncedRef;
+    const ref = referenceIntegral(func, xL, xR);
     const integralDisplay = ref.confident ? round(ref.value, 7) : '?';
 
     let f = new Formulas(
