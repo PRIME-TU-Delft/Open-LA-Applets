@@ -20,6 +20,33 @@ export function clamp(number: number, min: number, max: number) {
 }
 
 /**
+ * Finds the minimum and maximum of a function on an interval by simple sampling (no derivatives)
+ * @param f - function to evaluate
+ * @param a - lower bound of the interval
+ * @param b - upper bound of the interval
+ * @param samples - number of sample points, defaults to 1000
+ * @returns object with the minimum and maximum values found
+ */
+export function findMinMax(
+  f: (x: number) => number,
+  a: number,
+  b: number,
+  samples: number = 1000
+): { min: number; max: number } {
+  let min = Infinity;
+  let max = -Infinity;
+
+  for (let i = 0; i <= samples; i++) {
+    const x = a + (i / samples) * (b - a);
+    const y = f(x);
+    if (y < min) min = y;
+    if (y > max) max = y;
+  }
+
+  return { min, max };
+}
+
+/**
  * The snapPointToLine function calculates the smallest distance from a point to a line.
  * It then returns the closest point on that line if the actual distance is smaller than the required distance
  * @param point The point to check the distance from
