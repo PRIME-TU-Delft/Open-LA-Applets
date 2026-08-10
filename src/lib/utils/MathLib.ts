@@ -1,3 +1,4 @@
+import { ComputeEngine } from '@cortex-js/compute-engine';
 import { Vector2, Vector3 } from 'three';
 
 /**
@@ -291,6 +292,61 @@ export function integral(
   const whole = simpsonRule(a, b, fa, fm, fb);
 
   return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
+}
+
+/**
+ * Relative-error cutoff below which the Compute Engine's `.N()` estimate of a definite
+ * integral is trusted as a confident value. Tune this to trade off false '?' results
+ * against false confident values.
+ */
+export const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 0.01;
+
+export type ReferenceIntegralResult = { confident: true; value: number } | { confident: false };
+
+/**
+ * Computes a definite integral's reference value using the Compute Engine, symbolically
+ * where possible. Returns `{ confident: false }` rather than a claim of divergence when the
+ * result can't be trusted (e.g. divergent integrals, or singularities that make CE's
+ * `evaluate()` silently return a wrong finite value) — see issue #375.
+ * @param functionLatex - LaTeX source of the integrand, in terms of `variable`
+ * @param variable - Name of the integration variable (matches the integrand's free variable)
+ * @param xL - Lower bound of integration
+ * @param xR - Upper bound of integration
+ */
+export function referenceIntegral(
+  functionLatex: string,
+  variable: string,
+  xL: number,
+  xR: number
+): ReferenceIntegralResult {
+  if (!Number.isFinite(xL) || !Number.isFinite(xR)) return { confident: false };
+
+  const ce = new ComputeEngine();
+  const expr = ce.parse(`\\int_{${xL}}^{${xR}} ${functionLatex} \\,d${variable}`);
+
+  if (!expr.isValid) return { confident: false };
+
+  const numeric = expr.N();
+  // `.op1`/`.op2` are only declared on the compute-engine's function-expression type, but
+  // `numeric` is narrowed to a "PlusMinus" function expression by the operator check below.
+  const numericOps = numeric as unknown as { op1: { re: number }; op2: { re: number } };
+  const [numericValue, numericError] =
+    numeric.operator === 'PlusMinus' ? [numericOps.op1.re, numericOps.op2.re] : [numeric.re, 0];
+
+  const isNumericConfident =
+    Number.isFinite(numericValue) &&
+    Number.isFinite(numericError) &&
+    Math.abs(numericError) <=
+      INTEGRAL_CONFIDENCE_RELATIVE_ERROR * Math.max(Math.abs(numericValue), 1e-9);
+
+  if (!isNumericConfident) return { confident: false };
+
+  // A wrong finite value from evaluate() (e.g. through an interior singularity) is only
+  // trusted because we've already confirmed .N() independently agrees above.
+  const exact = expr.evaluate().N();
+  const value = Number.isFinite(exact.re) ? exact.re : numericValue;
+
+  return { confident: true, value };
 }
 
 /**
