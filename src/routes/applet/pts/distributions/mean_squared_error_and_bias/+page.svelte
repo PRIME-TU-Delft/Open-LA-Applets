@@ -155,7 +155,12 @@
   title={$_('applets.pts.distributions.mean_squared_error_and_bias.title')}
   cameraZoom={0.35}
   onReset={() => {
-    ((points = []), (stage = 'mu'), (mu_x = 0), (mu_y = 0), (omega_x = 0), (omega_y = 0));
+    points = [];
+    stage = 'mu';
+    mu_x = 0;
+    mu_y = 0;
+    omega_x = 0;
+    omega_y = 0;
   }}
 
   // target
@@ -171,7 +176,7 @@
   <Circle2D radius={2} color={PrimeColor.red} fill={PrimeColor.red} />
   <Circle2D radius={1} color={PrimeColor.red} fill={PrimeColor.white} />
 
-  {#each dists as dist}
+  {#each dists as dist (dist)}
     <Latex2D
       latex={`\\text{${10 - dist}}`}
       position={new Vector2((dist + 0.5) / Math.sqrt(2), (dist + 0.5) / Math.sqrt(2))}
@@ -181,7 +186,7 @@
 
   <Latex2D latex={`\\text{10}`} position={new Vector2(-0.15, 0.2)} color={PrimeColor.black} />
 
-  {#each points as point}
+  {#each points as point, i (i)}
     <Circle2D
       radius={0.15}
       color={Math.sqrt(point.x ** 2 + point.y ** 2) <= 10
