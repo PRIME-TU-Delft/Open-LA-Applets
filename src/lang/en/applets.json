@@ -181,7 +181,8 @@
       "central_limit_theorem": {
         "title": "Central Limit Theorem",
         "average": "Average",
-        "sum": "Sum"
+        "sum": "Sum",
+        "drawSamples": "Draw %N samples"
       }
     }
   },
