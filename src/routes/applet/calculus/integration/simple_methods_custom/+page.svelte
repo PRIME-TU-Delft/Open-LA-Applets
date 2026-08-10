@@ -11,7 +11,7 @@
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
   import { appletState } from '$lib/stores/applet.svelte';
   import { Formula, Formulas } from '$lib/utils/Formulas';
-  import { referenceIntegral, round } from '$lib/utils/MathLib';
+  import { integral, round } from '$lib/utils/MathLib';
   import { parseNumericalOrLatex } from '$lib/utils/Params';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
@@ -112,6 +112,10 @@
     return result;
   };
 
+  let intFunc = (a: number, b: number) => {
+    return integral(func, a, b);
+  };
+
   const currentRule = $derived(
     controls[1].replace('applets.calculus.integration.simple_methods.', '')
   );
@@ -145,18 +149,13 @@
   });
 
   const formulas = $derived.by(() => {
-    // Force the function control to resolve first: it's what sets currentFuctionString
-    // via the setLatexValue callback passed to Controls.addFunction above.
-    func(xL);
-
-    const ref = referenceIntegral(currentFuctionString, xAxisLetter, xL, xR);
-    const integralDisplay = ref.confident ? round(ref.value, 7) : '?';
+    let I = intFunc(xL, xR);
 
     let f = new Formulas(
       new Formula(`\\int_{\\$1}^{\\$2} \\$4 \\,d${xAxisLetter} = \\$3`)
         .addAutoParam(isXLLatex && xL == defaultXL ? urlXL || '' : round(xL), PrimeColor.orange)
         .addAutoParam(isXRLatex && xR == defaultXR ? urlXR || '' : round(xR), PrimeColor.orange)
-        .addAutoParam(integralDisplay, PrimeColor.blue)
+        .addAutoParam(!Number.isNaN(I) ? round(I, 7) : 'DIV', PrimeColor.blue)
         .addAutoParam(`${functionLetter}(${xAxisLetter})`, PrimeColor.blue),
       new Formula('\\text{\\$1} = \\$2')
         .addAutoParam($_('applets.common.area'))
