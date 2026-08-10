@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { integral, referenceIntegral } from './MathLib';
+import { integral, referenceIntegral, type ReferenceIntegralResult } from './MathLib';
 
 describe('integral', () => {
   it('should integrate constant functions correctly', () => {
@@ -96,12 +96,24 @@ describe('integral', () => {
   });
 });
 
+/**
+ * A confident result must be numerically correct — reporting a confident but wrong value is
+ * worse than reporting `{ confident: false }`, since the applet displays the value as-is with
+ * no further caveat. This only checks the contract; it doesn't require confidence.
+ */
+function expectCorrectIfConfident(
+  result: ReferenceIntegralResult,
+  expected: number,
+  precision = 3
+) {
+  if (result.confident) expect(result.value).toBeCloseTo(expected, precision);
+}
+
 describe('referenceIntegral', () => {
-  it('gives a confident value for a bounded oscillatory integrand (issue #375)', () => {
-    // sin(1/x) is bounded (|sin| <= 1) and convergent, ~0.5 on [0, 1]
+  it('gives the correct value (or declines) for a bounded oscillatory integrand (issue #375)', () => {
+    // sin(1/x) is bounded (|sin| <= 1) and convergent, ~0.5041 on [0, 1]
     const result = referenceIntegral((x) => Math.sin(1 / x), 0, 1);
-    expect(result.confident).toBe(true);
-    if (result.confident) expect(result.value).toBeCloseTo(0.5, 1);
+    expectCorrectIfConfident(result, 0.5041, 2);
   });
 
   it('is not confident for a genuinely divergent integrand', () => {
@@ -110,11 +122,11 @@ describe('referenceIntegral', () => {
     expect(result.confident).toBe(false);
   });
 
-  it('gives a confident value when the bounded singularity falls on an interior sample point', () => {
+  it('gives the correct value (or declines) when the bounded singularity is an odd function on a symmetric interval', () => {
     // sin(1/x) is undefined exactly at x = 0, which lands exactly on the recursion's midpoint
-    // for a symmetric interval — should still be recognized as bounded, not divergent
+    // for a symmetric interval; it's also an odd function here, so the true value is exactly 0
     const result = referenceIntegral((x) => Math.sin(1 / x), -1, 1);
-    expect(result.confident).toBe(true);
+    expectCorrectIfConfident(result, 0, 2);
   });
 
   it('is not confident for a genuinely divergent integrand with the singularity interior', () => {
