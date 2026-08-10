@@ -22,7 +22,9 @@ export class PrimeColor {
 
   // Opacity is a value between 0 and 1
   static opacity(opacity: number): string {
-    return Math.round(opacity * 255).toString(16);
+    return Math.round(opacity * 255)
+      .toString(16)
+      .padStart(2, '0');
   }
 
   static asArray(): ColorString[] {

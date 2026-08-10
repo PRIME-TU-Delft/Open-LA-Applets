@@ -84,17 +84,79 @@
   });
 </script>
 
-<circle
-  class="pulse"
-  r={draggable.radius * 2}
-  opacity="0.5"
-  fill={draggable.color}
-  role="button"
-  tabindex="0"
-  onmousedown={() => activityState.enable()}
-  style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
-/>
-<circle cx={valueScreen.x} cy={valueScreen.y} r={draggable.radius} fill={draggable.color} />
+{#if draggable.shape === 'square'}
+  {@const pulseRadius = draggable.radius * 2}
+  <rect
+    class="pulse"
+    x={-pulseRadius}
+    y={-pulseRadius}
+    width={pulseRadius * 2}
+    height={pulseRadius * 2}
+    opacity="0.5"
+    fill={draggable.color}
+    role="button"
+    tabindex="0"
+    onmousedown={() => activityState.enable()}
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+  />
+  <rect
+    x={valueScreen.x - draggable.radius}
+    y={valueScreen.y - draggable.radius}
+    width={draggable.radius * 2}
+    height={draggable.radius * 2}
+    fill={draggable.color}
+  />
+{:else if draggable.shape === 'triangle'}
+  {@const triRadius = draggable.radius * 1.2}
+  {@const dx = (triRadius * Math.sqrt(3)) / 2}
+  {@const dy = triRadius / 2}
+  {@const pulseTriRadius = triRadius * 2}
+  {@const pulseDx = (pulseTriRadius * Math.sqrt(3)) / 2}
+  {@const pulseDy = pulseTriRadius / 2}
+  <polygon
+    class="pulse"
+    points={`0,${pulseTriRadius} ${pulseDx},${-pulseDy} ${-pulseDx},${-pulseDy}`}
+    opacity="0.5"
+    fill={draggable.color}
+    role="button"
+    tabindex="0"
+    onmousedown={() => activityState.enable()}
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+  />
+  <polygon
+    points={`${valueScreen.x},${valueScreen.y + triRadius} ${valueScreen.x + dx},${valueScreen.y - dy} ${valueScreen.x - dx},${valueScreen.y - dy}`}
+    fill={draggable.color}
+  />
+{:else if draggable.shape === 'diamond'}
+  {@const diaRadius = draggable.radius * 1.2}
+  {@const pulseDiaRadius = diaRadius * 2}
+  <polygon
+    class="pulse"
+    points={`0,${-pulseDiaRadius} ${pulseDiaRadius},0 0,${pulseDiaRadius} ${-pulseDiaRadius},0`}
+    opacity="0.5"
+    fill={draggable.color}
+    role="button"
+    tabindex="0"
+    onmousedown={() => activityState.enable()}
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+  />
+  <polygon
+    points={`${valueScreen.x},${valueScreen.y - diaRadius} ${valueScreen.x + diaRadius},${valueScreen.y} ${valueScreen.x},${valueScreen.y + diaRadius} ${valueScreen.x - diaRadius},${valueScreen.y}`}
+    fill={draggable.color}
+  />
+{:else}
+  <circle
+    class="pulse"
+    r={draggable.radius * 2}
+    opacity="0.5"
+    fill={draggable.color}
+    role="button"
+    tabindex="0"
+    onmousedown={() => activityState.enable()}
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+  />
+  <circle cx={valueScreen.x} cy={valueScreen.y} r={draggable.radius} fill={draggable.color} />
+{/if}
 
 {#if children}
   {@render children()}

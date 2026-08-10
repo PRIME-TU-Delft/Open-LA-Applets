@@ -3,7 +3,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Vector2D from './Vector2D.svelte';
-  import Point2D from './Point2D.svelte';
 
   export type VectorField2DProps = {
     f: (x: number, y: number) => Vector2;
@@ -20,10 +19,15 @@
 </script>
 
 <script>
+  import { getContext } from 'svelte';
+  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
+  const sx = _scale2D?.x ?? 1;
+  const sy = _scale2D?.y ?? 1;
+
   let {
     f,
-    xRange = [-GRID_SIZE_2D / 2, GRID_SIZE_2D / 2],
-    yRange = [-GRID_SIZE_2D / 2, GRID_SIZE_2D / 2],
+    xRange = [-GRID_SIZE_2D / sx, GRID_SIZE_2D / sx],
+    yRange = [-GRID_SIZE_2D / sy, GRID_SIZE_2D / sy],
     step = 1,
     color = PrimeColor.black,
     normalize = true,
@@ -39,16 +43,18 @@
     }
 
     const values: number[] = [];
-    let current = min;
+    values.push(min); // Ensure the min value is included explicitly
 
-    while (current < max - 1e-12) {
-      values.push(current);
-      current += stepSize;
+    // Instead of using floating point arithmetic, we calculate explicitly
+    // the number of steps to avoid precision issues.
+    const steps = Math.round((max - min) / stepSize); // round, assuming stepSize divides the range evenly
+    const newStepSize = (max - min) / steps; // recalculate step size to avoid floating point errors
+    for (let i = 1; i <= steps - 1; i++) {
+      // Use 1:steps-1 to avoid min and max due to floating point errors
+      values.push(min + i * newStepSize);
     }
 
-    if (values.length === 0 || Math.abs(values.at(-1)! - max) > 1e-12) {
-      values.push(max);
-    }
+    values.push(max); // Ensure the max value is included explicitly
 
     return values;
   };
@@ -72,9 +78,8 @@
                 .multiplyScalar(length / 2)
             )}
 
-    {#if x < 1e-12 && x > -1e-12 && y < 1e-12 && y > -1e-12}
-      <Point2D position={origin} color={colorFn ? colorFn(x, y) : color} />
-    {:else}
+    {#if Math.sqrt(f(x, y).x ** 2 + f(x, y).y ** 2) > 1e-6}
+      // Only draw non-near-zero vectors
       <Vector2D
         {origin}
         direction={f(x, y)}
