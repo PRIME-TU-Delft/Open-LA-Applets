@@ -36,7 +36,7 @@ describe('outwardSideNormal', () => {
 });
 
 describe('outwardLabelOffset', () => {
-  it('offsets outward by the requested magnitude and aligns bottom-left is not chosen — up-right anchors bottom-left', () => {
+  it('offsets outward by the requested magnitude and anchors bottom-left for an up-right direction', () => {
     const { offset, alignX, alignY } = outwardLabelOffset(new Vector2(1, 1), POLYGON_LABEL_OFFSET);
 
     expect(offset.length()).toBeCloseTo(POLYGON_LABEL_OFFSET);
