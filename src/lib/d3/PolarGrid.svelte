@@ -127,6 +127,6 @@
   <!-- Radii ticks -->
   {#if showRadiiTicks && radius > 0}
     <line x1={radius} y1={-0.1} x2={radius} y2={0.1} stroke="black" stroke-width={0.02} />
-    <Latex2D latex={radius.toLocaleString()} position={new Vector2(radius - 0.01, -0.15)} />
+    <Latex2D latex={radius.toLocaleString('en-GB')} position={new Vector2(radius - 0.01, -0.15)} />
   {/if}
 {/each}

@@ -14,6 +14,8 @@
     skipY?: number;
     additionalTicksX?: number[];
     additionalTicksY?: number[];
+    colorX?: string;
+    colorY?: string;
   };
 </script>
 
@@ -38,7 +40,9 @@
     showAxisX = true,
     showAxisY = true,
     additionalTicksX = [],
-    additionalTicksY = []
+    additionalTicksY = [],
+    colorX = PrimeColor.black,
+    colorY = PrimeColor.black
   }: AxisProps = $props();
 
   const projection = getProjection2D();
@@ -65,7 +69,9 @@
 
   function getTickText(index: number, axis: 'x' | 'y') {
     if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
-      return index.toLocaleString();
+      // Forced en-GB locale string
+      return index.toLocaleString('en-GB');
+      // todo: make aware of embedding page or used url in iframe
     }
 
     return `10^{${index}}`;
@@ -89,7 +95,7 @@
         y1={-length}
         x2={index}
         y2={length}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
       />
     {/if}
@@ -100,14 +106,14 @@
         y1={-length}
         x2={index}
         y2={length}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipX, worldAdditionalTicksX)}
-      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke="black" stroke-width={0.02} />
+      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke={colorX} stroke-width={0.02} />
     {/if}
 
     {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, worldAdditionalTicksX)}
@@ -117,6 +123,7 @@
           latex={getTickText(index / projection.scaleX, 'x')}
           position={new Vector2(index, -0.15)}
           alignX="center"
+          color={colorX}
         />
       {/if}
     {/if}
@@ -131,7 +138,7 @@
         y1={-length}
         x2={worldIndex}
         y2={length}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(worldIndex, logarithmicX)}
       />
     {/if}
@@ -142,14 +149,21 @@
         y1={-length}
         x2={worldIndex}
         y2={length}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(worldIndex, logarithmicX)}
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(worldIndex, skipX, worldAdditionalTicksX)}
-      <line x1={worldIndex} y1={-0.1} x2={worldIndex} y2={0.1} stroke="black" stroke-width={0.02} />
+      <line
+        x1={worldIndex}
+        y1={-0.1}
+        x2={worldIndex}
+        y2={0.1}
+        stroke={colorX}
+        stroke-width={0.02}
+      />
     {/if}
 
     {#if worldIndex != 0 && showAxisNumbersX && showSkippedTick(worldIndex, skipX, worldAdditionalTicksX)}
@@ -159,6 +173,7 @@
           latex={getTickText(index, 'x')}
           position={new Vector2(worldIndex, -0.15)}
           alignX="center"
+          color={colorX}
         />
       {/if}
     {/if}
@@ -172,7 +187,7 @@
         y1={index}
         x2={length}
         y2={index}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
       />
     {/if}
@@ -183,14 +198,14 @@
         y1={index}
         x2={length}
         y2={index}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipY, worldAdditionalTicksY)}
-      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke="black" stroke-width={0.02} />
+      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke={colorY} stroke-width={0.02} />
     {/if}
 
     {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, worldAdditionalTicksY)}
@@ -201,6 +216,7 @@
           position={new Vector2(yAxisTextX, index)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
+          color={colorY}
         />
       {/if}
     {/if}
@@ -215,7 +231,7 @@
         y1={worldIndex}
         x2={length}
         y2={worldIndex}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(worldIndex, logarithmicY)}
       />
     {/if}
@@ -226,14 +242,21 @@
         y1={worldIndex}
         x2={length}
         y2={worldIndex}
-        stroke={PrimeColor.black + PrimeColor.opacity(0.5)}
+        stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(worldIndex, logarithmicY)}
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(worldIndex, skipY, worldAdditionalTicksY)}
-      <line x1={-0.1} y1={worldIndex} x2={0.1} y2={worldIndex} stroke="black" stroke-width={0.02} />
+      <line
+        x1={-0.1}
+        y1={worldIndex}
+        x2={0.1}
+        y2={worldIndex}
+        stroke={colorY}
+        stroke-width={0.02}
+      />
     {/if}
 
     {#if worldIndex != 0 && showAxisNumbersY && showSkippedTick(worldIndex, skipY, worldAdditionalTicksY)}
@@ -244,6 +267,7 @@
           position={new Vector2(yAxisTextX, worldIndex)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
+          color={colorY}
         />
       {/if}
     {/if}

@@ -12,6 +12,8 @@ export type LabelProps = {
   yLabelRotate?: boolean;
   yLabelOffset?: Vector2;
   size?: number;
+  xColor?: string;
+  yColor?: string;
 };
 
 let cameraBaselineX: number | undefined;
