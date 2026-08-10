@@ -347,8 +347,8 @@ export function referenceIntegral(
 
   // Cell counts are coprime-ish (not a common multiple of one another) so the two grids never
   // share a sample point, which would let a shared bad sample make them agree spuriously.
-  const coarse = riemannMidpointSum(f, xL, xR, 2003);
-  const fine = riemannMidpointSum(f, xL, xR, 8009);
+  const coarse = riemannMidpointSum(f, xL, xR, 4001);
+  const fine = riemannMidpointSum(f, xL, xR, 16001);
 
   if (coarse.diverged || fine.diverged) return { confident: false };
   if (!Number.isFinite(coarse.value) || !Number.isFinite(fine.value)) return { confident: false };

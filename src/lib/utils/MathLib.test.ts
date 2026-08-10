@@ -149,7 +149,7 @@ describe('referenceIntegral: easy closed-form cases are always confident and cor
     { name: 'cosine, quarter period', f: Math.cos, a: 0, b: Math.PI / 2, expected: 1 },
     { name: 'exponential', f: Math.exp, a: 0, b: 1, expected: Math.E - 1 },
     { name: 'reciprocal, no singularity in range', f: (x) => 1 / x, a: 1, b: Math.E, expected: 1 },
-    { name: 'square root', f: Math.sqrt, a: 0, b: 4, expected: 16 / 3, precision: 5 },
+    { name: 'square root', f: Math.sqrt, a: 0, b: 4, expected: 16 / 3 },
     {
       name: 'x sin(x)',
       f: (x) => x * Math.sin(x),
