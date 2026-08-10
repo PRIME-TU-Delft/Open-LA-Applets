@@ -53,7 +53,7 @@
     return qx * qx + qy * qy - 1;
   };
 
-    const zeroFuncQ = (x: number, y: number) => {
+  const zeroFuncQ = (x: number, y: number) => {
     const a = transformed_q1;
     const b = transformed_q2;
     const det = a.x * b.y - a.y * b.x;
