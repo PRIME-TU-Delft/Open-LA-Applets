@@ -110,6 +110,19 @@ describe('referenceIntegral', () => {
     expect(result.confident).toBe(false);
   });
 
+  it('gives a confident value when the bounded singularity falls on an interior sample point', () => {
+    // sin(1/x) is undefined exactly at x = 0, which lands exactly on the recursion's midpoint
+    // for a symmetric interval — should still be recognized as bounded, not divergent
+    const result = referenceIntegral((x) => Math.sin(1 / x), -1, 1);
+    expect(result.confident).toBe(true);
+  });
+
+  it('is not confident for a genuinely divergent integrand with the singularity interior', () => {
+    // 1/x has a non-integrable singularity at x = 0, which is interior on [-1, 1]
+    const result = referenceIntegral((x) => 1 / x, -1, 1);
+    expect(result.confident).toBe(false);
+  });
+
   it('gives an exact value for a polynomial', () => {
     // integral of x^2 from 0 to 3 = 9, exactly
     const result = referenceIntegral((x) => x * x, 0, 3);

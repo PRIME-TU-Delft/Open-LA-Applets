@@ -301,18 +301,22 @@ export type ReferenceIntegralResult = { confident: true; value: number } | { con
  */
 const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 1e-3;
 
-/** Tiny inward nudge used to sample just off a bound, in case the integrand is undefined
- * (but otherwise bounded) exactly at that point — e.g. sin(1/x) at x = 0. */
-const INTEGRAL_BOUNDARY_EPSILON = 1e-9;
+/** Relative size of the nudge used to sample just off a point where the integrand is
+ * undefined, in case it's an isolated singularity in an otherwise bounded function — e.g.
+ * sin(1/x) at x = 0, whether that point is a bound or falls exactly on an interior sample
+ * (such as the midpoint of a symmetric interval like [-1, 1]). */
+const INTEGRAL_SINGULARITY_EPSILON = 1e-9;
 
 type SimpsonPassResult = { value: number; diverged: boolean; unresolved: boolean };
 
 /**
  * Adaptive Simpson's rule that, unlike `integral`, distinguishes *why* a subinterval failed
- * to resolve: a genuine blow-up (integrand exceeds `blowupThreshold`, or is non-finite once
- * nudged off the boundary — a real singularity) sets `diverged`, while merely exhausting the
- * depth/evaluation budget (e.g. because the integrand oscillates rapidly but stays bounded)
- * sets `unresolved` and falls back to the coarse estimate for that subinterval instead of NaN.
+ * to resolve: a genuine blow-up (integrand exceeds `blowupThreshold` once nudged off an
+ * undefined sample point — a real singularity) sets `diverged`, while merely exhausting the
+ * depth/evaluation budget (e.g. because the integrand oscillates rapidly but stays bounded),
+ * or having to nudge off an isolated undefined point, sets `unresolved` and falls back to a
+ * coarse estimate for that subinterval instead of NaN — `referenceIntegral` cross-checks
+ * `unresolved` results with a second pass before trusting them.
  */
 function adaptiveSimpsonPass(
   f: (x: number) => number,
@@ -327,9 +331,23 @@ function adaptiveSimpsonPass(
   let diverged = false;
   let unresolved = false;
 
+  const nudgeWidth = (x: number) => Math.max(Math.abs(x), 1) * INTEGRAL_SINGULARITY_EPSILON;
+
+  // Interior sample point: if undefined exactly at x, it may be an isolated singularity in an
+  // otherwise bounded function (e.g. sin(1/x) landing exactly on x = 0 as a recursion
+  // midpoint) — probe both sides and use whichever is defined, rather than declaring the
+  // whole integral divergent over a single unlucky sample.
   const safeEval = (x: number): number => {
-    const v = f(x);
     evalCount++;
+    let v = f(x);
+    if (!Number.isFinite(v)) {
+      unresolved = true;
+      const delta = nudgeWidth(x);
+      const vRight = f(x + delta);
+      const vLeft = f(x - delta);
+      v = Number.isFinite(vRight) ? vRight : vLeft;
+      evalCount += 2;
+    }
     if (!Number.isFinite(v) || Math.abs(v) > blowupThreshold) {
       diverged = true;
       return NaN;
@@ -337,15 +355,20 @@ function adaptiveSimpsonPass(
     return v;
   };
 
-  // Sample just inside the bound rather than exactly on it, so an integrand that's undefined
-  // only at the boundary itself (but bounded nearby) isn't mistaken for a divergence.
+  // Bound: only nudge inward, since sampling outside [a, b] isn't meaningful.
   const safeEvalBoundary = (x: number, direction: 1 | -1): number => {
-    const v = f(x);
-    if (Number.isFinite(v)) {
+    evalCount++;
+    let v = f(x);
+    if (!Number.isFinite(v)) {
+      unresolved = true;
+      v = f(x + direction * nudgeWidth(x));
       evalCount++;
-      return Math.abs(v) > blowupThreshold ? ((diverged = true), NaN) : v;
     }
-    return safeEval(x + direction * INTEGRAL_BOUNDARY_EPSILON * Math.max(Math.abs(b - a), 1));
+    if (!Number.isFinite(v) || Math.abs(v) > blowupThreshold) {
+      diverged = true;
+      return NaN;
+    }
+    return v;
   };
 
   const simpsonRule = (a: number, b: number, fa: number, fm: number, fb: number): number =>
