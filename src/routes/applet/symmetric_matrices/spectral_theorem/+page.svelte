@@ -8,22 +8,66 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Circle2D from '$lib/d3/Circle2D.svelte';
   import ImplicitFunction2D from '$lib/d3/ImplicitFunction2D.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import Matrix2 from '$lib/utils/Matrix2.svelte';
+  import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
+
+  const controls = Controls.add(
+    new DiagonalMatrix(new Matrix2(1, 2, 2, -2), 'T', PrimeColor.raspberry)
+  );
 
   let direction_e1 = new Vector2(1, 0);
   let direction_e2 = new Vector2(0, 1);
-  let t = new Matrix3().set(1, 2, 0, 2, -2, 0, 0, 0, 1);
+  let t = $derived.by(() => {
+    return new Matrix3().set(
+      controls[0].tl,
+      controls[0].tr,
+      0,
+      controls[0].bl,
+      controls[0].br,
+      0,
+      0,
+      0,
+      1
+    );
+  });
 
-  let transformed_e1 = direction_e1.clone().applyMatrix3(t);
-  let transformed_e2 = direction_e2.clone().applyMatrix3(t);
+  let transformed_e1 = $derived(direction_e1.clone().applyMatrix3(t));
+  let transformed_e2 = $derived(direction_e2.clone().applyMatrix3(t));
 
   let direction_q1 = new Vector2(2 / Math.sqrt(5), 1 / Math.sqrt(5));
   let direction_q2 = new Vector2(-1 / Math.sqrt(5), 2 / Math.sqrt(5));
 
-  let transformed_q1 = direction_q1.clone().applyMatrix3(t);
-  let transformed_q2 = direction_q2.clone().applyMatrix3(t);
+  let transformed_q1 = $derived(direction_q1.clone().applyMatrix3(t));
+  let transformed_q2 = $derived(direction_q2.clone().applyMatrix3(t));
+
+  const zeroFuncE = (x: number, y: number) => {
+    const a = transformed_e1;
+    const b = transformed_e2;
+    const det = a.x * b.y - a.y * b.x;
+    if (Math.abs(det) < 1e-8) {
+      return 1;
+    }
+    const qx = (b.y * x - b.x * y) / det;
+    const qy = (-a.y * x + a.x * y) / det;
+    return qx * qx + qy * qy - 1;
+  };
+
+    const zeroFuncQ = (x: number, y: number) => {
+    const a = transformed_q1;
+    const b = transformed_q2;
+    const det = a.x * b.y - a.y * b.x;
+    if (Math.abs(det) < 1e-8) {
+      return 1;
+    }
+    const qx = (b.y * x - b.x * y) / det;
+    const qy = (-a.y * x + a.x * y) / det;
+    return qx * qx + qy * qy - 1;
+  };
 </script>
 
 <Canvas2D
+  {controls}
   axis={{ showAxisNumbersX: false, showAxisNumbersY: false }}
   cameraZoom={2}
   splitCanvas2DProps={{
@@ -68,11 +112,10 @@
   <Circle2D color={PrimeColor.darkGreen} />
 
   <ImplicitFunction2D
-    zeroFunc={(x, y) => 8 * x * x + 4 * x * y + 5 * y * y - 36}
-    color="#A50034"
-    stepSize={0.15}
-    width={0.06}
-    maxDepth={6}
+    zeroFunc={zeroFuncE}
+    color={PrimeColor.raspberry}
+    stepSize={0.4}
+    maxDepth={4}
   />
 
   {#snippet splitCanvas2DChildren()}
@@ -84,11 +127,10 @@
 
     <Circle2D color={PrimeColor.darkGreen} />
     <ImplicitFunction2D
-      zeroFunc={(x, y) => 8 * x * x + 4 * x * y + 5 * y * y - 36}
-      color="#A50034"
-      stepSize={0.15}
-      width={0.06}
-      maxDepth={6}
+      zeroFunc={zeroFuncQ}
+      color={PrimeColor.raspberry}
+      stepSize={0.4}
+      maxDepth={4}
     />
 
     <Latex2D
