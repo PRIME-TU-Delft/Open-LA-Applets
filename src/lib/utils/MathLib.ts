@@ -296,18 +296,17 @@ export function integral(
 export type ReferenceIntegralResult = { confident: true; value: number } | { confident: false };
 
 /**
- * Relative difference, between two differently-resolved passes, below which they're
- * considered to agree — see `referenceIntegral`.
+ * Relative difference between two differently-resolved passes, below which they're
+ * considered to agree. See `referenceIntegral`.
  */
 const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 1e-3;
 
 type QuadratureResult = { value: number; diverged: boolean };
 
 /**
- * Midpoint Riemann sum over `n` equal-width cells. Unlike adaptive Simpson, every sample sits
- * strictly inside its cell — never on a shared boundary or a rational point like an interval's
- * exact midpoint — so an isolated singularity (e.g. sin(1/x) at x = 0) is simply skipped over
- * rather than requiring a substitute value that could bias the estimate at a fixed weight.
+ * Midpoint Riemann sum over `n` equal-width cells. Every sample sits strictly inside its cell,
+ * never on a shared boundary or a rational point like an interval's exact midpoint, so an
+ * isolated singularity (e.g. sin(1/x) at x = 0) is skipped rather than substituted for.
  */
 function riemannMidpointSum(
   f: (x: number) => number,
@@ -332,9 +331,9 @@ function riemannMidpointSum(
 /**
  * Computes a definite integral's reference value using pure numeric quadrature, with a
  * confidence flag instead of a bare NaN-as-divergence signal. Cross-checks two independently
- * resolved midpoint Riemann sums and only reports a value when they agree — so a hard-to-
- * resolve integrand (e.g. a bounded but rapidly oscillating one) yields `{ confident: false }`
- * rather than either a false claim of divergence or a wrong finite value — see issue #375.
+ * resolved midpoint Riemann sums and only reports a value when they agree. A hard-to-resolve
+ * integrand (e.g. a bounded but rapidly oscillating one) yields `{ confident: false }` instead
+ * of a false claim of divergence or a wrong finite value. See issue #375.
  * @param f - Integrand, as a plain numeric function
  * @param xL - Lower bound of integration
  * @param xR - Upper bound of integration
