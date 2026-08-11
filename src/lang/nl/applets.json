@@ -185,7 +185,7 @@
       },
       "mean_squared_error_and_bias": {
         "title": "Gemiddelde Kwadratische Fout en Vertekening",
-        "clear": "Wissen",
+        "clear": "Pijlen wissen",
         "shoot": "Schiet 5 pijlen",
         "points": "Gemiddelde punten",
         "target": "Raak",
