@@ -187,7 +187,9 @@
         "title": "Mean Squared Error and Bias",
         "clear": "Clear",
         "shoot": "Shoot 5 Arrows",
-        "points": "Average points"
+        "points": "Average points",
+        "target": "On target",
+        "miss": "Miss"
       }
     }
   },

@@ -187,7 +187,9 @@
         "title": "Gemiddelde Kwadratische Fout en Vertekening",
         "clear": "Wissen",
         "shoot": "Schiet 5 pijlen",
-        "points": "Gemiddelde punten"
+        "points": "Gemiddelde punten",
+        "target": "Raak",
+        "miss": "Mis"
       }
     }
   },

@@ -11,6 +11,7 @@
   import { Vector2 } from 'three';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import Latex2D from '$lib/d3/Latex2D.svelte';
+  import { LegendItem } from '$lib/utils/Legend';
 
   let mu_x: number = $state(0);
   let mu_y: number = $state(0);
@@ -162,7 +163,16 @@
     omega_x = 0;
     omega_y = 0;
   }}
-
+  legendItems={[
+    new LegendItem(
+      `\\text{${$_('applets.pts.distributions.mean_squared_error_and_bias.target')}}`,
+      PrimeColor.darkBlue
+    ),
+    new LegendItem(
+      `\\text{${$_('applets.pts.distributions.mean_squared_error_and_bias.miss')}}`,
+      PrimeColor.raspberry
+    )
+  ]}
   // target
 >
   <Circle2D radius={10} color={PrimeColor.red} fill={PrimeColor.red} />
