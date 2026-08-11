@@ -14,6 +14,9 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import Latex2D from './Latex2D.svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
+
+  const projection = getProjection2D();
 
   let {
     angleStep = 30,
@@ -126,7 +129,8 @@
 
   <!-- Radii ticks -->
   {#if showRadiiTicks && radius > 0}
-    <line x1={radius} y1={-0.1} x2={radius} y2={0.1} stroke="black" stroke-width={0.02} />
+    {@const screenX = projection.toScreen(new Vector2(radius, 0)).x}
+    <line x1={screenX} y1={-0.1} x2={screenX} y2={0.1} stroke="black" stroke-width={0.02} />
     <Latex2D latex={radius.toLocaleString('en-GB')} position={new Vector2(radius - 0.01, -0.15)} />
   {/if}
 {/each}
