@@ -173,6 +173,30 @@
     return true;
   }
 
+  function checkCurvature(
+    valueCache: Map<string, number>,
+    x: number,
+    y: number,
+    size: number,
+    refIsPositive: boolean
+  ): boolean {
+    const midX = x + size / 2;
+    const midY = y + size / 2;
+    const samples: [number, number][] = [
+      [midX, y],
+      [x + size, midY],
+      [midX, y + size],
+      [x, midY],
+      [midX, midY]
+    ];
+
+    for (const [sx, sy] of samples) {
+      const v = getOrEvalFunc(valueCache, sx, sy);
+      if (v > 0 !== refIsPositive) return true;
+    }
+    return false;
+  }
+
   // Recursive function to process cells with adaptive refinement
   function marchingSquaresAdaptive(
     lines: StartEndLine[],
@@ -180,7 +204,8 @@
     xStart: number,
     yStart: number,
     currentStepSize: number,
-    maxDepth: number
+    maxDepth: number,
+    hiddenCheckLevel: number = 0
   ): void {
     const x = xStart;
     const y = yStart;
@@ -203,23 +228,92 @@
     if (v11 > 0) caseIndex |= 4;
     if (v01 > 0) caseIndex |= 8;
 
-    // Skip if all same sign or zero
-    if (caseIndex === 0 || caseIndex === 15) return;
+    // If all same sign or zero skip only if no sharp curve detected
+    if (caseIndex === 0 || caseIndex === 15) {
+      // Additional check in the case of sharp curvature for first two levels of recursion (if the issue persists the hiddenCheckLevel limit can be increased)
+      if (hiddenCheckLevel < 2 && maxDepth > 0) {
+        if (checkCurvature(valueCache, x, y, currentStepSize, v00 > 0)) {
+          const halfStep = currentStepSize / 2;
+          marchingSquaresAdaptive(
+            lines,
+            valueCache,
+            x,
+            y,
+            halfStep,
+            maxDepth - 1,
+            hiddenCheckLevel + 1
+          );
+          marchingSquaresAdaptive(
+            lines,
+            valueCache,
+            x + halfStep,
+            y,
+            halfStep,
+            maxDepth - 1,
+            hiddenCheckLevel + 1
+          );
+          marchingSquaresAdaptive(
+            lines,
+            valueCache,
+            x,
+            y + halfStep,
+            halfStep,
+            maxDepth - 1,
+            hiddenCheckLevel + 1
+          );
+          marchingSquaresAdaptive(
+            lines,
+            valueCache,
+            x + halfStep,
+            y + halfStep,
+            halfStep,
+            maxDepth - 1,
+            hiddenCheckLevel + 1
+          );
+        }
+      }
+      return;
+    }
 
     // Check if this cell needs refinement and we still have depth to refine
     if (needsRefinement(v00, v10, v01, v11, currentStepSize) && maxDepth > 0) {
       // Subdivide into 4 quadrants
       const halfStep = currentStepSize / 2;
-      marchingSquaresAdaptive(lines, valueCache, x, y, halfStep, maxDepth - 1);
-      marchingSquaresAdaptive(lines, valueCache, x + halfStep, y, halfStep, maxDepth - 1);
-      marchingSquaresAdaptive(lines, valueCache, x, y + halfStep, halfStep, maxDepth - 1);
+      marchingSquaresAdaptive(
+        lines,
+        valueCache,
+        x,
+        y,
+        halfStep,
+        maxDepth - 1,
+        hiddenCheckLevel + 1
+      );
+      marchingSquaresAdaptive(
+        lines,
+        valueCache,
+        x + halfStep,
+        y,
+        halfStep,
+        maxDepth - 1,
+        hiddenCheckLevel + 1
+      );
+      marchingSquaresAdaptive(
+        lines,
+        valueCache,
+        x,
+        y + halfStep,
+        halfStep,
+        maxDepth - 1,
+        hiddenCheckLevel + 1
+      );
       marchingSquaresAdaptive(
         lines,
         valueCache,
         x + halfStep,
         y + halfStep,
         halfStep,
-        maxDepth - 1
+        maxDepth - 1,
+        hiddenCheckLevel + 1
       );
       return;
     }
