@@ -1,11 +1,9 @@
 <script lang="ts" generics="State">
-  import LatexUI from '$lib/components/Latex.svelte';
   import ShareWindow from '$lib/components/ShareWindow.svelte';
   import * as Button from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import { globalState } from '$lib/stores/globalState.svelte';
-  import type { Formula } from '$lib/utils/Formulas';
   import type { LanguageInfo } from '$lib/utils/languages';
   import Languages from '@lucide/svelte/icons/languages';
   import Maximize from '@lucide/svelte/icons/maximize';
@@ -16,48 +14,38 @@
   import screenfull from 'screenfull';
   import { _ } from 'svelte-i18n';
   import LanguageWindow from './LanguageWindow.svelte';
-  import LegendItemComponent from './LegendItemComponent.svelte';
-  import type { LegendItem } from '$lib/utils/Legend';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
-  type ActionButtonsAndFormulaProps = {
+  type ActionButtonsProps = {
     onReset: () => void;
-    formulas?: Formula[];
-    legendItems?: LegendItem[];
-    splitFormulas?: Formula[];
-    splitLegendItems?: LegendItem[];
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
+    hasFormulasOrLegend: boolean;
+    legendOffset?: number;
     hideButtons?: boolean;
     languages: LanguageInfo[];
-    position?: 'top-right' | 'top-left';
+    onToggleFormulas: () => void;
   };
 
   let {
     onReset,
-    formulas = [],
-    legendItems = [],
-    splitFormulas = [],
-    splitLegendItems = [],
     controls = undefined,
     showFormulas = false,
+    hasFormulasOrLegend,
     languages,
     hideButtons = false,
-    position = 'top-right'
-  }: ActionButtonsAndFormulaProps = $props();
+    onToggleFormulas,
+    legendOffset = 0
+  }: ActionButtonsProps = $props();
 
-  // svelte-ignore state_referenced_locally
-  if (legendItems?.length >= 1) showFormulas = true;
-
-  let isFullscreen = $state(false); // Is the scene fullscreen?
-  let languageModalOpen = $state(false); // Is the language modal open?
+  let isFullscreen = $state(false);
+  let languageModalOpen = $state(false);
 
   $effect(() => {
     if (screenfull.isEnabled) {
       screenfull.on('change', () => {
         isFullscreen = screenfull.isFullscreen;
-
         globalState.changeState({ isFullscreen });
       });
     }
@@ -65,134 +53,80 @@
 
   function toggleFullscreen() {
     if (!screenfull.isEnabled || !document) return;
-
     screenfull.toggle(document.body);
   }
-
-  let formulasShown = $derived(
-    globalState.controlsInteractive || showFormulas || globalState.isInset()
-  );
 </script>
 
-<div class="absolute top-1 select-none {position === 'top-left' ? 'left-0' : 'right-0'}">
-  <!-- FORMULAE and LEGEND -->
-  {#if formulasShown}
-    <div class="flex {position === 'top-left' ? 'justify-start' : 'justify-end'}">
-      {#if (formulas && formulas.length >= 1) || (legendItems && legendItems.length >= 1)}
-        <div
-          class="mx-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
-        >
-          {#each formulas as formula (formula.id)}
-            {#key formula.latex}
-              <LatexUI latex={formula.latex} />
-            {/key}
-          {/each}
+{#if !hideButtons}
+  <!-- ACTION BUTTON -->
+  <div class="absolute right-0 flex p-1 select-none" style="top: {4 + legendOffset}px">
+    {#if !controls || controls.length == 0}
+      <Button.Action
+        side="bottom"
+        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+        onclick={onReset}
+        tooltip={$_('ui.reset_scene_tooltip')}
+      >
+        <RotateCcw class="h-5 w-5" />
+      </Button.Action>
+    {/if}
 
-          {#if formulas && formulas.length >= 1 && legendItems && legendItems.length >= 1}
-            <hr class="h-[1px] border-none bg-black" />
-          {/if}
-
-          {#each legendItems as legendI (legendI.id)}
-            {#key legendI.latex}
-              <LegendItemComponent {legendI} />
-            {/key}
-          {/each}
-        </div>
-      {/if}
-
-      {#if (splitFormulas && splitFormulas.length) >= 1 || (splitLegendItems && splitLegendItems.length >= 1)}
-        <div class="grid gap-1 rounded-md bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md">
-          {#each splitFormulas as formula (formula.id)}
-            {#key formula.latex}
-              <LatexUI latex={formula.latex} />
-            {/key}
-          {/each}
-
-          {#if splitFormulas && splitFormulas.length >= 1 && splitLegendItems && splitLegendItems.length >= 1}
-            <hr class="h-[1px] border-none bg-black" />
-          {/if}
-
-          {#each splitLegendItems as legendI (legendI.id)}
-            {#key legendI.latex}
-              <LegendItemComponent {legendI} />
-            {/key}
-          {/each}
-        </div>
-      {/if}
-    </div>
-  {/if}
-
-  {#if !hideButtons}
-    <!-- ACTION BUTTON -->
-    <div class="top-0 flex p-1 {position === 'top-left' ? 'float-start' : 'right-0 float-end'}">
-      {#if !controls || controls.length == 0}
-        <Button.Action
-          side="bottom"
-          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-          onclick={onReset}
-          tooltip={$_('ui.reset_scene_tooltip')}
-        >
-          <RotateCcw class="h-5 w-5" />
+    <!-- SHARE BUTTON -->
+    <Dialog.Root>
+      <Dialog.Trigger
+        class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
+      >
+        <Button.Action side="bottom" tooltip={$_('ui.share_tooltip')}>
+          <Share class="h-5 w-5" />
         </Button.Action>
-      {/if}
+      </Dialog.Trigger>
+      <ShareWindow />
+    </Dialog.Root>
 
-      <!-- SHARE BUTTON -->
-      <Dialog.Root>
+    <!-- LANGUAGE BUTTON -->
+    {#if languages.length > 1}
+      <Dialog.Root bind:open={languageModalOpen}>
         <Dialog.Trigger
           class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
         >
-          <Button.Action side="bottom" tooltip={$_('ui.share_tooltip')}>
-            <Share class="h-5 w-5" />
+          <Button.Action tooltip={$_('ui.change_language')} side="bottom">
+            <Languages class="h-5 w-5" />
           </Button.Action>
         </Dialog.Trigger>
-        <ShareWindow />
+        <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
       </Dialog.Root>
+    {/if}
 
-      <!-- LANGUAGE BUTTON -->
-      {#if languages.length > 1}
-        <Dialog.Root bind:open={languageModalOpen}>
-          <Dialog.Trigger
-            class="scale-[0.8] rounded-md bg-blue-200/80 shadow-sm backdrop-blur-md hover:bg-blue-300/80"
-          >
-            <Button.Action tooltip={$_('ui.change_language')} side="bottom">
-              <Languages class="h-5 w-5" />
-            </Button.Action>
-          </Dialog.Trigger>
-          <LanguageWindow {languages} onclose={() => (languageModalOpen = false)} />
-        </Dialog.Root>
-      {/if}
+    <!-- FULLSCREEN BUTTON -->
+    {#if screenfull.isEnabled && document}
+      <Button.Action
+        side="bottom"
+        class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
+        onclick={toggleFullscreen}
+        tooltip={isFullscreen ? $_('ui.exit_fullscreen') : $_('ui.enter_fullscreen')}
+      >
+        {#if isFullscreen}
+          <Minimize class="h-5 w-5" />
+        {:else}
+          <Maximize class="h-5 w-5" />
+        {/if}
+      </Button.Action>
+    {/if}
 
-      <!-- FULLSCREEN BUTTON -->
-      {#if screenfull.isEnabled && document}
-        <Button.Action
-          side="bottom"
-          class="scale-[0.8] rounded-md !bg-blue-200/80 shadow-sm backdrop-blur-md hover:!bg-blue-300/80"
-          onclick={toggleFullscreen}
-          tooltip={isFullscreen ? $_('ui.exit_fullscreen') : $_('ui.enter_fullscreen')}
-        >
-          {#if isFullscreen}
-            <Minimize class="h-5 w-5" />
-          {:else}
-            <Maximize class="h-5 w-5" />
-          {/if}
-        </Button.Action>
-      {/if}
-
-      <!-- TOGGLE FORMULAE BUTTON -->
-      {#if !globalState.isInset() && (formulas?.length >= 1 || legendItems?.length >= 1)}
-        <Button.Action
-          side="bottom"
-          class="{!formulasShown
-            ? '!bg-blue-200/80 hover:!bg-blue-300/80'
-            : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8]  rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
-            ? 'border-2'
-            : ''}"
-          tooltip={$_('ui.toggle_function')}
-          onclick={() => (showFormulas = !showFormulas)}
-        >
-          <SquareFunction />
-        </Button.Action>
-      {/if}
-    </div>
-  {/if}
-</div>
+    <!-- TOGGLE FORMULAE BUTTON -->
+    {#if !globalState.isInset() && hasFormulasOrLegend}
+      <Button.Action
+        side="bottom"
+        class="{!showFormulas
+          ? '!bg-blue-200/80 hover:!bg-blue-300/80'
+          : '!bg-blue-400/80 hover:!bg-blue-200/80'} scale-[0.8] rounded-md border-0 border-blue-500 shadow-sm backdrop-blur-md {showFormulas
+          ? 'border-2'
+          : ''}"
+        tooltip={$_('ui.toggle_function')}
+        onclick={onToggleFormulas}
+      >
+        <SquareFunction />
+      </Button.Action>
+    {/if}
+  </div>
+{/if}

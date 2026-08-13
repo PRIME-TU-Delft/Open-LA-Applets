@@ -10,7 +10,7 @@
     draggables?: Draggable[];
     title?: string;
     sceneChildren?: Snippet<[number, number]>;
-    legendFormulaPosition?: 'top-right' | 'top-left';
+    legendFormulaPosition?: LegendFormulaAnchor;
     onReset?: () => void;
   };
 </script>
@@ -24,6 +24,7 @@
   import type { Formula } from '$lib/utils/Formulas';
   import type { Snippet } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
+  import LegendFormulaPanel, { type LegendFormulaAnchor } from './LegendFormulaPanel.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
@@ -49,6 +50,7 @@
 
   let height = $state(500);
   let width = $state<number>(0);
+  let showFormulas = $state(showFormulasDefault);
 
   const showFps = dev && browser && import.meta.env.VITE_SHOW_FPS === 'true';
 
@@ -133,6 +135,10 @@
       globalState.title = title || '';
     }
   });
+
+  // values to calculate to ensure correct placement of legend when top-left and action buttons when top-right
+  let titleWidth = $state(0);
+  let legendPanelHeight = $state(0);
 </script>
 
 <div
@@ -171,7 +177,7 @@
 
     <!-- MARK: TITLE PANEL (top-left) -->
     {#if globalState.title && globalState.isInset()}
-      <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+      <div class="absolute top-2 left-2 rounded bg-blue-200 p-2" bind:clientWidth={titleWidth}>
         {globalState.title}
       </div>
     {/if}
@@ -192,18 +198,30 @@
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
-    <!-- MARK: ACTION BUTTONS / FORMULAE (top-right) -->
-    <ActionButtonsAndFormula
-      showFormulas={showFormulasDefault}
+    <!-- MARK: LEGEND -->
+    <LegendFormulaPanel
       {formulas}
       {legendItems}
       {splitFormulas}
       {splitLegendItems}
+      {showFormulas}
+      position={legendFormulaPosition ?? 'top-right'}
+      {titleWidth}
+      onHeightChange={(h) => (legendPanelHeight = h)}
+    />
+
+    <!-- MARK: ACTION BUTTONS (top-right) -->
+    <ActionButtonsAndFormula
       {controls}
       {hideButtons}
       {languages}
-      position={legendFormulaPosition}
+      {showFormulas}
+      hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+      onToggleFormulas={() => (showFormulas = !showFormulas)}
       onReset={() => reset()}
+      legendOffset={legendFormulaPosition === 'top-right' || !legendFormulaPosition
+        ? legendPanelHeight
+        : 0}
     />
   </div>
 </div>
