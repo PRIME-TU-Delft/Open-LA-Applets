@@ -71,14 +71,14 @@
     'bottom-left': 'bottom-1 left-0 items-start',
     'bottom-right': 'bottom-1 right-0 items-end'
   };
-  const topLeftOffset = $derived(titleWidth > 0 ? titleWidth + 12 : 96);
+  const topLeftOffset = $derived(titleWidth > 0 ? titleWidth + 12 : 0);
 </script>
 
 {#if formulasShown && (hasMain || hasSplit)}
   <!-- Top left positioning depends on title size so has different handling than other cases -->
   {#if position === 'top-left'}
     <div
-      class="absolute top-1 flex flex-col items-start gap-1 p-1 select-none"
+      class="absolute top-1 flex items-start gap-1 select-none"
       style="left: {topLeftOffset}px"
       bind:clientHeight={panelHeight}
     >
@@ -126,7 +126,7 @@
     </div>
   {:else}
     <div
-      class={cn('absolute flex flex-col gap-1 p-1 select-none', anchorClasses[position])}
+      class={cn('absolute flex gap-1 select-none', anchorClasses[position])}
       bind:clientHeight={panelHeight}
     >
       {#if hasMain}
