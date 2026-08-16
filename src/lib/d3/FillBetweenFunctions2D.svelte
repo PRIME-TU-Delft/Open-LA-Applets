@@ -3,7 +3,7 @@
   import { line } from 'd3';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   export type FillBetweenFunctions2DProps = {
     func1: (x: number) => number;
@@ -35,9 +35,10 @@
     integral
   }: FillBetweenFunctions2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
+  // 1D axis mappings (screen-space samples); no paired point, so scalar access.
+  const sx = projection.scaleX;
+  const sy = projection.scaleY;
 
   const safeVal1 = (x: number) => {
     try {
