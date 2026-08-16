@@ -18,7 +18,7 @@
   };
 </script>
 
-<script>
+<script lang="ts">
   import { getContext } from 'svelte';
   const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
   const sx = _scale2D?.x ?? 1;

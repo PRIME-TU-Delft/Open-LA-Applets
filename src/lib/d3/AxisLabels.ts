@@ -16,91 +16,97 @@ export type LabelProps = {
   yColor?: string;
 };
 
-let cameraBaselineX: number | undefined;
-let cameraBaselineY: number | undefined;
+export function createAxisLabels() {
+  let cameraBaselineX: number | undefined;
+  let cameraBaselineY: number | undefined;
 
-/**
- * CanvasD3 computes x and y as pan contribution plus initial camera baseline.
- * Capture that baseline once and remove it for viewport-relative label placement.
- * @param cameraTransform D3's camera transform
- * @returns camera position without baseline
- */
-function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transform2D | undefined {
-  if (!cameraTransform) return undefined;
-  if (cameraBaselineX === undefined) {
-    cameraBaselineX = cameraTransform.x;
-  }
-  if (cameraBaselineY === undefined) {
-    cameraBaselineY = cameraTransform.y;
+  /**
+   * CanvasD3 computes x and y as pan contribution plus initial camera baseline.
+   * Capture that baseline once and remove it for viewport-relative label placement.
+   * @param cameraTransform D3's camera transform
+   * @returns camera position without baseline
+   */
+  function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transform2D | undefined {
+    if (!cameraTransform) return undefined;
+    if (cameraBaselineX === undefined) {
+      cameraBaselineX = cameraTransform.x;
+    }
+    if (cameraBaselineY === undefined) {
+      cameraBaselineY = cameraTransform.y;
+    }
+
+    return {
+      ...cameraTransform,
+      x: cameraTransform.x - cameraBaselineX,
+      y: cameraTransform.y - cameraBaselineY
+    } as Transform2D;
   }
 
-  return {
-    ...cameraTransform,
-    x: cameraTransform.x - cameraBaselineX,
-    y: cameraTransform.y - cameraBaselineY
-  } as Transform2D;
+  function getXLabelX(
+    cameraTransform: Transform2D | undefined,
+    width: number,
+    cameraZoom: number,
+    labels: LabelProps | undefined,
+    scaleX: number = 1
+  ): number {
+    const normalizedCamera = revertCameraBaseline(cameraTransform);
+    if (!cameraTransform || !normalizedCamera) return 6.8 / scaleX;
+
+    const baselineX = cameraBaselineX ?? 0;
+    const normalizedPanX = normalizedCamera.x;
+    const zoom = Math.max(cameraTransform.k, 1e-6);
+    const totalZoom = zoom * cameraZoom;
+
+    const worldXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
+
+    if (labels && labels.xLabelPosition == 'center') {
+      return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
+    }
+
+    const edgeMarginPx = 48;
+
+    const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
+
+    const worldPostAtRight =
+      baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
+
+    return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
+  }
+
+  function getYLabelY(
+    cameraTransform: Transform2D | undefined,
+    width: number,
+    height: number,
+    cameraZoom: number,
+    labels: LabelProps | undefined,
+    scaleY: number = 1
+  ): number {
+    const normalizedCamera = revertCameraBaseline(cameraTransform);
+    if (!cameraTransform || !normalizedCamera) return 6.25 / scaleY;
+
+    const baselineY = cameraBaselineY ?? 0;
+    const normalizedPanY = normalizedCamera.y;
+    const zoom = Math.max(cameraTransform.k, 1e-6);
+
+    const translateY = (normalizedPanY * width) / 15;
+    const scaleFactor = 15 / (width * cameraZoom);
+
+    const worldYAtCenter =
+      baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
+
+    if (labels && labels.yLabelPosition == 'center') {
+      return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
+    }
+
+    const edgeMarginPx = 30;
+
+    const worldYAtTopMargin =
+      baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
+
+    return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
+  }
+
+  return { getXLabelX, getYLabelY };
 }
 
-export function getXLabelX(
-  cameraTransform: Transform2D | undefined,
-  width: number,
-  cameraZoom: number,
-  labels: LabelProps | undefined,
-  scaleX: number = 1
-): number {
-  const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.8 / scaleX;
-
-  const baselineX = cameraBaselineX ?? 0;
-  const normalizedPanX = normalizedCamera.x;
-  const zoom = Math.max(cameraTransform.k, 1e-6);
-  const totalZoom = zoom * cameraZoom;
-
-  const worldXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
-
-  if (labels && labels.xLabelPosition == 'center') {
-    return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
-  }
-
-  const edgeMarginPx = 48;
-
-  const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
-
-  const worldPostAtRight =
-    baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
-
-  return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
-}
-
-export function getYabelY(
-  cameraTransform: Transform2D | undefined,
-  width: number,
-  height: number,
-  cameraZoom: number,
-  labels: LabelProps | undefined,
-  scaleY: number = 1
-): number {
-  const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.25 / scaleY;
-
-  const baselineY = cameraBaselineY ?? 0;
-  const normalizedPanY = normalizedCamera.y;
-  const zoom = Math.max(cameraTransform.k, 1e-6);
-
-  const translateY = (normalizedPanY * width) / 15;
-  const scaleFactor = 15 / (width * cameraZoom);
-
-  const worldYAtCenter =
-    baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
-
-  if (labels && labels.yLabelPosition == 'center') {
-    return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
-  }
-
-  const edgeMarginPx = 30;
-
-  const worldYAtTopMargin =
-    baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
-
-  return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
-}
+export type AxisLabelCalculator = ReturnType<typeof createAxisLabels>;

@@ -40,11 +40,12 @@
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
-  import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import { type LabelProps } from './AxisLabels';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { createAxisLabels } from '$lib/d3/AxisLabels';
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -72,6 +73,8 @@
   let id = 'canvas-' + generateUUID();
 
   let currentCameraTransform = $state<Transform2D>();
+
+  const axisLabels = createAxisLabels();
 
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
@@ -178,9 +181,11 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX));
+  const xLabelX = $derived(
+    axisLabels.getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX)
+  );
   const yLabelY = $derived(
-    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
+    axisLabels.getYLabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
   );
 </script>
 
