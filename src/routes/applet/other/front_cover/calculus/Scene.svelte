@@ -222,8 +222,12 @@
     length={L}
     origin={new Vector3(x * X_STRETCH + X_OFFSET, -9.9, y)
       .multiplyScalar(WORLD_SCALE)
-      .sub(new Vector3(u*WORLD_SCALE*X_STRETCH, 0, v*WORLD_SCALE).normalize().multiplyScalar(L/2))}
-    direction={new Vector3(u*WORLD_SCALE*X_STRETCH, 0, v*WORLD_SCALE)}
+      .sub(
+        new Vector3(u * WORLD_SCALE * X_STRETCH, 0, v * WORLD_SCALE)
+          .normalize()
+          .multiplyScalar(L / 2)
+      )}
+    direction={new Vector3(u * WORLD_SCALE * X_STRETCH, 0, v * WORLD_SCALE)}
     radius={0.75}
   />
 {/each}
