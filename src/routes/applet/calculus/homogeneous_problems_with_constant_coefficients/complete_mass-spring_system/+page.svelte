@@ -1,0 +1,357 @@
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
+  import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import MassSpring2D from '$lib/d3/MassSpring2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+  import { AppletObject, Polygon } from '$lib/template/TemplateAppletObjects';
+  import CanvasGrid from '$lib/common/CanvasGrid.svelte';
+  import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
+  import Point2D from '$lib/d3/Point2D.svelte';
+  import Line2D from '$lib/d3/Line2D.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import { toLatexText } from '$lib/utils/FormatString';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
+  import Vector2D from '$lib/d3/Vector2D.svelte';
+  import FillBetweenFunctions2D from '$lib/d3/FillBetweenFunctions2D.svelte';
+  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
+  import { findMinMax } from '$lib/utils/MathLib';
+  import { untrack } from 'svelte';
+  import { Formula } from '$lib/utils/Formulas';
+
+  let initialViewBox: ViewBox | undefined;
+  let cameraPosition: Vector2 | undefined;
+  let cameraZoom: number | undefined;
+  let xAxisLabel: string | undefined;
+  let yAxisLabel: string | undefined;
+  let axis: AxisProps | undefined;
+  let axis2: AxisProps | undefined;
+  let axis3: AxisProps | undefined;
+
+  // ########################
+  // TUTORIAL / DOCUMENTATION
+  // ########################
+  // https://docs.openla.ewi.tudelft.nl/?path=/docs/tutorials-tutorial-template--docs
+  // on this page you can find documentation for the template objects and a tutorial on using them
+
+  // ###############
+  // CAMERA SETTINGS
+  // ###############
+  // choose one or none of the options below - if both are specified, view box will be used
+
+  // (remove if unnecessary)
+  cameraPosition = new Vector2(3, 1);
+  cameraZoom = 1.5;
+
+  // (remove if unnecessary)
+  initialViewBox = new ViewBox(
+    new Vector2(-1.5, -3.25), // bottom-left
+    new Vector2(4, 4.5), // top-right
+    0 // margin
+  );
+
+  // ####
+  // AXIS
+  // ####
+  // here are the default settings for axis, you can change them
+
+  // (remove if unnecessary)
+  axis = {
+    showOrigin: false,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: -1,
+    skipY: 0,
+    showAxisX: false
+  };
+  axis2 = {
+    showOrigin: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 3,
+    skipY: 2,
+    showAxisX: true,
+    showAxisY: true,
+    colorX: PrimeColor.raspberry,
+    colorY: PrimeColor.red
+  };
+  axis3 = {
+    showOrigin: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 1,
+    skipY: 0,
+    showAxisX: true,
+    showAxisY: true
+  };
+
+  // #####
+  // SCALE
+  // #####
+  // All child components (functions, points, lines, etc.) will auto-scale accordingly.
+  // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
+  // Formulas and positions should be written in display (mathematical) space.
+  let scaleX = 1;
+  let scaleY = 1;
+
+  // ###########
+  // AXIS LABELS
+  // ###########
+
+  // (remove if unnecessary)
+  function constructExactSolution(
+    m: number,
+    c: number,
+    k: number,
+    u0: number,
+    v0: number
+  ): (t: number) => number {
+    const D = c * c - 4 * m * k;
+    if (D > 0) {
+      const r1 = (-c + Math.sqrt(D)) / (2 * m);
+      const r2 = (-c - Math.sqrt(D)) / (2 * m);
+      const A = (v0 - r2 * u0) / (r1 - r2);
+      const B = u0 - A;
+      return (t: number) => A * Math.exp(r1 * t) + B * Math.exp(r2 * t);
+    } else if (D === 0) {
+      const r = -c / (2 * m);
+      const A = u0;
+      const B = v0 - r * u0;
+      return (t: number) => (A + B * t) * Math.exp(r * t);
+    } else {
+      const alpha = -c / (2 * m);
+      const beta = Math.sqrt(-D) / (2 * m);
+      const A = u0;
+      const B = (v0 - alpha * u0) / beta;
+      return (t: number) => Math.exp(alpha * t) * (A * Math.cos(beta * t) + B * Math.sin(beta * t));
+    }
+  }
+
+  xAxisLabel = '';
+  yAxisLabel = '';
+
+  const maxRadius = 2.5;
+  const m = 1;
+  const k = 25;
+
+  const controls = Controls.addSlider(10, 0, 26, 1, PrimeColor.green, {
+    label: 'c=',
+    animationStep: 1,
+    valueFn: (value: number) => toLatexText(value.toFixed(1).replace(/\.0$/, ''))
+  });
+
+  const c = $derived(controls[0]);
+
+  const draggables = [
+    new Draggable(
+      SnapToGrid(new Vector2(1, -10)),
+      PrimeColor.darkGreen,
+      undefined,
+      SnapToGrid,
+      undefined,
+      undefined,
+      0.4
+    )
+  ];
+  const draggables2 = [
+    new Draggable(
+      SnapToGrid2(new Vector2(0, 1)),
+      PrimeColor.yellow,
+      undefined,
+      SnapToGrid2,
+      undefined,
+      undefined,
+      0.2,
+      'square'
+    )
+  ];
+
+  function findMaxAmplitude(A: number, B: number): { min: number; max: number } {
+    const sol = constructExactSolution(m, c, k, A, B);
+    const boundsU = findMinMax(sol, 0, 5);
+    return { min: boundsU.min, max: boundsU.max };
+  }
+  function findMaxSpeed(A: number): { min: number; max: number } {
+    let floatArrayB: number[] = [];
+    let currentB = -30;
+    let stepB = 0.1;
+    let allowedB = [];
+    for (let i = 0; i < 600; i++) {
+      floatArrayB.push(currentB);
+      currentB += stepB;
+      // calculate the bounds of u(t) for this A and B
+      const boundsU = findMaxAmplitude(A, currentB);
+      // if bounds for u(t) acceptable, store B
+      if (boundsU.min >= -maxRadius && boundsU.max <= maxRadius) {
+        allowedB.push(currentB);
+      }
+    }
+    // find minimum and maximum allowed B's
+    return { min: Math.min(...allowedB), max: Math.max(...allowedB) };
+  }
+  function SnapToGrid(position: Vector2): Vector2 {
+    const snappedX = Math.min(Math.max(Number(position.x.toFixed(2)), -maxRadius), maxRadius);
+    const boundsY = findMaxSpeed(snappedX);
+    const snappedY = Math.min(Math.max(Number(position.y.toFixed(1)), boundsY.min), boundsY.max);
+    return new Vector2(snappedX, snappedY);
+  }
+
+  function SnapToGrid2(position: Vector2): Vector2 {
+    // limit t value to [0, 5]
+    const snappedX = Math.min(Math.max(Number(position.x.toFixed(2)), 0), 5);
+    //snap u to the value of the solution
+    const sol = constructExactSolution(m, c, k, draggables[0].position.x, draggables[0].position.y);
+    const snappedY = sol(snappedX);
+    return new Vector2(snappedX, snappedY);
+  }
+
+  $effect(() => {
+    // Re-clamp draggables[0] into the valid amplitude/speed bounds whenever c changes
+    const currentPosition = untrack(() => draggables[0].position);
+    draggables[0].position = SnapToGrid(currentPosition);
+  });
+
+  $effect(() => {
+    // Re-snap draggables2[0] onto the updated solution curve whenever draggables[0] or c changes
+    const currentPosition = untrack(() => draggables2[0].position);
+    draggables2[0].position = SnapToGrid2(currentPosition);
+  });
+
+  const floatArray: number[] = Array.from({ length: 61 }, (_, i) => -30 + i);
+
+  const appletObjects: AppletObject[] = [
+    new Polygon(
+      [new Vector2(0.75, 4), new Vector2(3.25, 4), new Vector2(3.25, -3), new Vector2(0.75, -3)],
+      PrimeColor.grey
+    )
+  ];
+
+  const formulas = $derived.by(() => {
+    let Type = '';
+    if (c === 0) {
+      Type += 'Undamped';
+    } else if (c < 10) {
+      Type += 'Underdamped';
+    } else if (c === 10) {
+      Type += 'Critically damped';
+    } else {
+      Type += 'Overdamped';
+    }
+    return [new Formula(toLatexText(Type))];
+  });
+</script>
+
+<CanvasGrid rows={2} columns={2} {controls} {formulas}>
+  <GridCanvas2D
+    {initialViewBox}
+    {cameraPosition}
+    {cameraZoom}
+    labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+    {axis}
+    {scaleX}
+    {scaleY}
+    gridColumn="1"
+    gridRow="1"
+  >
+    {@const u = draggables2[0].position.y}
+    <InfiniteLine2D
+      direction={new Vector2(1, 0)}
+      color={PrimeColor.black + PrimeColor.opacity(0.5)}
+    />
+    <Vector2D
+      color={PrimeColor.black}
+      origin={new Vector2(-1.3, -0.5)}
+      direction={new Vector2(0, -1)}
+    />
+    <MassSpring2D center={2} ceilingTop={4.2} massLocation={-1 * 1 * u} />
+    <Latex2D
+      latex="u"
+      color={PrimeColor.black}
+      position={new Vector2(-1.6, -0.8)}
+      alignX="center"
+      alignY="center"
+    />
+    {#each floatArray as y, _i (y)}
+      <Latex2D
+        latex={(-y).toFixed(0)}
+        color={PrimeColor.black}
+        position={new Vector2(-0.15, y + 0.05)}
+        alignX="right"
+        alignY="center"
+        background={PrimeColor.white}
+      />
+    {/each}
+    <FillBetweenFunctions2D
+      func1={(_x: number) => -3}
+      func2={(_x: number) => 4}
+      color1={PrimeColor.blue}
+      color2={PrimeColor.raspberry}
+      width={0.05}
+      xMin={0}
+      xMax={0}
+      integral={{
+        xLeft: 0.75,
+        xRight: 3.25,
+        fillStyle: 'full',
+        color: PrimeColor.green,
+        opacity: (0.5 * controls[0]) / 26
+      }}
+    />
+    <TemplateComponent objects={appletObjects} />
+  </GridCanvas2D>
+  {@const scaleX2 = 4}
+  {@const scaleY2 = 1 / 3}
+  <GridCanvas2D
+    {draggables}
+    initialViewBox={new ViewBox(
+      new Vector2(-maxRadius, -15 / scaleY2),
+      new Vector2(maxRadius, 15 / scaleY2),
+      0.2
+    )}
+    labels={{ xLabel: 'u(0)', yLabel: "u'(0)" }}
+    axis={axis2}
+    scaleX={scaleX2}
+    scaleY={scaleY2}
+    gridColumn="2"
+    gridRow="1"
+  ></GridCanvas2D>
+  <GridCanvas2D
+    draggables={draggables2}
+    initialViewBox={new ViewBox(new Vector2(0, -maxRadius), new Vector2(5, maxRadius), 2)}
+    labels={{ xLabel: 't', yLabel: 'u(t)' }}
+    axis={axis3}
+    scaleX={4}
+    scaleY={1}
+    gridColumn="1 / span 2"
+    gridRow="2"
+  >
+    {@const A = draggables[0].position.x}
+    {@const B = draggables[0].position.y}
+    {@const sol = constructExactSolution(m, c, k, A, B)}
+    <ExplicitFunction2D func={sol} color={PrimeColor.blue} width={0.1} xMin={0} xMax={5} />
+    <Line2D
+      start={new Vector2(0, draggables[0].position.x).sub(
+        new Vector2(1, draggables[0].position.y).multiplyScalar(0.15)
+      )}
+      end={new Vector2(0, draggables[0].position.x).add(
+        new Vector2(1, draggables[0].position.y).multiplyScalar(0.15)
+      )}
+      color={PrimeColor.red}
+      width={0.1}
+    />
+    <Point2D
+      position={new Vector2(0, draggables[0].position.x)}
+      color={PrimeColor.raspberry}
+      shape="square"
+    />
+  </GridCanvas2D>
+</CanvasGrid>

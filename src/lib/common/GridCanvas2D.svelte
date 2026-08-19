@@ -5,7 +5,7 @@
   export type GridCanvas2DProps = Omit<Canvas2DProps, 'width' | 'height' | 'children'> & {
     gridColumn?: string;
     gridRow?: string;
-    children: Snippet;
+    children?: Snippet;
   };
 </script>
 
@@ -48,6 +48,8 @@
   bind:clientHeight={containerHeight}
 >
   <CanvasD3 width={containerWidth} height={containerHeight} {...canvasProps}>
-    {@render children()}
+    {#if children}
+      {@render children()}
+    {/if}
   </CanvasD3>
 </div>

@@ -15,7 +15,7 @@
     isSplit?: boolean;
     scaleX?: number;
     scaleY?: number;
-    children: Snippet;
+    children?: Snippet;
   };
 </script>
 
@@ -44,6 +44,8 @@
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
     cameraZoom: cameraZoomProp = 1,
@@ -57,7 +59,7 @@
     labels,
     scaleX = 1,
     scaleY = 1,
-    children
+    children = undefined
   }: Canvas2DProps = $props();
 
   // svelte-ignore state_referenced_locally
@@ -204,7 +206,9 @@
             {/if}
 
             <!-- 3. Scene components -->
-            {@render children()}
+            {#if children}
+              {@render children()}
+            {/if}
 
             <!-- 2. Axis labels -->
             {#if labels?.xLabel}
@@ -217,6 +221,7 @@
                   0.75 / scaleY + (labels?.xLabelOffset?.y ?? 0)
                 )}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
+                color={labels?.xColor ?? axis?.colorX ?? PrimeColor.black}
               />
             {/if}
             {#if labels?.yLabel}
@@ -232,6 +237,7 @@
                 )}
                 rotation={labels.yLabelRotate ? -90 : 0}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'left'}
+                color={labels?.yColor ?? axis?.colorY ?? PrimeColor.black}
               />
             {/if}
 
