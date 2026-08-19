@@ -11,6 +11,7 @@
   import { OrthographicCamera } from 'three';
   import { OrbitControls as OrbitControlsJS } from 'three/addons/controls/OrbitControls.js';
   import vectorField from './vector_field.json';
+  import Point3D from '$lib/threlte/Point3D.svelte';
 
   let elevation = -2;
   let azimuth = 180;
@@ -27,7 +28,7 @@
   const GRID_CENTER_X = X_OFFSET * WORLD_SCALE;
   const GRID_CENTER_Z = 0;
   const GRID_RADIUS = 30;
-  const L = 1.0;
+  const L = 1.5;
 
   const vectorFieldPoints = vectorField as { x: number; y: number; u: number; v: number }[];
   const CURVE_SAMPLE_STEP = 10;
@@ -201,6 +202,30 @@
     /* eslint-disable-next-line no-console */
     console.log('Camera zoom:', camera.zoom);
   }
+
+  // Make a list of indices that should be shown to resemble a converging sequence
+  const stepFactor = 2; // Factor with which the step is multiplied
+  const startIndex = 168; // First index to select
+  let currentStep = 1; // StepSize
+  const maxStep = currentStep * stepFactor ** 4; // Maximum stepsize
+  const maxIndex = curveSegments[1].length; // Biggest index possible of second segment (the one we show)
+  let Indices = [startIndex];
+  let lastIndex = startIndex;
+  while (lastIndex + currentStep < maxIndex) {
+    Indices.push(lastIndex + currentStep);
+    lastIndex += currentStep;
+    currentStep = Math.min(currentStep * stepFactor, maxStep);
+  }
+  // Make a list of indices that should be shown to resemble a converging sequence toward the same point, but other direction
+  currentStep = 1; // reset StepSize
+  const minIndex = 0; // Smallest index possible of second segment (the one we show)
+  lastIndex = startIndex;
+  while (lastIndex - currentStep > minIndex) {
+    Indices.push(lastIndex - currentStep);
+    lastIndex -= currentStep;
+    currentStep = Math.min(currentStep * stepFactor, maxStep);
+  }
+  const IndicesSet = new Set(Indices);
 </script>
 
 {#if curveSegments.length > 0}
@@ -228,7 +253,7 @@
           .multiplyScalar(L / 2)
       )}
     direction={new Vector3(u * WORLD_SCALE * X_STRETCH, 0, v * WORLD_SCALE)}
-    radius={0.75}
+    radius={0.5}
   />
 {/each}
 
@@ -238,12 +263,22 @@
       <MeshLineGeometry points={segment} />
       <MeshLineMaterial
         depthTest={true}
-        width={0.01}
+        width={0.008}
         color={PrimeColor.blue}
         dashOffset={0.1}
         dashArray={0.1 * 0.01}
       />
     </T.Mesh>
+    {#each [...segment].reverse() as point, idxP (idxP)}
+      {#if IndicesSet.has(idxP)}
+        <Point3D
+          position={point}
+          color={PrimeColor.brightness(PrimeColor.green, 0.8)}
+          size={0.25}
+          alwaysOnTop={false}
+        />
+      {/if}
+    {/each}
   {/if}
 {/each}
 
@@ -262,4 +297,4 @@
   />
 </T.OrthographicCamera>
 
-<CustomRenderer {elevation} {azimuth} {grid} />
+<CustomRenderer {elevation} {azimuth} {grid} stars={false} bloomStrength={0.4} />
