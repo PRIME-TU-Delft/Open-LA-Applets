@@ -13,7 +13,16 @@
     "fullPage": false,
     "waitForSelector": "canvas, svg",
     "waitTime": 1000,
-    "timeout": 10000
+    "timeout": 10000,
+    "timeoutOverrides": {
+      "/applet/other/front_cover/calculus": 0,
+      "/applet/calculus/indefinite_integrals/several_functions": 0,
+      "/applet/calculus/slope_fields/equilibrium_solutions_in_a_slope_field": 0,
+      "/applet/calculus/slope_fields/sketching_in_a_slope_field": 0,
+      "/applet/calculus/slope_fields/solutions_in_a_slope_field": 0,
+      "/applet/calculus/slopes_of_curves_in_R2/folium_of_Descartes": 0,
+      "/applet/calculus/slopes_of_curves_in_R2/unit_circle": 0
+    }
   },
   "browser": {
     "headless": true,
