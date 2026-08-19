@@ -27,6 +27,7 @@
   const GRID_CENTER_X = X_OFFSET * WORLD_SCALE;
   const GRID_CENTER_Z = 0;
   const GRID_RADIUS = 30;
+  const L = 1.0;
 
   const vectorFieldPoints = vectorField as { x: number; y: number; u: number; v: number }[];
   const CURVE_SAMPLE_STEP = 10;
@@ -218,11 +219,11 @@
 {#each visibleVectors as { x, y, u, v } (`${x},${y},${u.toFixed(2)},${v.toFixed(2)}`)}
   <Vector3D
     color={PrimeColor.raspberry}
-    length={1.5}
+    length={L}
     origin={new Vector3(x * X_STRETCH + X_OFFSET, -9.9, y)
       .multiplyScalar(WORLD_SCALE)
-      .sub(new Vector3(u, 0, v).normalize().multiplyScalar(0.75))}
-    direction={new Vector3(u, 0, v)}
+      .sub(new Vector3(u*WORLD_SCALE*X_STRETCH, 0, v*WORLD_SCALE).normalize().multiplyScalar(L/2))}
+    direction={new Vector3(u*WORLD_SCALE*X_STRETCH, 0, v*WORLD_SCALE)}
     radius={0.75}
   />
 {/each}
