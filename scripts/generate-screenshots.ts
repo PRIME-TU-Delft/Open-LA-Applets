@@ -26,6 +26,7 @@ interface ScreenshotConfig {
   };
   screenshots: {
     timeout: number;
+    timeoutOverrides?: Record<string, number>;
     waitForSelector: string;
     waitTime: number;
     outputDir: string;
@@ -107,6 +108,15 @@ async function getAppletRoutes(): Promise<string[]> {
 function stripAnsi(text: string): string {
   // eslint-disable-next-line no-control-regex
   return text.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
+}
+
+/**
+ * Resolve the navigation timeout for a route, honoring any configured prefix override
+ */
+function getNavigationTimeout(route: string): number {
+  const overrides = CONFIG.screenshots.timeoutOverrides ?? {};
+  const match = Object.keys(overrides).find((prefix) => route.startsWith(prefix));
+  return match ? overrides[match] : CONFIG.screenshots.timeout;
 }
 
 /**
@@ -209,7 +219,7 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
       console.log(`Capturing: ${route}`);
 
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: CONFIG.screenshots.timeout });
+      await page.goto(url, { waitUntil: 'networkidle0', timeout: getNavigationTimeout(route) });
 
       let has3DContent = false;
       try {
