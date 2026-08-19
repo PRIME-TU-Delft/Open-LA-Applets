@@ -119,6 +119,23 @@ function getNavigationTimeout(route: string): number {
   return match ? overrides[match] : CONFIG.screenshots.timeout;
 }
 
+// Puppeteer treats a goto timeout of 0 as "wait forever", but the cluster's own task
+// timeout can't be disabled the same way, so a disabled override falls back to this instead
+const DISABLED_TIMEOUT_CLUSTER_FALLBACK = 10 * 60 * 1000; // 10 minutes
+
+/**
+ * Compute the puppeteer-cluster task timeout, large enough to cover the biggest
+ * configured navigation timeout (including any disabled per-route overrides)
+ */
+function getClusterTaskTimeout(): number {
+  const overrideValues = Object.values(CONFIG.screenshots.timeoutOverrides ?? {}).map((value) =>
+    value === 0 ? DISABLED_TIMEOUT_CLUSTER_FALLBACK : value
+  );
+  const largestTimeout = Math.max(CONFIG.screenshots.timeout, ...overrideValues);
+
+  return largestTimeout * 2;
+}
+
 /**
  * Start the preview server
  */
@@ -204,7 +221,7 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       args: CONFIG.browser.args,
       executablePath: executablePath
     },
-    timeout: CONFIG.screenshots.timeout * 2,
+    timeout: getClusterTaskTimeout(),
     retryLimit: 0
   });
 
