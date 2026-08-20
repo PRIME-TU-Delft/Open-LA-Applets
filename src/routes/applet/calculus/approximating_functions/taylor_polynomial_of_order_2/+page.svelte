@@ -12,7 +12,6 @@
   import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
-  import Legend from '$lib/stories/Legend.stories.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
