@@ -128,6 +128,6 @@
     origin={draggables[0].position}
     direction={new Vector2(1, der(draggables[0].position.x))}
     color={PrimeColor.orange}
-    width={0.08}
+    width={0.05}
   />
 </Canvas2D>
