@@ -37,6 +37,9 @@
 <!-- A Point with triangle shape defined -->
 <Story name="With triangle shape" args={{ shape: 'triangle' }} {template} />
 
+<!-- A Point with diamond shape defined -->
+<Story name="With diamond shape" args={{ shape: 'diamond' }} {template} />
+
 <!-- A Point with pulse effect defined -->
 <Story name="With pulse effect" args={{ pulse: true }} {template} />
 

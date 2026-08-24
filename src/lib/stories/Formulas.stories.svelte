@@ -158,3 +158,48 @@ const formulaRight = $derived([autoParamFormula[0]]);
     </div>
   {/snippet}
 </Story>
+
+<!-- `textColor` splits the formula's latex on "&" before wrapping it in `\textcolor{}`, so that a `\textcolor{}`
+  group doesn't swallow an alignment marker meant for an outer `\begin{aligned}...\end{aligned}` block.
+
+  KNOWN LIMITATION (undocumented behavior from PR #500, see issue #503): this only avoids swallowing the "&" — it
+  does NOT keep the `\begin{aligned}`/`\end{aligned}` pair inside one `\textcolor{}` group. Since each split segment
+  gets its own `\textcolor{}{...}` wrapper, `\begin{aligned}` ends up in a different group than its matching
+  `\end{aligned}`, which KaTeX rejects ("Expected & or \\ or \cr or \end"). In practice this means: passing
+  `textColor` to a `Formula` whose latex is a hand-written `\begin{aligned}...&...\end{aligned}` block throws at
+  render time. `Formulas.align()` itself is unaffected, since it builds the `\begin{aligned}` block from already
+  finished `Formula.latex` strings and never combines that with a `textColor` argument.
+
+```typescript
+// This combination currently throws a KaTeX parse error - do not use textColor together with
+// a hand-written \begin{aligned}...&...\end{aligned} block:
+// new Formula('\\begin{aligned} x &= 1 \\\\ y &= 2 \\end{aligned}', undefined, undefined, PrimeColor.raspberry);
+
+// textColor works fine on formulas without "&":
+const coloredFormula = new Formula('x = 1', undefined, undefined, PrimeColor.raspberry);
+```
+-->
+<Story name="Formula with textColor">
+  {#snippet template()}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D
+        {draggables}
+        formulas={[
+          new Formula(
+            `\\text{length} = ${round(draggables[0].position.length())}`,
+            undefined,
+            undefined,
+            PrimeColor.raspberry
+          )
+        ]}
+      >
+        <Vector2D
+          origin={new Vector2(0, 0)}
+          direction={draggables[0].position}
+          length={draggables[0].position.length()}
+          color={PrimeColor.blue}
+        />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
