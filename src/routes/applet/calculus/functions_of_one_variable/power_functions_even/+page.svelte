@@ -79,7 +79,7 @@
   // ##############
   const controls = Controls.addSlider(2, 1, 10, 1, PrimeColor.darkGreen, {
     label: toLatexText('$n=$'),
-    valueFn: (v: number) => (2 * v).toFixed(0),
+    valueFn: (v: number) => toLatexText((2 * v).toFixed(0)),
     animationStep: 1
   });
   const appletObjects: AppletObject[] = [
