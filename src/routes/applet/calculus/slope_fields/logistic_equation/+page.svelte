@@ -85,15 +85,15 @@
   }
   const controls = Controls.addSlider(0.2, 0, 10, 0.1, PrimeColor.raspberry, {
     label: toLatexText('$P(0)=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', ''))
+    valueFn: (v: number) => toLatexText("$"+v.toFixed(1).replace('.0', '')+"$")
   })
     .addSlider(2, 0, 10, 0.1, PrimeColor.darkGreen, {
       label: toLatexText('$k=$'),
-      valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', ''))
+      valueFn: (v: number) => toLatexText("$"+v.toFixed(1).replace('.0', '')+"$")
     })
     .addSlider(5, 0.1, 10, 0.1, PrimeColor.orange, {
       label: toLatexText('$M=$'),
-      valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', ''))
+      valueFn: (v: number) => toLatexText("$"+v.toFixed(1).replace('.0', '')+"$")
     });
   const formulas = $derived.by(() => {
     const f1 = new Formula('\\frac{dP}{dt} = \\$1\\cdot \\$2\\left(1-\\frac{P}{\\$2}\\right)')
@@ -120,7 +120,7 @@
   {@const M = controls[2]}
   {@const fy = (y: number) => k * y * (1 - y / M)}
   <VectorField2D
-    f={(x: number, y: number) => new Vector2(1, fy(y))}
+    f={(_x: number, y: number) => new Vector2(1, fy(y))}
     color={PrimeColor.black}
     yRange={[0, 30]}
   />

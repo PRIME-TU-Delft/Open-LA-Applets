@@ -69,7 +69,7 @@
   // ##############
   const controls = Controls.addSlider(1, 0.1, 5, 0.1, PrimeColor.yellow, {
     label: toLatexText('$n=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', '')),
+    valueFn: (v: number) => toLatexText("$"+v.toFixed(1).replace('.0', '')+"$"),
     animationStep: 0.1
   })
     .addToggle(true, toLatexText('$f$'), PrimeColor.blue)

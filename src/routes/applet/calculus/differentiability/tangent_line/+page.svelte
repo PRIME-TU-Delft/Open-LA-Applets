@@ -120,7 +120,9 @@
   const controls = Controls.addSlider(1, -2, 2, 0.05, PrimeColor.raspberry, {
     label: toLatexText('$h=$'),
     valueFn: (v: number) =>
-      toLatexText(Math.abs(v) === 1 ? v.toFixed(0) : v === 0 ? '0' : v.toFixed(2).replace(/0+$/, '')),
+      toLatexText(
+        Math.abs(v) === 1 ? v.toFixed(0) : v === 0 ? '0' : v.toFixed(2).replace(/0+$/, '')
+      ),
     animationStep: 0.5
   });
   function Direction() {
