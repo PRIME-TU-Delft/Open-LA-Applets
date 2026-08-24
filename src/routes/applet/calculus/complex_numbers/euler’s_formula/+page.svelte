@@ -109,7 +109,6 @@
   const formulas = $derived.by(() => {
     const re = draggablePoint[0].position.x;
     const im = draggablePoint[0].position.y;
-    const r = Math.sqrt(re * re + im * im);
     const theta = Math.atan2(im, re);
     return new Formulas(
       new Formula(
@@ -147,26 +146,26 @@
   <Latex2D
     latex={String.raw`e^{i\,0}`}
     position={new Vector2(3.15, -0.15)}
-    alignX={'left'}
-    alignY={'top'}
+    alignX="left"
+    alignY="top"
   />
   <Latex2D
     latex={String.raw`e^{i\,\pi}`}
     position={new Vector2(-3.15, -0.15)}
-    alignX={'right'}
-    alignY={'top'}
+    alignX="right"
+    alignY="top"
   />
   <Latex2D
     latex={String.raw`e^{i\,\frac{\pi}{2}}`}
     position={new Vector2(-0.15, 3.15)}
-    alignX={'right'}
-    alignY={'bottom'}
+    alignX="right"
+    alignY="bottom"
   />
   <Latex2D
     latex={String.raw`e^{-i\,\frac{\pi}{2}}`}
     position={new Vector2(-0.15, -3.15)}
-    alignX={'right'}
-    alignY={'top'}
+    alignX="right"
+    alignY="top"
   />
   {#if toggleControls[0]}
     <PolarGrid showAngleTicks showRadiiTicks={false} highlightRadii={[3]} />
@@ -185,7 +184,7 @@
     latex={String.raw`\cos(\theta)`}
     position={new Vector2(re, 0)}
     color={PrimeColor.blue}
-    alignX={'center'}
+    alignX="center"
     alignY={draggablePoint[0].position.y > 0 ? 'top' : 'bottom'}
     offset={new Vector2(0, draggablePoint[0].position.y > 0 ? -0.1 : 0.1)}
   />
@@ -200,7 +199,7 @@
     latex={String.raw`\sin(\theta)`}
     position={new Vector2(0, im)}
     color={PrimeColor.yellow}
-    alignY={'center'}
+    alignY="center"
     alignX={draggablePoint[0].position.x < 0 ? 'left' : 'right'}
     offset={new Vector2(draggablePoint[0].position.x > 0 ? -0.1 : 0.1, 0)}
   />
