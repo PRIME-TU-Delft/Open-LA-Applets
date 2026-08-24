@@ -329,8 +329,6 @@
     Mlist.push(newM);
     MListTransformed.push(MtoWorld(newM));
   }
-  console.log(Mlist);
-
   const formulas = $derived.by(() => {
     let p = draggables[1].position.x;
     p = p / Math.PI;
