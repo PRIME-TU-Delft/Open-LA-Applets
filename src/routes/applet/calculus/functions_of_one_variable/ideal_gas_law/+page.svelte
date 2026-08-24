@@ -70,11 +70,11 @@
   // ##############
   const controls = Controls.addSlider(1, 1, 10, 1, PrimeColor.darkGreen, {
     label: toLatexText('$n$ (mol)$=$'),
-    valueFn: (v: number) => v.toFixed(0),
+    valueFn: (v: number) => toLatexText(v.toFixed(0)),
     animationStep: 1
   }).addSlider(20, -273, 273, 1, PrimeColor.orange, {
     label: toLatexText('$T$ ($^{\\circ}$C)$=$'),
-    valueFn: (v: number) => v.toFixed(0),
+    valueFn: (v: number) => toLatexText(v.toFixed(0)),
     animationStep: 1
   });
 
