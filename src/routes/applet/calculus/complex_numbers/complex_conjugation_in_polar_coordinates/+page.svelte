@@ -136,6 +136,9 @@
   const toggleControls = Controls.addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
     isSwitch: true,
     switchRightSide: toLatexText('Polar grid')
+  }).addToggle(false, toLatexText('\\quad|\\quad Hide $-z$'), PrimeColor.black, {
+    isSwitch: true,
+    switchRightSide: toLatexText('Show $-z$')
   });
 </script>
 
@@ -161,6 +164,7 @@
   {@const theta = Math.atan2(im, re)}
   {@const phi = theta + Math.PI / 2}
   {@const shift = new Vector2(Math.cos(phi), Math.sin(phi)).multiplyScalar(0.5)}
+  // z-stuff
   <Latex2D
     latex="z"
     position={draggablePoint[0].position}
@@ -226,6 +230,26 @@
     alignX="left"
     alignY="center"
   />
+  // -z-stuff
+  {#if toggleControls[1]}
+    {@const MinZ = new Vector2(-draggablePoint[0].position.x, -draggablePoint[0].position.y)}
+    <Latex2D
+      latex="-z"
+      position={MinZ}
+      color={PrimeColor.green}
+      alignX={MinZ.x < 0 ? 'right' : 'left'}
+      alignY={MinZ.y < 0 ? 'top' : 'bottom'}
+      offset={new Vector2(MinZ.x < 0 ? -0.1 : 0.1, MinZ.y < 0 ? -0.1 : 0.1)}
+    />
+    <Line2D
+      start={MinZ}
+      end={new Vector2(0, 0)}
+      color={PrimeColor.green}
+      width={0.05}
+      isDashed={true}
+    />
+    <Point2D position={MinZ} color={PrimeColor.green} shape="square" />
+  {/if}
   {@const ConjugateZ = new Vector2(draggablePoint[0].position.x, -draggablePoint[0].position.y)}
   {@const phi2 = -theta + Math.PI / 2}
   {@const shiftC = new Vector2(Math.cos(phi2), Math.sin(phi2)).multiplyScalar(0.5)}
@@ -287,4 +311,26 @@
     alignY="center"
   />
   <Point2D position={ConjugateZ} color={PrimeColor.darkGreen} />
+  {#if toggleControls[1]}
+    {@const MinConjugateZ = new Vector2(
+      -draggablePoint[0].position.x,
+      draggablePoint[0].position.y
+    )}
+    <Line2D
+      start={new Vector2(0, 0)}
+      end={MinConjugateZ}
+      color={PrimeColor.darkGreen}
+      width={0.05}
+      isDashed={true}
+    />
+    <Latex2D
+      latex={String.raw`-\overline{z}=\overline{-z}`}
+      position={MinConjugateZ}
+      color={PrimeColor.darkGreen}
+      alignX={MinConjugateZ.x < 0 ? 'right' : 'left'}
+      alignY={MinConjugateZ.y < 0 ? 'top' : 'bottom'}
+      offset={new Vector2(MinConjugateZ.x < 0 ? -0.1 : 0.1, MinConjugateZ.y < 0 ? -0.1 : 0.1)}
+    />
+    <Point2D position={MinConjugateZ} color={PrimeColor.darkGreen} shape="square" />
+  {/if}
 </Canvas2D>
