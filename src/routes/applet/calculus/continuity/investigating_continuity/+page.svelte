@@ -93,7 +93,7 @@
 
   const controls = Controls.addSlider(-2, -10, 10, 0.5, PrimeColor.raspberry, {
     label: toLatexText('$b=$'),
-    valueFn: (v: number) => toLatexText("$"+v.toFixed(1).replace('.0', '')+"$"),
+    valueFn: (v: number) => toLatexText('$' + v.toFixed(1).replace('.0', '') + '$'),
     animationStep: 0.5
   });
 </script>

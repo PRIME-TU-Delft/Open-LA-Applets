@@ -70,7 +70,7 @@
   // ##############
   const controls = Controls.addSlider(48, 46, 54, 0.5, PrimeColor.darkGreen, {
     label: toLatexText('$\\!m_1m_2\\!$ (kg$^2$) $\\!\\!=$'),
-    valueFn: (v: number) => toLatexText("$"+'10^{' + v.toFixed(1).replace('.0', '') + '}'+"$"),
+    valueFn: (v: number) => toLatexText('$' + '10^{' + v.toFixed(1).replace('.0', '') + '}' + '$'),
     animationStep: 0.5
   });
 

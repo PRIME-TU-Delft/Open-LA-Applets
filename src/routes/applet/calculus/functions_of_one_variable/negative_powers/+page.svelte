@@ -69,11 +69,11 @@
   // ##############
   const controls = Controls.addSlider(1, 1, 10, 1, PrimeColor.blue, {
     label: toLatexText('$n=$'),
-    valueFn: (v: number) => toLatexText("$"+(2 * v - 1).toFixed(0)+"$"),
+    valueFn: (v: number) => toLatexText('$' + (2 * v - 1).toFixed(0) + '$'),
     animationStep: 1
   }).addSlider(1, 1, 10, 1, PrimeColor.raspberry, {
     label: toLatexText('$m=$'),
-    valueFn: (v: number) => toLatexText("$"+(2 * v).toFixed(0)+"$"),
+    valueFn: (v: number) => toLatexText('$' + (2 * v).toFixed(0) + '$'),
     animationStep: 1
   });
   function OddPower(x: number) {

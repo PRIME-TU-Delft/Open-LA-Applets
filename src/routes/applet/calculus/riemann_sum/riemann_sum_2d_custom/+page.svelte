@@ -65,7 +65,7 @@
     .addDropdown(defaultRule, methods, PrimeColor.yellow)
     .addSlider(defaultN, 1, 10, 1, PrimeColor.raspberry, {
       label: 'n=',
-      valueFn: (v) => toLatexText("$"+roundString(v, 0)+"$")
+      valueFn: (v) => toLatexText('$' + roundString(v, 0) + '$')
     });
 
   const currentMethod = $derived(

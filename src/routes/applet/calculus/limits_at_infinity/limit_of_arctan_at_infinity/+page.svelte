@@ -69,7 +69,7 @@
   // ##############
   const controls = Controls.addSlider(0.2, 0, 4, 0.05, PrimeColor.orange, {
     label: toLatexText('$\\varepsilon=$'),
-    valueFn: (x) => toLatexText("$"+x.toFixed(2)+"$")
+    valueFn: (x) => toLatexText('$' + x.toFixed(2) + '$')
   });
   let N = $derived(
     controls[0] >= Math.PI ? -30 : Math.min(Math.max(-30, Math.tan(Math.PI / 2 - controls[0])), 30) // To make sure the vertical lines don't intersect with the function

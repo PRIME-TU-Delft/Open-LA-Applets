@@ -102,7 +102,7 @@
     })
     .addSlider(2, -3, 3, 1, PrimeColor.raspberry, {
       label: toLatexText('$b=$'),
-      valueFn: (v: number) => toLatexText("$"+(Math.sign(v) * v ** 2).toFixed(0)+"$"),
+      valueFn: (v: number) => toLatexText('$' + (Math.sign(v) * v ** 2).toFixed(0) + '$'),
       animationStep: 1
     });
 
