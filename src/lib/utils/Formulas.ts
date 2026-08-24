@@ -51,16 +51,18 @@ export class Formula {
 
     if (textColor != undefined) {
       this.textColor = textColor;
-      // Take care of possible & for alignment
-      let new_latex = ``;
-      const parts = this.latex.split('&');
-      parts.forEach((part, index, array) => {
-        new_latex += `\\textcolor{${textColor}}{${part}}`;
-        if (index != array.length - 1) {
-          new_latex += `&`;
-        }
-      });
-      this.latex = new_latex;
+      // Wrap each text segment in its own \textcolor{}, but keep "&" alignment
+      // markers and \begin{...}/\end{...} environment delimiters outside any
+      // single \textcolor{} group - putting \begin{aligned} and \end{aligned}
+      // in different \textcolor{} groups is rejected by KaTeX.
+      const tokens = this.latex.split(/(\\begin\{[a-zA-Z*]+\}|\\end\{[a-zA-Z*]+\}|&)/);
+      this.latex = tokens
+        .map((token) =>
+          token === '' || /^(\\begin\{[a-zA-Z*]+\}|\\end\{[a-zA-Z*]+\}|&)$/.test(token)
+            ? token
+            : `\\textcolor{${textColor}}{${token}}`
+        )
+        .join('');
     }
   }
 
