@@ -72,6 +72,39 @@
 
   const slideShowControl = Controls.addSlideShow(slideShowState, transitionSteps);
 
+  const perStepTimingSteps = [
+    {
+      transition: (t: number, state: S) => {
+        state.aOpacity = state.aOpacity - 1 * t;
+        return {
+          state,
+          labelNext: $_('applets.testing.controls_stories.fade_out_a'),
+          labelPrev: $_('ui.slideshow_original_state')
+        };
+      },
+      duration: 2000,
+      timeSteps: 60
+    },
+    {
+      transition: (t: number, state: S) => {
+        state.bPosition = state.bPosition.add(new Vector2(-3, 1).multiplyScalar(t));
+
+        return {
+          state,
+          labelNext: $_('applets.testing.controls_stories.move_b_to'),
+          labelPrev: $_('applets.testing.controls_stories.move_b_from')
+        };
+      },
+      duration: 300,
+      timeSteps: 20
+    }
+  ];
+
+  const perStepTimingSlideShowControl = Controls.addSlideShow(
+    { aOpacity: 1, bPosition: new Vector2(2, 1) },
+    perStepTimingSteps
+  );
+
   const dropdownVals = [
     'applets.testing.controls_stories.vector_left',
     'applets.testing.controls_stories.vector_right',
@@ -195,6 +228,47 @@ const slideShowControl = Controls.addSlideShow(state, transitionSteps);
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={slideShowControl}>
       {@const state = slideShowControl[0]}
+      {#if state.aOpacity > 0.01}
+        <Vector2D
+          direction={new Vector2(-2, 1)}
+          length={3}
+          color={PrimeColor.raspberry + PrimeColor.opacity(state.aOpacity)}
+        />
+      {/if}
+      <Vector2D
+        direction={state.bPosition}
+        length={state.bPosition.length()}
+        color={PrimeColor.blue}
+      />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!--
+Each step can also be given its own `duration`/`timeSteps` (in place of a plain transition function),
+overriding the 750ms/20-step default used by `.next()`/`.prev()`:
+
+```typescript
+const perStepTimingSteps = [
+  {
+    transition: (t: number, state: S) => { ... },
+    duration: 2000,
+    timeSteps: 60
+  },
+  {
+    transition: (t: number, state: S) => { ... },
+    duration: 300,
+    timeSteps: 20
+  }
+];
+
+const slideShowControl = Controls.addSlideShow(state, perStepTimingSteps);
+```
+-->
+<Story name="Slide show with per-step timing">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={perStepTimingSlideShowControl}>
+      {@const state = perStepTimingSlideShowControl[0]}
       {#if state.aOpacity > 0.01}
         <Vector2D
           direction={new Vector2(-2, 1)}
