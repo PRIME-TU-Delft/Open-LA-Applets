@@ -95,7 +95,7 @@
   const initX = 1;
   const controls = Controls.addSlider(-0.5, -2, 2, 0.1, PrimeColor.blue, {
     label: toLatexText('$C=$'),
-    valueFn: (v: number) => v.toFixed(1).replace('.0', ''),
+    valueFn: (v: number) => toLatexText('$' + v.toFixed(1).replace('.0', '') + '$'),
     animationStep: 0.1,
     onChange: Snap3
   });

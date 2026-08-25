@@ -5,13 +5,14 @@
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
-  import { toLatexText } from '$lib/utils/FormatString';
+  import { ViewBox } from '$lib/d3/ViewBox';
+  import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { Controls } from '$lib/controls/Controls';
+  import { Draggable } from '$lib/controls/Draggables.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -28,8 +29,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2, 1);
-  cameraZoom = 1.0;
+  initialViewBox = new ViewBox(
+    new Vector2(0, 0), // bottom-left
+    new Vector2(14, 4), // top-right
+    1.5 // margin
+  );
 
   // ####
   // AXIS
@@ -53,7 +57,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 1;
+  let scaleX = 1 / 2;
   let scaleY = 1;
 
   // ###########
@@ -61,52 +65,69 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 't';
+  xAxisLabel = 'x';
   yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(2, 1, 10, 0.5, PrimeColor.blue, {
-    label: toLatexText('$a=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', '')),
-    animationStep: 0.5
-  }).addSlider(3, 1, 10, 0.5, PrimeColor.raspberry, {
-    label: toLatexText('$b=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(1).replace('.0', '')),
-    animationStep: 0.5
-  });
-  function Exponential(x: number) {
-    const n = controls[0];
-    return n ** x;
-  }
-  function InverseExponential(x: number) {
-    const m = controls[1];
-    return (1 / m) ** x;
-  }
+  const func = (x: number) => Math.pow(x, 1 / 3);
+  const invfunc = (x: number) => Math.pow(x, 3);
+  const der = (x: number) => (1 / 3) * Math.pow(x, -2 / 3);
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(Exponential, PrimeColor.blue),
-    new FunctionFragment(InverseExponential, PrimeColor.raspberry)
+    new FunctionFragment(func, PrimeColor.blue, {
+      legendText: 'f(x)=\\sqrt[3]{x}',
+      width: 0.08
+    }).addIncludedPoints(new Vector2(0, 0))
+  ];
+  const initX = 8;
+  const initY = func(initX);
+  function SnapToGrid(position: Vector2): Vector2 {
+    const snappedY = Math.max(0.1, Number(position.y.toFixed(1)));
+    const snappedX = invfunc(snappedY);
+
+    return new Vector2(snappedX, snappedY);
+  }
+  const draggables = [
+    new Draggable(
+      new Vector2(initX, initY),
+      PrimeColor.darkGreen,
+      undefined,
+      SnapToGrid,
+      undefined,
+      undefined,
+      0.12
+    )
   ];
 
-  const legendItems = $derived([
-    new LegendItem('A(t)=' + controls[0].toFixed(1).replace('.0', '') + '^t', PrimeColor.blue),
-    new LegendItem(
-      'B(t)=\\left(\\frac{1}{' + controls[1].toFixed(1).replace('.0', '') + '}\\right)^{t}',
-      PrimeColor.raspberry
-    )
-  ]);
+  const LegendL = $derived.by(() => {
+    const x = draggables[0].position.x;
+    const fx = func(x);
+    const invder = 3 * Math.pow(fx, 2);
+    return new LegendItem('L(x)=\\$2+\\$3 (x-\\$1)', PrimeColor.orange, 'square')
+      .addAutoParam(x.toFixed(3).replace(/\.?0+$/, ''), PrimeColor.darkGreen)
+      .addAutoParam(fx.toFixed(1).replace(/\.?0+$/, ''), PrimeColor.darkGreen)
+      .addAutoParam(
+        '\\frac{1}{' + invder.toFixed(2).replace(/\.?0+$/, '') + '}',
+        PrimeColor.orange
+      );
+  });
 </script>
 
 <Canvas2D
-  {controls}
-  {cameraPosition}
-  {cameraZoom}
-  {legendItems}
+  {draggables}
+  {initialViewBox}
+  legendItems={[...getLegend(appletObjects), LegendL]}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
 >
   <TemplateComponent objects={appletObjects} />
+  <InfiniteLine2D
+    origin={draggables[0].position}
+    direction={new Vector2(1, der(draggables[0].position.x))}
+    color={PrimeColor.orange}
+    width={0.05}
+  />
 </Canvas2D>

@@ -1,17 +1,16 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
-  import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
-  import Line2D from '$lib/d3/Line2D.svelte';
-  import { LegendItem } from '$lib/utils/Legend';
-  import { toLatexText } from '$lib/utils/FormatString';
+  import { Formula } from '$lib/utils/Formulas';
+  import VectorField2D from '$lib/d3/VectorField2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let cameraPosition: Vector2 | undefined;
@@ -37,8 +36,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-6, -4), // bottom-left
+    new Vector2(10, 10), // top-right
     0.5 // margin
   );
 
@@ -72,55 +71,36 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = 'x';
+  xAxisLabel = 't';
   yAxisLabel = 'y';
 
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(3, -5, 5, 0.1, PrimeColor.darkGreen, {
-    label: toLatexText('$y$-intercept$=$'),
-    valueFn: (v: number) => toLatexText('$' + v.toFixed(1) + '$'),
-    animationStep: 0.1
-  }) // y-intercept
-    .addSlider(2, -5, 5, 0.1, PrimeColor.orange, {
-      label: toLatexText('slope$=$'),
-      valueFn: (v: number) => toLatexText('$' + v.toFixed(1) + '$'),
-      animationStep: 0.1
-    }); // slope
-  function func(x: number) {
-    const slope = controls[1];
-    const intercept = controls[0];
-    return slope * x + intercept;
+  function Solution(t: number, Q: number, k: number, M: number): number {
+    if (Q === M || Q === 0) {
+      return Q;
+    }
+    return (M * Q) / (Q + (M - Q) * Math.exp(-k * t));
   }
-  const appletObjects: AppletObject[] = [new FunctionFragment(func, PrimeColor.blue)];
-
-  function textFormula() {
-    const slope = controls[1];
-    const intercept = controls[0];
-    let value = `f(x)=`;
-    if (slope === 0 && intercept === 0) {
-      value += '0';
-    }
-    if (slope !== 0) {
-      if (slope === 1) {
-        value += 'x';
-      } else if (slope === -1) {
-        value += '-x';
-      } else {
-        value += slope.toFixed(1) + 'x';
-      }
-    }
-    if (intercept !== 0) {
-      if (intercept > 0 && slope !== 0) {
-        value += '+';
-      }
-      value += intercept.toFixed(1);
-    }
-    return value;
-  }
-
-  const legendItems = $derived([new LegendItem(textFormula(), PrimeColor.blue)]);
+  const controls = Controls.addSlider(0.2, 0, 10, 0.1, PrimeColor.raspberry, {
+    label: toLatexText('$P(0)=$'),
+    valueFn: (v: number) => toLatexText('$' + v.toFixed(1).replace('.0', '') + '$')
+  })
+    .addSlider(2, 0, 10, 0.1, PrimeColor.darkGreen, {
+      label: toLatexText('$k=$'),
+      valueFn: (v: number) => toLatexText('$' + v.toFixed(1).replace('.0', '') + '$')
+    })
+    .addSlider(5, 0.1, 10, 0.1, PrimeColor.orange, {
+      label: toLatexText('$M=$'),
+      valueFn: (v: number) => toLatexText('$' + v.toFixed(1).replace('.0', '') + '$')
+    });
+  const formulas = $derived.by(() => {
+    const f1 = new Formula('\\frac{dP}{dt} = \\$1\\cdot \\$2\\left(1-\\frac{P}{\\$2}\\right)')
+      .addAutoParam(controls[1].toFixed(1).replace('.0', ''), PrimeColor.darkGreen)
+      .addAutoParam(controls[2].toFixed(1).replace('.0', ''), PrimeColor.orange);
+    return [f1];
+  });
 </script>
 
 <Canvas2D
@@ -128,30 +108,31 @@
   {initialViewBox}
   {cameraPosition}
   {cameraZoom}
-  {legendItems}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
+  {formulas}
+  showFormulasDefault
+  legendFormulaPosition="top-left"
 >
-  <TemplateComponent objects={appletObjects} />
-  <Point2D position={new Vector2(0, controls[0])} color={PrimeColor.darkGreen} shape="circle" />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(0))}
-    color={PrimeColor.orange}
-    isDashed={true}
+  {@const k = controls[1]}
+  {@const M = controls[2]}
+  {@const fy = (y: number) => k * y * (1 - y / M)}
+  <VectorField2D
+    f={(_x: number, y: number) => new Vector2(1, fy(y))}
+    color={PrimeColor.black}
+    yRange={[0, 30]}
   />
-  <Line2D
-    start={new Vector2(1, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    isDashed={true}
+
+  <ExplicitFunction2D
+    func={(t: number) => Solution(t, controls[0], controls[1], controls[2])}
+    color={PrimeColor.blue}
+    width={0.08}
+    xMin={0}
   />
-  <Line2D
-    start={new Vector2(0, func(0))}
-    end={new Vector2(1, func(1))}
-    color={PrimeColor.orange}
-    width={0.06}
+  <Point2D
+    position={new Vector2(0, Solution(0, controls[0], controls[1], controls[2]))}
+    color={PrimeColor.raspberry}
   />
 </Canvas2D>
