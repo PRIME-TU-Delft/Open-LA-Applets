@@ -117,12 +117,6 @@
   const appletObjects: AppletObject[] = [
     new ImplicitFunctionFragment(ZeroFunc, PrimeColor.blue, { width: 0.08 })
   ];
-  function TopFunction(x: number): number {
-    return Math.sqrt(a ** 2 - x ** 2);
-  }
-  function BottomFunction(x: number): number {
-    return -TopFunction(x);
-  }
   function theta(position: Vector2): number {
     const x = position.x;
     const y = position.y;
