@@ -159,7 +159,5 @@
   {scaleX}
   {scaleY}
 >
-  {@const x = draggables[0].position.x}
-  {@const y = draggables[0].position.y}
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
