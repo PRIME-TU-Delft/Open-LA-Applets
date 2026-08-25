@@ -19,11 +19,9 @@
 </script>
 
 <script>
-  import { getContext } from 'svelte';
-  const _scale3D = getContext('scale3D') as { x: number; y: number; z: number } | undefined;
-  const sx = _scale3D?.x ?? 1;
-  const sy = _scale3D?.y ?? 1;
-  const sz = _scale3D?.z ?? 1;
+  const sx = 1;
+  const sy = 1;
+  const sz = 1;
 
   const VECTOR_CAP = 2000;
 
