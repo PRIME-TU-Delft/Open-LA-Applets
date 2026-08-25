@@ -138,7 +138,6 @@
 
   // values to calculate to ensure correct placement of legend when top-left and action buttons when top-right
   let titleWidth = $state(0);
-  let legendPanelHeight = $state(0);
 </script>
 
 <div
@@ -175,13 +174,6 @@
       {/if}
     </div>
 
-    <!-- MARK: TITLE PANEL (top-left) -->
-    {#if globalState.title && globalState.isInset()}
-      <div class="absolute top-2 left-2 rounded bg-blue-200 p-2" bind:clientWidth={titleWidth}>
-        {globalState.title}
-      </div>
-    {/if}
-
     {#if showFps}
       <FpsCounter />
     {/if}
@@ -198,31 +190,93 @@
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
-    <!-- MARK: LEGEND -->
-    <LegendFormulaPanel
-      {formulas}
-      {legendItems}
-      {splitFormulas}
-      {splitLegendItems}
-      {showFormulas}
-      position={legendFormulaPosition ?? 'top-right'}
-      {titleWidth}
-      onHeightChange={(h) => (legendPanelHeight = h)}
-    />
+    <!-- MARK: LEGEND AND ACTION BUTTONS AND TITLE HANDLING -->
+    <!-- if top left - title and legend are stacked, action buttons placed normally -->
+    {#if legendFormulaPosition === 'top-left'}
+      <div class="absolute top-0 left-0 flex flex-col items-start gap-1 p-2">
+        <!-- MARK: TITLE PANEL -->
+        {#if globalState.title && globalState.isInset()}
+          <div class="rounded bg-blue-200 p-2">
+            {globalState.title}
+          </div>
+        {/if}
 
-    <!-- MARK: ACTION BUTTONS (top-right) -->
-    <ActionButtonsAndFormula
-      {controls}
-      {hideButtons}
-      {languages}
-      {showFormulas}
-      hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
-      onToggleFormulas={() => (showFormulas = !showFormulas)}
-      onReset={() => reset()}
-      legendOffset={legendFormulaPosition === 'top-right' || !legendFormulaPosition
-        ? legendPanelHeight
-        : 0}
-    />
+        <LegendFormulaPanel
+          {formulas}
+          {legendItems}
+          {splitFormulas}
+          {splitLegendItems}
+          {showFormulas}
+          position="top-left"
+          selfPosition={false}
+        />
+      </div>
+      <ActionButtonsAndFormula
+        {controls}
+        {hideButtons}
+        {languages}
+        {showFormulas}
+        hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+        onToggleFormulas={() => (showFormulas = !showFormulas)}
+        onReset={() => reset()}
+      />
+      <!-- if legend top right, title handled normally, action buttons placed below legend -->
+    {:else if legendFormulaPosition === 'top-right' || !legendFormulaPosition}
+      <!-- existing top-right wrapper, plus title rendered independently at top-left since it's not competing there -->
+      {#if globalState.title && globalState.isInset()}
+        <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+          {globalState.title}
+        </div>
+      {/if}
+      <div class="absolute top-0 right-0 flex flex-col items-end p-1">
+        <LegendFormulaPanel
+          {formulas}
+          {legendItems}
+          {splitFormulas}
+          {splitLegendItems}
+          {showFormulas}
+          position="top-right"
+          selfPosition={false}
+          {titleWidth}
+        />
+
+        <ActionButtonsAndFormula
+          {controls}
+          {hideButtons}
+          {languages}
+          {showFormulas}
+          hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+          selfPosition={false}
+          onToggleFormulas={() => (showFormulas = !showFormulas)}
+          onReset={() => reset()}
+        />
+      </div>
+      <!-- all other cases no extra handling required -->
+    {:else}
+      {#if globalState.title && globalState.isInset()}
+        <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+          {globalState.title}
+        </div>
+      {/if}
+      <LegendFormulaPanel
+        {formulas}
+        {legendItems}
+        {splitFormulas}
+        {splitLegendItems}
+        {showFormulas}
+        position={legendFormulaPosition ?? 'top-right'}
+        {titleWidth}
+      />
+      <ActionButtonsAndFormula
+        {controls}
+        {hideButtons}
+        {languages}
+        {showFormulas}
+        hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+        onToggleFormulas={() => (showFormulas = !showFormulas)}
+        onReset={() => reset()}
+      />
+    {/if}
   </div>
 </div>
 

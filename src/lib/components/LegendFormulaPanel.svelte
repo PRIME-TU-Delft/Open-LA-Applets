@@ -25,6 +25,7 @@
     splitLegendItems?: LegendItem[];
     showFormulas: boolean;
     position?: LegendFormulaAnchor;
+    selfPosition?: boolean;
     onHeightChange?: (height: number) => void;
   };
 
@@ -36,6 +37,7 @@
     showFormulas = false,
     position = 'top-right',
     titleWidth = 0,
+    selfPosition = true,
     onHeightChange
   }: LegendFormulaPanelProps & { titleWidth?: number } = $props();
 
@@ -78,13 +80,13 @@
   <!-- Top left positioning depends on title size so has different handling than other cases -->
   {#if position === 'top-left'}
     <div
-      class="absolute top-1 flex items-start gap-1 select-none"
-      style="left: {topLeftOffset}px"
+      class={cn('flex items-start gap-1 select-none', selfPosition && 'absolute top-1')}
+      style={selfPosition ? `left: ${topLeftOffset}px` : ''}
       bind:clientHeight={panelHeight}
     >
       {#if hasMain}
         <div
-          class="mx-2 grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
+          class="grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
         >
           {#each formulas as formula (formula.id)}
             {#key formula.latex}
@@ -126,7 +128,11 @@
     </div>
   {:else}
     <div
-      class={cn('absolute flex gap-1 select-none', anchorClasses[position])}
+      class={cn(
+        'flex gap-1 select-none',
+        selfPosition ? anchorClasses[position] : 'items-end',
+        selfPosition && 'absolute'
+      )}
       bind:clientHeight={panelHeight}
     >
       {#if hasMain}

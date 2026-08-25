@@ -14,6 +14,7 @@
   import screenfull from 'screenfull';
   import { _ } from 'svelte-i18n';
   import LanguageWindow from './LanguageWindow.svelte';
+  import { cn } from '$lib/utils';
 
   type G = readonly Controller<number | boolean | string | State>[];
 
@@ -22,9 +23,9 @@
     controls: Controls<State, G> | undefined;
     showFormulas: boolean;
     hasFormulasOrLegend: boolean;
-    legendOffset?: number;
     hideButtons?: boolean;
     languages: LanguageInfo[];
+    selfPosition?: boolean;
     onToggleFormulas: () => void;
   };
 
@@ -35,8 +36,8 @@
     hasFormulasOrLegend,
     languages,
     hideButtons = false,
-    onToggleFormulas,
-    legendOffset = 0
+    selfPosition = true,
+    onToggleFormulas
   }: ActionButtonsProps = $props();
 
   let isFullscreen = $state(false);
@@ -59,7 +60,7 @@
 
 {#if !hideButtons}
   <!-- ACTION BUTTON -->
-  <div class="absolute right-0 flex p-1 select-none" style="top: {4 + legendOffset}px">
+  <div class={cn('flex p-1 select-none', selfPosition && 'absolute top-1 right-0')}>
     {#if !controls || controls.length == 0}
       <Button.Action
         side="bottom"
