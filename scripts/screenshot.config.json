@@ -37,6 +37,6 @@
   },
   "parallel": {
     "enabled": true,
-    "maxConcurrent": 8
+    "maxConcurrent": 4
   }
 }

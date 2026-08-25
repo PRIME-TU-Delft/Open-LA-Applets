@@ -236,7 +236,10 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
       console.log(`Capturing: ${route}`);
 
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: getNavigationTimeout(route) });
+      await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: getNavigationTimeout(route)
+      });
 
       let has3DContent = false;
       try {
