@@ -223,12 +223,7 @@
   });
 </script>
 
-<CanvasGrid
-  columns={2}
-  rows={2}
-  {formulas}
-   legendFormulaPosition="center"
->
+<CanvasGrid columns={2} rows={2} {formulas} legendFormulaPosition="center">
   <GridCanvas2D
     {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
