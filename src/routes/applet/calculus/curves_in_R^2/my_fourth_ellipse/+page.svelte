@@ -16,6 +16,7 @@
   import { Controls } from '$lib/controls/Controls';
   import type { SlideShowSteps } from '$lib/controls/SlideShow.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
+  import InfiniteLine2D from '$lib/d3/InfiniteLine2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
@@ -103,13 +104,10 @@
     )
   ];
   function SnaptoXPositiveAxis(p: Vector2): Vector2 {
-    return new Vector2(Math.max(Math.sqrt(0.01 + CoVertex1.y ** 2), p.x), 0);
+    return new Vector2(Math.max(0.1, p.x), 0);
   }
   function SnaptoYPositiveAxis(p: Vector2): Vector2 {
-    return new Vector2(
-      0,
-      Math.max(Math.min(currentA - 0.1, p.y), Math.sqrt(0.2 * currentA - 0.01))
-    );
+    return new Vector2(0, Math.max(0.1, p.y));
   }
   const Vertex1 = $derived(draggables[0].position.clone().multiplyScalar(-1));
   const Vertex2 = $derived(draggables[0].position);
@@ -124,7 +122,7 @@
     return currentB * Math.sin(t);
   }
 
-  const initTheta = Math.PI / 3.1;
+  const initTheta = Math.PI / 3.5;
   const state = {
     theta: initTheta
   };
@@ -135,7 +133,7 @@
     // Step 1: theta increases with 2 pi
     {
       transition: (t: number, state: S) => {
-        state.theta = initTheta + t * 2 * Math.PI;
+        state.theta = initTheta + t * (2 * Math.PI - initTheta);
         return {
           state,
           labelPrev: toLatexText('Start drawing'),
@@ -207,6 +205,14 @@
     tEnd={controls[0].theta}
     width={0.15}
   />
+  <ParameterizedFunction2D
+    xFunc={ParamX}
+    yFunc={ParamY}
+    color={PrimeColor.blue}
+    tStart={0}
+    tEnd={initTheta}
+    width={0.15}
+  />
   <Latex2D
     latex="C"
     position={new Vector2(0, 0)}
@@ -219,9 +225,6 @@
   {@const PointA = new Vector2(ParamX(controls[0].theta), currentA * Math.sin(controls[0].theta))}
   {@const PointB = new Vector2(currentB * Math.cos(controls[0].theta), ParamY(controls[0].theta))}
   {@const PointP = new Vector2(PointA.x, PointB.y)}
-  {@const PointC = new Vector2(Math.sqrt(currentA ** 2 - PointB.y ** 2), PointB.y)}
-  {@const PointD = new Vector2(-Math.sqrt(currentA ** 2 - PointB.y ** 2), PointB.y)}
-  {@const PointE = new Vector2(ParamX(controls[0].theta), -currentA * Math.sin(controls[0].theta))}
   <Line2D
     start={new Vector2(0, 0)}
     end={new Vector2(PointP.x, 0)}
@@ -234,9 +237,14 @@
     color={PrimeColor.orange}
     width={0.12}
   />
-  <Line2D start={new Vector2(0, 0)} end={PointA} color={PrimeColor.black} width={0.1} />
-  <Line2D start={PointD} end={PointC} isDashed width={0.05} />
-  <Line2D start={PointE} end={PointA} isDashed width={0.05} />
+  <Line2D
+    start={new Vector2(0, 0)}
+    end={currentA > currentB ? PointA : PointB}
+    color={PrimeColor.black}
+    width={0.1}
+  />
+  <InfiniteLine2D origin={PointA} direction={new Vector2(0, 1)} isDashed width={0.05} />
+  <InfiniteLine2D origin={PointB} direction={new Vector2(1, 0)} isDashed width={0.05} />
   <Latex2D
     latex="P"
     position={PointP}
