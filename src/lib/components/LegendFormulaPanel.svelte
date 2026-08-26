@@ -26,7 +26,6 @@
     showFormulas: boolean;
     position?: LegendFormulaAnchor;
     selfPosition?: boolean;
-    onHeightChange?: (height: number) => void;
   };
 
   let {
@@ -36,16 +35,8 @@
     splitLegendItems = [],
     showFormulas = false,
     position = 'top-right',
-    titleWidth = 0,
-    selfPosition = true,
-    onHeightChange
-  }: LegendFormulaPanelProps & { titleWidth?: number } = $props();
-
-  let panelHeight = $state(0);
-
-  $effect(() => {
-    onHeightChange?.(panelHeight);
-  });
+    selfPosition = true
+  }: LegendFormulaPanelProps = $props();
 
   // svelte-ignore state_referenced_locally
   if (legendItems?.length >= 1) showFormulas = true;
@@ -73,17 +64,12 @@
     'bottom-left': 'bottom-1 left-0 items-start',
     'bottom-right': 'bottom-1 right-0 items-end'
   };
-  const topLeftOffset = $derived(titleWidth > 0 ? titleWidth + 12 : 0);
 </script>
 
 {#if formulasShown && (hasMain || hasSplit)}
   <!-- Top left positioning depends on title size so has different handling than other cases -->
   {#if position === 'top-left'}
-    <div
-      class={cn('flex items-start gap-1 select-none', selfPosition && 'absolute top-1')}
-      style={selfPosition ? `left: ${topLeftOffset}px` : ''}
-      bind:clientHeight={panelHeight}
-    >
+    <div class={cn('flex items-start gap-1 select-none', selfPosition && 'absolute top-1')}>
       {#if hasMain}
         <div
           class="grid gap-1 rounded-md border-3 border-blue-500 bg-blue-50/80 p-2 text-xs shadow-sm backdrop-blur-md"
@@ -133,7 +119,6 @@
         selfPosition ? anchorClasses[position] : 'items-end',
         selfPosition && 'absolute'
       )}
-      bind:clientHeight={panelHeight}
     >
       {#if hasMain}
         <div
@@ -178,6 +163,4 @@
       {/if}
     </div>
   {/if}
-{:else}
-  {((panelHeight = 0), '')}
-{/if}
+{:else}{/if}

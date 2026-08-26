@@ -135,9 +135,6 @@
       globalState.title = title || '';
     }
   });
-
-  // values to calculate to ensure correct placement of legend when top-left and action buttons when top-right
-  let titleWidth = $state(0);
 </script>
 
 <div
@@ -237,7 +234,6 @@
           {showFormulas}
           position="top-right"
           selfPosition={false}
-          {titleWidth}
         />
 
         <ActionButtonsAndFormula
@@ -265,7 +261,6 @@
         {splitLegendItems}
         {showFormulas}
         position={legendFormulaPosition ?? 'top-right'}
-        {titleWidth}
       />
       <ActionButtonsAndFormula
         {controls}
