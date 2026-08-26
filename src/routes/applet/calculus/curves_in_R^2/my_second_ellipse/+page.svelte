@@ -77,7 +77,6 @@
   const InitialFocalPoint1 = new Vector2(-7, 2);
   const InitialFocalPoint2 = new Vector2(-1, 2);
   const InitCenter = InitialFocalPoint1.clone().add(InitialFocalPoint2).multiplyScalar(0.5);
-  const initC = InitialFocalPoint2.clone().sub(InitialFocalPoint1).multiplyScalar(0.5).length();
   const InitA = 5;
   const InitDirection = InitialFocalPoint2.clone().sub(InitialFocalPoint1).normalize();
   const InitMajorPoint = InitCenter.clone().add(InitDirection.clone().multiplyScalar(InitA));
