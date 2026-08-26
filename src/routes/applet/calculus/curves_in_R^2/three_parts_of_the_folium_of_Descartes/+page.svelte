@@ -227,7 +227,7 @@
   columns={2}
   rows={2}
   {formulas}
-  //  legendFormulaPosition="center"
+   legendFormulaPosition="center"
 >
   <GridCanvas2D
     {initialViewBox}
