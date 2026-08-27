@@ -12,9 +12,9 @@
   import { LegendItem } from '$lib/utils/Legend';
   import { projectToParametrizedFunction2D } from '$lib/utils/MathLib';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -31,8 +31,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2, 3.5);
-  cameraZoom = 1.0;
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -1), // bottom-left
+    new Vector2(9, 8), // top-right
+    0.5 // margin
+  );
 
   // ####
   // AXIS
@@ -111,8 +114,7 @@
 
 <Canvas2D
   {draggables}
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={[
     ...getLegend(appletObjects),
     new LegendItem('\\text{Tangent line}', PrimeColor.yellow),
