@@ -20,8 +20,6 @@
   import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -38,10 +36,6 @@
   // CAMERA SETTINGS
   // ###############
   // choose one or none of the options below - if both are specified, view box will be used
-
-  // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -175,8 +169,6 @@
 <CanvasGrid rows={2} columns={2} {controls}>
   <GridCanvas2D
     {initialViewBox}
-    {cameraPosition}
-    {cameraZoom}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
