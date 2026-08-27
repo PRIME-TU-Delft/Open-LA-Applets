@@ -7,9 +7,9 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { getLegend } from '$lib/template/ObjectFormulas';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -72,19 +72,19 @@
     0.5 * Math.sqrt((c + d) ** 2 + (4 / 3) * (a ** 2 + a * b + b ** 2) - 2 * (c + d) * (a + b));
 
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\huge a', new Vector2(a, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge b', new Vector2(b, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge c', new Vector2(x1, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE c', new Vector2(x1, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\huge d', new Vector2(x2, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE d', new Vector2(x2, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })
@@ -138,8 +138,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1.2);
-  cameraZoom = 2;
+  initialViewBox = new ViewBox(
+    new Vector2(-1, -1), // bottom-left
+    new Vector2(7, 4), // top-right
+    0 // margin
+  );
 
   // (remove if unnecessary)
   axis = {
@@ -157,8 +160,7 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}

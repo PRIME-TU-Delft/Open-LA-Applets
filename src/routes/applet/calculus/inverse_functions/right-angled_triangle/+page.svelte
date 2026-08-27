@@ -1,34 +1,16 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    Angle,
-    AppletObject,
-    AsymptoteFragment,
-    Circle,
-    FunctionFragment,
-    ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
-    Point,
-    Polygon,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+  import { Angle, AppletObject, Polygon, Text } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
-  import type { AxisProps } from '$lib/d3/Axis.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
-  let axis: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -42,31 +24,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 2.0;
-
-  // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
-    0.5 // margin
+    new Vector2(-1, -1), // bottom-left
+    new Vector2(6, 4), // top-right
+    0 // margin
   );
-
-  // ####
-  // AXIS
-  // ####
-  // here are the default settings for axis, you can change them
-
-  // (remove if unnecessary)
-  axis = {
-    showOrigin: true,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
-    logarithmicX: false,
-    logarithmicY: false,
-    skipX: 0,
-    skipY: 0
-  };
 
   // ###########
   // AXIS LABELS
@@ -96,9 +58,7 @@
 </script>
 
 <Canvas2D
-  // {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   axis={null}
