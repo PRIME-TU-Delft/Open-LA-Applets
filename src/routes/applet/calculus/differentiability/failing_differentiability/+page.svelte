@@ -7,12 +7,12 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import CanvasGrid from '$lib/common/CanvasGrid.svelte';
   import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let initialViewBox: ViewBox | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -28,9 +28,11 @@
   // (remove if unnecessary)
   const a = 1;
   const b = 1;
-  cameraPosition = new Vector2(a, b);
-  cameraZoom = 4;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-1, -2.5), // bottom-left
+    new Vector2(3, 4.5), // top-right
+    0 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -130,8 +132,7 @@
 
 <CanvasGrid rows={1} columns={3}>
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -141,8 +142,7 @@
   </GridCanvas2D>
 
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -152,8 +152,7 @@
   </GridCanvas2D>
 
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}

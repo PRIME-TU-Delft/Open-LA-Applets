@@ -7,12 +7,12 @@
   import { Vector2 } from 'three';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Circle2D from '$lib/d3/Circle2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let initialViewBox: ViewBox | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -26,9 +26,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 0);
-  cameraZoom = 1;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-1.5, -1), // bottom-left
+    new Vector2(1.5, 2.5), // top-right
+    0 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -37,8 +39,8 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: false,
-    showAxisNumbersX: true,
-    showAxisNumbersY: true,
+    showAxisNumbersX: false,
+    showAxisNumbersY: false,
     logarithmicX: false,
     logarithmicY: false,
     skipX: -1,
@@ -88,8 +90,7 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
