@@ -131,8 +131,6 @@
 <Canvas2D
   {draggables}
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}

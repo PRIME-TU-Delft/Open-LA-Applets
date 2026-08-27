@@ -12,8 +12,6 @@
   import { Formula } from '$lib/utils/Formulas';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -30,8 +28,6 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -105,8 +101,6 @@
 <Canvas2D
   {controls}
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
