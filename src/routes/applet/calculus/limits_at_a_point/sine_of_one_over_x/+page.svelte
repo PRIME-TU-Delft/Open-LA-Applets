@@ -1,21 +1,14 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    AppletObject,
-    AsymptoteFragment,
-    FunctionFragment,
-    ObliqueAsymptoteFragment
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
 
@@ -31,9 +24,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 0);
-  cameraZoom = 1.5;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -2), // bottom-left
+    new Vector2(5, 2), // top-right
+    0 // margin
+  );
   // // (remove if unnecessary)
   // initialViewBox = new ViewBox(
   //   new Vector2(-2, -2), // bottom-left
@@ -62,8 +57,7 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
 >
