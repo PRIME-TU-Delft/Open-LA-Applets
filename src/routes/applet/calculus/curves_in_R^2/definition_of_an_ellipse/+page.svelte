@@ -94,7 +94,7 @@
       InitialFocalPoint2,
       PrimeColor.darkGreen,
       undefined,
-      SnapFocalPoint,
+      SnapFocalPoint2,
       undefined,
       undefined,
       0.3
@@ -133,14 +133,20 @@
   function SnapMajorPoint(position: Vector2): Vector2 {
     let Projected = projectToImplicitFunction2D(CurrentMajorAxisZeroFunction, position);
     const t = Projected.clone().sub(Center).dot(Direction);
-    if (t < c + 0.1) {
-      Projected = FocalPoint2.clone().add(Direction.clone().multiplyScalar(0.1));
+    if (t < c + 1) {
+      Projected = FocalPoint2.clone().add(Direction.clone().multiplyScalar(1));
     }
     draggables[3].value = SnapToEllipse(draggables[3].position);
     return Projected;
   }
   function SnapFocalPoint(position: Vector2): Vector2 {
-    // no real snap, but update position of MajorPoint
+    // no real snap, but update position of MajorPoint and EllipsePoint
+    draggables[2].value = SnapMajorPoint(draggables[2].position);
+    draggables[3].value = SnapToEllipse(draggables[3].position);
+    return position;
+  }
+  function SnapFocalPoint2(position: Vector2): Vector2 {
+    // no real snap, but update position of MajorPoint and EllipsePoint
     draggables[2].value = SnapMajorPoint(draggables[2].position);
     draggables[3].value = SnapToEllipse(draggables[3].position);
     return position;
