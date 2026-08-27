@@ -1,19 +1,6 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    Angle,
-    AppletObject,
-    AsymptoteFragment,
-    Circle,
-    FunctionFragment,
-    ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
-    Point,
-    Polygon,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -22,13 +9,10 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import Legend from '$lib/stories/Legend.stories.svelte';
   import { Controls } from '$lib/controls/Controls';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -45,8 +29,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.25;
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -12), // bottom-left
+    new Vector2(9, 14), // top-right
+    0 // margin
+  );
 
   // ####
   // AXIS
@@ -126,9 +113,7 @@
 </script>
 
 <Canvas2D
-  // {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {scaleX}
