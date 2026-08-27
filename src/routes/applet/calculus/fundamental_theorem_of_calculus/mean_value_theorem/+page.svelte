@@ -1,5 +1,5 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
+  // For ease of creating the template applets
   import { AppletObject, FunctionFragment, Point } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
