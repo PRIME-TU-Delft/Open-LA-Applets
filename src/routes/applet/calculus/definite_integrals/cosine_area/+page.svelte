@@ -1,11 +1,6 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import {
-    AppletObject,
-    AsymptoteFragment,
-    FunctionFragment,
-    ObliqueAsymptoteFragment
-  } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import Axis from '$lib/d3/Axis.svelte';
@@ -13,9 +8,7 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import Latex from '$lib/components/Latex.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;

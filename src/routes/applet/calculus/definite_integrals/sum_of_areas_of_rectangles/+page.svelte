@@ -75,7 +75,7 @@
   ];
   for (let i = 0; i <= N - 1; i++) {
     appletObjects.push(
-      new FunctionFragment((x: number) => func(midPoints[i]), PrimeColor.darkGreen, {
+      new FunctionFragment((_x: number) => func(midPoints[i]), PrimeColor.darkGreen, {
         domain: { xMin: leftPoints[i], xMax: rightPoints[i] },
         integral: {
           xLeft: leftPoints[i],
@@ -84,7 +84,7 @@
       })
     );
     appletObjects.push(
-      new FunctionFragment((x: number) => 0, PrimeColor.darkGreen, {
+      new FunctionFragment((_x: number) => 0, PrimeColor.darkGreen, {
         domain: { xMin: leftPoints[i], xMax: rightPoints[i] },
         integral: {
           xLeft: leftPoints[i],
