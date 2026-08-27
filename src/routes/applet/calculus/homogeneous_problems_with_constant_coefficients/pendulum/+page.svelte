@@ -73,7 +73,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0,
     showAxisX: true,
     showAxisY: true,
@@ -226,7 +226,7 @@
     initialViewBox={new ViewBox(
       new Vector2(-Math.PI / 2, (-Math.PI / 2) * r),
       new Vector2(Math.PI / 2, (Math.PI / 2) * r),
-      0.1
+      0.3
     )}
     labels={{ xLabel: '\\theta(0)', yLabel: "\\theta'(0)" }}
     axis={axis2}
@@ -246,9 +246,9 @@
   </GridCanvas2D>
   <GridCanvas2D
     initialViewBox={new ViewBox(
-      new Vector2(0, -Math.PI / 2 / 2),
-      new Vector2(10, Math.PI / 2 / 2),
-      2
+      new Vector2(-1, -Math.PI / 2 / 2),
+      new Vector2(10.5, Math.PI / 2 / 2),
+      0
     )}
     labels={{ xLabel: 't', yLabel: '\\theta(t)' }}
     axis={axis3}

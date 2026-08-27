@@ -60,7 +60,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0,
     colorX: PrimeColor.raspberry,
     colorY: PrimeColor.yellow

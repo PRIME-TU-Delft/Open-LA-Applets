@@ -22,8 +22,8 @@
   let axisP: AxisProps | undefined;
 
   initialViewBox = new ViewBox(
-    new Vector2(-5, -6), // bottom-left
-    new Vector2(10, 4), // top-right
+    new Vector2(-7, -6), // bottom-left
+    new Vector2(15, 5), // top-right
     0.5 // margin
   );
   axis = {

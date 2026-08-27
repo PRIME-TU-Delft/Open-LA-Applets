@@ -145,14 +145,14 @@
       0.12
     )
   ];
-  const N = 3;
+  const N = 1;
 </script>
 
 <CanvasGrid
   rows={2}
-  columns={2 * N + 1}
+  columns={2 * N}
   legendItems={[...getLegend(appletObjects)]}
-  legendFormulaPosition="top-right"
+  legendFormulaPosition="center"
 >
   <GridCanvas2D
     draggables={[draggablePoint[0]]}

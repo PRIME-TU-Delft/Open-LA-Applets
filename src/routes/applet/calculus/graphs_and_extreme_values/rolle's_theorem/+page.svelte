@@ -67,15 +67,15 @@
     );
   }
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE c', new Vector2(c, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })

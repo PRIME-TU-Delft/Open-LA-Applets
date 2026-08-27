@@ -42,13 +42,13 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: true,
+    showOrigin: false,
     showAxisNumbersX: true,
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####

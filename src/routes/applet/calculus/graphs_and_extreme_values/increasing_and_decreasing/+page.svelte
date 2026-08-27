@@ -126,7 +126,7 @@
   rows={1}
   columns={2}
   legendItems={[...getLegend(appletObjects), ...getLegend(appletObjects2)]}
-  legendFormulaPosition="top-right"
+  legendFormulaPosition="top-center"
 >
   <GridCanvas2D
     draggables={[draggablePoint[0]]}
