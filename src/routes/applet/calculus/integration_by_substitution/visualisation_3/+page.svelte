@@ -10,11 +10,11 @@
   import { LegendItem } from '$lib/utils/Legend';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraPosition2: Vector2 | undefined;
-  let cameraPosition3: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
+  let initialViewBox2: ViewBox | undefined;
+  let initialViewBox3: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -31,10 +31,21 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(1.5, 0.5);
-  cameraZoom = 1;
-  cameraPosition2 = new Vector2(1.5, 0.25);
-  cameraPosition3 = new Vector2(0.5, 0.25);
+  initialViewBox = new ViewBox(
+    new Vector2(-0.5, -0.75), // bottom-left
+    new Vector2(3.25, 1.75), // top-right
+    0 // margin
+  );
+  initialViewBox2 = new ViewBox(
+    new Vector2(-0.5, -0.75), // bottom-left
+    new Vector2(3.25, 1.75), // top-right
+    0 // margin
+  );
+  initialViewBox3 = new ViewBox(
+    new Vector2(-1.0, -0.75), // bottom-left
+    new Vector2(2.75, 1.75), // top-right
+    0.5 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -144,8 +155,7 @@
 <CanvasGrid rows={2} columns={4} {legendItems} legendFormulaPosition="top-left">
   <GridCanvas2D
     draggables={[draggablePoint[0], draggablePoint[1]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: 'u' }}
     {axis}
     {scaleX}
@@ -228,8 +238,7 @@
     />
   </GridCanvas2D>
   <GridCanvas2D
-    cameraPosition={cameraPosition2}
-    {cameraZoom}
+    initialViewBox={initialViewBox2}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -263,8 +272,7 @@
   </GridCanvas2D>
 
   <GridCanvas2D
-    cameraPosition={cameraPosition3}
-    {cameraZoom}
+    initialViewBox={initialViewBox3}
     labels={{ xLabel: 'u', yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}

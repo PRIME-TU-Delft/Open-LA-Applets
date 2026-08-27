@@ -8,9 +8,9 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import CanvasGrid from '$lib/common/CanvasGrid.svelte';
   import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -27,8 +27,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 0);
-  cameraZoom = 0.75;
+  initialViewBox = new ViewBox(
+    new Vector2(-1, -1.4), // bottom-left
+    new Vector2(1, 1.5), // top-right
+    0 // margin
+  );
 
   // ####
   // AXIS
@@ -88,8 +91,7 @@
   legendFormulaPosition="top-left"
 >
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -98,8 +100,7 @@
     <TemplateComponent objects={appletObjects} />
   </GridCanvas2D>
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
