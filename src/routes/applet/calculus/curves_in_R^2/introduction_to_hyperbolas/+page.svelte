@@ -123,7 +123,7 @@
   function SnapToHyperbola(position: Vector2): Vector2 {
     const x = position.x;
     const y = position.y;
-    let projected : Vector2 | undefined;
+    let projected: Vector2 | undefined;
     if (x > 0 && y > 0) {
       projected = projectToParametrizedFunction2D(HyperbolaXRight, HyperbolaY, position, 0, 10)[0];
     } else if (x > 0 && y < 0) {
