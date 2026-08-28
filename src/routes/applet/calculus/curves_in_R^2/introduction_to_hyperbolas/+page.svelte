@@ -113,32 +113,25 @@
       new Vector2(xInit, yInit),
       PrimeColor.pink,
       undefined,
-      SnapToEllipse,
+      SnapToHyperbola,
       undefined,
       undefined,
       0.3,
       'diamond'
     )
   ];
-  function SnapToEllipse(position: Vector2): Vector2 {
+  function SnapToHyperbola(position: Vector2): Vector2 {
     const x = position.x;
+    const y = position.y;
     let projected = position.clone();
-    if (x > 0) {
-      projected = projectToParametrizedFunction2D(
-        HyperbolaXRight,
-        HyperbolaY,
-        position,
-        -1000,
-        1000
-      )[0];
+    if (x > 0 && y > 0) {
+      projected = projectToParametrizedFunction2D(HyperbolaXRight, HyperbolaY, position, 0, 10)[0];
+    } else if (x > 0 && y < 0) {
+      projected = projectToParametrizedFunction2D(HyperbolaXRight, HyperbolaY, position, -10, 0)[0];
+    } else if (y > 0) {
+      projected = projectToParametrizedFunction2D(HyperbolaXLeft, HyperbolaY, position, 0, 10)[0];
     } else {
-      projected = projectToParametrizedFunction2D(
-        HyperbolaXLeft,
-        HyperbolaY,
-        position,
-        -1000,
-        1000
-      )[0];
+      projected = projectToParametrizedFunction2D(HyperbolaXLeft, HyperbolaY, position, -10, 0)[0];
     }
     return projected;
   }
