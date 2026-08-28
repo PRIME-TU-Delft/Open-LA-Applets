@@ -16,6 +16,15 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let initialViewBox: ViewBox | undefined;
+
+  initialViewBox = new ViewBox(
+    new Vector2(-6, -2), // bottom-left
+    new Vector2(6, 3), // top-right
+    0.5 // margin
+  );
 
   let xlSnapFunc = (p: Vector2) => {
     let x = Math.min(p.x, xR);
@@ -79,9 +88,6 @@
 
   let isXLLatex = xLResult.isLatex;
   let isXRLatex = xRResult.isLatex;
-
-  const cameraX = (defaultXR + defaultXL) / 2;
-  const cameraZoom = Math.min(12 / (defaultXR - defaultXL), 1);
 
   const draggables = [
     new Draggable(
@@ -212,8 +218,7 @@
   {draggables}
   {formulas}
   {controls}
-  cameraPosition={new Vector2(cameraX, 2)}
-  {cameraZoom}
+  {initialViewBox}
   labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
   showFormulasDefault
 >

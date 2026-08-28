@@ -14,6 +14,10 @@
   import { parseNumericalOrLatex } from '$lib/utils/Params';
   import { toLatexText } from '$lib/utils/FormatString';
 
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let initialViewBox: ViewBox | undefined;
+
   const searchParams = page?.url?.searchParams;
 
   let defaultFunction = searchParams.get('function') || '\\sqrt{1 + {\\cos{(x)}}^2 }';
@@ -28,9 +32,11 @@
   let defaultXL = parseNumericalOrLatex(searchParams.get('xL'), 1.5);
   let defaultXR = parseNumericalOrLatex(searchParams.get('xR'), 4.5);
 
-  const cameraX = (defaultXR.value + defaultXL.value) / 2;
-  const cameraZoom = Math.min(12 / (defaultXR.value - defaultXL.value), 1);
-
+  initialViewBox = new ViewBox(
+    new Vector2(-4, -3), // bottom-left
+    new Vector2(8, 6), // top-right
+    0.5 // margin
+  );
   let defaultN = parseInt(searchParams.get('n') || '5');
 
   const methods = [
@@ -258,8 +264,7 @@
   {controls}
   {formulas}
   {draggables}
-  cameraPosition={new Vector2(cameraX, 2)}
-  {cameraZoom}
+  {initialViewBox}
   labels={{ xLabel: xAxisLetter, yLabel: `${functionLetter}(${xAxisLetter})` }}
   showFormulasDefault
 >

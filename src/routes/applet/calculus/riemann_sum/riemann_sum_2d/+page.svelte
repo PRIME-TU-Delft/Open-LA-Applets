@@ -12,6 +12,15 @@
   import { page } from '$app/state';
   import { appletState } from '$lib/stores/applet.svelte';
   import { toLatexText } from '$lib/utils/FormatString';
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let initialViewBox: ViewBox | undefined;
+
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -3), // bottom-left
+    new Vector2(11, 6), // top-right
+    0.5 // margin
+  );
 
   const searchParams = page?.url?.searchParams;
   const ruleParam = searchParams.get('rule');
@@ -181,7 +190,7 @@
   {controls}
   {formulas}
   {draggables}
-  cameraPosition={new Vector2(4, 2)}
+  {initialViewBox}
   labels={{ xLabel: 'x', yLabel: 'f(x)' }}
   showFormulasDefault
 >
