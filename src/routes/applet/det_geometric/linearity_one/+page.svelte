@@ -63,7 +63,7 @@
   <Latex2D
     latex={String.raw`\mathbf{u}`}
     position={u.clone().multiplyScalar(0.5)}
-    offset={new Vector2(0, -0.1)}
+    offset={new Vector2(0.1, 0.1)}
     color={PrimeColor.orange}
   />
 
@@ -78,16 +78,16 @@
   <Vector2D direction={w} length={w.length()} color={PrimeColor.raspberry} />
   <Latex2D
     latex={String.raw`\mathbf{w}`}
-    position={w.clone().multiplyScalar(0.5)}
-    offset={new Vector2(-0.1, -0.2)}
+    position={w.clone().multiplyScalar(0.75)}
+    offset={new Vector2(-0.3, -0.05)}
     color={PrimeColor.raspberry}
   />
 
   <Vector2D direction={vw} length={vw.length()} color={PrimeColor.blue} />
   <Latex2D
     latex={String.raw`\mathbf{v + w}`}
-    position={vw.clone().multiplyScalar(0.5)}
-    offset={new Vector2(-1, 0.2)}
+    position={vw.clone().multiplyScalar(0.7)}
+    offset={new Vector2(-1.7, 0.2)}
     color={PrimeColor.blue}
   />
 
@@ -149,9 +149,9 @@
   <!-- MARK: A, B, C, D, E Labels -->
   <Latex2D latex="A" position={u} />
   <Latex2D latex="B" position={uv} offset={new Vector2(0.1, 0.2)} />
-  <Latex2D latex="C" position={v} offset={new Vector2(0, 0.4)} />
-  <Latex2D latex="D" position={uvw} extend={0.35} />
-  <Latex2D latex="E" position={vw} extend={0.35} />
+  <Latex2D latex="C" position={v} offset={new Vector2(-0.2, 0.7)} />
+  <Latex2D latex="D" position={uvw} offset={new Vector2(-0.2, 0.7)} />
+  <Latex2D latex="E" position={vw} offset={new Vector2(-0.2, 0.7)} />
 
   <Latex2D
     latex={controls[0].polygonLabel}
@@ -159,6 +159,6 @@
     offset={new Vector2(-1, 0.2)}
   />
   {#if controls[0].showCBDE}
-    <Latex2D latex="CBDE" position={new Vector2(1.5, 4)} offset={new Vector2(-0.1, 0.2)} />
+    <Latex2D latex="CBDE" position={new Vector2(1.5, 4)} offset={new Vector2(-0.3, 0.4)} />
   {/if}
 </Canvas2D>

@@ -145,8 +145,9 @@
   <Latex2D
     latex="{round(position.x)} {y < 0 ? y : '+ ' + y}i"
     {position}
-    offset={new Vector2(-0.5, 0.1)}
-    fontSize={0.8}
-    extend={0.5}
+    fontSize={0.7}
+    extend={0.1}
+    alignX={position.x > 0 ? 'left' : 'right'}
+    alignY={position.y < 0 ? 'top' : 'bottom'}
   />
 {/snippet}
