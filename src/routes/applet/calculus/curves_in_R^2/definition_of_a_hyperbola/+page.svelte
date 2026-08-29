@@ -169,8 +169,6 @@
     }
   }
   function SnapToHyperbola(position: Vector2): Vector2 {
-    const x = position.x;
-    const y = position.y;
     const quadrant = Quadrant(position);
     let projected: Vector2 | undefined;
     if (quadrant === 1) {
