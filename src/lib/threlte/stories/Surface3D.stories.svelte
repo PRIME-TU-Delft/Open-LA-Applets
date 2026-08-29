@@ -47,7 +47,7 @@
 
 <!-- This story showcases the Surface3D component with wireframe and surface. -->
 <Story
-  name="Wireframe"
+  name="Wireframe and surface"
   args={{
     func: (x, y) => -Math.sqrt(x * x + y * y) + 5,
     color: PrimeColor.raspberry,
@@ -60,7 +60,7 @@
 
 <!-- This story showcases the Surface3D component with wireframe and surface with different colors. -->
 <Story
-  name="Wireframe"
+  name="Wireframe and surface with different colors"
   args={{
     func: (x, y) => -Math.sqrt(x * x + y * y) + 5,
     color: PrimeColor.raspberry,
