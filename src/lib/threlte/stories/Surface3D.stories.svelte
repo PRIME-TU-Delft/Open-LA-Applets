@@ -28,9 +28,7 @@
 <Story
   name="Default"
   args={{
-    func: (x, y) => x * x + x * y + y * y - 3,
-    color: PrimeColor.cyan,
-    opacity: 0.5
+    func: (x, y) => x * x + x * y + y * y - 3
   }}
   {template}
 />
@@ -43,6 +41,33 @@
     color: PrimeColor.raspberry,
     wireframe: true,
     resolution: 100
+  }}
+  {template}
+/>
+
+<!-- This story showcases the Surface3D component with wireframe and surface. -->
+<Story
+  name="Wireframe"
+  args={{
+    func: (x, y) => -Math.sqrt(x * x + y * y) + 5,
+    color: PrimeColor.raspberry,
+    wireframe: true,
+    surface: true,
+    resolution: 100
+  }}
+  {template}
+/>
+
+<!-- This story showcases the Surface3D component with wireframe and surface with different colors. -->
+<Story
+  name="Wireframe"
+  args={{
+    func: (x, y) => -Math.sqrt(x * x + y * y) + 5,
+    color: PrimeColor.raspberry,
+    wireframe: true,
+    surface: true,
+    resolution: 100,
+    wireColor: PrimeColor.black
   }}
   {template}
 />

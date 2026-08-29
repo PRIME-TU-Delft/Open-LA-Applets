@@ -37,6 +37,9 @@ importers:
       d3:
         specifier: ^7.9.0
         version: 7.9.0
+      delaunator:
+        specifier: ^5.1.0
+        version: 5.1.0
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -104,6 +107,9 @@ importers:
       '@types/d3':
         specifier: ^7.4.3
         version: 7.4.3
+      '@types/delaunator':
+        specifier: ^5.0.3
+        version: 5.0.3
       '@types/node':
         specifier: ^25.9.5
         version: 25.9.5
@@ -1474,6 +1480,9 @@ packages:
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
+
+  '@types/delaunator@5.0.3':
+    resolution: {integrity: sha512-6tTLP8NX0OwtB/fmW9bXp4EWPptawTSsrSGjboWRuzqkxNEEJGyzRPHbr8wnV2DBWfAZ+EPTOvW3B/KysJrl2g==}
 
   '@types/esrecurse@4.3.1':
     resolution: {integrity: sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw==}
@@ -4636,6 +4645,8 @@ snapshots:
       '@types/d3-zoom': 3.0.8
 
   '@types/deep-eql@4.0.2': {}
+
+  '@types/delaunator@5.0.3': {}
 
   '@types/esrecurse@4.3.1': {}
 
