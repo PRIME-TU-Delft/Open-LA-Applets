@@ -83,7 +83,7 @@
   const c = Math.sqrt(Math.abs(a ** 2 + b ** 2));
   const FocalPoint1 = new Vector2(x0 - c, y0);
   const FocalPoint2 = new Vector2(x0 + c, y0);
-  function Ellipse(x: number, y: number): number {
+  function Hyperbola(x: number, y: number): number {
     return (x - x0) ** 2 / a ** 2 - (y - y0) ** 2 / b ** 2 - 1;
   }
   function HyperbolaXRight(t: number): number {
@@ -96,7 +96,7 @@
     return y0 + b * Math.sinh(t);
   }
   const appletObjects: AppletObject[] = [
-    new ImplicitFunctionFragment(Ellipse, PrimeColor.blue, {
+    new ImplicitFunctionFragment(Hyperbola, PrimeColor.blue, {
       legendText: '\\frac{x^2}{9}-\\frac{y^2}{16} = 1',
       width: 0.15,
       maxDepth: 2,
