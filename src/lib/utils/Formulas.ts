@@ -52,13 +52,16 @@ export class Formula {
     if (textColor != undefined) {
       this.textColor = textColor;
       // Wrap each text segment in its own \textcolor{}, but keep "&" alignment
-      // markers and \begin{...}/\end{...} environment delimiters outside any
-      // single \textcolor{} group - putting \begin{aligned} and \end{aligned}
-      // in different \textcolor{} groups is rejected by KaTeX.
-      const tokens = this.latex.split(/(\\begin\{[a-zA-Z*]+\}|\\end\{[a-zA-Z*]+\}|&)/);
+      // markers, "\\" row breaks, and \begin{...}/\end{...} environment
+      // delimiters outside any single \textcolor{} group - putting
+      // \begin{aligned} and \end{aligned} in different \textcolor{} groups is
+      // rejected by KaTeX, and wrapping "\\" inside a \textcolor{} argument
+      // strips it of its row-break meaning in aligned environments.
+      const delimiter = /(\\begin\{[a-zA-Z*]+\}|\\end\{[a-zA-Z*]+\}|\\\\|&)/;
+      const tokens = this.latex.split(delimiter);
       this.latex = tokens
         .map((token) =>
-          token === '' || /^(\\begin\{[a-zA-Z*]+\}|\\end\{[a-zA-Z*]+\}|&)$/.test(token)
+          token === '' || new RegExp(`^${delimiter.source}$`).test(token)
             ? token
             : `\\textcolor{${textColor}}{${token}}`
         )
