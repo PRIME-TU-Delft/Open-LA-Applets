@@ -1,17 +1,17 @@
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';
-import { classifyDiff, buildSummaryMarkdown, runDiff, type DiffReport } from './diff-screenshots';
+import {
+  classifyDiff,
+  buildSummaryMarkdown,
+  runDiff,
+  type DiffReport,
+  type ScreenshotManifestEntry
+} from './diff-screenshots';
 import fs from 'fs/promises';
 import path from 'path';
 import { PNG } from 'pngjs';
 import os from 'os';
 
-interface ManifestEntry {
-  route: string;
-  filename: string;
-  success: boolean;
-  has3DContent: boolean;
-  error?: string;
-}
+type ManifestEntry = ScreenshotManifestEntry;
 
 describe('classifyDiff', () => {
   it('classifies as unchanged when below threshold', () => {
@@ -39,7 +39,8 @@ describe('buildSummaryMarkdown', () => {
       onlyInBefore: [],
       onlyInAfter: [],
       threshold: 0.1,
-      baselineMissing: false
+      baselineMissing: false,
+      errors: []
     };
     const md = buildSummaryMarkdown(report);
     expect(md).toContain('0 applets changed');
@@ -54,12 +55,62 @@ describe('buildSummaryMarkdown', () => {
       onlyInBefore: [],
       onlyInAfter: [],
       threshold: 0.1,
-      baselineMissing: false
+      baselineMissing: false,
+      errors: []
     };
     const md = buildSummaryMarkdown(report);
     expect(md).toContain('1 applet changed');
     expect(md).toContain('/applet/foo/bar');
     expect(md).toContain('1.23%');
+  });
+
+  it('omits changed/skipped counts and the route dump when baseline is missing', () => {
+    const report: DiffReport = {
+      changed: [],
+      unchanged: [],
+      skipped3D: ['/applet/c/d'],
+      onlyInBefore: [],
+      onlyInAfter: Array.from({ length: 259 }, (_, i) => `/applet/generated/${i}`),
+      threshold: 0.1,
+      baselineMissing: true,
+      errors: []
+    };
+    const md = buildSummaryMarkdown(report);
+    expect(md).toContain('No baseline screenshots found');
+    expect(md).not.toContain('applets changed');
+    expect(md).not.toContain('skipped (3D/WebGL)');
+    expect(md).not.toContain('New applets (no baseline to compare)');
+    expect(md).not.toContain('/applet/generated/0');
+  });
+
+  it('mentions the error count when routes could not be compared', () => {
+    const report: DiffReport = {
+      changed: [],
+      unchanged: [],
+      skipped3D: [],
+      onlyInBefore: [],
+      onlyInAfter: [],
+      threshold: 0.1,
+      baselineMissing: false,
+      errors: [{ route: '/applet/test/broken', message: 'ENOENT' }]
+    };
+    const md = buildSummaryMarkdown(report);
+    expect(md).toContain('1 route(s) could not be compared');
+  });
+
+  it('does not mention errors when there are none', () => {
+    const report: DiffReport = {
+      changed: [],
+      unchanged: [],
+      skipped3D: [],
+      onlyInBefore: [],
+      onlyInAfter: [],
+      threshold: 0.1,
+      baselineMissing: false,
+      errors: []
+    };
+    const md = buildSummaryMarkdown(report);
+    expect(md).not.toContain('could not be compared');
   });
 });
 
@@ -345,6 +396,60 @@ describe('runDiff integration', () => {
 
     const md = buildSummaryMarkdown(report);
     expect(md).toContain('No baseline screenshots found');
+    expect(md).not.toContain('applets changed');
+    expect(md).not.toContain('skipped (3D/WebGL)');
+  });
+
+  it('does not crash the whole run when a route is missing its PNG, and still compares other routes', async () => {
+    // One route with a manifest entry but no PNG file (simulates a truncated
+    // artifact upload/download or a stale cached baseline), plus one normal
+    // unrelated route in the same batch to prove the crash doesn't take down
+    // the whole run.
+    await createPng(beforeDir, '/applet/test/missing-png', 100);
+    // Intentionally do NOT create the after PNG for this route.
+    await createPng(beforeDir, '/applet/test/unrelated-ok', 100);
+    await createPng(afterDir, '/applet/test/unrelated-ok', 100);
+
+    await writeManifest(beforeDir, [
+      {
+        route: '/applet/test/missing-png',
+        filename: 'missing-png.png',
+        success: true,
+        has3DContent: false
+      },
+      {
+        route: '/applet/test/unrelated-ok',
+        filename: 'unrelated-ok.png',
+        success: true,
+        has3DContent: false
+      }
+    ]);
+    await writeManifest(afterDir, [
+      {
+        route: '/applet/test/missing-png',
+        filename: 'missing-png.png',
+        success: true,
+        has3DContent: false
+      },
+      {
+        route: '/applet/test/unrelated-ok',
+        filename: 'unrelated-ok.png',
+        success: true,
+        has3DContent: false
+      }
+    ]);
+
+    const report = await runDiff({
+      before: beforeDir,
+      after: afterDir,
+      output: outputDir,
+      threshold: 0.1
+    });
+
+    expect(report.errors).toContainEqual(
+      expect.objectContaining({ route: '/applet/test/missing-png' })
+    );
+    expect(report.unchanged).toContain('/applet/test/unrelated-ok');
   });
 
   it('throws when the --after directory has no manifest.json', async () => {

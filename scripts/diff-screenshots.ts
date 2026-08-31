@@ -14,14 +14,9 @@ import path from 'path';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import { fileURLToPath } from 'url';
+import type { ScreenshotManifestEntry } from './generate-screenshots';
 
-interface ManifestEntry {
-  route: string;
-  filename: string;
-  success: boolean;
-  has3DContent: boolean;
-  error?: string;
-}
+export type { ScreenshotManifestEntry };
 
 export interface DiffReport {
   changed: { route: string; percentChanged: number }[];
@@ -31,6 +26,7 @@ export interface DiffReport {
   onlyInAfter: string[];
   threshold: number;
   baselineMissing: boolean;
+  errors: { route: string; message: string }[];
 }
 
 /**
@@ -58,7 +54,7 @@ export function buildSummaryMarkdown(report: DiffReport): string {
         'workflow runs against a `main` that predates it (nothing to compare against yet). ' +
         'A real visual diff will run on the next PR once `main` has baseline screenshots.'
     );
-    lines.push('');
+    return lines.join('\n');
   }
 
   lines.push(
@@ -66,6 +62,11 @@ export function buildSummaryMarkdown(report: DiffReport): string {
       `visually vs \`main\` (threshold: >${report.threshold}% pixels).`
   );
   lines.push(`${report.skipped3D.length} skipped (3D/WebGL).`);
+  if (report.errors.length > 0) {
+    lines.push(
+      `${report.errors.length} route(s) could not be compared (see report.json for details).`
+    );
+  }
   lines.push('');
 
   if (report.changed.length > 0) {
@@ -97,7 +98,7 @@ export function buildSummaryMarkdown(report: DiffReport): string {
  * this tooling existed degrades to "no baseline" instead of crashing the
  * whole diff run.
  */
-async function readManifest(dir: string): Promise<ManifestEntry[] | null> {
+async function readManifest(dir: string): Promise<ScreenshotManifestEntry[] | null> {
   let raw: string;
   try {
     raw = await fs.readFile(path.join(dir, 'manifest.json'), 'utf-8');
@@ -107,7 +108,7 @@ async function readManifest(dir: string): Promise<ManifestEntry[] | null> {
     }
     throw error;
   }
-  return JSON.parse(raw) as ManifestEntry[];
+  return JSON.parse(raw) as ScreenshotManifestEntry[];
 }
 
 function routeToImagePath(dir: string, route: string): string {
@@ -169,7 +170,8 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
     onlyInBefore: [],
     onlyInAfter: [],
     threshold: args.threshold,
-    baselineMissing
+    baselineMissing,
+    errors: []
   };
 
   await fs.mkdir(path.join(args.output, 'diffs'), { recursive: true });
@@ -194,29 +196,38 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
       continue;
     }
 
-    const beforePng = await loadPng(routeToImagePath(args.before, route));
-    const afterPng = await loadPng(routeToImagePath(args.after, route));
+    try {
+      const beforePng = await loadPng(routeToImagePath(args.before, route));
+      const afterPng = await loadPng(routeToImagePath(args.after, route));
 
-    if (beforePng.width !== afterPng.width || beforePng.height !== afterPng.height) {
-      report.changed.push({ route, percentChanged: 100 });
+      if (beforePng.width !== afterPng.width || beforePng.height !== afterPng.height) {
+        report.changed.push({ route, percentChanged: 100 });
+        continue;
+      }
+
+      const { width, height } = beforePng;
+      const diffPng = new PNG({ width, height });
+      const diffPixels = pixelmatch(beforePng.data, afterPng.data, diffPng.data, width, height, {
+        threshold: 0.1 // pixelmatch's own per-pixel AA-tolerance matching threshold (0-1 scale)
+      });
+
+      const totalPixels = width * height;
+      const percentChanged = (diffPixels / totalPixels) * 100;
+
+      if (classifyDiff(diffPixels, totalPixels, args.threshold) === 'changed') {
+        report.changed.push({ route, percentChanged });
+        const diffPath = path.join(args.output, 'diffs', `${route.replace(/\//g, '_')}.png`);
+        await fs.writeFile(diffPath, PNG.sync.write(diffPng));
+      } else {
+        report.unchanged.push(route);
+      }
+    } catch (error) {
+      // A missing/corrupt PNG for a single route (truncated artifact
+      // upload/download, a stale cached baseline, a manifest/PNG mismatch)
+      // must not crash the whole diff run for every other route.
+      const message = error instanceof Error ? error.message : String(error);
+      report.errors.push({ route, message });
       continue;
-    }
-
-    const { width, height } = beforePng;
-    const diffPng = new PNG({ width, height });
-    const diffPixels = pixelmatch(beforePng.data, afterPng.data, diffPng.data, width, height, {
-      threshold: 0.1 // pixelmatch's own per-pixel AA-tolerance matching threshold (0-1 scale)
-    });
-
-    const totalPixels = width * height;
-    const percentChanged = (diffPixels / totalPixels) * 100;
-
-    if (classifyDiff(diffPixels, totalPixels, args.threshold) === 'changed') {
-      report.changed.push({ route, percentChanged });
-      const diffPath = path.join(args.output, 'diffs', `${route.replace(/\//g, '_')}.png`);
-      await fs.writeFile(diffPath, PNG.sync.write(diffPng));
-    } else {
-      report.unchanged.push(route);
     }
   }
 

@@ -85,6 +85,20 @@ interface GenerationResult {
   results: ScreenshotResult[];
 }
 
+/**
+ * Shape of each entry written to manifest.json, and the single source of
+ * truth for that shape shared with diff-screenshots.ts (and its tests) — see
+ * issue #454 review: previously this shape was independently redeclared in
+ * three places with no compiler-enforced contract between producer/consumer.
+ */
+export interface ScreenshotManifestEntry {
+  route: string;
+  filename: string;
+  success: boolean;
+  has3DContent: boolean;
+  error?: string;
+}
+
 const configPath = path.join(process.cwd(), 'scripts/screenshot.config.json');
 let CONFIG: ScreenshotConfig = {} as ScreenshotConfig;
 
@@ -412,7 +426,7 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
     const results = await processRoutesWithCluster(routes);
     const successful = results.filter((r: ScreenshotResult) => r.success).length;
 
-    const manifest = results.map((r) => ({
+    const manifest: ScreenshotManifestEntry[] = results.map((r) => ({
       route: r.route,
       filename: r.filename ?? getScreenshotName(r.route, false),
       success: r.success,
