@@ -136,6 +136,10 @@
    * Reset the camera position and zoom level.
    * This function is called when the reset button is clicked.
    * It will animate the camera to the default position and zoom level in 750ms.
+   *
+   * Unlike `animateCameraTo` below, this only resets the d3-zoom overlay
+   * transform back to identity — it never touches the base `cameraZoom`/
+   * `cameraPosition` (those are the applet's own defaults and don't change).
    */
   function reset() {
     const svg = select(`#${id}`);
@@ -167,6 +171,12 @@
    * perceptual `interpolateZoom` path. Does not touch the d3-zoom overlay
    * transform, so any in-progress user pan/zoom keeps applying on top with
    * no jump, and this works identically whether `enablePan` is true or false.
+   *
+   * A caller (e.g. a SlideShow step) must set the same target for the whole
+   * duration of its step rather than varying it per-tick — this function
+   * (and the effect that calls it) treats every prop change as a new target
+   * to ease towards, so a per-tick-varying value would fight the easing
+   * instead of composing with it.
    */
   function animateCameraTo(targetZoomRaw: number, targetPosition: Vector2) {
     const [minZoom, maxZoom] = zoomScaleExtent(cameraZoom);
@@ -176,6 +186,8 @@
     const to: [number, number, number] = [targetPosition.x, targetPosition.y, 1 / targetZoom];
     const interpolator = interpolateZoom(from, to);
 
+    const node = select(`#${id}`).node() as Element;
+
     select(`#${id}`)
       .transition('camera')
       .duration(750)
@@ -184,11 +196,11 @@
         cameraPosition = new Vector2(x, y);
         cameraZoom = 1 / w;
 
-        debouncedUpdate2DCamera({
-          x,
-          y,
-          k: currentCameraTransform?.k ?? 1
-        } as Transform2D);
+        // Re-derive the camera-state sync payload the same way user pan/zoom
+        // does, using the live d3-zoom overlay transform (untouched by this
+        // tween) composed with the base we just moved — keeps legend/axis
+        // labels/URL zoom consistent instead of reporting a stale overlay k.
+        transformScene(zoomTransform(node) as unknown as Transform2D);
       });
   }
 
@@ -226,7 +238,12 @@
   });
 
   $effect(() => {
-    const _ = [width, height, cameraPosition, cameraZoom]; // update when width, height or camera changes
+    // Rebind whenever width/height change (resize) or cameraZoom changes —
+    // zoomProtocol's scaleExtent tracks cameraZoom, so it must re-derive and
+    // re-attach for the user's allowed pan/zoom range to track a moving
+    // base zoom (e.g. mid-slideshow-camera-move). cameraPosition doesn't
+    // affect scaleExtent, so it's deliberately not a dependency here.
+    const _ = [width, height, cameraZoom];
 
     if (activityState.isActive) {
       // Attach the zoom event listener
