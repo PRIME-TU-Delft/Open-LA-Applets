@@ -161,12 +161,12 @@
 
     return new Formulas(
       new Formula('E(X) &= \\$1').addAutoParam(m.expectedValue, m.expColor),
-      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(m.variance, m.varColor),
+      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(m.variance, m.varColor)
     ).align();
   });
 
   const splitFormulas = $derived.by(() => {
-        const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+    const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
 
     if (!def) {
       return new Formulas(
