@@ -53,6 +53,41 @@ export default {
     }
   },
 
+  'no-manual-aligned-formula': {
+    meta: {
+      type: 'problem',
+      docs: {
+        description:
+          'Disallow hand-written \\begin{aligned}...\\end{aligned} blocks, require Formulas.align() instead',
+        category: 'Best Practices',
+        recommended: true
+      },
+      messages: {
+        manualAligned:
+          'Do not write \\begin{aligned}...\\end{aligned} by hand. Use Formulas.align() to build aligned formulas instead - it handles row separators (\\\\) correctly.'
+      },
+      schema: []
+    },
+    create(context) {
+      const ALIGNED_PATTERN = /\\begin\{aligned\*?\}/;
+
+      function checkStringValue(node, value) {
+        if (typeof value === 'string' && ALIGNED_PATTERN.test(value)) {
+          context.report({ node, messageId: 'manualAligned' });
+        }
+      }
+
+      return {
+        Literal(node) {
+          checkStringValue(node, node.value);
+        },
+        TemplateElement(node) {
+          checkStringValue(node, node.value.cooked);
+        }
+      };
+    }
+  },
+
   'require-url-params-info': {
     meta: {
       type: 'problem',

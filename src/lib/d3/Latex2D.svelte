@@ -12,6 +12,7 @@
     dimOnHover?: boolean;
     background?: string;
     padding?: string;
+    compact?: boolean;
   };
 </script>
 
@@ -33,8 +34,11 @@
     alignY = null,
     dimOnHover = false,
     background = undefined,
-    padding = '0.2em'
+    padding = '0.2em',
+    compact = undefined
   }: Latex2DProps = $props();
+
+  const effectiveCompact = $derived(compact ?? background !== undefined);
 
   const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
   const scaleX = scale2D?.x ?? 1;
@@ -86,9 +90,9 @@
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="mathml" {style} compact={effectiveCompact} />
     {:else}
-      <Latex {latex} {color} outputType="html" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="html" {style} compact={effectiveCompact} />
     {/if}
   </foreignObject>
 </g>
