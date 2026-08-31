@@ -25,7 +25,7 @@ describe('classifyDiff', () => {
   });
 
   it('classifies as unchanged exactly at threshold (strictly greater-than semantics)', () => {
-    // 1000 of 1,000,000 pixels = 0.1%, threshold 0.1% — spec says "> threshold"
+    // 1000 of 1,000,000 pixels = 0.1%, threshold 0.1%. Spec says "> threshold".
     expect(classifyDiff(1000, 1_000_000, 0.1)).toBe('unchanged');
   });
 });

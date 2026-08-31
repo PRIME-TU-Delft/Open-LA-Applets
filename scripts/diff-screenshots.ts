@@ -155,8 +155,8 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
 
   if (afterManifest === null) {
     // The PR side always runs this same tooling, so a missing manifest here
-    // means the screenshot-generation step itself failed — a real problem
-    // to surface, unlike a missing baseline (see readManifest's doc comment).
+    // means the screenshot-generation step itself failed. That is a real
+    // problem to surface, unlike a missing baseline (see readManifest's doc comment).
     throw new Error(`No manifest.json found in --after directory: ${args.after}`);
   }
 
@@ -191,9 +191,9 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
     }
 
     if (!afterEntry.success || !beforeEntry.success) {
-      // A render failure isn't a visual diff to report here — the
-      // screenshot-generation step already fails the build loudly for this
-      // (see issue #438). Skip rather than false-flag it as "changed".
+      // A render failure isn't a visual diff to report here. The
+      // screenshot-generation step already fails the build loudly for this.
+      // Skip rather than false-flag it as "changed".
       continue;
     }
 

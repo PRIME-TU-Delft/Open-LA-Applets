@@ -86,10 +86,8 @@ interface GenerationResult {
 }
 
 /**
- * Shape of each entry written to manifest.json, and the single source of
- * truth for that shape shared with diff-screenshots.ts (and its tests) — see
- * issue #454 review: previously this shape was independently redeclared in
- * three places with no compiler-enforced contract between producer/consumer.
+ * Shape of each entry written to manifest.json. Single source of truth,
+ * imported by diff-screenshots.ts and its tests.
  */
 export interface ScreenshotManifestEntry {
   route: string;
@@ -334,8 +332,8 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error(`   Failed to capture ${route}:`, errorMessage);
       // has3DContent may not have been determined yet if the failure happened
-      // before detection ran — default to false so a failed route still shows
-      // up in the manifest rather than being silently dropped.
+      // before detection ran. Default to false so a failed route still shows
+      // up in the manifest instead of being silently dropped.
       results.push({ route, success: false, error: errorMessage, has3DContent });
     }
 
