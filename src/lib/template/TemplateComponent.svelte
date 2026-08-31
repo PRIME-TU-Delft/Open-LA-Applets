@@ -25,6 +25,11 @@
   import Line2D from '$lib/d3/Line2D.svelte';
   import Circle2D from '$lib/d3/Circle2D.svelte';
   import Polygon2D from '$lib/d3/Polygon2D.svelte';
+  import {
+    outwardLabelOffset,
+    outwardSideNormal,
+    POLYGON_LABEL_OFFSET
+  } from './PolygonLabelOffset';
 
   let { objects }: { objects: AppletObject[] } = $props();
 </script>
@@ -232,28 +237,21 @@
       color={object.color.toString()}
       fillStyle={object.fillStyle}
     />
-    {#each object.sideLatex as latex, i (i)}
-      {@const pStart = object.points[i].clone()}
-      {@const pEnd = object.points[(i + 1) % object.points.length].clone()}
-      {@const v = pStart.add(pEnd).divideScalar(2)}
-      {@const isVertical = Math.abs(pEnd.x - pStart.x) < 1e-6}
-      {@const alignX = Math.abs(v.x) < 1e-6 ? 'center' : v.x > 0 ? 'left' : 'right'}
-      {@const alignY = Math.abs(v.y) < 1e-6 ? 'center' : v.y > 0 ? 'bottom' : 'top'}
-      {@const offset = isVertical
-        ? new Vector2(alignX === 'right' ? -0.08 : 0.08, 0)
-        : new Vector2(0, 0)}
-      <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
-    {/each}
     {@const center = object.points
       .reduce((acc, p) => acc.add(p), new Vector2(0, 0))
       .divideScalar(object.points.length)}
+    {#each object.sideLatex as latex, i (i)}
+      {@const pStart = object.points[i].clone()}
+      {@const pEnd = object.points[(i + 1) % object.points.length].clone()}
+      {@const v = pStart.clone().add(pEnd).divideScalar(2)}
+      {@const normal = outwardSideNormal(pStart, pEnd, center)}
+      {@const { offset, alignX, alignY } = outwardLabelOffset(normal, POLYGON_LABEL_OFFSET)}
+      <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
+    {/each}
     {#each object.verticesLatex as latex, i (i)}
       {@const v = object.points[i].clone()}
-      {@const d = v.clone().sub(center)}
-      {@const alignX = Math.abs(d.x) < 1e-6 ? 'center' : d.x > 0 ? 'left' : 'right'}
-      {@const alignY = Math.abs(d.y) < 1e-6 ? 'center' : d.y > 0 ? 'bottom' : 'top'}
-      {@const offset =
-        d.lengthSq() < 1e-12 ? new Vector2(0, 0) : d.clone().normalize().multiplyScalar(0.08)}
+      {@const direction = v.clone().sub(center)}
+      {@const { offset, alignX, alignY } = outwardLabelOffset(direction, POLYGON_LABEL_OFFSET)}
       <Latex2D {latex} position={v} {offset} color={object.color.toString()} {alignX} {alignY} />
     {/each}
   {/if}

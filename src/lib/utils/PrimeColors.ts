@@ -27,6 +27,18 @@ export class PrimeColor {
       .padStart(2, '0');
   }
 
+  // Scales a color's RGB channels by amount, like CSS's filter: brightness(amount)
+  static brightness(color: ColorString, amount: number): ColorString {
+    const hex = color.replace('#', '');
+    const channel = (offset: number) =>
+      Math.min(255, Math.max(0, Math.round(parseInt(hex.slice(offset, offset + 2), 16) * amount)))
+        .toString(16)
+        .padStart(2, '0');
+    const alpha = hex.length >= 8 ? hex.slice(6, 8) : '';
+
+    return `#${channel(0)}${channel(2)}${channel(4)}${alpha}`;
+  }
+
   static asArray(): ColorString[] {
     return Object.values(PrimeColor);
   }

@@ -26,6 +26,7 @@ interface ScreenshotConfig {
   };
   screenshots: {
     timeout: number;
+    timeoutOverrides?: Record<string, number>;
     waitForSelector: string;
     waitTime: number;
     outputDir: string;
@@ -107,6 +108,32 @@ async function getAppletRoutes(): Promise<string[]> {
 function stripAnsi(text: string): string {
   // eslint-disable-next-line no-control-regex
   return text.replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '');
+}
+
+/**
+ * Resolve the navigation timeout for a route, honoring any configured prefix override
+ */
+function getNavigationTimeout(route: string): number {
+  const overrides = CONFIG.screenshots.timeoutOverrides ?? {};
+  const match = Object.keys(overrides).find((prefix) => route.startsWith(prefix));
+  return match ? overrides[match] : CONFIG.screenshots.timeout;
+}
+
+// Puppeteer treats a goto timeout of 0 as "wait forever", but the cluster's own task
+// timeout can't be disabled the same way, so a disabled override falls back to this instead
+const DISABLED_TIMEOUT_CLUSTER_FALLBACK = 10 * 60 * 1000; // 10 minutes
+
+/**
+ * Compute the puppeteer-cluster task timeout, large enough to cover the biggest
+ * configured navigation timeout (including any disabled per-route overrides)
+ */
+function getClusterTaskTimeout(): number {
+  const overrideValues = Object.values(CONFIG.screenshots.timeoutOverrides ?? {}).map((value) =>
+    value === 0 ? DISABLED_TIMEOUT_CLUSTER_FALLBACK : value
+  );
+  const largestTimeout = Math.max(CONFIG.screenshots.timeout, ...overrideValues);
+
+  return largestTimeout * 2;
 }
 
 /**
@@ -194,7 +221,7 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       args: CONFIG.browser.args,
       executablePath: executablePath
     },
-    timeout: CONFIG.screenshots.timeout * 2,
+    timeout: getClusterTaskTimeout(),
     retryLimit: 0
   });
 
@@ -209,7 +236,10 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
       console.log(`Capturing: ${route}`);
 
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: CONFIG.screenshots.timeout });
+      await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: getNavigationTimeout(route)
+      });
 
       let has3DContent = false;
       try {
@@ -374,7 +404,13 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
 // Run the script from shell
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
   generateScreenshots()
-    .then(() => {
+    .then((result) => {
+      if (result && result.successful < result.total) {
+        console.error(
+          `Screenshot generation failed: ${result.total - result.successful}/${result.total} routes failed`
+        );
+        process.exit(1);
+      }
       console.log('Screenshot generation completed successfully');
       process.exit(0);
     })

@@ -146,7 +146,7 @@
   const controls = Controls.addSlider(10, 0, 26, 1, PrimeColor.green, {
     label: 'c=',
     animationStep: 1,
-    valueFn: (value: number) => toLatexText(value.toFixed(1).replace(/\.0$/, ''))
+    valueFn: (value: number) => toLatexText('$' + value.toFixed(1).replace(/\.0$/, '') + '$')
   });
 
   const c = $derived(controls[0]);
@@ -215,7 +215,13 @@
   }
 
   $effect(() => {
-    // Re-snap draggables2[0] onto the updated solution curve whenever draggables[0] moves
+    // Re-clamp draggables[0] into the valid amplitude/speed bounds whenever c changes
+    const currentPosition = untrack(() => draggables[0].position);
+    draggables[0].position = SnapToGrid(currentPosition);
+  });
+
+  $effect(() => {
+    // Re-snap draggables2[0] onto the updated solution curve whenever draggables[0] or c changes
     const currentPosition = untrack(() => draggables2[0].position);
     draggables2[0].position = SnapToGrid2(currentPosition);
   });
@@ -231,7 +237,9 @@
 
   const formulas = $derived.by(() => {
     let Type = '';
-    if (c < 10) {
+    if (c === 0) {
+      Type += 'Undamped';
+    } else if (c < 10) {
       Type += 'Underdamped';
     } else if (c === 10) {
       Type += 'Critically damped';
@@ -301,7 +309,7 @@
     <TemplateComponent objects={appletObjects} />
   </GridCanvas2D>
   {@const scaleX2 = 4}
-  {@const scaleY2 = 1 / 10}
+  {@const scaleY2 = 1 / 3}
   <GridCanvas2D
     {draggables}
     initialViewBox={new ViewBox(

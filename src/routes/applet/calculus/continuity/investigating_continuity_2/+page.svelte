@@ -78,7 +78,7 @@
   // ##############
   const controls = Controls.addSlider(1, -3, 3, 1, PrimeColor.raspberry, {
     label: toLatexText('$b=$'),
-    valueFn: (v: number) => v.toFixed(0),
+    valueFn: (v: number) => toLatexText(v.toFixed(0)),
     animationStep: 1
   });
   const legendItems = $derived.by(() => {

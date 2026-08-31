@@ -110,7 +110,7 @@
       return {
         state,
         labelPrev: '(0,y), y\\in\\mathbb{Z}',
-        labelNext: '(x,y), x\\in\\{0,1\\}, y\\in\\mathbb{Z}'
+        labelNext: '(t,y), t\\in\\{0,1\\}, y\\in\\mathbb{Z}'
       };
     },
     // Step 4: add (x,y)
@@ -120,8 +120,8 @@
       state.xMax = Math.round(1 * (1 - t) + 30 * t);
       return {
         state,
-        labelPrev: '(x,y), x\\in\\{0,1\\}, y\\in\\mathbb{Z}',
-        labelNext: '(x,y), x\\in\\mathbb{Z}, y\\in\\mathbb{Z}'
+        labelPrev: '(t,y), t\\in\\{0,1\\}, y\\in\\mathbb{Z}',
+        labelNext: '(t,y), t\\in\\mathbb{Z}, y\\in\\mathbb{Z}'
       };
     }
   ];

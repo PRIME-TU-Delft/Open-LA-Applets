@@ -1,4 +1,5 @@
 <script lang="ts" module>
+  import type { LegendFormulaAnchor } from '$lib/components/LegendFormulaPanel.svelte';
   import Scene from '$lib/components/Scene.svelte';
   import type { Controller, Controls } from '$lib/controls/Controls';
   import type { Draggable } from '$lib/controls/Draggables.svelte';
@@ -21,7 +22,7 @@
     controls?: Controls<any, readonly Controller<number | boolean | string | any>[]>;
     formulas?: Formula[];
     legendItems?: LegendItem[];
-    legendFormulaPosition?: 'top-right' | 'top-left';
+    legendFormulaPosition?: LegendFormulaAnchor;
     children: Snippet;
   };
 </script>

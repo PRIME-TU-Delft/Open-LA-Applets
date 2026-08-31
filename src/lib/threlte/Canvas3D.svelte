@@ -50,7 +50,8 @@
     cameraZoom = 29,
     enablePan = false,
     logPan = false,
-    defaultLeftDivision
+    defaultLeftDivision,
+    legendFormulaPosition = 'top-right'
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -125,6 +126,7 @@
   {legendItems}
   {splitFormulas}
   {splitLegendItems}
+  {legendFormulaPosition}
 >
   {#snippet sceneChildren(width, height)}
     {@const defaultCanvasWidth = width / 2}

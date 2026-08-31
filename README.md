@@ -40,7 +40,7 @@ deployed to `https://openla.ewi.tudelft.nl`.
 
 In the book of choice ([Open LA book](https://github.com/TUDelft-PRIME-Books/Linear-Algebra) or [Calculus](https://github.com/TUDelft-PRIME-Books/Calculus), etc.),
 you can embed the applet using an iframe. You can find more information on how to do this in the
-[Shinx PRIME applet documentation](https://github.com/TeachBooks/Sphinx-PRIME-applets). Your applet should be available with the following snippet:
+[Sphinx PRIME applet documentation](https://github.com/TeachBooks/Sphinx-PRIME-applets). Your applet should be available with the following snippet:
 
 ````
 ```{applet}

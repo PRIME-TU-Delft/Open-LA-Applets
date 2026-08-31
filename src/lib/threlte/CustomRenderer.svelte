@@ -11,9 +11,21 @@
     elevation?: number;
     azimuth?: number;
     grid?: boolean;
+    stars?: boolean;
+    bloomStrength?: number;
+    bloomRadius?: number;
+    bloomThreshold?: number;
   };
 
-  let { elevation = 0, azimuth = 250, grid = true }: CustomRendererProps = $props();
+  let {
+    elevation = 0,
+    azimuth = 250,
+    grid = true,
+    stars = true,
+    bloomStrength = 1,
+    bloomRadius = 0.5,
+    bloomThreshold = 0.1
+  }: CustomRendererProps = $props();
 
   const { scene, renderer, camera, size, autoRender, renderStage } = useThrelte();
 
@@ -28,7 +40,12 @@
     autoRender.set(false);
 
     const renderPass = new RenderPass(scene, $camera);
-    const bloomPass = new UnrealBloomPass(new Vector2(100, 100), 1, 0.5, 0.1);
+    const bloomPass = new UnrealBloomPass(
+      new Vector2(100, 100),
+      bloomStrength,
+      bloomRadius,
+      bloomThreshold
+    );
 
     composer.addPass(renderPass);
     composer.addPass(bloomPass);
@@ -53,7 +70,9 @@
 
 <Sky {elevation} {azimuth} setEnvironment={true} />
 
-<Stars opacity={1} count={10000} radius={8} factor={10} />
+{#if stars}
+  <Stars opacity={1} count={10000} radius={8} factor={10} />
+{/if}
 
 {#if grid}
   <Grid

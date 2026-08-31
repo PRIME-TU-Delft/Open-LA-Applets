@@ -154,7 +154,7 @@
         PrimeColor.blue
       ),
       new Formula(
-        '|\\frac{z}{w}|&' + symbol + rs.toFixed(2).replace(/\.?0+$/, ''),
+        '\\left|\\frac{z}{w}\\right|&' + symbol + rs.toFixed(2).replace(/\.?0+$/, ''),
         undefined,
         undefined,
         PrimeColor.yellow
@@ -288,7 +288,7 @@
   />
   <Point2D position={quotient} color={PrimeColor.yellow} />
   <Latex2D
-    latex="zw"
+    latex={String.raw`\frac{z}{w}`}
     position={quotient}
     color={PrimeColor.yellow}
     alignX={quotient.x < 0 ? 'right' : 'left'}
