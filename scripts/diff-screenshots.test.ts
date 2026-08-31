@@ -5,6 +5,14 @@ import path from 'path';
 import { PNG } from 'pngjs';
 import os from 'os';
 
+interface ManifestEntry {
+  route: string;
+  filename: string;
+  success: boolean;
+  has3DContent: boolean;
+  error?: string;
+}
+
 describe('classifyDiff', () => {
   it('classifies as unchanged when below threshold', () => {
     // 500 of 1,000,000 pixels = 0.05%, threshold 0.1%
@@ -92,7 +100,7 @@ describe('runDiff integration', () => {
     await fs.writeFile(path.join(subDir, 'image.png'), PNG.sync.write(png));
   }
 
-  async function writeManifest(dir: string, entries: any[]): Promise<void> {
+  async function writeManifest(dir: string, entries: ManifestEntry[]): Promise<void> {
     await fs.writeFile(path.join(dir, 'manifest.json'), JSON.stringify(entries, null, 2));
   }
 
