@@ -293,6 +293,74 @@ export function integral(
   return adaptiveSimpson(a, b, tolerance, fa, fm, fb, whole, 0);
 }
 
+export type ReferenceIntegralResult = { confident: true; value: number } | { confident: false };
+
+/**
+ * Relative difference between two differently-resolved passes, below which they're
+ * considered to agree. See `referenceIntegral`.
+ */
+const INTEGRAL_CONFIDENCE_RELATIVE_ERROR = 1e-3;
+
+type QuadratureResult = { value: number; diverged: boolean };
+
+/**
+ * Midpoint Riemann sum over `n` equal-width cells. Every sample sits strictly inside its cell,
+ * never on a shared boundary or a rational point like an interval's exact midpoint, so an
+ * isolated singularity (e.g. sin(1/x) at x = 0) is skipped rather than substituted for.
+ */
+function riemannMidpointSum(
+  f: (x: number) => number,
+  a: number,
+  b: number,
+  n: number
+): QuadratureResult {
+  const blowupThreshold = 1e12;
+  const width = (b - a) / n;
+  let sum = 0;
+
+  for (let i = 0; i < n; i++) {
+    const x = a + (i + 0.5) * width;
+    const v = f(x);
+    if (!Number.isFinite(v) || Math.abs(v) > blowupThreshold) return { value: NaN, diverged: true };
+    sum += v;
+  }
+
+  return { value: sum * width, diverged: false };
+}
+
+/**
+ * Computes a definite integral's reference value using pure numeric quadrature, with a
+ * confidence flag instead of a bare NaN-as-divergence signal. Cross-checks two independently
+ * resolved midpoint Riemann sums and only reports a value when they agree. A hard-to-resolve
+ * integrand (e.g. a bounded but rapidly oscillating one) yields `{ confident: false }` instead
+ * of a false claim of divergence or a wrong finite value. See issue #375.
+ * @param f - Integrand, as a plain numeric function
+ * @param xL - Lower bound of integration
+ * @param xR - Upper bound of integration
+ */
+export function referenceIntegral(
+  f: (x: number) => number,
+  xL: number,
+  xR: number
+): ReferenceIntegralResult {
+  if (!Number.isFinite(xL) || !Number.isFinite(xR) || xL === xR) return { confident: false };
+
+  // Cell counts are coprime-ish (not a common multiple of one another) so the two grids never
+  // share a sample point, which would let a shared bad sample make them agree spuriously.
+  const coarse = riemannMidpointSum(f, xL, xR, 4001);
+  const fine = riemannMidpointSum(f, xL, xR, 16001);
+
+  if (coarse.diverged || fine.diverged) return { confident: false };
+  if (!Number.isFinite(coarse.value) || !Number.isFinite(fine.value)) return { confident: false };
+
+  const scale = Math.max(Math.abs(coarse.value), Math.abs(fine.value), 1e-9);
+  const relativeDifference = Math.abs(coarse.value - fine.value) / scale;
+
+  if (relativeDifference > INTEGRAL_CONFIDENCE_RELATIVE_ERROR) return { confident: false };
+
+  return { confident: true, value: fine.value };
+}
+
 /**
  * Projects a point onto the nearest point on an implicit curve defined by zeroFunc(x, y) = 0.
  * Uses alternating Newton projection (onto the constraint) and tangent-direction minimisation steps.

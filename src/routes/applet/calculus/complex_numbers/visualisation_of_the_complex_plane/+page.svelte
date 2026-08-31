@@ -79,7 +79,7 @@
     return new Vector2(snappedX, snappedY);
   }
   const draggablePoint = [
-    new Draggable(new Vector2(1, 2), PrimeColor.green, undefined, SnapToGrid)
+    new Draggable(new Vector2(-1, 2), PrimeColor.green, undefined, SnapToGrid)
   ];
   const formulas = $derived.by(() => {
     const Re = draggablePoint[0].position.x;

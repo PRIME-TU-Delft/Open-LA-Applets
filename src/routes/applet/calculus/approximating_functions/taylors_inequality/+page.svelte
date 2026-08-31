@@ -280,7 +280,7 @@
 
   const controls = Controls.addSlider(1, 1, 9, 1, PrimeColor.pink, {
     label: toLatexText('$n=$'),
-    valueFn: (v: number) => v.toFixed(0)
+    valueFn: (v: number) => toLatexText(v.toFixed(0))
   });
 
   const Legends = $derived.by(() => {

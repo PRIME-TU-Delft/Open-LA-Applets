@@ -146,7 +146,7 @@
   const controls = Controls.addSlider(10, 0, 26, 1, PrimeColor.green, {
     label: 'c=',
     animationStep: 1,
-    valueFn: (value: number) => toLatexText(value.toFixed(1).replace(/\.0$/, ''))
+    valueFn: (value: number) => toLatexText('$' + value.toFixed(1).replace(/\.0$/, '') + '$')
   });
 
   const c = $derived(controls[0]);

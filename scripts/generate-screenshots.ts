@@ -236,7 +236,10 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       const url = `http://localhost:${CONFIG.server.port}${route}?hideButtons=true`;
       console.log(`Capturing: ${route}`);
 
-      await page.goto(url, { waitUntil: 'networkidle0', timeout: getNavigationTimeout(route) });
+      await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: getNavigationTimeout(route)
+      });
 
       let has3DContent = false;
       try {
@@ -401,7 +404,13 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
 // Run the script from shell
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
   generateScreenshots()
-    .then(() => {
+    .then((result) => {
+      if (result && result.successful < result.total) {
+        console.error(
+          `Screenshot generation failed: ${result.total - result.successful}/${result.total} routes failed`
+        );
+        process.exit(1);
+      }
       console.log('Screenshot generation completed successfully');
       process.exit(0);
     })
