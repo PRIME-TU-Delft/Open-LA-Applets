@@ -110,10 +110,20 @@ describe('runDiff integration', () => {
     await createPng(afterDir, '/applet/test/identical', 100);
 
     await writeManifest(beforeDir, [
-      { route: '/applet/test/identical', filename: 'identical.png', success: true, has3DContent: false }
+      {
+        route: '/applet/test/identical',
+        filename: 'identical.png',
+        success: true,
+        has3DContent: false
+      }
     ]);
     await writeManifest(afterDir, [
-      { route: '/applet/test/identical', filename: 'identical.png', success: true, has3DContent: false }
+      {
+        route: '/applet/test/identical',
+        filename: 'identical.png',
+        success: true,
+        has3DContent: false
+      }
     ]);
 
     const report = await runDiff({
@@ -190,7 +200,13 @@ describe('runDiff integration', () => {
     await createPng(afterDir, '/applet/test/failed', 100);
 
     await writeManifest(beforeDir, [
-      { route: '/applet/test/failed', filename: 'failed.png', success: false, has3DContent: false, error: 'render error' }
+      {
+        route: '/applet/test/failed',
+        filename: 'failed.png',
+        success: false,
+        has3DContent: false,
+        error: 'render error'
+      }
     ]);
     await writeManifest(afterDir, [
       { route: '/applet/test/failed', filename: 'failed.png', success: true, has3DContent: false }
