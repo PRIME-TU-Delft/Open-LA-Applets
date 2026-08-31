@@ -25,6 +25,7 @@
   import { Camera2D, cameraState, type Transform2D } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import {
+    interpolateZoom,
     select,
     zoom,
     zoomIdentity,
@@ -63,11 +64,15 @@
   }: Canvas2DProps = $props();
 
   // svelte-ignore state_referenced_locally
-  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, scaleX, scaleY) : cameraZoomProp;
+  let cameraZoom = $state(
+    viewBox ? viewBox.getCameraZoom(width, height, scaleX, scaleY) : cameraZoomProp
+  );
   // svelte-ignore state_referenced_locally
-  let cameraPosition = viewBox
-    ? viewBox.getCameraPos(scaleX, scaleY)
-    : cameraPositionProp.clone().multiply(new Vector2(scaleX, scaleY));
+  let cameraPosition = $state(
+    viewBox
+      ? viewBox.getCameraPos(scaleX, scaleY)
+      : cameraPositionProp.clone().multiply(new Vector2(scaleX, scaleY))
+  );
 
   let id = 'canvas-' + generateUUID();
 
@@ -116,8 +121,7 @@
    * @see https://observablehq.com/@d3/drag-zoom?collection=@d3/d3-drag
    */
   const zoomProtocol = $derived.by(() => {
-    const minZoom = cameraZoom / 6;
-    const maxZoom = 6 / cameraZoom;
+    const [minZoom, maxZoom] = zoomScaleExtent(cameraZoom);
 
     return zoom()
       .scaleExtent([minZoom, maxZoom])
@@ -150,6 +154,76 @@
     if (isSplit) cameraState.splitCamera2D = new Camera2D(0, 0, 1, cameraZoom);
     else cameraState.camera2D = new Camera2D(0, 0, 1, cameraZoom);
   }
+
+  /**
+   * The user-pan/zoom scale bounds allowed relative to a given base zoom.
+   */
+  function zoomScaleExtent(baseZoom: number): [number, number] {
+    return [baseZoom / 6, 6 / baseZoom];
+  }
+
+  /**
+   * Eases the base camera (zoom + position) to a new target using d3's
+   * perceptual `interpolateZoom` path. Does not touch the d3-zoom overlay
+   * transform, so any in-progress user pan/zoom keeps applying on top with
+   * no jump, and this works identically whether `enablePan` is true or false.
+   */
+  function animateCameraTo(targetZoomRaw: number, targetPosition: Vector2) {
+    const [minZoom, maxZoom] = zoomScaleExtent(cameraZoom);
+    const targetZoom = Math.min(Math.max(targetZoomRaw, minZoom), maxZoom);
+
+    const from: [number, number, number] = [cameraPosition.x, cameraPosition.y, 1 / cameraZoom];
+    const to: [number, number, number] = [targetPosition.x, targetPosition.y, 1 / targetZoom];
+    const interpolator = interpolateZoom(from, to);
+
+    select(`#${id}`)
+      .transition('camera')
+      .duration(750)
+      .tween('camera', () => (t: number) => {
+        const [x, y, w] = interpolator(t);
+        cameraPosition = new Vector2(x, y);
+        cameraZoom = 1 / w;
+
+        debouncedUpdate2DCamera({
+          x,
+          y,
+          k: currentCameraTransform?.k ?? 1
+        } as Transform2D);
+      });
+  }
+
+  let cameraTargetInitialized = false;
+  let prevCameraZoomTarget = cameraZoomProp;
+  let prevCameraPositionTarget = cameraPositionProp;
+
+  /**
+   * Watches the `cameraZoom`/`cameraPosition` props for changes made after
+   * mount (e.g. a SlideShow step updating its applet state) and eases the
+   * camera to the new target. ViewBox-configured canvases only use these
+   * props to seed the initial camera, so they're excluded here.
+   */
+  $effect(() => {
+    const targetZoom = cameraZoomProp;
+    const targetPosition = cameraPositionProp;
+
+    if (!cameraTargetInitialized) {
+      cameraTargetInitialized = true;
+      prevCameraZoomTarget = targetZoom;
+      prevCameraPositionTarget = targetPosition;
+      return;
+    }
+
+    if (viewBox) return;
+
+    if (targetZoom === prevCameraZoomTarget && targetPosition.equals(prevCameraPositionTarget)) {
+      return;
+    }
+
+    prevCameraZoomTarget = targetZoom;
+    prevCameraPositionTarget = targetPosition;
+
+    animateCameraTo(targetZoom, targetPosition.clone().multiply(new Vector2(scaleX, scaleY)));
+  });
 
   $effect(() => {
     const _ = [width, height, cameraPosition, cameraZoom]; // update when width, height or camera changes

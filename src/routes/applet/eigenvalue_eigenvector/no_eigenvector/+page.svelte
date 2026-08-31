@@ -17,7 +17,9 @@
 
   const defaultState = {
     angle: -0.35,
-    avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}'
+    avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}',
+    cameraZoom: 0.9,
+    cameraPosition: new Vector2(0, 0)
   };
 
   const steps: SlideShowSteps<typeof defaultState> = [
@@ -62,6 +64,12 @@
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+
+      // Camera fields are a target, not something to interpolate per-tick:
+      // set the same value for every t so CanvasD3 sees one change per step
+      // and eases to it itself (see issue #462).
+      state.cameraZoom = 1.4;
+      state.cameraPosition = new Vector2(1, 1);
 
       return {
         state,
@@ -114,7 +122,13 @@
   });
 </script>
 
-<Canvas2D {controls} {formulas} cameraZoom={0.9} showFormulasDefault>
+<Canvas2D
+  {controls}
+  {formulas}
+  cameraZoom={state.cameraZoom}
+  cameraPosition={state.cameraPosition}
+  showFormulasDefault
+>
   <!-- V1 -->
   <Vector2D direction={Aw} length={Aw.length()} color={PrimeColor.blue} />
   <Latex2D
