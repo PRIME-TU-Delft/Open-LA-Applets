@@ -175,6 +175,44 @@
     return true;
   }
 
+  function estimateGradientMagnitude(
+    valueCache: Map<string, number>,
+    x: number,
+    y: number,
+    size: number
+  ): number {
+    const h = size / 2;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const fx1 = getOrEvalFunc(valueCache, cx - h, cy);
+    const fx2 = getOrEvalFunc(valueCache, cx + h, cy);
+    const fy1 = getOrEvalFunc(valueCache, cx, cy - h);
+    const fy2 = getOrEvalFunc(valueCache, cx, cy + h);
+    const dfdx = (fx2 - fx1) / (2 * h);
+    const dfdy = (fy2 - fy1) / (2 * h);
+    return Math.sqrt(dfdx * dfdx + dfdy * dfdy);
+  }
+
+  // check for potential zero cross to avoid gaps in function from sampling
+  function mightHideZero(
+    valueCache: Map<string, number>,
+    x: number,
+    y: number,
+    size: number,
+    v00: number,
+    v10: number,
+    v01: number,
+    v11: number
+  ): boolean {
+    const minCornerAbs = Math.min(Math.abs(v00), Math.abs(v10), Math.abs(v01), Math.abs(v11));
+    const diagonal = size * Math.SQRT2;
+    const gradEstimate = estimateGradientMagnitude(valueCache, x, y, size);
+    const safetyFactor = 2;
+    const worstCasePossibleDrop = gradEstimate * safetyFactor * diagonal;
+
+    return minCornerAbs - worstCasePossibleDrop <= 0;
+  }
+
   // Recursive function to process cells with adaptive refinement
   function marchingSquaresAdaptive(
     lines: StartEndLine[],
@@ -205,8 +243,24 @@
     if (v11 > 0) caseIndex |= 4;
     if (v01 > 0) caseIndex |= 8;
 
-    // Skip if all same sign or zero
-    if (caseIndex === 0 || caseIndex === 15) return;
+    // If all same sign or zero skip only if no sharp curve detected
+    if (caseIndex === 0 || caseIndex === 15) {
+      if (maxDepth > 0 && mightHideZero(valueCache, x, y, currentStepSize, v00, v10, v01, v11)) {
+        const halfStep = currentStepSize / 2;
+        marchingSquaresAdaptive(lines, valueCache, x, y, halfStep, maxDepth - 1);
+        marchingSquaresAdaptive(lines, valueCache, x + halfStep, y, halfStep, maxDepth - 1);
+        marchingSquaresAdaptive(lines, valueCache, x, y + halfStep, halfStep, maxDepth - 1);
+        marchingSquaresAdaptive(
+          lines,
+          valueCache,
+          x + halfStep,
+          y + halfStep,
+          halfStep,
+          maxDepth - 1
+        );
+      }
+      return;
+    }
 
     // Check if this cell needs refinement and we still have depth to refine
     if (needsRefinement(v00, v10, v01, v11, currentStepSize) && maxDepth > 0) {
