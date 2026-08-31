@@ -50,9 +50,10 @@ export function buildSummaryMarkdown(report: DiffReport): string {
 
   if (report.baselineMissing) {
     lines.push(
-      '**No baseline screenshots found for `main`** — this is expected the first time this ' +
-        'workflow runs against a `main` that predates it (nothing to compare against yet). ' +
-        'A real visual diff will run on the next PR once `main` has baseline screenshots.'
+      '**No baseline screenshots found for `main`.** The PR base commit does not have this ' +
+        'action merged yet, so it has no `manifest.json` to compare against. This will keep ' +
+        'happening on every run of this PR until it merges to `main`; after that, future PRs ' +
+        'will get a real visual diff.'
     );
     return lines.join('\n');
   }
