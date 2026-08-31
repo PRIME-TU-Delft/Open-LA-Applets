@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   export type Polygon2DProps = {
     points: Vector2[];
@@ -22,15 +22,11 @@
     fillStyle = 'full'
   }: Polygon2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
   // Points joined by commas [(1,0,), (0,1)] => "1,0 0,1"
   const pointsJoin = $derived(
-    points
-      .map((p) => new Vector2((p.x + offset.x) * sx, (p.y + offset.y) * sy).toArray().join(','))
-      .join(' ')
+    points.map((p) => projection.toScreen(p.clone().add(offset)).toArray().join(',')).join(' ')
   );
 
   const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);

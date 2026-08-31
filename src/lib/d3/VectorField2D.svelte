@@ -19,10 +19,10 @@
 </script>
 
 <script>
-  import { getContext } from 'svelte';
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  import { getProjection2D } from '$lib/utils/Projection2D';
+  const projection = getProjection2D();
+  const sx = projection.scaleX;
+  const sy = projection.scaleY;
 
   let {
     f,

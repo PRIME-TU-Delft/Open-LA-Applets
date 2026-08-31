@@ -4,7 +4,7 @@
   import { Vector2 } from 'three';
   import Triangle2D from './Triangle2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
 
   export type ExplicitFunction2DProps = {
     func: (x: number) => number;
@@ -48,11 +48,12 @@
     verticalLimit = GRID_SIZE_2D
   }: ExplicitFunction2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  // Prevent Triangle2D children (arrow heads) from applying scale to visual-space coords
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
+  // 1D axis mappings (screen-space samples); scalar access to the seam.
+  const sx = projection.scaleX;
+  const sy = projection.scaleY;
+  // Curve is built in screen space; children (arrow heads) must not re-project.
+  setProjection2D(IDENTITY_PROJECTION);
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {

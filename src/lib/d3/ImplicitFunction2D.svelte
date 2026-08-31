@@ -2,7 +2,7 @@
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
 
   export type ImplicitFunction2DProps = {
     // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
@@ -110,10 +110,12 @@
     maxDepth = 6
   }: ImplicitFunction2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
+  // 1D axis mappings (screen-space samples); scalar access to the seam.
+  const sx = projection.scaleX;
+  const sy = projection.scaleY;
+  // Grid is built in screen space; children must not re-project.
+  setProjection2D(IDENTITY_PROJECTION);
 
   const worldXMin = $derived(xMin * sx);
   const worldXMax = $derived(xMax * sx);

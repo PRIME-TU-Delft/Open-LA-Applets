@@ -4,18 +4,17 @@
   import { globalState } from '$lib/stores/globalState.svelte';
   import { INTERACTIVITY_RADIUS, POINT_SIZE } from '$lib/utils/AttributeDimensions';
   import { drag, select } from 'd3';
-  import { getContext, type Snippet } from 'svelte';
+  import { type Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
+  import { getProjection2D } from '$lib/utils/Projection2D';
 
   type DraggableProps = {
     draggable: Draggable;
     children?: Snippet;
   };
 
-  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const scaleX = scale2D?.x ?? 1;
-  const scaleY = scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
   let { draggable, children }: DraggableProps = $props();
 
@@ -23,6 +22,9 @@
 
   let dragPosition: Vector2 = $state(draggable.value.clone());
   let isDragging = $state(false);
+
+  const dragPosScreen = $derived(projection.toScreen(dragPosition));
+  const valueScreen = $derived(projection.toScreen(draggable.value));
 
   function dragstarted(_: DragEvent) {
     isDragging = true;
@@ -33,7 +35,7 @@
   }
 
   function dragged(event: DragEvent) {
-    dragPosition = new Vector2(event.x / scaleX, event.y / scaleY);
+    dragPosition = projection.toWorld(new Vector2(event.x, event.y));
 
     const newPoint = draggable.snapFn(dragPosition);
     draggable.value = new Vector2(newPoint.x, newPoint.y);
@@ -83,8 +85,6 @@
 </script>
 
 {#if draggable.shape === 'square'}
-  {@const cx = draggable.value.x * scaleX}
-  {@const cy = draggable.value.y * scaleY}
   {@const pulseRadius = draggable.radius * 2}
   <rect
     class="pulse"
@@ -97,18 +97,16 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosition.x * scaleX}; --y:{dragPosition.y * scaleY}"
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
   />
   <rect
-    x={cx - draggable.radius}
-    y={cy - draggable.radius}
+    x={valueScreen.x - draggable.radius}
+    y={valueScreen.y - draggable.radius}
     width={draggable.radius * 2}
     height={draggable.radius * 2}
     fill={draggable.color}
   />
 {:else if draggable.shape === 'triangle'}
-  {@const cx = draggable.value.x * scaleX}
-  {@const cy = draggable.value.y * scaleY}
   {@const triRadius = draggable.radius * 1.2}
   {@const dx = (triRadius * Math.sqrt(3)) / 2}
   {@const dy = triRadius / 2}
@@ -123,15 +121,13 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosition.x * scaleX}; --y:{dragPosition.y * scaleY}"
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
   />
   <polygon
-    points={`${cx},${cy + triRadius} ${cx + dx},${cy - dy} ${cx - dx},${cy - dy}`}
+    points={`${valueScreen.x},${valueScreen.y + triRadius} ${valueScreen.x + dx},${valueScreen.y - dy} ${valueScreen.x - dx},${valueScreen.y - dy}`}
     fill={draggable.color}
   />
 {:else if draggable.shape === 'diamond'}
-  {@const cx = draggable.value.x * scaleX}
-  {@const cy = draggable.value.y * scaleY}
   {@const diaRadius = draggable.radius * 1.2}
   {@const pulseDiaRadius = diaRadius * 2}
   <polygon
@@ -142,10 +138,10 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosition.x * scaleX}; --y:{dragPosition.y * scaleY}"
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
   />
   <polygon
-    points={`${cx},${cy - diaRadius} ${cx + diaRadius},${cy} ${cx},${cy + diaRadius} ${cx - diaRadius},${cy}`}
+    points={`${valueScreen.x},${valueScreen.y - diaRadius} ${valueScreen.x + diaRadius},${valueScreen.y} ${valueScreen.x},${valueScreen.y + diaRadius} ${valueScreen.x - diaRadius},${valueScreen.y}`}
     fill={draggable.color}
   />
 {:else}
@@ -157,14 +153,9 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosition.x * scaleX}; --y:{dragPosition.y * scaleY}"
+    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
   />
-  <circle
-    cx={draggable.value.x * scaleX}
-    cy={draggable.value.y * scaleY}
-    r={draggable.radius}
-    fill={draggable.color}
-  />
+  <circle cx={valueScreen.x} cy={valueScreen.y} r={draggable.radius} fill={draggable.color} />
 {/if}
 
 {#if children}
@@ -173,8 +164,8 @@
 
 <g bind:this={g}>
   <circle
-    cx={draggable.value.x * scaleX}
-    cy={draggable.value.y * scaleY}
+    cx={valueScreen.x}
+    cy={valueScreen.y}
     r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
     opacity="0"
   />
