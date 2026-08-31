@@ -12,6 +12,7 @@
   import { page } from '$app/state';
   import { appletState } from '$lib/stores/applet.svelte';
   import { parseNumericalOrLatex } from '$lib/utils/Params';
+  import { toLatexText } from '$lib/utils/FormatString';
 
   const searchParams = page?.url?.searchParams;
 
@@ -64,7 +65,7 @@
     .addDropdown(defaultRule, methods, PrimeColor.yellow)
     .addSlider(defaultN, 1, 10, 1, PrimeColor.raspberry, {
       label: 'n=',
-      valueFn: (v) => roundString(v, 0)
+      valueFn: (v) => toLatexText('$' + roundString(v, 0) + '$')
     });
 
   const currentMethod = $derived(

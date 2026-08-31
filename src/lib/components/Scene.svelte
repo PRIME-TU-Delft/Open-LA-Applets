@@ -10,7 +10,7 @@
     draggables?: Draggable[];
     title?: string;
     sceneChildren?: Snippet<[number, number]>;
-    legendFormulaPosition?: 'top-right' | 'top-left';
+    legendFormulaPosition?: LegendFormulaAnchor;
     onReset?: () => void;
   };
 </script>
@@ -24,6 +24,7 @@
   import type { Formula } from '$lib/utils/Formulas';
   import type { Snippet } from 'svelte';
   import ActionButtonsAndFormula from './ActionButtonsAndFormula.svelte';
+  import LegendFormulaPanel, { type LegendFormulaAnchor } from './LegendFormulaPanel.svelte';
   import ActivityPanel from './ActivityPanel.svelte';
   import ControllerAndActivityPanel from './ControllerAndActivityPanel.svelte';
   import FpsCounter from './FpsCounter.svelte';
@@ -49,6 +50,7 @@
 
   let height = $state(500);
   let width = $state<number>(0);
+  let showFormulas = $state(showFormulasDefault);
 
   const showFps = dev && browser && import.meta.env.VITE_SHOW_FPS === 'true';
 
@@ -169,13 +171,6 @@
       {/if}
     </div>
 
-    <!-- MARK: TITLE PANEL (top-left) -->
-    {#if globalState.title && globalState.isInset()}
-      <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
-        {globalState.title}
-      </div>
-    {/if}
-
     {#if showFps}
       <FpsCounter />
     {/if}
@@ -192,19 +187,91 @@
       <ActivityPanel onLock={(e) => lock(e)} />
     {/if}
 
-    <!-- MARK: ACTION BUTTONS / FORMULAE (top-right) -->
-    <ActionButtonsAndFormula
-      showFormulas={showFormulasDefault}
-      {formulas}
-      {legendItems}
-      {splitFormulas}
-      {splitLegendItems}
-      {controls}
-      {hideButtons}
-      {languages}
-      position={legendFormulaPosition}
-      onReset={() => reset()}
-    />
+    <!-- MARK: LEGEND AND ACTION BUTTONS AND TITLE HANDLING -->
+    <!-- if top left - title and legend are stacked, action buttons placed normally -->
+    {#if legendFormulaPosition === 'top-left'}
+      <div class="absolute top-0 left-0 flex flex-col items-start gap-1 p-2">
+        <!-- MARK: TITLE PANEL -->
+        {#if globalState.title && globalState.isInset()}
+          <div class="rounded bg-blue-200 p-2">
+            {globalState.title}
+          </div>
+        {/if}
+
+        <LegendFormulaPanel
+          {formulas}
+          {legendItems}
+          {splitFormulas}
+          {splitLegendItems}
+          {showFormulas}
+          position="top-left"
+          selfPosition={false}
+        />
+      </div>
+      <ActionButtonsAndFormula
+        {controls}
+        {hideButtons}
+        {languages}
+        {showFormulas}
+        hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+        onToggleFormulas={() => (showFormulas = !showFormulas)}
+        onReset={() => reset()}
+      />
+      <!-- if legend top right, title handled normally, action buttons placed below legend -->
+    {:else if legendFormulaPosition === 'top-right' || !legendFormulaPosition}
+      <!-- existing top-right wrapper, plus title rendered independently at top-left since it's not competing there -->
+      {#if globalState.title && globalState.isInset()}
+        <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+          {globalState.title}
+        </div>
+      {/if}
+      <div class="absolute top-0 right-0 flex flex-col items-end p-1">
+        <LegendFormulaPanel
+          {formulas}
+          {legendItems}
+          {splitFormulas}
+          {splitLegendItems}
+          {showFormulas}
+          position="top-right"
+          selfPosition={false}
+        />
+
+        <ActionButtonsAndFormula
+          {controls}
+          {hideButtons}
+          {languages}
+          {showFormulas}
+          hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+          selfPosition={false}
+          onToggleFormulas={() => (showFormulas = !showFormulas)}
+          onReset={() => reset()}
+        />
+      </div>
+      <!-- all other cases no extra handling required -->
+    {:else}
+      {#if globalState.title && globalState.isInset()}
+        <div class="absolute top-2 left-2 rounded bg-blue-200 p-2">
+          {globalState.title}
+        </div>
+      {/if}
+      <LegendFormulaPanel
+        {formulas}
+        {legendItems}
+        {splitFormulas}
+        {splitLegendItems}
+        {showFormulas}
+        position={legendFormulaPosition ?? 'top-right'}
+      />
+      <ActionButtonsAndFormula
+        {controls}
+        {hideButtons}
+        {languages}
+        {showFormulas}
+        hasFormulasOrLegend={formulas.length >= 1 || legendItems.length >= 1}
+        onToggleFormulas={() => (showFormulas = !showFormulas)}
+        onReset={() => reset()}
+      />
+    {/if}
   </div>
 </div>
 
