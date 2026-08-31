@@ -30,6 +30,7 @@ export interface DiffReport {
   onlyInBefore: string[];
   onlyInAfter: string[];
   threshold: number;
+  baselineMissing: boolean;
 }
 
 /**
@@ -50,6 +51,16 @@ export function classifyDiff(
  */
 export function buildSummaryMarkdown(report: DiffReport): string {
   const lines: string[] = [];
+
+  if (report.baselineMissing) {
+    lines.push(
+      '**No baseline screenshots found for `main`** — this is expected the first time this ' +
+        'workflow runs against a `main` that predates it (nothing to compare against yet). ' +
+        'A real visual diff will run on the next PR once `main` has baseline screenshots.'
+    );
+    lines.push('');
+  }
+
   lines.push(
     `**${report.changed.length} applet${report.changed.length === 1 ? '' : 's'} changed** ` +
       `visually vs \`main\` (threshold: >${report.threshold}% pixels).`
@@ -80,8 +91,22 @@ export function buildSummaryMarkdown(report: DiffReport): string {
   return lines.join('\n');
 }
 
-async function readManifest(dir: string): Promise<ManifestEntry[]> {
-  const raw = await fs.readFile(path.join(dir, 'manifest.json'), 'utf-8');
+/**
+ * Read a screenshot directory's manifest.json. Returns `null` (rather than
+ * throwing) when the manifest is absent, so a `main` checkout from before
+ * this tooling existed degrades to "no baseline" instead of crashing the
+ * whole diff run.
+ */
+async function readManifest(dir: string): Promise<ManifestEntry[] | null> {
+  let raw: string;
+  try {
+    raw = await fs.readFile(path.join(dir, 'manifest.json'), 'utf-8');
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      return null;
+    }
+    throw error;
+  }
   return JSON.parse(raw) as ManifestEntry[];
 }
 
@@ -126,7 +151,15 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
   const beforeManifest = await readManifest(args.before);
   const afterManifest = await readManifest(args.after);
 
-  const beforeByRoute = new Map(beforeManifest.map((e) => [e.route, e]));
+  if (afterManifest === null) {
+    // The PR side always runs this same tooling, so a missing manifest here
+    // means the screenshot-generation step itself failed — a real problem
+    // to surface, unlike a missing baseline (see readManifest's doc comment).
+    throw new Error(`No manifest.json found in --after directory: ${args.after}`);
+  }
+
+  const baselineMissing = beforeManifest === null;
+  const beforeByRoute = new Map((beforeManifest ?? []).map((e) => [e.route, e]));
   const afterByRoute = new Map(afterManifest.map((e) => [e.route, e]));
 
   const report: DiffReport = {
@@ -135,7 +168,8 @@ export async function runDiff(args: DiffArgs): Promise<DiffReport> {
     skipped3D: [],
     onlyInBefore: [],
     onlyInAfter: [],
-    threshold: args.threshold
+    threshold: args.threshold,
+    baselineMissing
   };
 
   await fs.mkdir(path.join(args.output, 'diffs'), { recursive: true });

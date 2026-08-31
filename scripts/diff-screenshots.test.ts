@@ -38,7 +38,8 @@ describe('buildSummaryMarkdown', () => {
       skipped3D: ['/applet/c/d'],
       onlyInBefore: [],
       onlyInAfter: [],
-      threshold: 0.1
+      threshold: 0.1,
+      baselineMissing: false
     };
     const md = buildSummaryMarkdown(report);
     expect(md).toContain('0 applets changed');
@@ -52,7 +53,8 @@ describe('buildSummaryMarkdown', () => {
       skipped3D: [],
       onlyInBefore: [],
       onlyInAfter: [],
-      threshold: 0.1
+      threshold: 0.1,
+      baselineMissing: false
     };
     const md = buildSummaryMarkdown(report);
     expect(md).toContain('1 applet changed');
@@ -312,5 +314,50 @@ describe('runDiff integration', () => {
     const changed = report.changed.find((c) => c.route === '/applet/test/resized');
     expect(changed).toBeDefined();
     expect(changed!.percentChanged).toBe(100);
+  });
+
+  it('treats a missing baseline manifest as "no baseline" instead of crashing', async () => {
+    // A --before directory with no manifest.json at all (e.g. a `main`
+    // checkout from before this tooling existed) must not throw.
+    const noBaselineDir = path.join(tmpDir, 'no-baseline');
+    await fs.mkdir(noBaselineDir, { recursive: true });
+
+    await createPng(afterDir, '/applet/test/no-baseline-case', 100);
+    await writeManifest(afterDir, [
+      {
+        route: '/applet/test/no-baseline-case',
+        filename: 'no-baseline-case.png',
+        success: true,
+        has3DContent: false
+      }
+    ]);
+
+    const report = await runDiff({
+      before: noBaselineDir,
+      after: afterDir,
+      output: outputDir,
+      threshold: 0.1
+    });
+
+    expect(report.baselineMissing).toBe(true);
+    expect(report.onlyInAfter).toContain('/applet/test/no-baseline-case');
+    expect(report.changed).toEqual([]);
+
+    const md = buildSummaryMarkdown(report);
+    expect(md).toContain('No baseline screenshots found');
+  });
+
+  it('throws when the --after directory has no manifest.json', async () => {
+    const noManifestDir = path.join(tmpDir, 'no-after-manifest');
+    await fs.mkdir(noManifestDir, { recursive: true });
+
+    await expect(
+      runDiff({
+        before: beforeDir,
+        after: noManifestDir,
+        output: outputDir,
+        threshold: 0.1
+      })
+    ).rejects.toThrow(/No manifest\.json found in --after directory/);
   });
 });
