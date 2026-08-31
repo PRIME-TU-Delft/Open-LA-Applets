@@ -19,6 +19,28 @@ import { spawn, ChildProcess } from 'child_process';
 import { fileURLToPath } from 'url';
 import { getScreenshotName } from '../src/lib/screenshots/utils';
 
+/**
+ * Build a JS source string that overrides `Math.random` with a seeded
+ * mulberry32 PRNG. Injected into every page before app scripts run, so the
+ * 6 applets that call `Math.random` render identically across CI runs.
+ */
+export function buildSeededRandomInjectionScript(seed: number): string {
+  return `
+    (function () {
+      let state = ${seed} >>> 0;
+      Math.random = function () {
+        state |= 0;
+        state = (state + 0x6D2B79F5) | 0;
+        let t = Math.imul(state ^ (state >>> 15), 1 | state);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    })();
+  `;
+}
+
+const SCREENSHOT_RANDOM_SEED = 454; // fixed seed for deterministic screenshot rendering
+
 interface ScreenshotConfig {
   server: {
     port: number;
@@ -54,6 +76,7 @@ interface ScreenshotResult {
   path?: string;
   filename?: string;
   error?: string;
+  has3DContent: boolean;
 }
 
 interface GenerationResult {
@@ -226,8 +249,10 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
   });
 
   await cluster.task(async ({ page, data: route }) => {
+    let has3DContent = false;
     try {
-      await page.setViewport(CONFIG.screenshots.viewport);
+      await page.evaluateOnNewDocument(buildSeededRandomInjectionScript(SCREENSHOT_RANDOM_SEED));
+      await page.setViewport({ ...CONFIG.screenshots.viewport, deviceScaleFactor: 1 });
 
       if (CONFIG.browser.reducedMotion) {
         await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
@@ -240,8 +265,6 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
         waitUntil: 'domcontentloaded',
         timeout: getNavigationTimeout(route)
       });
-
-      let has3DContent = false;
       try {
         await page.waitForSelector(CONFIG.screenshots.waitForSelector, { timeout: 5000 });
 
@@ -286,11 +309,20 @@ async function processRoutesWithCluster(routes: string[]): Promise<ScreenshotRes
       });
 
       console.log(`   Saved: ${screenshotName}`);
-      results.push({ route, success: true, path: screenshotPath, filename: screenshotName });
+      results.push({
+        route,
+        success: true,
+        path: screenshotPath,
+        filename: screenshotName,
+        has3DContent
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error(`   Failed to capture ${route}:`, errorMessage);
-      results.push({ route, success: false, error: errorMessage });
+      // has3DContent may not have been determined yet if the failure happened
+      // before detection ran — default to false so a failed route still shows
+      // up in the manifest rather than being silently dropped.
+      results.push({ route, success: false, error: errorMessage, has3DContent });
     }
 
     const successful = results.filter((r) => r.success).length;
@@ -379,6 +411,19 @@ async function generateScreenshots(): Promise<GenerationResult | undefined> {
 
     const results = await processRoutesWithCluster(routes);
     const successful = results.filter((r: ScreenshotResult) => r.success).length;
+
+    const manifest = results.map((r) => ({
+      route: r.route,
+      filename: r.filename ?? getScreenshotName(r.route, false),
+      success: r.success,
+      has3DContent: r.has3DContent,
+      ...(r.error ? { error: r.error } : {})
+    }));
+    await fs.writeFile(
+      path.join(CONFIG.screenshots.outputDir, 'manifest.json'),
+      JSON.stringify(manifest, null, 2)
+    );
+    console.log(`Wrote manifest.json with ${manifest.length} entries`);
 
     console.log('\nScreenshot generation completed!');
     console.log(`   Successful: ${successful}`);
