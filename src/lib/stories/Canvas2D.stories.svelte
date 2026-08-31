@@ -58,7 +58,7 @@
   {template}
 />
 
-<!-- axis.colorX/colorY color the grid lines, tick marks and tick numbers for each axis independently. -->
+<!-- `axis.colorX`/`axis.colorY` color the grid lines, tick marks and tick numbers for each axis independently. -->
 <Story
   name="Colored axis"
   args={{
@@ -70,7 +70,7 @@
   {template}
 />
 
-<!-- labels.xColor/yColor color the axis label text. They fall back to axis.colorX/colorY, then black, when not set. -->
+<!-- `labels.xColor`/`labels.yColor` color the axis label text. They fall back to `axis.colorX`/`axis.colorY`, then black, when not set. -->
 <Story
   name="Colored axis labels"
   args={{

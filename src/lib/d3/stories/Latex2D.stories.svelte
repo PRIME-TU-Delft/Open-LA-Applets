@@ -54,10 +54,10 @@
 <Story name="With extend defined" args={{ latex: 'E=mc^2', extend: 2 }} {template} />
 
 <!-- Setting `background` draws a highlight box behind the text. Note: setting `background` also switches the
-     underlying `Latex` component to `compact` mode automatically (compact={background !== undefined}), which
-     tightens the line-height so the highlight box hugs the text instead of the default KaTeX line box. `padding`
-     controls the space between the text and the edge of that box (default "0.2em") and only has a visible effect
-     when `background` is set. -->
+    underlying `Latex` component to `compact` mode automatically (compact={background !== undefined}), which
+    tightens the line-height so the highlight box hugs the text instead of the default KaTeX line box. `padding`
+    controls the space between the text and the edge of that box (default "0.2em") and only has a visible effect
+    when `background` is set. -->
 <Story
   name="With background"
   args={{ latex: 'E=mc^2', background: PrimeColor.yellow }}

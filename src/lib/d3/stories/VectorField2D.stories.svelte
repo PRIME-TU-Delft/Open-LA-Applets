@@ -117,10 +117,10 @@ crosses zero at the origin, so no arrow or dot appears there. -->
   {template}
 />
 
-<!-- When xRange/yRange are not given, they default to [-GRID_SIZE_2D / scaleX, GRID_SIZE_2D / scaleX]
-(and the yRange equivalent for scaleY), reading the scale2D context set by Canvas2D's scaleX/scaleY props.
+<!-- When `xRange`/`yRange` are not given, they default to `[-GRID_SIZE_2D / scaleX, GRID_SIZE_2D / scaleX]`
+(and the `yRange` equivalent for `scaleY`), reading the `scale2D` context set by Canvas2D's `scaleX`/`scaleY` props.
 So the field automatically covers the same visible area regardless of the canvas scale, without needing
-an explicit xRange/yRange. -->
+an explicit `xRange`/`yRange`. -->
 <Story name="Default range follows canvas scale">
   {#snippet template(_args)}
     <div class="h-[300px] overflow-hidden rounded-lg">

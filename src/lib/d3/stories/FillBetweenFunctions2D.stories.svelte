@@ -22,12 +22,17 @@
   </div>
 {/snippet}
 
-<!-- Fills the area between y = x^2 and y = x over the full domain, without shading the integral region -->
+<!-- Fills the area between y = x^2 and y = x over the domain [0, 1] -->
 <Story
   name="Between two functions"
   args={{
     func1: (x: number) => x * x,
     func2: (x: number) => x,
+    integral: {
+      xLeft: 0,
+      xRight: 1,
+      fillStyle: 'full'
+    },
     color1: PrimeColor.raspberry,
     color2: PrimeColor.blue
   }}
@@ -39,7 +44,7 @@
   name="With solid integral fill"
   args={{
     func1: (x: number) => 0.5 * x * x,
-    func2: () => 0,
+    func2: (x: number) => (1 / 10) * x ** 2,
     color1: PrimeColor.raspberry,
     color2: PrimeColor.black,
     integral: {
@@ -56,7 +61,7 @@
   name="With dashed integral fill"
   args={{
     func1: (x: number) => 0.5 * x * x,
-    func2: () => 0,
+    func2: (x: number) => (1 / 10) * x ** 2,
     color1: PrimeColor.raspberry,
     color2: PrimeColor.black,
     integral: {
@@ -68,12 +73,12 @@
   {template}
 />
 
-<!-- integral.opacity (added in #501) controls the fill transparency independently of color1/color2 -->
+<!-- `integral.opacity` controls the fill transparency independently of color1/color2 -->
 <Story
   name="With custom fill opacity"
   args={{
     func1: (x: number) => 0.5 * x * x,
-    func2: () => 0,
+    func2: (x: number) => (1 / 10) * x ** 2,
     color1: PrimeColor.raspberry,
     color2: PrimeColor.black,
     integral: {
