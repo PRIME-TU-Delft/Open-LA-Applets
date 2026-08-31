@@ -49,6 +49,39 @@
   const customSnapDraggables = [
     new Draggable(new Vector2(1.5, 1), PrimeColor.raspberry, 'A', maxDistance)
   ];
+
+  const shapeDraggables = [
+    new Draggable(
+      new Vector2(3, 2),
+      PrimeColor.darkGreen,
+      'A',
+      undefined,
+      undefined,
+      'right',
+      0.1,
+      'square'
+    ),
+    new Draggable(
+      new Vector2(0, 2),
+      PrimeColor.yellow,
+      'B',
+      undefined,
+      undefined,
+      'right',
+      0.1,
+      'triangle'
+    ),
+    new Draggable(
+      new Vector2(-3, 2),
+      PrimeColor.raspberry,
+      'C',
+      undefined,
+      undefined,
+      'right',
+      0.1,
+      'diamond'
+    )
+  ];
 </script>
 
 {#snippet template(args: Omit<CanvasProps, 'children'>)}
@@ -153,3 +186,16 @@ const draggables = [
     </div>
   {/snippet}
 </Story>
+
+<!-- The 8th constructor argument sets the draggable's shape - "circle" (default), "square", "triangle" or "diamond".
+It changes both the draggable dot and its pulsing halo.
+
+```typescript
+const draggables = [
+  new Draggable(new Vector2(3, 2), PrimeColor.darkGreen, 'A', undefined, undefined, 'right', 0.1, 'square'),
+  new Draggable(new Vector2(0, 2), PrimeColor.yellow, 'B', undefined, undefined, 'right', 0.1, 'triangle'),
+  new Draggable(new Vector2(-3, 2), PrimeColor.raspberry, 'C', undefined, undefined, 'right', 0.1, 'diamond')
+];
+```
+-->
+<Story name="With shape" {template} args={{ draggables: shapeDraggables }} />

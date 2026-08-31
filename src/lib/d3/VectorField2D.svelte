@@ -79,7 +79,7 @@
             )}
 
     {#if Math.sqrt(f(x, y).x ** 2 + f(x, y).y ** 2) > 1e-6}
-      // Only draw non-near-zero vectors
+      <!-- Only draw non-near-zero vectors -->
       <Vector2D
         {origin}
         direction={f(x, y)}

@@ -51,12 +51,12 @@ const legendItems = [new LegendItem("A", PrimeColor.blue)];
   {/snippet}
 </Story>
 
-<!-- 
+<!--
 This story showcases multiple types of legend item fill styles
 ```typescript
 const legendItems = [
-    new LegendItem('A', PrimeColor.blue), 
-    new LegendItem('B', PrimeColor.raspberry, FillType.Border), 
+    new LegendItem('A', PrimeColor.blue),
+    new LegendItem('B', PrimeColor.raspberry, FillType.Border),
     new LegendItem('C', PrimeColor.darkGreen, FillType.Dashed)
 ];
 ```
@@ -89,6 +89,34 @@ const legendItems = [
           length={1}
           color={PrimeColor.darkGreen}
         />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
+<!--
+This story showcases the available legend item shapes, including diamond
+```typescript
+const legendItems = [
+    new LegendItem('Circle', PrimeColor.blue, Shape.Circle),
+    new LegendItem('Square', PrimeColor.raspberry, Shape.Square),
+    new LegendItem('Triangle', PrimeColor.darkGreen, Shape.Triangle),
+    new LegendItem('Diamond', PrimeColor.orange, Shape.Diamond)
+];
+```
+-->
+<Story name="All legend item shapes">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D
+        legendItems={[
+          new LegendItem('Circle', PrimeColor.blue, Shape.Circle),
+          new LegendItem('Square', PrimeColor.raspberry, Shape.Square),
+          new LegendItem('Triangle', PrimeColor.darkGreen, Shape.Triangle),
+          new LegendItem('Diamond', PrimeColor.orange, Shape.Diamond)
+        ]}
+      >
+        <g></g>
       </Canvas2D>
     </div>
   {/snippet}

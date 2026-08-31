@@ -18,6 +18,9 @@
   import Matrix2 from '$lib/utils/Matrix2.svelte';
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
+
+  const onChangeState = $state({ dragging: 1, lastReleased: 1 });
 
   const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
     label: 'A',
@@ -40,12 +43,12 @@
 
   const functionControl = Controls.addFunction('\\sin{x}', 'f(x)', PrimeColor.raspberry);
 
-  const state = {
+  const slideShowState = {
     aOpacity: 1,
     bPosition: new Vector2(2, 1)
   };
 
-  type S = typeof state;
+  type S = typeof slideShowState;
 
   const transitionSteps = [
     (t: number, state: S) => {
@@ -67,7 +70,40 @@
     }
   ];
 
-  const slideShowControl = Controls.addSlideShow(state, transitionSteps);
+  const slideShowControl = Controls.addSlideShow(slideShowState, transitionSteps);
+
+  const perStepTimingSteps = [
+    {
+      transition: (t: number, state: S) => {
+        state.aOpacity = state.aOpacity - 1 * t;
+        return {
+          state,
+          labelNext: $_('applets.testing.controls_stories.fade_out_a'),
+          labelPrev: $_('ui.slideshow_original_state')
+        };
+      },
+      duration: 2000,
+      timeSteps: 60
+    },
+    {
+      transition: (t: number, state: S) => {
+        state.bPosition = state.bPosition.add(new Vector2(-3, 1).multiplyScalar(t));
+
+        return {
+          state,
+          labelNext: $_('applets.testing.controls_stories.move_b_to'),
+          labelPrev: $_('applets.testing.controls_stories.move_b_from')
+        };
+      },
+      duration: 300,
+      timeSteps: 20
+    }
+  ];
+
+  const perStepTimingSlideShowControl = Controls.addSlideShow(
+    { aOpacity: 1, bPosition: new Vector2(2, 1) },
+    perStepTimingSteps
+  );
 
   const dropdownVals = [
     'applets.testing.controls_stories.vector_left',
@@ -139,7 +175,10 @@ const multiControls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, 'A x'
   </div>
 </Story>
 
-<!-- 
+<!--
+Toggle labels are rendered as-is, with no trailing ":" appended (unlike a Slider label, which gets one unless it
+already ends in "=").
+
 ```typescript
 const toggleControls = Controls.addToggle(true, 'A', PrimeColor.blue).addToggle(
     false,
@@ -189,6 +228,47 @@ const slideShowControl = Controls.addSlideShow(state, transitionSteps);
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={slideShowControl}>
       {@const state = slideShowControl[0]}
+      {#if state.aOpacity > 0.01}
+        <Vector2D
+          direction={new Vector2(-2, 1)}
+          length={3}
+          color={PrimeColor.raspberry + PrimeColor.opacity(state.aOpacity)}
+        />
+      {/if}
+      <Vector2D
+        direction={state.bPosition}
+        length={state.bPosition.length()}
+        color={PrimeColor.blue}
+      />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!--
+Each step can also be given its own `duration`/`timeSteps` (in place of a plain transition function),
+overriding the 750ms/20-step default used by `.next()`/`.prev()`:
+
+```typescript
+const perStepTimingSteps = [
+  {
+    transition: (t: number, state: S) => { ... },
+    duration: 2000,
+    timeSteps: 60
+  },
+  {
+    transition: (t: number, state: S) => { ... },
+    duration: 300,
+    timeSteps: 20
+  }
+];
+
+const slideShowControl = Controls.addSlideShow(state, perStepTimingSteps);
+```
+-->
+<Story name="Slide show with per-step timing">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={perStepTimingSlideShowControl}>
+      {@const state = perStepTimingSlideShowControl[0]}
       {#if state.aOpacity > 0.01}
         <Vector2D
           direction={new Vector2(-2, 1)}
@@ -275,7 +355,63 @@ const function: (x: number) => number = functionControl[0];
   </div>
 </Story>
 
-<!-- 
+<!--
+A slider label ending in "=" (or "=$}" for a LaTeX label) does not get an automatic trailing ":" appended, since
+the "=" already reads as a label terminator. Any other label still gets the ":" appended for you.
+
+```typescript
+const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, { label: 'x =' });
+```
+-->
+<Story name="Slider label ending with =">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D
+      controls={Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
+        label: 'x ='
+      })}
+    >
+      <Vector2D />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!--
+`onChange` fires on every slider drag/input, before `onRelease`/`onStopChanging`. Use it for live feedback while
+dragging (e.g. updating another value), and `onRelease` for the final settled value. Here, `onChange` updates a
+live-dragging label in real time, while `onRelease` only updates the "last released" label once dragging stops.
+
+```typescript
+let lastReleased = $state(1);
+const controls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
+  label: 'A',
+  onRelease: (v) => (lastReleased = v)
+});
+```
+-->
+<Story name="Slider with onChange">
+  {#snippet template()}
+    {@const onChangeControls = Controls.addSlider(1, 0.5, 10, 0.5, PrimeColor.blue, {
+      label: 'A',
+      valueFn: (v) => round(v, 1).toString(),
+      onChange: (v) => (onChangeState.dragging = v),
+      onRelease: (v) => (onChangeState.lastReleased = v)
+    })}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D controls={onChangeControls}>
+        <Latex2D
+          latex={`\\text{dragging: } ${round(onChangeState.dragging, 1)}`}
+          position={new Vector2(0, 1)}
+        />
+        <Latex2D
+          latex={`\\text{last released: } ${round(onChangeState.lastReleased, 1)}`}
+          position={new Vector2(0, -1)}
+        />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
+
+<!--
 Labels of the controls in some controls depend on whether you use LaTeX symbols in them ({, \). In some like Function or Matrix, it always parses the label as LaTeX.
 
 ```typescript

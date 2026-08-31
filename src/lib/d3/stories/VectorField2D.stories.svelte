@@ -102,3 +102,31 @@
   }}
   {template}
 />
+
+<!-- Vectors whose magnitude is ~0 (sqrt(x^2 + y^2) <= 1e-6) are not drawn at all - the saddle field
+crosses zero at the origin, so no arrow or dot appears there. -->
+<Story
+  name="Near-zero vectors are skipped"
+  args={{
+    f: saddle,
+    xRange: [-2, 2] as [number, number],
+    yRange: [-2, 2] as [number, number],
+    step: 1,
+    color: PrimeColor.darkGreen
+  }}
+  {template}
+/>
+
+<!-- When `xRange`/`yRange` are not given, they default to `[-GRID_SIZE_2D / scaleX, GRID_SIZE_2D / scaleX]`
+(and the `yRange` equivalent for `scaleY`), reading the `scale2D` context set by Canvas2D's `scaleX`/`scaleY` props.
+So the field automatically covers the same visible area regardless of the canvas scale, without needing
+an explicit `xRange`/`yRange`. -->
+<Story name="Default range follows canvas scale">
+  {#snippet template(_args)}
+    <div class="h-[300px] overflow-hidden rounded-lg">
+      <Canvas2D scaleX={2} scaleY={2}>
+        <VectorField2D f={rotation} step={1} color={PrimeColor.blue} />
+      </Canvas2D>
+    </div>
+  {/snippet}
+</Story>
