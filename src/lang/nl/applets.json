@@ -181,7 +181,8 @@
       "central_limit_theorem": {
         "title": "Centrale limietstelling",
         "sum": "Som",
-        "average": "Gemiddelde"
+        "average": "Gemiddelde",
+        "drawSamples": "Trek %N monsters"
       }
     }
   },
