@@ -13,7 +13,7 @@
   import { DiagonalMatrix } from '$lib/controls/DiagonalMatrix.svelte';
 
   const controls = Controls.add(
-    new DiagonalMatrix(new Matrix2(1, 2, 2, -2), 'T', PrimeColor.raspberry)
+    new DiagonalMatrix(new Matrix2(1, 2, 2, -2), '\\textit{T}', PrimeColor.raspberry)
   );
 
   let direction_e1 = new Vector2(1, 0);
@@ -32,18 +32,48 @@
     );
   });
 
-  let transformed_e1 = $derived(direction_e1.clone().applyMatrix3(t));
-  let transformed_e2 = $derived(direction_e2.clone().applyMatrix3(t));
+  // svelte-ignore state_referenced_locally
+  let transformed_e1_fixed = direction_e1.clone().applyMatrix3(t);
+  // svelte-ignore state_referenced_locally
+  let transformed_e2_fixed = direction_e2.clone().applyMatrix3(t);
 
-  let direction_q1 = new Vector2(2 / Math.sqrt(5), 1 / Math.sqrt(5));
-  let direction_q2 = new Vector2(-1 / Math.sqrt(5), 2 / Math.sqrt(5));
+  const eigen = $derived.by(() => {
+    const a = controls[0].tl;
+    const b = controls[0].tr;
+    const d = controls[0].br;
+
+    const trace = a + d;
+    const diff = a - d;
+    const disc = Math.sqrt((diff / 2) ** 2 + b * b);
+
+    const lambda1 = trace / 2 + disc;
+
+    function eigenvectorFor(lambda: number): Vector2 {
+      const v1 = new Vector2(b, lambda - a);
+      const v2 = new Vector2(lambda - d, b);
+      const chosen = v1.length() > v2.length() ? v1 : v2;
+
+      if (chosen.length() < 1e-8) return new Vector2(1, 0);
+
+      return chosen.normalize();
+    }
+
+    const q1 = eigenvectorFor(lambda1);
+
+    const q2 = new Vector2(-q1.y, q1.x);
+
+    return { q1, q2 };
+  });
+
+  let direction_q1 = $derived(eigen.q1);
+  let direction_q2 = $derived(eigen.q2);
 
   let transformed_q1 = $derived(direction_q1.clone().applyMatrix3(t));
   let transformed_q2 = $derived(direction_q2.clone().applyMatrix3(t));
 
   const zeroFuncE = (x: number, y: number) => {
-    const a = transformed_e1;
-    const b = transformed_e2;
+    const a = transformed_e1_fixed;
+    const b = transformed_e2_fixed;
     const det = a.x * b.y - a.y * b.x;
     if (Math.abs(det) < 1e-8) {
       return 1;
@@ -81,8 +111,16 @@
   <Vector2D direction={direction_e1} length={direction_e1.length()} color={PrimeColor.cyan} />
   <Vector2D direction={direction_e2} length={direction_e2.length()} color={PrimeColor.cyan} />
 
-  <Vector2D direction={transformed_e1} length={transformed_e1.length()} color={PrimeColor.red} />
-  <Vector2D direction={transformed_e2} length={transformed_e2.length()} color={PrimeColor.red} />
+  <Vector2D
+    direction={transformed_e1_fixed}
+    length={transformed_e1_fixed.length()}
+    color={PrimeColor.red}
+  />
+  <Vector2D
+    direction={transformed_e2_fixed}
+    length={transformed_e2_fixed.length()}
+    color={PrimeColor.red}
+  />
 
   <Latex2D
     latex={'\\text{e}_1'}
@@ -97,14 +135,14 @@
     color={PrimeColor.cyan}
   />
   <Latex2D
-    latex={'\\text{T}(\\text{e}_1)'}
-    position={transformed_e1}
-    offset={new Vector2(-1.2, 0)}
+    latex={'\\textit{T}(\\text{e}_1)'}
+    position={transformed_e1_fixed}
+    offset={new Vector2(0.1, 0.6)}
     color={PrimeColor.red}
   />
   <Latex2D
-    latex={'\\text{T}(\\text{e}_2)'}
-    position={transformed_e2}
+    latex={'\\textit{T}(\\text{e}_2)'}
+    position={transformed_e2_fixed}
     offset={new Vector2(0.15, 0)}
     color={PrimeColor.red}
   />
@@ -146,13 +184,13 @@
       color={PrimeColor.cyan}
     />
     <Latex2D
-      latex={'\\text{T}(\\text{q}_1)'}
+      latex={'\\textit{T}(\\text{q}_1)'}
       position={transformed_q1}
       offset={new Vector2(0.15, 0.15)}
       color={PrimeColor.red}
     />
     <Latex2D
-      latex={'\\text{T}(\\text{q}_2)'}
+      latex={'\\textit{T}(\\text{q}_2)'}
       position={transformed_q2}
       offset={new Vector2(0.15, 0)}
       color={PrimeColor.red}
