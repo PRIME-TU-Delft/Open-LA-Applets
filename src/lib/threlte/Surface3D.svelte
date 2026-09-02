@@ -23,7 +23,9 @@
 
   import { BufferAttribute, BufferGeometry, DoubleSide } from 'three';
 
-  import Delaunator from 'delaunator';
+  import cdt2d from 'cdt2d';
+
+  type Point = [number, number];
 
   let {
     func,
@@ -93,6 +95,34 @@
     return total / polygon.length;
   }
 
+  function encroaches(p: Vector2, a: Vector2, b: Vector2): boolean {
+    const mx = (a.x + b.x) / 2;
+    const my = (a.y + b.y) / 2;
+
+    const radius2 = ((a.x - b.x) ** 2 + (a.y - b.y) ** 2) / 4;
+
+    const dist2 = (p.x - mx) ** 2 + (p.y - my) ** 2;
+
+    return dist2 < radius2;
+  }
+
+  type Edge = [number, number];
+
+  function findEncroachedEdge(points: Vector2[], edges: Edge[], candidate: Vector2): boolean {
+    for (const edge of edges) {
+      const [i1, i2] = edge;
+
+      const p1 = points[i1];
+      const p2 = points[i2];
+
+      if (encroaches(candidate, p1, p2)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   const geometry = $derived.by(() => {
     if (polygon.length === 0) {
       // no polygon, so assume rectangular based on (default) xRange and yRange
@@ -127,6 +157,11 @@
 
     points.push(...subdivideBoundary(polygon, resolution));
 
+    const edges: Edge[] = [];
+    for (let iter = 0; iter < points.length; iter++) {
+      edges.push([iter, (iter + 1) % points.length]);
+    }
+
     // --------------------------------------------------
     // Hexagonal interior sampling
     // --------------------------------------------------
@@ -147,7 +182,10 @@
         const p = new Vector2(x, y);
 
         if (pointInPolygon(p, polygon)) {
-          points.push(p);
+          const nearEdge = findEncroachedEdge(points, edges, p);
+          if (!nearEdge) {
+            points.push(p);
+          }
         }
       }
     }
@@ -156,11 +194,15 @@
     // Delaunay triangulation
     // --------------------------------------------------
 
-    const delaunay = Delaunator.from(
-      points,
-      (p: Vector2) => p.x,
-      (p: Vector2) => p.y
-    );
+    // make the points "flat"
+    const flatPoints: Point[] = [];
+    for (const p of points) {
+      flatPoints.push([p.x, p.y]);
+    }
+
+    const triangles = cdt2d(flatPoints, edges, { exterior: false });
+
+    console.log('Constrained number of triangles', triangles.length);
 
     const vertices: number[] = [];
 
@@ -170,22 +212,8 @@
 
     const indices: number[] = [];
 
-    const tris = delaunay.triangles;
-
-    for (let i = 0; i < tris.length; i += 3) {
-      const ia = tris[i];
-      const ib = tris[i + 1];
-      const ic = tris[i + 2];
-
-      const a = points[ia];
-      const b = points[ib];
-      const c = points[ic];
-
-      const centroid = triangleCentroid(a, b, c);
-
-      if (pointInPolygon(centroid, polygon)) {
-        indices.push(ia, ib, ic);
-      }
+    for (const t of triangles) {
+      indices.push(t[0], t[1], t[2]);
     }
 
     const geom = new BufferGeometry();
@@ -201,19 +229,13 @@
 </script>
 
 {#if surface}
-  <T.Mesh {geometry} rotation={[-Math.PI / 2, 0, 0]}>
+  <T.Mesh {geometry} rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}>
     <T.MeshBasicMaterial {color} transparent={opacity < 1} {opacity} side={DoubleSide} />
   </T.Mesh>
 {/if}
 
 {#if wireframe}
-  <T.Mesh {geometry} rotation={[-Math.PI / 2, 0, 0]}>
-    <T.MeshBasicMaterial
-      color={wireColor}
-      // transparent={opacity < 1}
-      // {opacity}
-      side={DoubleSide}
-      {wireframe}
-    />
+  <T.Mesh {geometry} rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}>
+    <T.MeshBasicMaterial color={wireColor} {wireframe} />
   </T.Mesh>
 {/if}
