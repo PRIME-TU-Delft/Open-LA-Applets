@@ -20,14 +20,8 @@
 </script>
 
 <script lang="ts">
-  import { T } from '@threlte/core';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
-  import { BufferAttribute, BufferGeometry, DoubleSide } from 'three';
-
-  import cdt2d from 'cdt2d';
-
-  type Point = [number, number];
 
   let {
     func,
