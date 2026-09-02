@@ -32,10 +32,8 @@
     );
   });
 
-  // svelte-ignore state_referenced_locally
-  let transformed_e1_fixed = direction_e1.clone().applyMatrix3(t);
-  // svelte-ignore state_referenced_locally
-  let transformed_e2_fixed = direction_e2.clone().applyMatrix3(t);
+  let transformed_e1_fixed = $derived(direction_e1.clone().applyMatrix3(t));
+  let transformed_e2_fixed = $derived(direction_e2.clone().applyMatrix3(t));
 
   const eigen = $derived.by(() => {
     const a = controls[0].tl;
