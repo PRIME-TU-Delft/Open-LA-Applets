@@ -1,6 +1,12 @@
 import { FillType, LegendItem } from '$lib/utils/Legend';
 import { AbstractFunctionFragment, AppletObject, Point, Polygon } from './TemplateAppletObjects';
-import { AbstractFunctionFragment3, AppletObject3D, Point3 } from './TemplateAppletObjects3D';
+import {
+  AbstractFunctionFragment3D,
+  AppletObject3D,
+  LineSegmentObject3D,
+  PointObject3D,
+  PolygonObject3D
+} from './TemplateAppletObjects3D';
 
 export function getLegend(objects: AppletObject[]): LegendItem[] {
   const legendItems: LegendItem[] = [];
@@ -65,7 +71,7 @@ export function getLegend3D(objects: AppletObject3D[]): LegendItem[] {
   const legendItems: LegendItem[] = [];
 
   for (const obj of objects) {
-    if (obj instanceof AbstractFunctionFragment3) {
+    if (obj instanceof AbstractFunctionFragment3D) {
       if (obj.legendText) {
         legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
       }
@@ -74,18 +80,22 @@ export function getLegend3D(objects: AppletObject3D[]): LegendItem[] {
           new LegendItem(obj.pointsLegendText.included, obj.color, obj.shape, FillType.Full)
         );
       }
-    } else if (obj instanceof Point3) {
+    } else if (obj instanceof PointObject3D) {
       if (obj.legendText) {
         legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
       }
-    } else if (obj instanceof Polygon) {
+    } else if (obj instanceof PolygonObject3D) {
+      if (obj.legendText) {
+        legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
+      }
+    } else if (obj instanceof LineSegmentObject3D) {
       if (obj.legendText) {
         legendItems.push(
           new LegendItem(
             obj.legendText,
             obj.color,
-            obj.legendShape,
-            obj.fillStyle === 'dashed' ? FillType.Dashed : FillType.Full
+            obj.shape,
+            obj.isDashed == true ? FillType.Dashed : FillType.Full
           )
         );
       }

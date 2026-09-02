@@ -17,7 +17,7 @@ export abstract class AppletObject3D {
   }
 }
 
-export abstract class AbstractFunctionFragment3 extends AppletObject3D {
+export abstract class AbstractFunctionFragment3D extends AppletObject3D {
   domain: Domain | undefined;
   width?: number;
   legendText: string | undefined;
@@ -57,7 +57,7 @@ export abstract class AbstractFunctionFragment3 extends AppletObject3D {
   }
 }
 
-export class Surface3 extends AbstractFunctionFragment3 {
+export class SurfaceFunction3D extends AbstractFunctionFragment3D {
   func: (x: number, y: number) => number;
 
   /**
@@ -99,7 +99,7 @@ export class Surface3 extends AbstractFunctionFragment3 {
   }
 }
 
-export class Text3 extends AppletObject3D {
+export class TextObject3D extends AppletObject3D {
   latex: string;
   position: Vector3;
   size?: number;
@@ -119,7 +119,7 @@ export class Text3 extends AppletObject3D {
   }
 }
 
-export class Angle3 extends AppletObject3D {
+export class AngleObject3D extends AppletObject3D {
   position: Vector3;
   startVector: Vector3;
   endVector: Vector3;
@@ -168,7 +168,7 @@ export class Angle3 extends AppletObject3D {
   }
 }
 
-export class Point3 extends AppletObject3D {
+export class PointObject3D extends AppletObject3D {
   position: Vector3;
   shape?: Shape;
   latex?: string;
@@ -204,9 +204,8 @@ export class Point3 extends AppletObject3D {
   }
 }
 
-export class VectorField3 extends AppletObject3D {
+export class VectorFieldObject3D extends AppletObject3D {
   func: (x: number, y: number, z: number) => Vector3;
-  color: PrimeColor;
   xRange?: [number, number];
   yRange?: [number, number];
   zRange?: [number, number];
@@ -234,7 +233,6 @@ export class VectorField3 extends AppletObject3D {
   ) {
     super(color);
     this.func = func;
-    this.color = color;
     this.xRange = options?.xRange;
     this.yRange = options?.yRange;
     this.zRange = options?.zRange;
@@ -246,12 +244,14 @@ export class VectorField3 extends AppletObject3D {
   }
 }
 
-export class LineSegment3 extends AppletObject3D {
+export class LineSegmentObject3D extends AppletObject3D {
   startPoint: Vector3;
   endPoint: Vector3;
   radius?: number;
   latex?: string;
   isDashed?: boolean;
+  shape?: Shape;
+  legendText?: string;
 
   /**
    * Line fragment template object
@@ -275,6 +275,8 @@ export class LineSegment3 extends AppletObject3D {
         alignX?: 'left' | 'right' | 'center' | null;
         alignY?: 'top' | 'bottom' | 'center' | null;
       };
+      shape?: Shape;
+      legendText?: string;
     }
   ) {
     super(color);
@@ -284,6 +286,8 @@ export class LineSegment3 extends AppletObject3D {
     this.radius = options?.radius;
     this.latex = options?.latex;
     this.isDashed = options?.isDashed;
+    this.shape = options?.shape;
+    this.legendText = options?.legendText;
   }
 
   // public midpoint() {
@@ -294,7 +298,7 @@ export class LineSegment3 extends AppletObject3D {
   // }
 }
 
-export class InfiniteLine3 extends LineSegment3 {
+export class InfiniteLineObject3D extends LineSegmentObject3D {
   /**
    * Line fragment template object
    * @param start Start point of the line
@@ -323,13 +327,32 @@ export class InfiniteLine3 extends LineSegment3 {
   }
 }
 
-export class Polygon3 extends AppletObject3D {
+export class PolygonObject3D extends AppletObject3D {
   points: Vector3[];
   offset?: Vector3;
+  shape?: Shape;
+  legendText?: string;
 
-  constructor(points: Vector3[], color: PrimeColor, offset?: Vector3) {
+  constructor(
+    points: Vector3[],
+    color: PrimeColor,
+    options?: { offset?: Vector3; shape?: Shape; legendText?: string }
+  ) {
     super(color);
     this.points = points;
-    this.offset = offset;
+    this.offset = options?.offset;
+    this.shape = options?.shape;
+    this.legendText = options?.legendText;
+  }
+}
+
+export class CuboidObject3D extends AppletObject3D {
+  corners: [Vector3, Vector3];
+  toggleEdges?: boolean;
+
+  constructor(color: PrimeColor, corners: [Vector3, Vector3], toggleEdges?: boolean) {
+    super(color);
+    this.corners = corners;
+    this.toggleEdges = toggleEdges;
   }
 }
