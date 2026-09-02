@@ -186,15 +186,28 @@
 
       for (let x = minX + offset; x <= maxX; x += dx) {
         const p = new Vector2(x, y);
-
-        if (pointInPolygon(p, polygon)) {
-          const nearEdge = findEncroachedEdge(points, edges, p);
-          if (!nearEdge) {
-            points.push(p);
+        let InPoints = false;
+        for (const q of points) {
+          const dist = p.clone().sub(q).length();
+          if (dist < 0.01 * avgEdge) {
+            InPoints = true;
+          }
+          if (InPoints) {
+            break;
+          }
+        }
+        if (!InPoints) {
+          if (pointInPolygon(p, polygon)) {
+            const nearEdge = findEncroachedEdge(points, edges, p);
+            if (!nearEdge) {
+              points.push(p);
+            }
           }
         }
       }
     }
+
+    const AfterRefinement = [...points];
 
     // --------------------------------------------------
     // Delaunay triangulation
