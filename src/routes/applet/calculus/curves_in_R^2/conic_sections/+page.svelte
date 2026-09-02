@@ -1,16 +1,12 @@
 <script lang="ts">
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
-  import Latex3D from '$lib/threlte/Latex3D.svelte';
-  import Vector3D from '$lib/threlte/Vector3D.svelte';
-  import Polygon3D from '$lib/threlte/Polygon3D.svelte';
-  import Line3D from '$lib/threlte/Line3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { MathVector3 } from '$lib/utils/MathVector';
-  import { Controls } from '$lib/controls/Controls';
-  import { toLatexText } from '$lib/utils/FormatString';
+  // import { Controls } from '$lib/controls/Controls';
+  // import { toLatexText } from '$lib/utils/FormatString';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
   import Surface3DParametricDomain from '$lib/threlte/Surface3DParametricDomain.svelte';
-  import Axis3D from '$lib/threlte/Axis3D.svelte';
+  // import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector2 } from 'three';
   import Curve3D from '$lib/threlte/Curve3D.svelte';
   import Point3D from '$lib/threlte/Point3D.svelte';
@@ -168,7 +164,6 @@
       tRange={[MaxZ / 2 / PlaneB, -MaxZ / 2 / PlaneB]}
       color={PrimeColor.red}
       radius={3}
-      isDashed
     />
   {/if}
   {#if Type === 'Line'}
