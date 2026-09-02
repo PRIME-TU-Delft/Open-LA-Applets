@@ -80,7 +80,7 @@
       new MathVector3(1, 0, 0),
       new MathVector3(0, 0, 1),
       PrimeColor.blue,
-      { latex: '\\theta', size: 5 }
+      { latex: '\\theta', size: 9 }
     ),
     new TextObject3D('\\pi', new MathVector3(0, 6, 8), PrimeColor.darkGreen),
     new VectorFieldObject3D(

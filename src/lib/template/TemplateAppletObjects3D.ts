@@ -23,10 +23,6 @@ export abstract class AbstractFunctionFragment3D extends AppletObject3D {
   legendText: string | undefined;
   wireframe: boolean = false;
   shape: Shape = 'circle';
-  pointsLegendText: { included: string | undefined; gaps: string | undefined } = {
-    included: undefined,
-    gaps: undefined
-  };
 
   /**
    * Function fragment template object
@@ -61,7 +57,7 @@ export class SurfaceFunction3D extends AbstractFunctionFragment3D {
   func: (x: number, y: number) => number;
 
   /**
-   * Function fragment template object
+   * Surface3D template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
@@ -105,10 +101,11 @@ export class TextObject3D extends AppletObject3D {
   size?: number;
 
   /**
-   * Text template object
+   * Text3D template object
    * @param latex Latex string to display
    * @param position Position of the text in the scene
    * @param color Color of the text
+   * @param size Font size of the text
    */
   constructor(latex: string, position: Vector3, color: PrimeColor, size?: number) {
     super(color);
@@ -127,12 +124,13 @@ export class AngleObject3D extends AppletObject3D {
   size?: number;
 
   /**
-   * Angle template object
+   * Angle3D template object
    * @param position Origin position of the angle
    * @param startVector Start vector of the angle
    * @param endVector End vector of the angle
    * @param color Color of the angle
    * @param options.latex Latex shown next to the angle
+   * @param options.size Size of drawn angle
    */
   constructor(
     position: Vector3,
@@ -176,7 +174,7 @@ export class PointObject3D extends AppletObject3D {
   size?: number;
 
   /**
-   * Point template object
+   * Point3D template object
    * @param position Position of the points
    * @param color Color of the points
    * @param options.shape Shape of the point
@@ -216,6 +214,20 @@ export class VectorFieldObject3D extends AppletObject3D {
   anchor?: 'middle' | 'start' | 'end';
   colorFn?: (x: number, y: number) => PrimeColor | string;
 
+  /**
+   * VectorField3D template object
+   * @param func Function of vector field
+   * @param color Color of the points
+   * @param options.xRange Range of x values for vector field
+   * @param options.yRange Range of y values for vector field
+   * @param options.zRange Range of z values for vector field
+   * @param options.step Size of arrow step
+   * @param options.normalize Boolean whether to normalize vectors
+   * @param options.normalizedLength Length to normalize vectors
+   * @param options.hideHead Boolean whether pointed head of arrows hidden
+   * @param options.anchor Location of arrow anchor
+   * @param options.colorFun Custom function to define arrow color
+   */
   constructor(
     func: (x: number, y: number, z: number) => Vector3,
     color: PrimeColor,
@@ -254,14 +266,15 @@ export class LineSegmentObject3D extends AppletObject3D {
   legendText?: string;
 
   /**
-   * Line fragment template object
+   * Line fragment 3D template object
    * @param startPoint Start point of the line
    * @param endPoint End point of the line
    * @param color Color of the line
    * @param options.radius Width of the line
    * @param options.latex Text shown next to the line
-   * @param options.latexAlign How the text next to the line shuold be aligned, can overwrite auto-alignment
    * @param options.isDashed Whether the line should be dashed
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
    */
   constructor(
     startPoint: Vector3,
@@ -300,14 +313,15 @@ export class LineSegmentObject3D extends AppletObject3D {
 
 export class InfiniteLineObject3D extends LineSegmentObject3D {
   /**
-   * Line fragment template object
+   * Infinite line 3D template object
    * @param start Start point of the line
    * @param end End point of the line
    * @param color Color of the line
    * @param options.radius Width of the line
    * @param options.latex Text shown next to the line
-   * @param options.latexAlign How the text next to the line shuold be aligned, can overwrite auto-alignment
    * @param options.isDashed Whether the line should be dashed
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
    */
   constructor(
     start: Vector3,
@@ -333,6 +347,14 @@ export class PolygonObject3D extends AppletObject3D {
   shape?: Shape;
   legendText?: string;
 
+  /**
+   * Polygon3D template object
+   * @param points Points to include in polygon
+   * @param color Color of the polygon
+   * @param options.offset Offset to add to defined polygon points
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
+   */
   constructor(
     points: Vector3[],
     color: PrimeColor,
@@ -350,6 +372,12 @@ export class CuboidObject3D extends AppletObject3D {
   corners: [Vector3, Vector3];
   toggleEdges?: boolean;
 
+  /**
+   * Cuboid3D template object
+   * @param corners Two corners of the 3D cuboid
+   * @param color Color of the cuboid
+   * @param options.toggleEdges Boolean whether to show cuboid edges
+   */
   constructor(color: PrimeColor, corners: [Vector3, Vector3], toggleEdges?: boolean) {
     super(color);
     this.corners = corners;

@@ -75,11 +75,6 @@ export function getLegend3D(objects: AppletObject3D[]): LegendItem[] {
       if (obj.legendText) {
         legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
       }
-      if (obj.pointsLegendText.included) {
-        legendItems.push(
-          new LegendItem(obj.pointsLegendText.included, obj.color, obj.shape, FillType.Full)
-        );
-      }
     } else if (obj instanceof PointObject3D) {
       if (obj.legendText) {
         legendItems.push(new LegendItem(obj.legendText, obj.color, obj.shape));
