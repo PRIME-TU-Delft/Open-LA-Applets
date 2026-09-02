@@ -33,7 +33,7 @@ export abstract class AbstractFunctionFragment3 extends AppletObject3D {
    * @param color Color of the function graph
    * @param options.domain Domain on which the function should be drawn
    * @param options.width Width of the function line
-   * @param options.isDashed Whether the function line should be dashed
+   * @param options.wireframe Whether the function should be a wireframe
    * @param options.shape Shape to use for legend and points
    * @param options.legendText Text to be shown in the legend item
    */
@@ -69,6 +69,7 @@ export class Surface3 extends AbstractFunctionFragment3 {
    * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
    * @param options.legendText Text to be shown in the legend item
+   * @param options.wireframe Whether the function should be a wireframe
    */
   constructor(
     func: ((x: number, y: number) => number) | string,

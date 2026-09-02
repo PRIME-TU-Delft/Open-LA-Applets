@@ -70,7 +70,9 @@
       legendText: '\\sigma'
     }),
     new Surface3((x, y) => -Math.sqrt(x * x + y * y) + 5, PrimeColor.raspberry, {
-      wireframe: true
+      wireframe: true,
+      shape: 'square',
+      legendText: 'Surface'
     }),
     new Angle3(
       new MathVector3(0, 0, 0),

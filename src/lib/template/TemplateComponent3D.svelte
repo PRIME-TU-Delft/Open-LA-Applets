@@ -15,7 +15,7 @@
   import Surface3D from '$lib/threlte/Surface3D.svelte';
   import Angle3D from '$lib/threlte/Angle3D.svelte';
   import Latex3D from '$lib/threlte/Latex3D.svelte';
-  import VectorField3D from '$lib/d3/VectorField3D.svelte';
+  import VectorField3D from '$lib/threlte/VectorField3D.svelte';
   import InfiniteLine3D from '$lib/threlte/InfiniteLine3D.svelte';
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Polygon3D from '$lib/threlte/Polygon3D.svelte';
