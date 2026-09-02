@@ -7,10 +7,10 @@
     zFunc: (t: number) => number;
 
     tRange?: [number, number];
+    zRange?: [number, number];
 
     resolution?: number;
     color?: string;
-    isDashed?: boolean;
     radius?: number;
     alwaysOnTop?: boolean;
   };
@@ -36,17 +36,16 @@
 <script lang="ts">
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { T } from '@threlte/core';
-  import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
-  import { Line, Mesh } from 'three';
+  import { DoubleSide } from 'three';
 
   let {
     xFunc,
     yFunc,
     zFunc,
     tRange = [0, 1],
+    zRange = [-10, 10],
     resolution = 500,
     color = PrimeColor.blue,
-    isDashed = false,
     radius = 1,
     alwaysOnTop = false
   }: Curve3DProps = $props();
@@ -54,45 +53,70 @@
   const curve = new ParametricCurve((t) => [xFunc(t), yFunc(t), zFunc(t)], tRange);
 
   const points = curve.getPoints(resolution);
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-  let line = $state<Line>();
-  let lineMesh = $state<Mesh>();
+  // break the sampled points into contiguous runs that lie inside zRange
+  function splitByZRange(pts: THREE.Vector3[], [zMin, zMax]: [number, number]): THREE.Vector3[][] {
+    const segments: THREE.Vector3[][] = [];
+    let current: THREE.Vector3[] = [];
 
-  $effect(() => {
-    if (line && isDashed) {
-      line.computeLineDistances();
+    for (const p of pts) {
+      if (p.z >= zMin && p.z <= zMax) {
+        current.push(p);
+      } else if (current.length > 1) {
+        segments.push(current);
+        current = [];
+      } else {
+        current = [];
+      }
     }
-  });
 
-  $effect(() => {
-    if (!lineMesh) return;
+    if (current.length > 1) segments.push(current);
 
-    if (alwaysOnTop) lineMesh.renderOrder = 300;
-  });
+    return segments;
+  }
+
+  const segments = $derived(splitByZRange(points, zRange));
+
+  // round, solid cross-section so the curve reads as a physical bar rather than a flat ribbon
+  const tubeGeometries = $derived(
+    segments.map(
+      (segment) =>
+        new THREE.TubeGeometry(
+          new THREE.CatmullRomCurve3(segment),
+          Math.max(segment.length - 1, 1),
+          Math.max(radius / 40, 0.0001),
+          12,
+          false
+        )
+    )
+  );
+
+  const lineGeometries = $derived(
+    segments.map((segment) => new THREE.BufferGeometry().setFromPoints(segment))
+  );
 </script>
 
 {#key alwaysOnTop}
   {#if radius > 0}
-    <T.Mesh bind:ref={lineMesh} rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}>
-      <MeshLineGeometry {points} />
-      <MeshLineMaterial
-        depthTest={!alwaysOnTop}
-        width={radius / 200}
-        {color}
-        dashOffset={0.1}
-        dashArray={0.02}
-        dashRatio={isDashed ? 0.2 : 0}
-        transparent={isDashed || alwaysOnTop}
-      />
-    </T.Mesh>
+    {#each tubeGeometries as tubeGeometry, i (i)}
+      <T.Mesh
+        geometry={tubeGeometry}
+        rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}
+        renderOrder={alwaysOnTop ? 300 : 0}
+      >
+        <T.MeshBasicMaterial
+          {color}
+          side={DoubleSide}
+          depthTest={!alwaysOnTop}
+          transparent={alwaysOnTop}
+        />
+      </T.Mesh>
+    {/each}
   {:else}
-    <T.Line bind:ref={line} {geometry} rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}>
-      {#if isDashed}
-        <T.LineDashedMaterial {color} dashSize={0.2} gapSize={0.1} />
-      {:else}
+    {#each lineGeometries as lineGeometry, i (i)}
+      <T.Line geometry={lineGeometry} rotation={[(Math.PI / 2) * -1, 0, (Math.PI / 2) * -1]}>
         <T.LineBasicMaterial {color} />
-      {/if}
-    </T.Line>
+      </T.Line>
+    {/each}
   {/if}
 {/key}
