@@ -6,7 +6,7 @@
     yFunc: (t: number) => number;
     zFunc: (t: number) => number;
 
-    tRange?: number[];
+    tRange?: [number, number];
 
     resolution?: number;
     color?: string;
