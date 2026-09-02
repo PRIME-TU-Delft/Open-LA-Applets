@@ -83,8 +83,8 @@
     surface: true,
     resolution: 100,
     wireColor: PrimeColor.black,
-    xRange: [0,3],
-    yRange: [-2,3]
+    xRange: [0, 3],
+    yRange: [-2, 3]
   }}
   {template}
 />
@@ -93,7 +93,7 @@
 
 If `polygon` is provided, any values in `xRange` and `yRange` will be ignored.
 
-The `polygon` must be a list of Vector2 elements, in counter-clockwise order.
+The `polygon` must be a list of Vector2 elements, in (counter-)clockwise order.
 -->
 <Story
   name="Polygonal domain"
@@ -104,7 +104,7 @@ The `polygon` must be a list of Vector2 elements, in counter-clockwise order.
     surface: true,
     resolution: 10,
     wireColor: PrimeColor.black,
-    polygon: [new Vector2(0,0), new Vector2(0,5),new Vector2(2,6),new Vector2(5,3)]
+    polygon: [new Vector2(0, 0), new Vector2(0, 5), new Vector2(2, 6), new Vector2(5, 3)]
   }}
   {template}
 />

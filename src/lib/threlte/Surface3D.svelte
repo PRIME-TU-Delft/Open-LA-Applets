@@ -61,10 +61,6 @@
     return inside;
   }
 
-  function triangleCentroid(a: Vector2, b: Vector2, c: Vector2): Vector2 {
-    return new Vector2((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3);
-  }
-
   function subdivideBoundary(polygon: Vector2[], resolution: number): Vector2[] {
     const result: Vector2[] = [];
 
@@ -201,8 +197,6 @@
     }
 
     const triangles = cdt2d(flatPoints, edges, { exterior: false });
-
-    console.log('Constrained number of triangles', triangles.length);
 
     const vertices: number[] = [];
 
