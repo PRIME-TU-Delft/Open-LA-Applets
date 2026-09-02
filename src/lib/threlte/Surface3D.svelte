@@ -6,6 +6,7 @@
     xRange?: [number, number];
     yRange?: [number, number];
     polygon?: Vector2[];
+    internalPoints?: Vector2[];
 
     resolution?: number;
 
@@ -32,6 +33,7 @@
     xRange = [-5, 5],
     yRange = [-5, 5],
     polygon = [],
+    internalPoints = [],
     resolution = 40,
     color = PrimeColor.blue,
     opacity = 0.7,
@@ -156,6 +158,14 @@
     const edges: Edge[] = [];
     for (let iter = 0; iter < points.length; iter++) {
       edges.push([iter, (iter + 1) % points.length]);
+    }
+
+    // --------------------------------------------------
+    // Add required internal points
+    // --------------------------------------------------
+
+    for (const p of internalPoints) {
+      points.push(p);
     }
 
     // --------------------------------------------------
