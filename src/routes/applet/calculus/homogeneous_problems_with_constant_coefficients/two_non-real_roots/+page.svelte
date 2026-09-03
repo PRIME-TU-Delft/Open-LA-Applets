@@ -12,11 +12,10 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraPosition2: Vector2 | undefined;
-  let cameraZoom: number | undefined;
-  let cameraZoom2: number | undefined;
+  let initialViewBox: ViewBox | undefined;
+  let initialViewBox2: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -34,10 +33,16 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 0);
-  cameraZoom = 1.5;
-  cameraPosition2 = new Vector2(0, 0);
-  cameraZoom2 = 1.5;
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -7), // bottom-left
+    new Vector2(5, 7), // top-right
+    0 // margin
+  );
+  initialViewBox2 = new ViewBox(
+    new Vector2(-1, -1), // bottom-left
+    new Vector2(1, 1), // top-right
+    0 // margin
+  );
 
   // ####
   // AXIS
@@ -60,7 +65,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0,
     colorX: PrimeColor.raspberry,
     colorY: PrimeColor.yellow
@@ -125,8 +130,7 @@
 
 <CanvasGrid rows={3} columns={2} legendItems={[...getLegend(appletObjects), legendSum]}>
   <GridCanvas2D
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -145,8 +149,7 @@
   </GridCanvas2D>
   <GridCanvas2D
     {draggables}
-    cameraPosition={cameraPosition2}
-    cameraZoom={cameraZoom2}
+    initialViewBox={initialViewBox2}
     labels={{ xLabel: 'c_1', yLabel: 'c_2' }}
     axis={axis2}
     scaleX={5}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unused-vars */ // For ease of creating the template applets
+  // For ease of creating the template applets
   import { AppletObject, FunctionFragment, Point } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
@@ -11,8 +11,6 @@
   import Latex2D from '$lib/d3/Latex2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
 
@@ -26,10 +24,6 @@
   // CAMERA SETTINGS
   // ###############
   // choose one or none of the options below - if both are specified, view box will be used
-
-  // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -89,8 +83,6 @@
 
 <Canvas2D
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   axis={null}

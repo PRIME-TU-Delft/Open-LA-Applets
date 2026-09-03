@@ -9,12 +9,12 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
   import { LegendItem } from '$lib/utils/Legend';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let initialViewBox: ViewBox | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -28,9 +28,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2, 1);
-  cameraZoom = 1.0;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -4), // bottom-left
+    new Vector2(9, 6), // top-right
+    0.5 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -100,8 +102,7 @@
 
 <Canvas2D
   {controls}
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   {legendItems}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}

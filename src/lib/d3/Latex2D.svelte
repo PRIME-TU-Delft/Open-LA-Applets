@@ -74,11 +74,14 @@
   });
 
   const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+  const REFERENCE_WIDTH = 500; // baseline canvas width text sizing is calibrated against
+
+  const defWidth = (getContext('default-width') as number | undefined) ?? REFERENCE_WIDTH; // baseline canvas width text sizing is calibrated against
 
   const scale = $derived.by(() => {
-    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+    if (dontScaleWithDefaultZoom) return 0.03 * fontSize;
 
-    return (0.02 * fontSize) / defZoom;
+    return ((0.03 * fontSize) / defZoom) * (REFERENCE_WIDTH / defWidth);
   });
 </script>
 

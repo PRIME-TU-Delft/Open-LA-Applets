@@ -77,6 +77,8 @@
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
+  setContext('default-width', width);
+  // svelte-ignore state_referenced_locally
   setContext('scale2D', { x: scaleX, y: scaleY });
 
   function update2DCamera(transform2d: Transform2D) {

@@ -1,37 +1,19 @@
 <script lang="ts">
   // For ease of creating the template applets
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  import {
-    Angle,
-    AppletObject,
-    AsymptoteFragment,
-    Circle,
-    FunctionFragment,
-    ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
-    Point,
-    Polygon,
-    Text
-  } from '$lib/template/TemplateAppletObjects';
+
+  import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
-  import { number } from 'svelte-i18n';
-  import type { float } from 'three/tsl';
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let initialViewBox: ViewBox | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -45,8 +27,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(12, 8);
-  cameraZoom = 0.85;
+  initialViewBox = new ViewBox(
+    new Vector2(-2, -4), // bottom-left
+    new Vector2(22, 20), // top-right
+    0.5 // margin
+  );
 
   // ####
   // AXIS
@@ -130,8 +115,7 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   scaleX={sX}

@@ -21,8 +21,9 @@
     ...canvasProps
   }: GridCanvas2DProps = $props();
 
-  let containerWidth = $state(500);
-  let containerHeight = $state(300);
+  // Start at 0 so the gate below waits for the real measured size before mounting CanvasD3
+  let containerWidth = $state(0);
+  let containerHeight = $state(0);
 
   const gridContext = getContext<CanvasGridContext>(CANVAS_GRID_KEY);
   // svelte-ignore state_referenced_locally
@@ -47,9 +48,11 @@
   bind:clientWidth={containerWidth}
   bind:clientHeight={containerHeight}
 >
-  <CanvasD3 width={containerWidth} height={containerHeight} {...canvasProps}>
-    {#if children}
-      {@render children()}
-    {/if}
-  </CanvasD3>
+  {#if containerWidth > 0 && containerHeight > 0}
+    <CanvasD3 width={containerWidth} height={containerHeight} {...canvasProps}>
+      {#if children}
+        {@render children()}
+      {/if}
+    </CanvasD3>
+  {/if}
 </div>

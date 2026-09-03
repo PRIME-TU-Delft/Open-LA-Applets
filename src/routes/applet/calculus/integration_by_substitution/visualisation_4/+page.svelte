@@ -10,11 +10,9 @@
   import { LegendItem } from '$lib/utils/Legend';
   import Point2D from '$lib/d3/Point2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraPosition2: Vector2 | undefined;
-  let cameraPosition3: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -31,10 +29,12 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(0, 0);
-  cameraZoom = 0.75;
-  cameraPosition2 = new Vector2(0, 0);
-  cameraPosition3 = new Vector2(0, 0);
+  initialViewBox = new ViewBox(
+    new Vector2(-2.5, -1.75), // bottom-left
+    new Vector2(2.5, 1.75), // top-right
+    0 // margin
+  );
+
   // ####
   // AXIS
   // ####
@@ -42,13 +42,13 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: true,
+    showOrigin: false,
     showAxisNumbersX: true,
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
@@ -144,8 +144,7 @@
 <CanvasGrid rows={2} columns={4} {legendItems} legendFormulaPosition="top-left">
   <GridCanvas2D
     draggables={[draggablePoint[0], draggablePoint[1]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: 't' }}
     {axis}
     {scaleX}
@@ -235,8 +234,7 @@
     />
   </GridCanvas2D>
   <GridCanvas2D
-    cameraPosition={cameraPosition2}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -270,8 +268,7 @@
   </GridCanvas2D>
 
   <GridCanvas2D
-    cameraPosition={cameraPosition3}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: 't', yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}

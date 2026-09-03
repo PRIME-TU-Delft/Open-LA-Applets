@@ -1,0 +1,66 @@
+<script lang="ts" module>
+  import { Vector2 } from 'three';
+
+  export type Surface3DProps = {
+    func: (x: number, y: number) => number;
+    xFunc: (t: number) => number;
+    yFunc: (t: number) => number;
+
+    tRange?: number[];
+    internalPoints?: Vector2[];
+
+    resolution?: number;
+
+    color?: string;
+    opacity?: number;
+    wireframe?: boolean;
+    surface?: boolean;
+    wireColor?: string;
+  };
+</script>
+
+<script lang="ts">
+  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import Surface3D from '$lib/threlte/Surface3D.svelte';
+
+  let {
+    func,
+    xFunc,
+    yFunc,
+    tRange = [0, 1],
+    internalPoints = [],
+    resolution = 10,
+    color = PrimeColor.blue,
+    opacity = 0.7,
+    wireframe = false,
+    surface = wireframe ? false : true,
+    wireColor = color
+  }: Surface3DProps = $props();
+
+  // create the polygon that approximates the given parametric curve
+  const polygon = $derived.by(() => {
+    const poly: Vector2[] = [];
+    const numberOfSegments = tRange.length - 1;
+    for (let iter = 0; iter < numberOfSegments; iter++) {
+      for (let reti = 0; reti < resolution; reti++) {
+        const tStart = tRange[iter];
+        const tEnd = tRange[iter + 1];
+        const t = tStart * (1 - reti / resolution) + tEnd * (reti / resolution);
+        poly.push(new Vector2(xFunc(t), yFunc(t)));
+      }
+    }
+    return poly;
+  });
+</script>
+
+<Surface3D
+  {func}
+  {polygon}
+  {internalPoints}
+  resolution={1}
+  {color}
+  {opacity}
+  {wireframe}
+  {surface}
+  {wireColor}
+/>
