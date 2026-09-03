@@ -195,6 +195,13 @@
     width={0.08}
     overruledLength={100}
   />
+  <InfiniteLine2D
+    origin={CurvePoint}
+    direction={Normal}
+    width={0.08}
+    overruledLength={100}
+    color={PrimeColor.green}
+  />
   <Latex2D
     latex={toLatexText('Directrix')}
     position={Center}
@@ -264,6 +271,15 @@
     offset={new Vector2(1.5 * off, 0)}
     background={PrimeColor.white + PrimeColor.opacity(0.5)}
     color={PrimeColor.orange}
+  />
+  <Latex2D
+    latex={String.raw`\mathcal{L}`}
+    position={DirectrixPoint.clone().add(Normal.clone().normalize().multiplyScalar(2.0))}
+    alignX="center"
+    alignY="center"
+    offset={new Vector2(off, 0.5 * off)}
+    background={PrimeColor.white + PrimeColor.opacity(0.5)}
+    color={PrimeColor.green}
   />
   <Point2D position={DirectrixPoint} radius={0.3} color={PrimeColor.orange} />
 </Canvas2D>
