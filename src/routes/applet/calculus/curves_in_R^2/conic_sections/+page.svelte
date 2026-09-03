@@ -2,33 +2,42 @@
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { MathVector3 } from '$lib/utils/MathVector';
-  // import { Controls } from '$lib/controls/Controls';
-  // import { toLatexText } from '$lib/utils/FormatString';
+  import { Controls } from '$lib/controls/Controls';
+  import { toLatexText } from '$lib/utils/FormatString';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
   import Surface3DParametricDomain from '$lib/threlte/Surface3DParametricDomain.svelte';
-  // import Axis3D from '$lib/threlte/Axis3D.svelte';
   import { Vector2 } from 'three';
   import Curve3D from '$lib/threlte/Curve3D.svelte';
   import Point3D from '$lib/threlte/Point3D.svelte';
+  import { LegendItem } from '$lib/utils/Legend';
+
+  const controls = Controls.addSlider(1, -10, 10, 0.1, PrimeColor.pink, {
+    label: toLatexText('Plane tilt$=$'),
+    valueFn: (v: number) => toLatexText(v.toFixed(1).replace(/\.?0+$/, ''))
+  }).addSlider(2, -9.9, 9.9, 0.1, PrimeColor.green, {
+    label: toLatexText('Plane heigth$=$'),
+    valueFn: (v: number) => toLatexText(v.toFixed(1).replace(/\.?0+$/, ''))
+  });
 
   const Radius = 5;
   const Slope = 2;
-  const PlaneZ = -3;
-  const Phi = 0.7 * Math.PI; //Math.atan(-1/2);//
-  const PlaneOrigin = new MathVector3(0, 0, PlaneZ);
-  const PlaneNormal = new MathVector3(0, -Math.cos(Phi) / Math.sin(Phi), 1);
-  const PlaneD = PlaneOrigin.dot(PlaneNormal);
-  const PlaneA = PlaneNormal.mathX;
-  const PlaneB = PlaneNormal.mathY;
-  const PlaneC = PlaneNormal.mathZ;
+  const PlaneZ = $derived(controls[1]);
+  const PlaneOrigin = $derived(new MathVector3(0, 0, PlaneZ));
+  const PlaneNormal = $derived(new MathVector3(0, controls[0], 1));
+  const PlaneD = $derived(PlaneOrigin.dot(PlaneNormal));
+  const PlaneA = $derived(PlaneNormal.mathX);
+  const PlaneB = $derived(PlaneNormal.mathY);
+  const PlaneC = $derived(PlaneNormal.mathZ);
   function PlaneFunction(x: number, y: number): number {
     return (PlaneD - (PlaneA * x + PlaneB * y)) / PlaneC;
   }
   const MaxZ = Radius * Slope;
-  const Y1 = Math.min(Math.max((PlaneD - PlaneC * MaxZ) / PlaneB, -Radius), Radius);
-  const Y2 = Math.min(Math.max((PlaneD + PlaneC * MaxZ) / PlaneB, -Radius), Radius);
-  const MaxY = Math.max(Y1, Y2);
-  const MinY = Math.min(Y1, Y2);
+  const Y1 = $derived(PlaneB === 0 ? Radius : (PlaneD - PlaneC * MaxZ) / PlaneB);
+  const Y2 = $derived(PlaneB === 0 ? -Radius : (PlaneD + PlaneC * MaxZ) / PlaneB);
+  const YA = $derived(Math.max(Y1, Y2));
+  const YB = $derived(Math.min(Y1, Y2));
+  const MaxY = $derived(Math.min(Radius, Math.max(-Radius, YA)));
+  const MinY = $derived(Math.min(Radius, Math.max(-Radius, YB)));
   const MaxX = Radius;
 
   function TypeOfCurve(): string {
@@ -63,6 +72,8 @@
     }
   }
 
+  const Type = $derived(TypeOfCurve());
+
   function ConeTop(x: number, y: number): number {
     return Slope * Math.sqrt(x ** 2 + y ** 2);
   }
@@ -75,27 +86,26 @@
   function CloseBottom(x: number, y: number): number {
     return -CloseTop(x, y);
   }
-  const Azimuth = (60 / 180) * Math.PI;
-  const Elevation = (15 / 180) * Math.PI;
-  const R = 50;
-  const CameraX = R * Math.sin(Azimuth) * Math.cos(Elevation);
-  const CameraY = R * Math.cos(Azimuth) * Math.cos(Elevation);
-  const CameraZ = R * Math.sin(Elevation);
+
+  // Set viewbox information
+  const viewBoxSize: [number, number, number] = [2 * Radius, 2 * Radius, 2 * Radius * Slope];
+  const viewBoxCenter = new MathVector3(0, 0, 0);
+  const azimuth = (60 / 180) * Math.PI;
+  const elevation = (15 / 180) * Math.PI;
 </script>
 
 <Canvas3D
-  cameraZoom={R}
-  cameraPosition={new MathVector3(CameraX, CameraY, CameraZ)}
-  cameraTarget={new MathVector3(0, 0, 0)}
+  {controls}
+  {viewBoxSize}
+  {viewBoxCenter}
+  {azimuth}
+  {elevation}
+  legendItems={[
+    new LegendItem(toLatexText('Cone'), PrimeColor.blue, 'triangle'),
+    new LegendItem(toLatexText('Plane'), PrimeColor.yellow + PrimeColor.opacity(0.4), 'square'),
+    new LegendItem(toLatexText(Type), PrimeColor.red)
+  ]}
 >
-  <!-- <Axis3D
-    showNumbers={false}
-    hideTicks={false}
-    axisLength={10}
-    axisSpacing={2}
-    floor={false}
-    hideOrigin={false}
-  /> -->
   <Surface3DParametricDomain
     func={ConeTop}
     xFunc={(t: number) => Radius * Math.cos(t * Math.PI)}
@@ -141,7 +151,6 @@
     wireColor={PrimeColor.darkBlue}
     color={PrimeColor.yellow}
   />
-  {@const Type = TypeOfCurve()}
   {#if Type === 'Point'}
     <Point3D position={PlaneOrigin} color={PrimeColor.red} alwaysOnTop={false} />
   {/if}
