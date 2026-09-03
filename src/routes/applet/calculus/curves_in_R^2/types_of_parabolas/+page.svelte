@@ -30,7 +30,7 @@
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
     new Vector2(-3, -4), // bottom-left
-    new Vector2(3, 7), // top-right
+    new Vector2(3, 4), // top-right
     0.5 // margin
   );
 
@@ -46,8 +46,8 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
