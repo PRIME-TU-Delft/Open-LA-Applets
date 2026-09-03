@@ -61,10 +61,7 @@
         return 'Parabola';
       }
     }
-    return 'Undefined';
   }
-
-  console.log(TypeOfCurve());
 
   function ConeTop(x: number, y: number): number {
     return Slope * Math.sqrt(x ** 2 + y ** 2);
@@ -214,10 +211,6 @@
     />
   {/if}
   {#if Type === 'Parabola'}
-    {@const A = PlaneB ** 2 - 4}
-    {@const a = (2 * Math.abs(PlaneD)) / A}
-    {@const c = PlaneD / Math.sqrt(A)}
-    {@const y0 = (PlaneB * PlaneD) / A}
     <Curve3D
       xFunc={(t: number) => t}
       yFunc={(t: number) => PlaneD / 4 - t ** 2 / PlaneD}
