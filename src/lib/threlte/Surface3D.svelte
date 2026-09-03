@@ -122,15 +122,18 @@
   }
 
   const geometry = $derived.by(() => {
-    if (polygon.length === 0) {
-      // no polygon, so assume rectangular based on (default) xRange and yRange
-      polygon.push(new Vector2(xRange[0], yRange[0]));
-      polygon.push(new Vector2(xRange[1], yRange[0]));
-      polygon.push(new Vector2(xRange[1], yRange[1]));
-      polygon.push(new Vector2(xRange[0], yRange[1]));
-    }
+    // build locally instead of mutating the (possibly shared/cached) polygon prop default
+    const activePolygon =
+      polygon.length === 0
+        ? [
+            new Vector2(xRange[0], yRange[0]),
+            new Vector2(xRange[1], yRange[0]),
+            new Vector2(xRange[1], yRange[1]),
+            new Vector2(xRange[0], yRange[1])
+          ]
+        : polygon;
 
-    if (polygon.length < 3) {
+    if (activePolygon.length < 3) {
       return new BufferGeometry();
     }
 
@@ -139,7 +142,7 @@
     let minY = Infinity;
     let maxY = -Infinity;
 
-    for (const p of polygon) {
+    for (const p of activePolygon) {
       minX = Math.min(minX, p.x);
       maxX = Math.max(maxX, p.x);
 
@@ -153,7 +156,7 @@
     // Boundary subdivision
     // --------------------------------------------------
 
-    points.push(...subdivideBoundary(polygon, resolution));
+    points.push(...subdivideBoundary(activePolygon, resolution));
 
     const edges: Edge[] = [];
     for (let iter = 0; iter < points.length; iter++) {
@@ -172,7 +175,7 @@
     // Hexagonal interior sampling
     // --------------------------------------------------
 
-    const avgEdge = averageEdgeLength(polygon);
+    const avgEdge = averageEdgeLength(activePolygon);
 
     const spacing = avgEdge / resolution;
 
@@ -197,7 +200,7 @@
           }
         }
         if (!InPoints) {
-          if (pointInPolygon(p, polygon)) {
+          if (pointInPolygon(p, activePolygon)) {
             const nearEdge = findEncroachedEdge(points, edges, p);
             if (!nearEdge) {
               points.push(p);

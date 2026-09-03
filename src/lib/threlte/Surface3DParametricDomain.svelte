@@ -38,20 +38,19 @@
   }: Surface3DProps = $props();
 
   // create the polygon that approximates the given parametric curve
-  const polygon: Vector2[] = [];
-  const numberOfSegments = tRange.length - 1;
-  for (let iter = 0; iter < numberOfSegments; iter++) {
-    // for each segment divide the t values in resolution pieces
-    // for each segment we skip the last value, as that is the first of the next (or first) segment
-    for (let reti = 0; reti < resolution; reti++) {
-      const tStart = tRange[iter];
-      const tEnd = tRange[iter + 1];
-      const t = tStart * (1 - reti / resolution) + tEnd * (reti / resolution);
-      const x = xFunc(t);
-      const y = yFunc(t);
-      polygon.push(new Vector2(x, y));
+  const polygon = $derived.by(() => {
+    const poly: Vector2[] = [];
+    const numberOfSegments = tRange.length - 1;
+    for (let iter = 0; iter < numberOfSegments; iter++) {
+      for (let reti = 0; reti < resolution; reti++) {
+        const tStart = tRange[iter];
+        const tEnd = tRange[iter + 1];
+        const t = tStart * (1 - reti / resolution) + tEnd * (reti / resolution);
+        poly.push(new Vector2(xFunc(t), yFunc(t)));
+      }
     }
-  }
+    return poly;
+  });
 </script>
 
 <Surface3D
