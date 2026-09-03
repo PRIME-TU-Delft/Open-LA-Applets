@@ -50,9 +50,8 @@
     alwaysOnTop = false
   }: Curve3DProps = $props();
 
-  const curve = new ParametricCurve((t) => [xFunc(t), yFunc(t), zFunc(t)], tRange);
-
-  const points = curve.getPoints(resolution);
+  const curve = $derived(new ParametricCurve((t) => [xFunc(t), yFunc(t), zFunc(t)], tRange));
+  const points = $derived(curve.getPoints(resolution));
 
   // break the sampled points into contiguous runs that lie inside zRange
   function splitByZRange(pts: THREE.Vector3[], [zMin, zMax]: [number, number]): THREE.Vector3[][] {
