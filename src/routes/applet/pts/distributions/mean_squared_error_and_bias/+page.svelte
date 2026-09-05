@@ -223,7 +223,7 @@
       alignX="left"
       alignY="bottom"
       color={PrimeColor.black}
-      background={'#eaeaea59'}
+      background="#eaeaea59"
       fontSize={1.5}
       padding="0.15em"
     />
