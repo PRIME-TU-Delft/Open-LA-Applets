@@ -5,7 +5,6 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Circle2D from '$lib/d3/Circle2D.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import NumberFlow from '@number-flow/svelte';
   import { _ } from 'svelte-i18n';
   import { randomNormal } from 'd3';
   import { Vector2 } from 'three';
@@ -25,11 +24,9 @@
 
   const meanControls = $derived.by(() => {
     const cont = Controls.addSlider(0, -8, 8, 0.5, PrimeColor.darkGreen, {
-      label: '\\mu_x',
-      labelFormat
+      label: '\\mu_x'
     }).addSlider(0, -8, 8, 0.5, PrimeColor.blue, {
-      label: '\\mu_y',
-      labelFormat
+      label: '\\mu_y'
     });
 
     return cont.addButton(
@@ -45,11 +42,9 @@
 
   const omegaControls = $derived.by(() => {
     const cont = Controls.addSlider(0, 0, 3, 0.5, PrimeColor.yellow, {
-      label: '\\sigma_x',
-      labelFormat
+      label: '\\sigma_x'
     }).addSlider(0, 0, 3, 0.5, PrimeColor.orange, {
-      label: '\\sigma_y',
-      labelFormat
+      label: '\\sigma_y'
     });
 
     return cont.addButton(
@@ -105,6 +100,8 @@
     }
   });
 
+  let hoveredPoint: number | null = $state(null);
+
   const dists = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const ptVals = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
   const formulas = $derived.by(() => {
@@ -145,10 +142,6 @@
     return new Formulas(pts, mean_x, mean_y, mse_x, mse_y).align();
   });
 </script>
-
-{#snippet labelFormat(value: number)}
-  <NumberFlow {value} />
-{/snippet}
 
 <Canvas2D
   {controls}
@@ -207,5 +200,32 @@
         ? PrimeColor.darkBlue
         : PrimeColor.raspberry}
     />
+
+    <circle
+      cx={point.x}
+      cy={point.y}
+      r={0.4}
+      fill="transparent"
+      stroke="none"
+      role="presentation"
+      onmouseenter={() => (hoveredPoint = i)}
+      onmouseleave={() => (hoveredPoint = null)}
+    />
   {/each}
+
+  {#if hoveredPoint !== null}
+    {@const point = points[hoveredPoint]}
+
+    <Latex2D
+      latex={`\\left(${point.x.toFixed(2)},\\,${point.y.toFixed(2)}\\right)`}
+      position={new Vector2(point.x, point.y)}
+      offset={new Vector2(0.2, -0.2)}
+      alignX="left"
+      alignY="bottom"
+      color={PrimeColor.black}
+      background={'#eaeaea59'}
+      fontSize={1.5}
+      padding="0.15em"
+    />
+  {/if}
 </Canvas2D>
