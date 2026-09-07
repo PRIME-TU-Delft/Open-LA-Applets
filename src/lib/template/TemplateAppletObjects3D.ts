@@ -2,52 +2,51 @@ import type { PrimeColor } from '../utils/PrimeColors';
 import { parse, compile } from '@cortex-js/compute-engine';
 import { Vector3 } from 'three';
 
-type Domain = {
-  xRange?: [number, number];
-  yRange?: [number, number];
-};
-
 type Shape = 'circle' | 'square' | 'triangle' | 'diamond';
 
 export abstract class AppletObject3D {
-  color: PrimeColor;
+  color?: PrimeColor;
 
-  constructor(color: PrimeColor) {
+  constructor(color?: PrimeColor) {
     this.color = color;
   }
 }
 
 export abstract class AbstractFunctionFragment3D extends AppletObject3D {
-  domain: Domain | undefined;
-  width?: number;
   legendText: string | undefined;
   wireframe: boolean = false;
   shape: Shape = 'circle';
+  opacity: number | undefined;
+  xRange: [number, number] | undefined;
+  yRange: [number, number] | undefined;
 
   /**
    * Function fragment template object
    * @param color Color of the function graph
-   * @param options.domain Domain on which the function should be drawn
-   * @param options.width Width of the function line
+   * @param options.xRange Range of x values function should be rendered for
+   * @param options.yRange Range of y values function should be rendered for
    * @param options.wireframe Whether the function should be a wireframe
    * @param options.shape Shape to use for legend and points
+   * @param options.opacity Opacity level for shading function.
    * @param options.legendText Text to be shown in the legend item
    */
   constructor(
     color: PrimeColor,
     options?: {
-      domain?: Domain;
-      width?: number;
+      xRange?: [number, number];
+      yRange?: [number, number];
       wireframe?: boolean;
       shape?: Shape;
+      opacity?: number;
       legendText?: string;
     }
   ) {
     super(color);
 
-    this.domain = options?.domain;
-    this.width = options?.width;
     this.legendText = options?.legendText;
+    this.opacity = options?.opacity;
+    this.xRange = options?.xRange;
+    this.yRange = options?.yRange;
     if (options?.wireframe) this.wireframe = options.wireframe;
     if (options?.shape) this.shape = options.shape;
   }
@@ -60,9 +59,6 @@ export class SurfaceFunction3D extends AbstractFunctionFragment3D {
    * Surface3D template object
    * @param func A javascript function or a latex string describing the function
    * @param color Color of the function graph
-   * @param options.domain Domain on which the function should be drawn
-   * @param options.width Width of the function line
-   * @param options.isDashed Whether the function line should be dashed
    * @param options.shape Shape to use for legend and points
    * @param options.legendText Text to be shown in the legend item
    * @param options.wireframe Whether the function should be a wireframe
@@ -71,12 +67,9 @@ export class SurfaceFunction3D extends AbstractFunctionFragment3D {
     func: ((x: number, y: number) => number) | string,
     color: PrimeColor,
     options?: {
-      domain?: Domain;
-      width?: number;
-      isDashed?: boolean;
       shape?: Shape;
       legendText?: string;
-      wireframe: boolean;
+      wireframe?: boolean;
     }
   ) {
     super(color, options);
@@ -212,7 +205,7 @@ export class VectorFieldObject3D extends AppletObject3D {
   normalizedLength?: number;
   hideHead?: boolean;
   anchor?: 'middle' | 'start' | 'end';
-  colorFn?: (x: number, y: number) => PrimeColor | string;
+  colorFn?: (x: number, y: number, z: number) => PrimeColor | string;
 
   /**
    * VectorField3D template object
@@ -230,8 +223,8 @@ export class VectorFieldObject3D extends AppletObject3D {
    */
   constructor(
     func: (x: number, y: number, z: number) => Vector3,
-    color: PrimeColor,
     options: {
+      color?: PrimeColor;
       xRange?: [number, number];
       yRange?: [number, number];
       zRange?: [number, number];
@@ -240,11 +233,12 @@ export class VectorFieldObject3D extends AppletObject3D {
       normalizedLength?: number;
       hideHead?: boolean;
       anchor?: 'middle' | 'start' | 'end';
-      colorFn?: (x: number, y: number) => PrimeColor | string;
+      colorFn?: (x: number, y: number, z: number) => PrimeColor | string;
     }
   ) {
-    super(color);
+    super();
     this.func = func;
+    this.color = options?.color;
     this.xRange = options?.xRange;
     this.yRange = options?.yRange;
     this.zRange = options?.zRange;
@@ -253,6 +247,7 @@ export class VectorFieldObject3D extends AppletObject3D {
     this.normalizedLength = options?.normalizedLength;
     this.hideHead = options?.hideHead;
     this.anchor = options?.anchor;
+    this.colorFn = options?.colorFn;
   }
 }
 

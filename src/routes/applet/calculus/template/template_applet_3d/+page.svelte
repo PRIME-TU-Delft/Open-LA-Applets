@@ -29,6 +29,9 @@
   let enablePan: boolean;
   let cameraZoom: number | undefined;
   let showAxes: boolean;
+  let x1: string;
+  let x2: string;
+  let x3: string;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -39,7 +42,6 @@
   // ###############
   // CAMERA SETTINGS
   // ###############
-  // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
   cameraPosition = new MathVector3(10, 10, 10);
@@ -61,6 +63,14 @@
   floor = false;
   hideOrigin = false;
 
+  // ###########
+  // AXIS LABELS
+  // ###########
+
+  x1 = 'x';
+  x2 = 'y';
+  x3 = 'z';
+
   // ##############
   // APPLET OBJECTS
   // ##############
@@ -70,10 +80,10 @@
       latex: '\\sigma',
       legendText: '\\sigma'
     }),
-    new SurfaceFunction3D((x, y) => -Math.sqrt(x * x + y * y) + 3, PrimeColor.raspberry, {
-      wireframe: true,
+    new SurfaceFunction3D((x, y) => Math.sin(x) - Math.cos(y), PrimeColor.raspberry, {
       shape: 'square',
-      legendText: 'Surface'
+      legendText: 'Surface',
+      wireframe: true
     }),
     new AngleObject3D(
       new MathVector3(0, 0, 0),
@@ -83,15 +93,14 @@
       { latex: '\\theta', size: 9 }
     ),
     new TextObject3D('\\pi', new MathVector3(0, 6, 8), PrimeColor.darkGreen),
-    new VectorFieldObject3D(
-      (x: number, y: number) => new MathVector3(x, -y, 0),
-      PrimeColor.darkBlue,
-      {
-        xRange: [-2, 2],
-        yRange: [-2, 2],
-        zRange: [-2, 2]
-      }
-    ),
+    new VectorFieldObject3D((x: number, y: number) => new MathVector3(x, -y, 0), {
+      xRange: [-2, 2],
+      yRange: [-2, 2],
+      zRange: [-2, 2],
+      step: 0.5,
+      colorFn: (x: number, y: number, z: number) =>
+        x * y * z >= 0 ? PrimeColor.blue : PrimeColor.raspberry
+    }),
     new LineSegmentObject3D(
       new MathVector3(0, 0, 0),
       new MathVector3(-8, -4, 3),
@@ -126,7 +135,17 @@
 
 <Canvas3D legendItems={getLegend3D(appletObjects)} {cameraPosition} {enablePan} {cameraZoom}>
   {#if showAxes}
-    <Axis3D {showNumbers} {hideTicks} {axisLength} {axisSpacing} {floor} {hideOrigin} />
+    <Axis3D
+      {showNumbers}
+      {hideTicks}
+      {axisLength}
+      {axisSpacing}
+      {floor}
+      {hideOrigin}
+      {x1}
+      {x2}
+      {x3}
+    />
   {/if}
   <TemplateComponent3D objects={appletObjects} />
 </Canvas3D>
