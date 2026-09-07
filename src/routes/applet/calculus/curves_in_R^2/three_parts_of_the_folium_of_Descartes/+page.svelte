@@ -123,7 +123,7 @@
       tEnd: Math.pow(2, -1 / 3)
     })
       .addGaps(new Vector2(xSwitch, ySwitch))
-      .addIncludedPoints(new Vector2(0, 0)),
+      .addGaps(new Vector2(0, 0)),
     new ImplicitFunctionFragment(zeroEquation, PrimeColor.orange, {
       maxDepth: 3,
       width: 0.08,
