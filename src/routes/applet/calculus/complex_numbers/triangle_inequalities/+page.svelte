@@ -10,11 +10,15 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
+  import { Controls } from '$lib/controls/Controls';
+  import { toLatexText } from '$lib/utils/FormatString';
+  import PolarGrid from '$lib/d3/PolarGrid.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
+  let axisP: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -29,8 +33,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1, -2), // bottom-left
-    new Vector2(8, 5), // top-right
+    new Vector2(-1, -3), // bottom-left
+    new Vector2(8, 4), // top-right
     0.5 // margin
   );
 
@@ -48,6 +52,17 @@
     logarithmicY: false,
     skipX: 0,
     skipY: 0
+  };
+  axisP = {
+    showOrigin: true,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
+    logarithmicX: false,
+    logarithmicY: false,
+    skipX: 0,
+    skipY: 0,
+    showGridLinesX: false,
+    showGridLinesY: false
   };
 
   // #####
@@ -130,18 +145,32 @@
     );
     return new Formulas(f1, f2, f3, f4, f5, f6).align();
   });
+
+  const toggleControls = Controls.addToggle(
+    false,
+    toLatexText('Cartesian grid'),
+    PrimeColor.black,
+    {
+      isSwitch: true,
+      switchRightSide: toLatexText('Polar grid')
+    }
+  );
 </script>
 
 <Canvas2D
+  controls={toggleControls}
   draggables={draggablePoint}
   {initialViewBox}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  {axis}
+  axis={toggleControls[0] ? axisP : axis}
   {scaleX}
   {scaleY}
   {formulas}
   showFormulasDefault={true}
 >
+  {#if toggleControls[0]}
+    <PolarGrid showAngleTicks showRadiiTicks={false} />
+  {/if}
   <Latex2D
     latex="z"
     position={draggablePoint[0].position}
