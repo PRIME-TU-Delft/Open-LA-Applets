@@ -10,7 +10,6 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
-  import { snapPointToLine } from '$lib/utils/MathLib';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
