@@ -155,9 +155,6 @@
     }
     return OverPi.toFixed(2);
   }
-
-  const argZn = $derived(Math.atan(theta / n));
-  const modZn = $derived(Math.pow(Math.sqrt(1 + theta ** 2 / n ** 2), n));
 </script>
 
 <Canvas2D
