@@ -204,6 +204,7 @@
       radius={object.radius}
       color={object.color.toString()}
       isDashed={object.isDashed}
+      width={object.width}
     />
     {#each object.radiiShown as angle, i (i)}
       {@const endPoint = object.origin

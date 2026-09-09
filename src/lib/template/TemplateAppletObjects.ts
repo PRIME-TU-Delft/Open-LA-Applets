@@ -501,6 +501,7 @@ export class Circle extends AppletObject {
   isDashed?: boolean;
   radiiShown?: number[];
   radiusLatex?: string;
+  width?: number;
 
   /**
    * Circle template object
@@ -510,12 +511,13 @@ export class Circle extends AppletObject {
    * @param options.isDashed Whether the circle should be dashed
    * @param options.radiiShown List of angles (radians) for which radius is drawn
    * @param options.radiusLatex Latex drawn next to radii
+   * @param options.width Width of the circle stroke
    */
   constructor(
     origin: Vector2,
     radius: number,
     color: PrimeColor,
-    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string }
+    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string; width?: number }
   ) {
     super(color);
 
@@ -524,6 +526,7 @@ export class Circle extends AppletObject {
     this.isDashed = options?.isDashed;
     this.radiiShown = options?.radiiShown;
     this.radiusLatex = options?.radiusLatex;
+    this.width = options?.width;
   }
 }
 
