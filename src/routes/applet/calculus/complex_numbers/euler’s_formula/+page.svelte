@@ -195,7 +195,7 @@
     alignX={draggablePoint[0].position.x < 0 ? 'left' : 'right'}
     offset={new Vector2(draggablePoint[0].position.x > 0 ? -0.1 : 0.1, 0)}
   />
-  <Point2D position={new Vector2(re, 0)} color={PrimeColor.blue} shape="square" />
+  <Point2D position={new Vector2(0, im)} color={PrimeColor.yellow} shape="square" />
   <Latex2D
     latex={String.raw`e^{i\,\theta}`}
     position={draggablePoint[0].position}
