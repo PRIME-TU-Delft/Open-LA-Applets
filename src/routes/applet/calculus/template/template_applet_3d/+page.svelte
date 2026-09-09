@@ -4,7 +4,7 @@
     AngleObject3D,
     AppletObject3D,
     CuboidObject3D,
-    // CurveObject3D,
+    CurveObject3D,
     InfiniteLineObject3D,
     LineSegmentObject3D,
     PointObject3D,
@@ -126,12 +126,13 @@
       ],
       PrimeColor.pink
     ),
-    // new CurveObject3D(
-    //   (x: number) => Math.sin(x),
-    //   (y: number) => Math.tan(y),
-    //   (z: number) => z,
-    //   PrimeColor.darkGreen
-    // ),
+    new CurveObject3D(
+      (x: number) => Math.sin(x),
+      (y: number) => Math.cos(y),
+      (z: number) => Math.sin(z) + 5,
+      PrimeColor.darkGreen,
+      { tRange: [0, 30] }
+    ),
     new CuboidObject3D(
       PrimeColor.purple,
       [new MathVector3(7, 6, 4), new MathVector3(8, 8, 3)],

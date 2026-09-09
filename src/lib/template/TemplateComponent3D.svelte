@@ -9,8 +9,8 @@
     LineSegmentObject3D,
     PolygonObject3D,
     CuboidObject3D,
-    SurfaceFunction3D
-    // CurveObject3D
+    SurfaceFunction3D,
+    CurveObject3D
   } from './TemplateAppletObjects3D';
   import Point3D from '$lib/threlte/Point3D.svelte';
   import Surface3D from '$lib/threlte/Surface3D.svelte';
@@ -20,8 +20,8 @@
   import InfiniteLine3D from '$lib/threlte/InfiniteLine3D.svelte';
   import Line3D from '$lib/threlte/Line3D.svelte';
   import Polygon3D from '$lib/threlte/Polygon3D.svelte';
+  import Curve3D from '$lib/threlte/Curve3D.svelte';
   import Cuboid3D from '$lib/threlte/Cuboid3D.svelte';
-  // import Curve3D from '$lib/threlte/Curve3D.svelte';
 
   let { objects }: { objects: AppletObject3D[] } = $props();
 </script>
@@ -36,7 +36,7 @@
       wireframe={object.wireframe}
       opacity={object?.opacity}
     />
-    <!-- {:else if object instanceof CurveObject3D}
+  {:else if object instanceof CurveObject3D}
     <Curve3D
       xFunc={object.xFunc}
       yFunc={object.yFunc}
@@ -46,7 +46,7 @@
       zRange={object?.zRange}
       radius={object?.radius}
       alwaysOnTop={object?.alwaysOnTop}
-    /> -->
+    />
   {:else if object instanceof TextObject3D}
     <Latex3D
       latex={object.latex}
