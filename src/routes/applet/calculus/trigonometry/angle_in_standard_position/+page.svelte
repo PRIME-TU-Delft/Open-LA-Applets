@@ -28,8 +28,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-3, -4), // bottom-left
-    new Vector2(4, 7), // top-right
+    new Vector2(-4, -4), // bottom-left
+    new Vector2(4, 4), // top-right
     0.5 // margin
   );
 
@@ -88,6 +88,7 @@
     const re = draggablePoint[0].position.x;
     const im = draggablePoint[0].position.y;
     const theta = Math.atan2(im, re);
+    const r = Math.sqrt(re * re + im * im);
     return new Formulas(
       new Formula(
         '\\theta&=' +
@@ -99,7 +100,8 @@
         undefined,
         undefined,
         PrimeColor.orange
-      )
+      ),
+      new Formula('r&=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.yellow)
     ).align();
   });
 </script>
@@ -122,7 +124,13 @@
     start={new Vector2(0, 0)}
     end={draggablePoint[0].position.clone().multiplyScalar(100)}
     color={PrimeColor.blue}
-    width={0.05}
+    width={0.08}
+  />
+  <Line2D
+    start={new Vector2(0, 0)}
+    end={draggablePoint[0].position}
+    color={PrimeColor.yellow}
+    width={0.1}
   />
   <Angle2D
     startAngle={0}
@@ -130,7 +138,7 @@
     hasHead={true}
     distance={0.5 * r}
     color={PrimeColor.orange}
-    width={0.05}
+    width={0.08}
   />
   <Latex2D
     latex="\theta"
@@ -140,5 +148,22 @@
     )}
     alignX="center"
     alignY="center"
+  />
+  <Latex2D
+    latex="r"
+    color={PrimeColor.yellow}
+    position={draggablePoint[0].position.clone().multiplyScalar(0.75)}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white}
+  />
+  <Latex2D
+    latex="P(x,y)"
+    color={PrimeColor.green}
+    position={draggablePoint[0].position.clone()}
+    extend={0.5}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white}
   />
 </Canvas2D>
