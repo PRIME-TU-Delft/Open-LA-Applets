@@ -4,6 +4,7 @@
     AngleObject3D,
     AppletObject3D,
     CuboidObject3D,
+    // CurveObject3D,
     InfiniteLineObject3D,
     LineSegmentObject3D,
     PointObject3D,
@@ -76,7 +77,7 @@
   // ##############
 
   const appletObjects: AppletObject3D[] = [
-    new PointObject3D(new MathVector3(0, 0, 0), PrimeColor.red, {
+    new PointObject3D(new MathVector3(0, 0, 0), PrimeColor.raspberry, {
       latex: '\\sigma',
       legendText: '\\sigma'
     }),
@@ -125,6 +126,12 @@
       ],
       PrimeColor.pink
     ),
+    // new CurveObject3D(
+    //   (x: number) => Math.sin(x),
+    //   (y: number) => Math.tan(y),
+    //   (z: number) => z,
+    //   PrimeColor.darkGreen
+    // ),
     new CuboidObject3D(
       PrimeColor.purple,
       [new MathVector3(7, 6, 4), new MathVector3(8, 8, 3)],
