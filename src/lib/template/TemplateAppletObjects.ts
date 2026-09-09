@@ -534,6 +534,7 @@ export class Polygon extends AppletObject {
   verticesLatex?: string[];
   legendText?: string;
   legendShape: Shape;
+  width?: number;
 
   /**
    * Polygon template object
@@ -554,6 +555,7 @@ export class Polygon extends AppletObject {
       verticesLatex?: string[];
       legendText?: string;
       legendShape?: Shape;
+      width?: number;
     }
   ) {
     super(color);
@@ -566,5 +568,6 @@ export class Polygon extends AppletObject {
     this.legendShape =
       options?.legendShape ??
       (points.length === 3 ? 'triangle' : points.length === 4 ? 'square' : 'circle');
+    this.width = options?.width;
   }
 }

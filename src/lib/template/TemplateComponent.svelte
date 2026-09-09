@@ -238,6 +238,7 @@
       points={object.points}
       color={object.color.toString()}
       fillStyle={object.fillStyle}
+      strokeWidth={object.width}
     />
     {@const center = object.points
       .reduce((acc, p) => acc.add(p), new Vector2(0, 0))
