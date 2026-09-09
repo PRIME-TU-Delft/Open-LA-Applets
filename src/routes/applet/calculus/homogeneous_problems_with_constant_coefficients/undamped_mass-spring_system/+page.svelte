@@ -19,8 +19,6 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -39,13 +37,9 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
-  // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1.5, -2.5), // bottom-left
-    new Vector2(4, 4), // top-right
+    new Vector2(-3, -3), // bottom-left
+    new Vector2(5, 4.5), // top-right
     0 // margin
   );
 
@@ -71,7 +65,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0,
     showAxisX: true,
     showAxisY: true,
@@ -165,8 +159,6 @@
 <CanvasGrid rows={2} columns={2} {controls}>
   <GridCanvas2D
     {initialViewBox}
-    {cameraPosition}
-    {cameraZoom}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -183,7 +175,7 @@
     />
     <Vector2D
       color={PrimeColor.black}
-      origin={new Vector2(-1.3, -0.5)}
+      origin={new Vector2(-2.3, -0.5)}
       direction={new Vector2(0, -1)}
     />
     <MassSpring2D
@@ -194,7 +186,7 @@
     <Latex2D
       latex="u"
       color={PrimeColor.black}
-      position={new Vector2(-1.6, -0.8)}
+      position={new Vector2(-2.7, -0.8)}
       alignX="center"
       alignY="center"
     />
@@ -214,7 +206,7 @@
     initialViewBox={new ViewBox(
       new Vector2(-maxRadius, -maxRadius * r),
       new Vector2(maxRadius, maxRadius * r),
-      0.2
+      0.5
     )}
     labels={{ xLabel: 'u(0)', yLabel: "u'(0)" }}
     axis={axis2}
@@ -233,7 +225,7 @@
     />
   </GridCanvas2D>
   <GridCanvas2D
-    initialViewBox={new ViewBox(new Vector2(0, -2.0 / 2), new Vector2(5, 1.0 / 2), 2)}
+    initialViewBox={new ViewBox(new Vector2(-1, -0.75), new Vector2(5.5, 0.5), 0)}
     labels={{ xLabel: 't', yLabel: 'u(t)' }}
     axis={axis3}
     scaleX={4}

@@ -47,6 +47,8 @@
         stepSize={object.stepSize}
         tension={object.tension}
         maxDepth={object.maxDepth}
+        yMin={object.range?.yMin}
+        yMax={object.range?.yMax}
       />
     {:else if object instanceof ParameterizedFunctionFragment}
       <ParameterizedFunction2D

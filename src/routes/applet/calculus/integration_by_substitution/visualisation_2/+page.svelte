@@ -9,8 +9,6 @@
   import { Controls } from '$lib/controls/Controls';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
 
@@ -24,11 +22,6 @@
   // CAMERA SETTINGS
   // ###############
   // choose one or none of the options below - if both are specified, view box will be used
-
-  // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
-
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
     new Vector2(-3, -4), // bottom-left
@@ -151,8 +144,6 @@
 <Canvas2D
   {controls}
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   labels={{ xLabel: (controls[0] as S).xLabel, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}

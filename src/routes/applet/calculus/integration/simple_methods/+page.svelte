@@ -15,6 +15,15 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let initialViewBox: ViewBox | undefined;
+
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -2), // bottom-left
+    new Vector2(11, 6), // top-right
+    0.5 // margin
+  );
 
   let func = (x: number) => {
     return 4 / Math.sqrt(x + 1);
@@ -120,7 +129,7 @@
   {draggables}
   {formulas}
   {controls}
-  cameraPosition={new Vector2(4, 2)}
+  {initialViewBox}
   labels={{ xLabel: 'x', yLabel: 'f(x)' }}
   showFormulasDefault
 >

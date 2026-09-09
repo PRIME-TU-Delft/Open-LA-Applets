@@ -7,9 +7,9 @@
   import { Vector2 } from 'three';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -32,9 +32,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(1, -10);
-  cameraZoom = 1.2;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -50), // bottom-left
+    new Vector2(3, 30), // top-right
+    0 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -110,13 +112,13 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}
   {scaleY}
+  legendFormulaPosition="bottom-right"
 >
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>

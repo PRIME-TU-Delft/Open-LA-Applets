@@ -5,6 +5,7 @@
     color?: string;
     width?: number;
     isDashed?: boolean;
+    overruledLength?: number;
   };
 </script>
 
@@ -18,7 +19,8 @@
     direction = new Vector2(1, 1),
     color = 'black',
     width = LINE_WIDTH,
-    isDashed = false
+    isDashed = false,
+    overruledLength = GRID_SIZE_2D
   }: InfiniteLine2DProps = $props();
 
   const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
@@ -27,11 +29,11 @@
   const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
 
   const dir = $derived(new Vector2(direction.x * sx, direction.y * sy).normalize());
-  const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(scaledOrigin));
+  const start = $derived(dir.clone().multiplyScalar(overruledLength).add(scaledOrigin));
   const end = $derived(
     dir
       .clone()
-      .multiplyScalar(GRID_SIZE_2D * -1)
+      .multiplyScalar(overruledLength * -1)
       .add(scaledOrigin)
   );
 </script>

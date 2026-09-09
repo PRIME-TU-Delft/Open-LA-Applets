@@ -9,6 +9,15 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
+  import { ViewBox } from '$lib/d3/ViewBox';
+
+  let initialViewBox: ViewBox | undefined;
+
+  initialViewBox = new ViewBox(
+    new Vector2(-3, -7), // bottom-left
+    new Vector2(3, 1), // top-right
+    0.5 // margin
+  );
 
   let func = (t: number) => {
     return Math.sqrt(1 + Math.pow(Math.cos(t), 2));
@@ -143,8 +152,7 @@
     logarithmicX: true,
     logarithmicY: true
   }}
-  cameraZoom={1.15}
-  cameraPosition={new Vector2(0, -3)}
+  {initialViewBox}
   title={$_('applets.calculus.integration.method_errors.title')}
   labels={{
     xLabel: 'h',

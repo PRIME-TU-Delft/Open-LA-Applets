@@ -1,18 +1,10 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   // For ease of creating the template applets
   import {
-    Angle,
     AppletObject,
-    AsymptoteFragment,
-    Circle,
     FunctionFragment,
     ImplicitFunctionFragment,
-    LineFragment,
-    ObliqueAsymptoteFragment,
-    ParameterizedFunctionFragment,
     Point,
-    Polygon,
     Text
   } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
@@ -21,13 +13,10 @@
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { getLegend } from '$lib/template/ObjectFormulas';
-  import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -42,10 +31,6 @@
   // CAMERA SETTINGS
   // ###############
   // choose one or none of the options below - if both are specified, view box will be used
-
-  // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -155,8 +140,6 @@
 
 <Canvas2D
   {initialViewBox}
-  {cameraPosition}
-  {cameraZoom}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}

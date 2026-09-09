@@ -11,6 +11,11 @@
       splitCanvas2DChildren?: Snippet;
       splitCanvas3DChildren?: Snippet;
       defaultLeftDivision?: number;
+      // When set, the camera position/target/zoom are derived from this box instead of the props above
+      viewBoxSize?: [number, number, number];
+      viewBoxCenter?: MathVector3;
+      azimuth?: number;
+      elevation?: number;
     };
 </script>
 
@@ -23,6 +28,8 @@
   import CanvasD3 from '$lib/d3/CanvasD3.svelte';
   import { activityState } from '$lib/stores/activity.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
+  import { MathVector3 } from '$lib/utils/MathVector';
+  import { computeOrthographicView } from '$lib/utils/OrthographicView';
   import { parseUrl } from '$lib/utils/URLParsing';
   import { Canvas } from '@threlte/core';
   import { NoToneMapping, Vector3 } from 'three';
@@ -51,7 +58,13 @@
     enablePan = false,
     logPan = false,
     defaultLeftDivision,
-    legendFormulaPosition = 'top-right'
+    legendFormulaPosition = 'top-right',
+
+    // View box props: override cameraPosition/cameraTarget/cameraZoom when set
+    viewBoxSize,
+    viewBoxCenter = new MathVector3(0, 0, 0),
+    azimuth = (45 / 180) * Math.PI,
+    elevation = (30 / 180) * Math.PI
   }: CanvasProps = $props();
 
   const hasSplitCanvas = $derived(
@@ -133,13 +146,22 @@
     {@const leftWidth = leftCanvasWidth ?? defaultCanvasWidth}
     {@const rightWidth = width - leftWidth}
     {@const canvasWidth = hasSplitCanvas ? leftWidth : width}
+    {@const orthographicView = viewBoxSize
+      ? computeOrthographicView(viewBoxSize, viewBoxCenter, azimuth, elevation, canvasWidth, height)
+      : undefined}
     <div style="width: {canvasWidth}px" class="overflow-hidden">
       {#if confettiState.confettiSide === 'left' || confettiState.confettiSide === 'center'}
         <Confetti isSplit={false} />
       {/if}
 
       <Canvas {renderMode} toneMapping={NoToneMapping}>
-        <Camera3D {cameraPosition} {cameraTarget} {cameraZoom} {enablePan} {logPan} />
+        <Camera3D
+          cameraPosition={orthographicView?.cameraPosition ?? cameraPosition}
+          cameraTarget={orthographicView?.cameraTarget ?? cameraTarget}
+          cameraZoom={orthographicView?.cameraZoom ?? cameraZoom}
+          {enablePan}
+          {logPan}
+        />
 
         {@render children()}
 

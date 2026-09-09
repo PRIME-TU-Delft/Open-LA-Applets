@@ -7,6 +7,11 @@ type Domain = {
   xMax?: number;
 };
 
+type Range = {
+  yMin?: number;
+  yMax?: number;
+};
+
 type Integral = {
   xLeft: number;
   xRight: number;
@@ -28,6 +33,7 @@ export abstract class AppletObject {
 
 export abstract class AbstractFunctionFragment extends AppletObject {
   domain: Domain | undefined;
+  range: Range | undefined;
   width?: number;
   gaps: Vector2[] = [];
   gapRadius: number = 0.075;
@@ -56,6 +62,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      range?: Range;
       width?: number;
       isDashed?: boolean;
       shape?: Shape;
@@ -66,6 +73,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     super(color);
 
     this.domain = options?.domain;
+    this.range = options?.range;
     this.width = options?.width;
     this.legendText = options?.legendText;
     if (options?.isDashed) this.isDashed = options.isDashed;
@@ -155,6 +163,7 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      range?: Range;
       width?: number;
       isDashed?: boolean;
       shape?: Shape;
