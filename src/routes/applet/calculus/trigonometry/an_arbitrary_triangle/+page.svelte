@@ -24,7 +24,7 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-4, -2), // bottom-left
+    new Vector2(-4, -3), // bottom-left
     new Vector2(4, 4), // top-right
     0 // margin
   );
@@ -53,7 +53,7 @@
   const angleC = (80 / 180) * Math.PI;
   const draggables = [
     new Draggable(
-      new Vector2(radius * Math.cos(angleB), radius * Math.sin(angleB)),
+      new Vector2(radius * Math.cos(angleB), radius * Math.sin(angleB) - 1),
       PrimeColor.orange,
       undefined,
       undefined,
@@ -62,7 +62,7 @@
       0.12
     ),
     new Draggable(
-      new Vector2(-radius * Math.cos(angleB), -radius * Math.sin(angleB)),
+      new Vector2(-radius * Math.cos(angleB), -radius * Math.sin(angleB) - 1),
       PrimeColor.green,
       undefined,
       undefined,

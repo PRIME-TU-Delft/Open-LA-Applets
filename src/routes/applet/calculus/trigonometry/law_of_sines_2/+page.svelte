@@ -54,7 +54,7 @@
   const angleC = (80 / 180) * Math.PI;
   const draggables = [
     new Draggable(
-      new Vector2(radius * Math.cos(angleB), radius * Math.sin(angleB)),
+      new Vector2(radius * Math.cos(angleB), radius * Math.sin(angleB) - 1),
       PrimeColor.orange,
       undefined,
       undefined,
@@ -63,7 +63,7 @@
       0.12
     ),
     new Draggable(
-      new Vector2(-radius * Math.cos(angleB), -radius * Math.sin(angleB)),
+      new Vector2(-radius * Math.cos(angleB), -radius * Math.sin(angleB) - 1),
       PrimeColor.green,
       undefined,
       undefined,
