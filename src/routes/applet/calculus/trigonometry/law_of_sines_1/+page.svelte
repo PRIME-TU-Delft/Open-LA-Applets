@@ -1,6 +1,6 @@
 <script lang="ts">
   // For ease of creating the template applets
-  import { AppletObject, LineFragment, Polygon, Circle } from '$lib/template/TemplateAppletObjects';
+  import { AppletObject, LineFragment, Circle } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
@@ -99,12 +99,6 @@
     const Iy = wA * A.y + wB * B.y + wC * C.y;
     const I = new Vector2(Ix, Iy);
     return I;
-  });
-  const E = $derived.by(() => {
-    const dot = CA.dot(AB);
-    const lengthSquared = AB.lengthSq();
-    const t = dot / lengthSquared;
-    return A.clone().add(AB.clone().multiplyScalar(-t));
   });
   const circumCenter = $derived.by(() => {
     let D = A.x * (B.y - C.y);
