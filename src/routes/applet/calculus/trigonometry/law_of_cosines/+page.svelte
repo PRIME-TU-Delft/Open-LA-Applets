@@ -109,7 +109,6 @@
   });
   const AI = $derived(inCenter.clone().sub(draggables[1].position).normalize());
   const BI = $derived(inCenter.clone().sub(draggables[0].position).normalize());
-  const CI = $derived(inCenter.clone().sub(draggables[2].position).normalize());
   const AE = $derived(E.clone().sub(A));
   const BE = $derived(E.clone().sub(B));
   const CE = $derived(E.clone().sub(C));
