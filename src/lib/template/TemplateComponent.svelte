@@ -204,6 +204,7 @@
       radius={object.radius}
       color={object.color.toString()}
       isDashed={object.isDashed}
+      width={object.width}
     />
     {#each object.radiiShown as angle, i (i)}
       {@const endPoint = object.origin
@@ -214,6 +215,7 @@
         end={endPoint}
         color={object.color.toString()}
         isDashed={object.isDashed}
+        width={object.width}
       />
       {#if object.radiusLatex}
         {@const v = endPoint.clone().add(object.origin.clone()).divideScalar(2)}
@@ -238,6 +240,7 @@
       points={object.points}
       color={object.color.toString()}
       fillStyle={object.fillStyle}
+      strokeWidth={object.width}
     />
     {@const center = object.points
       .reduce((acc, p) => acc.add(p), new Vector2(0, 0))

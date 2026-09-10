@@ -10,16 +10,11 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
-  import PolarGrid from '$lib/d3/PolarGrid.svelte';
-  import { Controls } from '$lib/controls/Controls';
-  import { toLatexText } from '$lib/utils/FormatString';
-  import Point2D from '$lib/d3/Point2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
-  let axisP: AxisProps | undefined;
 
   // ########################
   // TUTORIAL / DOCUMENTATION
@@ -30,7 +25,6 @@
   // ###############
   // CAMERA SETTINGS
   // ###############
-  // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -47,23 +41,12 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: false,
-    showAxisNumbersY: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
     skipX: 0,
     skipY: 0
-  };
-  axisP = {
-    showOrigin: true,
-    showAxisNumbersX: false,
-    showAxisNumbersY: false,
-    logarithmicX: false,
-    logarithmicY: false,
-    skipX: 0,
-    skipY: 0,
-    showGridLinesX: false,
-    showGridLinesY: false
   };
 
   // #####
@@ -80,21 +63,22 @@
   // ###########
 
   // (remove if unnecessary)
-  xAxisLabel = '\\operatorname{Re}';
-  yAxisLabel = '\\operatorname{Im}';
+  xAxisLabel = 'x';
+  yAxisLabel = 'y';
 
   function SnapToGrid(position: Vector2): Vector2 {
     const re = position.x;
     const im = position.y;
+    const r = Math.sqrt(re * re + im * im);
     const theta = Math.atan2(im, re);
-    const snappedR = 3;
+    const snappedR = Number(r.toFixed(1));
     const snappedTheta = Number((theta / Math.PI).toFixed(2)) * Math.PI;
     const snappedX = snappedR * Math.cos(snappedTheta);
     const snappedY = snappedR * Math.sin(snappedTheta);
     return new Vector2(snappedX, snappedY);
   }
   const r = 3;
-  const theta = 0.33 * Math.PI;
+  const theta = 0.67 * Math.PI;
   const re = r * Math.cos(theta);
   const im = r * Math.sin(theta);
   const draggablePoint = [
@@ -104,9 +88,10 @@
     const re = draggablePoint[0].position.x;
     const im = draggablePoint[0].position.y;
     const theta = Math.atan2(im, re);
+    const r = Math.sqrt(re * re + im * im);
     return new Formulas(
       new Formula(
-        '\\theta=\\arg(z)&=' +
+        '\\theta&=' +
           (theta / Math.PI)
             .toFixed(2)
             .replace('1.00', '')
@@ -115,119 +100,70 @@
         undefined,
         undefined,
         PrimeColor.orange
-      )
+      ),
+      new Formula('r&=' + r.toFixed(1).replace('.0', ''), undefined, undefined, PrimeColor.yellow)
     ).align();
-  });
-  const toggleControls = Controls.addToggle(true, toLatexText('Cartesian grid'), PrimeColor.black, {
-    isSwitch: true,
-    switchRightSide: toLatexText('Polar grid')
   });
 </script>
 
 <Canvas2D
-  controls={toggleControls}
   draggables={draggablePoint}
   {initialViewBox}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  axis={toggleControls[0] ? axisP : axis}
+  {axis}
   {scaleX}
   {scaleY}
   {formulas}
   showFormulasDefault={true}
 >
-  <Latex2D
-    latex={String.raw`e^{i\,0}`}
-    position={new Vector2(3.15, -0.15)}
-    alignX="left"
-    alignY="top"
-  />
-  <Latex2D
-    latex={String.raw`e^{i\,\pi}`}
-    position={new Vector2(-3.15, -0.15)}
-    alignX="right"
-    alignY="top"
-  />
-  <Latex2D
-    latex={String.raw`e^{i\,\frac{\pi}{2}}`}
-    position={new Vector2(-0.15, 3.15)}
-    alignX="right"
-    alignY="bottom"
-  />
-  <Latex2D
-    latex={String.raw`e^{-i\,\frac{\pi}{2}}`}
-    position={new Vector2(-0.15, -3.15)}
-    alignX="right"
-    alignY="top"
-  />
-  {#if toggleControls[0]}
-    <PolarGrid showAngleTicks showRadiiTicks={false} highlightRadii={[3]} />
-  {/if}
   {@const re = draggablePoint[0].position.x}
   {@const im = draggablePoint[0].position.y}
   {@const r = Math.sqrt(re * re + im * im)}
   {@const theta = Math.atan2(im, re)}
   <Line2D
-    start={draggablePoint[0].position}
-    end={new Vector2(re, 0)}
+    start={new Vector2(0, 0)}
+    end={draggablePoint[0].position.clone().multiplyScalar(100)}
     color={PrimeColor.blue}
-    width={0.05}
-  />
-  <Latex2D
-    latex={String.raw`\cos(\theta)`}
-    position={new Vector2(re, 0)}
-    color={PrimeColor.blue}
-    alignX="center"
-    alignY={draggablePoint[0].position.y > 0 ? 'top' : 'bottom'}
-    offset={new Vector2(0, draggablePoint[0].position.y > 0 ? -0.1 : 0.1)}
-  />
-  <Point2D position={new Vector2(re, 0)} color={PrimeColor.blue} shape="square" />
-  <Line2D
-    start={draggablePoint[0].position}
-    end={new Vector2(0, im)}
-    color={PrimeColor.yellow}
-    width={0.05}
-  />
-  <Latex2D
-    latex={String.raw`\sin(\theta)`}
-    position={new Vector2(0, im)}
-    color={PrimeColor.yellow}
-    alignY="center"
-    alignX={draggablePoint[0].position.x < 0 ? 'left' : 'right'}
-    offset={new Vector2(draggablePoint[0].position.x > 0 ? -0.1 : 0.1, 0)}
-  />
-  <Point2D position={new Vector2(0, im)} color={PrimeColor.yellow} shape="square" />
-  <Latex2D
-    latex={String.raw`e^{i\,\theta}`}
-    position={draggablePoint[0].position}
-    color={PrimeColor.green}
-    alignX={draggablePoint[0].position.x < 0 ? 'right' : 'left'}
-    alignY={draggablePoint[0].position.y < 0 ? 'top' : 'bottom'}
-    offset={new Vector2(
-      draggablePoint[0].position.x < 0 ? -0.1 : 0.1,
-      draggablePoint[0].position.y < 0 ? -0.1 : 0.1
-    )}
+    width={0.08}
   />
   <Line2D
-    start={draggablePoint[0].position}
-    end={new Vector2(0, 0)}
-    color={PrimeColor.green}
-    width={0.05}
+    start={new Vector2(0, 0)}
+    end={draggablePoint[0].position}
+    color={PrimeColor.yellow}
+    width={0.1}
   />
   <Angle2D
     startAngle={0}
     endAngle={theta}
     hasHead={true}
-    distance={0.2 * r}
+    distance={0.5 * r}
     color={PrimeColor.orange}
-    width={0.05}
+    width={0.08}
   />
   <Latex2D
     latex="\theta"
     color={PrimeColor.orange}
-    position={new Vector2(0.2 * r * Math.cos(theta / 2), 0.2 * r * Math.sin(theta / 2)).add(
-      new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.2 : -0.2)
+    position={new Vector2(0.5 * r * Math.cos(theta / 2), 0.5 * r * Math.sin(theta / 2)).add(
+      new Vector2(Math.sin(theta), -Math.cos(theta)).multiplyScalar(theta > 0 ? 0.3 : -0.3)
     )}
     alignX="center"
     alignY="center"
+  />
+  <Latex2D
+    latex="r"
+    color={PrimeColor.yellow}
+    position={draggablePoint[0].position.clone().multiplyScalar(0.75)}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white}
+  />
+  <Latex2D
+    latex="P(x,y)"
+    color={PrimeColor.green}
+    position={draggablePoint[0].position.clone()}
+    extend={0.5}
+    alignX="center"
+    alignY="center"
+    background={PrimeColor.white}
   />
 </Canvas2D>
