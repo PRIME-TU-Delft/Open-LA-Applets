@@ -173,6 +173,7 @@ export class PointObject3D extends AppletObject3D {
   position: Vector3;
   shape?: Shape;
   latex?: string;
+  latexOffset?: Vector3;
   legendText?: string;
   size?: number;
 
@@ -182,6 +183,7 @@ export class PointObject3D extends AppletObject3D {
    * @param color Color of the points
    * @param options.shape Shape of the point
    * @param options.latex Latex shown next to the point
+   * @param options.latexOffset Offset from point position to place Latex
    * @param options.legendText Legend text of the point
    * @param options.size Radius of the point
    */
@@ -191,6 +193,7 @@ export class PointObject3D extends AppletObject3D {
     options?: {
       shape?: Shape;
       latex?: string;
+      latexOffset?: Vector3;
       legendText?: string;
       size?: number;
     }
@@ -200,6 +203,7 @@ export class PointObject3D extends AppletObject3D {
     this.position = position;
     this.shape = options?.shape;
     this.latex = options?.latex;
+    this.latexOffset = options?.latexOffset;
     this.legendText = options?.legendText;
     this.size = options?.size;
   }
@@ -264,7 +268,6 @@ export class LineSegmentObject3D extends AppletObject3D {
   startPoint: Vector3;
   endPoint: Vector3;
   radius?: number;
-  latex?: string;
   isDashed?: boolean;
   shape?: Shape;
   legendText?: string;
@@ -275,7 +278,6 @@ export class LineSegmentObject3D extends AppletObject3D {
    * @param endPoint End point of the line
    * @param color Color of the line
    * @param options.radius Width of the line
-   * @param options.latex Text shown next to the line
    * @param options.isDashed Whether the line should be dashed
    * @param options.shape Shape of legend item
    * @param options.legendText Text to include in legend
@@ -286,7 +288,6 @@ export class LineSegmentObject3D extends AppletObject3D {
     color: PrimeColor,
     options?: {
       radius?: number;
-      latex?: string;
       isDashed?: boolean;
       latexAlign?: {
         alignX?: 'left' | 'right' | 'center' | null;
@@ -301,18 +302,10 @@ export class LineSegmentObject3D extends AppletObject3D {
     this.startPoint = startPoint;
     this.endPoint = endPoint;
     this.radius = options?.radius;
-    this.latex = options?.latex;
     this.isDashed = options?.isDashed;
     this.shape = options?.shape;
     this.legendText = options?.legendText;
   }
-
-  // public midpoint() {
-  //   const midX = (this.startPoint.x + this.endPoint.x) / 2;
-  //   const midY = (this.startPoint.y + this.endPoint.y) / 2;
-
-  //   return new Vector2(midX, midY);
-  // }
 }
 
 export class InfiniteLineObject3D extends LineSegmentObject3D {
@@ -322,7 +315,6 @@ export class InfiniteLineObject3D extends LineSegmentObject3D {
    * @param end End point of the line
    * @param color Color of the line
    * @param options.radius Width of the line
-   * @param options.latex Text shown next to the line
    * @param options.isDashed Whether the line should be dashed
    * @param options.shape Shape of legend item
    * @param options.legendText Text to include in legend
@@ -333,7 +325,6 @@ export class InfiniteLineObject3D extends LineSegmentObject3D {
     color: PrimeColor,
     options?: {
       radius?: number;
-      latex?: string;
       isDashed?: boolean;
       latexAlign?: {
         alignX?: 'left' | 'right' | 'center' | null;

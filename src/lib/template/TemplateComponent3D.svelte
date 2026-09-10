@@ -86,7 +86,15 @@
   {:else if object instanceof PointObject3D}
     <Point3D position={object.position} color={object.color.toString()} size={object.size} />
     {#if object.latex}
-      <Latex3D position={object.position} latex={object.latex} color={object.color.toString()} />
+      {#if object.latexOffset}
+        <Latex3D
+          position={object.position.add(object.latexOffset)}
+          latex={object.latex}
+          color={object.color.toString()}
+        />
+      {:else}
+        <Latex3D position={object.position} latex={object.latex} color={object.color.toString()} />
+      {/if}
     {/if}
   {:else if object instanceof AngleObject3D}
     <Angle3D
