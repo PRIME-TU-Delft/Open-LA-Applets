@@ -129,7 +129,6 @@
   const AI = $derived(inCenter.clone().sub(draggables[1].position).normalize());
   const BI = $derived(inCenter.clone().sub(draggables[0].position).normalize());
   const AE = $derived(E.clone().sub(A));
-  const BE = $derived(E.clone().sub(B));
   const CE = $derived(E.clone().sub(C));
   const circumRadius = $derived(circumCenter?.clone().sub(A).length());
 
@@ -153,10 +152,7 @@
         PrimeColor.black,
         { width: 1.2 }
       ),
-      new LineFragment(A, E, PrimeColor.blue, {
-        width: 0.08
-      }),
-      new LineFragment(B, E, PrimeColor.cyan, {
+      new LineFragment(A, B, PrimeColor.blue, {
         width: 0.08
       }),
       new LineFragment(A, C, PrimeColor.orange, {
@@ -235,20 +231,12 @@
     position={C.clone().add(CA.clone().multiplyScalar(0.5))}
   />
   <Latex2D
-    latex="e"
+    latex="c"
     alignX="center"
     alignY="center"
-    offset={new Vector2(-AE.y, AE.x).normalize().multiplyScalar(-0.25)}
+    offset={new Vector2(-AB.y, AB.x).normalize().multiplyScalar(-0.25)}
     color={PrimeColor.blue}
-    position={A.clone().add(AE.clone().multiplyScalar(0.5))}
-  />
-  <Latex2D
-    latex="c-e"
-    alignX="center"
-    alignY="center"
-    offset={new Vector2(-BE.y, BE.x).normalize().multiplyScalar(0.25)}
-    color={PrimeColor.cyan}
-    position={B.clone().add(BE.clone().multiplyScalar(0.5))}
+    position={A.clone().add(AB.clone().multiplyScalar(0.5))}
   />
   <Latex2D
     latex="h"
