@@ -215,6 +215,7 @@
         end={endPoint}
         color={object.color.toString()}
         isDashed={object.isDashed}
+        width={object.width}
       />
       {#if object.radiusLatex}
         {@const v = endPoint.clone().add(object.origin.clone()).divideScalar(2)}
