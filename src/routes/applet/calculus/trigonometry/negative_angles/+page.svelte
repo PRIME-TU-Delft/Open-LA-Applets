@@ -7,7 +7,6 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
-  import { Formula, Formulas } from '$lib/utils/Formulas';
   import Line2D from '$lib/d3/Line2D.svelte';
   import Angle2D from '$lib/d3/Angle2D.svelte';
   import Point2D from '$lib/d3/Point2D.svelte';
@@ -86,24 +85,6 @@
   const draggablePoint = [
     new Draggable(new Vector2(re, im), PrimeColor.green, undefined, SnapToGrid)
   ];
-  const formulas = $derived.by(() => {
-    const re = draggablePoint[0].position.x;
-    const im = draggablePoint[0].position.y;
-    const theta = Math.atan2(im, re);
-    return new Formulas(
-      new Formula(
-        '\\theta&=' +
-          (theta / Math.PI)
-            .toFixed(2)
-            .replace('1.00', '')
-            .replace(/\.?0+$/, '') +
-          '\\pi',
-        undefined,
-        undefined,
-        PrimeColor.orange
-      )
-    ).align();
-  });
 </script>
 
 <Canvas2D
