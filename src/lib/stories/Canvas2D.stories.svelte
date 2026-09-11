@@ -58,6 +58,32 @@
   {template}
 />
 
+<!-- `axis.colorX`/`axis.colorY` color the grid lines, tick marks and tick numbers for each axis independently. -->
+<Story
+  name="Colored axis"
+  args={{
+    axis: {
+      colorX: PrimeColor.raspberry,
+      colorY: PrimeColor.blue
+    }
+  }}
+  {template}
+/>
+
+<!-- `labels.xColor`/`labels.yColor` color the axis label text. They fall back to `axis.colorX`/`axis.colorY`, then black, when not set. -->
+<Story
+  name="Colored axis labels"
+  args={{
+    labels: {
+      xLabel: 'x',
+      yLabel: '\\text{error}',
+      xColor: PrimeColor.raspberry,
+      yColor: PrimeColor.blue
+    }
+  }}
+  {template}
+/>
+
 <!-- This canvas is smaller than the regular canvas. This can be useful in combination with `cameraZoom` -->
 <Story name="Adjust tickLength" args={{ axis: { length: 5 } }} {template} />
 

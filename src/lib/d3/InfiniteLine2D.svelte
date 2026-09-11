@@ -5,6 +5,7 @@
     color?: string;
     width?: number;
     isDashed?: boolean;
+    overruledLength?: number;
   };
 </script>
 
@@ -18,18 +19,19 @@
     direction = new Vector2(1, 1),
     color = 'black',
     width = LINE_WIDTH,
-    isDashed = false
+    isDashed = false,
+    overruledLength = GRID_SIZE_2D
   }: InfiniteLine2DProps = $props();
 
   const projection = getProjection2D();
   const scaledOrigin = $derived(projection.toScreen(origin));
 
   const dir = $derived(projection.toScreenDir(direction));
-  const start = $derived(dir.clone().multiplyScalar(GRID_SIZE_2D).add(scaledOrigin));
+  const start = $derived(dir.clone().multiplyScalar(overruledLength).add(scaledOrigin));
   const end = $derived(
     dir
       .clone()
-      .multiplyScalar(GRID_SIZE_2D * -1)
+      .multiplyScalar(overruledLength * -1)
       .add(scaledOrigin)
   );
 </script>

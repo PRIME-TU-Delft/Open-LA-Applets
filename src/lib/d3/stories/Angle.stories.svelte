@@ -40,3 +40,10 @@
   args={{ hasHead: true, startAngle: 0, endAngle: Math.PI / 2 }}
   {template}
 />
+
+<!-- headLength overrides the arrowhead size (default is max(7 * width, 0.4)) -->
+<Story
+  name="With custom arrow head length"
+  args={{ hasHead: true, startAngle: 0, endAngle: Math.PI / 2, headLength: 1 }}
+  {template}
+/>

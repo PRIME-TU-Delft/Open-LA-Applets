@@ -13,9 +13,9 @@
   import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import Vector2D from '$lib/d3/Vector2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -32,9 +32,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(4.5, 2);
-  cameraZoom = 1.5;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-0.5, -1), // bottom-left
+    new Vector2(9.5, 5), // top-right
+    0 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -43,8 +45,8 @@
   // (remove if unnecessary)
   axis = {
     showOrigin: true,
-    showAxisNumbersX: false,
-    showAxisNumbersY: false,
+    showAxisNumbersX: true,
+    showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
     skipX: 0,
@@ -186,8 +188,7 @@
 </script>
 
 <Canvas2D
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}

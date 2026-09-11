@@ -12,6 +12,7 @@
     dimOnHover?: boolean;
     background?: string;
     padding?: string;
+    compact?: boolean;
   };
 </script>
 
@@ -34,8 +35,11 @@
     alignY = null,
     dimOnHover = false,
     background = undefined,
-    padding = '0.2em'
+    padding = '0.2em',
+    compact = undefined
   }: Latex2DProps = $props();
+
+  const effectiveCompact = $derived(compact ?? background !== undefined);
 
   const projection = getProjection2D();
 
@@ -69,11 +73,14 @@
   });
 
   const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+  const REFERENCE_WIDTH = 500; // baseline canvas width text sizing is calibrated against
+
+  const defWidth = (getContext('default-width') as number | undefined) ?? REFERENCE_WIDTH; // baseline canvas width text sizing is calibrated against
 
   const scale = $derived.by(() => {
-    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+    if (dontScaleWithDefaultZoom) return 0.03 * fontSize;
 
-    return (0.02 * fontSize) / defZoom;
+    return ((0.03 * fontSize) / defZoom) * (REFERENCE_WIDTH / defWidth);
   });
 </script>
 
@@ -85,9 +92,9 @@
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="mathml" {style} compact={effectiveCompact} />
     {:else}
-      <Latex {latex} {color} outputType="html" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="html" {style} compact={effectiveCompact} />
     {/if}
   </foreignObject>
 </g>

@@ -9,9 +9,9 @@
   import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -78,15 +78,15 @@
     return -1.5 * (x - c) ** 2;
   }
   const appletObjectsShared: AppletObject[] = [
-    new Text('\\Huge a', new Vector2(a, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE a', new Vector2(a, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge b', new Vector2(b, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE b', new Vector2(b, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     }),
-    new Text('\\Huge c', new Vector2(c, -0.1), PrimeColor.grey, {
+    new Text('\\LARGE c', new Vector2(c, -0.1), PrimeColor.grey, {
       alignX: 'center',
       alignY: 'top'
     })
@@ -138,8 +138,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(2.5, 1.5);
-  cameraZoom = 1.7;
+  initialViewBox = new ViewBox(
+    new Vector2(-2, -1), // bottom-left
+    new Vector2(7, 4), // top-right
+    0 // margin
+  );
 
   // (remove if unnecessary)
   axis = {
@@ -214,8 +217,7 @@
 <CanvasGrid rows={2} columns={2}>
   <GridCanvas2D
     draggables={[draggablePoint[0]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -240,8 +242,7 @@
 
   <GridCanvas2D
     draggables={[draggablePoint[1]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -266,8 +267,7 @@
 
   <GridCanvas2D
     draggables={[draggablePoint[2]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -292,8 +292,7 @@
 
   <GridCanvas2D
     draggables={[draggablePoint[3]]}
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}

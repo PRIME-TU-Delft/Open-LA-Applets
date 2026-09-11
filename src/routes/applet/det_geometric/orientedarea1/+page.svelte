@@ -14,8 +14,8 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
 
   const draggables = [
-    new Draggable(new Vector2(3, 1), PrimeColor.raspberry, 'u'),
-    new Draggable(new Vector2(0.5, 2), PrimeColor.darkGreen, 'v')
+    new Draggable(new Vector2(3, 1), PrimeColor.raspberry),
+    new Draggable(new Vector2(0.5, 2), PrimeColor.darkGreen)
   ];
 
   const u = $derived(draggables[0].position);
@@ -36,7 +36,7 @@
     {#snippet children(endPoint)}
       <Latex2D
         latex={'\\mathbf{u}'}
-        offset={new Vector2(0.2, -0.1)}
+        offset={new Vector2(0.2, 0.2)}
         position={endPoint.clone().multiplyScalar(0.5)}
         color={PrimeColor.raspberry}
       />
@@ -48,11 +48,11 @@
     {#snippet children(endPoint)}
       <Latex2D
         latex={'\\mathbf{v}'}
-        offset={new Vector2(0.1, -0.1)}
+        offset={new Vector2(0.2, 0.6)}
         position={endPoint.clone().multiplyScalar(0.5)}
         color={PrimeColor.darkGreen}
       />
-      <Latex2D latex="B" extend={0.4} offset={new Vector2(-0.2, 0)} position={endPoint} />
+      <Latex2D latex="B" extend={0.4} offset={new Vector2(-0.2, 0.4)} position={endPoint} />
     {/snippet}
   </Vector2D>
 
