@@ -1,0 +1,196 @@
+name: Screenshot Diff
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: screenshot-diff-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  DIFF_THRESHOLD: '0.1'
+
+jobs:
+  pr-screenshots:
+    name: Render PR screenshots
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Chromium deps
+        run: pnpm exec puppeteer browsers install chrome
+
+      - name: Build
+        run: pnpm build
+
+      - name: Generate screenshots
+        run: pnpm screenshots
+
+      - name: Upload PR screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-screenshots
+          path: build/client/applet
+          retention-days: 7
+
+  main-screenshots:
+    name: Render/restore main baseline screenshots
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - name: Checkout main at PR base SHA
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: Restore main baseline cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: main-screenshots
+          key: screenshots-main-${{ github.event.pull_request.base.sha }}
+
+      - name: Set up pnpm
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Install Chromium deps
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm exec puppeteer browsers install chrome
+
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm build
+
+      - name: Generate screenshots
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm screenshots
+
+      - name: Move screenshots into cache path
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: mv build/client/applet main-screenshots
+
+      - name: Upload main screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-screenshots
+          path: main-screenshots
+          retention-days: 7
+
+  compare:
+    name: Diff screenshots and comment
+    needs: [pr-screenshots, main-screenshots]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Download PR screenshots
+        uses: actions/download-artifact@v5
+        with:
+          name: pr-screenshots
+          path: pr-screenshots
+
+      - name: Download main screenshots
+        uses: actions/download-artifact@v5
+        with:
+          name: main-screenshots
+          path: main-screenshots
+
+      - name: Run diff
+        run: |
+          pnpm diff-screenshots \
+            --before main-screenshots \
+            --after pr-screenshots \
+            --output screenshot-diff \
+            --threshold "$DIFF_THRESHOLD"
+
+      - name: Upload diff artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diff
+          path: screenshot-diff
+          retention-days: 14
+
+      - name: Upsert PR comment
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- screenshot-diff-report -->';
+            const summary = fs.readFileSync('screenshot-diff/summary.md', 'utf-8');
+            const body = `${marker}\n## Screenshot diff report\n\n${summary}\n\n` +
+              `Before/after/diff images are attached as the \`screenshot-diff\` workflow artifact ` +
+              `on this run: ${context.payload.pull_request.html_url}/checks`;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number
+            });
+
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body
+              });
+            }
