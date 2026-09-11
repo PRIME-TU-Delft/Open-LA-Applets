@@ -11,6 +11,7 @@
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
+  import Point2D from '$lib/d3/Point2D.svelte';
 
   let mu_x: number = $state(0);
   let mu_y: number = $state(0);
@@ -100,8 +101,6 @@
     }
   });
 
-  let hoveredPoint: number | null = $state(null);
-
   const dists = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const ptVals = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
   const formulas = $derived.by(() => {
@@ -190,7 +189,7 @@
   <Latex2D latex={`\\text{10}`} position={new Vector2(-0.15, 0.2)} color={PrimeColor.black} />
 
   {#each points as point, i (i)}
-    <Circle2D
+    <Point2D
       radius={0.15}
       color={Math.sqrt(point.x ** 2 + point.y ** 2) <= 10
         ? PrimeColor.darkBlue
@@ -199,33 +198,10 @@
       fill={Math.sqrt(point.x ** 2 + point.y ** 2) <= 10
         ? PrimeColor.darkBlue
         : PrimeColor.raspberry}
-    />
-
-    <circle
-      cx={point.x}
-      cy={point.y}
-      r={0.4}
-      fill="transparent"
-      stroke="none"
-      role="presentation"
-      onmouseenter={() => (hoveredPoint = i)}
-      onmouseleave={() => (hoveredPoint = null)}
+      showTextOnlyOnHover={true}
+      text={`\\left(${point.x.toFixed(2)},\\,${point.y.toFixed(2)}\\right)`}
+      offset={new Vector2(0.2, 0.4)}
+      fontSize={1.6}
     />
   {/each}
-
-  {#if hoveredPoint !== null}
-    {@const point = points[hoveredPoint]}
-
-    <Latex2D
-      latex={`\\left(${point.x.toFixed(2)},\\,${point.y.toFixed(2)}\\right)`}
-      position={new Vector2(point.x, point.y)}
-      offset={new Vector2(0.2, -0.2)}
-      alignX="left"
-      alignY="bottom"
-      color={PrimeColor.black}
-      background="#eaeaea59"
-      fontSize={1.5}
-      padding="0.15em"
-    />
-  {/if}
 </Canvas2D>
