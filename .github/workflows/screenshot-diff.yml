@@ -59,17 +59,23 @@ jobs:
     outputs:
       cache-hit: ${{ steps.cache.outputs.cache-hit }}
     steps:
-      - name: Checkout main at PR base SHA
+      # base.sha only updates on events for this PR, not when main advances
+      # via other merged PRs, so it can be stale. Use the branch name instead.
+      - name: Checkout main baseline
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - name: Resolve main baseline SHA
+        id: base
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Restore main baseline cache
         id: cache
         uses: actions/cache@v4
         with:
           path: main-screenshots
-          key: screenshots-main-${{ github.event.pull_request.base.sha }}
+          key: screenshots-main-${{ steps.base.outputs.sha }}
 
       - name: Set up pnpm
         if: steps.cache.outputs.cache-hit != 'true'
