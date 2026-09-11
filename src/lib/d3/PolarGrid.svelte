@@ -14,7 +14,7 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import Latex2D from './Latex2D.svelte';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   const projection = getProjection2D();
 

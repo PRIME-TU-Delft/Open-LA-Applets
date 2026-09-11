@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   export type Rectangle2DProps = {
     points: [Vector2, Vector2];

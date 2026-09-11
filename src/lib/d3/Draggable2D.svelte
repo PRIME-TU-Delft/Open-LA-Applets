@@ -7,7 +7,7 @@
   import { type Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   type DraggableProps = {
     draggable: Draggable;
@@ -23,8 +23,8 @@
   let dragPosition: Vector2 = $state(draggable.value.clone());
   let isDragging = $state(false);
 
-  const dragPosScreen = $derived(projection.toScreen(dragPosition));
-  const valueScreen = $derived(projection.toScreen(draggable.value));
+  const screenDragPosition = $derived(projection.toScreen(dragPosition));
+  const screenValue = $derived(projection.toScreen(draggable.value));
 
   function dragstarted(_: DragEvent) {
     isDragging = true;
@@ -97,11 +97,11 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+    style="--x:{screenDragPosition.x}; --y:{screenDragPosition.y}"
   />
   <rect
-    x={valueScreen.x - draggable.radius}
-    y={valueScreen.y - draggable.radius}
+    x={screenValue.x - draggable.radius}
+    y={screenValue.y - draggable.radius}
     width={draggable.radius * 2}
     height={draggable.radius * 2}
     fill={draggable.color}
@@ -121,10 +121,10 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+    style="--x:{screenDragPosition.x}; --y:{screenDragPosition.y}"
   />
   <polygon
-    points={`${valueScreen.x},${valueScreen.y + triRadius} ${valueScreen.x + dx},${valueScreen.y - dy} ${valueScreen.x - dx},${valueScreen.y - dy}`}
+    points={`${screenValue.x},${screenValue.y + triRadius} ${screenValue.x + dx},${screenValue.y - dy} ${screenValue.x - dx},${screenValue.y - dy}`}
     fill={draggable.color}
   />
 {:else if draggable.shape === 'diamond'}
@@ -138,10 +138,10 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+    style="--x:{screenDragPosition.x}; --y:{screenDragPosition.y}"
   />
   <polygon
-    points={`${valueScreen.x},${valueScreen.y - diaRadius} ${valueScreen.x + diaRadius},${valueScreen.y} ${valueScreen.x},${valueScreen.y + diaRadius} ${valueScreen.x - diaRadius},${valueScreen.y}`}
+    points={`${screenValue.x},${screenValue.y - diaRadius} ${screenValue.x + diaRadius},${screenValue.y} ${screenValue.x},${screenValue.y + diaRadius} ${screenValue.x - diaRadius},${screenValue.y}`}
     fill={draggable.color}
   />
 {:else}
@@ -153,9 +153,9 @@
     role="button"
     tabindex="0"
     onmousedown={() => activityState.enable()}
-    style="--x:{dragPosScreen.x}; --y:{dragPosScreen.y}"
+    style="--x:{screenDragPosition.x}; --y:{screenDragPosition.y}"
   />
-  <circle cx={valueScreen.x} cy={valueScreen.y} r={draggable.radius} fill={draggable.color} />
+  <circle cx={screenValue.x} cy={screenValue.y} r={draggable.radius} fill={draggable.color} />
 {/if}
 
 {#if children}
@@ -164,8 +164,8 @@
 
 <g bind:this={g}>
   <circle
-    cx={valueScreen.x}
-    cy={valueScreen.y}
+    cx={screenValue.x}
+    cy={screenValue.y}
     r={INTERACTIVITY_RADIUS - POINT_SIZE + draggable.radius}
     opacity="0"
   />

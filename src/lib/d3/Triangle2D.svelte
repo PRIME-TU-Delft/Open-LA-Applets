@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   export type Triangle2DProps = {
     points: Vector2[];
@@ -10,7 +10,7 @@
   let { points, color = 'black' }: Triangle2DProps = $props();
 
   const projection = getProjection2D();
-  const scaledPoints = $derived(points.map((p) => projection.toScreen(p)));
+  const screenPoints = $derived(points.map((p) => projection.toScreen(p)));
 </script>
 
 <!-- @component
@@ -22,4 +22,4 @@
 <Triangle points={[new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 1)]} />
 -->
 
-<polygon points={scaledPoints.map((p) => p.x + ',' + p.y).join(' ')} fill={color} />
+<polygon points={screenPoints.map((p) => p.x + ',' + p.y).join(' ')} fill={color} />

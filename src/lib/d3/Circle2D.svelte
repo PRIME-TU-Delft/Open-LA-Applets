@@ -1,7 +1,7 @@
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   export type Circle2DProps = {
     position?: Vector2;
@@ -22,7 +22,10 @@
   }: Circle2DProps = $props();
 
   const projection = getProjection2D();
-  const scaledPos = $derived(projection.toScreen(position));
+  const screenPosition = $derived(projection.toScreen(position));
+  // The radius is a world-space extent, so it scales per axis (non-uniform scale gives an ellipse).
+  const screenRadiusX = $derived(projection.xToScreen(radius));
+  const screenRadiusY = $derived(projection.yToScreen(radius));
 </script>
 
 <!-- @component
@@ -39,11 +42,11 @@
 
 -->
 
-{#if projection.scaleX === projection.scaleY}
+{#if screenRadiusX === screenRadiusY}
   <circle
-    cx={scaledPos.x}
-    cy={scaledPos.y}
-    r={radius * projection.scaleX}
+    cx={screenPosition.x}
+    cy={screenPosition.y}
+    r={screenRadiusX}
     {fill}
     stroke={color}
     stroke-width={width}
@@ -51,10 +54,10 @@
   />
 {:else}
   <ellipse
-    cx={scaledPos.x}
-    cy={scaledPos.y}
-    rx={radius * projection.scaleX}
-    ry={radius * projection.scaleY}
+    cx={screenPosition.x}
+    cy={screenPosition.y}
+    rx={screenRadiusX}
+    ry={screenRadiusY}
     {fill}
     stroke={color}
     stroke-width={width}

@@ -24,7 +24,7 @@
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex2D from './Latex2D.svelte';
-  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let {
     length = GRID_SIZE_2D,
@@ -47,13 +47,18 @@
 
   const projection = getProjection2D();
 
-  // Convert additionalTicks from display-space to world-space
-  const worldAdditionalTicksX = $derived(additionalTicksX.map((tick) => tick * projection.scaleX));
-  const worldAdditionalTicksY = $derived(additionalTicksY.map((tick) => tick * projection.scaleY));
+  // The grid is drawn in screen space: grid index i sits at screen coordinate i.
+  // Tick labels show world values. additionalTicks are given in world space.
+  const screenAdditionalTicksX = $derived(
+    additionalTicksX.map((tick) => projection.xToScreen(tick))
+  );
+  const screenAdditionalTicksY = $derived(
+    additionalTicksY.map((tick) => projection.yToScreen(tick))
+  );
 
-  // The axis grid is drawn in screen/index space; its Latex2D children must NOT
-  // re-project, so publish an identity projection to the subtree.
-  setProjection2D(IDENTITY_PROJECTION);
+  // Latex2D projects its position, so screen-space label spots go in as world coordinates.
+  const labelPosition = (screenX: number, screenY: number) =>
+    projection.toWorld(new Vector2(screenX, screenY));
 
   // Generate indeces for the grid lines from -length to length including 0
   let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
@@ -89,7 +94,7 @@
 <g>
   {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
-    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, worldAdditionalTicksX)}
+    {#if index != 0 && showGridLinesX && showSkippedTick(index, skipX, screenAdditionalTicksX)}
       <line
         x1={index}
         y1={-length}
@@ -112,16 +117,16 @@
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipX, worldAdditionalTicksX)}
+    {#if showSkippedTick(index, skipX, screenAdditionalTicksX)}
       <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke={colorX} stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, worldAdditionalTicksX)}
+    {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
-          latex={getTickText(index / projection.scaleX, 'x')}
-          position={new Vector2(index, -0.15)}
+          latex={getTickText(projection.xToWorld(index), 'x')}
+          position={labelPosition(index, -0.15)}
           alignX="center"
           color={colorX}
         />
@@ -130,48 +135,48 @@
   {/each}
 
   {#each additionalTicksX as index, idx (idx)}
-    {@const worldIndex = worldAdditionalTicksX[idx]}
+    {@const screenIndex = screenAdditionalTicksX[idx]}
     <!-- Grid Lines -->
-    {#if worldIndex != 0 && showGridLinesX && showSkippedTick(worldIndex, skipX, worldAdditionalTicksX)}
+    {#if screenIndex != 0 && showGridLinesX && showSkippedTick(screenIndex, skipX, screenAdditionalTicksX)}
       <line
-        x1={worldIndex}
+        x1={screenIndex}
         y1={-length}
-        x2={worldIndex}
+        x2={screenIndex}
         y2={length}
         stroke={colorX + PrimeColor.opacity(0.5)}
-        stroke-width={stokeWidth(worldIndex, logarithmicX)}
+        stroke-width={stokeWidth(screenIndex, logarithmicX)}
       />
     {/if}
-    {#if worldIndex == 0 && showAxisY}
+    {#if screenIndex == 0 && showAxisY}
       <!-- Y axis -->
       <line
-        x1={worldIndex}
+        x1={screenIndex}
         y1={-length}
-        x2={worldIndex}
+        x2={screenIndex}
         y2={length}
         stroke={colorY + PrimeColor.opacity(0.5)}
-        stroke-width={stokeWidth(worldIndex, logarithmicX)}
+        stroke-width={stokeWidth(screenIndex, logarithmicX)}
       />
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(worldIndex, skipX, worldAdditionalTicksX)}
+    {#if showSkippedTick(screenIndex, skipX, screenAdditionalTicksX)}
       <line
-        x1={worldIndex}
+        x1={screenIndex}
         y1={-0.1}
-        x2={worldIndex}
+        x2={screenIndex}
         y2={0.1}
         stroke={colorX}
         stroke-width={0.02}
       />
     {/if}
 
-    {#if worldIndex != 0 && showAxisNumbersX && showSkippedTick(worldIndex, skipX, worldAdditionalTicksX)}
+    {#if screenIndex != 0 && showAxisNumbersX && showSkippedTick(screenIndex, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
-      {#if worldIndex <= length && worldIndex >= -length}
+      {#if screenIndex <= length && screenIndex >= -length}
         <Latex2D
           latex={getTickText(index, 'x')}
-          position={new Vector2(worldIndex, -0.15)}
+          position={labelPosition(screenIndex, -0.15)}
           alignX="center"
           color={colorX}
         />
@@ -181,7 +186,7 @@
 
   {#each axisIndicesY as index, idx (idx)}
     <!-- Grid Lines -->
-    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, worldAdditionalTicksY)}
+    {#if index != 0 && showGridLinesY && showSkippedTick(index, skipY, screenAdditionalTicksY)}
       <line
         x1={-length}
         y1={index}
@@ -204,16 +209,16 @@
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(index, skipY, worldAdditionalTicksY)}
+    {#if showSkippedTick(index, skipY, screenAdditionalTicksY)}
       <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke={colorY} stroke-width={0.02} />
     {/if}
 
-    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, worldAdditionalTicksY)}
+    {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
         <Latex2D
-          latex={getTickText(index / projection.scaleY, 'y')}
-          position={new Vector2(yAxisTextX, index)}
+          latex={getTickText(projection.yToWorld(index), 'y')}
+          position={labelPosition(yAxisTextX, index)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
           color={colorY}
@@ -223,48 +228,48 @@
   {/each}
 
   {#each additionalTicksY as index, idx (idx)}
-    {@const worldIndex = worldAdditionalTicksY[idx]}
+    {@const screenIndex = screenAdditionalTicksY[idx]}
     <!-- Grid Lines -->
-    {#if worldIndex != 0 && showGridLinesY && showSkippedTick(worldIndex, skipY, worldAdditionalTicksY)}
+    {#if screenIndex != 0 && showGridLinesY && showSkippedTick(screenIndex, skipY, screenAdditionalTicksY)}
       <line
         x1={-length}
-        y1={worldIndex}
+        y1={screenIndex}
         x2={length}
-        y2={worldIndex}
+        y2={screenIndex}
         stroke={colorY + PrimeColor.opacity(0.5)}
-        stroke-width={stokeWidth(worldIndex, logarithmicY)}
+        stroke-width={stokeWidth(screenIndex, logarithmicY)}
       />
     {/if}
-    {#if worldIndex == 0 && showAxisX}
+    {#if screenIndex == 0 && showAxisX}
       <!-- X axis -->
       <line
         x1={-length}
-        y1={worldIndex}
+        y1={screenIndex}
         x2={length}
-        y2={worldIndex}
+        y2={screenIndex}
         stroke={colorX + PrimeColor.opacity(0.5)}
-        stroke-width={stokeWidth(worldIndex, logarithmicY)}
+        stroke-width={stokeWidth(screenIndex, logarithmicY)}
       />
     {/if}
 
     <!-- Tick marks -->
-    {#if showSkippedTick(worldIndex, skipY, worldAdditionalTicksY)}
+    {#if showSkippedTick(screenIndex, skipY, screenAdditionalTicksY)}
       <line
         x1={-0.1}
-        y1={worldIndex}
+        y1={screenIndex}
         x2={0.1}
-        y2={worldIndex}
+        y2={screenIndex}
         stroke={colorY}
         stroke-width={0.02}
       />
     {/if}
 
-    {#if worldIndex != 0 && showAxisNumbersY && showSkippedTick(worldIndex, skipY, worldAdditionalTicksY)}
+    {#if screenIndex != 0 && showAxisNumbersY && showSkippedTick(screenIndex, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
-      {#if worldIndex <= length && worldIndex >= -length}
+      {#if screenIndex <= length && screenIndex >= -length}
         <Latex2D
           latex={getTickText(index, 'y')}
-          position={new Vector2(yAxisTextX, worldIndex)}
+          position={labelPosition(yAxisTextX, screenIndex)}
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
           color={colorY}

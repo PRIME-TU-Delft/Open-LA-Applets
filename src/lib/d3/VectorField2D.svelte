@@ -19,15 +19,14 @@
 </script>
 
 <script>
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
   const projection = getProjection2D();
-  const sx = projection.scaleX;
-  const sy = projection.scaleY;
 
   let {
     f,
-    xRange = [-GRID_SIZE_2D / sx, GRID_SIZE_2D / sx],
-    yRange = [-GRID_SIZE_2D / sy, GRID_SIZE_2D / sy],
+    // Default: the world range that fills the visible grid, whatever the canvas scale.
+    xRange = [projection.xToWorld(-GRID_SIZE_2D), projection.xToWorld(GRID_SIZE_2D)],
+    yRange = [projection.yToWorld(-GRID_SIZE_2D), projection.yToWorld(GRID_SIZE_2D)],
     step = 1,
     color = PrimeColor.black,
     normalize = true,

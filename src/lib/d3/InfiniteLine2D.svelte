@@ -12,7 +12,7 @@
 <script lang="ts">
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { Vector2 } from 'three';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let {
     origin = new Vector2(0, 0),
@@ -24,15 +24,15 @@
   }: InfiniteLine2DProps = $props();
 
   const projection = getProjection2D();
-  const scaledOrigin = $derived(projection.toScreen(origin));
+  const screenOrigin = $derived(projection.toScreen(origin));
 
   const dir = $derived(projection.toScreenDir(direction));
-  const start = $derived(dir.clone().multiplyScalar(overruledLength).add(scaledOrigin));
+  const start = $derived(dir.clone().multiplyScalar(overruledLength).add(screenOrigin));
   const end = $derived(
     dir
       .clone()
       .multiplyScalar(overruledLength * -1)
-      .add(scaledOrigin)
+      .add(screenOrigin)
   );
 </script>
 

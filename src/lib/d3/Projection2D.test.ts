@@ -41,6 +41,26 @@ describe('Projection2D', () => {
     expect(input.y).toBe(5);
   });
 
+  it('scalar mappings match toScreen/toWorld per axis', () => {
+    expect(p.xToScreen(3)).toBe(6);
+    expect(p.yToScreen(5)).toBe(20);
+    expect(p.xToWorld(6)).toBe(3);
+    expect(p.yToWorld(20)).toBe(5);
+  });
+
+  it('toScreenFunction maps a world-space function onto screen space', () => {
+    const screenSquare = p.toScreenFunction((x) => x * x);
+    // screen x 6 -> world x 3 -> world y 9 -> screen y 36
+    expect(screenSquare(6)).toBe(36);
+  });
+
+  it('toScreenFunction points project back onto the world graph', () => {
+    const f = (x: number) => Math.sin(x);
+    const screenF = p.toScreenFunction(f);
+    const world = p.toWorld(new Vector2(1.3, screenF(1.3)));
+    expect(world.y).toBeCloseTo(f(world.x));
+  });
+
   it('IDENTITY_PROJECTION is a no-op', () => {
     const v = new Vector2(7, 9);
     expect(IDENTITY_PROJECTION.toScreen(v)).toEqual(v);

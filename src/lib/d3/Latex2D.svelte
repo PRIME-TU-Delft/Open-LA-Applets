@@ -20,7 +20,7 @@
   import Latex from '$lib/components/Latex.svelte';
   import { cameraState } from '$lib/stores/camera.svelte';
   import { getContext } from 'svelte';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
   import { Vector2 } from 'three';
 
   let {
@@ -43,9 +43,9 @@
 
   const projection = getProjection2D();
 
-  const scaledPosition = $derived(projection.toScreen(position));
+  const screenPosition = $derived(projection.toScreen(position));
 
-  let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
+  let extendedOffset = $derived(screenPosition.clone().normalize().multiplyScalar(extend));
 
   let style = $derived.by(() => {
     const base = `display: inline-block; width: max-content;${background !== undefined ? ` background-color: ${background}; padding: ${padding};` : ''}`;
@@ -86,7 +86,7 @@
 
 <g
   class={dimOnHover ? 'latex-dim' : ''}
-  transform="translate({scaledPosition.x + offset.x + extendedOffset.x}, {scaledPosition.y +
+  transform="translate({screenPosition.x + offset.x + extendedOffset.x}, {screenPosition.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >

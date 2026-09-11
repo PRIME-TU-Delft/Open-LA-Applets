@@ -12,13 +12,13 @@
 
 <script lang="ts">
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let { start, end, color = 'black', width = LINE_WIDTH, isDashed = false }: Line2DProps = $props();
 
   const projection = getProjection2D();
-  const startS = $derived(projection.toScreen(start));
-  const endS = $derived(projection.toScreen(end));
+  const screenStart = $derived(projection.toScreen(start));
+  const screenEnd = $derived(projection.toScreen(end));
 </script>
 
 <!-- @component
@@ -35,10 +35,10 @@
 -->
 
 <line
-  x1={startS.x}
-  y1={startS.y}
-  x2={endS.x}
-  y2={endS.y}
+  x1={screenStart.x}
+  y1={screenStart.y}
+  x2={screenEnd.x}
+  y2={screenEnd.y}
   stroke={color}
   stroke-width={width}
   stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}

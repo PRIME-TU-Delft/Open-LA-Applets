@@ -30,7 +30,7 @@
   } from '$lib/template/TemplateAppletObjects';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let {
     center = -3,
@@ -53,7 +53,7 @@
 
   const projection = getProjection2D();
   const origin = $derived(new Vector2(center, ceilingTop));
-  const scaledOrigin = $derived(projection.toScreen(origin));
+  const screenOrigin = $derived(projection.toScreen(origin));
 
   const ceilingStart = $derived(new Vector2(center - ceilingWidth / 2, ceilingTop));
   const startSpring = $derived(new Vector2(ceilingWidth / 2, -ceilingThickness).add(ceilingStart));
@@ -146,6 +146,6 @@
   });
 </script>
 
-<g transform="rotate({rotation}, {scaledOrigin.x}, {scaledOrigin.y})">
+<g transform="rotate({rotation}, {screenOrigin.x}, {screenOrigin.y})">
   <TemplateComponent objects={templatedObjects} />
 </g>

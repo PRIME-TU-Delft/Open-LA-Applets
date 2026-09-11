@@ -12,7 +12,7 @@
   import { Vector2 } from 'three';
   import Line from './Line2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let {
     vs,
@@ -23,14 +23,16 @@
   }: RightAngle2DProps = $props();
 
   const projection = getProjection2D();
-  // This component builds screen-space geometry; its children must not re-project.
-  setProjection2D(IDENTITY_PROJECTION);
 
-  const scaledOrigin = $derived(projection.toScreen(origin));
-
-  //resize vectors
+  //resize vectors; the marker size is a screen-space size, so it does not scale
   const u1 = $derived(vs[0].clone().multiplyScalar(size / vs[0].length()));
   const u2 = $derived(vs[1].clone().multiplyScalar(size / vs[1].length()));
+
+  // The marker is laid out in screen space, then handed to Line2D as world coordinates.
+  const screenOrigin = $derived(projection.toScreen(origin));
+  const leg1End = $derived(projection.toWorld(u1.clone().add(screenOrigin)));
+  const leg2End = $derived(projection.toWorld(u2.clone().add(screenOrigin)));
+  const corner = $derived(projection.toWorld(u1.clone().add(u2).add(screenOrigin)));
 </script>
 
 <!-- @component 
@@ -49,16 +51,6 @@
 
 <!-- draw two lines to represent right angle if perpendicular -->
 {#if Math.abs(u1.dot(u2)) <= 0.005 && !u1.equals(u2)}
-  <Line
-    {color}
-    width={lineWidth}
-    start={u1.clone().add(scaledOrigin)}
-    end={u1.clone().add(u2).add(scaledOrigin)}
-  />
-  <Line
-    {color}
-    width={lineWidth}
-    start={u2.clone().add(scaledOrigin)}
-    end={u1.clone().add(u2).add(scaledOrigin)}
-  />
+  <Line {color} width={lineWidth} start={leg1End} end={corner} />
+  <Line {color} width={lineWidth} start={leg2End} end={corner} />
 {/if}

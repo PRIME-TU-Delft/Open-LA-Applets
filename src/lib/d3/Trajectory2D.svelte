@@ -3,8 +3,8 @@
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import Point2D from './Point2D.svelte';
-  import Triangle2D from './Triangle2D.svelte';
-  import { getProjection2D, setProjection2D, IDENTITY_PROJECTION } from '$lib/utils/Projection2D';
+  import ArrowHead2D from './ArrowHead2D.svelte';
+  import { getProjection2D } from './Projection2D';
 
   type Trajectory2DProps = {
     start: Vector2;
@@ -25,8 +25,7 @@
   }: Trajectory2DProps = $props();
 
   const projection = getProjection2D();
-  // Points are built in screen space; children must not re-project.
-  setProjection2D(IDENTITY_PROJECTION);
+  // trajectoryPoints are in screen space: they feed the path and the fixed-size arrowheads.
 
   const c1 = $derived(0.25 * start.x + 0.5 * start.y);
   const c2 = $derived(0.25 * start.x - 0.5 * start.y);
@@ -94,33 +93,29 @@
 
 {#each trajectoryPoints as point, i (i)}
   {#if i == 0}
-    <Point2D position={point} {color} radius={width ? width * 2 : undefined} />
+    <Point2D position={start} {color} radius={width ? width * 2 : undefined} />
   {:else if i == trajectoryPoints.length - 1}
     {@const lastPoint = trajectoryPoints[i - 1]}
-    {@const dir = point.clone().sub(lastPoint).normalize().multiplyScalar(0.5)}
     {@const size = (width ?? 0.5) * 2}
 
-    <g
-      transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-    >
-      <Triangle2D
-        points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-        {color}
-      />
-    </g>
+    <ArrowHead2D
+      screenPosition={point}
+      angle={point.clone().sub(lastPoint).angle()}
+      length={size * 2}
+      halfWidth={size}
+      {color}
+    />
   {:else}
     {@const nextPoint = trajectoryPoints[i + 1]}
-    {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
     {@const size = (width ?? 0.5) * 2}
 
-    <g
-      transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-    >
-      <Triangle2D
-        points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-        {color}
-      />
-    </g>
+    <ArrowHead2D
+      screenPosition={point}
+      angle={nextPoint.clone().sub(point).angle()}
+      length={size * 2}
+      halfWidth={size}
+      {color}
+    />
   {/if}
 {/each}
 

@@ -19,7 +19,7 @@
   import { Vector2 } from 'three';
   import Latex2D from './Latex2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getProjection2D } from '$lib/utils/Projection2D';
+  import { getProjection2D } from './Projection2D';
 
   let {
     position = new Vector2(0, 0),
@@ -36,14 +36,14 @@
   }: Point2DProps = $props();
 
   const projection = getProjection2D();
-  const scaledPos = $derived(projection.toScreen(position));
+  const screenPosition = $derived(projection.toScreen(position));
 </script>
 
 <g class="point2d" {opacity}>
   {#if shape == 'square'}
     <rect
-      x={scaledPos.x - radius}
-      y={scaledPos.y - radius}
+      x={screenPosition.x - radius}
+      y={screenPosition.y - radius}
       height={radius * 2}
       width={radius * 2}
       stroke={color}
@@ -54,9 +54,9 @@
     {#if pulse}
       <rect
         class="pulse"
-        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
-        x={scaledPos.x - radius}
-        y={scaledPos.y - radius}
+        style="transform-origin: {screenPosition.x}px {screenPosition.y}px;"
+        x={screenPosition.x - radius}
+        y={screenPosition.y - radius}
         height={radius * 2}
         width={radius * 2}
         stroke={color}
@@ -66,8 +66,8 @@
     {/if}
   {:else if shape == 'circle'}
     <circle
-      cx={scaledPos.x}
-      cy={scaledPos.y}
+      cx={screenPosition.x}
+      cy={screenPosition.y}
       r={radius}
       stroke={color}
       stroke-width={LINE_WIDTH}
@@ -77,9 +77,9 @@
     {#if pulse}
       <circle
         class="pulse"
-        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
-        cx={scaledPos.x}
-        cy={scaledPos.y}
+        style="transform-origin: {screenPosition.x}px {screenPosition.y}px;"
+        cx={screenPosition.x}
+        cy={screenPosition.y}
         r={radius}
         stroke={color}
         stroke-width={LINE_WIDTH}
@@ -91,7 +91,7 @@
     {@const dx = (triRadius * Math.sqrt(3)) / 2}
     {@const dy = triRadius / 2}
     <polygon
-      points={`${scaledPos.x},${scaledPos.y + triRadius} ${scaledPos.x + dx},${scaledPos.y - dy} ${scaledPos.x - dx},${scaledPos.y - dy}`}
+      points={`${screenPosition.x},${screenPosition.y + triRadius} ${screenPosition.x + dx},${screenPosition.y - dy} ${screenPosition.x - dx},${screenPosition.y - dy}`}
       stroke={color}
       stroke-width={LINE_WIDTH}
       fill={fill ?? color}
@@ -100,8 +100,8 @@
     {#if pulse}
       <polygon
         class="pulse"
-        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
-        points={`${scaledPos.x},${scaledPos.y + triRadius} ${scaledPos.x + dx},${scaledPos.y - dy} ${scaledPos.x - dx},${scaledPos.y - dy}`}
+        style="transform-origin: {screenPosition.x}px {screenPosition.y}px;"
+        points={`${screenPosition.x},${screenPosition.y + triRadius} ${screenPosition.x + dx},${screenPosition.y - dy} ${screenPosition.x - dx},${screenPosition.y - dy}`}
         stroke={color}
         stroke-width={LINE_WIDTH}
         fill={fill ?? color}
@@ -110,7 +110,7 @@
   {:else if shape == 'diamond'}
     {@const diaRadius = radius * 1.2}
     <polygon
-      points={`${scaledPos.x},${scaledPos.y - diaRadius} ${scaledPos.x + diaRadius},${scaledPos.y} ${scaledPos.x},${scaledPos.y + diaRadius} ${scaledPos.x - diaRadius},${scaledPos.y}`}
+      points={`${screenPosition.x},${screenPosition.y - diaRadius} ${screenPosition.x + diaRadius},${screenPosition.y} ${screenPosition.x},${screenPosition.y + diaRadius} ${screenPosition.x - diaRadius},${screenPosition.y}`}
       stroke={color}
       stroke-width={LINE_WIDTH}
       fill={fill ?? color}
@@ -119,8 +119,8 @@
     {#if pulse}
       <polygon
         class="pulse"
-        style="transform-origin: {scaledPos.x}px {scaledPos.y}px;"
-        points={`${scaledPos.x},${scaledPos.y - diaRadius} ${scaledPos.x + diaRadius},${scaledPos.y} ${scaledPos.x},${scaledPos.y + diaRadius} ${scaledPos.x - diaRadius},${scaledPos.y}`}
+        style="transform-origin: {screenPosition.x}px {screenPosition.y}px;"
+        points={`${screenPosition.x},${screenPosition.y - diaRadius} ${screenPosition.x + diaRadius},${screenPosition.y} ${screenPosition.x},${screenPosition.y + diaRadius} ${screenPosition.x - diaRadius},${screenPosition.y}`}
         stroke={color}
         stroke-width={LINE_WIDTH}
         fill={fill ?? color}
@@ -131,10 +131,10 @@
 {#if text}
   {#if showTextOnlyOnHover}
     <g class="hoverText">
-      <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
+      <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
     </g>
   {:else}
-    <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
+    <Latex2D latex={text} {position} {offset} {fontSize} color={PrimeColor.black} />
   {/if}
 {/if}
 
