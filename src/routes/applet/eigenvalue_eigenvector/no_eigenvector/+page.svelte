@@ -65,11 +65,11 @@
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
 
-      // Camera fields are a target, not something to interpolate per-tick:
-      // set the same value for every t so CanvasD3 sees one change per step
-      // and eases to it itself (see issue #462).
-      state.cameraZoom = 1.4;
-      state.cameraPosition = new Vector2(1, 1);
+      // Set once per step (gated on t >= 0.5) so CanvasD3 eases to it itself.
+      if (t >= 0.5) {
+        state.cameraZoom = 1.4;
+        state.cameraPosition = new Vector2(1, 1);
+      }
 
       return {
         state,
