@@ -25,6 +25,7 @@
   import { Camera2D, cameraState, type Transform2D } from '$lib/stores/camera.svelte';
   import { globalState } from '$lib/stores/globalState.svelte';
   import {
+    interpolateZoom,
     select,
     zoom,
     zoomIdentity,
@@ -33,6 +34,7 @@
     type Selection,
     type Transition
   } from 'd3';
+  import { untrack } from 'svelte';
   import { generateUUID } from 'three/src/math/MathUtils.js';
   import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
@@ -42,10 +44,19 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
 
   import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import {
+    clampCameraZoom,
+    fromZoomView,
+    toZoomView,
+    VISIBLE_SCENE_WIDTH,
+    zoomScaleExtent
+  } from './CameraMath';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
+
+  const CAMERA_TRANSITION_MS = 750;
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -63,15 +74,21 @@
     children = undefined
   }: Canvas2DProps = $props();
 
-  // svelte-ignore state_referenced_locally
   const projection = new Projection2D(scaleX, scaleY);
 
   // svelte-ignore state_referenced_locally
-  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp;
+  let cameraZoom = $state(
+    viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp
+  );
   // svelte-ignore state_referenced_locally
-  let cameraPosition = viewBox
-    ? viewBox.getCameraPos(projection)
-    : projection.toScreen(cameraPositionProp);
+  let cameraPosition = $state(
+    viewBox ? viewBox.getCameraPos(projection) : projection.toScreen(cameraPositionProp)
+  );
+
+  // Mount-time base zoom, used as the fixed reference for the user zoom range
+  // and for clamping programmatic camera moves; never reassigned.
+  // svelte-ignore state_referenced_locally
+  const initialCameraZoom = cameraZoom;
 
   let id = 'canvas-' + generateUUID();
 
@@ -79,15 +96,22 @@
 
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
+  // svelte-ignore state_referenced_locally
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
   setContext('default-width', width);
   setProjection2D(projection);
 
   function update2DCamera(transform2d: Transform2D) {
-    // Update camera
-    if (isSplit) cameraState.splitCamera2D = Camera2D.new(transform2d, cameraZoom, enablePan);
-    else cameraState.camera2D = Camera2D.new(transform2d, cameraZoom, enablePan);
+    const camera = Camera2D.new(
+      transform2d,
+      cameraZoom,
+      initialCameraZoom,
+      cameraPosition,
+      enablePan
+    );
+    if (isSplit) cameraState.splitCamera2D = camera;
+    else cameraState.camera2D = camera;
   }
 
   const debouncedUpdate2DCamera = debounce(update2DCamera, 100);
@@ -96,7 +120,7 @@
    * Transform function that translates and scales the whole scene
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
-  function transformScene(transform: Transform2D) {
+  function transformScene(transform: Transform2D, immediate = false) {
     if (!transform.k) return;
 
     if (enablePan) {
@@ -107,13 +131,22 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x;
-    const y = 15 / (width / transform.y) + cameraPosition.y;
+    const x = VISIBLE_SCENE_WIDTH / (width / -transform.x) + cameraPosition.x;
+    const y = VISIBLE_SCENE_WIDTH / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
     currentCameraTransform = transform2d;
-    debouncedUpdate2DCamera(transform2d);
+
+    // `animateCameraTo` passes `immediate` so cameraState.camera2D (and the
+    // share-URL it feeds) stays correct mid-tween; the 100ms debounce below
+    // is only appropriate for interactive user pan/zoom, which fires far
+    // more often than once per animation frame.
+    if (immediate) {
+      update2DCamera(transform2d);
+    } else {
+      debouncedUpdate2DCamera(transform2d);
+    }
   }
 
   /**
@@ -121,8 +154,7 @@
    * @see https://observablehq.com/@d3/drag-zoom?collection=@d3/d3-drag
    */
   const zoomProtocol = $derived.by(() => {
-    const minZoom = cameraZoom / 6;
-    const maxZoom = 6 / cameraZoom;
+    const [minZoom, maxZoom] = zoomScaleExtent(initialCameraZoom);
 
     return zoom()
       .scaleExtent([minZoom, maxZoom])
@@ -134,9 +166,13 @@
   }) as (selection: Selection<BaseType, unknown, BaseType, unknown>) => void;
 
   /**
-   * Reset the camera position and zoom level.
-   * This function is called when the reset button is clicked.
-   * It will animate the camera to the default position and zoom level in 750ms.
+   * Eases the d3-zoom overlay back to identity; the base camera
+   * (`cameraZoom`/`cameraPosition`) is untouched, and follows the applet's
+   * own props, which an applet's own reset (e.g. `SlideShow.reset()`)
+   * restores separately.
+   *
+   * Shares the 'camera' transition name with `animateCameraTo` so the two
+   * interrupt each other instead of running concurrently on the same node.
    */
   function reset() {
     const svg = select(`#${id}`);
@@ -147,34 +183,86 @@
     }).transform as (t: Transition<BaseType, unknown, BaseType, unknown>) => void;
 
     svg
-      .transition()
-      .duration(750)
+      .transition('camera')
+      .duration(CAMERA_TRANSITION_MS)
       .call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
 
-    // Update camera
-    if (isSplit) cameraState.splitCamera2D = new Camera2D(0, 0, 1, cameraZoom);
-    else cameraState.camera2D = new Camera2D(0, 0, 1, cameraZoom);
+    update2DCamera({ x: 0, y: 0, k: 1 } as Transform2D);
   }
 
+  /**
+   * Eases the base camera to a new target via d3's perceptual
+   * `interpolateZoom` path; composes with any in-progress user pan/zoom
+   * with no jump. Callers (e.g. a SlideShow step) must hold the target
+   * constant for the whole step rather than varying it per-tick.
+   */
+  function animateCameraTo(targetZoomRaw: number, targetPosition: Vector2) {
+    const targetZoom = clampCameraZoom(targetZoomRaw, initialCameraZoom);
+
+    const from = toZoomView(cameraPosition, cameraZoom);
+    const to = toZoomView(targetPosition, targetZoom);
+    const interpolator = interpolateZoom(from, to);
+
+    const svg = select(`#${id}`);
+    const node = svg.node() as Element;
+
+    svg
+      .transition('camera')
+      .duration(CAMERA_TRANSITION_MS)
+      .tween('camera', () => (t: number) => {
+        const decoded = fromZoomView(interpolator(t));
+        cameraPosition = decoded.position;
+        cameraZoom = decoded.zoom;
+
+        // Re-derive the camera-state sync payload from the live d3-zoom
+        // overlay transform composed with the base we just moved, so
+        // legend/axis labels and the share-URL zoom stay correct mid-tween.
+        // `immediate: true` bypasses the debounce so cameraState.camera2D
+        // updates every tick instead of only ~100ms after the tween ends.
+        transformScene(zoomTransform(node) as unknown as Transform2D, true);
+      });
+  }
+
+  // svelte-ignore state_referenced_locally
+  let prevCameraTarget = { zoom: cameraZoomProp, position: cameraPositionProp.clone() };
+
+  /** Eases the base camera to a changed `cameraZoom`/`cameraPosition` prop (e.g. a SlideShow step). */
   $effect(() => {
-    const _ = [width, height, cameraPosition, cameraZoom]; // update when width, height or camera changes
+    const targetZoom = cameraZoomProp;
+    const targetPosition = cameraPositionProp;
+
+    if (targetZoom === prevCameraTarget.zoom && targetPosition.equals(prevCameraTarget.position)) {
+      return;
+    }
+
+    prevCameraTarget = { zoom: targetZoom, position: targetPosition.clone() };
+
+    untrack(() => animateCameraTo(targetZoom, projection.toScreen(targetPosition)));
+  });
+
+  /** Attach/detach the zoom listener; rebinds on resize. */
+  $effect(() => {
+    const _ = [width, height];
 
     if (activityState.isActive) {
-      // Attach the zoom event listener
       select(`#${id}`).call(zoomProtocol);
     } else {
-      // Release the zoom event listener
       select(`#${id}`).on('.zoom', null);
     }
   });
 
   /**
    * Reset the d3 canvas when the reset key changes.
+   *
+   * `reset()` reads `cameraZoom`/`cameraPosition` (via `update2DCamera`), so without
+   * `untrack` this effect would also depend on them; `animateCameraTo`'s tween writes
+   * both every frame, which would re-fire this effect and cancel the tween's own
+   * `'camera'`-named transition almost immediately.
    */
   $effect(() => {
     const _ = globalState.resetKey;
 
-    reset();
+    untrack(() => reset());
   });
 
   // Remove / clean-upw camera store entries
