@@ -41,11 +41,12 @@
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
-  import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import { getXLabelX, getYLabelY, type LabelProps } from './AxisLabels';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { GRID_SIZE_2D, HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -76,12 +77,14 @@
   let id = 'canvas-' + generateUUID();
 
   let currentCameraTransform = $state<Transform2D>();
+  let cameraBaseline = $state<{ x: number; y: number }>();
 
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
   setContext('default-width', width);
+  setContext('current-zoom-k', () => currentCameraTransform?.k ?? 1);
   setProjection2D(projection);
 
   function update2DCamera(transform2d: Transform2D) {
@@ -107,10 +110,12 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x;
-    const y = 15 / (width / transform.y) + cameraPosition.y;
+    const x = HALF_GRID_SIZE_2D / (width / -transform.x) + cameraPosition.x;
+    const y = HALF_GRID_SIZE_2D / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
+
+    if (!cameraBaseline) cameraBaseline = { x: transform2d.x, y: transform2d.y };
 
     currentCameraTransform = transform2d;
     debouncedUpdate2DCamera(transform2d);
@@ -184,10 +189,18 @@
   });
 
   const xLabelX = $derived(
-    getXLabelX(currentCameraTransform, width, cameraZoom, labels, projection)
+    getXLabelX(currentCameraTransform, cameraBaseline, width, cameraZoom, labels, projection)
   );
   const yLabelY = $derived(
-    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, projection)
+    getYLabelY(
+      currentCameraTransform,
+      cameraBaseline,
+      width,
+      height,
+      cameraZoom,
+      labels,
+      projection
+    )
   );
 </script>
 
@@ -202,9 +215,9 @@
     <g>
       <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
         <g
-          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
+          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / GRID_SIZE_2D}, {(-1 *
             (2 * width)) /
-            30})"
+            GRID_SIZE_2D})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
             <!-- 4. Axis: ticks, axis lines, tick numbers -->
@@ -221,6 +234,7 @@
             {#if labels?.xLabel}
               <Latex2D
                 dimOnHover={true}
+                fixedScreenScale={true}
                 latex={labels.xLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
@@ -234,6 +248,7 @@
             {#if labels?.yLabel}
               <Latex2D
                 dimOnHover={true}
+                fixedScreenScale={true}
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(

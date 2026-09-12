@@ -13,6 +13,8 @@
     background?: string;
     padding?: string;
     compact?: boolean;
+    /** Keep this label's on-screen size constant during live interactive zoom (e.g. axis labels). */
+    fixedScreenScale?: boolean;
   };
 </script>
 
@@ -36,7 +38,8 @@
     dimOnHover = false,
     background = undefined,
     padding = '0.2em',
-    compact = undefined
+    compact = undefined,
+    fixedScreenScale = false
   }: Latex2DProps = $props();
 
   const effectiveCompact = $derived(compact ?? background !== undefined);
@@ -77,10 +80,13 @@
 
   const defWidth = (getContext('default-width') as number | undefined) ?? REFERENCE_WIDTH; // baseline canvas width text sizing is calibrated against
 
+  const getLiveZoomK = getContext('current-zoom-k') as (() => number) | undefined;
+  const liveZoomK = $derived(fixedScreenScale ? (getLiveZoomK?.() ?? 1) : 1);
+
   const scale = $derived.by(() => {
     if (dontScaleWithDefaultZoom) return 0.03 * fontSize;
 
-    return ((0.03 * fontSize) / defZoom) * (REFERENCE_WIDTH / defWidth);
+    return ((0.03 * fontSize) / defZoom / liveZoomK) * (REFERENCE_WIDTH / defWidth);
   });
 </script>
 
