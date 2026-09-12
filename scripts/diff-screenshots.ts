@@ -50,10 +50,9 @@ export function buildSummaryMarkdown(report: DiffReport): string {
 
   if (report.baselineMissing) {
     lines.push(
-      '**No baseline screenshots found for `main`.** The PR base commit does not have this ' +
-        'action merged yet, so it has no `manifest.json` to compare against. This will keep ' +
-        'happening on every run of this PR until it merges to `main`; after that, future PRs ' +
-        'will get a real visual diff.'
+      '**No baseline screenshots found for `main`.** The baseline render produced no ' +
+        '`manifest.json`, so no visual diff could be computed. Check the "Render/restore main ' +
+        'baseline screenshots" job log.'
     );
     return lines.join('\n');
   }
