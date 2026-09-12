@@ -37,6 +37,7 @@
   import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import { Projection2D, setProjection2D } from './Projection2D';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
@@ -63,11 +64,14 @@
   }: Canvas2DProps = $props();
 
   // svelte-ignore state_referenced_locally
-  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, scaleX, scaleY) : cameraZoomProp;
+  const projection = new Projection2D(scaleX, scaleY);
+
+  // svelte-ignore state_referenced_locally
+  let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp;
   // svelte-ignore state_referenced_locally
   let cameraPosition = viewBox
-    ? viewBox.getCameraPos(scaleX, scaleY)
-    : cameraPositionProp.clone().multiply(new Vector2(scaleX, scaleY));
+    ? viewBox.getCameraPos(projection)
+    : projection.toScreen(cameraPositionProp);
 
   let id = 'canvas-' + generateUUID();
 
@@ -77,7 +81,8 @@
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
-  setContext('scale2D', { x: scaleX, y: scaleY });
+  setContext('default-width', width);
+  setProjection2D(projection);
 
   function update2DCamera(transform2d: Transform2D) {
     // Update camera
@@ -178,9 +183,11 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX));
+  const xLabelX = $derived(
+    getXLabelX(currentCameraTransform, width, cameraZoom, labels, projection)
+  );
   const yLabelY = $derived(
-    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
+    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, projection)
   );
 </script>
 
@@ -218,7 +225,7 @@
                 fontSize={labels.size || 1}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
-                  0.75 / scaleY + (labels?.xLabelOffset?.y ?? 0)
+                  projection.yToWorld(0.75) + (labels?.xLabelOffset?.y ?? 0)
                 )}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
                 color={labels?.xColor ?? axis?.colorX ?? PrimeColor.black}
@@ -230,8 +237,7 @@
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
-                  0.25 / scaleX +
-                    (labels.yLabelRotate ? 0.5 / scaleX : 0) +
+                  projection.xToWorld(0.25 + (labels.yLabelRotate ? 0.5 : 0)) +
                     (labels?.yLabelOffset?.x ?? 0),
                   yLabelY + +(labels?.yLabelOffset?.y ?? 0)
                 )}

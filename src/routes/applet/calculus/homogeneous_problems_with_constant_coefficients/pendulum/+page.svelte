@@ -20,8 +20,6 @@
   import { toLatexText } from '$lib/utils/FormatString';
 
   let initialViewBox: ViewBox | undefined;
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -38,10 +36,6 @@
   // CAMERA SETTINGS
   // ###############
   // choose one or none of the options below - if both are specified, view box will be used
-
-  // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 1);
-  cameraZoom = 1.5;
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
@@ -73,7 +67,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 0,
     showAxisX: true,
     showAxisY: true,
@@ -175,8 +169,6 @@
 <CanvasGrid rows={2} columns={2} {controls}>
   <GridCanvas2D
     {initialViewBox}
-    {cameraPosition}
-    {cameraZoom}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -226,7 +218,7 @@
     initialViewBox={new ViewBox(
       new Vector2(-Math.PI / 2, (-Math.PI / 2) * r),
       new Vector2(Math.PI / 2, (Math.PI / 2) * r),
-      0.1
+      0.3
     )}
     labels={{ xLabel: '\\theta(0)', yLabel: "\\theta'(0)" }}
     axis={axis2}
@@ -246,9 +238,9 @@
   </GridCanvas2D>
   <GridCanvas2D
     initialViewBox={new ViewBox(
-      new Vector2(0, -Math.PI / 2 / 2),
-      new Vector2(10, Math.PI / 2 / 2),
-      2
+      new Vector2(-1, -Math.PI / 2 / 2),
+      new Vector2(10.5, Math.PI / 2 / 2),
+      0
     )}
     labels={{ xLabel: 't', yLabel: '\\theta(t)' }}
     axis={axis3}

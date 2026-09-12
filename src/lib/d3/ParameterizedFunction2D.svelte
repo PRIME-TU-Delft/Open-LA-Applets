@@ -2,8 +2,8 @@
   import { LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
-  import Triangle2D from './Triangle2D.svelte';
-  import { getContext, setContext } from 'svelte';
+  import ArrowHead2D from './ArrowHead2D.svelte';
+  import { getProjection2D } from './Projection2D';
 
   export type ParameterizedFunction2DProps = {
     xFunc: (t: number) => number;
@@ -31,11 +31,7 @@
     isDashed = false
   }: ParameterizedFunction2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  // Prevent Triangle2D children (arrow heads) from applying scale to visual-space coords
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
@@ -45,18 +41,17 @@
       // Compute t independently per step to avoid floating-point drift;
       // clamp the last step to tEnd so the endpoint is always included.
       const t = i < numSteps ? tStart + i * stepSize : tEnd;
-      let x: number;
-      let y: number;
+      let point: Vector2;
 
       try {
-        x = xFunc(t) * sx;
-        y = yFunc(t) * sy;
-        if (!isFinite(x)) continue;
-        if (!isFinite(y)) continue;
+        // The curve is built from screen-space points.
+        point = projection.toScreen(new Vector2(xFunc(t), yFunc(t)));
+        if (!isFinite(point.x)) continue;
+        if (!isFinite(point.y)) continue;
       } catch {
         continue;
       }
-      points.push(new Vector2(x, y));
+      points.push(point);
     }
     return [points];
   });
@@ -75,16 +70,14 @@
     {#each points as point, i (i)}
       {#if i > 0 && i < points.length - 1}
         {@const nextPoint = points[i + 1]}
-        {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
         {@const size = (width ?? 0.5) * 2}
-        <g
-          transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-        >
-          <Triangle2D
-            points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-            {color}
-          />
-        </g>
+        <ArrowHead2D
+          screenPosition={point}
+          angle={nextPoint.clone().sub(point).angle()}
+          length={size * 2}
+          halfWidth={size}
+          {color}
+        />
       {/if}
     {/each}
   {/each}

@@ -12,7 +12,7 @@
   import { Vector2 } from 'three';
   import Line from './Line2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   let {
     vs,
@@ -22,17 +22,17 @@
     lineWidth = 0.02
   }: RightAngle2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  // Prevent Line2D children from applying scale again (coordinates are passed in world space)
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
 
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
-
-  //resize vectors
+  //resize vectors; the marker size is a screen-space size, so it does not scale
   const u1 = $derived(vs[0].clone().multiplyScalar(size / vs[0].length()));
   const u2 = $derived(vs[1].clone().multiplyScalar(size / vs[1].length()));
+
+  // The marker is laid out in screen space, then handed to Line2D as world coordinates.
+  const screenOrigin = $derived(projection.toScreen(origin));
+  const leg1End = $derived(projection.toWorld(u1.clone().add(screenOrigin)));
+  const leg2End = $derived(projection.toWorld(u2.clone().add(screenOrigin)));
+  const corner = $derived(projection.toWorld(u1.clone().add(u2).add(screenOrigin)));
 </script>
 
 <!-- @component 
@@ -51,16 +51,6 @@
 
 <!-- draw two lines to represent right angle if perpendicular -->
 {#if Math.abs(u1.dot(u2)) <= 0.005 && !u1.equals(u2)}
-  <Line
-    {color}
-    width={lineWidth}
-    start={u1.clone().add(scaledOrigin)}
-    end={u1.clone().add(u2).add(scaledOrigin)}
-  />
-  <Line
-    {color}
-    width={lineWidth}
-    start={u2.clone().add(scaledOrigin)}
-    end={u1.clone().add(u2).add(scaledOrigin)}
-  />
+  <Line {color} width={lineWidth} start={leg1End} end={corner} />
+  <Line {color} width={lineWidth} start={leg2End} end={corner} />
 {/if}

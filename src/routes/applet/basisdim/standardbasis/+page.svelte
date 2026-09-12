@@ -33,9 +33,10 @@
     {#snippet children(endPoint)}
       <Latex2D
         latex={'\\mathbf{e_1}'}
-        offset={new Vector2(-0.3, 0.4)}
         position={endPoint}
         color={PrimeColor.blue}
+        alignX="left"
+        alignY="bottom"
       />
     {/snippet}
   </Vector2D>
@@ -45,9 +46,11 @@
     {#snippet children(endPoint)}
       <Latex2D
         latex={'\\mathbf{e_2}'}
-        offset={new Vector2(0.2, -0.1)}
         position={endPoint}
         color={PrimeColor.darkGreen}
+        offset={new Vector2(0.1, 0)}
+        alignX="left"
+        alignY="bottom"
       />
     {/snippet}
   </Vector2D>

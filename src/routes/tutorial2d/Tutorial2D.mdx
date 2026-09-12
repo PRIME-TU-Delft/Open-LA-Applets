@@ -347,8 +347,32 @@ If your applet needs a different coordinate scale (for example, showing values f
 </Canvas2D>
 ```
 
-- `scaleX` / `scaleY`: how many SVG (world-space) units correspond to 1 display unit. Default: `1`.
+- `scaleX` / `scaleY`: how many SVG (screen-space) units correspond to 1 world (mathematical) unit. Default: `1`.
 - All child components read the scale from context and adjust automatically.
-- Specify positions and formulas in display (mathematical) space — the scaling is handled for you.
+- Specify positions and formulas in world (mathematical) space — the scaling is handled for you.
+- Sizes (stroke widths, point radii, arrowheads, label offsets) are in screen space and do not scale.
+
+### Writing a scale-aware 2D component
+
+All scaling goes through one module, `Projection2D` (`src/lib/d3/Projection2D.ts`). `Canvas2D` publishes it,
+and components read it with `getProjection2D()`:
+
+```ts
+import { getProjection2D } from './Projection2D';
+
+const projection = getProjection2D();
+const screenPosition = $derived(projection.toScreen(position)); // world point to SVG point
+```
+
+- `toScreen(p)` / `toWorld(p)`: world point to screen point and back. Use `toWorld` for drag input.
+- `xToScreen` / `yToScreen` / `xToWorld` / `yToWorld`: the same mapping for one coordinate or extent,
+  such as a domain bound or a circle radius.
+- `toScreenDir(d)`: a world direction as a unit direction on screen, for example to orient an arrowhead.
+- `toScreenFunction(f)`: an explicit function `y = f(x)` as a screen-space function, for plotters that sample in
+  screen units.
+
+Props always take world coordinates. A component that lays out geometry in screen space and renders other
+components must hand them world coordinates (`projection.toWorld(...)`); never publish a different projection
+to a subtree. Fixed-size screen geometry, such as an arrowhead, uses `ArrowHead2D`, which is not projected.
 
 For more details and examples, see the [Canvas2D documentation](./?path=/docs/initialize-canvas2d--docs).

@@ -11,9 +11,9 @@
   import Vector2D from '$lib/d3/Vector2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
   import Line2D from '$lib/d3/Line2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -30,8 +30,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(3, 0.5);
-  cameraZoom = 1.0;
+  initialViewBox = new ViewBox(
+    new Vector2(-4.5, -4), // bottom-left
+    new Vector2(10.5, 5), // top-right
+    0 // margin
+  );
 
   // ####
   // AXIS
@@ -153,8 +156,7 @@
 
 <Canvas2D
   {draggables}
-  {cameraPosition}
-  {cameraZoom}
+  {initialViewBox}
   legendItems={getLegend(appletObjects)}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
