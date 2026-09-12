@@ -182,7 +182,9 @@
         "title": "Central Limit Theorem",
         "average": "Average",
         "sum": "Sum",
-        "drawSamples": "Draw %N samples"
+        "drawSamples": "Draw %N samples",
+        "maxReached": "Max reached (300)",
+        "placeholder": "\\text{Click Draw to generate your first sample}"
       }
     }
   },

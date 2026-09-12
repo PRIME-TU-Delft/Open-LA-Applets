@@ -182,7 +182,9 @@
         "title": "Centrale limietstelling",
         "sum": "Som",
         "average": "Gemiddelde",
-        "drawSamples": "Trek %N monsters"
+        "drawSamples": "Trek %N monsters",
+        "maxReached": "Maximum bereikt (300)",
+        "placeholder": "\\text{Klik op Trek om je eerste steekproef te genereren}"
       }
     }
   },

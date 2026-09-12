@@ -1,18 +1,22 @@
 <script lang="ts">
   import { Controls, type Controller } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
+  import DotHistogram2D from '$lib/d3/DotHistogram2D.svelte';
+  import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Histogram from '$lib/d3/Histogram2D.svelte';
+  import Latex2D from '$lib/d3/Latex2D.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
   import { Formula, Formulas } from '$lib/utils/Formulas';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
   import { CONTINUOUS_TYPES, DISCRETE_TYPES, DISTRIBUTIONS, NS } from '../distributionRegistry';
+  import { nextBatchSize, MAX_SAMPLES } from './batchSize';
 
   const NSC = 'applets.pts.distributions.central_limit_theorem.';
 
   // Number of controls before the per-distribution sliders start
-  // (here: the draw samples button, average/sum dropdown, N slider).
+  // (here: the draw button, the average/sum toggle, and the k slider).
   const OFFSET = 3;
 
   const baseControls = Controls.addDropdown(`${NS}continuous`, [
@@ -45,71 +49,82 @@
   const valueFn = (x: number) => x.toFixed(2);
   const valueFnInt = (x: number) => x.toFixed(0);
 
-  let CLT_samples_number = $state(0);
-  let CLT_samples_increment = $derived.by(() => {
-    if (CLT_samples_number < 5) {
-      return 1;
-    }
-    if (CLT_samples_number < 20) {
-      return 5;
-    }
-    if (CLT_samples_number < 100) {
-      return 10;
-    }
-    if (CLT_samples_number < 300) {
-      return 25;
-    }
+  // Each entry is one accumulated sample's k raw draws.
+  let samples: number[][] = $state([]);
+  // null = auto-follow the most-recently-drawn sample; otherwise a user-picked dot.
+  let selectedIndex: number | null = $state(null);
 
-    return 0; // disable the button
+  const draggables = $derived.by(() => {
+    const key = savedDistrType?.replace(NS, '');
+    return key ? (DISTRIBUTIONS[key]?.draggables?.() ?? []) : [];
   });
 
-  let CLT_samples: number[][] = $state([]);
-
-  const is_average = $derived.by(() => {
-    const c = controls?.[1];
-    return c && typeof c === 'string' && c.endsWith('average');
+  const extraValues = $derived.by(() => {
+    if (!isInDistr) return [];
+    return (controls?.getAll() ?? []).slice(OFFSET).map((c) => c.value as number);
   });
 
-  const CLT_histogram = $derived.by(() => {
-    const hist: Record<number, number> = {};
-
-    for (const sample of CLT_samples) {
-      if (!sample) continue;
-
-      const value = is_average
-        ? sample.reduce((a, b) => a + b, 0) / sample.length
-        : sample.reduce((a, b) => a + b, 0);
-      const bucket = Math.floor(value);
-      hist[bucket] = (hist[bucket] ?? 0) + 1;
+  const k = $derived.by(() => {
+    if (typeof controls?.[2] === 'number') {
+      return controls[2];
     }
-
-    return hist;
+    return 5;
   });
 
-  function addSamples() {
+  const isSum = $derived.by(() => controls?.[1] === true);
+
+  // Changing the distribution, its parameters, or the sample size invalidates
+  // the accumulated samples (they were drawn under different conditions).
+  // Toggling average/sum on its own must NOT clear them.
+  const accumulationKey = $derived(
+    JSON.stringify({
+      distrType: curDistrType,
+      k,
+      extraValues,
+      draggablePositions: draggables.map((d) => ({ x: d.position.x, y: d.position.y }))
+    })
+  );
+
+  $effect(() => {
+    accumulationKey;
+    samples = [];
+    selectedIndex = null;
+  });
+
+  const randomFn = $derived.by(() => {
+    const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+    return def ? def.sampler(extraValues, draggables) : () => 0;
+  });
+
+  function drawSamples() {
+    const batch = nextBatchSize(samples.length);
+    if (batch <= 0) return;
+
     const newSamples: number[][] = [];
-
-    for (let i = 0; i < CLT_samples_increment; i++) {
-      const sample: number[] = [];
-      for (let j = 0; j < N; j++) {
-        sample.push(randomFn());
-      }
-      newSamples.push(sample);
+    for (let i = 0; i < batch; i++) {
+      const draws: number[] = [];
+      for (let j = 0; j < k; j++) draws.push(randomFn());
+      newSamples.push(draws);
     }
 
-    CLT_samples_number += CLT_samples_increment;
-    CLT_samples = [...CLT_samples, ...newSamples];
+    samples = [...samples, ...newSamples];
+    selectedIndex = null;
   }
 
-  const inDistrControls = $derived(
-    Controls.addButton(
-      $_(`${NSC}drawSamples`).replace('%N', CLT_samples_increment.toString()),
-      PrimeColor.pink,
-      addSamples
-    )
-      .addDropdown(`${NSC}average`, [`${NSC}average`, `${NSC}sum`])
-      .addSlider(100, 0, 300, 1, PrimeColor.blue, { label: 'N' })
-  );
+  const inDistrControls = $derived.by(() => {
+    const nextBatch = nextBatchSize(samples.length);
+    const drawLabel =
+      nextBatch > 0
+        ? $_(`${NSC}drawSamples`).replace('%N', nextBatch.toString())
+        : $_(`${NSC}maxReached`);
+
+    return Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
+      .addToggle(false, $_(`${NSC}average`), PrimeColor.blue, {
+        isSwitch: true,
+        switchRightSide: $_(`${NSC}sum`)
+      })
+      .addSlider(5, 1, 50, 1, PrimeColor.blue, { label: 'k', valueFn: valueFnInt });
+  });
 
   const controls = $derived.by(() => {
     if (!isInDistr) {
@@ -129,22 +144,30 @@
     );
   });
 
-  const N = $derived.by(() => {
-    if (typeof controls?.[2] === 'number') {
-      return controls?.[2];
-    }
+  // Reduce each accumulated sample to its mean or sum.
+  const reducedValues = $derived(
+    samples.map((draws) => {
+      const sum = draws.reduce((a, b) => a + b, 0);
+      return isSum ? sum : sum / draws.length;
+    })
+  );
 
-    return 200;
-  });
+  const displayedSampleIndex = $derived(
+    selectedIndex ?? (samples.length > 0 ? samples.length - 1 : null)
+  );
+  const leftDraws = $derived(
+    displayedSampleIndex !== null ? samples[displayedSampleIndex] : []
+  );
 
-  const draggables = $derived.by(() => {
-    const key = savedDistrType?.replace(NS, '');
-    return key ? (DISTRIBUTIONS[key]?.draggables?.() ?? []) : [];
-  });
+  function addFreq(map: { [x: number]: number }, x: number) {
+    map[x] = (map[x] ?? 0) + 1;
+    return map;
+  }
 
-  const extraValues = $derived.by(() => {
-    if (!isInDistr) return [];
-    return (controls?.getAll() ?? []).slice(OFFSET).map((c) => c.value as number);
+  const freqMap = $derived.by(() => {
+    let m: Record<number, number> = {};
+    for (const v of leftDraws) m = addFreq(m, Math.floor(v));
+    return m;
   });
 
   const formulas = $derived.by(() => {
@@ -165,42 +188,60 @@
     ).align();
   });
 
-  const splitFormulas = $derived.by(() => {
+  const baseNumericMoments = $derived.by(() => {
     const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+    return def ? def.numericMoments(extraValues, draggables) : null;
+  });
 
-    if (!def) {
+  const samplingMoments = $derived.by(() => {
+    if (!baseNumericMoments) return null;
+    const { mean, variance } = baseNumericMoments;
+    return isSum ? { mean: k * mean, variance: k * variance } : { mean, variance: variance / k };
+  });
+
+  const splitFormulas = $derived.by(() => {
+    if (!samplingMoments) {
       return new Formulas(
-        new Formula('E(X) &= \\$1').addAutoParam(0, PrimeColor.black),
-        new Formula('\\text{Var}(X) &= \\$1').addAutoParam(0, PrimeColor.black)
+        new Formula('E &= \\text{undefined}'),
+        new Formula('\\text{Var} &= \\text{undefined}')
       ).align();
     }
 
+    const { mean, variance } = samplingMoments;
+    const label = isSum ? 'S_k' : '\\bar X';
+
     return new Formulas(
-      new Formula('E(X) &= \\$1').addAutoParam(999),
-      new Formula('\\text{Var}(X) &= \\$1').addAutoParam(999),
-      new Formula('k &= \\$1').addAutoParam(CLT_samples_number, PrimeColor.pink)
+      new Formula(`E(${label}) &= \\$1`).addAutoParam(mean, PrimeColor.orange),
+      new Formula(`\\text{Var}(${label}) &= \\$1`).addAutoParam(variance, PrimeColor.raspberry)
     ).align();
   });
 
-  function addFreq(map: { [x: number]: number }, x: number) {
-    map[x] = (map[x] ?? 0) + 1;
-    return map;
-  }
+  // Average mode: right panel shares the same x-domain as the left panel, so the
+  // means visibly concentrate on the same axis as the raw draws. Sum mode: the
+  // right panel gets its own k-times-larger domain (a shared axis would squash it).
+  // The right panel's y-axis is a dot count (up to MAX_SAMPLES stacked in one bin),
+  // so it uses a much smaller scaleY than the left panel's normalized [0,1] histogram.
+  const leftViewBox = new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5);
+  const rightScaleY = 3;
+  const rightDomainScale = $derived(isSum ? k : 1);
+  const rightXMin = $derived(-3 * rightDomainScale);
+  const rightXMax = $derived(10 * rightDomainScale);
+  const rightViewBox = $derived(
+    new ViewBox(new Vector2(rightXMin, -0.1), new Vector2(rightXMax, 20), 1)
+  );
+  const rightBinWidth = $derived(Math.max(0.1, (13 * rightDomainScale) / 30));
 
-  const randomFn = $derived.by(() => {
-    const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
-    return def ? def.sampler(extraValues, draggables) : () => 0;
-  });
+  const normalOverlayFn = $derived.by(() => {
+    if (samples.length < 25 || !samplingMoments) return null;
+    const { mean, variance } = samplingMoments;
+    const sd = Math.sqrt(variance);
+    if (!isFinite(sd) || sd <= 0) return null;
 
-  const freqMap = $derived.by(() => {
-    let m: Record<number, number> = {};
-
-    for (let i = 0; i < N; i++) {
-      const res = Math.floor(randomFn() ?? 0);
-      m = addFreq(m, res);
-    }
-
-    return m;
+    return (x: number) =>
+      samples.length *
+      rightBinWidth *
+      (1 / (sd * Math.sqrt(2 * Math.PI))) *
+      Math.exp(-0.5 * ((x - mean) / sd) ** 2);
   });
 </script>
 
@@ -211,32 +252,51 @@
   onReset={() => {
     savedCategory = '';
     savedDistrType = '';
-    CLT_samples_number = 0;
-    CLT_samples = [];
+    samples = [];
+    selectedIndex = null;
   }}
-  initialViewBox={new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5)}
+  initialViewBox={leftViewBox}
   scaleY={10}
   title={$_(`${NSC}title`)}
   splitCanvas2DProps={{
-    initialViewBox: new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5),
-    scaleY: 10
-    // @todo: for some reason the right canvas is slightly shifted downwards?
+    initialViewBox: rightViewBox,
+    scaleY: rightScaleY,
+    axis: { skipY: rightScaleY - 1 }
   }}
-  {splitFormulas}
+  splitFormulas={splitFormulas}
 >
-  <Histogram
-    {freqMap}
-    isInteger={curCategory === `${NS}discrete`}
-    color={PrimeColor.cyan}
-    normalized={true}
-  />
-
-  {#snippet splitCanvas2DChildren()}
+  {#if leftDraws.length === 0}
+    <Latex2D
+      latex={$_(`${NSC}placeholder`)}
+      position={new Vector2(3.5, 0.5)}
+      color={PrimeColor.black}
+    />
+  {:else}
     <Histogram
-      freqMap={CLT_histogram}
-      isInteger={false}
-      color={PrimeColor.pink}
+      {freqMap}
+      isInteger={curCategory === `${NS}discrete`}
+      color={PrimeColor.cyan}
       normalized={true}
     />
+  {/if}
+
+  {#snippet splitCanvas2DChildren()}
+    <DotHistogram2D
+      values={reducedValues}
+      binWidth={rightBinWidth}
+      selectedIndex={displayedSampleIndex}
+      color={PrimeColor.cyan.toString()}
+      selectedColor={PrimeColor.raspberry.toString()}
+      onSelect={(index) => (selectedIndex = index)}
+    />
+
+    {#if normalOverlayFn}
+      <ExplicitFunction2D
+        func={normalOverlayFn}
+        color={PrimeColor.black}
+        xMin={rightXMin}
+        xMax={rightXMax}
+      />
+    {/if}
   {/snippet}
 </Canvas2D>
