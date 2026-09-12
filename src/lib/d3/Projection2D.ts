@@ -60,6 +60,26 @@ export class Projection2D {
   }
 
   /**
+   * World angle → screen angle, in radians. Continuous: sweeping worldAngle
+   * monotonically sweeps the result monotonically too, so callers can pass
+   * negative angles or angles beyond a full turn (e.g. an arc's start/end
+   * angle) without the result snapping backward at a 2π boundary.
+   *
+   * No-op when scaleX === scaleY (in particular at scale 1).
+   */
+  toScreenAngle(worldAngle: number): number {
+    const TAU = 2 * Math.PI;
+    const turns = Math.floor(worldAngle / TAU);
+    const wrapped = worldAngle - turns * TAU; // in [0, TAU)
+    const screenWrapped = Math.atan2(
+      this.scaleY * Math.sin(wrapped),
+      this.scaleX * Math.cos(wrapped)
+    );
+    const screenWrapped0to2pi = screenWrapped < 0 ? screenWrapped + TAU : screenWrapped;
+    return screenWrapped0to2pi + turns * TAU;
+  }
+
+  /**
    * World-space function y = f(x) → the same curve as a screen-space function.
    * Plotters sample it in screen units, so the step size is even on screen.
    */
