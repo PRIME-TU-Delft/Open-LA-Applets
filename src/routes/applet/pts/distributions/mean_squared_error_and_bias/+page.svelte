@@ -201,6 +201,7 @@
       showTextOnlyOnHover={true}
       text={`\\left(${point.x.toFixed(2)},\\,${point.y.toFixed(2)}\\right)`}
       offset={new Vector2(0.2, 0.4)}
+      background="#dededecc"
       fontSize={1.6}
     />
   {/each}

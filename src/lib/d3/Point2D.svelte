@@ -10,6 +10,7 @@
     text?: string;
     showTextOnlyOnHover?: boolean;
     fontSize?: number;
+    background?: string;
     offset?: Vector2;
   };
 </script>
@@ -31,6 +32,7 @@
     opacity = 1,
     text = '',
     fontSize = 1,
+    background = undefined,
     offset = new Vector2(0, 0),
     showTextOnlyOnHover = false
   }: Point2DProps = $props();
@@ -133,10 +135,24 @@
 {#if text}
   {#if showTextOnlyOnHover}
     <g class="hoverText">
-      <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
+      <Latex2D
+        latex={text}
+        position={scaledPos}
+        {offset}
+        {fontSize}
+        color={PrimeColor.black}
+        {background}
+      />
     </g>
   {:else}
-    <Latex2D latex={text} position={scaledPos} {offset} {fontSize} color={PrimeColor.black} />
+    <Latex2D
+      latex={text}
+      position={scaledPos}
+      {offset}
+      {fontSize}
+      color={PrimeColor.black}
+      {background}
+    />
   {/if}
 {/if}
 
