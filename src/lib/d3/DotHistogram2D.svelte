@@ -3,6 +3,10 @@
     // One value (mean or sum) per accumulated sample, in draw order.
     values: number[];
     binWidth: number;
+    // When true, each dot's height is 1/values.length (matching Histogram2D's
+    // freq/totalFreq convention), so the stack never grows past y=1 regardless
+    // of how many samples have been drawn.
+    normalized?: boolean;
     selectedIndex?: number | null;
     color?: string;
     selectedColor?: string;
@@ -20,6 +24,7 @@
   const {
     values,
     binWidth,
+    normalized = false,
     selectedIndex = null,
     color = PrimeColor.cyan,
     selectedColor = PrimeColor.raspberry,
@@ -33,12 +38,14 @@
   // form a running histogram of the accumulated samples.
   const dots = $derived.by(() => {
     const stackHeight: Record<number, number> = {};
+    const total = normalized ? Math.max(values.length, 1) : 1;
+
     return values.map((value, index) => {
       const bin = Math.floor(value / binWidth) * binWidth;
       const height = stackHeight[bin] ?? 0;
       stackHeight[bin] = height + 1;
 
-      const position = new Vector2(bin + binWidth / 2, height + 0.5);
+      const position = new Vector2(bin + binWidth / 2, (height + 0.5) / total);
       return { index, position };
     });
   });

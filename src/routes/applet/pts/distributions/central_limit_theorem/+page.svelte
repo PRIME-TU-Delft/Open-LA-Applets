@@ -11,7 +11,7 @@
   import { _ } from 'svelte-i18n';
   import { Vector2 } from 'three';
   import { CONTINUOUS_TYPES, DISCRETE_TYPES, DISTRIBUTIONS, NS } from '../distributionRegistry';
-  import { nextBatchSize, MAX_SAMPLES } from './batchSize';
+  import { nextBatchSize } from './batchSize';
 
   const NSC = 'applets.pts.distributions.central_limit_theorem.';
 
@@ -71,7 +71,7 @@
     return 5;
   });
 
-  const isSum = $derived.by(() => controls?.[1] === true);
+  const isSum = $derived.by(() => controls?.[1] === `${NSC}sum`);
 
   // Changing the distribution, its parameters, or the sample size invalidates
   // the accumulated samples (they were drawn under different conditions).
@@ -119,10 +119,7 @@
         : $_(`${NSC}maxReached`);
 
     return Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
-      .addToggle(false, $_(`${NSC}average`), PrimeColor.blue, {
-        isSwitch: true,
-        switchRightSide: $_(`${NSC}sum`)
-      })
+      .addDropdown(`${NSC}average`, [`${NSC}average`, `${NSC}sum`])
       .addSlider(5, 1, 50, 1, PrimeColor.blue, { label: 'k', valueFn: valueFnInt });
   });
 
@@ -216,18 +213,21 @@
     ).align();
   });
 
-  // Average mode: right panel shares the same x-domain as the left panel, so the
-  // means visibly concentrate on the same axis as the raw draws. Sum mode: the
-  // right panel gets its own k-times-larger domain (a shared axis would squash it).
-  // The right panel's y-axis is a dot count (up to MAX_SAMPLES stacked in one bin),
-  // so it uses a much smaller scaleY than the left panel's normalized [0,1] histogram.
+  // Average mode: right panel shares the same x-domain (and the same normalized
+  // [0,1] y-domain/scale) as the left panel, so the means visibly concentrate on
+  // the same axis as the raw draws. Sum mode: the right panel gets its own
+  // k-times-larger x-domain (a shared axis would squash it), but keeps the same
+  // normalized y-domain — the dot histogram is normalized like Histogram2D
+  // (height = freq/totalFreq), so it never grows past y=1 regardless of how many
+  // samples have been drawn.
   const leftViewBox = new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5);
-  const rightScaleY = 3;
   const rightDomainScale = $derived(isSum ? k : 1);
   const rightXMin = $derived(-3 * rightDomainScale);
   const rightXMax = $derived(10 * rightDomainScale);
   const rightViewBox = $derived(
-    new ViewBox(new Vector2(rightXMin, -0.1), new Vector2(rightXMax, 20), 1)
+    isSum
+      ? new ViewBox(new Vector2(rightXMin, -0.1), new Vector2(rightXMax, 1), 0.5 * rightDomainScale)
+      : leftViewBox
   );
   const rightBinWidth = $derived(Math.max(0.1, (13 * rightDomainScale) / 30));
 
@@ -237,11 +237,10 @@
     const sd = Math.sqrt(variance);
     if (!isFinite(sd) || sd <= 0) return null;
 
+    // Matches the dot histogram's normalized height (freq/total): the expected
+    // fraction of samples in a bin of width rightBinWidth is ~ pdf(x) * rightBinWidth.
     return (x: number) =>
-      samples.length *
-      rightBinWidth *
-      (1 / (sd * Math.sqrt(2 * Math.PI))) *
-      Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+      rightBinWidth * (1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mean) / sd) ** 2);
   });
 </script>
 
@@ -260,8 +259,7 @@
   title={$_(`${NSC}title`)}
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
-    scaleY: rightScaleY,
-    axis: { skipY: rightScaleY - 1 }
+    scaleY: 10
   }}
   splitFormulas={splitFormulas}
 >
@@ -284,6 +282,7 @@
     <DotHistogram2D
       values={reducedValues}
       binWidth={rightBinWidth}
+      normalized={true}
       selectedIndex={displayedSampleIndex}
       color={PrimeColor.cyan.toString()}
       selectedColor={PrimeColor.raspberry.toString()}
