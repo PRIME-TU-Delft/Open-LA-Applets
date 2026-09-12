@@ -86,7 +86,7 @@
   );
 
   $effect(() => {
-    accumulationKey;
+    void accumulationKey;
     samples = [];
     selectedIndex = null;
   });
@@ -229,6 +229,14 @@
   );
   const rightBinWidth = $derived(Math.max(0.1, (13 * rightDomainScale) / 30));
 
+  // Some parameter combinations (e.g. sum mode with a large k, or heavy-tailed
+  // distributions) push draws well past the default axis length of 30. Extend
+  // it generously, and skip rendering gridlines/labels below x=-10 since these
+  // distributions rarely draw meaningfully negative values that far out.
+  const AXIS_MIN_X = -10;
+  const leftAxis = { minX: AXIS_MIN_X, length: 60 };
+  const rightAxis = $derived({ minX: AXIS_MIN_X, length: Math.max(60, Math.ceil(rightXMax) + 5) });
+
   const normalOverlayFn = $derived.by(() => {
     if (samples.length < 25 || !samplingMoments) return null;
     const { mean, variance } = samplingMoments;
@@ -254,10 +262,12 @@
   }}
   initialViewBox={leftViewBox}
   scaleY={10}
+  axis={leftAxis}
   title={$_(`${NSC}title`)}
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
-    scaleY: 10
+    scaleY: 10,
+    axis: rightAxis
   }}
   {splitFormulas}
 >

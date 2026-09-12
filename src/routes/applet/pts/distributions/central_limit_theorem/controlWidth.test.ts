@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { Controls } from '$lib/controls/Controls';
+import { Controls, type Controller } from '$lib/controls/Controls';
 import { PrimeColor } from '$lib/utils/PrimeColors';
 import { DISTRIBUTIONS } from '../distributionRegistry';
 
@@ -9,7 +9,11 @@ describe('CLT applet control chain fits the width budget', () => {
   for (const [name, def] of Object.entries(DISTRIBUTIONS)) {
     it(`does not throw for ${name} (${def.sliders.length} slider(s))`, () => {
       expect(() => {
-        let controls = Controls.addButton('Draw', PrimeColor.pink, () => {})
+        let controls: Controls<unknown, readonly Controller<unknown>[]> = Controls.addButton(
+          'Draw',
+          PrimeColor.pink,
+          () => {}
+        )
           .addDropdown(`${NSC}average`, [`${NSC}average`, `${NSC}sum`])
           .addSlider(5, 1, 50, 1, PrimeColor.blue, { label: 'k' });
 
