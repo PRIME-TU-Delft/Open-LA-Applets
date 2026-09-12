@@ -166,6 +166,75 @@ jobs:
           path: screenshot-diff
           retention-days: 14
 
+      # When at most 5 images changed, list them out (empty outputs for the
+      # unused slots) so each can be uploaded as its own unarchived artifact
+      # below, individually browsable with a direct link.
+      - name: List changed diff images (up to 5)
+        id: files
+        run: |
+          node -e "
+            const fs = require('fs');
+            const { changed } = require('./screenshot-diff/report.json');
+            const files = changed
+              .map((c) => 'screenshot-diff/diffs/' + c.route.replace(/\//g, '_') + '.png')
+              .slice(0, 5);
+            const lines = [];
+            for (let i = 0; i < 5; i++) {
+              lines.push(\`file-\${i + 1}=\${changed.length <= 5 ? (files[i] ?? '') : ''}\`);
+            }
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, lines.join('\n') + '\n');
+          "
+
+      - name: Upload diff image 1
+        if: steps.files.outputs.file-1 != ''
+        id: upload-image-1
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-diff-image-1
+          path: ${{ steps.files.outputs.file-1 }}
+          archive: false
+          retention-days: 14
+
+      - name: Upload diff image 2
+        if: steps.files.outputs.file-2 != ''
+        id: upload-image-2
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-diff-image-2
+          path: ${{ steps.files.outputs.file-2 }}
+          archive: false
+          retention-days: 14
+
+      - name: Upload diff image 3
+        if: steps.files.outputs.file-3 != ''
+        id: upload-image-3
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-diff-image-3
+          path: ${{ steps.files.outputs.file-3 }}
+          archive: false
+          retention-days: 14
+
+      - name: Upload diff image 4
+        if: steps.files.outputs.file-4 != ''
+        id: upload-image-4
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-diff-image-4
+          path: ${{ steps.files.outputs.file-4 }}
+          archive: false
+          retention-days: 14
+
+      - name: Upload diff image 5
+        if: steps.files.outputs.file-5 != ''
+        id: upload-image-5
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-diff-image-5
+          path: ${{ steps.files.outputs.file-5 }}
+          archive: false
+          retention-days: 14
+
       - name: Upsert PR comment
         uses: actions/github-script@v8
         with:
@@ -173,9 +242,22 @@ jobs:
             const fs = require('fs');
             const marker = '<!-- screenshot-diff-report -->';
             const summary = fs.readFileSync('screenshot-diff/summary.md', 'utf-8');
-            const body = `${marker}\n## Screenshot diff report\n\n${summary}\n\n` +
-              `Before/after/diff images are attached as the \`screenshot-diff\` workflow artifact ` +
-              `on this run: ${context.payload.pull_request.html_url}/checks`;
+
+            const imageUrls = [
+              '${{ steps.upload-image-1.outputs.artifact-url }}',
+              '${{ steps.upload-image-2.outputs.artifact-url }}',
+              '${{ steps.upload-image-3.outputs.artifact-url }}',
+              '${{ steps.upload-image-4.outputs.artifact-url }}',
+              '${{ steps.upload-image-5.outputs.artifact-url }}'
+            ].filter(Boolean);
+
+            const imagesLine = imageUrls.length > 0
+              ? `Changed diff image${imageUrls.length === 1 ? '' : 's'}, attached directly:\n` +
+                imageUrls.map((url) => `- ${url}`).join('\n')
+              : `Before/after/diff images are attached as the \`screenshot-diff\` workflow artifact ` +
+                `on this run: ${context.payload.pull_request.html_url}/checks`;
+
+            const body = `${marker}\n## Screenshot diff report\n\n${summary}\n\n${imagesLine}`;
 
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
