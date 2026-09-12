@@ -178,9 +178,11 @@ jobs:
             const files = changed
               .map((c) => 'screenshot-diff/diffs/' + c.route.replace(/\//g, '_') + '.png')
               .slice(0, 5);
+            const routes = changed.map((c) => c.route).slice(0, 5);
             const lines = [];
             for (let i = 0; i < 5; i++) {
               lines.push(\`file-\${i + 1}=\${changed.length <= 5 ? (files[i] ?? '') : ''}\`);
+              lines.push(\`route-\${i + 1}=\${changed.length <= 5 ? (routes[i] ?? '') : ''}\`);
             }
             fs.appendFileSync(process.env.GITHUB_OUTPUT, lines.join('\n') + '\n');
           "
@@ -243,17 +245,17 @@ jobs:
             const marker = '<!-- screenshot-diff-report -->';
             const summary = fs.readFileSync('screenshot-diff/summary.md', 'utf-8');
 
-            const imageUrls = [
-              '${{ steps.upload-image-1.outputs.artifact-url }}',
-              '${{ steps.upload-image-2.outputs.artifact-url }}',
-              '${{ steps.upload-image-3.outputs.artifact-url }}',
-              '${{ steps.upload-image-4.outputs.artifact-url }}',
-              '${{ steps.upload-image-5.outputs.artifact-url }}'
-            ].filter(Boolean);
+            const imageLinks = [
+              ['${{ steps.upload-image-1.outputs.artifact-url }}', '${{ steps.files.outputs.route-1 }}'],
+              ['${{ steps.upload-image-2.outputs.artifact-url }}', '${{ steps.files.outputs.route-2 }}'],
+              ['${{ steps.upload-image-3.outputs.artifact-url }}', '${{ steps.files.outputs.route-3 }}'],
+              ['${{ steps.upload-image-4.outputs.artifact-url }}', '${{ steps.files.outputs.route-4 }}'],
+              ['${{ steps.upload-image-5.outputs.artifact-url }}', '${{ steps.files.outputs.route-5 }}']
+            ].filter(([url]) => Boolean(url));
 
-            const imagesLine = imageUrls.length > 0
-              ? `Changed diff image${imageUrls.length === 1 ? '' : 's'}, attached directly:\n` +
-                imageUrls.map((url) => `- ${url}`).join('\n')
+            const imagesLine = imageLinks.length > 0
+              ? `Changed diff image${imageLinks.length === 1 ? '' : 's'}, attached directly:\n` +
+                imageLinks.map(([url, route]) => `- [${route}](${url})`).join('\n')
               : `Before/after/diff images are attached as the \`screenshot-diff\` workflow artifact ` +
                 `on this run: ${context.payload.pull_request.html_url}/checks`;
 
