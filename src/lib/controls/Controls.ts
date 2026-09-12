@@ -29,7 +29,10 @@ export class Controls<
   private readonly _controls: T;
   _width: number; // width of the controls
 
-  MAX_WIDTH = 120;
+  // 130 rather than the previous 120: the CLT applet's per-distribution control
+  // chain (draw button + average/sum dropdown + k slider + up to 2 distribution
+  // sliders, e.g. binomial's p and n) needs the extra 10 to fit.
+  MAX_WIDTH = 130;
 
   constructor(controls: T, width = 0) {
     this._controls = controls;
