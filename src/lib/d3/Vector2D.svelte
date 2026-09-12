@@ -19,10 +19,10 @@
   import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
+  import ArrowHead2D from './ArrowHead2D.svelte';
   import Line2D from './Line2D.svelte';
   import Point2D from './Point2D.svelte';
-  import Triangle2D from './Triangle2D.svelte';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   let {
     color = PrimeColor.getRandomColor(),
@@ -38,10 +38,7 @@
     children
   }: VectorProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
 
   const CONE_HEIGHT = $derived(Math.max(7 * radius, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * radius, 0.1));
@@ -49,29 +46,39 @@
   const normalizedDirection = $derived(noNormalise ? direction : direction.clone().normalize());
   const coneHeight = $derived(hideHead ? 0 : headLength !== undefined ? headLength : CONE_HEIGHT);
 
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
   const displayEnd = $derived(
     origin.clone().add(normalizedDirection.clone().multiplyScalar(length))
   );
-  const endPoint = $derived(new Vector2(displayEnd.x * sx, displayEnd.y * sy));
 
-  const worldDirection = $derived(
-    new Vector2(normalizedDirection.x * sx, normalizedDirection.y * sy)
-  );
+  // world coords projected once, in screen space
+  const screenOrigin = $derived(projection.toScreen(origin));
+  const screenEnd = $derived(projection.toScreen(displayEnd));
+
+  // on-screen UNIT direction of the shaft; sign carries a negative length
   const screenDirSign = $derived(length > 0 ? 1 : -1);
-  const screenDir = $derived(worldDirection.clone().normalize().multiplyScalar(screenDirSign));
+  const screenDir = $derived(
+    projection.toScreenDir(normalizedDirection).multiplyScalar(screenDirSign)
+  );
 
-  const coneStartPos = $derived(endPoint.clone().sub(screenDir.clone().multiplyScalar(coneHeight)));
+  // The cones are screen-space sizes (they must not distort under non-uniform scale),
+  // so the shaft is shortened in screen space. It runs 5% into the cone so no gap shows.
+  const coneStartPos = $derived(
+    screenEnd.clone().sub(screenDir.clone().multiplyScalar(coneHeight))
+  );
   const lineEndPos = $derived(
-    endPoint.clone().sub(screenDir.clone().multiplyScalar(0.95 * coneHeight))
+    screenEnd.clone().sub(screenDir.clone().multiplyScalar(0.95 * coneHeight))
   );
 
   const secondConeStartPos = $derived(
-    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
+    screenOrigin.clone().add(screenDir.clone().multiplyScalar(coneHeight))
   );
   const lineStartPos = $derived(
-    scaledOrigin.clone().add(screenDir.clone().multiplyScalar(0.95 * coneHeight))
+    screenOrigin.clone().add(screenDir.clone().multiplyScalar(0.95 * coneHeight))
   );
+
+  // Line2D projects its endpoints, so the screen-space shaft ends go in as world coordinates.
+  const shaftStart = $derived(doubleEnded ? projection.toWorld(lineStartPos) : origin);
+  const shaftEnd = $derived(projection.toWorld(lineEndPos));
 </script>
 
 <!--@component
@@ -86,55 +93,38 @@
 - isDashed: boolean - Whether the vector is dashed or not.
 - noNormalise: boolean - Whether to normalize the vector or not.
 - headLength: number - The length of the head of the vector. If not specified, it will be determined by the radius.
-- children: Snippet<[Vector2]> - The children to render at the end of the vector. Slot prop is the endPoint of the vector.
+- children: Snippet<[Vector2]> - The children to render at the end of the vector. The snippet argument is the end point of the vector in world coordinates (the same space as `origin`), so children position themselves with it like any other primitive, e.g. `<Latex2D position={end} />`.
 
 @example
 <Vector2D origin={new Vector2(1, 1)} direction={new Vector2(2, 0)} noNormalise />
 -->
 
-<!-- Line 2D -->
-<Line2D
-  start={doubleEnded ? lineStartPos : scaledOrigin}
-  end={lineEndPos}
-  {color}
-  width={radius}
-  {isDashed}
-/>
+<Line2D start={shaftStart} end={shaftEnd} {color} width={radius} {isDashed} />
 
 {#if !hideHead}
   {#if length == 0}
-    <Point2D position={scaledOrigin} {color} />
+    <Point2D position={origin} {color} />
   {:else}
-    <g
-      transform={`translate(${coneStartPos.x}, ${coneStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI - 90})`}
-    >
-      <Triangle2D
-        points={[
-          new Vector2(CONE_DIAMETER, 0),
-          new Vector2(-CONE_DIAMETER, 0),
-          new Vector2(0, coneHeight)
-        ]}
-        {color}
-      />
-    </g>
+    <ArrowHead2D
+      screenPosition={coneStartPos}
+      angle={screenDir.angle()}
+      length={coneHeight}
+      halfWidth={CONE_DIAMETER}
+      {color}
+    />
   {/if}
 {/if}
 
 {#if doubleEnded}
-  <g
-    transform={`translate(${secondConeStartPos.x}, ${secondConeStartPos.y}) rotate(${(screenDir.angle() * 180) / Math.PI + 90})`}
-  >
-    <Triangle2D
-      points={[
-        new Vector2(CONE_DIAMETER, 0),
-        new Vector2(-CONE_DIAMETER, 0),
-        new Vector2(0, coneHeight)
-      ]}
-      {color}
-    />
-  </g>
+  <ArrowHead2D
+    screenPosition={secondConeStartPos}
+    angle={screenDir.angle() + Math.PI}
+    length={coneHeight}
+    halfWidth={CONE_DIAMETER}
+    {color}
+  />
 {/if}
 
 {#if children}
-  {@render children(endPoint)}
+  {@render children(displayEnd)}
 {/if}

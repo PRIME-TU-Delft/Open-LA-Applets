@@ -30,7 +30,7 @@
   } from '$lib/template/TemplateAppletObjects';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   let {
     center = -3,
@@ -51,11 +51,9 @@
     rotation = 0
   }: MassSpring2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
   const origin = $derived(new Vector2(center, ceilingTop));
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+  const screenOrigin = $derived(projection.toScreen(origin));
 
   const ceilingStart = $derived(new Vector2(center - ceilingWidth / 2, ceilingTop));
   const startSpring = $derived(new Vector2(ceilingWidth / 2, -ceilingThickness).add(ceilingStart));
@@ -148,6 +146,6 @@
   });
 </script>
 
-<g transform="rotate({rotation}, {scaledOrigin.x}, {scaledOrigin.y})">
+<g transform="rotate({rotation}, {screenOrigin.x}, {screenOrigin.y})">
   <TemplateComponent objects={templatedObjects} />
 </g>

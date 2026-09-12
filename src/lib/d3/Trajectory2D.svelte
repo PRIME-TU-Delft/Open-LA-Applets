@@ -3,8 +3,8 @@
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import Point2D from './Point2D.svelte';
-  import Triangle2D from './Triangle2D.svelte';
-  import { getContext, setContext } from 'svelte';
+  import ArrowHead2D from './ArrowHead2D.svelte';
+  import { getProjection2D } from './Projection2D';
 
   type Trajectory2DProps = {
     start: Vector2;
@@ -24,11 +24,8 @@
     tension = 0.5
   }: Trajectory2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  // Prevent children (Point2D, Triangle2D) from applying scale again
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
+  // trajectoryPoints are in screen space: they feed the path and the fixed-size arrowheads.
 
   const c1 = $derived(0.25 * start.x + 0.5 * start.y);
   const c2 = $derived(0.25 * start.x - 0.5 * start.y);
@@ -36,7 +33,7 @@
   const v2 = new Vector2(2, -1);
 
   const trajectoryPoints = $derived.by(() => {
-    const points = [new Vector2(start.x * sx, start.y * sy)];
+    const points = [projection.toScreen(start)];
     let currentPoint = start.clone();
 
     function xt(t: number) {
@@ -68,7 +65,7 @@
 
       currentPoint = point;
 
-      points.push(new Vector2(currentPoint.x * sx, currentPoint.y * sy));
+      points.push(projection.toScreen(currentPoint));
       iterations++;
     }
 
@@ -96,33 +93,29 @@
 
 {#each trajectoryPoints as point, i (i)}
   {#if i == 0}
-    <Point2D position={point} {color} radius={width ? width * 2 : undefined} />
+    <Point2D position={start} {color} radius={width ? width * 2 : undefined} />
   {:else if i == trajectoryPoints.length - 1}
     {@const lastPoint = trajectoryPoints[i - 1]}
-    {@const dir = point.clone().sub(lastPoint).normalize().multiplyScalar(0.5)}
     {@const size = (width ?? 0.5) * 2}
 
-    <g
-      transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-    >
-      <Triangle2D
-        points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-        {color}
-      />
-    </g>
+    <ArrowHead2D
+      screenPosition={point}
+      angle={point.clone().sub(lastPoint).angle()}
+      length={size * 2}
+      halfWidth={size}
+      {color}
+    />
   {:else}
     {@const nextPoint = trajectoryPoints[i + 1]}
-    {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
     {@const size = (width ?? 0.5) * 2}
 
-    <g
-      transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-    >
-      <Triangle2D
-        points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-        {color}
-      />
-    </g>
+    <ArrowHead2D
+      screenPosition={point}
+      angle={nextPoint.clone().sub(point).angle()}
+      length={size * 2}
+      halfWidth={size}
+      {color}
+    />
   {/if}
 {/each}
 

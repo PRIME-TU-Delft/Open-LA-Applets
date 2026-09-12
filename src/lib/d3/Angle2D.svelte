@@ -16,8 +16,8 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { arc } from 'd3';
   import { Vector2 } from 'three';
-  import { getContext } from 'svelte';
-  import Triangle2D from './Triangle2D.svelte';
+  import { getProjection2D } from './Projection2D';
+  import ArrowHead2D from './ArrowHead2D.svelte';
 
   let {
     color = PrimeColor.black,
@@ -30,10 +30,11 @@
     headLength = undefined
   }: Angle2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  const scaledOrigin = $derived(new Vector2(origin.x * sx, origin.y * sy));
+  const projection = getProjection2D();
+  // Only the origin is projected. The arc radius (`distance`), its width and the
+  // arrowhead are screen-space sizes, and the angles are used as given, so under
+  // non-uniform scale the arc ends do not follow the projected vectors. Known limitation.
+  const screenOrigin = $derived(projection.toScreen(origin));
 
   const CONE_HEIGHT = $derived(headLength !== undefined ? headLength : Math.max(7 * width, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * width, 0.1));
@@ -74,12 +75,16 @@
   - width: number - The width of the angle.
   - distance: number - The distance of the angle from the origin.
   - hasHead: boolean - Whether the angle has a head.
+  - headLength: number - The length of the head.
+
+  `distance`, `width` and `headLength` are screen-space sizes: they stay the same
+  whatever the canvas `scaleX`/`scaleY`.
 @example
 <Angle2D startAngle={0} endAngle={Math.PI / 2} />
 
 -->
 
-<g transform="translate({scaledOrigin.x}, {scaledOrigin.y}) rotate({rotation})">
+<g transform="translate({screenOrigin.x}, {screenOrigin.y}) rotate({rotation})">
   <path {d} fill={color} />
 
   {#if hasHead}
@@ -87,12 +92,12 @@
       transform="rotate({(endAngle / Math.PI) * 180 -
         90}) translate({distance}, 0) rotate({-headAngleOffsetDeg}) rotate({inverted ? 180 : 0})"
     >
-      <Triangle2D
-        points={[
-          new Vector2(CONE_DIAMETER, -CONE_HEIGHT),
-          new Vector2(-CONE_DIAMETER, -CONE_HEIGHT),
-          new Vector2(0, 0)
-        ]}
+      <!-- Tip at the local origin, pointing along +y -->
+      <ArrowHead2D
+        screenPosition={new Vector2(0, -CONE_HEIGHT)}
+        angle={Math.PI / 2}
+        length={CONE_HEIGHT}
+        halfWidth={CONE_DIAMETER}
         {color}
       />
     </g>

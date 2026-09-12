@@ -2,6 +2,7 @@ import type { Transform2D } from '$lib/stores/camera.svelte';
 import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 import { clamp } from '$lib/utils/MathLib';
 import type { Vector2 } from 'three';
+import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
 
 export type LabelProps = {
   xLabel?: string;
@@ -46,30 +47,30 @@ export function getXLabelX(
   width: number,
   cameraZoom: number,
   labels: LabelProps | undefined,
-  scaleX: number = 1
+  projection: Projection2D = IDENTITY_PROJECTION
 ): number {
   const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.8 / scaleX;
+  if (!cameraTransform || !normalizedCamera) return projection.xToWorld(6.8);
 
   const baselineX = cameraBaselineX ?? 0;
   const normalizedPanX = normalizedCamera.x;
   const zoom = Math.max(cameraTransform.k, 1e-6);
   const totalZoom = zoom * cameraZoom;
 
-  const worldXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
+  const screenXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
 
   if (labels && labels.xLabelPosition == 'center') {
-    return clamp(worldXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
+    return projection.xToWorld(clamp(screenXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D));
   }
 
   const edgeMarginPx = 48;
 
   const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
 
-  const worldPostAtRight =
+  const screenXAtRight =
     baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
 
-  return clamp(worldPostAtRight, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleX;
+  return projection.xToWorld(clamp(screenXAtRight, -GRID_SIZE_2D, GRID_SIZE_2D));
 }
 
 export function getYabelY(
@@ -78,10 +79,10 @@ export function getYabelY(
   height: number,
   cameraZoom: number,
   labels: LabelProps | undefined,
-  scaleY: number = 1
+  projection: Projection2D = IDENTITY_PROJECTION
 ): number {
   const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return 6.25 / scaleY;
+  if (!cameraTransform || !normalizedCamera) return projection.yToWorld(6.25);
 
   const baselineY = cameraBaselineY ?? 0;
   const normalizedPanY = normalizedCamera.y;
@@ -90,17 +91,17 @@ export function getYabelY(
   const translateY = (normalizedPanY * width) / 15;
   const scaleFactor = 15 / (width * cameraZoom);
 
-  const worldYAtCenter =
+  const screenYAtCenter =
     baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
 
   if (labels && labels.yLabelPosition == 'center') {
-    return clamp(worldYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
+    return projection.yToWorld(clamp(screenYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D));
   }
 
   const edgeMarginPx = 30;
 
-  const worldYAtTopMargin =
+  const screenYAtTopMargin =
     baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
 
-  return clamp(worldYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D) / scaleY;
+  return projection.yToWorld(clamp(screenYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D));
 }

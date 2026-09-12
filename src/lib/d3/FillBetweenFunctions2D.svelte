@@ -3,7 +3,7 @@
   import { line } from 'd3';
   import { Vector2 } from 'three';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   export type FillBetweenFunctions2DProps = {
     func1: (x: number) => number;
@@ -35,25 +35,22 @@
     integral
   }: FillBetweenFunctions2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
-  const safeVal1 = (x: number) => {
-    try {
-      return func1(x / sx) * sy;
-    } catch {
-      return NaN;
-    }
+  // Curves are sampled in screen space: x and the returned y are screen coordinates.
+  const safeScreenFunction = (func: (x: number) => number) => {
+    const screenFunc = projection.toScreenFunction(func);
+    return (x: number) => {
+      try {
+        return screenFunc(x);
+      } catch {
+        return NaN;
+      }
+    };
   };
 
-  const safeVal2 = (x: number) => {
-    try {
-      return func2(x / sx) * sy;
-    } catch {
-      return NaN;
-    }
-  };
+  const safeVal1 = $derived(safeScreenFunction(func1));
+  const safeVal2 = $derived(safeScreenFunction(func2));
 
   const lineGen = line<Vector2>()
     .x((d) => d.x)
@@ -76,8 +73,10 @@
   };
 
   // Function curves from xMin to xMax
-  const func1Points = $derived(buildPoints(safeVal1, xMin * sx, xMax * sx));
-  const func2Points = $derived(buildPoints(safeVal2, xMin * sx, xMax * sx));
+  const screenXMin = $derived(projection.xToScreen(xMin));
+  const screenXMax = $derived(projection.xToScreen(xMax));
+  const func1Points = $derived(buildPoints(safeVal1, screenXMin, screenXMax));
+  const func2Points = $derived(buildPoints(safeVal2, screenXMin, screenXMax));
 
   const func1Line = $derived(func1Points.length >= 2 ? lineGen(func1Points) : null);
   const func2Line = $derived(func2Points.length >= 2 ? lineGen(func2Points) : null);
@@ -86,8 +85,8 @@
   const fillPath = $derived.by(() => {
     if (!integral) return null;
 
-    const xLeft = Math.min(integral.xLeft, integral.xRight) * sx;
-    const xRight = Math.max(integral.xLeft, integral.xRight) * sx;
+    const xLeft = projection.xToScreen(Math.min(integral.xLeft, integral.xRight));
+    const xRight = projection.xToScreen(Math.max(integral.xLeft, integral.xRight));
 
     if (xLeft >= xRight) return null;
 

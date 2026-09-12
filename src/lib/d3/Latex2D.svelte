@@ -20,6 +20,7 @@
   import Latex from '$lib/components/Latex.svelte';
   import { cameraState } from '$lib/stores/camera.svelte';
   import { getContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
   import { Vector2 } from 'three';
 
   let {
@@ -40,13 +41,11 @@
 
   const effectiveCompact = $derived(compact ?? background !== undefined);
 
-  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const scaleX = scale2D?.x ?? 1;
-  const scaleY = scale2D?.y ?? 1;
+  const projection = getProjection2D();
 
-  const scaledPosition = $derived(new Vector2(position.x * scaleX, position.y * scaleY));
+  const screenPosition = $derived(projection.toScreen(position));
 
-  let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
+  let extendedOffset = $derived(screenPosition.clone().normalize().multiplyScalar(extend));
 
   let style = $derived.by(() => {
     const base = `display: inline-block; width: max-content;${background !== undefined ? ` background-color: ${background}; padding: ${padding};` : ''}`;
@@ -87,7 +86,7 @@
 
 <g
   class={dimOnHover ? 'latex-dim' : ''}
-  transform="translate({scaledPosition.x + offset.x + extendedOffset.x}, {scaledPosition.y +
+  transform="translate({screenPosition.x + offset.x + extendedOffset.x}, {screenPosition.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >
