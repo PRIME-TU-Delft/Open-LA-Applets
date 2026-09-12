@@ -105,6 +105,43 @@
     perStepTimingSteps
   );
 
+  const cameraSlideShowState = {
+    cameraZoom: 1,
+    cameraPosition: new Vector2(0, 0)
+  };
+
+  type CameraS = typeof cameraSlideShowState;
+
+  const cameraSteps = [
+    (t: number, state: CameraS) => {
+      // Set once per step (gated on t >= 0.5) so CanvasD3 eases to it itself.
+      if (t >= 0.5) {
+        state.cameraZoom = 2;
+        state.cameraPosition = new Vector2(2, 1);
+      }
+
+      return {
+        state,
+        labelNext: $_('applets.testing.controls_stories.zoom_in_on_b'),
+        labelPrev: $_('ui.slideshow_original_state')
+      };
+    },
+    (t: number, state: CameraS) => {
+      if (t >= 0.5) {
+        state.cameraZoom = 1;
+        state.cameraPosition = new Vector2(0, 0);
+      }
+
+      return {
+        state,
+        labelNext: $_('applets.testing.controls_stories.reset_camera'),
+        labelPrev: $_('applets.testing.controls_stories.zoom_in_on_b')
+      };
+    }
+  ];
+
+  const cameraSlideShowControl = Controls.addSlideShow(cameraSlideShowState, cameraSteps);
+
   const dropdownVals = [
     'applets.testing.controls_stories.vector_left',
     'applets.testing.controls_stories.vector_right',
@@ -285,7 +322,57 @@ const slideShowControl = Controls.addSlideShow(state, perStepTimingSteps);
   </div>
 </Story>
 
-<!-- 
+<!--
+A step can also set `cameraZoom`/`cameraPosition` on the slideshow state, in addition to any scene state.
+`Canvas2D` picks those up as ordinary props and eases the camera to the new values itself, driven by the
+same `t` the step already uses for the rest of its transition.
+
+```typescript
+const state = {
+  cameraZoom: 1,
+  cameraPosition: new Vector2(0, 0)
+};
+
+const cameraSteps = [
+  (t: number, state: typeof state) => {
+    // Set once per step (gated on t >= 0.5) so CanvasD3 eases to it itself.
+    if (t >= 0.5) {
+      state.cameraZoom = 2;
+      state.cameraPosition = new Vector2(2, 1);
+    }
+
+    return { state, labelNext: 'Zoom in on b', labelPrev: 'Original state' };
+  },
+  (t: number, state: typeof state) => {
+    if (t >= 0.5) {
+      state.cameraZoom = 1;
+      state.cameraPosition = new Vector2(0, 0);
+    }
+
+    return { state, labelNext: 'Reset camera', labelPrev: 'Zoom in on b' };
+  }
+];
+
+const cameraSlideShowControl = Controls.addSlideShow(state, cameraSteps);
+```
+-->
+<Story name="Slide show driving the camera">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D
+      controls={cameraSlideShowControl}
+      cameraZoom={cameraSlideShowControl[0].cameraZoom}
+      cameraPosition={cameraSlideShowControl[0].cameraPosition}
+    >
+      <Vector2D
+        direction={new Vector2(2, 1)}
+        length={new Vector2(2, 1).length()}
+        color={PrimeColor.blue}
+      />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!--
 ```typescript
 const dropdownVals = [
   'applets.testing.controls_stories.vector_left',
