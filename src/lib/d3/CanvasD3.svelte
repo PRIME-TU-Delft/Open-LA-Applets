@@ -43,7 +43,13 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
 
   import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
-  import { clampCameraZoom, fromZoomView, toZoomView, zoomScaleExtent } from './CameraMath';
+  import {
+    clampCameraZoom,
+    fromZoomView,
+    toZoomView,
+    VISIBLE_SCENE_WIDTH,
+    zoomScaleExtent
+  } from './CameraMath';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
@@ -114,7 +120,7 @@
    * Transform function that translates and scales the whole scene
    * @param transform {x: number, y: number, k: number} - k is zoom
    */
-  function transformScene(transform: Transform2D) {
+  function transformScene(transform: Transform2D, immediate = false) {
     if (!transform.k) return;
 
     if (enablePan) {
@@ -125,13 +131,22 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x;
-    const y = 15 / (width / transform.y) + cameraPosition.y;
+    const x = VISIBLE_SCENE_WIDTH / (width / -transform.x) + cameraPosition.x;
+    const y = VISIBLE_SCENE_WIDTH / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
     currentCameraTransform = transform2d;
-    debouncedUpdate2DCamera(transform2d);
+
+    // `animateCameraTo` passes `immediate` so cameraState.camera2D (and the
+    // share-URL it feeds) stays correct mid-tween — the 100ms debounce below
+    // is only appropriate for interactive user pan/zoom, which fires far
+    // more often than once per animation frame.
+    if (immediate) {
+      update2DCamera(transform2d);
+    } else {
+      debouncedUpdate2DCamera(transform2d);
+    }
   }
 
   /**
@@ -155,6 +170,9 @@
    * (`cameraZoom`/`cameraPosition`) is untouched — it follows the applet's
    * own props, which an applet's own reset (e.g. `SlideShow.reset()`)
    * restores separately.
+   *
+   * Shares the 'camera' transition name with `animateCameraTo` so the two
+   * interrupt each other instead of running concurrently on the same node.
    */
   function reset() {
     const svg = select(`#${id}`);
@@ -165,7 +183,7 @@
     }).transform as (t: Transition<BaseType, unknown, BaseType, unknown>) => void;
 
     svg
-      .transition()
+      .transition('camera')
       .duration(CAMERA_TRANSITION_MS)
       .call(transformFn, zoomIdentity, zoomTransform(node).invert([width / 2, height / 2]));
 
@@ -199,7 +217,9 @@
         // Re-derive the camera-state sync payload from the live d3-zoom
         // overlay transform composed with the base we just moved, so
         // legend/axis labels and the share-URL zoom stay correct mid-tween.
-        transformScene(zoomTransform(node) as unknown as Transform2D);
+        // `immediate: true` bypasses the debounce so cameraState.camera2D
+        // updates every tick instead of only ~100ms after the tween ends.
+        transformScene(zoomTransform(node) as unknown as Transform2D, true);
       });
   }
 

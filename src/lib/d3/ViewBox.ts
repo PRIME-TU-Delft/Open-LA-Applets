@@ -1,4 +1,5 @@
 import { Vector2 } from 'three';
+import { VISIBLE_SCENE_WIDTH } from './CameraMath';
 
 export class ViewBox {
   bottomLeft: Vector2;
@@ -35,8 +36,11 @@ export class ViewBox {
     }
 
     // At zoom z, the visible coordinate range is:
-    //   x: 15/z total
-    //   y: 15*(height/width)/z total
-    return Math.min(15 / boxWidth, (15 * height) / (boxHeight * width));
+    //   x: VISIBLE_SCENE_WIDTH/z total
+    //   y: VISIBLE_SCENE_WIDTH*(height/width)/z total
+    return Math.min(
+      VISIBLE_SCENE_WIDTH / boxWidth,
+      (VISIBLE_SCENE_WIDTH * height) / (boxHeight * width)
+    );
   }
 }
