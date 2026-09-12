@@ -12,11 +12,14 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector3 } from 'three';
   import type { Cuboid3DProps } from '../Cuboid3D.svelte';
+  import Canvas3D from '../Canvas3D.svelte';
 </script>
 
 {#snippet template(args: Cuboid3DProps)}
   <div class="h-[300px] overflow-hidden rounded-lg">
-    <Cuboid3D {...args} />
+    <Canvas3D>
+      <Cuboid3D {...args} />
+    </Canvas3D>
   </div>
 {/snippet}
 
