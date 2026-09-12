@@ -12,8 +12,11 @@
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Angle2D from './Angle2D.svelte';
+  import { getProjection2D } from './Projection2D';
 
   const props: SmallestArc2DProps = $props();
+
+  const projection = getProjection2D();
 
   const v = $derived(props.points[0]);
   const w = $derived(props.points[1]);
@@ -29,13 +32,21 @@
   }
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
+
+  // `distance` is a screen-space radius, so the bisector (and the straight-angle
+  // fallback below) are computed in screen space, then converted back to world
+  // space since label consumers (e.g. Latex2D) expect a world-space position and
+  // project it themselves.
+  const screenBisector = $derived(
+    projection.toScreenDir(v).clone().add(projection.toScreenDir(w)).normalize()
+  );
   const labelPosition = $derived(
-    v
-      .clone()
-      .normalize()
-      .add(w.clone().normalize())
-      .normalize()
-      .multiplyScalar(props.distance || 1)
+    projection.toWorld(screenBisector.clone().multiplyScalar(props.distance || 1))
+  );
+
+  const screenVDir = $derived(projection.toScreenDir(v));
+  const straightLabelPosition = $derived(
+    projection.toWorld(new Vector2(-screenVDir.y, screenVDir.x).multiplyScalar(props.distance || 1))
   );
 </script>
 
@@ -65,9 +76,8 @@
 -->
 
 {#if angle == 1}
-  {@const labelPosition = v.clone().normalize()}
   <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
-  {@render props.label?.(new Vector2(-labelPosition.y, labelPosition.x))}
+  {@render props.label?.(straightLabelPosition)}
 {:else if angle < 0 || angle > 1}
   <Angle2D {...props} startAngle={w.angle()} endAngle={v.angle()} />
   {@render props.label?.(labelPosition)}
