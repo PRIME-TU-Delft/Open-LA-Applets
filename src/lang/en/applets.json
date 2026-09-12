@@ -182,6 +182,14 @@
         "title": "Central Limit Theorem",
         "average": "Average",
         "sum": "Sum"
+      },
+      "mean_squared_error_and_bias": {
+        "title": "Mean Squared Error and Bias",
+        "clear": "Clear Arrows",
+        "shoot": "Shoot 5 Arrows",
+        "points": "Average points",
+        "target": "On target",
+        "miss": "Miss"
       }
     }
   },
