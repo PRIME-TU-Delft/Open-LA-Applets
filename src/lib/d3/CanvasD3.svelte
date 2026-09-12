@@ -253,11 +253,16 @@
 
   /**
    * Reset the d3 canvas when the reset key changes.
+   *
+   * `reset()` reads `cameraZoom`/`cameraPosition` (via `update2DCamera`), so without
+   * `untrack` this effect would also depend on them; `animateCameraTo`'s tween writes
+   * both every frame, which would re-fire this effect and cancel the tween's own
+   * `'camera'`-named transition almost immediately.
    */
   $effect(() => {
     const _ = globalState.resetKey;
 
-    reset();
+    untrack(() => reset());
   });
 
   // Remove / clean-upw camera store entries
