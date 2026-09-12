@@ -52,6 +52,13 @@
 <!-- A Point with text shown only on hover -->
 <Story
   name="With text shown only on hover"
-  args={{ text: 'Hover me!', showTextOnlyOnHover: true }}
+  args={{ text: '\\text{Hover me!}', showTextOnlyOnHover: true }}
+  {template}
+/>
+
+<!-- A Point with text defined and background color -->
+<Story
+  name="With text background"
+  args={{ text: 'Hello, World!', background: '#ff349d', offset: new Vector2(0.3, 0.3) }}
   {template}
 />
