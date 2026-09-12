@@ -152,9 +152,7 @@
   const displayedSampleIndex = $derived(
     selectedIndex ?? (samples.length > 0 ? samples.length - 1 : null)
   );
-  const leftDraws = $derived(
-    displayedSampleIndex !== null ? samples[displayedSampleIndex] : []
-  );
+  const leftDraws = $derived(displayedSampleIndex !== null ? samples[displayedSampleIndex] : []);
 
   function addFreq(map: { [x: number]: number }, x: number) {
     map[x] = (map[x] ?? 0) + 1;
@@ -261,7 +259,7 @@
     initialViewBox: rightViewBox,
     scaleY: 10
   }}
-  splitFormulas={splitFormulas}
+  {splitFormulas}
 >
   {#if leftDraws.length === 0}
     <Latex2D
