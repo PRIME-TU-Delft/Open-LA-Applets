@@ -39,7 +39,11 @@
   const state = $derived(controls[0]);
 </script>
 
-<Canvas2D {controls} axis={{ showAxisNumbersX: false, showAxisNumbersY: false }}>
+<Canvas2D
+  {controls}
+  axis={{ showAxisNumbersX: false, showAxisNumbersY: false }}
+  cameraPosition={new Vector2(3, 0.5)}
+>
   <!-- MARK: Polygons -->
   {#if state.OAFC.visible}
     <Polygon2D
@@ -98,7 +102,7 @@
   <Latex2D
     latex={String.raw`\mathbf{u}`}
     position={u.clone().multiplyScalar(0.5)}
-    offset={new Vector2(0, -0.1)}
+    offset={new Vector2(0, 0.8)}
     color={PrimeColor.orange}
   />
 
@@ -122,9 +126,9 @@
   {#if state.vPlusW.visible}
     <Vector2D direction={vw} length={vw.length()} color={PrimeColor.blue} />
     <Latex2D
-      latex={String.raw`\mathbf{v+w}`}
-      position={vw.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.8, 0.3)}
+      latex={String.raw`\mathbf{v}+\mathbf{w}`}
+      position={vw.clone().multiplyScalar(0.5).add(u)}
+      offset={new Vector2(0.5, 0.3)}
       color={PrimeColor.blue}
     />
 
@@ -141,40 +145,39 @@
   <Point2D position={o} radius={POINT_SIZE * 0.75} />
   <Point2D position={u} radius={POINT_SIZE * 0.75} />
 
-  <Latex2D latex="A" position={u} offset={new Vector2(0.15, 0.3)} />
+  <Latex2D latex="A" position={u} offset={new Vector2(0.2, 0.5)} />
   <Latex2D latex="B" position={w} offset={new Vector2(-0.1, -0.2)} />
-  <Latex2D latex="C" position={v} offset={new Vector2(0, 0.4)} />
-  <Latex2D latex="D" position={uw} extend={0.15} />
+  <Latex2D latex="C" position={v} offset={new Vector2(-0.2, 0.7)} />
+  <Latex2D latex="D" position={uw} offset={new Vector2(0.2, 0.7)} />
   <Latex2D latex="E" position={uvw} extend={0.15} />
-  <Latex2D latex="F" position={uv} offset={new Vector2(0.1, 0.25)} />
-  <Latex2D latex="G" position={vw} offset={new Vector2(0.1, 0.25)} />
+  <Latex2D latex="F" position={uv} offset={new Vector2(-0.2, 0.7)} />
+  <Latex2D latex="G" position={vw} offset={new Vector2(0.1, 0.1)} />
 
   {#if state.OAFC.visible || state.OAFCG.visible}
     <Latex2D
       latex="OAFC"
       position={uv.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.2, -0.1)}
+      offset={new Vector2(-0.5, -0.1)}
     />
 
     <Latex2D
       latex="OBDA"
       position={uw.clone().multiplyScalar(0.5)}
-      offset={state.OBDA.offset.clone().add(new Vector2(-0.25, 0.25))}
+      offset={state.OBDA.offset.clone().add(new Vector2(-1.2, 0.3))}
     />
   {/if}
 
   {#if state.CGEF.visible || state.OAEG.visible}
     <Latex2D
       latex="OAEG"
-      position={uvw.clone().multiplyScalar(0.5)}
-      offset={new Vector2(-0.2, 0.2)}
+      position={uv.clone().multiplyScalar(0.5)}
+      offset={new Vector2(-0.5, -0.1)}
     />
 
     <Latex2D
       latex="CGEF"
-      position={new Vector2(3, 3)}
-      offset={new Vector2(-0.1, 0.2)}
-      fontSize={state.CGEF.opacity}
+      position={uw.clone().multiplyScalar(0.5)}
+      offset={state.OBDA.offset.clone().add(new Vector2(-1.2, 0.3))}
     />
   {/if}
 </Canvas2D>

@@ -10,9 +10,9 @@
   import { Draggable } from '$lib/controls/Draggables.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import FillBetweenFunctions2D from '$lib/d3/FillBetweenFunctions2D.svelte';
+  import { ViewBox } from '$lib/d3/ViewBox';
 
-  let cameraPosition: Vector2 | undefined;
-  let cameraZoom: number | undefined;
+  let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
   let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
@@ -29,9 +29,11 @@
   // choose one or none of the options below - if both are specified, view box will be used
 
   // (remove if unnecessary)
-  cameraPosition = new Vector2(5, 0);
-  cameraZoom = 0.9;
-
+  initialViewBox = new ViewBox(
+    new Vector2(-5, -1.75), // bottom-left
+    new Vector2(13, 1.75), // top-right
+    0 // margin
+  );
   // ####
   // AXIS
   // ####
@@ -127,14 +129,13 @@
     ...getLegend(appletObjects2),
     ...getLegend(appletObjects3)
   ]}
-  legendFormulaPosition="top-right"
+  legendFormulaPosition="top-left"
 >
   <GridCanvas2D
     {draggables}
     gridColumn="1"
     gridRow="1"
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -156,8 +157,7 @@
     {draggables}
     gridColumn="1"
     gridRow="2"
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}
@@ -197,8 +197,7 @@
     {draggables}
     gridColumn="1"
     gridRow="3"
-    {cameraPosition}
-    {cameraZoom}
+    {initialViewBox}
     labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
     {axis}
     {scaleX}

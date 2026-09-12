@@ -1,5 +1,6 @@
 import { Vector2 } from 'three';
 import { VISIBLE_SCENE_WIDTH } from './CameraMath';
+import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
 
 export class ViewBox {
   bottomLeft: Vector2;
@@ -18,18 +19,22 @@ export class ViewBox {
     this.margin = margin ?? 0;
   }
 
-  getCameraPos(scaleX: number = 1, scaleY: number = 1): Vector2 {
-    const scaledBottomLeft = new Vector2(this.bottomLeft.x * scaleX, this.bottomLeft.y * scaleY);
-    const scaledTopRight = new Vector2(this.topRight.x * scaleX, this.topRight.y * scaleY);
+  getCameraPos(projection: Projection2D = IDENTITY_PROJECTION): Vector2 {
+    const screenBottomLeft = projection.toScreen(this.bottomLeft);
+    const screenTopRight = projection.toScreen(this.topRight);
     return new Vector2(
-      (scaledBottomLeft.x + scaledTopRight.x + 2 * this.margin) / 2 - this.margin,
-      (scaledBottomLeft.y + scaledTopRight.y + 2 * this.margin) / 2 - this.margin
+      (screenBottomLeft.x + screenTopRight.x + 2 * this.margin) / 2 - this.margin,
+      (screenBottomLeft.y + screenTopRight.y + 2 * this.margin) / 2 - this.margin
     );
   }
 
-  getCameraZoom(width: number, height: number, scaleX: number = 1, scaleY: number = 1): number {
-    const boxWidth = (this.topRight.x - this.bottomLeft.x) * scaleX + 2 * this.margin;
-    const boxHeight = (this.topRight.y - this.bottomLeft.y) * scaleY + 2 * this.margin;
+  getCameraZoom(
+    width: number,
+    height: number,
+    projection: Projection2D = IDENTITY_PROJECTION
+  ): number {
+    const boxWidth = projection.xToScreen(this.topRight.x - this.bottomLeft.x) + 2 * this.margin;
+    const boxHeight = projection.yToScreen(this.topRight.y - this.bottomLeft.y) + 2 * this.margin;
 
     if (boxWidth <= 0 || boxHeight <= 0 || width <= 0 || height <= 0) {
       return 1;

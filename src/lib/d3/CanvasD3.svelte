@@ -39,6 +39,7 @@
   import Axis, { type AxisProps } from './Axis.svelte';
   import Draggable2D from './Draggable2D.svelte';
   import { debounce } from '$lib/utils/TimingFunctions';
+  import { Projection2D, setProjection2D } from './Projection2D';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
@@ -73,21 +74,19 @@
     children = undefined
   }: Canvas2DProps = $props();
 
-  function toScenePosition(v: Vector2): Vector2 {
-    return v.clone().multiply(new Vector2(scaleX, scaleY));
-  }
+  const projection = new Projection2D(scaleX, scaleY);
 
   // svelte-ignore state_referenced_locally
   let cameraZoom = $state(
-    viewBox ? viewBox.getCameraZoom(width, height, scaleX, scaleY) : cameraZoomProp
+    viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp
   );
   // svelte-ignore state_referenced_locally
   let cameraPosition = $state(
-    viewBox ? viewBox.getCameraPos(scaleX, scaleY) : toScenePosition(cameraPositionProp)
+    viewBox ? viewBox.getCameraPos(projection) : projection.toScreen(cameraPositionProp)
   );
 
   // Mount-time base zoom, used as the fixed reference for the user zoom range
-  // and for clamping programmatic camera moves — never reassigned.
+  // and for clamping programmatic camera moves; never reassigned.
   // svelte-ignore state_referenced_locally
   const initialCameraZoom = cameraZoom;
 
@@ -100,7 +99,8 @@
   // svelte-ignore state_referenced_locally
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
-  setContext('scale2D', { x: scaleX, y: scaleY });
+  setContext('default-width', width);
+  setProjection2D(projection);
 
   function update2DCamera(transform2d: Transform2D) {
     const camera = Camera2D.new(
@@ -139,7 +139,7 @@
     currentCameraTransform = transform2d;
 
     // `animateCameraTo` passes `immediate` so cameraState.camera2D (and the
-    // share-URL it feeds) stays correct mid-tween — the 100ms debounce below
+    // share-URL it feeds) stays correct mid-tween; the 100ms debounce below
     // is only appropriate for interactive user pan/zoom, which fires far
     // more often than once per animation frame.
     if (immediate) {
@@ -167,7 +167,7 @@
 
   /**
    * Eases the d3-zoom overlay back to identity; the base camera
-   * (`cameraZoom`/`cameraPosition`) is untouched — it follows the applet's
+   * (`cameraZoom`/`cameraPosition`) is untouched, and follows the applet's
    * own props, which an applet's own reset (e.g. `SlideShow.reset()`)
    * restores separately.
    *
@@ -237,7 +237,7 @@
 
     prevCameraTarget = { zoom: targetZoom, position: targetPosition.clone() };
 
-    untrack(() => animateCameraTo(targetZoom, toScenePosition(targetPosition)));
+    untrack(() => animateCameraTo(targetZoom, projection.toScreen(targetPosition)));
   });
 
   /** Attach/detach the zoom listener; rebinds on resize. */
@@ -266,9 +266,11 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(getXLabelX(currentCameraTransform, width, cameraZoom, labels, scaleX));
+  const xLabelX = $derived(
+    getXLabelX(currentCameraTransform, width, cameraZoom, labels, projection)
+  );
   const yLabelY = $derived(
-    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, scaleY)
+    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, projection)
   );
 </script>
 
@@ -306,7 +308,7 @@
                 fontSize={labels.size || 1}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
-                  0.75 / scaleY + (labels?.xLabelOffset?.y ?? 0)
+                  projection.yToWorld(0.75) + (labels?.xLabelOffset?.y ?? 0)
                 )}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
                 color={labels?.xColor ?? axis?.colorX ?? PrimeColor.black}
@@ -318,8 +320,7 @@
                 latex={labels.yLabel}
                 fontSize={labels.size || 1}
                 position={new Vector2(
-                  0.25 / scaleX +
-                    (labels.yLabelRotate ? 0.5 / scaleX : 0) +
+                  projection.xToWorld(0.25 + (labels.yLabelRotate ? 0.5 : 0)) +
                     (labels?.yLabelOffset?.x ?? 0),
                   yLabelY + +(labels?.yLabelOffset?.y ?? 0)
                 )}

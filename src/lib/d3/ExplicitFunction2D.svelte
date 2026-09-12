@@ -2,9 +2,9 @@
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
-  import Triangle2D from './Triangle2D.svelte';
+  import ArrowHead2D from './ArrowHead2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   export type ExplicitFunction2DProps = {
     func: (x: number) => number;
@@ -48,11 +48,10 @@
     verticalLimit = GRID_SIZE_2D
   }: ExplicitFunction2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  // Prevent Triangle2D children (arrow heads) from applying scale to visual-space coords
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
+  // The curve is sampled in screen space (stepSize is in screen units), so the x and y
+  // values below are screen coordinates.
+  const screenFunc = $derived(projection.toScreenFunction(func));
 
   // Generate points for the function
   const functionRoots = $derived.by(() => {
@@ -68,7 +67,7 @@
 
     const safeVal = (x: number) => {
       try {
-        return func(x / sx) * sy;
+        return screenFunc(x);
       } catch {
         return NaN;
       }
@@ -90,7 +89,7 @@
         const xm = (x0 + x1) / 2;
         let ym: number;
         try {
-          ym = func(xm / sx) * sy;
+          ym = screenFunc(xm);
         } catch {
           ym = NaN;
         }
@@ -123,7 +122,9 @@
       return false;
     };
 
-    let prevX = xMin * sx;
+    const screenXMin = projection.xToScreen(xMin);
+    const screenXMax = projection.xToScreen(xMax);
+    let prevX = screenXMin;
     let prevY: number | null = null;
 
     const firstY = (() => {
@@ -136,11 +137,9 @@
       currentSegment.push(new Vector2(prevX, prevY));
     }
 
-    const xMinScaled = xMin * sx;
-    const xMaxScaled = xMax * sx;
-    const steps = Math.ceil((xMaxScaled - xMinScaled) / stepSize);
+    const steps = Math.ceil((screenXMax - screenXMin) / stepSize);
     for (let i = 1; i <= steps; i++) {
-      const x = Math.min(xMinScaled + i * stepSize, xMaxScaled);
+      const x = Math.min(screenXMin + i * stepSize, screenXMax);
       const y = safeVal(x);
 
       if (!isFinite(y)) {
@@ -195,14 +194,14 @@
   const integralPath = $derived.by(() => {
     if (!integral) return null;
 
-    const xLeft = Math.min(integral.xLeft, integral.xRight) * sx;
-    const xRight = Math.max(integral.xLeft, integral.xRight) * sx;
+    const xLeft = projection.xToScreen(Math.min(integral.xLeft, integral.xRight));
+    const xRight = projection.xToScreen(Math.max(integral.xLeft, integral.xRight));
     const segments: Vector2[][] = [];
     let current: Vector2[] = [];
 
     const safeVal = (x: number) => {
       try {
-        return func(x / sx) * sy;
+        return screenFunc(x);
       } catch {
         return NaN;
       }
@@ -285,16 +284,14 @@
     {#each points as point, i (i)}
       {#if i > 0 && i < points.length - 1}
         {@const nextPoint = points[i + 1]}
-        {@const dir = nextPoint.clone().sub(point).normalize().multiplyScalar(0.5)}
         {@const size = (width ?? 0.5) * 2}
-        <g
-          transform={`translate(${point.x}, ${point.y}) rotate(${(dir.angle() * 180) / Math.PI - 90})`}
-        >
-          <Triangle2D
-            points={[new Vector2(size, 0), new Vector2(-size, 0), new Vector2(0, size * 2)]}
-            {color}
-          />
-        </g>
+        <ArrowHead2D
+          screenPosition={point}
+          angle={nextPoint.clone().sub(point).angle()}
+          length={size * 2}
+          halfWidth={size}
+          {color}
+        />
       {/if}
     {/each}
   {/each}

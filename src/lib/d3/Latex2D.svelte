@@ -12,6 +12,7 @@
     dimOnHover?: boolean;
     background?: string;
     padding?: string;
+    compact?: boolean;
   };
 </script>
 
@@ -19,6 +20,7 @@
   import Latex from '$lib/components/Latex.svelte';
   import { cameraState } from '$lib/stores/camera.svelte';
   import { getContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
   import { Vector2 } from 'three';
 
   let {
@@ -33,16 +35,17 @@
     alignY = null,
     dimOnHover = false,
     background = undefined,
-    padding = '0.2em'
+    padding = '0.2em',
+    compact = undefined
   }: Latex2DProps = $props();
 
-  const scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const scaleX = scale2D?.x ?? 1;
-  const scaleY = scale2D?.y ?? 1;
+  const effectiveCompact = $derived(compact ?? background !== undefined);
 
-  const scaledPosition = $derived(new Vector2(position.x * scaleX, position.y * scaleY));
+  const projection = getProjection2D();
 
-  let extendedOffset = $derived(scaledPosition.clone().normalize().multiplyScalar(extend));
+  const screenPosition = $derived(projection.toScreen(position));
+
+  let extendedOffset = $derived(screenPosition.clone().normalize().multiplyScalar(extend));
 
   let style = $derived.by(() => {
     const base = `display: inline-block; width: max-content;${background !== undefined ? ` background-color: ${background}; padding: ${padding};` : ''}`;
@@ -70,25 +73,28 @@
   });
 
   const dontScaleWithDefaultZoom = getContext('dontScaleWithDefaultZoom') === true;
+  const REFERENCE_WIDTH = 500; // baseline canvas width text sizing is calibrated against
+
+  const defWidth = (getContext('default-width') as number | undefined) ?? REFERENCE_WIDTH; // baseline canvas width text sizing is calibrated against
 
   const scale = $derived.by(() => {
-    if (dontScaleWithDefaultZoom) return 0.02 * fontSize;
+    if (dontScaleWithDefaultZoom) return 0.03 * fontSize;
 
-    return (0.02 * fontSize) / defZoom;
+    return ((0.03 * fontSize) / defZoom) * (REFERENCE_WIDTH / defWidth);
   });
 </script>
 
 <g
   class={dimOnHover ? 'latex-dim' : ''}
-  transform="translate({scaledPosition.x + offset.x + extendedOffset.x}, {scaledPosition.y +
+  transform="translate({screenPosition.x + offset.x + extendedOffset.x}, {screenPosition.y +
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >
   <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
     {#if isSafari}
-      <Latex {latex} {color} outputType="mathml" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="mathml" {style} compact={effectiveCompact} />
     {:else}
-      <Latex {latex} {color} outputType="html" {style} compact={background !== undefined} />
+      <Latex {latex} {color} outputType="html" {style} compact={effectiveCompact} />
     {/if}
   </foreignObject>
 </g>

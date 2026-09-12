@@ -67,8 +67,8 @@ This is the complete page component for the template applet (`src/routes/applet/
   // SCALE
   // #####
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
-  // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
-  // Formulas and positions should be written in display (mathematical) space.
+  // Example: scaleX={2} means 1 world (mathematical) unit = 2 SVG (screen) units on the x-axis.
+  // Formulas and positions should be written in world (mathematical) space.
   let scaleX = 1;
   let scaleY = 1;
 
@@ -188,17 +188,17 @@ To change the coordinate system scale, pass `scaleX` and/or `scaleY` to `Canvas2
 </Canvas2D>
 ```
 
-- `scaleX`: how many SVG (world-space) units correspond to 1 display unit on the x-axis. Default: `1`.
-- `scaleY`: how many SVG (world-space) units correspond to 1 display unit on the y-axis. Default: `1`.
+- `scaleX`: how many SVG (screen-space) units correspond to 1 world (mathematical) unit on the x-axis. Default: `1`.
+- `scaleY`: how many SVG (screen-space) units correspond to 1 world (mathematical) unit on the y-axis. Default: `1`.
 
 All child components (functions, points, lines, axis, etc.) automatically read the scale from context and adjust accordingly. This means:
 
-- **Formulas** should be written in pure mathematical (display) space. For example, use `'\\cos(x)'` instead of manually pre-scaling like `'3\\cos(x/1.5)'`.
-- **Domains and integral bounds** should be in display space. For example, `domain: { xMin: 0, xMax: 2 * Math.PI }` instead of `{ xMin: 0, xMax: 2 * Math.PI * scaleX }`.
-- **Point positions** (gaps, included points) should be in display space.
-- **Axis tick labels** automatically show display-space values.
-- **`Latex2D` positions** are in display space. They automatically scale based on the active scale context.
-- **`additionalTicksX`/`additionalTicksY`** values should be in display space. The Axis component automatically converts them to world space internally.
+- **Formulas** should be written in pure mathematical (world) space. For example, use `'\\cos(x)'` instead of manually pre-scaling like `'3\\cos(x/1.5)'`.
+- **Domains and integral bounds** should be in world space. For example, `domain: { xMin: 0, xMax: 2 * Math.PI }` instead of `{ xMin: 0, xMax: 2 * Math.PI * scaleX }`.
+- **Point positions** (gaps, included points) should be in world space.
+- **Axis tick labels** automatically show world-space values.
+- **`Latex2D` positions** are in world space. They automatically scale based on the active scale context.
+- **`additionalTicksX`/`additionalTicksY`** values should be in world space. The Axis component automatically converts them to screen space internally.
 
 ## Optional: set axis labels
 
@@ -326,6 +326,7 @@ new ImplicitFunctionFragment(func, color, options?)
 - `color`: one of the `PrimeColor` values.
 - `options` (optional):
   - `domain`: `{ xMin?: number; xMax?: number }`, limits x-range used during rendering.
+  - `range`: `{ yMin?: number; yMax?: number }`, limits y-range used during rendering.
   - `isDashed`: `true` or (by default) `false`.
   - `shape`: `'circle'`, `'square'` or `'triangle'`, used for legend and points.
   - `legendText`: text to display in the legend.

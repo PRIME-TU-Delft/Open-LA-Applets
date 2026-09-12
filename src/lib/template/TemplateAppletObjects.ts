@@ -7,6 +7,11 @@ type Domain = {
   xMax?: number;
 };
 
+type Range = {
+  yMin?: number;
+  yMax?: number;
+};
+
 type Integral = {
   xLeft: number;
   xRight: number;
@@ -28,6 +33,7 @@ export abstract class AppletObject {
 
 export abstract class AbstractFunctionFragment extends AppletObject {
   domain: Domain | undefined;
+  range: Range | undefined;
   width?: number;
   gaps: Vector2[] = [];
   gapRadius: number = 0.075;
@@ -56,6 +62,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      range?: Range;
       width?: number;
       isDashed?: boolean;
       shape?: Shape;
@@ -66,6 +73,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
     super(color);
 
     this.domain = options?.domain;
+    this.range = options?.range;
     this.width = options?.width;
     this.legendText = options?.legendText;
     if (options?.isDashed) this.isDashed = options.isDashed;
@@ -155,6 +163,7 @@ export class ImplicitFunctionFragment extends AbstractFunctionFragment {
     color: PrimeColor,
     options?: {
       domain?: Domain;
+      range?: Range;
       width?: number;
       isDashed?: boolean;
       shape?: Shape;
@@ -492,6 +501,7 @@ export class Circle extends AppletObject {
   isDashed?: boolean;
   radiiShown?: number[];
   radiusLatex?: string;
+  width?: number;
 
   /**
    * Circle template object
@@ -501,12 +511,13 @@ export class Circle extends AppletObject {
    * @param options.isDashed Whether the circle should be dashed
    * @param options.radiiShown List of angles (radians) for which radius is drawn
    * @param options.radiusLatex Latex drawn next to radii
+   * @param options.width Width of the circle stroke
    */
   constructor(
     origin: Vector2,
     radius: number,
     color: PrimeColor,
-    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string }
+    options?: { isDashed?: boolean; radiiShown?: number[]; radiusLatex?: string; width?: number }
   ) {
     super(color);
 
@@ -515,6 +526,7 @@ export class Circle extends AppletObject {
     this.isDashed = options?.isDashed;
     this.radiiShown = options?.radiiShown;
     this.radiusLatex = options?.radiusLatex;
+    this.width = options?.width;
   }
 }
 
@@ -525,6 +537,7 @@ export class Polygon extends AppletObject {
   verticesLatex?: string[];
   legendText?: string;
   legendShape: Shape;
+  width?: number;
 
   /**
    * Polygon template object
@@ -545,6 +558,7 @@ export class Polygon extends AppletObject {
       verticesLatex?: string[];
       legendText?: string;
       legendShape?: Shape;
+      width?: number;
     }
   ) {
     super(color);
@@ -557,5 +571,6 @@ export class Polygon extends AppletObject {
     this.legendShape =
       options?.legendShape ??
       (points.length === 3 ? 'triangle' : points.length === 4 ? 'square' : 'circle');
+    this.width = options?.width;
   }
 }

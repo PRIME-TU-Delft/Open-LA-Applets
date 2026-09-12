@@ -2,7 +2,7 @@
   import { GRID_SIZE_2D, LINE_WIDTH } from '$lib/utils/AttributeDimensions';
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
-  import { getContext, setContext } from 'svelte';
+  import { getProjection2D } from './Projection2D';
 
   export type ImplicitFunction2DProps = {
     // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
@@ -110,15 +110,13 @@
     maxDepth = 6
   }: ImplicitFunction2DProps = $props();
 
-  const _scale2D = getContext('scale2D') as { x: number; y: number } | undefined;
-  const sx = _scale2D?.x ?? 1;
-  const sy = _scale2D?.y ?? 1;
-  setContext('scale2D', { x: 1, y: 1 });
+  const projection = getProjection2D();
 
-  const worldXMin = $derived(xMin * sx);
-  const worldXMax = $derived(xMax * sx);
-  const worldYMin = $derived(yMin * sy);
-  const worldYMax = $derived(yMax * sy);
+  // Marching squares runs on a screen-space grid (stepSize is in screen units).
+  const screenXMin = $derived(projection.xToScreen(xMin));
+  const screenXMax = $derived(projection.xToScreen(xMax));
+  const screenYMin = $derived(projection.yToScreen(yMin));
+  const screenYMax = $derived(projection.yToScreen(yMax));
 
   function interpolate(p1: Vector2, p2: Vector2, v1: number, v2: number): Vector2 {
     if (Math.abs(v1 - v2) < 1e-10) return p1.clone();
@@ -133,7 +131,7 @@
       return valueCache.get(key)!;
     }
     try {
-      const val = zeroFunc(x / sx, y / sy);
+      const val = zeroFunc(projection.xToWorld(x), projection.yToWorld(y));
       const result = isFinite(val) ? val : 0;
       valueCache.set(key, result);
       return result;
@@ -346,12 +344,12 @@
     const lines: StartEndLine[] = [];
     const valueCache = new Map<string, number>();
 
-    let xPos = worldXMin;
-    while (xPos < worldXMax) {
-      let yPos = worldYMin;
-      while (yPos < worldYMax) {
+    let xPos = screenXMin;
+    while (xPos < screenXMax) {
+      let yPos = screenYMin;
+      while (yPos < screenYMax) {
         // Calculate actual cell size (may be smaller at boundaries)
-        const currentStepSize = Math.min(stepSize, worldXMax - xPos, worldYMax - yPos);
+        const currentStepSize = Math.min(stepSize, screenXMax - xPos, screenYMax - yPos);
 
         marchingSquaresAdaptive(lines, valueCache, xPos, yPos, currentStepSize, maxDepth);
 
@@ -406,7 +404,7 @@
 {#each contourLines as line, lineIdx (lineIdx)}
   {#each line.points as point, pointIdx (pointIdx)}
     <Point2D
-      position={new Vector2(point.x, point.y)}
+      position={projection.toWorld(point)}
       color={PrimeColor.black}
       radius={0.03}
     />

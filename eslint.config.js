@@ -45,6 +45,7 @@ export default ts.config(
         }
       ],
       'local-rules/no-hardcoded-title': 'error',
+      'local-rules/no-manual-aligned-formula': 'error',
       'local-rules/require-url-params-info': 'error',
       'svelte/no-unnecessary-state-wrap': [
         'error',
@@ -83,6 +84,14 @@ export default ts.config(
     files: ['**/tutorial*/**/*.svelte', '**/stories/**/*.svelte'],
     rules: {
       'local-rules/no-hardcoded-title': 'off'
+    }
+  },
+  // Formulas.ts is where \begin{aligned} is legitimately constructed (Formulas.align()),
+  // and eslint-local-rules.js only mentions the pattern in its own message/docs text.
+  {
+    files: ['**/lib/utils/Formulas.ts', 'eslint-local-rules.js'],
+    rules: {
+      'local-rules/no-manual-aligned-formula': 'off'
     }
   },
   storybook.configs['flat/recommended']
