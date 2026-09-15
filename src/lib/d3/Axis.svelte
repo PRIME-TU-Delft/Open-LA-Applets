@@ -64,13 +64,17 @@
   let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
   let axisIndicesY = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
 
+  // Screen pixels: these lines use vector-effect="non-scaling-stroke" so they
+  // stay a constant width on screen instead of thickening as the user zooms in.
   function stokeWidth(index: number, logarithmic: boolean) {
-    if (logarithmic) return 0.005;
+    if (logarithmic) return 0.4;
 
-    if (index % 10 == 0) return 0.02;
-    if (index % 5 == 0) return 0.01;
-    return 0.005;
+    if (index % 10 == 0) return 1.6;
+    if (index % 5 == 0) return 0.8;
+    return 0.4;
   }
+
+  const TICK_MARK_WIDTH = 1.2;
 
   function getTickText(index: number, axis: 'x' | 'y') {
     if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
@@ -102,6 +106,7 @@
         y2={length}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if index == 0 && showAxisY}
@@ -113,12 +118,21 @@
         y2={length}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipX, screenAdditionalTicksX)}
-      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke={colorX} stroke-width={0.02} />
+      <line
+        x1={index}
+        y1={-0.1}
+        x2={index}
+        y2={0.1}
+        stroke={colorX}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
+      />
     {/if}
 
     {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, screenAdditionalTicksX)}
@@ -147,6 +161,7 @@
         y2={length}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if screenIndex == 0 && showAxisY}
@@ -158,6 +173,7 @@
         y2={length}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
@@ -169,7 +185,8 @@
         x2={screenIndex}
         y2={0.1}
         stroke={colorX}
-        stroke-width={0.02}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
@@ -198,6 +215,7 @@
         y2={index}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if index == 0 && showAxisX}
@@ -209,12 +227,21 @@
         y2={index}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipY, screenAdditionalTicksY)}
-      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke={colorY} stroke-width={0.02} />
+      <line
+        x1={-0.1}
+        y1={index}
+        x2={0.1}
+        y2={index}
+        stroke={colorY}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
+      />
     {/if}
 
     {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, screenAdditionalTicksY)}
@@ -244,6 +271,7 @@
         y2={screenIndex}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if screenIndex == 0 && showAxisX}
@@ -255,6 +283,7 @@
         y2={screenIndex}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
@@ -266,7 +295,8 @@
         x2={0.1}
         y2={screenIndex}
         stroke={colorY}
-        stroke-width={0.02}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
