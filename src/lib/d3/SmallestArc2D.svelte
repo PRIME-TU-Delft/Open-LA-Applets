@@ -33,20 +33,22 @@
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
 
-  // `distance` is a screen-space radius, so the bisector (and the straight-angle
-  // fallback below) are computed in screen space, then converted back to world
-  // space since label consumers (e.g. Latex2D) expect a world-space position and
-  // project it themselves.
-  const screenBisector = $derived(
-    projection.toScreenDir(v).clone().add(projection.toScreenDir(w)).normalize()
-  );
+  // `distance` is a screen-space radius, so the label position is computed from a
+  // screen-space direction, then converted back to world space since label
+  // consumers (e.g. Latex2D) expect a world-space position and project it themselves.
+  function toWorldLabelPosition(screenDir: Vector2) {
+    return projection.toWorld(screenDir.clone().multiplyScalar(props.distance || 1));
+  }
+
   const labelPosition = $derived(
-    projection.toWorld(screenBisector.clone().multiplyScalar(props.distance || 1))
+    toWorldLabelPosition(
+      projection.toScreenDir(v).clone().add(projection.toScreenDir(w)).normalize()
+    )
   );
 
   const screenVDir = $derived(projection.toScreenDir(v));
   const straightLabelPosition = $derived(
-    projection.toWorld(new Vector2(-screenVDir.y, screenVDir.x).multiplyScalar(props.distance || 1))
+    toWorldLabelPosition(new Vector2(-screenVDir.y, screenVDir.x))
   );
 </script>
 
