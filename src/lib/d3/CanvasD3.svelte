@@ -41,11 +41,13 @@
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
 
-  import { getXLabelX, getYabelY, type LabelProps } from './AxisLabels';
+  import { getXLabelX, getYLabelY, type LabelProps } from './AxisLabels';
+  import { pixelDeltaToScreenUnit } from './CameraViewport';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -63,8 +65,10 @@
     children = undefined
   }: Canvas2DProps = $props();
 
+  let currentCameraTransform = $state<Transform2D>();
+
   // svelte-ignore state_referenced_locally
-  const projection = new Projection2D(scaleX, scaleY);
+  const projection = new Projection2D(scaleX, scaleY, () => currentCameraTransform?.k ?? 1);
 
   // svelte-ignore state_referenced_locally
   let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp;
@@ -75,7 +79,13 @@
 
   let id = 'canvas-' + generateUUID();
 
-  let currentCameraTransform = $state<Transform2D>();
+  // The camera starts at rest (identity transform), so the baseline is just the
+  // initial camera position — fixed once here, not captured from whichever zoom
+  // event happens to fire first.
+  let cameraBaseline = $state<{ x: number; y: number }>({
+    x: cameraPosition.x,
+    y: cameraPosition.y
+  });
 
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
@@ -107,8 +117,8 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = 15 / (width / -transform.x) + cameraPosition.x;
-    const y = 15 / (width / transform.y) + cameraPosition.y;
+    const x = pixelDeltaToScreenUnit(-transform.x, width) + cameraPosition.x;
+    const y = pixelDeltaToScreenUnit(transform.y, width) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
@@ -183,12 +193,18 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(
-    getXLabelX(currentCameraTransform, width, cameraZoom, labels, projection)
-  );
-  const yLabelY = $derived(
-    getYabelY(currentCameraTransform, width, height, cameraZoom, labels, projection)
-  );
+  const axisLabelLayout = $derived({
+    cameraTransform: currentCameraTransform,
+    cameraBaseline,
+    width,
+    height,
+    cameraZoom,
+    labels,
+    projection
+  });
+
+  const xLabelX = $derived(getXLabelX(axisLabelLayout));
+  const yLabelY = $derived(getYLabelY(axisLabelLayout));
 </script>
 
 <div class="relative overflow-hidden">
@@ -202,9 +218,9 @@
     <g>
       <g transform-origin="{width / 2} {height / 2}" transform="scale({cameraZoom})">
         <g
-          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / 30}, {(-1 *
+          transform="translate({width / 2}, {height / 2}) scale({(2 * width) / GRID_SIZE_2D}, {(-1 *
             (2 * width)) /
-            30})"
+            GRID_SIZE_2D})"
         >
           <g transform="translate({-cameraPosition.x}, {-cameraPosition.y})">
             <!-- 4. Axis: ticks, axis lines, tick numbers -->
@@ -221,8 +237,9 @@
             {#if labels?.xLabel}
               <Latex2D
                 dimOnHover={true}
+                fixedScreenScale={true}
                 latex={labels.xLabel}
-                fontSize={labels.size || 1}
+                fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
                   projection.yToWorld(0.75) + (labels?.xLabelOffset?.y ?? 0)
@@ -234,8 +251,9 @@
             {#if labels?.yLabel}
               <Latex2D
                 dimOnHover={true}
+                fixedScreenScale={true}
                 latex={labels.yLabel}
-                fontSize={labels.size || 1}
+                fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   projection.xToWorld(0.25 + (labels.yLabelRotate ? 0.5 : 0)) +
                     (labels?.yLabelOffset?.x ?? 0),

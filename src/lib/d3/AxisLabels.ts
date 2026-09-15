@@ -1,7 +1,8 @@
 import type { Transform2D } from '$lib/stores/camera.svelte';
-import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+import { GRID_SIZE_2D, HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 import { clamp } from '$lib/utils/MathLib';
 import type { Vector2 } from 'three';
+import { pixelDeltaToScreenUnit, screenUnitToPixelDelta } from './CameraViewport';
 import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
 
 export type LabelProps = {
@@ -17,91 +18,119 @@ export type LabelProps = {
   yColor?: string;
 };
 
-let cameraBaselineX: number | undefined;
-let cameraBaselineY: number | undefined;
+export type CameraBaseline = { x: number; y: number };
+
+export type AxisLabelLayout = {
+  cameraTransform: Transform2D | undefined;
+  cameraBaseline: CameraBaseline | undefined;
+  width: number;
+  height: number;
+  cameraZoom: number;
+  labels: LabelProps | undefined;
+  projection?: Projection2D;
+};
+
+type NormalizedAxisLabelLayout = {
+  baseline: CameraBaseline;
+  normalizedPan: Transform2D;
+  zoom: number;
+  totalZoom: number;
+};
 
 /**
  * CanvasD3 computes x and y as pan contribution plus initial camera baseline.
- * Capture that baseline once and remove it for viewport-relative label placement.
- * @param cameraTransform D3's camera transform
- * @returns camera position without baseline
+ * Remove that baseline for viewport-relative label placement.
  */
-function revertCameraBaseline(cameraTransform: Transform2D | undefined): Transform2D | undefined {
-  if (!cameraTransform) return undefined;
-  if (cameraBaselineX === undefined) {
-    cameraBaselineX = cameraTransform.x;
-  }
-  if (cameraBaselineY === undefined) {
-    cameraBaselineY = cameraTransform.y;
-  }
-
+function normalizeCamera(
+  cameraTransform: Transform2D,
+  cameraBaseline: CameraBaseline | undefined
+): Transform2D {
   return {
     ...cameraTransform,
-    x: cameraTransform.x - cameraBaselineX,
-    y: cameraTransform.y - cameraBaselineY
+    x: cameraTransform.x - (cameraBaseline?.x ?? 0),
+    y: cameraTransform.y - (cameraBaseline?.y ?? 0)
   } as Transform2D;
 }
 
-export function getXLabelX(
+function normalizeAxisLabelLayout(
   cameraTransform: Transform2D | undefined,
-  width: number,
-  cameraZoom: number,
-  labels: LabelProps | undefined,
-  projection: Projection2D = IDENTITY_PROJECTION
-): number {
-  const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return projection.xToWorld(6.8);
+  cameraBaseline: CameraBaseline | undefined,
+  cameraZoom: number
+): NormalizedAxisLabelLayout | undefined {
+  if (!cameraTransform) return undefined;
 
-  const baselineX = cameraBaselineX ?? 0;
-  const normalizedPanX = normalizedCamera.x;
   const zoom = Math.max(cameraTransform.k, 1e-6);
-  const totalZoom = zoom * cameraZoom;
 
-  const screenXAtCenter = baselineX - 7.5 / cameraZoom + (7.5 + normalizedPanX) / totalZoom;
+  return {
+    baseline: { x: cameraBaseline?.x ?? 0, y: cameraBaseline?.y ?? 0 },
+    normalizedPan: normalizeCamera(cameraTransform, cameraBaseline),
+    zoom,
+    totalZoom: zoom * cameraZoom
+  };
+}
 
-  if (labels && labels.xLabelPosition == 'center') {
-    return projection.xToWorld(clamp(screenXAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D));
+function clampToGrid(screenValue: number): number {
+  return clamp(screenValue, -GRID_SIZE_2D, GRID_SIZE_2D);
+}
+
+export function getXLabelX({
+  cameraTransform,
+  cameraBaseline,
+  width,
+  cameraZoom,
+  labels,
+  projection = IDENTITY_PROJECTION
+}: AxisLabelLayout): number {
+  const normalized = normalizeAxisLabelLayout(cameraTransform, cameraBaseline, cameraZoom);
+  if (!normalized) return projection.xToWorld(6.8);
+
+  const { baseline, normalizedPan, totalZoom } = normalized;
+
+  const screenXAtCenter = baseline.x - 7.5 / cameraZoom + (7.5 + normalizedPan.x) / totalZoom;
+
+  if (labels?.xLabelPosition === 'center') {
+    return projection.xToWorld(clampToGrid(screenXAtCenter));
   }
 
   const edgeMarginPx = 48;
-
-  const rightEdgeFactor = 15 * (1 - edgeMarginPx / width);
+  const rightEdgeFactor = HALF_GRID_SIZE_2D * (1 - edgeMarginPx / width);
 
   const screenXAtRight =
-    baselineX - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPanX) / totalZoom;
+    baseline.x - 7.5 / cameraZoom + (rightEdgeFactor + normalizedPan.x) / totalZoom;
 
-  return projection.xToWorld(clamp(screenXAtRight, -GRID_SIZE_2D, GRID_SIZE_2D));
+  return projection.xToWorld(clampToGrid(screenXAtRight));
 }
 
-export function getYabelY(
-  cameraTransform: Transform2D | undefined,
-  width: number,
-  height: number,
-  cameraZoom: number,
-  labels: LabelProps | undefined,
-  projection: Projection2D = IDENTITY_PROJECTION
-): number {
-  const normalizedCamera = revertCameraBaseline(cameraTransform);
-  if (!cameraTransform || !normalizedCamera) return projection.yToWorld(6.25);
+export function getYLabelY({
+  cameraTransform,
+  cameraBaseline,
+  width,
+  height,
+  cameraZoom,
+  labels,
+  projection = IDENTITY_PROJECTION
+}: AxisLabelLayout): number {
+  const normalized = normalizeAxisLabelLayout(cameraTransform, cameraBaseline, cameraZoom);
+  if (!normalized) return projection.yToWorld(6.25);
 
-  const baselineY = cameraBaselineY ?? 0;
-  const normalizedPanY = normalizedCamera.y;
-  const zoom = Math.max(cameraTransform.k, 1e-6);
+  const { baseline, normalizedPan, zoom } = normalized;
 
-  const translateY = (normalizedPanY * width) / 15;
-  const scaleFactor = 15 / (width * cameraZoom);
+  // Recover the raw d3 pixel-space pan CanvasD3's transformScene folded into
+  // normalizedPan, so we can redo the same pixel-space positioning it does.
+  const panPixelY = screenUnitToPixelDelta(normalizedPan.y, width);
 
   const screenYAtCenter =
-    baselineY + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
+    baseline.y +
+    pixelDeltaToScreenUnit(height / 2 + panPixelY / zoom - height / (2 * zoom), width) / cameraZoom;
 
-  if (labels && labels.yLabelPosition == 'center') {
-    return projection.yToWorld(clamp(screenYAtCenter, -GRID_SIZE_2D, GRID_SIZE_2D));
+  if (labels?.yLabelPosition === 'center') {
+    return projection.yToWorld(clampToGrid(screenYAtCenter));
   }
 
   const edgeMarginPx = 30;
-
   const screenYAtTopMargin =
-    baselineY + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
+    baseline.y +
+    pixelDeltaToScreenUnit(height / 2 + panPixelY / zoom - edgeMarginPx / zoom, width) / cameraZoom;
 
-  return projection.yToWorld(clamp(screenYAtTopMargin, -GRID_SIZE_2D, GRID_SIZE_2D));
+  return projection.yToWorld(clampToGrid(screenYAtTopMargin));
 }
