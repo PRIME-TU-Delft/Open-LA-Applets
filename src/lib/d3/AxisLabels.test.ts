@@ -30,8 +30,12 @@ describe('getXLabelX / getYLabelY', () => {
     // and small enough pan/zoom that results don't clamp to ±GRID_SIZE_2D.
     const t = transform(10, 10, 2);
 
-    const withBaselineA = getXLabelX(layout({ cameraTransform: t, cameraBaseline: { x: 0, y: 0 } }));
-    const withBaselineB = getXLabelX(layout({ cameraTransform: t, cameraBaseline: { x: 5, y: 5 } }));
+    const withBaselineA = getXLabelX(
+      layout({ cameraTransform: t, cameraBaseline: { x: 0, y: 0 } })
+    );
+    const withBaselineB = getXLabelX(
+      layout({ cameraTransform: t, cameraBaseline: { x: 5, y: 5 } })
+    );
 
     expect(withBaselineA).not.toBeCloseTo(withBaselineB, 5);
 
@@ -54,7 +58,9 @@ describe('getXLabelX / getYLabelY', () => {
     const edge = getXLabelX(layout({ cameraTransform: t }));
     expect(center).not.toBeCloseTo(edge, 5);
 
-    const yCenter = getYLabelY(layout({ cameraTransform: t, labels: { yLabelPosition: 'center' } }));
+    const yCenter = getYLabelY(
+      layout({ cameraTransform: t, labels: { yLabelPosition: 'center' } })
+    );
     const yEdge = getYLabelY(layout({ cameraTransform: t }));
     expect(yCenter).not.toBeCloseTo(yEdge, 5);
   });

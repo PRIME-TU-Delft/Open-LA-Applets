@@ -19,7 +19,6 @@ export type LabelProps = {
 
 export type CameraBaseline = { x: number; y: number };
 
-/** Everything axis label placement needs about the camera and canvas it's drawn in. */
 export type AxisLabelLayout = {
   cameraTransform: Transform2D | undefined;
   cameraBaseline: CameraBaseline | undefined;
@@ -52,7 +51,6 @@ function normalizeCamera(
   } as Transform2D;
 }
 
-/** Shared preamble for both axes: guard against a missing transform, then derive baseline/zoom. */
 function normalizeAxisLabelLayout(
   cameraTransform: Transform2D | undefined,
   cameraBaseline: CameraBaseline | undefined,
@@ -87,8 +85,7 @@ export function getXLabelX({
 
   const { baseline, normalizedPan, totalZoom } = normalized;
 
-  const screenXAtCenter =
-    baseline.x - 7.5 / cameraZoom + (7.5 + normalizedPan.x) / totalZoom;
+  const screenXAtCenter = baseline.x - 7.5 / cameraZoom + (7.5 + normalizedPan.x) / totalZoom;
 
   if (labels?.xLabelPosition === 'center') {
     return projection.xToWorld(clampToGrid(screenXAtCenter));

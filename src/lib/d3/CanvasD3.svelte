@@ -81,7 +81,6 @@
   // The camera starts at rest (identity transform), so the baseline is just the
   // initial camera position — fixed once here, not captured from whichever zoom
   // event happens to fire first.
-  // svelte-ignore state_referenced_locally
   let cameraBaseline = $state<{ x: number; y: number }>({
     x: cameraPosition.x,
     y: cameraPosition.y
