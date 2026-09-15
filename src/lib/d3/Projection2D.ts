@@ -1,5 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import { Vector2 } from 'three';
+import { wrapAngle } from '$lib/utils/MathLib';
 
 /**
  * The world↔screen seam for 2D applets.
@@ -70,13 +71,12 @@ export class Projection2D {
   toScreenAngle(worldAngle: number): number {
     const TAU = 2 * Math.PI;
     const turns = Math.floor(worldAngle / TAU);
-    const wrapped = worldAngle - turns * TAU; // in [0, TAU)
+    const wrapped = wrapAngle(worldAngle);
     const screenWrapped = Math.atan2(
       this.scaleY * Math.sin(wrapped),
       this.scaleX * Math.cos(wrapped)
     );
-    const screenWrapped0to2pi = screenWrapped < 0 ? screenWrapped + TAU : screenWrapped;
-    return screenWrapped0to2pi + turns * TAU;
+    return wrapAngle(screenWrapped) + turns * TAU;
   }
 
   /**

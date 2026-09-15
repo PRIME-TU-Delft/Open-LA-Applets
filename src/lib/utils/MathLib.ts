@@ -19,11 +19,17 @@ export function clamp(number: number, min: number, max: number) {
   return Math.max(min, Math.min(number, max));
 }
 
+/** Wraps `angle` into [0, 2π), unlike `%` which can return a negative remainder. */
+export function wrapAngle(angle: number) {
+  const TAU = 2 * Math.PI;
+  const wrapped = angle % TAU;
+  return wrapped < 0 ? wrapped + TAU : wrapped;
+}
+
 /** Smallest signed rotation, in (-π, π], from angle `from` to angle `to`. */
 export function smallestSignedAngleDelta(from: number, to: number) {
-  const TAU = 2 * Math.PI;
-  const raw = ((to - from) % TAU) + ((to - from) % TAU < 0 ? TAU : 0); // [0, TAU)
-  return raw > Math.PI ? raw - TAU : raw;
+  const raw = wrapAngle(to - from); // [0, TAU)
+  return raw > Math.PI ? raw - 2 * Math.PI : raw;
 }
 
 /**

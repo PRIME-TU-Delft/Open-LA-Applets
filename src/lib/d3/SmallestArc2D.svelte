@@ -36,8 +36,12 @@
 
   // v.angle()/w.angle() are raw values in [0, 2π), so a plain endAngle - startAngle
   // can be off by a full turn once they straddle the 2π/0 wrap point.
-  const directEndAngle = $derived(v.angle() + smallestSignedAngleDelta(v.angle(), w.angle()));
-  const flipEndAngle = $derived(w.angle() + smallestSignedAngleDelta(w.angle(), v.angle()));
+  function endAngleFrom(from: number, to: number) {
+    return from + smallestSignedAngleDelta(from, to);
+  }
+
+  const directEndAngle = $derived(endAngleFrom(v.angle(), w.angle()));
+  const flipEndAngle = $derived(endAngleFrom(w.angle(), v.angle()));
 
   // `distance` is a screen-space radius, so the label position is computed from a
   // screen-space direction, then converted back to world space since label
