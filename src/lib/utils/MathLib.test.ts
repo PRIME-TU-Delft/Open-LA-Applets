@@ -22,10 +22,7 @@ describe('smallestSignedAngleDelta', () => {
   it('never exceeds half a turn in magnitude', () => {
     for (let fromDeg = 0; fromDeg < 360; fromDeg += 37) {
       for (let toDeg = 0; toDeg < 360; toDeg += 41) {
-        const delta = smallestSignedAngleDelta(
-          (fromDeg * Math.PI) / 180,
-          (toDeg * Math.PI) / 180
-        );
+        const delta = smallestSignedAngleDelta((fromDeg * Math.PI) / 180, (toDeg * Math.PI) / 180);
         expect(Math.abs(delta)).toBeLessThanOrEqual(Math.PI + 1e-9);
       }
     }
@@ -43,8 +40,7 @@ describe('smallestSignedAngleDelta', () => {
   });
 
   it('reproduces the SmallestArc2D regression: v=233°, w=18°', () => {
-    // A raw `w - v` difference of -215° would draw the 215° major arc;
-    // the true smallest arc between these two directions is +145°.
+    // raw w-v is -215°; the actual smallest arc is +145°.
     const v = (233.13 * Math.PI) / 180;
     const w = (18.43 * Math.PI) / 180;
     const delta = smallestSignedAngleDelta(v, w);
