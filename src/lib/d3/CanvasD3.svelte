@@ -46,7 +46,11 @@
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import { GRID_SIZE_2D, HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import {
+    AXIS_LABEL_FONT_SIZE,
+    GRID_SIZE_2D,
+    HALF_GRID_SIZE_2D
+  } from '$lib/utils/AttributeDimensions';
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -238,7 +242,7 @@
                 dimOnHover={true}
                 fixedScreenScale={true}
                 latex={labels.xLabel}
-                fontSize={labels.size || 1}
+                fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
                   projection.yToWorld(0.75) + (labels?.xLabelOffset?.y ?? 0)
@@ -252,7 +256,7 @@
                 dimOnHover={true}
                 fixedScreenScale={true}
                 latex={labels.yLabel}
-                fontSize={labels.size || 1}
+                fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   projection.xToWorld(0.25 + (labels.yLabelRotate ? 0.5 : 0)) +
                     (labels?.yLabelOffset?.x ?? 0),

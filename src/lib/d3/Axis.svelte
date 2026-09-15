@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import Latex2D from './Latex2D.svelte';
   import { getProjection2D } from './Projection2D';
@@ -129,6 +129,8 @@
           position={labelPosition(index, -0.15)}
           alignX="center"
           color={colorX}
+          fixedScreenScale={true}
+          fontSize={AXIS_LABEL_FONT_SIZE}
         />
       {/if}
     {/if}
@@ -179,6 +181,8 @@
           position={labelPosition(screenIndex, -0.15)}
           alignX="center"
           color={colorX}
+          fixedScreenScale={true}
+          fontSize={AXIS_LABEL_FONT_SIZE}
         />
       {/if}
     {/if}
@@ -222,6 +226,8 @@
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
           color={colorY}
+          fixedScreenScale={true}
+          fontSize={AXIS_LABEL_FONT_SIZE}
         />
       {/if}
     {/if}
@@ -273,6 +279,8 @@
           alignX={logarithmicY ? 'left' : 'right'}
           alignY="center"
           color={colorY}
+          fixedScreenScale={true}
+          fontSize={AXIS_LABEL_FONT_SIZE}
         />
       {/if}
     {/if}
@@ -280,6 +288,13 @@
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D latex="O" alignX="right" alignY="top" offset={new Vector2(-0.15, -0.15)} />
+    <Latex2D
+      latex="O"
+      alignX="right"
+      alignY="top"
+      offset={new Vector2(-0.15, -0.15)}
+      fixedScreenScale={true}
+      fontSize={AXIS_LABEL_FONT_SIZE}
+    />
   {/if}
 </g>
