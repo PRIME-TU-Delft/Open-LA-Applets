@@ -64,8 +64,10 @@
     children = undefined
   }: Canvas2DProps = $props();
 
+  let currentCameraTransform = $state<Transform2D>();
+
   // svelte-ignore state_referenced_locally
-  const projection = new Projection2D(scaleX, scaleY);
+  const projection = new Projection2D(scaleX, scaleY, () => currentCameraTransform?.k ?? 1);
 
   // svelte-ignore state_referenced_locally
   let cameraZoom = viewBox ? viewBox.getCameraZoom(width, height, projection) : cameraZoomProp;
@@ -76,15 +78,20 @@
 
   let id = 'canvas-' + generateUUID();
 
-  let currentCameraTransform = $state<Transform2D>();
-  let cameraBaseline = $state<{ x: number; y: number }>();
+  // The camera starts at rest (identity transform), so the baseline is just the
+  // initial camera position — fixed once here, not captured from whichever zoom
+  // event happens to fire first.
+  // svelte-ignore state_referenced_locally
+  let cameraBaseline = $state<{ x: number; y: number }>({
+    x: cameraPosition.x,
+    y: cameraPosition.y
+  });
 
   // svelte-ignore state_referenced_locally
   setContext('is-split', isSplit);
   setContext('default-zoom', cameraZoom);
   // svelte-ignore state_referenced_locally
   setContext('default-width', width);
-  setContext('current-zoom-k', () => currentCameraTransform?.k ?? 1);
   setProjection2D(projection);
 
   function update2DCamera(transform2d: Transform2D) {
@@ -114,8 +121,6 @@
     const y = HALF_GRID_SIZE_2D / (width / transform.y) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
-
-    if (!cameraBaseline) cameraBaseline = { x: transform2d.x, y: transform2d.y };
 
     currentCameraTransform = transform2d;
     debouncedUpdate2DCamera(transform2d);
@@ -188,20 +193,18 @@
     else cameraState.camera2D = undefined;
   });
 
-  const xLabelX = $derived(
-    getXLabelX(currentCameraTransform, cameraBaseline, width, cameraZoom, labels, projection)
-  );
-  const yLabelY = $derived(
-    getYLabelY(
-      currentCameraTransform,
-      cameraBaseline,
-      width,
-      height,
-      cameraZoom,
-      labels,
-      projection
-    )
-  );
+  const axisLabelLayout = $derived({
+    cameraTransform: currentCameraTransform,
+    cameraBaseline,
+    width,
+    height,
+    cameraZoom,
+    labels,
+    projection
+  });
+
+  const xLabelX = $derived(getXLabelX(axisLabelLayout));
+  const yLabelY = $derived(getYLabelY(axisLabelLayout));
 </script>
 
 <div class="relative overflow-hidden">
