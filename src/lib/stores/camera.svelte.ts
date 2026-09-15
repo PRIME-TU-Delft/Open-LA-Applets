@@ -60,11 +60,18 @@ export class Camera2D {
     public defaultZoom: number
   ) {}
 
-  static new(transform: Transform2D, defaultZoom: number, enablePan = false) {
+  static new(
+    transform: Transform2D,
+    baseZoom: number,
+    defaultZoom: number,
+    basePosition: { x: number; y: number },
+    enablePan = false
+  ) {
+    const zoom = transform.k * baseZoom;
     if (enablePan) {
-      return new Camera2D(transform.x, transform.y, transform.k, defaultZoom);
+      return new Camera2D(transform.x, transform.y, zoom, defaultZoom);
     }
-    return new Camera2D(0, 0, transform.k, defaultZoom);
+    return new Camera2D(basePosition.x, basePosition.y, zoom, defaultZoom);
   }
 
   static toCoordinateSystem(num: number, width: number) {

@@ -217,11 +217,17 @@
       "move_b_from": "Move b to (2,-1)",
       "vector_left": "Vector to the left",
       "vector_right": "Vector to the right",
-      "no_vector": "No vector"
+      "no_vector": "No vector",
+      "zoom_in_on_b": "Zoom in on b",
+      "reset_camera": "Reset camera"
     },
     "more_languages": {
       "title": "Multiple languages test",
       "formula": "This is a test on having more applet languages than UI languages"
+    },
+    "slideshow_camera": {
+      "zoom_in_on_point": "Zoom in on the point",
+      "reset_camera": "Reset camera"
     }
   },
   "vectors": {
