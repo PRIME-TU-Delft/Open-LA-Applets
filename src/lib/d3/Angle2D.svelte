@@ -31,15 +31,18 @@
   }: Angle2DProps = $props();
 
   const projection = getProjection2D();
-  // Only the origin is projected. The arc radius (`distance`), its width and the
-  // arrowhead are screen-space sizes, and the angles are used as given, so under
-  // non-uniform scale the arc ends do not follow the projected vectors. Known limitation.
+  // `origin` (a world point) and `startAngle`/`endAngle` (world angles) are the
+  // only world-space inputs; both are projected here so the drawn arc ends land
+  // on the on-screen direction of the vectors they represent. `distance`,
+  // `width` and `headLength` are screen-space sizes and are never projected.
   const screenOrigin = $derived(projection.toScreen(origin));
+  const screenStartAngle = $derived(projection.toScreenAngle(startAngle));
+  const screenEndAngle = $derived(projection.toScreenAngle(endAngle));
 
   const CONE_HEIGHT = $derived(headLength !== undefined ? headLength : Math.max(7 * width, 0.4));
   const CONE_DIAMETER = $derived(Math.max(1.5 * width, 0.1));
 
-  const inverted = $derived.by(() => startAngle > endAngle);
+  const inverted = $derived.by(() => screenStartAngle > screenEndAngle);
   const rotation = $derived.by(() => {
     let angle = 90;
 
@@ -50,14 +53,14 @@
     hasHead ? (inverted ? -CONE_HEIGHT : CONE_HEIGHT) / Math.max(distance, 1e-6) : 0
   );
   // Slightly reduce the angle of the arc to force a minimal overlap with the arrowhead
-  const endAngleCalculated = $derived(endAngle - 0.95 * headAngleOffset);
+  const endAngleCalculated = $derived(screenEndAngle - 0.95 * headAngleOffset);
   const headAngleOffsetDeg = $derived(((headAngleOffset / Math.PI) * 180) / 2);
 
   let d = $derived.by(() => {
     return arc()({
       innerRadius: distance - width / 2,
       outerRadius: distance + width / 2,
-      startAngle: startAngle,
+      startAngle: screenStartAngle,
       endAngle: endAngleCalculated
     });
   });
@@ -77,8 +80,11 @@
   - hasHead: boolean - Whether the angle has a head.
   - headLength: number - The length of the head.
 
-  `distance`, `width` and `headLength` are screen-space sizes: they stay the same
-  whatever the canvas `scaleX`/`scaleY`.
+  `startAngle` and `endAngle` are world-space angles; this component converts
+  them to screen-space internally so the arc ends land on the on-screen
+  direction of the vectors they represent, even under non-uniform canvas
+  scale. `distance`, `width` and `headLength` are screen-space sizes: they
+  stay the same whatever the canvas `scaleX`/`scaleY`.
 @example
 <Angle2D startAngle={0} endAngle={Math.PI / 2} />
 
@@ -89,7 +95,7 @@
 
   {#if hasHead}
     <g
-      transform="rotate({(endAngle / Math.PI) * 180 -
+      transform="rotate({(screenEndAngle / Math.PI) * 180 -
         90}) translate({distance}, 0) rotate({-headAngleOffsetDeg}) rotate({inverted ? 180 : 0})"
     >
       <!-- Tip at the local origin, pointing along +y -->
