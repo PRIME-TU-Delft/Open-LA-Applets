@@ -23,7 +23,7 @@
   import { Vector2 } from 'three';
   import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Latex2D from './Latex2D.svelte';
+  import Latex2D, { type Latex2DProps } from './Latex2D.svelte';
   import { getProjection2D } from './Projection2D';
 
   let {
@@ -95,6 +95,10 @@
   let yAxisTextX = $derived(logarithmicY ? 0.2 : -0.2);
 </script>
 
+{#snippet axisLabel(props: Omit<Latex2DProps, 'fixedScreenScale' | 'fontSize'>)}
+  <Latex2D {...props} fixedScreenScale={true} fontSize={AXIS_LABEL_FONT_SIZE} />
+{/snippet}
+
 <g>
   {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
@@ -138,14 +142,12 @@
     {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
-        <Latex2D
-          latex={getTickText(projection.xToWorld(index), 'x')}
-          position={labelPosition(index, -0.15)}
-          alignX="center"
-          color={colorX}
-          fixedScreenScale={true}
-          fontSize={AXIS_LABEL_FONT_SIZE}
-        />
+        {@render axisLabel({
+          latex: getTickText(projection.xToWorld(index), 'x'),
+          position: labelPosition(index, -0.15),
+          alignX: 'center',
+          color: colorX
+        })}
       {/if}
     {/if}
   {/each}
@@ -193,14 +195,12 @@
     {#if screenIndex != 0 && showAxisNumbersX && showSkippedTick(screenIndex, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if screenIndex <= length && screenIndex >= -length}
-        <Latex2D
-          latex={getTickText(index, 'x')}
-          position={labelPosition(screenIndex, -0.15)}
-          alignX="center"
-          color={colorX}
-          fixedScreenScale={true}
-          fontSize={AXIS_LABEL_FONT_SIZE}
-        />
+        {@render axisLabel({
+          latex: getTickText(index, 'x'),
+          position: labelPosition(screenIndex, -0.15),
+          alignX: 'center',
+          color: colorX
+        })}
       {/if}
     {/if}
   {/each}
@@ -247,15 +247,13 @@
     {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
-        <Latex2D
-          latex={getTickText(projection.yToWorld(index), 'y')}
-          position={labelPosition(yAxisTextX, index)}
-          alignX={logarithmicY ? 'left' : 'right'}
-          alignY="center"
-          color={colorY}
-          fixedScreenScale={true}
-          fontSize={AXIS_LABEL_FONT_SIZE}
-        />
+        {@render axisLabel({
+          latex: getTickText(projection.yToWorld(index), 'y'),
+          position: labelPosition(yAxisTextX, index),
+          alignX: logarithmicY ? 'left' : 'right',
+          alignY: 'center',
+          color: colorY
+        })}
       {/if}
     {/if}
   {/each}
@@ -303,28 +301,24 @@
     {#if screenIndex != 0 && showAxisNumbersY && showSkippedTick(screenIndex, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if screenIndex <= length && screenIndex >= -length}
-        <Latex2D
-          latex={getTickText(index, 'y')}
-          position={labelPosition(yAxisTextX, screenIndex)}
-          alignX={logarithmicY ? 'left' : 'right'}
-          alignY="center"
-          color={colorY}
-          fixedScreenScale={true}
-          fontSize={AXIS_LABEL_FONT_SIZE}
-        />
+        {@render axisLabel({
+          latex: getTickText(index, 'y'),
+          position: labelPosition(yAxisTextX, screenIndex),
+          alignX: logarithmicY ? 'left' : 'right',
+          alignY: 'center',
+          color: colorY
+        })}
       {/if}
     {/if}
   {/each}
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D
-      latex="O"
-      alignX="right"
-      alignY="top"
-      offset={new Vector2(-0.15, -0.15)}
-      fixedScreenScale={true}
-      fontSize={AXIS_LABEL_FONT_SIZE}
-    />
+    {@render axisLabel({
+      latex: 'O',
+      alignX: 'right',
+      alignY: 'top',
+      offset: new Vector2(-0.15, -0.15)
+    })}
   {/if}
 </g>

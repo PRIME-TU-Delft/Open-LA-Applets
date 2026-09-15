@@ -42,15 +42,12 @@
   import { confettiState } from '$lib/stores/confetti.svelte';
 
   import { getXLabelX, getYLabelY, type LabelProps } from './AxisLabels';
+  import { pixelDeltaToScreenUnit } from './CameraViewport';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import {
-    AXIS_LABEL_FONT_SIZE,
-    GRID_SIZE_2D,
-    HALF_GRID_SIZE_2D
-  } from '$lib/utils/AttributeDimensions';
+  import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
   let {
     cameraPosition: cameraPositionProp = new Vector2(0, 0),
@@ -120,8 +117,8 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = HALF_GRID_SIZE_2D / (width / -transform.x) + cameraPosition.x;
-    const y = HALF_GRID_SIZE_2D / (width / transform.y) + cameraPosition.y;
+    const x = pixelDeltaToScreenUnit(-transform.x, width) + cameraPosition.x;
+    const y = pixelDeltaToScreenUnit(transform.y, width) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 

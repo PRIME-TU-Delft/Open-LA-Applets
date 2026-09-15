@@ -2,6 +2,7 @@ import type { Transform2D } from '$lib/stores/camera.svelte';
 import { GRID_SIZE_2D, HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 import { clamp } from '$lib/utils/MathLib';
 import type { Vector2 } from 'three';
+import { pixelDeltaToScreenUnit, screenUnitToPixelDelta } from './CameraViewport';
 import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
 
 export type LabelProps = {
@@ -114,11 +115,13 @@ export function getYLabelY({
 
   const { baseline, normalizedPan, zoom } = normalized;
 
-  const translateY = (normalizedPan.y * width) / HALF_GRID_SIZE_2D;
-  const scaleFactor = HALF_GRID_SIZE_2D / (width * cameraZoom);
+  // Recover the raw d3 pixel-space pan CanvasD3's transformScene folded into
+  // normalizedPan, so we can redo the same pixel-space positioning it does.
+  const panPixelY = screenUnitToPixelDelta(normalizedPan.y, width);
 
   const screenYAtCenter =
-    baseline.y + scaleFactor * (height / 2 + translateY / zoom - height / (2 * zoom));
+    baseline.y +
+    pixelDeltaToScreenUnit(height / 2 + panPixelY / zoom - height / (2 * zoom), width) / cameraZoom;
 
   if (labels?.yLabelPosition === 'center') {
     return projection.yToWorld(clampToGrid(screenYAtCenter));
@@ -126,7 +129,8 @@ export function getYLabelY({
 
   const edgeMarginPx = 30;
   const screenYAtTopMargin =
-    baseline.y + scaleFactor * (height / 2 + translateY / zoom - edgeMarginPx / zoom);
+    baseline.y +
+    pixelDeltaToScreenUnit(height / 2 + panPixelY / zoom - edgeMarginPx / zoom, width) / cameraZoom;
 
   return projection.yToWorld(clampToGrid(screenYAtTopMargin));
 }
