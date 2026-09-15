@@ -1,5 +1,61 @@
 import { describe, it, expect } from 'vitest';
-import { integral, referenceIntegral, type ReferenceIntegralResult } from './MathLib';
+import {
+  integral,
+  referenceIntegral,
+  smallestSignedAngleDelta,
+  type ReferenceIntegralResult
+} from './MathLib';
+
+describe('smallestSignedAngleDelta', () => {
+  it('returns the plain difference for angles within half a turn', () => {
+    expect(smallestSignedAngleDelta(0, Math.PI / 2)).toBeCloseTo(Math.PI / 2);
+    expect(smallestSignedAngleDelta(Math.PI / 2, 0)).toBeCloseTo(-Math.PI / 2);
+  });
+
+  it('wraps to the shorter side when the raw angles straddle 0/2π', () => {
+    // 350° -> 10° is a 20° step forward, not a 340° one.
+    const from = (350 * Math.PI) / 180;
+    const to = (10 * Math.PI) / 180;
+    expect(smallestSignedAngleDelta(from, to)).toBeCloseTo((20 * Math.PI) / 180);
+  });
+
+  it('never exceeds half a turn in magnitude', () => {
+    for (let fromDeg = 0; fromDeg < 360; fromDeg += 37) {
+      for (let toDeg = 0; toDeg < 360; toDeg += 41) {
+        const delta = smallestSignedAngleDelta(
+          (fromDeg * Math.PI) / 180,
+          (toDeg * Math.PI) / 180
+        );
+        expect(Math.abs(delta)).toBeLessThanOrEqual(Math.PI + 1e-9);
+      }
+    }
+  });
+
+  it('lands back on `to` modulo a full turn', () => {
+    for (let fromDeg = 0; fromDeg < 360; fromDeg += 53) {
+      for (let toDeg = 0; toDeg < 360; toDeg += 47) {
+        const from = (fromDeg * Math.PI) / 180;
+        const to = (toDeg * Math.PI) / 180;
+        const landed = from + smallestSignedAngleDelta(from, to);
+        expect(smallestSignedAngleDelta(to, landed)).toBeCloseTo(0);
+      }
+    }
+  });
+
+  it('reproduces the SmallestArc2D regression: v=233°, w=18°', () => {
+    // A raw `w - v` difference of -215° would draw the 215° major arc;
+    // the true smallest arc between these two directions is +145°.
+    const v = (233.13 * Math.PI) / 180;
+    const w = (18.43 * Math.PI) / 180;
+    const delta = smallestSignedAngleDelta(v, w);
+    expect(Math.abs(delta)).toBeLessThan(Math.PI);
+    expect(delta).toBeCloseTo((145.3 * Math.PI) / 180, 2);
+  });
+
+  it('returns π at the straight-angle boundary', () => {
+    expect(Math.abs(smallestSignedAngleDelta(0, Math.PI))).toBeCloseTo(Math.PI);
+  });
+});
 
 describe('integral', () => {
   it('should integrate constant functions correctly', () => {

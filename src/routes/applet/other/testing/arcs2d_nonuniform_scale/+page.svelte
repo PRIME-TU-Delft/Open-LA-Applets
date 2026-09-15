@@ -9,10 +9,13 @@
 
   // Regression demo for #545: under a non-uniform Canvas2D scale, the arc drawn
   // by SmallestArc2D/Angle2D should still meet the two vectors exactly, and its
-  // label should sit on the arc's bisector, not drift off to the side.
+  // label should sit on the arc's bisector, not drift off to the side. These
+  // vectors are >180° apart in raw angle terms, which also exercises the
+  // SmallestArc2D wrap-around fix (it used to draw the major arc here instead
+  // of the true ~145° smallest one).
   const draggables = [
-    new Draggable(new Vector2(4, 1), PrimeColor.blue, 'v', Draggable.snapToGrid),
-    new Draggable(new Vector2(1, 4), PrimeColor.darkGreen, 'w', Draggable.snapToGrid)
+    new Draggable(new Vector2(-3, -4), PrimeColor.blue, 'v', Draggable.snapToGrid),
+    new Draggable(new Vector2(3, 1), PrimeColor.darkGreen, 'w', Draggable.snapToGrid)
   ];
 
   const v = $derived(draggables[0].position);

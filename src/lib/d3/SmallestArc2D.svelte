@@ -13,6 +13,7 @@
   import { Vector2 } from 'three';
   import Angle2D from './Angle2D.svelte';
   import { getProjection2D } from './Projection2D';
+  import { smallestSignedAngleDelta } from '$lib/utils/MathLib';
 
   const props: SmallestArc2DProps = $props();
 
@@ -32,6 +33,15 @@
   }
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
+
+  // `v.angle()`/`w.angle()` are both raw values in [0, 2π), so a plain
+  // `endAngle - startAngle` can be off by a full turn whenever the two
+  // angles straddle the 2π/0 wrap point — e.g. v=233°, w=18° gives a raw
+  // difference of -215° when the actual smallest arc between them is 145°.
+  // smallestSignedAngleDelta corrects for that, so the arc Angle2D draws
+  // never exceeds half a turn.
+  const directEndAngle = $derived(v.angle() + smallestSignedAngleDelta(v.angle(), w.angle()));
+  const flipEndAngle = $derived(w.angle() + smallestSignedAngleDelta(w.angle(), v.angle()));
 
   // `distance` is a screen-space radius, so the label position is computed from a
   // screen-space direction, then converted back to world space since label
@@ -78,12 +88,12 @@
 -->
 
 {#if angle == 1}
-  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={directEndAngle} />
   {@render props.label?.(straightLabelPosition)}
-{:else if angle < 0 || angle > 1}
-  <Angle2D {...props} startAngle={w.angle()} endAngle={v.angle()} />
+{:else if angle > 1}
+  <Angle2D {...props} startAngle={w.angle()} endAngle={flipEndAngle} />
   {@render props.label?.(labelPosition)}
 {:else}
-  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={directEndAngle} />
   {@render props.label?.(labelPosition)}
 {/if}

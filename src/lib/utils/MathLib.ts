@@ -20,6 +20,17 @@ export function clamp(number: number, min: number, max: number) {
 }
 
 /**
+ * The smallest signed rotation, in (-π, π], that takes angle `from` to angle `to`.
+ * Adding it to `from` always lands on `to` (mod 2π) while never exceeding half a
+ * turn, regardless of how `from`/`to` themselves straddle the 0/2π boundary.
+ */
+export function smallestSignedAngleDelta(from: number, to: number) {
+  const TAU = 2 * Math.PI;
+  const raw = ((to - from) % TAU) + (((to - from) % TAU) < 0 ? TAU : 0); // [0, TAU)
+  return raw > Math.PI ? raw - TAU : raw;
+}
+
+/**
  * Finds the minimum and maximum of a function on an interval by simple sampling (no derivatives)
  * @param f - function to evaluate
  * @param a - lower bound of the interval
