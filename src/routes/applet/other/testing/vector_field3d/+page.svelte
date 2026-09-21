@@ -1,6 +1,6 @@
 <script lang="ts">
   import Canvas3D from '$lib/threlte/Canvas3D.svelte';
-  import VectorField3D from '$lib/d3/VectorField3D.svelte';
+  import VectorField3D from '$lib/threlte/VectorField3D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { MathVector3 } from '$lib/utils/MathVector';
 
