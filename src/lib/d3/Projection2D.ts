@@ -1,5 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import { Vector2 } from 'three';
+import { wrapAngle } from '$lib/utils/MathLib';
 
 /**
  * The world↔screen seam for 2D applets.
@@ -57,6 +58,25 @@ export class Projection2D {
     const screen = this.toScreen(d);
     const len = screen.length();
     return len === 0 ? screen : screen.divideScalar(len);
+  }
+
+  /**
+   * World angle → screen angle, in radians. Continuous: sweeping worldAngle
+   * monotonically sweeps the result monotonically too, so callers can pass
+   * negative angles or angles beyond a full turn (e.g. an arc's start/end
+   * angle) without the result snapping backward at a 2π boundary.
+   *
+   * No-op when scaleX === scaleY (in particular at scale 1).
+   */
+  toScreenAngle(worldAngle: number): number {
+    const TAU = 2 * Math.PI;
+    const turns = Math.floor(worldAngle / TAU);
+    const wrapped = wrapAngle(worldAngle);
+    const screenWrapped = Math.atan2(
+      this.scaleY * Math.sin(wrapped),
+      this.scaleX * Math.cos(wrapped)
+    );
+    return wrapAngle(screenWrapped) + turns * TAU;
   }
 
   /**
