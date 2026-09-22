@@ -132,8 +132,8 @@
   <!-- V1 -->
   <Vector2D direction={Aw} length={Aw.length()} color={PrimeColor.blue} />
   <Latex2D
-    extend={0.5}
-    offset={new Vector2(-0.25, 0.25)}
+    extend={1}
+    offset={new Vector2(-0.25, 0.5)}
     latex={state.avLabel}
     position={Aw}
     color={PrimeColor.blue}
