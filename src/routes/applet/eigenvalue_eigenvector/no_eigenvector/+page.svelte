@@ -18,7 +18,7 @@
   const defaultState = {
     angle: -0.35,
     avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}',
-    cameraZoom: 0.9,
+    cameraZoom: 0.75,
     cameraPosition: new Vector2(0, 0)
   };
 
@@ -133,7 +133,7 @@
   <Vector2D direction={Aw} length={Aw.length()} color={PrimeColor.blue} />
   <Latex2D
     extend={1}
-    offset={new Vector2(-0.25, 0.5)}
+    offset={new Vector2(-1.25, 0.2)}
     latex={state.avLabel}
     position={Aw}
     color={PrimeColor.blue}
