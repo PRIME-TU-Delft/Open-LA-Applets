@@ -17,7 +17,9 @@
 
   const defaultState = {
     angle: -0.35,
-    avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}'
+    avLabel: 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}',
+    cameraZoom: 0.75,
+    cameraPosition: new Vector2(0, 0)
   };
 
   const steps: SlideShowSteps<typeof defaultState> = [
@@ -62,6 +64,12 @@
 
       if (t > 0.9) state.avLabel = 'A\\mathbf{w}=-1\\mathbf{w}';
       else state.avLabel = 'A\\mathbf{w}\\neq\\lambda\\mathbf{w}';
+
+      // Set once per step (gated on t >= 0.5) so CanvasD3 eases to it itself.
+      if (t >= 0.5) {
+        state.cameraZoom = 1.4;
+        state.cameraPosition = new Vector2(1, 1);
+      }
 
       return {
         state,
@@ -114,12 +122,18 @@
   });
 </script>
 
-<Canvas2D {controls} {formulas} cameraZoom={0.9} showFormulasDefault>
+<Canvas2D
+  {controls}
+  {formulas}
+  cameraZoom={state.cameraZoom}
+  cameraPosition={state.cameraPosition}
+  showFormulasDefault
+>
   <!-- V1 -->
   <Vector2D direction={Aw} length={Aw.length()} color={PrimeColor.blue} />
   <Latex2D
-    extend={0.5}
-    offset={new Vector2(-0.25, 0.25)}
+    extend={1}
+    offset={new Vector2(-1.25, 0.2)}
     latex={state.avLabel}
     position={Aw}
     color={PrimeColor.blue}
