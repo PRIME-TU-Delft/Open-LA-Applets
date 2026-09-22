@@ -90,7 +90,7 @@
     offset.y +
     extendedOffset.y}) rotate({rotation}) scale({scale},{-scale})"
 >
-  <foreignObject x="0" y="0" width=".1" height=".1" class="overflow-visible">
+  <foreignObject x="0" y="0" width="1000" height="1000" class="overflow-visible">
     {#if isSafari}
       <Latex {latex} {color} outputType="mathml" {style} compact={effectiveCompact} />
     {:else}
