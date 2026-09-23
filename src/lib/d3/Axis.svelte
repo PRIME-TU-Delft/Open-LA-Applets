@@ -21,9 +21,9 @@
 
 <script lang="ts">
   import { Vector2 } from 'three';
-  import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
   import { PrimeColor } from '$lib/utils/PrimeColors';
-  import Latex2D from './Latex2D.svelte';
+  import Latex2D, { type Latex2DProps } from './Latex2D.svelte';
   import { getProjection2D } from './Projection2D';
 
   let {
@@ -64,13 +64,17 @@
   let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
   let axisIndicesY = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
 
+  // Screen pixels: these lines use vector-effect="non-scaling-stroke" so they
+  // stay a constant width on screen instead of thickening as the user zooms in.
   function stokeWidth(index: number, logarithmic: boolean) {
-    if (logarithmic) return 0.005;
+    if (logarithmic) return 0.4;
 
-    if (index % 10 == 0) return 0.02;
-    if (index % 5 == 0) return 0.01;
-    return 0.005;
+    if (index % 10 == 0) return 1.6;
+    if (index % 5 == 0) return 0.8;
+    return 0.4;
   }
+
+  const TICK_MARK_WIDTH = 1.2;
 
   function getTickText(index: number, axis: 'x' | 'y') {
     if ((axis == 'x' && !logarithmicX) || (axis == 'y' && !logarithmicY)) {
@@ -91,6 +95,10 @@
   let yAxisTextX = $derived(logarithmicY ? 0.2 : -0.2);
 </script>
 
+{#snippet axisLabel(props: Omit<Latex2DProps, 'fixedScreenScale' | 'fontSize'>)}
+  <Latex2D {...props} fixedScreenScale={true} fontSize={AXIS_LABEL_FONT_SIZE} />
+{/snippet}
+
 <g>
   {#each axisIndicesX as index, idx (idx)}
     <!-- Grid Lines -->
@@ -102,6 +110,7 @@
         y2={length}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if index == 0 && showAxisY}
@@ -113,23 +122,32 @@
         y2={length}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipX, screenAdditionalTicksX)}
-      <line x1={index} y1={-0.1} x2={index} y2={0.1} stroke={colorX} stroke-width={0.02} />
+      <line
+        x1={index}
+        y1={-0.1}
+        x2={index}
+        y2={0.1}
+        stroke={colorX}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
+      />
     {/if}
 
     {#if index != 0 && showAxisNumbersX && showSkippedTick(index, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if index <= length && index >= -length}
-        <Latex2D
-          latex={getTickText(projection.xToWorld(index), 'x')}
-          position={labelPosition(index, -0.15)}
-          alignX="center"
-          color={colorX}
-        />
+        {@render axisLabel({
+          latex: getTickText(projection.xToWorld(index), 'x'),
+          position: labelPosition(index, -0.15),
+          alignX: 'center',
+          color: colorX
+        })}
       {/if}
     {/if}
   {/each}
@@ -145,6 +163,7 @@
         y2={length}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if screenIndex == 0 && showAxisY}
@@ -156,6 +175,7 @@
         y2={length}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicX)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
@@ -167,19 +187,20 @@
         x2={screenIndex}
         y2={0.1}
         stroke={colorX}
-        stroke-width={0.02}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     {#if screenIndex != 0 && showAxisNumbersX && showSkippedTick(screenIndex, skipX, screenAdditionalTicksX)}
       <!-- X axis number labels -->
       {#if screenIndex <= length && screenIndex >= -length}
-        <Latex2D
-          latex={getTickText(index, 'x')}
-          position={labelPosition(screenIndex, -0.15)}
-          alignX="center"
-          color={colorX}
-        />
+        {@render axisLabel({
+          latex: getTickText(index, 'x'),
+          position: labelPosition(screenIndex, -0.15),
+          alignX: 'center',
+          color: colorX
+        })}
       {/if}
     {/if}
   {/each}
@@ -194,6 +215,7 @@
         y2={index}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if index == 0 && showAxisX}
@@ -205,24 +227,33 @@
         y2={index}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(index, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     <!-- Tick marks -->
     {#if showSkippedTick(index, skipY, screenAdditionalTicksY)}
-      <line x1={-0.1} y1={index} x2={0.1} y2={index} stroke={colorY} stroke-width={0.02} />
+      <line
+        x1={-0.1}
+        y1={index}
+        x2={0.1}
+        y2={index}
+        stroke={colorY}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
+      />
     {/if}
 
     {#if index != 0 && showAxisNumbersY && showSkippedTick(index, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if index <= length && index >= -length}
-        <Latex2D
-          latex={getTickText(projection.yToWorld(index), 'y')}
-          position={labelPosition(yAxisTextX, index)}
-          alignX={logarithmicY ? 'left' : 'right'}
-          alignY="center"
-          color={colorY}
-        />
+        {@render axisLabel({
+          latex: getTickText(projection.yToWorld(index), 'y'),
+          position: labelPosition(yAxisTextX, index),
+          alignX: logarithmicY ? 'left' : 'right',
+          alignY: 'center',
+          color: colorY
+        })}
       {/if}
     {/if}
   {/each}
@@ -238,6 +269,7 @@
         y2={screenIndex}
         stroke={colorY + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
     {#if screenIndex == 0 && showAxisX}
@@ -249,6 +281,7 @@
         y2={screenIndex}
         stroke={colorX + PrimeColor.opacity(0.5)}
         stroke-width={stokeWidth(screenIndex, logarithmicY)}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
@@ -260,26 +293,32 @@
         x2={0.1}
         y2={screenIndex}
         stroke={colorY}
-        stroke-width={0.02}
+        stroke-width={TICK_MARK_WIDTH}
+        vector-effect="non-scaling-stroke"
       />
     {/if}
 
     {#if screenIndex != 0 && showAxisNumbersY && showSkippedTick(screenIndex, skipY, screenAdditionalTicksY)}
       <!-- Y axis number labels -->
       {#if screenIndex <= length && screenIndex >= -length}
-        <Latex2D
-          latex={getTickText(index, 'y')}
-          position={labelPosition(yAxisTextX, screenIndex)}
-          alignX={logarithmicY ? 'left' : 'right'}
-          alignY="center"
-          color={colorY}
-        />
+        {@render axisLabel({
+          latex: getTickText(index, 'y'),
+          position: labelPosition(yAxisTextX, screenIndex),
+          alignX: logarithmicY ? 'left' : 'right',
+          alignY: 'center',
+          color: colorY
+        })}
       {/if}
     {/if}
   {/each}
 
   <!-- Axis labels -->
   {#if showOrigin}
-    <Latex2D latex="O" alignX="right" alignY="top" offset={new Vector2(-0.15, -0.15)} />
+    {@render axisLabel({
+      latex: 'O',
+      alignX: 'right',
+      alignY: 'top',
+      offset: new Vector2(-0.15, -0.15)
+    })}
   {/if}
 </g>
