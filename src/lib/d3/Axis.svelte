@@ -12,6 +12,9 @@
     logarithmicY?: boolean;
     skipX?: number;
     skipY?: number;
+    // Lower bound (in screen-space grid units) for X gridlines/ticks/labels.
+    // Defaults to -length, i.e. the full symmetric range, same as before.
+    minX?: number;
     additionalTicksX?: number[];
     additionalTicksY?: number[];
     colorX?: string;
@@ -35,6 +38,7 @@
     logarithmicY = false,
     skipX = 0,
     skipY = 0,
+    minX = undefined,
     showGridLinesX = true,
     showGridLinesY = true,
     showAxisX = true,
@@ -61,7 +65,10 @@
     projection.toWorld(new Vector2(screenX, screenY));
 
   // Generate indeces for the grid lines from -length to length including 0
-  let axisIndicesX = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
+  const effectiveMinX = $derived(minX ?? -length);
+  let axisIndicesX = $derived(
+    [...Array(length + 1).keys()].flatMap((a) => [-a, a]).filter((i) => i >= effectiveMinX)
+  );
   let axisIndicesY = $derived([...Array(length + 1).keys()].flatMap((a) => [-a, a]));
 
   function stokeWidth(index: number, logarithmic: boolean) {
