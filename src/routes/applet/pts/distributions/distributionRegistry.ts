@@ -35,6 +35,11 @@ export interface Moments {
   varColor: PrimeColor;
 }
 
+export interface NumericMoments {
+  mean: number;
+  variance: number;
+}
+
 export interface DistributionDef {
   category: 'discrete' | 'continuous';
   // extra sliders added after N, in order
@@ -42,6 +47,10 @@ export interface DistributionDef {
   draggables?: () => Draggable[];
   // extra: values of `sliders` above, in order. drag: this distribution's draggables, in order.
   moments(extra: number[], drag: Draggable[]): Moments;
+  // Raw numeric mean/variance, for downstream math (e.g. the CLT sampling-distribution
+  // formulas/overlay). Returns null when mean or variance is undefined or infinite for the
+  // current parameters (e.g. Pareto with alpha <= 2).
+  numericMoments(extra: number[], drag: Draggable[]): NumericMoments | null;
   sampler(extra: number[], drag: Draggable[]): () => number;
 }
 
@@ -66,6 +75,12 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         expColor: PrimeColor.orange,
         varColor: PrimeColor.raspberry
       };
+    },
+    numericMoments: (extra, drag) => {
+      const mean_ = drag[0]?.position.x ?? 4;
+      const sigma = extra[0] ?? 2;
+
+      return { mean: mean_, variance: Math.pow(sigma, 2) };
     },
     sampler: (extra, drag) => {
       const mean_ = drag[0]?.position.x ?? 4;
@@ -95,6 +110,11 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         expColor: PrimeColor.raspberry,
         varColor: PrimeColor.raspberry
       };
+    },
+    numericMoments: (extra) => {
+      const lambda = extra[0] ?? 1;
+
+      return { mean: Math.pow(lambda, -1), variance: Math.pow(lambda, -2) };
     },
     sampler: (extra) => {
       const lambda = extra[0] ?? 1;
@@ -131,6 +151,18 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
 
       return { expectedValue, variance, expColor: PrimeColor.black, varColor: PrimeColor.black };
     },
+    numericMoments: (extra, drag) => {
+      const x0 = drag[0]?.position.x ?? 1;
+      const alpha = extra[0] ?? 2;
+
+      if (alpha <= 1) return null;
+      const mean = (alpha * x0) / (alpha - 1);
+
+      if (alpha <= 2) return null;
+      const variance = (alpha * x0 ** 2) / ((alpha - 1) ** 2 * (alpha - 2));
+
+      return { mean, variance };
+    },
     sampler: (extra, drag) => {
       const x0 = drag[0]?.position.x ?? 1;
       const alpha = extra[0] ?? 2;
@@ -164,6 +196,12 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         varColor: PrimeColor.black
       };
     },
+    numericMoments: (_extra, drag) => {
+      const a = drag[0]?.position.x ?? -2;
+      const b = drag[1]?.position.x ?? 8;
+
+      return { mean: (a + b) / 2, variance: Math.pow(b - a, 2) / 12 };
+    },
     sampler: (_extra, drag) => {
       const a = drag[0]?.position.x ?? -2;
       const b = drag[1]?.position.x ?? 8;
@@ -185,6 +223,11 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         expColor: PrimeColor.raspberry,
         varColor: PrimeColor.raspberry
       };
+    },
+    numericMoments: (extra) => {
+      const p = extra[0] ?? 0.5;
+
+      return { mean: p, variance: p * (1 - p) };
     },
     sampler: (extra) => {
       const p = extra[0] ?? 0.5;
@@ -209,6 +252,12 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         varColor: PrimeColor.black
       };
     },
+    numericMoments: (extra) => {
+      const p = extra[0] ?? 0.5;
+      const n = extra[1] ?? 10;
+
+      return { mean: n * p, variance: n * p * (1 - p) };
+    },
     sampler: (extra) => {
       const p = extra[0] ?? 0.5;
       const n = extra[1] ?? 10;
@@ -231,6 +280,11 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         varColor: PrimeColor.raspberry
       };
     },
+    numericMoments: (extra) => {
+      const p = extra[0] ?? 0.5;
+
+      return { mean: 1 / p, variance: (1 - p) / Math.pow(p, 2) };
+    },
     sampler: (extra) => {
       const p = extra[0] ?? 0.5;
 
@@ -252,6 +306,11 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         varColor: PrimeColor.raspberry
       };
     },
+    numericMoments: (extra) => {
+      const lambda = extra[0] ?? 3;
+
+      return { mean: lambda, variance: lambda };
+    },
     sampler: (extra) => {
       const lambda = extra[0] ?? 3;
 
@@ -272,6 +331,11 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         expColor: PrimeColor.blue,
         varColor: PrimeColor.blue
       };
+    },
+    numericMoments: (extra) => {
+      const n = extra[0] ?? 6;
+
+      return { mean: (n + 1) / 2, variance: (Math.pow(n, 2) - 1) / 12 };
     },
     sampler: (extra) => {
       const n = extra[0] ?? 6;
