@@ -12,8 +12,12 @@
   import type { Snippet } from 'svelte';
   import { Vector2 } from 'three';
   import Angle2D from './Angle2D.svelte';
+  import { getProjection2D } from './Projection2D';
+  import { smallestSignedAngleDelta } from '$lib/utils/MathLib';
 
   const props: SmallestArc2DProps = $props();
+
+  const projection = getProjection2D();
 
   const v = $derived(props.points[0]);
   const w = $derived(props.points[1]);
@@ -29,13 +33,32 @@
   }
 
   const angle = $derived(normalizeAngle(w.angle() - v.angle()) / Math.PI);
+
+  // v.angle()/w.angle() are raw values in [0, 2π), so a plain endAngle - startAngle
+  // can be off by a full turn once they straddle the 2π/0 wrap point.
+  function endAngleFrom(from: number, to: number) {
+    return from + smallestSignedAngleDelta(from, to);
+  }
+
+  const directEndAngle = $derived(endAngleFrom(v.angle(), w.angle()));
+  const flipEndAngle = $derived(endAngleFrom(w.angle(), v.angle()));
+
+  // `distance` is a screen-space radius, so the label position is computed from a
+  // screen-space direction, then converted back to world space since label
+  // consumers (e.g. Latex2D) expect a world-space position and project it themselves.
+  function toWorldLabelPosition(screenDir: Vector2) {
+    return projection.toWorld(screenDir.clone().multiplyScalar(props.distance || 1));
+  }
+
   const labelPosition = $derived(
-    v
-      .clone()
-      .normalize()
-      .add(w.clone().normalize())
-      .normalize()
-      .multiplyScalar(props.distance || 1)
+    toWorldLabelPosition(
+      projection.toScreenDir(v).clone().add(projection.toScreenDir(w)).normalize()
+    )
+  );
+
+  const screenVDir = $derived(projection.toScreenDir(v));
+  const straightLabelPosition = $derived(
+    toWorldLabelPosition(new Vector2(-screenVDir.y, screenVDir.x))
   );
 </script>
 
@@ -65,13 +88,12 @@
 -->
 
 {#if angle == 1}
-  {@const labelPosition = v.clone().normalize()}
-  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
-  {@render props.label?.(new Vector2(-labelPosition.y, labelPosition.x))}
-{:else if angle < 0 || angle > 1}
-  <Angle2D {...props} startAngle={w.angle()} endAngle={v.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={directEndAngle} />
+  {@render props.label?.(straightLabelPosition)}
+{:else if angle > 1}
+  <Angle2D {...props} startAngle={w.angle()} endAngle={flipEndAngle} />
   {@render props.label?.(labelPosition)}
 {:else}
-  <Angle2D {...props} startAngle={v.angle()} endAngle={w.angle()} />
+  <Angle2D {...props} startAngle={v.angle()} endAngle={directEndAngle} />
   {@render props.label?.(labelPosition)}
 {/if}
