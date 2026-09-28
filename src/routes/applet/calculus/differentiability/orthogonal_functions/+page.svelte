@@ -98,11 +98,11 @@
   // slider runs from -0.5 to 0.5 in steps of 0.1
   const controls = Controls.addSlider(0.1, -0.49, 0.49, 0.01, PrimeColor.pink, {
     label: toLatexText('$f^{\\prime}(a)$'),
-    valueFn: (v: number) => '',
+    valueFn: (_v: number) => '',
     animationStep: 0.01
   }).addSlider(-0.2, -0.49, 0.49, 0.01, PrimeColor.yellow, {
     label: toLatexText('$g^{\\prime}(a)=$'),
-    valueFn: (v: number) => '',
+    valueFn: (_v: number) => '',
     animationStep: 0.01
   });
   const alphaF = $derived(controls[0] * Math.PI);
