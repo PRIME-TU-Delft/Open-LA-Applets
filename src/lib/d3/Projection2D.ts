@@ -19,8 +19,15 @@ import { Vector2 } from 'three';
 export class Projection2D {
   constructor(
     private readonly scaleX: number,
-    private readonly scaleY: number
+    private readonly scaleY: number,
+    /** Live interactive zoom factor (1 = at rest). Lets consumers keep an on-screen size fixed under zoom. */
+    private readonly getLiveZoomK: () => number = () => 1
   ) {}
+
+  /** Current interactive zoom factor, e.g. to counter-scale a label so it stays a fixed screen size. */
+  get liveZoomK(): number {
+    return this.getLiveZoomK();
+  }
 
   /** World point → screen point. */
   toScreen(p: Vector2): Vector2 {
