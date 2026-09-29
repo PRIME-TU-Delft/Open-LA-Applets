@@ -83,12 +83,18 @@
       new Vector2(5, 5),
       PrimeColor.grey,
       undefined,
-      undefined,
+      Restrict,
       undefined,
       undefined,
       0.15
     )
   ];
+  function Restrict(pos: Vector2): Vector2 {
+    let x = pos.x;
+    x = Math.max(x, 0.1);
+    x = Math.min(x, 9.9);
+    return new Vector2(x, pos.y);
+  }
   const BF = $derived(draggables[0].position);
   const BG = $derived(BF);
   const vF = Math.sqrt((CF.x - AF.x) ** 2 + (CF.y - AF.y) ** 2);
@@ -96,11 +102,11 @@
   // Controls for the slopes of F and G
   // defined as the angle with the horizontal axis
   // slider runs from -0.5 to 0.5 in steps of 0.1
-  const controls = Controls.addSlider(0.1, -0.49, 0.49, 0.01, PrimeColor.pink, {
+  const controls = Controls.addSlider(0.1, -0.4, 0.4, 0.05, PrimeColor.pink, {
     label: toLatexText('$f^{\\prime}(a)$'),
     valueFn: (_v: number) => '',
     animationStep: 0.01
-  }).addSlider(-0.2, -0.49, 0.49, 0.01, PrimeColor.yellow, {
+  }).addSlider(-0.2, -0.4, 0.4, 0.05, PrimeColor.yellow, {
     label: toLatexText('$g^{\\prime}(a)=$'),
     valueFn: (_v: number) => '',
     animationStep: 0.01
@@ -110,31 +116,41 @@
 
   // Create the parametrisations
   function ParamXF(t: number): number {
-    let ans = BF.x;
-    ans += vF * Math.cos(alphaF) * (t - 0.5);
-    ans += 2 * (AF.x - 2 * BF.x + CF.x) * (t - 0.5) ** 2;
-    ans += 4 * (CF.x - AF.x - vF * Math.cos(alphaF)) * (t - 0.5) ** 3;
+    let ans = t;
     return ans;
   }
-  function ParamYF(t: number): number {
+  function ParamYF(x: number): number {
+    let t = x - BF.x;
+    let m = Math.tan(alphaF);
+    let u = AF.x - BF.x;
+    let v = CF.x - BF.x;
+    let YA = AF.y - BF.y - m * u;
+    let YC = CF.y - BF.y - m * v;
+    let q = (YC * u ** 2 - YA * v ** 2) / (u ** 2 * v ** 2 * (v - u));
+    let p = YA / u ** 2 - q * u;
     let ans = BF.y;
-    ans += vF * Math.sin(alphaF) * (t - 0.5);
-    ans += 2 * (AF.y - 2 * BF.y + CF.y) * (t - 0.5) ** 2;
-    ans += 4 * (CF.y - AF.y - vF * Math.sin(alphaF)) * (t - 0.5) ** 3;
+    ans += m * t;
+    ans += p * t ** 2;
+    ans += q * t ** 3;
     return ans;
   }
   function ParamXG(t: number): number {
-    let ans = BG.x;
-    ans += vG * Math.cos(alphaG) * (t - 0.5);
-    ans += 2 * (AG.x - 2 * BG.x + CG.x) * (t - 0.5) ** 2;
-    ans += 4 * (CG.x - AG.x - vG * Math.cos(alphaG)) * (t - 0.5) ** 3;
+    let ans = t;
     return ans;
   }
-  function ParamYG(t: number): number {
+  function ParamYG(x: number): number {
+    let t = x - BG.x;
+    let m = Math.tan(alphaG);
+    let u = AG.x - BG.x;
+    let v = CG.x - BG.x;
+    let YA = AG.y - BG.y - m * u;
+    let YC = CG.y - BG.y - m * v;
+    let q = (YC * u ** 2 - YA * v ** 2) / (u ** 2 * v ** 2 * (v - u));
+    let p = YA / u ** 2 - q * u;
     let ans = BG.y;
-    ans += vG * Math.sin(alphaG) * (t - 0.5);
-    ans += 2 * (AG.y - 2 * BG.y + CG.y) * (t - 0.5) ** 2;
-    ans += 4 * (CG.y - AG.y - vG * Math.sin(alphaG)) * (t - 0.5) ** 3;
+    ans += m * t;
+    ans += p * t ** 2;
+    ans += q * t ** 3;
     return ans;
   }
   // Create the optional polygon points and controls
@@ -163,14 +179,14 @@
       stepSize: 0.01,
       legendText: 'y=f(x)',
       tStart: 0,
-      tEnd: 1
+      tEnd: 10
     }).addIncludedPoints([AF, CF], undefined, 0.15),
     new ParameterizedFunctionFragment(ParamXG, ParamYG, PrimeColor.darkGreen, {
       width: 0.08,
       stepSize: 0.01,
       legendText: 'y=g(x)',
       tStart: 0,
-      tEnd: 1
+      tEnd: 10
     }).addIncludedPoints([AG, CG], undefined, 0.15),
     new ParameterizedFunctionFragment(
       (t) => BF.x + t * Math.cos(alphaF),
