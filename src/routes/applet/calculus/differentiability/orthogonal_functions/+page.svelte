@@ -97,8 +97,6 @@
   }
   const BF = $derived(draggables[0].position);
   const BG = $derived(BF);
-  const vF = Math.sqrt((CF.x - AF.x) ** 2 + (CF.y - AF.y) ** 2);
-  const vG = Math.sqrt((CG.x - AG.x) ** 2 + (CG.y - AG.y) ** 2);
   // Controls for the slopes of F and G
   // defined as the angle with the horizontal axis
   // slider runs from -0.5 to 0.5 in steps of 0.1
