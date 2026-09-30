@@ -1,13 +1,14 @@
 <script lang="ts">
   let contributors = [
-    { name: 'Bartek Włodarczyk', title: 'Lead-developer' },
     { name: 'Abel de Bruijn', title: 'Lead-developer' },
+    { name: 'Stella Schultz', title: 'Lead-developer' },
+    { name: 'Bartek Włodarczyk', title: 'Lead-developer' },
     { name: 'Zhenghan Zhong', title: 'Developer' },
     { name: 'Pauline Hengst', title: 'Frontend-developer' },
     { name: 'Julia van der Kris', title: 'Backend-developer' },
-    { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
     { name: 'Fokko van de Bult', title: 'Teacher/Reviewer' },
     { name: 'Teun Janssen', title: 'Teacher/Reviewer' },
+    { name: 'Christophe Smet', title: 'Teacher/Reviewer' },
     { name: 'Dennis den Ouden-van der Horst', title: 'Book Author/Developer' },
     { name: 'Beryl van Gelderen', title: 'Coordinator' }
   ];

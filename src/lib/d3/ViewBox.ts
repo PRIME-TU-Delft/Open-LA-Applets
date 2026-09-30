@@ -1,5 +1,6 @@
 import { Vector2 } from 'three';
 import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
+import { HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
 export class ViewBox {
   bottomLeft: Vector2;
@@ -40,8 +41,11 @@ export class ViewBox {
     }
 
     // At zoom z, the visible coordinate range is:
-    //   x: 15/z total
-    //   y: 15*(height/width)/z total
-    return Math.min(15 / boxWidth, (15 * height) / (boxHeight * width));
+    //   x: HALF_GRID_SIZE_2D/z total
+    //   y: HALF_GRID_SIZE_2D*(height/width)/z total
+    return Math.min(
+      HALF_GRID_SIZE_2D / boxWidth,
+      (HALF_GRID_SIZE_2D * height) / (boxHeight * width)
+    );
   }
 }

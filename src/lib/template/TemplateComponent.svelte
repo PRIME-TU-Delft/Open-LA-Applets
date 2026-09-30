@@ -59,6 +59,8 @@
         tEnd={object.tDomain.end}
         width={object.width}
         isDashed={object.isDashed}
+        stepSize={object.stepSize}
+        tension={object.tension}
       />
     {:else if object instanceof FunctionFragment}
       <ExplicitFunction2D

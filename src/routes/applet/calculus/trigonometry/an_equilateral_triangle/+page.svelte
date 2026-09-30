@@ -70,24 +70,50 @@
 
 <Canvas2D {initialViewBox} legendItems={getLegend(appletObjects)} axis={null} {scaleX} {scaleY}>
   <TemplateComponent objects={appletObjects} />
-  <Latex2D latex="1" position={new Vector2(1, -0.15)} alignX="center" alignY="top" />
-  <Latex2D latex="1" position={new Vector2(3, -0.15)} alignX="center" alignY="top" />
+  <Latex2D
+    latex="1"
+    position={new Vector2(1, 0)}
+    alignX="center"
+    alignY="top"
+    background={PrimeColor.white}
+    padding="1pt"
+  />
+  <Latex2D
+    latex="1"
+    position={new Vector2(3, 0)}
+    alignX="center"
+    alignY="top"
+    background={PrimeColor.white}
+    padding="1pt"
+  />
   <Latex2D
     latex={String.raw`\sqrt{3}`}
-    position={new Vector2(2.1, Math.sqrt(3))}
+    position={new Vector2(2.05, Math.sqrt(3))}
     alignX="left"
     alignY="center"
+    background={PrimeColor.white}
+    padding="1pt"
   />
   <Latex2D
     latex="2"
-    position={new Vector2(3.1, Math.sqrt(3) + 0.1)}
+    position={new Vector2(3, Math.sqrt(3))}
     alignX="left"
     alignY="bottom"
+    background={PrimeColor.white}
+    padding="1pt"
+    offset={new Vector2(Math.cos(Math.PI / 3), Math.sin(Math.PI / 3))
+      .normalize()
+      .multiplyScalar(0.1)}
   />
   <Latex2D
     latex="2"
-    position={new Vector2(0.9, Math.sqrt(3) + 0.1)}
+    position={new Vector2(1, Math.sqrt(3))}
     alignX="right"
     alignY="bottom"
+    background={PrimeColor.white}
+    padding="1pt"
+    offset={new Vector2(Math.cos((2 * Math.PI) / 3), Math.sin((2 * Math.PI) / 3))
+      .normalize()
+      .multiplyScalar(0.1)}
   />
 </Canvas2D>

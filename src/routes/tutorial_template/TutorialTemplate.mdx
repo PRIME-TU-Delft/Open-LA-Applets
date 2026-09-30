@@ -10,7 +10,7 @@ This tutorial explains how to quickly create a calculus applet using the templat
 
 The template system lets you build applets by editing one array (`appletObjects`) instead of writing custom Svelte rendering logic.
 
-Here is a preview of the example template applet:
+Here is a preview of the example 2D template applet:
 
 <iframe
   src={host + '/applet/calculus/template/template_applet'}
@@ -21,11 +21,22 @@ Here is a preview of the example template applet:
 The code for this applet can be found here:
 [View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/applet/calculus/template/template_applet/%2Bpage.svelte)
 
+Here is a preview of the example 3D template applet:
+
+<iframe
+  src={host + '/applet/calculus/template/template_applet_3d'}
+  width="100%"
+  height="600px"
+></iframe>
+
+The code for this applet can be found here:
+[View Code](https://github.com/PRIME-TU-Delft/Open-LA-Applets/blob/main/src/routes/applet/calculus/template/template_applet_3d/%2Bpage.svelte)
+
 <br />
 
 ## Template applet structure
 
-This is the complete page component for the template applet (`src/routes/applet/calculus/template/template_applet/+page.svelte`):
+This is the complete page component for the 2D template applet (`src/routes/applet/calculus/template/template_applet/+page.svelte`):
 
 ```html
 <script lang="ts">
@@ -110,8 +121,11 @@ This is the complete page component for the template applet (`src/routes/applet/
 ```
 
 In practice, you should usually edit only `appletObjects`. Everything in this array is rendered automatically by `TemplateComponent`.
+For 3D applets the same can be achieved by ediitng `appletObjects` and everything in the array is rendered automatically by `TemplateComponent3D`.
 
 If you want a custom starting camera, define a `ViewBox` in the `camera settings` part, or set `cameraPosition` and `cameraZoom`. If not, then remove the `camera settings` lines.
+
+For the 2D case:
 
 ```ts
 const appletObjects: AppletObject[] = [
@@ -119,9 +133,17 @@ const appletObjects: AppletObject[] = [
 ];
 ```
 
+For the 3D case:
+
+```ts
+const appletObjects: AppletObject3D[] = [
+  // Your objects here
+];
+```
+
 ## Optional: set an initial view
 
-### Using a `ViewBox`
+### Using a `ViewBox` (2D)
 
 Use `ViewBox` when you want to guarantee a minimum visible area on first render, independent of viewport size.
 
@@ -144,18 +166,29 @@ Notes:
 
 If you only want to set camera position and zoom, you can use `cameraPosition` and `cameraZoom` properties in the camera settings section.
 
+2D case:
+
 ```ts
 cameraPosition = new Vector2(3, 1);
 cameraZoom = 1.5;
 ```
 
+3D case:
+
+```ts
+cameraPosition = new MathVector3(10, 10, 10);
+cameraZoom = 29;
+```
+
 Notes:
 
-- Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
+- (2D): Those properties cannot be used together with `ViewBox`, you need to remove its definition if you want to use this method.
 
 ## Optional: configure axis
 
 You can configure axis display by setting the `axis` object.
+
+2D case:
 
 ```ts
 axis = {
@@ -178,7 +211,29 @@ What each option does:
 - `skipX`: skip every n-th x-axis label/tick according to axis renderer settings.
 - `skipY`: skip every n-th y-axis label/tick according to axis renderer settings.
 
-## Optional: set scale
+3D case:
+
+```ts
+showAxes = true;
+showNumbers = false;
+hideTicks = true;
+axisLength = 10;
+axisSpacing = 2;
+floor = false;
+hideOrigin = false;
+```
+
+What each option does:
+
+- `showAxes`: show or hide the axes.
+- `showNumbers`: show or hide axis tick labels.
+- `hideTicks`: show or hide axis ticks.
+- `axislength`: specify length of axis.
+- `axisSpacing`: specify the spacing between ticks.
+- `floor`: show or hide floor.
+- `hideOrigin`: show or hide the origin marker.
+
+## Optional (2D): set scale
 
 To change the coordinate system scale, pass `scaleX` and/or `scaleY` to `Canvas2D`:
 
@@ -206,6 +261,8 @@ If you want to also have dynamic axis labels in your applet, you can define them
 
 Example:
 
+2D case:
+
 ```ts
 // ###########
 // AXIS LABELS
@@ -215,7 +272,21 @@ xAxisLabel = 'x';
 yAxisLabel = 'f(x)';
 ```
 
+3D case:
+
+```ts
+// ###########
+// AXIS LABELS
+// ###########
+
+x1 = 'x';
+x2 = 'y';
+x3 = 'f(x,y)'
+```
+
 ## Template objects
+
+### 2D case:
 
 The `appletObjects` array can contain the following types of objects:
 
@@ -604,9 +675,328 @@ new Polygon(
 );
 ```
 
+### 3D case:
+
+The `appletObjects` array can contain the following types of objects:
+
+- `SurfaceFunction3D`: a function graph (defined by JavaScript function or LaTeX string).
+- `TextObject3D`: a standalone LaTeX label.
+- `VectorFieldObject3D`: a vector field (defined by a JavaScript function).
+- `PointObject3D`: a single point with optional shape and label.
+- `LineSegmentObject3D`: a finite line segment with optional label and (optional) manual label alignment.
+- `InfiniteLineObject3D`: an infinite line segment with optional label and (optional) manual label alignment.
+- `AngleObject3D`: an angle arc (or right-angle marker).
+- `PolygonObject3D`: a polygon with optional fill, side labels, and vertex labels.
+- `CuboidObject3D`: a cuboid with optional edges outlined.
+- `CurveObject3D`: a curve defined by an x, y, and z JavaScript function.
+
+### 1) `SurfaceFunction3D`
+
+Constructor:
+
+```ts
+new SurfaceFunction3D(func, color, options?);
+```
+
+- `func`: either `(x: number, y:number) => number` or a LaTeX string (for example `'\\sin(x)'+'\\sin(y)'`).
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `xRange`: `[number, number]`, specifies for which x-values the function should be drawn. You can specify just min, max, or both. Omit both to display across the entire view.
+  - `yRange`: `[number, number]`, specifies for which y-values the function should be drawn. You can specify just min, max, or both. Omit both to display across the entire view.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for legend item shapes. Default: `'circle'`.
+  - `legendText`: text to display in the legend for this function.
+  - `opacity`: `number` the level of opacity the function should take.
+  - `wireframe`: `boolean` whether or not the function is visualized as solid or wireframe
+
+`SurfaceFunction3D` examples:
+
+```ts
+// 1) JavaScript function: polynomial
+new SurfaceFunction3D((x, y) => x * x + y * y + 3, PrimeColor.raspberry, {
+      wireframe: true,
+      shape: 'square',
+      legendText: 'Surface'
+    });
+
+// 2) JavaScript function: trigonometric
+new SurfaceFunction3D((x, y) => Math.sin(x) - Math.cos(y), PrimeColor.blue, {
+      shape: 'square',
+      legendText: 'Surface'
+    });
+```
+
+### 2) `TextObject3D`
+
+Constructor:
+
+```ts
+new TextObject3D(latex, position, color, size);
+```
+
+- `latex`: LaTeX string to display.
+- `position`: `Vector3` position.
+- `color`: one of the `PrimeColor` values.
+- `size`: `number` the fontsize of the text.
+
+Examples:
+
+```ts
+new TextObject3D('f(x)=\\frac{x-1}{x+3+y}', new MathVector3(0, 6, 8), PrimeColor.darkGreen);
+new TextObject3D('\\pi', new MathVector3(0, 0, -2), PrimeColor.blue, 6);
+```
+
+### 3) `VectorFieldObject3D`
+
+Constructor:
+
+```ts
+new VectorFieldObject3D(func, color, options?);
+```
+
+- `func`: `(x: number, y: number, z: number) => Vector3` function defining the vector field.
+- `options` (optional): an object with the following properties:
+  - `xRange`: `[number, number]` range of x values the vector field is rendered for.
+  - `yRange`: `[number, number]` range of y values the vector field is rendered for.
+  - `zRange`: `[number, number]` range of z values the vector field is rendered for.
+  - `step`: `number` step taken for vectors rendered in the vector field.
+  - `normalize`: `boolean` whether vectors are normalized.
+  - `normalizedLength`: `number` the length for normalized vectors.
+  - `hideHead`: `boolean` whether the head of the vectors in the vector field are rendered.
+  - `anchor`: `'middle' | 'start' | 'end'` specifies anchor point for vectors.
+  - `color`: one of the `PrimeColor` values.
+  - `colorFn`: `(x: number, y: number) => PrimeColor | string` function mapping the location of the vectors to a color.
+
+Example:
+
+```ts
+new VectorFieldObject3D((x: number, y: number) => new MathVector3(x, -y, 0), {
+      xRange: [-2, 2],
+      yRange: [-2, 2],
+      zRange: [-2, 2],
+      step: 0.5,
+      colorFn: (x: number, y: number, z: number) =>
+        x * y * z >= 0 ? PrimeColor.blue : PrimeColor.raspberry
+    });
+```
+
+### 4) `PointObject3D`
+
+Constructor:
+
+```ts
+new PointObject3D(position, color, options);
+```
+
+- `position`: `Vector3` position of the point object in 3D space.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for the legend item shapes. Default: `'circle'`.
+  - `latex`: `string` LaTeX string to display next to point.
+  - `latexOffset`: `Vector3` offset from point position to place LaTeX string.
+  - `legendText`: `string` text to display in the legend for this function.
+  - `size`: `number` the size of the renderd point.
+
+Examples:
+
+```ts
+new PointObject3D(new MathVector3(1,2,5), PrimeColor.pink, {size:4});
+new PointObject3D(new MathVector3(1, 2, 5), PrimeColor.grey, {
+      shape: 'triangle',
+      latex: 'x_1',
+      latexOffset: new MathVector3(0.5, 0.5, 0),
+      legendText: 'x_1'
+    });
+```
+
+### 5) `LineSegmentObject3D`
+
+Constructor:
+
+```ts
+new LineSegmentObject3D(color, startPoint, endPoint, options);
+```
+
+- `color`: one of the `PrimeColor` values.
+- `startPoint`: `Vector3` the starting position of the line segment.
+- `endPoint`: `Vector3` the end position of the line segment.
+- `options` (optional): an object with the following properties:
+  - `radius`: `number` the width of the line segment.
+  - `latex`: `string` LaTeX string to display next to line segment.
+  - `isDashed`: `boolean` whether or not the line segment should be dashed.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for the legend item shapes. Default: `'circle'`.
+  - `legendText`: `string` text to display in the legend for this function.
+
+Example:
+
+```ts
+new LineSegmentObject3D(
+  new MathVector3(1, 5, 5),
+  new MathVector3(-7, -8, 3),
+  PrimeColor.yellow,
+  {
+    isDashed: true,
+    radius: 2,
+    shape: 'triangle',
+    legendText: 'f(t)'
+  }
+);
+```
+
+### 6) `InfiniteLineObject3D`
+
+Constructor:
+
+```ts
+new InfiniteLineObject3D(start, end, color, options);
+```
+
+- `start`: `Vector3` the first position defining the line.
+- `end`: `Vector3` the second position defining the line.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `radius`: `number` the width of the line segment.
+  - `isDashed`: `boolean` whether or not the line should be dashed.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for the legend item shapes. Default: `'circle'`.
+  - `legendText`: `string` text to display in the legend for this function.
+
+Example:
+
+```ts
+new InfiniteLineObject3D(new MathVector3(0, 0, 3), new MathVector3(1, 1, -3), PrimeColor.green, {
+      radius: 1
+    });
+```
+
+### 7) `AngleObject3D`
+
+Constructor:
+
+```ts
+new AngleObject3D(position, startVector, endVector, color, options);
+```
+
+- `position`: `Vector3` the origin position of the angle.
+- `startVector`: `Vector3` the start position defining the angle.
+- `endVector`: `Vector3` the end position defining the angle.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `latex`: `string` LaTeX string to display next to point.
+  - `size`: `number` Size of the drawn angle.
+
+Example:
+
+```ts
+new AngleObject3D(
+      new MathVector3(0, 0, 0),
+      new MathVector3(1, 0, 0),
+      new MathVector3(0, 0, 1),
+      PrimeColor.orange,
+      { latex: '\\theta', size: 9 }
+    );
+```
+
+### 8) `PolygonObject3D`
+
+Constructor:
+
+```ts
+new PolygonObject3D(points, color, options);
+```
+
+- `points`: `Vector3[]` List of points included in the polygon.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `offset`: `Vector3` the offset to add to defined polygon points.
+  - `shape`: `'circle'`, `'square'` or `'triangle'`, used for the legend item shapes. Default: `'circle'`.
+  - `legendText`: `string` text to display in the legend for this function.
+
+Example:
+
+```ts
+new PolygonObject3D(
+      [
+        new MathVector3(4, 1, 5),
+        new MathVector3(6, 1, 5),
+        new MathVector3(7, 0, 6.5),
+        new MathVector3(6, -1, 8),
+        new MathVector3(4, -1, 8)
+      ],
+      PrimeColor.purple,
+      {
+        shape: 'square',
+        legendText: 'P'
+      }
+    );
+```
+
+### 9) `CuboidObject3D`
+
+Constructor:
+
+```ts
+new CuboidObject3D(corners, color, options);
+```
+
+- `corners`: `[Vector3, Vector3]` the two corners defining the 3D cuboid.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `toggleEdges`: `boolean` whether or not the edges of the cuboid should be outlined.
+
+Examples:
+
+```ts
+new CuboidObject3D(
+      PrimeColor.darkBlue,
+      [new MathVector3(2, 3, 4), new MathVector3(5, 4, 4)],
+      true
+    );
+new CuboidObject3D(
+      PrimeColor.blue,
+      [new MathVector3(0, 0, 0), new MathVector3(5, 4, 4)],
+      false
+    );
+```
+
+### 10) `CurveObject3D`
+
+Constructor:
+
+```ts
+new CurveObject3D(xFunc, yFunc, zFunc, color, options);
+```
+
+- `xFunc`: `(t: number) => number` function defining x values in terms of t.
+- `yFunc`: `(t: number) => number` function defining y values in terms of t.
+- `zFunc`: `(t: number) => number` function defining z values in terms of t.
+- `color`: one of the `PrimeColor` values.
+- `options` (optional): an object with the following properties:
+  - `tRange`: `[number, number]` the range of t values in which to render the curve.
+  - `zRange`: `[number, number]` the range of z values in which to render the curve.
+  - `radius`: `number` the radius size of the rendered curve.
+  - `alwaysOnTop`: `boolean` whether or not the rendered curve should always be rendered on top of other objects.
+
+Example:
+
+```ts
+new CurveObject3D(
+      (x: number) => Math.sin(x),
+      (y: number) => Math.cos(y),
+      (z: number) => Math.sin(z) + 5,
+      PrimeColor.darkGreen,
+      { tRange: [0, 30] }
+    );
+new CurveObject3D(
+      (x: number) => Math.cos(5 * x),
+      (y: number) => Math.cos(5 * y),
+      (z: number) => 2 * z,
+      PrimeColor.red,
+      { radius: 5, tRange: [0, 30] }
+    );
+```
+
 ## Step-by-step: create an example applet
 
-In this section, we build a small applet from scratch using only `appletObjects`.
+In this section, we build a small 2D applet from scratch using only `appletObjects`.
 
 ### Step 1: Start with one function
 
@@ -680,6 +1070,6 @@ const appletObjects: AppletObject[] = [
    - Custom legend labels for everything
    - Multiple gaps and included points via chaining
 
-4. **Set camera framing (optional)** — Use `initialViewBox` for guaranteed minimum visible area, or `cameraPosition`/`cameraZoom` for simple positioning.
+4. **Set camera framing (optional)** — 2D: Use `initialViewBox` for guaranteed minimum visible area, or `cameraPosition`/`cameraZoom` for simple positioning.
 
 5. **Next steps** — If your applet needs interactivity or custom logic, ask a TA for help.

@@ -1,5 +1,13 @@
 import { FillType, LegendItem } from '$lib/utils/Legend';
+import { PrimeColor } from '$lib/utils/PrimeColors';
 import { AbstractFunctionFragment, AppletObject, Point, Polygon } from './TemplateAppletObjects';
+import {
+  SurfaceFunction3D,
+  AppletObject3D,
+  LineSegmentObject3D,
+  PointObject3D,
+  PolygonObject3D
+} from './TemplateAppletObjects3D';
 
 export function getLegend(objects: AppletObject[]): LegendItem[] {
   const legendItems: LegendItem[] = [];
@@ -51,6 +59,45 @@ export function getLegend(objects: AppletObject[]): LegendItem[] {
             obj.color,
             obj.legendShape,
             obj.fillStyle === 'dashed' ? FillType.Dashed : FillType.Full
+          )
+        );
+      }
+    }
+  }
+
+  return legendItems;
+}
+
+export function getLegend3D(objects: AppletObject3D[]): LegendItem[] {
+  const legendItems: LegendItem[] = [];
+
+  for (const obj of objects) {
+    if (obj instanceof SurfaceFunction3D) {
+      if (obj.legendText) {
+        legendItems.push(
+          new LegendItem(obj.legendText, obj.color ? obj.color : PrimeColor.blue, obj.shape)
+        );
+      }
+    } else if (obj instanceof PointObject3D) {
+      if (obj.legendText) {
+        legendItems.push(
+          new LegendItem(obj.legendText, obj.color ? obj.color : PrimeColor.blue, obj.shape)
+        );
+      }
+    } else if (obj instanceof PolygonObject3D) {
+      if (obj.legendText) {
+        legendItems.push(
+          new LegendItem(obj.legendText, obj.color ? obj.color : PrimeColor.blue, obj.shape)
+        );
+      }
+    } else if (obj instanceof LineSegmentObject3D) {
+      if (obj.legendText) {
+        legendItems.push(
+          new LegendItem(
+            obj.legendText,
+            obj.color ? obj.color : PrimeColor.blue,
+            obj.shape,
+            obj.isDashed == true ? FillType.Dashed : FillType.Full
           )
         );
       }

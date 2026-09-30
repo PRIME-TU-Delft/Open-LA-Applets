@@ -208,6 +208,9 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
     start?: number;
     end?: number;
   };
+  stepSize: number = 0.15;
+  tension: number = -0.5;
+  maxDepth: number = 6;
 
   /**
    * Parameterized function fragment template object
@@ -220,6 +223,9 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
    * @param options.legendText Text to be shown in the legend item
    * @param options.tStart Start value for t
    * @param options.tEnd End value for t
+   * @param options.stepSize Step size for rendering the parametric curve
+   * @param options.tension Tension parameter for curve rendering
+   * @param options.maxDepth Maximum depth for curve rendering
    */
   constructor(
     xFunc: ((t: number) => number) | string,
@@ -232,6 +238,9 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
       legendText?: string;
       tStart?: number;
       tEnd?: number;
+      stepSize?: number;
+      tension?: number;
+      maxDepth?: number;
     }
   ) {
     super(color, options);
@@ -240,6 +249,10 @@ export class ParameterizedFunctionFragment extends AbstractFunctionFragment {
       start: options?.tStart,
       end: options?.tEnd
     };
+
+    if (options?.stepSize !== undefined) this.stepSize = options.stepSize;
+    if (options?.tension !== undefined) this.tension = options.tension;
+    if (options?.maxDepth !== undefined) this.maxDepth = options.maxDepth;
 
     if (typeof xFunc == 'string') {
       const parsed = parse(xFunc);

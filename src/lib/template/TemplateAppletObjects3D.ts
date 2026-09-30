@@ -1,0 +1,381 @@
+import { PrimeColor } from '../utils/PrimeColors';
+import { parse, compile } from '@cortex-js/compute-engine';
+import { Vector3 } from 'three';
+
+type Shape = 'circle' | 'square' | 'triangle' | 'diamond';
+
+export abstract class AppletObject3D {
+  color: PrimeColor;
+
+  constructor(color: PrimeColor = PrimeColor.black) {
+    this.color = color;
+  }
+}
+
+export class SurfaceFunction3D extends AppletObject3D {
+  func: (x: number, y: number) => number;
+  legendText: string | undefined;
+  wireframe: boolean = false;
+  shape: Shape = 'circle';
+  opacity: number | undefined;
+  xRange: [number, number] | undefined;
+  yRange: [number, number] | undefined;
+
+  /**
+   * Surface3D template object
+   * @param func A javascript function or a latex string describing the function
+   * @param color Color of the function graph
+   * @param options.shape Shape to use for legend and points
+   * @param options.legendText Text to be shown in the legend item
+   * @param options.wireframe Whether the function should be a wireframe
+   * @param options.xRange Range of x values function should be rendered for
+   * @param options.yRange Range of y values function should be rendered for
+   * @param options.opacity Opacity level for shading function.
+   */
+  constructor(
+    func: ((x: number, y: number) => number) | string,
+    color: PrimeColor,
+    options?: {
+      shape?: Shape;
+      legendText?: string;
+      wireframe?: boolean;
+      xRange?: [number, number];
+      yRange?: [number, number];
+      opacity?: number;
+    }
+  ) {
+    super(color);
+    this.legendText = options?.legendText;
+    this.opacity = options?.opacity;
+    this.xRange = options?.xRange;
+    this.yRange = options?.yRange;
+    if (options?.wireframe) this.wireframe = options.wireframe;
+    if (options?.shape) this.shape = options.shape;
+    if (typeof func == 'string') {
+      const parsed = parse(func);
+      const compiled = compile(parsed);
+
+      this.func = (x: number) => {
+        const result = compiled.run?.({ x });
+        return typeof result === 'number' ? result : Number(result);
+      };
+    } else {
+      this.func = func;
+    }
+  }
+}
+
+export class CurveObject3D extends AppletObject3D {
+  xFunc: (t: number) => number;
+  yFunc: (t: number) => number;
+  zFunc: (t: number) => number;
+
+  tRange?: [number, number];
+  zRange?: [number, number];
+  radius?: number;
+  alwaysOnTop?: boolean;
+
+  constructor(
+    xFunc: (t: number) => number,
+    yFunc: (t: number) => number,
+    zFunc: (t: number) => number,
+    color: PrimeColor,
+    options?: {
+      tRange?: [number, number];
+      zRange?: [number, number];
+      radius?: number;
+      alwaysOnTop?: boolean;
+    }
+  ) {
+    super(color);
+    this.xFunc = xFunc;
+    this.yFunc = yFunc;
+    this.zFunc = zFunc;
+    this.tRange = options?.tRange;
+    this.zRange = options?.zRange;
+    this.radius = options?.radius;
+    this.alwaysOnTop = options?.alwaysOnTop;
+  }
+}
+
+export class TextObject3D extends AppletObject3D {
+  latex: string;
+  position: Vector3;
+  size?: number;
+
+  /**
+   * Text3D template object
+   * @param latex Latex string to display
+   * @param position Position of the text in the scene
+   * @param color Color of the text
+   * @param size Font size of the text
+   */
+  constructor(latex: string, position: Vector3, color: PrimeColor, size?: number) {
+    super(color);
+
+    this.latex = latex;
+    this.position = position;
+    this.size = size;
+  }
+}
+
+export class AngleObject3D extends AppletObject3D {
+  position: Vector3;
+  startVector: Vector3;
+  endVector: Vector3;
+  latex?: string;
+  size?: number;
+
+  /**
+   * Angle3D template object
+   * @param position Origin position of the angle
+   * @param startVector Start vector of the angle
+   * @param endVector End vector of the angle
+   * @param color Color of the angle
+   * @param options.latex Latex shown next to the angle
+   * @param options.size Size of drawn angle
+   */
+  constructor(
+    position: Vector3,
+    startVector: Vector3,
+    endVector: Vector3,
+    color: PrimeColor,
+    options?: {
+      latex?: string;
+      size?: number;
+    }
+  ) {
+    super(color);
+
+    this.position = position;
+    this.startVector = startVector;
+    this.endVector = endVector;
+    this.latex = options?.latex;
+    this.size = options?.size;
+  }
+
+  public isRight(): boolean {
+    return (
+      Math.abs(
+        this.endVector.x * this.startVector.x +
+          this.endVector.y * this.startVector.y +
+          this.endVector.z * this.startVector.z
+      ) < 0.0001
+    );
+  }
+
+  public getVectors(): [Vector3, Vector3] {
+    return [this.startVector, this.endVector];
+  }
+}
+
+export class PointObject3D extends AppletObject3D {
+  position: Vector3;
+  shape?: Shape;
+  latex?: string;
+  latexOffset?: Vector3;
+  legendText?: string;
+  size?: number;
+
+  /**
+   * Point3D template object
+   * @param position Position of the points
+   * @param color Color of the points
+   * @param options.shape Shape of the point
+   * @param options.latex Latex shown next to the point
+   * @param options.latexOffset Offset from point position to place Latex
+   * @param options.legendText Legend text of the point
+   * @param options.size Radius of the point
+   */
+  constructor(
+    position: Vector3,
+    color: PrimeColor,
+    options?: {
+      shape?: Shape;
+      latex?: string;
+      latexOffset?: Vector3;
+      legendText?: string;
+      size?: number;
+    }
+  ) {
+    super(color);
+
+    this.position = position;
+    this.shape = options?.shape;
+    this.latex = options?.latex;
+    this.latexOffset = options?.latexOffset;
+    this.legendText = options?.legendText;
+    this.size = options?.size;
+  }
+}
+
+export class VectorFieldObject3D extends AppletObject3D {
+  func: (x: number, y: number, z: number) => Vector3;
+  xRange?: [number, number];
+  yRange?: [number, number];
+  zRange?: [number, number];
+  step?: number;
+  normalize?: boolean;
+  normalizedLength?: number;
+  hideHead?: boolean;
+  anchor?: 'middle' | 'start' | 'end';
+  colorFn?: (x: number, y: number, z: number) => PrimeColor | string;
+
+  /**
+   * VectorField3D template object
+   * @param func Function of vector field
+   * @param color Color of the points
+   * @param options.xRange Range of x values for vector field
+   * @param options.yRange Range of y values for vector field
+   * @param options.zRange Range of z values for vector field
+   * @param options.step Size of arrow step
+   * @param options.normalize Boolean whether to normalize vectors
+   * @param options.normalizedLength Length to normalize vectors
+   * @param options.hideHead Boolean whether pointed head of arrows hidden
+   * @param options.anchor Location of arrow anchor
+   * @param options.colorFun Custom function to define arrow color
+   */
+  constructor(
+    func: (x: number, y: number, z: number) => Vector3,
+    options: {
+      color?: PrimeColor;
+      xRange?: [number, number];
+      yRange?: [number, number];
+      zRange?: [number, number];
+      step?: number;
+      normalize?: boolean;
+      normalizedLength?: number;
+      hideHead?: boolean;
+      anchor?: 'middle' | 'start' | 'end';
+      colorFn?: (x: number, y: number, z: number) => PrimeColor | string;
+    }
+  ) {
+    super(options?.color);
+    this.func = func;
+    this.xRange = options?.xRange;
+    this.yRange = options?.yRange;
+    this.zRange = options?.zRange;
+    this.step = options?.step;
+    this.normalize = options?.normalize;
+    this.normalizedLength = options?.normalizedLength;
+    this.hideHead = options?.hideHead;
+    this.anchor = options?.anchor;
+    this.colorFn = options?.colorFn;
+  }
+}
+
+export class LineSegmentObject3D extends AppletObject3D {
+  startPoint: Vector3;
+  endPoint: Vector3;
+  radius?: number;
+  isDashed?: boolean;
+  shape?: Shape;
+  legendText?: string;
+
+  /**
+   * Line fragment 3D template object
+   * @param startPoint Start point of the line
+   * @param endPoint End point of the line
+   * @param color Color of the line
+   * @param options.radius Width of the line
+   * @param options.isDashed Whether the line should be dashed
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
+   */
+  constructor(
+    startPoint: Vector3,
+    endPoint: Vector3,
+    color: PrimeColor,
+    options?: {
+      radius?: number;
+      isDashed?: boolean;
+      latexAlign?: {
+        alignX?: 'left' | 'right' | 'center' | null;
+        alignY?: 'top' | 'bottom' | 'center' | null;
+      };
+      shape?: Shape;
+      legendText?: string;
+    }
+  ) {
+    super(color);
+
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+    this.radius = options?.radius;
+    this.isDashed = options?.isDashed;
+    this.shape = options?.shape;
+    this.legendText = options?.legendText;
+  }
+}
+
+export class InfiniteLineObject3D extends LineSegmentObject3D {
+  /**
+   * Infinite line 3D template object
+   * @param start Start point of the line
+   * @param end End point of the line
+   * @param color Color of the line
+   * @param options.radius Width of the line
+   * @param options.isDashed Whether the line should be dashed
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
+   */
+  constructor(
+    start: Vector3,
+    end: Vector3,
+    color: PrimeColor,
+    options?: {
+      radius?: number;
+      isDashed?: boolean;
+      latexAlign?: {
+        alignX?: 'left' | 'right' | 'center' | null;
+        alignY?: 'top' | 'bottom' | 'center' | null;
+      };
+    }
+  ) {
+    super(start, end, color, options);
+  }
+}
+
+export class PolygonObject3D extends AppletObject3D {
+  points: Vector3[];
+  offset?: Vector3;
+  shape?: Shape;
+  legendText?: string;
+
+  /**
+   * Polygon3D template object
+   * @param points Points to include in polygon
+   * @param color Color of the polygon
+   * @param options.offset Offset to add to defined polygon points
+   * @param options.shape Shape of legend item
+   * @param options.legendText Text to include in legend
+   */
+  constructor(
+    points: Vector3[],
+    color: PrimeColor,
+    options?: { offset?: Vector3; shape?: Shape; legendText?: string }
+  ) {
+    super(color);
+    this.points = points;
+    this.offset = options?.offset;
+    this.shape = options?.shape;
+    this.legendText = options?.legendText;
+  }
+}
+
+export class CuboidObject3D extends AppletObject3D {
+  corners: [Vector3, Vector3];
+  toggleEdges?: boolean;
+
+  /**
+   * Cuboid3D template object
+   * @param corners Two corners of the 3D cuboid
+   * @param color Color of the cuboid
+   * @param options.toggleEdges Boolean whether to show cuboid edges
+   */
+  constructor(color: PrimeColor, corners: [Vector3, Vector3], toggleEdges?: boolean) {
+    super(color);
+    this.corners = corners;
+    this.toggleEdges = toggleEdges;
+  }
+}

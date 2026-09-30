@@ -57,8 +57,31 @@
 </script>
 
 <Canvas2D {initialViewBox} axis={null} {scaleX} {scaleY}>
+  <Latex2D
+    latex="a"
+    position={new Vector2(2, 0)}
+    alignX="center"
+    alignY="top"
+    background={PrimeColor.white}
+    padding="0.75em"
+  />
+  <Latex2D
+    latex="b"
+    position={new Vector2(4.04, 1.5)}
+    alignX="left"
+    alignY="center"
+    background={PrimeColor.white}
+    padding="0.5em"
+  />
+  <Latex2D
+    latex="c"
+    position={new Vector2(2, 1.5)}
+    alignX="center"
+    alignY="bottom"
+    background={PrimeColor.white}
+    padding="0.55em"
+    rotation={(Math.atan2(3, 4) * 180) / Math.PI}
+    offset={new Vector2(-3, 4).normalize().multiplyScalar(0.05)}
+  />
   <TemplateComponent objects={appletObjects} />
-  <Latex2D latex="a" position={new Vector2(2, -0.15)} alignX="center" alignY="top" />
-  <Latex2D latex="b" position={new Vector2(4.15, 1.5)} alignX="left" alignY="center" />
-  <Latex2D latex="c" position={new Vector2(2.1, 1.6)} alignX="right" alignY="bottom" />
 </Canvas2D>
