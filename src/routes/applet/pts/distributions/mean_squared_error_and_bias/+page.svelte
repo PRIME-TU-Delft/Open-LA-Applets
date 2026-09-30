@@ -16,18 +16,16 @@
   let mu_x: number = $state(0);
   let mu_y: number = $state(0);
 
-  let omega_x: number = $state(0);
-  let omega_y: number = $state(0);
+  let sigma_x: number = $state(0);
+  let sigma_y: number = $state(0);
 
-  type ControlStage = 'mu' | 'omega' | 'arrow';
+  type ControlStage = 'mu1' | 'mu2' | 'sigma1' | 'sigma2' | 'arrow';
 
-  let stage: ControlStage = $state('mu');
+  let stage: ControlStage = $state('mu1');
 
-  const meanControls = $derived.by(() => {
+  const meanControls1 = $derived.by(() => {
     const cont = Controls.addSlider(0, -8, 8, 0.5, PrimeColor.darkGreen, {
       label: '\\mu_x'
-    }).addSlider(0, -8, 8, 0.5, PrimeColor.blue, {
-      label: '\\mu_y'
     });
 
     return cont.addButton(
@@ -35,16 +33,43 @@
       PrimeColor.raspberry,
       () => {
         mu_x = cont[0];
-        mu_y = cont[1];
-        stage = 'omega';
+        stage = 'mu2';
       }
     );
   });
 
-  const omegaControls = $derived.by(() => {
+  const meanControls2 = $derived.by(() => {
+    const cont = Controls.addSlider(0, -8, 8, 0.5, PrimeColor.blue, {
+      label: '\\mu_y'
+    });
+
+    return cont.addButton(
+      $_('applets.pts.distributions.distributions.next'),
+      PrimeColor.raspberry,
+      () => {
+        mu_y = cont[0];
+        stage = 'sigma1';
+      }
+    );
+  });
+
+  const sigmaControls1 = $derived.by(() => {
     const cont = Controls.addSlider(0, 0, 3, 0.5, PrimeColor.yellow, {
       label: '\\sigma_x'
-    }).addSlider(0, 0, 3, 0.5, PrimeColor.orange, {
+    });
+
+    return cont.addButton(
+      $_('applets.pts.distributions.distributions.next'),
+      PrimeColor.raspberry,
+      () => {
+        sigma_x = cont[0];
+        stage = 'sigma2';
+      }
+    );
+  });
+
+  const sigmaControls2 = $derived.by(() => {
+    const cont = Controls.addSlider(0, 0, 3, 0.5, PrimeColor.orange, {
       label: '\\sigma_y'
     });
 
@@ -52,9 +77,7 @@
       $_('applets.pts.distributions.distributions.next'),
       PrimeColor.raspberry,
       () => {
-        omega_x = cont[0];
-        omega_y = cont[1];
-
+        sigma_y = cont[0];
         stage = 'arrow';
       }
     );
@@ -74,8 +97,8 @@
       () => {
         for (let i = 0; i < 5; i++) {
           points.push({
-            x: randomNormal(mu_x, omega_x)(),
-            y: randomNormal(mu_y, omega_y)()
+            x: randomNormal(mu_x, sigma_x)(),
+            y: randomNormal(mu_y, sigma_y)()
           });
         }
       }
@@ -90,11 +113,17 @@
 
   const controls = $derived.by(() => {
     switch (stage) {
-      case 'mu':
-        return meanControls;
+      case 'mu1':
+        return meanControls1;
 
-      case 'omega':
-        return omegaControls;
+      case 'mu2':
+        return meanControls2;
+
+      case 'sigma1':
+        return sigmaControls1;
+
+      case 'sigma2':
+        return sigmaControls2;
 
       case 'arrow':
         return arrowControls;
@@ -119,26 +148,40 @@
         points.length === 0 ? 0 : (totalScore / points.length).toFixed(2),
         PrimeColor.blue
       );
-    const average = (array: number[]) =>
-      (array.reduce((a: number, b: number) => a + b) / array.length).toFixed(2);
-    const mse = (array: number[]) =>
-      (array.reduce((a: number, b: number) => a + b ** 2) / array.length).toFixed(2);
-    const mean_x = new Formula(`\\bar{x_n} = \\$1`).addAutoParam(
-      points.length === 0 ? 0 : average(points.map((p) => p.x)),
-      PrimeColor.blue
-    );
-    const mean_y = new Formula(`\\bar{y_n} = \\$1`).addAutoParam(
-      points.length === 0 ? 0 : average(points.map((p) => p.y)),
-      PrimeColor.blue
-    );
-    const mse_x = new Formula(
-      `\\text{MSE(x)} \\approx \\frac{1}{n}(x^2_1+ \\ldots + x^2_n) = \\$1`
-    ).addAutoParam(points.length === 0 ? 0 : mse(points.map((p) => p.x)), PrimeColor.blue);
-    const mse_y = new Formula(
-      `\\text{MSE(y)} \\approx \\frac{1}{n}(y^2_1+ \\ldots + y^2_n) = \\$1`
-    ).addAutoParam(points.length === 0 ? 0 : mse(points.map((p) => p.y)), PrimeColor.blue);
 
-    return new Formulas(pts, mean_x, mean_y, mse_x, mse_y).align();
+    const average = (array: number[]) =>
+      (array.reduce((a: number, b: number) => a + b, 0) / array.length).toFixed(2);
+    const mse = (array: number[]) =>
+      (array.reduce((a: number, b: number) => a + b ** 2, 0) / array.length).toFixed(2);
+
+    const mean_x = new Formula(`\\bar{x_{\\$1}} = \\$2`)
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 0 : average(points.map((p) => p.x)), PrimeColor.blue);
+    const mean_y = new Formula(`\\bar{y_{\\$1}} = \\$2`)
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 0 : average(points.map((p) => p.y)), PrimeColor.blue);
+    const mse_x = new Formula(
+      `\\text{MSE(x)} \\approx \\frac{1}{\\$1}(x^2_1+ \\ldots + x^2_{\\$2}) = \\$3`
+    )
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 0 : mse(points.map((p) => p.x)), PrimeColor.blue);
+    const mse_y = new Formula(
+      `\\text{MSE(y)} \\approx \\frac{1}{\\$1}(y^2_1+ \\ldots + y^2_{\\$2}) = \\$3`
+    )
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 'n' : points.length)
+      .addAutoParam(points.length === 0 ? 0 : mse(points.map((p) => p.y)), PrimeColor.blue);
+
+    const mus = new Formula(`\\mu_x = \\$1 \\text{\t} \\mu_y = \\$2`)
+      .addAutoParam(mu_x, PrimeColor.blue)
+      .addAutoParam(mu_y, PrimeColor.blue);
+
+    const sigmas = new Formula(`\\sigma_x = \\$1 \\text{\t\t} \\sigma_y = \\$2`)
+      .addAutoParam(sigma_x, PrimeColor.blue)
+      .addAutoParam(sigma_y, PrimeColor.blue);
+
+    return new Formulas(pts, mean_x, mean_y, mse_x, mse_y, mus, sigmas).align();
   });
 </script>
 
@@ -149,11 +192,11 @@
   cameraZoom={0.35}
   onReset={() => {
     points = [];
-    stage = 'mu';
+    stage = 'mu1';
     mu_x = 0;
     mu_y = 0;
-    omega_x = 0;
-    omega_y = 0;
+    sigma_x = 0;
+    sigma_y = 0;
   }}
   legendItems={[
     new LegendItem(
