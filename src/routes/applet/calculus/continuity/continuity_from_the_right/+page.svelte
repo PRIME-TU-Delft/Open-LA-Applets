@@ -71,14 +71,18 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment('3x+4', PrimeColor.blue, {
       legendText: String.raw`f(x)=\left\{\begin{array}{ll}3x+4,&\text{if }\,x\leq 0,\\ \ln(x)+3,&\text{if }\,0<x<1,\\ 3-x,&\text{if }\,x\geq 1. \end{array}\right.`,
-      domain: { xMax: 0 }
-    }).addIncludedPoints(new Vector2(0, 4)),
+      domain: { xMax: 0 },
+      width: 0.08
+    }).addIncludedPoints(new Vector2(0, 4), undefined, 0.12),
     new FunctionFragment('\\ln(x)+3', PrimeColor.blue, {
-      domain: { xMin: 0, xMax: 1 }
-    }).addGaps(new Vector2(1, Math.log(1) + 3)),
+      domain: { xMin: 0, xMax: 1 },
+      stepSize: 0.00001,
+      width: 0.08
+    }).addGaps(new Vector2(1, Math.log(1) + 3), undefined, 0.12),
     new FunctionFragment('3-x', PrimeColor.blue, {
-      domain: { xMin: 1 }
-    }).addIncludedPoints(new Vector2(1, 2))
+      domain: { xMin: 1 },
+      width: 0.08
+    }).addIncludedPoints(new Vector2(1, 2), undefined, 0.12)
   ];
 </script>
 

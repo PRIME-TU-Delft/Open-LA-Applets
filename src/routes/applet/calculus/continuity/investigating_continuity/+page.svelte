@@ -46,8 +46,8 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
@@ -103,19 +103,31 @@
   legendFormulaPosition="top-left"
 >
   {@const b = controls[0]}
-  <ExplicitFunction2D func={(x: number) => 2 ** x + b} xMax={2} color={PrimeColor.blue} />
-  <ExplicitFunction2D func={(x: number) => x ** 2 - 3 * x} xMin={2} color={PrimeColor.blue} />
+  <ExplicitFunction2D
+    func={(x: number) => 2 ** x + b}
+    xMax={2}
+    color={PrimeColor.blue}
+    width={0.12}
+  />
+  <ExplicitFunction2D
+    func={(x: number) => x ** 2 - 3 * x}
+    xMin={2}
+    color={PrimeColor.blue}
+    width={0.12}
+  />
   {#if b !== -6}
     <Point2D
       position={new Vector2(2, 2 ** 2 + b)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
+      radius={0.18}
     />
     <Point2D
       position={new Vector2(2, 2 ** 2 - 3 * 2)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
+      radius={0.18}
     />
-    <Point2D position={new Vector2(2, 2 * b + 10)} color={PrimeColor.blue} />
+    <Point2D position={new Vector2(2, 2 * b + 10)} color={PrimeColor.blue} radius={0.18} />
   {/if}
 </Canvas2D>

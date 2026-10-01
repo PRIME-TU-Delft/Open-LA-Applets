@@ -70,7 +70,9 @@
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment('\\frac{x^2+1}{x^2-1}', PrimeColor.blue, {
-      legendText: 'f(x)=\\frac{x^2+1}{x^2-1}'
+      legendText: 'f(x)=\\frac{x^2+1}{x^2-1}',
+      width: 0.08,
+      stepSize: 0.0001
     })
   ];
 </script>

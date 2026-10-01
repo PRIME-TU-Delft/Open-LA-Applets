@@ -38,13 +38,13 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: true,
+    showOrigin: false,
     showAxisNumbersX: true,
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
@@ -69,7 +69,9 @@
   // ##############
   const appletObjects: AppletObject[] = [
     new FunctionFragment('1/x', PrimeColor.darkGreen, {
-      legendText: 'g(x)=\\frac{1}{x}'
+      legendText: 'g(x)=\\frac{1}{x}',
+      width: 0.12,
+      stepSize: 0.0001
     })
   ];
 </script>
