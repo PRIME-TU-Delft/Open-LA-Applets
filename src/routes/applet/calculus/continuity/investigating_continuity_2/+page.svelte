@@ -81,7 +81,7 @@
     const Dollar3 = b === -1 ? '1' : '\\$3 x+1';
     return [
       new LegendItem(
-        'f(x)=\\left\\{\\begin{array}{ll}' +
+        'g(x)=\\left\\{\\begin{array}{ll}' +
           (b === 0 ? '\\$4' : Dollar1 + ' x^4') +
           ',&x<1,\\\\\\$2,&x=1,\\\\' +
           Dollar3 +
