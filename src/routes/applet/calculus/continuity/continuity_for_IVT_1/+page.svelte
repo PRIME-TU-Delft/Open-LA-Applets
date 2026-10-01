@@ -39,13 +39,13 @@
 
   // (remove if unnecessary)
   axis = {
-    showOrigin: true,
+    showOrigin: false,
     showAxisNumbersX: true,
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
-    skipY: 0
+    skipX: 1,
+    skipY: 1
   };
 
   // #####
@@ -72,11 +72,13 @@
     new FunctionFragment('x+3', PrimeColor.blue, {
       domain: { xMax: 1 },
       legendText:
-        'f(x)=\\left\\{\\begin{array}{ll}x+3,&\\text{if }\\,x\\leq 1,\\\\ 2x+4,&\\text{if }\\,x>1.\\end{array}\\right.'
-    }).addIncludedPoints(new Vector2(1, 4)),
+        'f(x)=\\left\\{\\begin{array}{ll}x+3,&\\text{if }\\,x\\leq 1,\\\\ 2x+4,&\\text{if }\\,x>1.\\end{array}\\right.',
+      width: 0.12
+    }).addIncludedPoints(new Vector2(1, 4), undefined, 0.18),
     new FunctionFragment('2x+4', PrimeColor.blue, {
-      domain: { xMin: 1 }
-    }).addGaps(new Vector2(1, 6))
+      domain: { xMin: 1 },
+      width: 0.12
+    }).addGaps(new Vector2(1, 6), undefined, 0.18)
   ];
 </script>
 

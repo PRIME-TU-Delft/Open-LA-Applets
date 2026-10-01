@@ -69,6 +69,7 @@
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
         width={object.width}
+        stepSize={object.stepSize}
         integral={object.integral
           ? {
               xLeft: object.integral?.xLeft,

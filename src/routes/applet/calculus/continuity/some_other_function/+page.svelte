@@ -71,22 +71,28 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => 1 / (-x - 2), PrimeColor.blue, {
       domain: { xMax: -2 },
-      legendText: 'g(x)'
+      legendText: 'g(x)',
+      width: 0.06
     }),
     new FunctionFragment((x: number) => (x + 1) ** 2, PrimeColor.blue, {
-      domain: { xMin: -2, xMax: -1 }
+      domain: { xMin: -2, xMax: -1 },
+      width: 0.06
     }),
     new FunctionFragment((x: number) => 1 - x ** 2, PrimeColor.blue, {
-      domain: { xMin: -1, xMax: 0 }
+      domain: { xMin: -1, xMax: 0 },
+      width: 0.06
     }),
     new FunctionFragment((x: number) => 1 + x ** 2, PrimeColor.blue, {
-      domain: { xMin: 0, xMax: 1 }
+      domain: { xMin: 0, xMax: 1 },
+      width: 0.06
     }),
     new FunctionFragment((x: number) => 2 + (x - 1), PrimeColor.blue, {
-      domain: { xMin: 1, xMax: 2 }
+      domain: { xMin: 1, xMax: 2 },
+      width: 0.06
     }),
     new FunctionFragment((x: number) => ((0 - 4) / (2.75 - 2)) * (x - 2.75), PrimeColor.blue, {
-      domain: { xMin: 2 }
+      domain: { xMin: 2 },
+      width: 0.06
     })
       .addIncludedPoints([new Vector2(-2, 1), new Vector2(1, 4), new Vector2(2, 3)])
       .addGaps([new Vector2(0, 1), new Vector2(1, 2), new Vector2(2, 4)])

@@ -47,7 +47,7 @@
     logarithmicX: false,
     logarithmicY: false,
     skipX: 1,
-    skipY: 0
+    skipY: 1
   };
 
   // #####
@@ -81,7 +81,7 @@
     const Dollar3 = b === -1 ? '1' : '\\$3 x+1';
     return [
       new LegendItem(
-        'f(x)=\\left\\{\\begin{array}{ll}' +
+        'g(x)=\\left\\{\\begin{array}{ll}' +
           (b === 0 ? '\\$4' : Dollar1 + ' x^4') +
           ',&x<1,\\\\\\$2,&x=1,\\\\' +
           Dollar3 +
@@ -107,19 +107,31 @@
   legendFormulaPosition="top-left"
 >
   {@const b = controls[0]}
-  <ExplicitFunction2D func={(x: number) => -1 * b * x ** 4} xMax={1} color={PrimeColor.blue} />
-  <ExplicitFunction2D func={(x: number) => (b + 1) * x + 1} xMin={1} color={PrimeColor.blue} />
+  <ExplicitFunction2D
+    func={(x: number) => -1 * b * x ** 4}
+    xMax={1}
+    color={PrimeColor.blue}
+    width={0.12}
+  />
+  <ExplicitFunction2D
+    func={(x: number) => (b + 1) * x + 1}
+    xMin={1}
+    color={PrimeColor.blue}
+    width={0.12}
+  />
   {#if b !== -1}
     <Point2D
       position={new Vector2(1, -1 * b * 1 ** 4)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
+      radius={0.18}
     />
     <Point2D
       position={new Vector2(1, (b + 1) * 1 + 1)}
       color={PrimeColor.blue}
       fill={PrimeColor.white}
+      radius={0.18}
     />
-    <Point2D position={new Vector2(1, b ** 2)} color={PrimeColor.blue} />
+    <Point2D position={new Vector2(1, b ** 2)} color={PrimeColor.blue} radius={0.18} />
   {/if}
 </Canvas2D>
