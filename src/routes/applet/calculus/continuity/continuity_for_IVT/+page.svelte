@@ -2,12 +2,13 @@
   // For ease of creating the template applets
   import { AppletObject, FunctionFragment } from '$lib/template/TemplateAppletObjects';
   import TemplateComponent from '$lib/template/TemplateComponent.svelte';
-  import Canvas2D from '$lib/d3/Canvas2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { getLegend } from '$lib/template/ObjectFormulas';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { ViewBox } from '$lib/d3/ViewBox';
+  import CanvasGrid from '$lib/common/CanvasGrid.svelte';
+  import GridCanvas2D from '$lib/common/GridCanvas2D.svelte';
 
   let initialViewBox: ViewBox | undefined;
   let xAxisLabel: string | undefined;
@@ -27,10 +28,15 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-9, -5), // bottom-left
-    new Vector2(5, 11), // top-right
-    0.5 // margin
+    new Vector2(-5, -5), // bottom-left
+    new Vector2(7, 11), // top-right
+    2 // margin
   );
+  // initialViewBox = new ViewBox(
+  //   new Vector2(-9, -7), // bottom-left
+  //   new Vector2(5, 9), // top-right
+  //   0.5 // margin
+  // );
 
   // ####
   // AXIS
@@ -78,18 +84,37 @@
     new FunctionFragment('2x+4', PrimeColor.blue, {
       domain: { xMin: 1 },
       width: 0.12
-    }).addGaps(new Vector2(1, 6), undefined, 0.18)
+    }).addGaps(new Vector2(1, 6), undefined, 0.18),
+    new FunctionFragment('1/x', PrimeColor.darkGreen, {
+      legendText: 'g(x)=\\frac{1}{x}',
+      width: 0.12,
+      stepSize: 0.0001
+    })
   ];
 </script>
 
-<Canvas2D
-  {initialViewBox}
+<CanvasGrid
+  columns={2}
+  rows={1}
   legendItems={getLegend(appletObjects)}
-  labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  {axis}
-  {scaleX}
-  {scaleY}
-  legendFormulaPosition="top-left"
+  legendFormulaPosition="top-center"
 >
-  <TemplateComponent objects={appletObjects} />
-</Canvas2D>
+  <GridCanvas2D
+    {initialViewBox}
+    labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+    {axis}
+    {scaleX}
+    {scaleY}
+  >
+    <TemplateComponent objects={[appletObjects[0], appletObjects[1]]} />
+  </GridCanvas2D>
+  <GridCanvas2D
+    {initialViewBox}
+    labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
+    {axis}
+    {scaleX}
+    {scaleY}
+  >
+    <TemplateComponent objects={[appletObjects[2]]} />
+  </GridCanvas2D>
+</CanvasGrid>

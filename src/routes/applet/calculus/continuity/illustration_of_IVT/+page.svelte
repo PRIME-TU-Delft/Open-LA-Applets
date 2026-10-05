@@ -74,8 +74,13 @@
   const func = (x: number) => Math.sin(x) + Math.cos(x);
   const appletObjects: AppletObject[] = [
     new FunctionFragment(func, PrimeColor.blue, {
-      domain: { xMin: -1 * Math.PI, xMax: 2 * Math.PI }
-    }).addIncludedPoints([new Vector2(0, func(0)), new Vector2(2 * Math.PI, func(2 * Math.PI))])
+      domain: { xMin: -1 * Math.PI, xMax: 2 * Math.PI },
+      width: 0.08
+    }).addIncludedPoints(
+      [new Vector2(-1 * Math.PI, func(-1 * Math.PI)), new Vector2(2 * Math.PI, func(2 * Math.PI))],
+      undefined,
+      0.12
+    )
   ];
   function snapToFunc(position: Vector2): Vector2 {
     const x = Math.min(Math.max(position.x, -1 * Math.PI), 2 * Math.PI);
@@ -85,8 +90,24 @@
   const a = 1.5;
   const b = 3.5;
   const draggablePoint = [
-    new Draggable(new Vector2(a, func(a)), PrimeColor.orange, undefined, snapToFunc),
-    new Draggable(new Vector2(b, func(b)), PrimeColor.darkGreen, undefined, snapToFunc)
+    new Draggable(
+      new Vector2(a, func(a)),
+      PrimeColor.orange,
+      undefined,
+      snapToFunc,
+      undefined,
+      undefined,
+      0.16
+    ),
+    new Draggable(
+      new Vector2(b, func(b)),
+      PrimeColor.darkGreen,
+      undefined,
+      snapToFunc,
+      undefined,
+      undefined,
+      0.16
+    )
   ];
   const legendItems = [
     new LegendItem('f(x)', PrimeColor.blue),
@@ -111,17 +132,19 @@
     color={PrimeColor.orange}
     isDashed={true}
     origin={new Vector2(0, draggablePoint[0].position.y)}
+    width={0.08}
   />
   <InfiniteLine2D
     direction={new Vector2(1, 0)}
     color={PrimeColor.darkGreen}
     isDashed={true}
     origin={new Vector2(0, draggablePoint[1].position.y)}
+    width={0.08}
   />
   <ImplicitFunction2D
     zeroFunc={(x, y) => y - func(x)}
     color={PrimeColor.yellow}
-    width={0.1}
+    width={0.14}
     xMin={Math.min(draggablePoint[0].position.x, draggablePoint[1].position.x)}
     xMax={Math.max(draggablePoint[0].position.x, draggablePoint[1].position.x)}
     yMin={Math.min(draggablePoint[0].position.y, draggablePoint[1].position.y)}
