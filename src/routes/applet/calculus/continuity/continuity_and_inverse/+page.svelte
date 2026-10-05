@@ -70,11 +70,14 @@
   const Nmax = 100;
   let Gaps = [];
   let Points = [];
+  let InversePoints = [];
   for (let i = 3; i <= Nmax; i++) {
     Gaps.push(new Vector2(1 / i, 1 / i));
     Gaps.push(new Vector2(1 - 1 / i, 1 - 1 / i));
     Points.push(new Vector2(1 / i, 1 / (2 * i)));
     Points.push(new Vector2(1 - 1 / i, 1 / (2 * i + 1)));
+    InversePoints.push(new Vector2(1 / (2 * i), 1 / i));
+    InversePoints.push(new Vector2(1 / (2 * i + 1), 1 - 1 / i));
   }
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => x, PrimeColor.blue, {
@@ -84,6 +87,14 @@
     })
       .addGaps(Gaps, undefined, 0.11)
       .addIncludedPoints(Points, undefined, 0.11),
+    new FunctionFragment((x: number) => x, PrimeColor.orange, {
+      domain: { xMin: -1, xMax: 1 },
+      legendText: 'f^{-1}(x)',
+      width: 0.1,
+      isDashed: true
+    })
+      .addGaps(Gaps, undefined, 0.11)
+      .addIncludedPoints(InversePoints, undefined, 0.11),
     new Text('1', new Vector2(1, 0), PrimeColor.grey, { alignX: 'center', alignY: 'top' }),
     new Text('-1', new Vector2(-1, 0), PrimeColor.grey, { alignX: 'center', alignY: 'top' }),
     new Text('1', new Vector2(0, 1), PrimeColor.grey, { alignX: 'right', alignY: 'center' }),

@@ -70,19 +70,23 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment((x: number) => 3 + 2 * x, PrimeColor.blue, {
       domain: { xMax: -2 },
-      legendText: 'f(x)'
+      legendText: 'f(x)',
+      width: 0.08
     }),
     new FunctionFragment((x: number) => x ** 2, PrimeColor.blue, {
-      domain: { xMin: -2, xMax: -1 }
+      domain: { xMin: -2, xMax: -1 },
+      width: 0.08
     }),
     new FunctionFragment((x: number) => x + 2, PrimeColor.blue, {
-      domain: { xMin: -1, xMax: 1 }
+      domain: { xMin: -1, xMax: 1 },
+      width: 0.08
     }),
     new FunctionFragment((x: number) => 3 - 2 * (x - 1), PrimeColor.blue, {
-      domain: { xMin: 1 }
+      domain: { xMin: 1 },
+      width: 0.08
     })
-      .addIncludedPoints([new Vector2(-2, -1), new Vector2(-1, -3)])
-      .addGaps([new Vector2(-2, 4), new Vector2(-1, 1), new Vector2(2, 1)])
+      .addIncludedPoints([new Vector2(-2, -1), new Vector2(-1, -3)], undefined, 0.12)
+      .addGaps([new Vector2(-2, 4), new Vector2(-1, 1), new Vector2(2, 1)], undefined, 0.12)
   ];
 </script>
 

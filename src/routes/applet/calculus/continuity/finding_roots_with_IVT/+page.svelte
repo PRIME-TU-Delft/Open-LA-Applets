@@ -28,8 +28,8 @@
 
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1, -5), // bottom-left
-    new Vector2(7, 2), // top-right
+    new Vector2(-1, -3), // bottom-left
+    new Vector2(3, 2), // top-right
     0.5 // margin
   );
 
@@ -46,7 +46,7 @@
     logarithmicX: false,
     logarithmicY: false,
     skipX: 1,
-    skipY: 0
+    skipY: 1
   };
 
   // #####
@@ -76,9 +76,10 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment(func, PrimeColor.blue, {
       domain: { xMin: 0, xMax: 1 },
-      legendText: 'f(x) = x^5 - 8x^3 + 2x^2 + 1'
-    }).addIncludedPoints([new Vector2(0, func(0)), new Vector2(1, func(1))]),
-    new Point(new Vector2(c, 0), PrimeColor.raspberry, { legendText: '(c,0)' })
+      legendText: 'f(x) = x^5 - 8x^3 + 2x^2 + 1',
+      width: 0.08
+    }).addIncludedPoints([new Vector2(0, func(0)), new Vector2(1, func(1))], undefined, 0.12),
+    new Point(new Vector2(c, 0), PrimeColor.raspberry, { legendText: '(c,0)', radius: 0.12 })
   ];
 </script>
 
@@ -96,17 +97,20 @@
     color={PrimeColor.orange}
     isDashed={true}
     origin={new Vector2(0, func(a))}
+    width={0.08}
   />
   <InfiniteLine2D
     direction={new Vector2(1, 0)}
     color={PrimeColor.darkGreen}
     isDashed={true}
     origin={new Vector2(0, func(b))}
+    width={0.08}
   />
   <InfiniteLine2D
     direction={new Vector2(0, 1)}
     color={PrimeColor.raspberry}
     isDashed={true}
     origin={new Vector2(c, 0)}
+    width={0.08}
   />
 </Canvas2D>
