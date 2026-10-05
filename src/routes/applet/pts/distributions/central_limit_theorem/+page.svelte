@@ -12,12 +12,21 @@
   import { Vector2 } from 'three';
   import { CONTINUOUS_TYPES, DISCRETE_TYPES, DISTRIBUTIONS, NS } from '../distributionRegistry';
   import { nextBatchSize } from './batchSize';
+  import { untrack } from 'svelte';
 
   const NSC = 'applets.pts.distributions.central_limit_theorem.';
+
+  let savedParams: number[] = $state([]);
+  let savedN = $state(20);
+  let savedMode = $state(`${NSC}average`);
 
   // Number of controls before the per-distribution sliders start
   // (here: the draw button, the average/sum toggle, and the k slider).
   const OFFSET = 3;
+
+  type ControlStage = 'base' | 'parameters' | 'sampling';
+
+  let stage: ControlStage = $state('base');
 
   const baseControls = Controls.addDropdown(`${NS}continuous`, [
     `${NS}continuous`,
@@ -29,8 +38,6 @@
   let savedCategory: string = $state('');
   let savedDistrType: string = $state('');
 
-  const isInDistr = $derived(savedCategory !== '' && savedDistrType !== '');
-
   const contDiscControls = $derived.by(() => {
     const cont = baseControls.addDropdown(
       discrete ? `${NS}bernouli` : `${NS}normal`,
@@ -40,6 +47,7 @@
     return cont.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
       savedCategory = cont[0];
       savedDistrType = cont[1];
+      stage = 'parameters';
     });
   });
 
@@ -59,20 +67,9 @@
     return key ? (DISTRIBUTIONS[key]?.draggables?.() ?? []) : [];
   });
 
-  const extraValues = $derived.by(() => {
-    if (!isInDistr) return [];
-    return (controls?.getAll() ?? []).slice(OFFSET).map((c) => c.value as number);
-  });
-
-  const k = $derived.by(() => {
-    if (typeof controls?.[2] === 'number') {
-      return controls[2];
-    }
-    return 5;
-  });
-
-  const isSum = $derived.by(() => controls?.[1] === `${NSC}sum`);
-
+  const extraValues = $derived(savedParams);
+  const k = $derived(savedN);
+  // const isSum = $derived(savedMode === `${NSC}sum`);
   // Changing the distribution, its parameters, or the sample size invalidates
   // the accumulated samples (they were drawn under different conditions).
   // Toggling average/sum on its own must NOT clear them.
@@ -111,6 +108,29 @@
     selectedIndex = null;
   }
 
+  const curDef = $derived(
+    savedDistrType ? DISTRIBUTIONS[savedDistrType.replace(NS, '')] : undefined
+  );
+
+  const paramSelectionControls = $derived.by(() => {
+    if (!curDef) return undefined;
+    let c: any = Controls;
+
+    curDef.sliders.forEach((s, i) => {
+      const initial = untrack(() => savedParams[i] ?? s.default);
+      c = c.addSlider(initial, s.from, s.to, s.step, s.color, {
+        label: s.label,
+        valueFn: s.integer ? valueFnInt : valueFn,
+        onChange: (c: number) => {
+          savedParams[i] = c;
+        }
+      });
+    });
+    return c.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
+      stage = 'sampling';
+    }) as Controls<unknown, readonly Controller<unknown>[]>;
+  });
+
   const inDistrControls = $derived.by(() => {
     const nextBatch = nextBatchSize(samples.length);
     const drawLabel =
@@ -118,27 +138,66 @@
         ? $_(`${NSC}drawSamples`).replace('%N', nextBatch.toString())
         : $_(`${NSC}maxReached`);
 
-    return Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
-      .addDropdown(`${NSC}average`, [`${NSC}average`, `${NSC}sum`])
-      .addSlider(5, 1, 50, 1, PrimeColor.blue, { label: 'k', valueFn: valueFnInt });
+    let c: any = Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
+      .addDropdown(
+        untrack(() => savedMode),
+        [`${NSC}average`, `${NSC}sum`]
+      )
+      .addSlider(
+        untrack(() => savedN),
+        1,
+        50,
+        1,
+        PrimeColor.blue,
+        {
+          label: 'n',
+          valueFn: valueFnInt,
+          onChange: (c: number) => {
+            savedN = c;
+          }
+        }
+      );
+
+    return c;
   });
 
+  $effect(() => {
+    if (stage !== 'sampling') return;
+    const mode = inDistrControls[1] as string; // tracked: re-runs when the dropdown changes
+    untrack(() => {
+      savedMode = mode;
+    });
+  });
+
+  const isSum = $derived(savedMode === `${NSC}sum`);
+
   const controls = $derived.by(() => {
-    if (!isInDistr) {
-      return contDiscControls;
+    switch (stage) {
+      case 'base':
+        return contDiscControls;
+
+      case 'parameters':
+        return paramSelectionControls;
+
+      case 'sampling':
+        return inDistrControls;
     }
+  });
 
-    const def = DISTRIBUTIONS[savedDistrType.replace(NS, '')];
-    if (!def) return undefined;
-
-    return def.sliders.reduce<Controls<unknown, readonly Controller<unknown>[]>>(
-      (acc, s) =>
-        acc.addSlider(s.default, s.from, s.to, s.step, s.color, {
-          label: s.label,
-          valueFn: s.integer ? valueFnInt : valueFn
-        }),
-      inDistrControls
-    );
+  $effect(() => {
+    const all = controls?.getAll?.();
+    if (!all) return;
+    untrack(() => {
+      if (stage === 'parameters') {
+        savedParams = all
+          .slice(0, curDef?.sliders.length ?? 0)
+          .map((c: { value: number }) => c.value as number);
+      }
+      // } else if (stage === 'sampling') {
+      //   savedN = all[2].value as number;
+      //   savedParams = all.slice(OFFSET).map((c: { value: number }) => c.value as number);
+      // }
+    });
   });
 
   // Reduce each accumulated sample to its mean or sum.
@@ -148,6 +207,15 @@
       return isSum ? sum : sum / draws.length;
     })
   );
+
+  const reducedFreqMap = $derived.by(() => {
+    const m: Record<number, number> = {};
+    for (const v of reducedValues) {
+      const bin = Number((Math.floor(v / rightBinWidth) * rightBinWidth).toFixed(6));
+      m[bin] = (m[bin] ?? 0) + 1;
+    }
+    return m;
+  });
 
   const displayedSampleIndex = $derived(
     selectedIndex ?? (samples.length > 0 ? samples.length - 1 : null)
@@ -237,16 +305,51 @@
   const leftAxis = { minX: AXIS_MIN_X, length: 60 };
   const rightAxis = $derived({ minX: AXIS_MIN_X, length: Math.max(60, Math.ceil(rightXMax) + 5) });
 
-  const normalOverlayFn = $derived.by(() => {
-    if (samples.length < 25 || !samplingMoments) return null;
-    const { mean, variance } = samplingMoments;
-    const sd = Math.sqrt(variance);
-    if (!isFinite(sd) || sd <= 0) return null;
+  const exp_mean = $derived(new Vector2(samplingMoments?.mean ?? 0, 0));
 
-    // Matches the dot histogram's normalized height (freq/total): the expected
-    // fraction of samples in a bin of width rightBinWidth is ~ pdf(x) * rightBinWidth.
-    return (x: number) =>
-      rightBinWidth * (1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+  const normalOverlayFn = $derived.by(() => {
+    const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+
+    if (samples.length < 25 || !samplingMoments) {
+      if (!isSum) {
+        const m = def.moments(extraValues, draggables);
+        const mean = m.expectedValue as number;
+        const variance = (m.variance as number) / k;
+        const sd = Math.sqrt(variance);
+        if (!isFinite(sd) || sd <= 0) return null;
+
+        // Matches the dot histogram's normalized height (freq/total): the expected
+        // fraction of samples in a bin of width rightBinWidth is ~ pdf(x) * rightBinWidth.
+        return (x: number) =>
+          rightBinWidth *
+          (1 / (sd * Math.sqrt(2 * Math.PI))) *
+          Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+      } else {
+        const m = def.moments(extraValues, draggables);
+        const mean = (m.expectedValue as number) * k;
+        const variance = (m.variance as number) * k;
+        const sd = Math.sqrt(variance);
+        if (!isFinite(sd) || sd <= 0) return null;
+
+        // Matches the dot histogram's normalized height (freq/total): the expected
+        // fraction of samples in a bin of width rightBinWidth is ~ pdf(x) * rightBinWidth.
+        return (x: number) =>
+          rightBinWidth *
+          (1 / (sd * Math.sqrt(2 * Math.PI))) *
+          Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+      }
+    } else {
+      const { mean, variance } = samplingMoments;
+      const sd = Math.sqrt(variance);
+      if (!isFinite(sd) || sd <= 0) return null;
+
+      // Matches the dot histogram's normalized height (freq/total): the expected
+      // fraction of samples in a bin of width rightBinWidth is ~ pdf(x) * rightBinWidth.
+      return (x: number) =>
+        rightBinWidth *
+        (1 / (sd * Math.sqrt(2 * Math.PI))) *
+        Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+    }
   });
 </script>
 
@@ -259,6 +362,10 @@
     savedDistrType = '';
     samples = [];
     selectedIndex = null;
+    stage = 'base';
+    savedParams = [];
+    savedN = 20;
+    savedMode = `${NSC}average`;
   }}
   initialViewBox={leftViewBox}
   scaleY={10}
@@ -267,14 +374,15 @@
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
     scaleY: 10,
-    axis: rightAxis
+    axis: rightAxis,
+    cameraPosition: exp_mean
   }}
   {splitFormulas}
 >
   {#if leftDraws.length === 0}
     <Latex2D
       latex={$_(`${NSC}placeholder`)}
-      position={new Vector2(3.5, 0.5)}
+      position={new Vector2(1, 0.5)}
       color={PrimeColor.black}
     />
   {:else}
@@ -287,16 +395,7 @@
   {/if}
 
   {#snippet splitCanvas2DChildren()}
-    <DotHistogram2D
-      values={reducedValues}
-      binWidth={rightBinWidth}
-      normalized={true}
-      selectedIndex={displayedSampleIndex}
-      color={PrimeColor.cyan.toString()}
-      selectedColor={PrimeColor.raspberry.toString()}
-      onSelect={(index) => (selectedIndex = index)}
-    />
-
+    <Histogram freqMap={reducedFreqMap} color={PrimeColor.cyan} normalized={true} />
     {#if normalOverlayFn}
       <ExplicitFunction2D
         func={normalOverlayFn}

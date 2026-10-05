@@ -8,7 +8,7 @@ export const MAX_SAMPLES = 300;
 export function nextBatchSize(currentCount: number): number {
   if (currentCount >= MAX_SAMPLES) return 0;
 
-  const step = currentCount < 5 ? 1 : currentCount < 25 ? 5 : currentCount < 100 ? 10 : 25;
+  const step = currentCount < 2 ? 1 : currentCount < 25 ? 5 : currentCount < 100 ? 10 : 25;
 
   return Math.min(step, MAX_SAMPLES - currentCount);
 }
