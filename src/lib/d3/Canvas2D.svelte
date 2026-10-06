@@ -63,6 +63,9 @@
     const urlProps = parseUrl(searchParams);
 
     // 2d props
+    // Seeds the initial camera only: a later slideshow step that sets a
+    // camera target overrides it, and prev/reset then go back to the
+    // applet's default rather than this URL value.
     if (urlProps.params2D.position2D) cameraPosition = urlProps.params2D.position2D;
     if (urlProps.params2D.zoom2D) cameraZoom = urlProps.params2D.zoom2D;
 
