@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Controls, type Controller } from '$lib/controls/Controls';
   import Canvas2D from '$lib/d3/Canvas2D.svelte';
-  import DotHistogram2D from '$lib/d3/DotHistogram2D.svelte';
   import ExplicitFunction2D from '$lib/d3/ExplicitFunction2D.svelte';
   import Histogram from '$lib/d3/Histogram2D.svelte';
   import Latex2D from '$lib/d3/Latex2D.svelte';
@@ -19,10 +18,6 @@
   let savedParams: number[] = $state([]);
   let savedN = $state(20);
   let savedMode = $state(`${NSC}average`);
-
-  // Number of controls before the per-distribution sliders start
-  // (here: the draw button, the average/sum toggle, and the k slider).
-  const OFFSET = 3;
 
   type ControlStage = 'base' | 'parameters' | 'sampling';
 
@@ -112,23 +107,48 @@
     savedDistrType ? DISTRIBUTIONS[savedDistrType.replace(NS, '')] : undefined
   );
 
+  // const paramSelectionControls = $derived.by(() => {
+  //   if (!curDef) return undefined;
+  //   let c: any = Controls;
+
+  //   curDef.sliders.forEach((s, i) => {
+  //     const initial = untrack(() => savedParams[i] ?? s.default);
+  //     c = c.addSlider(initial, s.from, s.to, s.step, s.color, {
+  //       label: s.label,
+  //       valueFn: s.integer ? valueFnInt : valueFn,
+  //       onChange: (c: number) => {
+  //         savedParams[i] = c;
+  //       }
+  //     });
+  //   });
+  //   return c.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
+  //     stage = 'sampling';
+  //   }) as Controls<unknown, readonly Controller<unknown>[]>;
+  // });
+
+  type AnyControls = Controls<unknown, readonly Controller<unknown>[]>;
   const paramSelectionControls = $derived.by(() => {
     if (!curDef) return undefined;
-    let c: any = Controls;
 
-    curDef.sliders.forEach((s, i) => {
+    const sliders = curDef.sliders.reduce<AnyControls | undefined>((acc, s, i) => {
       const initial = untrack(() => savedParams[i] ?? s.default);
-      c = c.addSlider(initial, s.from, s.to, s.step, s.color, {
+      const options = {
         label: s.label,
         valueFn: s.integer ? valueFnInt : valueFn,
-        onChange: (c: number) => {
-          savedParams[i] = c;
+        onChange: (v: number) => {
+          savedParams = Object.assign([...savedParams], { [i]: v });
         }
-      });
-    });
-    return c.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
+      };
+      return (
+        acc
+          ? acc.addSlider(initial, s.from, s.to, s.step, s.color, options)
+          : Controls.addSlider(initial, s.from, s.to, s.step, s.color, options)
+      ) as AnyControls;
+    }, undefined);
+
+    return sliders?.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
       stage = 'sampling';
-    }) as Controls<unknown, readonly Controller<unknown>[]>;
+    }) as AnyControls | undefined;
   });
 
   const inDistrControls = $derived.by(() => {
@@ -138,7 +158,7 @@
         ? $_(`${NSC}drawSamples`).replace('%N', nextBatch.toString())
         : $_(`${NSC}maxReached`);
 
-    let c: any = Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
+    return Controls.addButton(drawLabel, PrimeColor.pink, drawSamples)
       .addDropdown(
         untrack(() => savedMode),
         [`${NSC}average`, `${NSC}sum`]
@@ -157,8 +177,6 @@
           }
         }
       );
-
-    return c;
   });
 
   $effect(() => {
@@ -189,14 +207,8 @@
     if (!all) return;
     untrack(() => {
       if (stage === 'parameters') {
-        savedParams = all
-          .slice(0, curDef?.sliders.length ?? 0)
-          .map((c: { value: number }) => c.value as number);
+        savedParams = all.slice(0, curDef?.sliders.length ?? 0).map((c) => c.value as number);
       }
-      // } else if (stage === 'sampling') {
-      //   savedN = all[2].value as number;
-      //   savedParams = all.slice(OFFSET).map((c: { value: number }) => c.value as number);
-      // }
     });
   });
 
@@ -305,8 +317,6 @@
   const AXIS_MIN_X = -10;
   const leftAxis = { minX: AXIS_MIN_X, length: 60 };
   const rightAxis = $derived({ minX: AXIS_MIN_X, length: Math.max(60, Math.ceil(rightXMax) + 5) });
-
-  const exp_mean = $derived(new Vector2(samplingMoments?.mean ?? 0, 0));
 
   const normalOverlayFn = $derived.by(() => {
     const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
