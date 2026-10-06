@@ -59,6 +59,8 @@
         tEnd={object.tDomain.end}
         width={object.width}
         isDashed={object.isDashed}
+        stepSize={object.stepSize}
+        tension={object.tension}
       />
     {:else if object instanceof FunctionFragment}
       <ExplicitFunction2D
@@ -67,6 +69,7 @@
         xMin={object.domain?.xMin}
         xMax={object.domain?.xMax}
         width={object.width}
+        stepSize={object.stepSize}
         integral={object.integral
           ? {
               xLeft: object.integral?.xLeft,

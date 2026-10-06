@@ -1,6 +1,7 @@
 import { Vector2 } from 'three';
 import { VISIBLE_SCENE_WIDTH } from './CameraMath';
 import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
+import { HALF_GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
 
 export class ViewBox {
   bottomLeft: Vector2;

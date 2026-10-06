@@ -3,4 +3,6 @@ export const INTERACTIVITY_RADIUS = 0.4; //used in draggables
 export const VECTOR_WIDTH = 0.06;
 export const LINE_WIDTH = 0.03;
 export const GRID_SIZE_2D = 30;
+export const HALF_GRID_SIZE_2D = GRID_SIZE_2D / 2;
 export const GRID_SIZE_3D = 10;
+export const AXIS_LABEL_FONT_SIZE = 1.3;
