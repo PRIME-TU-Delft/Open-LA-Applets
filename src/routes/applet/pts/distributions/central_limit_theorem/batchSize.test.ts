@@ -4,7 +4,7 @@ import { nextBatchSize, MAX_SAMPLES } from './batchSize';
 describe('nextBatchSize', () => {
   it('escalates through +1, +5, +10, +25 as the count grows', () => {
     expect(nextBatchSize(0)).toBe(1);
-    expect(nextBatchSize(4)).toBe(1);
+    expect(nextBatchSize(4)).toBe(5);
     expect(nextBatchSize(5)).toBe(5);
     expect(nextBatchSize(24)).toBe(5);
     expect(nextBatchSize(25)).toBe(10);
