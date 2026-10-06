@@ -42,15 +42,9 @@
   import { Projection2D, setProjection2D } from './Projection2D';
   import Confetti from '$lib/components/Confetti.svelte';
   import { confettiState } from '$lib/stores/confetti.svelte';
-
+  import { clampCameraZoom, fromZoomView, toZoomView, zoomScaleExtent } from './CameraMath';
   import { getXLabelX, getYLabelY, type LabelProps } from './AxisLabels';
-  import {
-    clampCameraZoom,
-    fromZoomView,
-    toZoomView,
-    VISIBLE_SCENE_WIDTH,
-    zoomScaleExtent
-  } from './CameraMath';
+  import { pixelDeltaToScreenUnit } from './CameraViewport';
   import Latex2D from './Latex2D.svelte';
   import type { ViewBox } from './ViewBox';
 
@@ -77,7 +71,8 @@
 
   let currentCameraTransform = $state<Transform2D>();
 
-  const projection = new Projection2D(scaleX, scaleY);
+  // svelte-ignore state_referenced_locally
+  const projection = new Projection2D(scaleX, scaleY, () => currentCameraTransform?.k ?? 1);
 
   // svelte-ignore state_referenced_locally
   let cameraZoom = $state(
@@ -140,8 +135,8 @@
         .attr('transform-origin', 'center center');
     }
 
-    const x = VISIBLE_SCENE_WIDTH / (width / -transform.x) + cameraPosition.x;
-    const y = VISIBLE_SCENE_WIDTH / (width / transform.y) + cameraPosition.y;
+    const x = pixelDeltaToScreenUnit(-transform.x, width) + cameraPosition.x;
+    const y = pixelDeltaToScreenUnit(transform.y, width) + cameraPosition.y;
 
     const transform2d = { x, y, k: transform.k } as Transform2D;
 
