@@ -270,7 +270,8 @@
       ).align();
     }
 
-    const { mean, variance } = samplingMoments;
+    const mean = samplingMoments.mean.toFixed(2);
+    const variance = samplingMoments.variance.toFixed(2);
     const label = isSum ? 'S_k' : '\\bar X';
 
     return new Formulas(
@@ -374,8 +375,7 @@
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
     scaleY: 10,
-    axis: rightAxis,
-    cameraPosition: exp_mean
+    axis: rightAxis
   }}
   {splitFormulas}
 >
@@ -383,6 +383,11 @@
     <Latex2D
       latex={$_(`${NSC}placeholder`)}
       position={new Vector2(1, 0.5)}
+      color={PrimeColor.black}
+    />
+    <Latex2D
+      latex={$_(`${NSC}placeholder2`)}
+      position={new Vector2(1, 0.4)}
       color={PrimeColor.black}
     />
   {:else}

@@ -58,15 +58,18 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
   normal: {
     category: 'continuous',
     sliders: [
-      { default: 2, from: 0, to: 4, step: 0.1, color: PrimeColor.raspberry, label: '\\sigma' }
+      { default: 2, from: -10, to: 10, step: 0.5, color: PrimeColor.orange, label: '\\mu' },
+      {
+        default: 2,
+        from: 0,
+        to: 4,
+        step: 0.1,
+        color: PrimeColor.cyan,
+        label: '\\sigma'
+      }
     ],
-    draggables: () => [
-      new Draggable(new Vector2(4, 0), PrimeColor.orange, '\\mu', (v) => {
-        return new Vector2(clamp(v.x, -10, 10), 0);
-      })
-    ],
-    moments: (extra, drag) => {
-      const mean_ = drag[0]?.position.x ?? 4;
+    moments: (extra) => {
+      const mean_ = extra[1] ?? 2;
       const sigma = extra[0] ?? 2;
 
       return {
@@ -76,14 +79,14 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
         varColor: PrimeColor.raspberry
       };
     },
-    numericMoments: (extra, drag) => {
-      const mean_ = drag[0]?.position.x ?? 4;
+    numericMoments: (extra) => {
+      const mean_ = extra[1] ?? 2;
       const sigma = extra[0] ?? 2;
 
       return { mean: mean_, variance: Math.pow(sigma, 2) };
     },
-    sampler: (extra, drag) => {
-      const mean_ = drag[0]?.position.x ?? 4;
+    sampler: (extra) => {
+      const mean_ = extra[1] ?? 2;
       const sigma = extra[0] ?? 2;
 
       return randomNormal(mean_, sigma);
