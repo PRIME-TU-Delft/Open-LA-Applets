@@ -12,6 +12,7 @@
   import { CONTINUOUS_TYPES, DISCRETE_TYPES, DISTRIBUTIONS, NS } from '../distributionRegistry';
   import { nextBatchSize } from './batchSize';
   import { untrack } from 'svelte';
+  import { LegendItem } from '$lib/utils/Legend';
 
   const NSC = 'applets.pts.distributions.central_limit_theorem.';
 
@@ -107,28 +108,22 @@
     savedDistrType ? DISTRIBUTIONS[savedDistrType.replace(NS, '')] : undefined
   );
 
-  // const paramSelectionControls = $derived.by(() => {
-  //   if (!curDef) return undefined;
-  //   let c: any = Controls;
-
-  //   curDef.sliders.forEach((s, i) => {
-  //     const initial = untrack(() => savedParams[i] ?? s.default);
-  //     c = c.addSlider(initial, s.from, s.to, s.step, s.color, {
-  //       label: s.label,
-  //       valueFn: s.integer ? valueFnInt : valueFn,
-  //       onChange: (c: number) => {
-  //         savedParams[i] = c;
-  //       }
-  //     });
-  //   });
-  //   return c.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
-  //     stage = 'sampling';
-  //   }) as Controls<unknown, readonly Controller<unknown>[]>;
-  // });
-
   type AnyControls = Controls<unknown, readonly Controller<unknown>[]>;
   const paramSelectionControls = $derived.by(() => {
     if (!curDef) return undefined;
+
+    const goNext = () => {
+      stage = 'sampling';
+    };
+
+    // Draggable-only distributions (e.g. uniform) have no sliders
+    if (curDef.sliders.length === 0) {
+      return Controls.addButton(
+        $_(`${NS}next`),
+        PrimeColor.raspberry,
+        goNext
+      ) as unknown as AnyControls;
+    }
 
     const sliders = curDef.sliders.reduce<AnyControls | undefined>((acc, s, i) => {
       const initial = untrack(() => savedParams[i] ?? s.default);
@@ -146,9 +141,8 @@
       ) as AnyControls;
     }, undefined);
 
-    return sliders?.addButton($_(`${NS}next`), PrimeColor.raspberry, () => {
-      stage = 'sampling';
-    }) as AnyControls | undefined;
+    return sliders?.addButton($_(`${NS}next`), PrimeColor.raspberry, goNext) as
+      AnyControls | undefined;
   });
 
   const inDistrControls = $derived.by(() => {
@@ -243,6 +237,24 @@
     let m: Record<number, number> = {};
     for (const v of leftDraws) m = addFreq(m, Math.floor(v));
     return m;
+  });
+
+  const legendItems = $derived.by(() => {
+    const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+    if (!def || stage == 'base') {
+      return [] as LegendItem[];
+    }
+    const sliderItems = def.sliders.map((s, i) => {
+      const value = extraValues[i] ?? s.default;
+      const formatted = s.integer ? valueFnInt(value) : valueFn(value);
+      return new LegendItem(`${s.label} = ${formatted}`, '#f2f8ff');
+    });
+
+    const dragItems = draggables.map(
+      (d) => new LegendItem(`${d.label} = ${valueFn(d.position.x)}`, '#f2f8ff')
+    );
+
+    return [...sliderItems, ...dragItems];
   });
 
   const formulas = $derived.by(() => {
@@ -368,6 +380,7 @@
   {controls}
   {draggables}
   {formulas}
+  {legendItems}
   onReset={() => {
     savedCategory = '';
     savedDistrType = '';

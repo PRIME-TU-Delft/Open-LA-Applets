@@ -36,7 +36,7 @@ export class LegendItem extends Formula {
 
   /**
    * Creates a new instance of LegendItem
-   * @param label Text representation of what does the color/shape represent
+   * @param latex Text representation of what does the color/shape represent
    * @param color Color used for the concept in the applet
    * @param shape Shape used for the concept in the applet
    * @param fill Type of fill for the circle in the legend
