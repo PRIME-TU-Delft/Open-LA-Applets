@@ -18,7 +18,7 @@
   };
 </script>
 
-<script>
+<script lang="ts">
   import { getProjection2D } from './Projection2D';
   const projection = getProjection2D();
 

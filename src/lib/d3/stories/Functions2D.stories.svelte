@@ -46,7 +46,7 @@
 <!-- y = x^2 explicit function with increased width -->
 <Story
   name="Explicit"
-  args={{ func: (x) => x * x, color: PrimeColor.raspberry, width: 0.06, showArrows: false }}
+  args={{ func: (x: number) => x * x, color: PrimeColor.raspberry, width: 0.06, showArrows: false }}
   {template}
 />
 
@@ -54,7 +54,7 @@
 <Story
   name="Explicit sin(x)"
   args={{
-    func: (x) => Math.sin(x),
+    func: (x: number) => Math.sin(x),
     color: PrimeColor.yellow,
     xMin: -3.14,
     xMax: 3.14,
@@ -68,7 +68,7 @@
 <Story
   name="Dashed cos(x)"
   args={{
-    func: (x) => Math.cos(x),
+    func: (x: number) => Math.cos(x),
     color: PrimeColor.raspberry,
     isDashed: true
   }}
@@ -79,7 +79,7 @@
 <Story
   name="Explicit with integral coloring"
   args={{
-    func: (x) => 4 / Math.sqrt(x + 1),
+    func: (x: number) => 4 / Math.sqrt(x + 1),
     color: PrimeColor.yellow,
     integral: {
       xLeft: 2,
@@ -94,8 +94,8 @@
 <Story
   name="Parameterized"
   args={{
-    xFunc: (t) => Math.cos(t),
-    yFunc: (t) => Math.sin(t),
+    xFunc: (t: number) => Math.cos(t),
+    yFunc: (t: number) => Math.sin(t),
     tEnd: 4,
     color: PrimeColor.cyan,
     showArrows: false
@@ -107,7 +107,7 @@
 <Story
   name="Implicit"
   args={{
-    zeroFunc: (x, y) => x * x + y * y - 1,
+    zeroFunc: (x: number, y: number) => x * x + y * y - 1,
     yMin: -1.1,
     yMax: 1.1,
     xMin: -1.1,
