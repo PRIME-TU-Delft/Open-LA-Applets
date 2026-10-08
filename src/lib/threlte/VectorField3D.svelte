@@ -18,7 +18,7 @@
   };
 </script>
 
-<script>
+<script lang="ts">
   const sx = 1;
   const sy = 1;
   const sz = 1;
