@@ -6,6 +6,7 @@
   import Eye from '@lucide/svelte/icons/eye';
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import { fade } from 'svelte/transition';
+  import LatexText from './LatexText.svelte';
 
   export let url: `/applet/${string}`;
   export let title = '';
@@ -29,6 +30,7 @@
       <Eye class="h-4 w-4" />
     </Button.Root>
   {/if}
+
   <a
     class="link-hover flex w-full items-center justify-between rounded bg-slate-200 p-4"
     href={resolve(url)}
@@ -37,14 +39,17 @@
       <span class="text-sm text-slate-500">
         {formatString(subtitle)} /
       </span>
+
       <span>
-        {formatString(title)}
+        <LatexText text={title} />
       </span>
     </div>
+
     <div class="flex items-center gap-2">
       {#if !used}
         <span class="rounded-xl bg-amber-300 px-2 py-1">Unused</span>
       {/if}
+
       <ArrowRight />
     </div>
   </a>

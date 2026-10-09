@@ -21,6 +21,15 @@
         !s.startsWith('pts/')
     );
 
+  // set custom titles for applets and applet folders
+  const titles: Record<string, string> = {
+    'linear_transformation/embed_r2_r3': 'Embed $\\mathbb{R}^2$ $\\mathbb{R}^3$'
+  };
+
+  const folderTitles: Record<string, string> = {
+    'calculus/curves_in_R^2': 'Curves in $\\mathbb{R}^2$'
+  };
+
   let { data }: PageProps = $props();
 </script>
 
@@ -61,7 +70,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} appletUsageInBook={data['Linear-Algebra']} />
+  <FolderList {fileUrls} {titles} {folderTitles} appletUsageInBook={data['Linear-Algebra']} />
 
   <Credits
     bookURL="https://interactivetextbooks.tudelft.nl/linear-algebra/"

@@ -10,6 +10,11 @@
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/pts/', '').replace('/+page.svelte', '')
   );
+
+  // set custom titles for applets and applet folders
+  const titles: Record<string, string> = {};
+
+  const folderTitles: Record<string, string> = {};
 </script>
 
 <NavBar bookTitle="Probability Theory and Statistics" {fileUrls} directory="pts/" />
@@ -39,7 +44,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="pts/" />
+  <FolderList {fileUrls} {titles} {folderTitles} directory="pts/" />
 
   <Credits />
 
