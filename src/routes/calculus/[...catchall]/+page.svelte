@@ -14,6 +14,17 @@
   );
 
   let { data }: PageProps = $props();
+
+  // set custom titles for applets and applet folders
+  const titles: Record<string, string> = {
+    'calculus/limits_at_infinity/one_over_one_plus_e_to_the_minus_x': '$\\frac{1}{1+e^{-x}}$',
+    'calculus/limits_at_infinity/sine_of_x_over_x_squared': '$\\sin{\\frac{x}{x^2}}$'
+  };
+
+  const folderTitles: Record<string, string> = {
+    'curves_in_R^2': 'Curves in $\\mathbb{R}^2$',
+    slopes_of_curves_in_R2: 'Slopes of curves in $\\mathbb{R}^2$'
+  };
 </script>
 
 <NavBar
@@ -54,7 +65,13 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="calculus/" appletUsageInBook={data['Calculus']} />
+  <FolderList
+    {fileUrls}
+    {titles}
+    {folderTitles}
+    directory="calculus/"
+    appletUsageInBook={data['Calculus']}
+  />
 
   <Credits
     bookURL="https://tudelft-prime-books.github.io/Calculus/"
