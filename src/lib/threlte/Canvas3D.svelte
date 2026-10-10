@@ -87,7 +87,7 @@
 
     const urlProps = parseUrl(searchParams);
 
-    // 2d props
+    // 3d props
     if (urlProps.params3D.position3D) cameraPosition = urlProps.params3D.position3D;
     if (urlProps.params3D.zoom3D) cameraZoom = urlProps.params3D.zoom3D;
 
