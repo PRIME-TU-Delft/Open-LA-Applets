@@ -322,6 +322,9 @@
   );
   const rightBinWidth = $derived(Math.max(0.1, (13 * rightDomainScale) / 30));
 
+  // Center of the left viewbox is x = 3.5, y = 0.45 (the right canvas mounts there too)
+  const rightCenter = $derived(new Vector2(samplingMoments?.mean ?? 3.5, 0.45));
+
   // Some parameter combinations (e.g. sum mode with a large k, or heavy-tailed
   // distributions) push draws well past the default axis length of 30. Extend
   // it generously, and skip rendering gridlines/labels below x=-10 since these
@@ -398,7 +401,8 @@
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
     scaleY: 10,
-    axis: rightAxis
+    axis: rightAxis,
+    cameraPosition: rightCenter
   }}
   {splitFormulas}
 >
@@ -423,7 +427,12 @@
   {/if}
 
   {#snippet splitCanvas2DChildren()}
-    <Histogram freqMap={reducedFreqMap} color={PrimeColor.cyan} normalized={true} />
+    <Histogram
+      freqMap={reducedFreqMap}
+      width={rightBinWidth}
+      color={PrimeColor.cyan}
+      normalized={true}
+    />
     {#if normalOverlayFn}
       <ExplicitFunction2D
         func={normalOverlayFn}
