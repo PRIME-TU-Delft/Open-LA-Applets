@@ -239,9 +239,12 @@
       return;
     }
 
+    const zoomChanged = targetZoom !== prevCameraTarget.zoom;
     prevCameraTarget = { zoom: targetZoom, position: targetPosition.clone() };
 
-    untrack(() => animateCameraTo(targetZoom, projection.toScreen(targetPosition)));
+    untrack(() =>
+      animateCameraTo(zoomChanged ? targetZoom : cameraZoom, projection.toScreen(targetPosition))
+    );
   });
 
   /** Attach/detach the zoom listener; rebinds on resize. */
