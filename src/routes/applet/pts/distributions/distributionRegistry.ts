@@ -58,7 +58,7 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
   normal: {
     category: 'continuous',
     sliders: [
-      { default: 2, from: -10, to: 10, step: 0.5, color: PrimeColor.orange, label: '\\mu' },
+      { default: 2, from: -2, to: 3, step: 0.5, color: PrimeColor.orange, label: '\\mu' },
       {
         default: 2,
         from: 0,
@@ -69,8 +69,8 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
       }
     ],
     moments: (extra) => {
-      const mean_ = extra[1] ?? 2;
-      const sigma = extra[0] ?? 2;
+      const mean_ = extra[0] ?? 2;
+      const sigma = extra[1] ?? 2;
 
       return {
         expectedValue: mean_.toFixed(2),
@@ -80,14 +80,14 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
       };
     },
     numericMoments: (extra) => {
-      const mean_ = extra[1] ?? 2;
-      const sigma = extra[0] ?? 2;
+      const mean_ = extra[0] ?? 2;
+      const sigma = extra[1] ?? 2;
 
       return { mean: mean_, variance: Math.pow(sigma, 2) };
     },
     sampler: (extra) => {
-      const mean_ = extra[1] ?? 2;
-      const sigma = extra[0] ?? 2;
+      const mean_ = extra[0] ?? 2;
+      const sigma = extra[1] ?? 2;
 
       return randomNormal(mean_, sigma);
     }

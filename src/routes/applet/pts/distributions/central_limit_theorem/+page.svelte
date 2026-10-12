@@ -313,7 +313,7 @@
   // samples have been drawn.
   const leftViewBox = new ViewBox(new Vector2(-3, -0.1), new Vector2(10, 1), 0.5);
   const rightDomainScale = $derived(isSum ? k : 1);
-  const rightXMin = $derived(-3 * rightDomainScale);
+  const rightXMin = $derived(-10 * rightDomainScale);
   const rightXMax = $derived(10 * rightDomainScale);
   const rightViewBox = $derived(
     isSum
@@ -322,16 +322,16 @@
   );
   const rightBinWidth = $derived(Math.max(0.1, (13 * rightDomainScale) / 30));
 
-  // Center of the left viewbox is x = 3.5, y = 0.45 (the right canvas mounts there too)
-  const rightCenter = $derived(new Vector2(samplingMoments?.mean ?? 3.5, 0.45));
-
   // Some parameter combinations (e.g. sum mode with a large k, or heavy-tailed
   // distributions) push draws well past the default axis length of 30. Extend
   // it generously, and skip rendering gridlines/labels below x=-10 since these
   // distributions rarely draw meaningfully negative values that far out.
   const AXIS_MIN_X = -10;
   const leftAxis = { minX: AXIS_MIN_X, length: 60 };
-  const rightAxis = $derived({ minX: AXIS_MIN_X, length: Math.max(60, Math.ceil(rightXMax) + 5) });
+  const rightAxis = $derived({
+    minX: Math.min(-20, rightXMin),
+    length: Math.max(60, Math.ceil(rightXMax) + 5)
+  });
 
   const normalOverlayFn = $derived.by(() => {
     const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
@@ -377,6 +377,26 @@
         Math.exp(-0.5 * ((x - mean) / sd) ** 2);
     }
   });
+
+  // Center of the left viewbox is x = 3.5, y = 0.45 (the right canvas mounts there too)
+  // const rightCenter = $derived.by(() => {
+  //   const def = DISTRIBUTIONS[curDistrType?.replace(NS, '')];
+
+  //   if (samples.length < 25 || !samplingMoments) {
+  //     if (!isSum) {
+  //       const m = def.moments(extraValues, draggables);
+  //       const mean = m.expectedValue as number;
+  //       return new Vector2(mean, 0.45);
+  //     } else {
+  //       const m = def.moments(extraValues, draggables);
+  //       const mean = (m.expectedValue as number) * k;
+  //       return new Vector2(mean, 0.45);
+  //     }
+  //   } else {
+  //     const { mean, variance } = samplingMoments;
+  //     return new Vector2(mean, 0.45);
+  //   }
+  // });
 </script>
 
 <Canvas2D
@@ -401,8 +421,8 @@
   splitCanvas2DProps={{
     initialViewBox: rightViewBox,
     scaleY: 10,
-    axis: rightAxis,
-    cameraPosition: rightCenter
+    axis: rightAxis
+    // cameraPosition: rightCenter
   }}
   {splitFormulas}
 >
