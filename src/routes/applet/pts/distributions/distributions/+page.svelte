@@ -26,7 +26,7 @@
 
   const contDiscControls = $derived.by(() => {
     const cont = baseControls.addDropdown(
-      discrete ? `${NS}bernouli` : `${NS}normal`,
+      discrete ? `${NS}bernoulli` : `${NS}normal`,
       (discrete ? DISCRETE_TYPES : CONTINUOUS_TYPES).map((t) => `${NS}${t}`)
     );
 
