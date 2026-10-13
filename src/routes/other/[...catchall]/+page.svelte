@@ -10,6 +10,12 @@
     // Remove head of path and extension
     rawUrl.replace('/src/routes/applet/other/', '').replace('/+page.svelte', '')
   );
+
+  // set custom titles for applets and applet folders
+
+  const titles: Record<string, string> = {};
+
+  const folderTitles: Record<string, string> = {};
 </script>
 
 <NavBar
@@ -38,7 +44,7 @@
     </blockquote>
   </div>
 
-  <FolderList {fileUrls} directory="other/" />
+  <FolderList {fileUrls} {titles} {folderTitles} directory="other/" />
 
   <Credits />
 

@@ -6,6 +6,7 @@
   import * as Tooltip from '$lib/components/ui/tooltip/index.js';
   import type { BookAppletUsage } from '$lib/server/bookApplets';
   import { onMount } from 'svelte';
+  import LatexText from './LatexText.svelte';
 
   let showUnused: boolean = $state(false);
 
@@ -13,9 +14,17 @@
     fileUrls: string[];
     directory?: string;
     appletUsageInBook?: BookAppletUsage;
+    titles?: Record<string, string>;
+    folderTitles?: Record<string, string>;
   };
 
-  let { fileUrls, directory = '', appletUsageInBook }: FolderListProps = $props();
+  let {
+    fileUrls,
+    directory = '',
+    appletUsageInBook,
+    titles = {},
+    folderTitles = {}
+  }: FolderListProps = $props();
 
   type File = {
     title: string;
@@ -39,12 +48,11 @@
           const thisAppletUsage = usedApplets.find((e) => e.url === route);
 
           let file = {
-            title: curr.file,
+            title: titles[route] ?? formatString(curr.file),
             url: `/applet/${route}`,
             used:
-              thisAppletUsage != undefined || appletUsageInBook == undefined || !appletUsageInBook // if appletUsageInBook is undefined, then loading the usage file failed
+              thisAppletUsage != undefined || appletUsageInBook == undefined || !appletUsageInBook
           };
-
           if (showUnused || file.used) {
             if (curr.folder in acc) {
               acc[curr.folder].push(file);
@@ -76,11 +84,13 @@
               Show <span class="underline decoration-dotted">unused</span> applets
             </label>
           </Tooltip.Trigger>
+
           <Tooltip.Content>
             <p>"Unused" applets are those that do not appear in the book.</p>
           </Tooltip.Content>
         </Tooltip.Root>
       </Tooltip.Provider>
+
       <Switch bind:checked={showUnused} id="show-unused-toggle" />
     </div>
   {/if}
@@ -88,12 +98,17 @@
   <Accordion.Root type="single" class="container mx-auto">
     {#each Object.entries(folders) as [folderTitle, files] (folderTitle)}
       <Accordion.Item value={folderTitle}>
-        <Accordion.Trigger>{formatString(folderTitle)}</Accordion.Trigger>
-        {#each files as { title, url, used } (url)}
-          <Accordion.Content>
-            <ListItem {title} {used} url={url as '/applet/${string}'} />
-          </Accordion.Content>
-        {/each}
+        <Accordion.Trigger>
+          <LatexText text={folderTitles[folderTitle] ?? formatString(folderTitle)} />
+        </Accordion.Trigger>
+
+        <Accordion.Content>
+          <div class="flex flex-col gap-2">
+            {#each files as { title, url, used } (url)}
+              <ListItem {title} {used} url={url as `/applet/${string}`} />
+            {/each}
+          </div>
+        </Accordion.Content>
       </Accordion.Item>
     {/each}
   </Accordion.Root>
