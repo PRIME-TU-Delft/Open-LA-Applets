@@ -16,7 +16,7 @@
   import { debounce } from '$lib/utils/TimingFunctions';
   import { T, useThrelte } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount, untrack } from 'svelte';
   import { get } from 'svelte/store';
   import { OrthographicCamera, Quaternion, Vector3 } from 'three';
   import { OrbitControls as OrbitControlsJS } from 'three/addons/controls/OrbitControls.js';
@@ -35,6 +35,15 @@
   const INTERVALS = 20;
   const DURATION = 750;
 
+  // svelte-ignore state_referenced_locally
+  const initialPosition: [number, number, number] = [
+    cameraPosition.x,
+    cameraPosition.y,
+    cameraPosition.z
+  ];
+  // svelte-ignore state_referenced_locally
+  const initialZoom = zoom;
+
   let interval: ReturnType<typeof setInterval>;
   let doReset: ReturnType<typeof setTimeout>;
   let orbitControlsRef = $state<OrbitControlsJS>();
@@ -46,6 +55,7 @@
    * Do this with a smooth animation and ✨ QuAtErNiOnS ✨
    */
   function resetCamera() {
+    if (tweenFrame !== undefined) cancelAnimationFrame(tweenFrame);
     clearInterval(interval);
 
     // Original values
@@ -104,6 +114,87 @@
     }, DURATION);
   }
 
+  let tweenFrame: number | undefined;
+
+  // svelte-ignore state_referenced_locally
+  let currentTarget = cameraTarget.clone();
+
+  function animateCameraTo(toPos: Vector3, toTarget: Vector3, toZoom: number) {
+    if (tweenFrame !== undefined) cancelAnimationFrame(tweenFrame);
+
+    const cam = get(camera) as OrthographicCamera;
+
+    const fromTarget = orbitControlsRef ? orbitControlsRef.target.clone() : currentTarget.clone();
+    const fromOffset = cam.position.clone().sub(fromTarget);
+    const toOffset = toPos.clone().sub(toTarget);
+
+    const fromR = fromOffset.length();
+    const toR = toOffset.length();
+    const fromDir = fromOffset.clone().normalize();
+    const toDir = toOffset.clone().normalize();
+    const rot = new Quaternion().setFromUnitVectors(fromDir, toDir);
+
+    const fromZoom = cam.zoom;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / DURATION);
+      const e = t * t * (3 - 2 * t); // smoothstep
+
+      const dir = fromDir.clone().applyQuaternion(new Quaternion().slerp(rot, e));
+      const r = fromR + (toR - fromR) * e;
+      const target = fromTarget.clone().lerp(toTarget, e);
+
+      cam.position.copy(target).addScaledVector(dir, r);
+      cam.zoom = fromZoom * (toZoom / fromZoom) ** e;
+      cam.updateProjectionMatrix();
+
+      if (orbitControlsRef) {
+        orbitControlsRef.target.copy(target);
+        orbitControlsRef.update();
+      } else {
+        cam.lookAt(target);
+      }
+      currentTarget = target;
+
+      const snapshot = new Camera3D(cam);
+      if (isSplit) cameraState.splitCamera3D = snapshot;
+      else cameraState.camera3D = snapshot;
+
+      advance();
+
+      tweenFrame = t < 1 ? requestAnimationFrame(step) : undefined;
+    };
+
+    tweenFrame = requestAnimationFrame(step);
+  }
+
+  // svelte-ignore state_referenced_locally
+  let prevTarget = {
+    position: cameraPosition.clone(),
+    target: cameraTarget.clone(),
+    zoom
+  };
+
+  /** Eases the camera when the cameraPosition/cameraTarget/cameraZoom props change (e.g. a SlideShow step). */
+  $effect(() => {
+    const pos = cameraPosition;
+    const target = cameraTarget;
+    const z = zoom;
+
+    if (
+      pos.equals(prevTarget.position) &&
+      target.equals(prevTarget.target) &&
+      z === prevTarget.zoom
+    ) {
+      return;
+    }
+
+    prevTarget = { position: pos.clone(), target: target.clone(), zoom: z };
+
+    untrack(() => animateCameraTo(pos, target, z));
+  });
+
   // Function that changes the camera State for 3D camera
   // Updates when the camera "changes"
   function handleCameraChange() {
@@ -157,6 +248,7 @@
   });
 
   onDestroy(() => {
+    if (tweenFrame !== undefined) cancelAnimationFrame(tweenFrame);
     if (isSplit) cameraState.splitCamera3D = undefined;
     else cameraState.camera3D = undefined;
   });
@@ -172,9 +264,9 @@
 
 <T.OrthographicCamera
   makeDefault
-  position={[cameraPosition.x, cameraPosition.y, cameraPosition.z]}
+  position={initialPosition}
   fov={15}
-  {zoom}
+  zoom={initialZoom}
   near={-100}
   far={100}
 >
