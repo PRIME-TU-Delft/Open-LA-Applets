@@ -15,7 +15,7 @@ import { Vector2 } from 'three';
 
 export const NS = 'applets.pts.distributions.distributions.';
 
-export const DISCRETE_TYPES = ['bernouli', 'binomial', 'geometric', 'poisson', 'uniform_die'];
+export const DISCRETE_TYPES = ['bernoulli', 'binomial', 'geometric', 'poisson', 'uniform_die'];
 export const CONTINUOUS_TYPES = ['normal', 'exponential', 'pareto', 'uniform'];
 
 export interface SliderSpec {
@@ -212,7 +212,7 @@ export const DISTRIBUTIONS: Record<string, DistributionDef> = {
       return randomUniform(a, b);
     }
   },
-  bernouli: {
+  bernoulli: {
     category: 'discrete',
     sliders: [
       { default: 0.5, from: 0, to: 1, step: 0.05, color: PrimeColor.raspberry, label: 'p' }

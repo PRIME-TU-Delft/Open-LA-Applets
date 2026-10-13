@@ -167,7 +167,7 @@
       "distributions": {
         "continuous": "Continuous",
         "discrete": "Discrete",
-        "bernouli": "Bernouli",
+        "bernoulli": "Bernouli",
         "binomial": "Binomial",
         "geometric": "Geometric",
         "poisson": "Poisson",
