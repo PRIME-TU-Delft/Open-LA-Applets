@@ -97,7 +97,7 @@
   const x1 = $derived((1 + Math.sqrt(D)) / 2);
 
   const appletObjects: AppletObject[] = $derived.by(() => {
-    let duh:AppletObject[] = [
+    let duh: AppletObject[] = [
       new FunctionFragment(LatexFunc, PrimeColor.blue, {
         domain: { xMin: 0, xMax: 30 / scaleX },
         legendText: LatexFunc,
