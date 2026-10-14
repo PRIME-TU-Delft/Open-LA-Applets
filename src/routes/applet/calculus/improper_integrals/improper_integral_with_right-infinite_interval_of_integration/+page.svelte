@@ -69,19 +69,26 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const Func = '\\frac{1}{x\\sqrt{x}}';
-  const parsed = parse(Func);
+  const LatexFunc = '\\frac{1}{x\\sqrt{x}}';
+  const parsed = parse(LatexFunc);
   const compiled = compile(parsed);
   const CompFunc = (x: number) => {
     const result = compiled.run?.({ x });
     return typeof result === 'number' ? result : Number(result);
   };
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(Func, PrimeColor.blue, {
+    new FunctionFragment(LatexFunc, PrimeColor.blue, {
       domain: { xMin: 1, xMax: 30 / scaleX },
-      legendText: 'f(x)=' + Func,
-      width: 0.08
-    }).addIncludedPoints(new Vector2(1, CompFunc(1)))
+      legendText: LatexFunc,
+      width: 0.08,
+      integral: {
+        xLeft: 1,
+        xRight: 30 / scaleX,
+        legendText: '\\int_{1}^{\\infty}' + LatexFunc + '\\,dx',
+        color: PrimeColor.darkGreen,
+        shape: 'square'
+      }
+    }).addIncludedPoints(new Vector2(1, CompFunc(1)), undefined, 0.12)
   ];
 </script>
 
