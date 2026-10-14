@@ -80,7 +80,7 @@
     new FunctionFragment(CompFunc, PrimeColor.blue, {
       domain: { xMin: 0, xMax: 30 / scaleX },
       legendText: LatexFunc,
-      width: 0.08,
+      width: 0.1,
       integral: {
         xLeft: 0,
         xRight: 30 / scaleX,
@@ -88,7 +88,7 @@
         color: PrimeColor.darkGreen,
         shape: 'square'
       }
-    })
+    }).addIncludedPoints(new Vector2(0, CompFunc(0)), undefined, 0.15)
   ];
 </script>
 
