@@ -77,7 +77,7 @@
     return typeof result === 'number' ? result : Number(result);
   };
   const appletObjects: AppletObject[] = [
-    new FunctionFragment(LatexFunc, PrimeColor.blue, {
+    new FunctionFragment(CompFunc, PrimeColor.blue, {
       domain: { xMin: -30 / scaleX, xMax: 30 / scaleX },
       legendText: LatexFunc,
       width: 0.08,
