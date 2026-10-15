@@ -5,6 +5,9 @@
   import ArrowHead2D from './ArrowHead2D.svelte';
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { getProjection2D } from './Projection2D';
+  import { getCameraView2D } from './CameraView2D';
+  import { createResampleDomain } from './ResampleDomain.svelte';
+  import { strokeWidthFor } from './StrokeWidth';
 
   export type ExplicitFunction2DProps = {
     func: (x: number) => number;
@@ -53,6 +56,36 @@
   // values below are screen coordinates.
   const screenFunc = $derived(projection.toScreenFunction(func));
 
+  const MAX_STEPS = 5000;
+
+  const view = getCameraView2D();
+  const adaptive = $derived(!showArrows);
+
+  const propRange = $derived({
+    xMin: projection.xToScreen(xMin),
+    xMax: projection.xToScreen(xMax),
+    yMin: -Infinity,
+    yMax: Infinity
+  });
+
+  const domain = createResampleDomain(
+    () => view.live.window,
+    () => view.settled.zoom,
+    () => propRange,
+    'x'
+  );
+
+  const sampleZoom = $derived(adaptive ? Math.max(1, domain.value.zoom) : 1);
+  const sampleMin = $derived(adaptive ? domain.value.xMin : propRange.xMin);
+  const sampleMax = $derived(adaptive ? domain.value.xMax : propRange.xMax);
+
+  const effStep = $derived(Math.max(stepSize / sampleZoom, (sampleMax - sampleMin) / MAX_STEPS));
+  const effMinStep = $derived(minStep / sampleZoom);
+  const effCurvature = $derived(curvatureThreshold / sampleZoom);
+
+  const strokeWidth = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.live.zoom, view.baseZoom));
+  const dashUnit = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.settled.zoom, view.baseZoom));
+
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const segments: Vector2[][] = [];
@@ -85,7 +118,7 @@
 
       const slope = Math.abs((y1 - y0) / dx);
 
-      if (depth < maxDepth && dx > minStep) {
+      if (depth < maxDepth && dx > effMinStep) {
         const xm = (x0 + x1) / 2;
         let ym: number;
         try {
@@ -99,7 +132,7 @@
           const slopeR = Math.abs((y1 - ym) / (x1 - xm));
           const localCurvature = Math.abs(ym - (y0 + y1) / 2);
 
-          if (slopeL > maxSlope || slopeR > maxSlope || localCurvature > curvatureThreshold) {
+          if (slopeL > maxSlope || slopeR > maxSlope || localCurvature > effCurvature) {
             if (refine(x0, y0, xm, ym, depth + 1)) return true;
             if (refine(xm, ym, x1, y1, depth + 1)) return true;
             return false;
@@ -122,8 +155,8 @@
       return false;
     };
 
-    const screenXMin = projection.xToScreen(xMin);
-    const screenXMax = projection.xToScreen(xMax);
+    const screenXMin = Math.ceil(sampleMin / effStep) * effStep;
+    const screenXMax = sampleMax;
     let prevX = screenXMin;
     let prevY: number | null = null;
 
@@ -137,9 +170,9 @@
       currentSegment.push(new Vector2(prevX, prevY));
     }
 
-    const steps = Math.ceil((screenXMax - screenXMin) / stepSize);
+    const steps = Math.ceil((screenXMax - screenXMin) / effStep);
     for (let i = 1; i <= steps; i++) {
-      const x = Math.min(screenXMin + i * stepSize, screenXMax);
+      const x = Math.min(screenXMin + i * effStep, screenXMax);
       const y = safeVal(x);
 
       if (!isFinite(y)) {
@@ -301,8 +334,8 @@
   <path
     {d}
     stroke={color ?? 'black'}
-    stroke-width={width ?? LINE_WIDTH}
+    stroke-width={strokeWidth}
     fill="none"
-    stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
+    stroke-dasharray={isDashed ? `${4 * dashUnit} ${4 * dashUnit}` : undefined}
   />
 {/each}

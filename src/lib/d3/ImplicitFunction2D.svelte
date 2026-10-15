@@ -3,6 +3,9 @@
   import { curveCardinal, line } from 'd3';
   import { Vector2 } from 'three';
   import { getProjection2D } from './Projection2D';
+  import { getCameraView2D } from './CameraView2D';
+  import { createResampleDomain } from './ResampleDomain.svelte';
+  import { strokeWidthFor } from './StrokeWidth';
 
   export type ImplicitFunction2DProps = {
     // function as equal to 0, e.g. "x^2 + y^2 = 1" should be passed as x^2 + y^2 - 1
@@ -23,11 +26,13 @@
     start: Vector2;
     end: Vector2;
     points: Vector2[];
+    tol: number;
 
-    constructor(start: Vector2, end: Vector2) {
+    constructor(start: Vector2, end: Vector2, tol = 0.001) {
       this.start = start;
       this.end = end;
       this.points = [start, end];
+      this.tol = tol;
     }
 
     private startDistance(other: Vector2): number {
@@ -39,22 +44,22 @@
     }
 
     addEdge([start, end]: [Vector2, Vector2]): boolean {
-      if (this.startDistance(start) < 0.001) {
+      if (this.startDistance(start) < this.tol) {
         // prepend to start
         this.points.unshift(end);
         this.start = end;
         return true;
-      } else if (this.startDistance(end) < 0.001) {
+      } else if (this.startDistance(end) < this.tol) {
         // prepend to start
         this.points.unshift(start);
         this.start = start;
         return true;
-      } else if (this.endDistance(start) < 0.001) {
+      } else if (this.endDistance(start) < this.tol) {
         // append to end
         this.points.push(end);
         this.end = end;
         return true;
-      } else if (this.endDistance(end) < 0.001) {
+      } else if (this.endDistance(end) < this.tol) {
         // append to end
         this.points.push(start);
         this.end = start;
@@ -67,25 +72,25 @@
     canMerge(other: StartEndLine): boolean {
       // Check if the start or end points are close enough
       return (
-        this.startDistance(other.start) < 0.001 ||
-        this.startDistance(other.end) < 0.001 ||
-        this.endDistance(other.start) < 0.001 ||
-        this.endDistance(other.end) < 0.001
+        this.startDistance(other.start) < this.tol ||
+        this.startDistance(other.end) < this.tol ||
+        this.endDistance(other.start) < this.tol ||
+        this.endDistance(other.end) < this.tol
       );
     }
 
     merge(other: StartEndLine): void {
       // Merge points from the other line
-      if (this.startDistance(other.start) < 0.001) {
+      if (this.startDistance(other.start) < this.tol) {
         this.points.unshift(...other.points.reverse().slice(0, -1));
         this.start = other.end;
-      } else if (this.startDistance(other.end) < 0.001) {
+      } else if (this.startDistance(other.end) < this.tol) {
         this.points.unshift(...other.points.slice(0, -1));
         this.start = other.start;
-      } else if (this.endDistance(other.start) < 0.001) {
+      } else if (this.endDistance(other.start) < this.tol) {
         this.points = [...this.points.slice(0, -1), ...other.points];
         this.end = other.end;
-      } else if (this.endDistance(other.end) < 0.001) {
+      } else if (this.endDistance(other.end) < this.tol) {
         this.points = [...this.points.slice(0, -1), ...other.points.reverse()];
         this.end = other.start;
       }
@@ -111,12 +116,42 @@
   }: ImplicitFunction2DProps = $props();
 
   const projection = getProjection2D();
+  // Same cell budget as the old full grid: (60 / 0.15)^2 = 160000
+  const MAX_CELLS = 160_000;
 
-  // Marching squares runs on a screen-space grid (stepSize is in screen units).
-  const screenXMin = $derived(projection.xToScreen(xMin));
-  const screenXMax = $derived(projection.xToScreen(xMax));
-  const screenYMin = $derived(projection.yToScreen(yMin));
-  const screenYMax = $derived(projection.yToScreen(yMax));
+  const view = getCameraView2D();
+
+  // Outer limit in screen units, on both axes
+  const propRange = $derived({
+    xMin: projection.xToScreen(xMin),
+    xMax: projection.xToScreen(xMax),
+    yMin: projection.yToScreen(yMin),
+    yMax: projection.yToScreen(yMax)
+  });
+
+  const domain = createResampleDomain(
+    () => view.settled.window,
+    () => view.settled.zoom,
+    () => propRange,
+    'xy'
+  );
+
+  const sampleZoom = $derived(Math.max(1, domain.value.zoom));
+  const sampleW = $derived(Math.max(0, domain.value.xMax - domain.value.xMin));
+  const sampleH = $derived(Math.max(0, domain.value.yMax - domain.value.yMin));
+
+  const effStep = $derived(
+    Math.max(stepSize / sampleZoom, Math.sqrt((sampleW * sampleH) / MAX_CELLS))
+  );
+  const matchTol = $derived(effStep / 150);
+
+  const gridXMin = $derived(Math.floor(domain.value.xMin / effStep) * effStep);
+  const gridYMin = $derived(Math.floor(domain.value.yMin / effStep) * effStep);
+  const gridXMax = $derived(domain.value.xMax);
+  const gridYMax = $derived(domain.value.yMax);
+
+  const strokeWidth = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.live.zoom, view.baseZoom));
+  const dashUnit = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.settled.zoom, view.baseZoom));
 
   function interpolate(p1: Vector2, p2: Vector2, v1: number, v2: number): Vector2 {
     if (Math.abs(v1 - v2) < 1e-10) return p1.clone();
@@ -163,8 +198,7 @@
     if (!hasZeroCrossing) return false;
 
     // Don't refine cells that are already at minimum size
-    // Use a reasonable minimum based on stepSize
-    const minCellSize = stepSize / Math.pow(2, 5); // ~3% of original stepSize
+    const minCellSize = effStep / Math.pow(2, 5);
     if (cellSize <= minCellSize) return false;
 
     // For cells with zero crossing, always refine until hitting minimum
@@ -333,7 +367,7 @@
 
       if (!canBeAdded) {
         // Create a new StartEndLine if it cannot be added
-        const newLine = new StartEndLine(s, e);
+        const newLine = new StartEndLine(s, e, matchTol);
         lines.push(newLine);
       }
     }
@@ -344,18 +378,20 @@
     const lines: StartEndLine[] = [];
     const valueCache = new Map<string, number>();
 
-    let xPos = screenXMin;
-    while (xPos < screenXMax) {
-      let yPos = screenYMin;
-      while (yPos < screenYMax) {
+    const step = effStep;
+    const nx = Math.ceil((gridXMax - gridXMin) / step);
+    const ny = Math.ceil((gridYMax - gridYMin) / step);
+
+    for (let i = 0; i < nx; i++) {
+      const xPos = gridXMin + i * step;
+      for (let j = 0; j < ny; j++) {
+        const yPos = gridYMin + j * step;
         // Calculate actual cell size (may be smaller at boundaries)
-        const currentStepSize = Math.min(stepSize, screenXMax - xPos, screenYMax - yPos);
+        const currentStepSize = Math.min(step, gridXMax - xPos, gridYMax - yPos);
+        if (currentStepSize <= 0) continue;
 
         marchingSquaresAdaptive(lines, valueCache, xPos, yPos, currentStepSize, maxDepth);
-
-        yPos += stepSize;
       }
-      xPos += stepSize;
     }
 
     // Merge connected lines
@@ -393,9 +429,9 @@
     <path
       {d}
       stroke={color}
-      stroke-width={width ?? LINE_WIDTH}
+      stroke-width={strokeWidth}
       fill="none"
-      stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
+      stroke-dasharray={isDashed ? `${4 * dashUnit} ${4 * dashUnit}` : undefined}
     />
   {/if}
 {/each}

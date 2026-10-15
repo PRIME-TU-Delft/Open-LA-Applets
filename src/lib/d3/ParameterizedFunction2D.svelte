@@ -4,6 +4,8 @@
   import { Vector2 } from 'three';
   import ArrowHead2D from './ArrowHead2D.svelte';
   import { getProjection2D } from './Projection2D';
+  import { getCameraView2D } from './CameraView2D';
+  import { strokeWidthFor } from './StrokeWidth';
 
   export type ParameterizedFunction2DProps = {
     xFunc: (t: number) => number;
@@ -32,26 +34,40 @@
   }: ParameterizedFunction2DProps = $props();
 
   const projection = getProjection2D();
+  const MAX_STEPS = 5000;
 
+  const view = getCameraView2D();
+  const adaptive = $derived(!showArrows);
+
+  // Settled zoom, relative to mount, rounded to a power of two so small zoom changes
+  // don't trigger a re-sample (only roughly 2x changes do).
+  const zoomLevel = $derived(
+    adaptive ? 2 ** Math.round(Math.log2(Math.max(1, view.settled.zoom / view.baseZoom))) : 1
+  );
+
+  // Step in t, denser when zoomed in, capped so the point count can't blow up.
+  const effStep = $derived(Math.max(stepSize / zoomLevel, Math.abs(tEnd - tStart) / MAX_STEPS));
+
+  const strokeWidth = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.live.zoom, view.baseZoom));
+  const dashUnit = $derived(strokeWidthFor(width ?? LINE_WIDTH, view.settled.zoom, view.baseZoom));
   // Generate points for the function
   const functionRoots = $derived.by(() => {
     const points: Vector2[] = [];
-    const numSteps = Math.ceil((tEnd - tStart) / stepSize);
+    const span = tEnd - tStart;
+    const numSteps = Math.max(1, Math.ceil(Math.abs(span) / effStep));
+
     for (let i = 0; i <= numSteps; i++) {
-      // Compute t independently per step to avoid floating-point drift;
-      // clamp the last step to tEnd so the endpoint is always included.
-      const t = i < numSteps ? tStart + i * stepSize : tEnd;
-      let point: Vector2;
+      // t is computed independently per step and clamped to the range, so the
+      // curve never runs past tEnd and the endpoint is always included.
+      const t = i < numSteps ? tStart + (i * span) / numSteps : tEnd;
 
       try {
-        // The curve is built from screen-space points.
-        point = projection.toScreen(new Vector2(xFunc(t), yFunc(t)));
-        if (!isFinite(point.x)) continue;
-        if (!isFinite(point.y)) continue;
+        const point = projection.toScreen(new Vector2(xFunc(t), yFunc(t)));
+        if (!isFinite(point.x) || !isFinite(point.y)) continue;
+        points.push(point);
       } catch {
         continue;
       }
-      points.push(point);
     }
     return [points];
   });
@@ -87,8 +103,8 @@
   <path
     {d}
     stroke={color ?? 'black'}
-    stroke-width={width ?? LINE_WIDTH}
+    stroke-width={strokeWidth}
     fill="none"
-    stroke-dasharray={isDashed ? `${4 * width} ${4 * width}` : undefined}
+    stroke-dasharray={isDashed ? `${4 * dashUnit} ${4 * dashUnit}` : undefined}
   />
 {/each}

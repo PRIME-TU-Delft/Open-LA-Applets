@@ -50,6 +50,7 @@
 
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { AXIS_LABEL_FONT_SIZE, GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
+  import { setCameraView2D, visibleScreenWindow } from './CameraView2D';
 
   const CAMERA_TRANSITION_MS = 750;
 
@@ -71,6 +72,8 @@
 
   let currentCameraTransform = $state<Transform2D>();
 
+  let rawTransform = $state({ tx: 0, ty: 0, k: 1 });
+
   // svelte-ignore state_referenced_locally
   const projection = new Projection2D(scaleX, scaleY, () => currentCameraTransform?.k ?? 1);
 
@@ -82,6 +85,40 @@
   let cameraPosition = $state(
     viewBox ? viewBox.getCameraPos(projection) : projection.toScreen(cameraPositionProp)
   );
+
+  const live = $derived({
+    zoom: rawTransform.k * cameraZoom,
+    window: visibleScreenWindow({
+      ...rawTransform,
+      cx: cameraPosition.x,
+      cy: cameraPosition.y,
+      z: cameraZoom,
+      width,
+      height
+    })
+  });
+
+  let settled = $state(untrack(() => live));
+  const settle = debounce(() => {
+    settled = live;
+  }, 100);
+
+  $effect(() => {
+    void live;
+    settle();
+  });
+
+  setCameraView2D({
+    get live() {
+      return live;
+    },
+    get settled() {
+      return settled;
+    },
+    get baseZoom() {
+      return initialCameraZoom;
+    }
+  });
 
   // Mount-time base zoom, used as the fixed reference for the user zoom range
   // and for clamping programmatic camera moves; never reassigned.
@@ -126,6 +163,15 @@
    */
   function transformScene(transform: Transform2D, immediate = false) {
     if (!transform.k) return;
+
+    rawTransform = enablePan
+      ? { tx: transform.x, ty: transform.y, k: transform.k }
+      : // pan disabled: the scene is scaled about the canvas centre, which is equivalent to this translation
+        {
+          tx: ((1 - transform.k) * width) / 2,
+          ty: ((1 - transform.k) * height) / 2,
+          k: transform.k
+        };
 
     if (enablePan) {
       select(`#${id} g`).attr('transform', transform).attr('transform-origin', '0 0');
