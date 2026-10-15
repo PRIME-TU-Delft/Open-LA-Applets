@@ -43,7 +43,7 @@ export abstract class AbstractFunctionFragment extends AppletObject {
   legendText: string | undefined;
   isDashed: boolean = false;
   shape: Shape = 'circle';
-  stepSize: number = 0.15;
+  stepSize: number = 0.01;
   pointsLegendText: { included: string | undefined; gaps: string | undefined } = {
     included: undefined,
     gaps: undefined

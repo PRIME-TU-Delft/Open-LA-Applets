@@ -318,21 +318,22 @@
             <!-- 2. Axis labels -->
             {#if labels?.xLabel}
               <Latex2D
-                dimOnHover={true}
+                dimOnHover={false}
                 fixedScreenScale={true}
                 latex={labels.xLabel}
                 fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
-                  projection.yToWorld(0.75) + (labels?.xLabelOffset?.y ?? 0)
+                  projection.yToWorld(0.25) + (labels?.xLabelOffset?.y ?? 0)
                 )}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'right'}
+                alignY={labels.yLabelPosition == 'center' ? 'center' : 'bottom'}
                 color={labels?.xColor ?? axis?.colorX ?? PrimeColor.black}
               />
             {/if}
             {#if labels?.yLabel}
               <Latex2D
-                dimOnHover={true}
+                dimOnHover={false}
                 fixedScreenScale={true}
                 latex={labels.yLabel}
                 fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
@@ -343,6 +344,7 @@
                 )}
                 rotation={labels.yLabelRotate ? -90 : 0}
                 alignX={labels.xLabelPosition == 'center' ? 'center' : 'left'}
+                alignY={labels.yLabelPosition == 'center' ? 'center' : 'top'}
                 color={labels?.yColor ?? axis?.colorY ?? PrimeColor.black}
               />
             {/if}
