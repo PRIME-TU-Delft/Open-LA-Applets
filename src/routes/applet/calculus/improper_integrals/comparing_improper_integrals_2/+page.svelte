@@ -99,6 +99,19 @@
 
   const appletObjects: AppletObject[] = $derived.by(() => {
     let duh: AppletObject[] = [
+      new FunctionFragment(LatexFunc2c, PrimeColor.orange, {
+        domain: { xMin: 0, xMax: 30 / scaleX },
+        legendText: LatexFunc2,
+        width: 0.08,
+        integral: {
+          xLeft: 0,
+          xRight: 30 / scaleX,
+          legendText: '\\int_{0}^{\\infty}' + LatexFunc2 + '\\,dx',
+          color: PrimeColor.yellow,
+          shape: 'square',
+          isDashed: false
+        }
+      }).addIncludedPoints(new Vector2(0, CompFunc2(0)), undefined, 0.12),
       new FunctionFragment(LatexFunc, PrimeColor.blue, {
         domain: { xMin: 0, xMax: 30 / scaleX },
         legendText: LatexFunc,
@@ -110,20 +123,7 @@
           color: PrimeColor.darkGreen,
           shape: 'square'
         }
-      }).addIncludedPoints(new Vector2(0, CompFunc(0)), undefined, 0.12),
-      new FunctionFragment(LatexFunc2c, PrimeColor.orange, {
-        domain: { xMin: 0, xMax: 30 / scaleX },
-        legendText: LatexFunc2,
-        width: 0.08,
-        integral: {
-          xLeft: 0,
-          xRight: 30 / scaleX,
-          legendText: '\\int_{0}^{\\infty}' + LatexFunc2 + '\\,dx',
-          color: PrimeColor.yellow,
-          shape: 'square',
-          isDashed: true
-        }
-      }).addIncludedPoints(new Vector2(0, CompFunc2(0)), undefined, 0.12)
+      }).addIncludedPoints(new Vector2(0, CompFunc(0)), undefined, 0.12)
     ];
     if (D >= 0) {
       duh.push(new Point(new Vector2(x1, CompFunc2(x1)), PrimeColor.black));
@@ -134,7 +134,7 @@
 
 <Canvas2D
   {initialViewBox}
-  legendItems={getLegend(appletObjects)}
+  legendItems={[...getLegend([appletObjects[1]]), ...getLegend([appletObjects[0]])]}
   labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
   {axis}
   {scaleX}

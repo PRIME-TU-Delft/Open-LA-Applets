@@ -106,7 +106,7 @@
         legendText: '\\int_{0}^{\\infty}' + LatexFunc2 + '\\,dx',
         color: PrimeColor.yellow,
         shape: 'square',
-        isDashed: true
+        isDashed: false
       }
     }).addIncludedPoints(new Vector2(1, CompFunc2(1)), undefined, 0.12)
   ];
