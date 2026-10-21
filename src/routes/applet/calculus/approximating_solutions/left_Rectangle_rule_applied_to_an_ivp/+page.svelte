@@ -27,7 +27,7 @@
   // ###############
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
-    new Vector2(-1, -1), // bottom-left
+    new Vector2(-1, -2), // bottom-left
     new Vector2(11, 8), // top-right
     0.5 // margin
   );
@@ -83,7 +83,7 @@
         legendText: "y'=f(t,y(t))"
       }
     ),
-    new FunctionFragment((x: number) => 5, PrimeColor.darkGreen, {
+    new FunctionFragment((_x: number) => 5, PrimeColor.darkGreen, {
       domain: {
         xMin: 3,
         xMax: 7
