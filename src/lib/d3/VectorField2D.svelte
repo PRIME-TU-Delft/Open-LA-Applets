@@ -34,7 +34,7 @@
     hideHead = false,
     anchor = 'middle',
     colorFn = undefined
-  } = $props();
+  }: VectorField2DProps = $props();
 
   const buildRangeValues = (min: number, max: number, stepSize: number) => {
     if (stepSize <= 0) {
