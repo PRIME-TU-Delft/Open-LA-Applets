@@ -121,10 +121,9 @@
         start={new Vector2(tNum[i], yNum[i])}
         end={new Vector2(tNum[i - 1], yNum[i - 1])}
         color={PrimeColor.orange}
-        isDashed={true}
-        width={0.08}
+        isDashed={false}
+        width={0.1}
       />
     {/if}
-    <Point2D position={new Vector2(tNum[i], yNum[i])} color={PrimeColor.orange} radius={0.12} />
   {/each}
 </Canvas2D>
