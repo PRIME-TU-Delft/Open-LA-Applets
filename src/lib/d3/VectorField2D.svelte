@@ -8,7 +8,7 @@
     f: (x: number, y: number) => Vector2;
     xRange?: [number, number];
     yRange?: [number, number];
-    step?: number;
+    step?: number | [number, number];
     color?: PrimeColor;
     normalize?: boolean;
     normalizedLength?: number;
@@ -58,8 +58,21 @@
     return values;
   };
 
-  let xValues = $derived.by(() => buildRangeValues(xRange[0], xRange[1], step));
-  let yValues = $derived.by(() => buildRangeValues(yRange[0], yRange[1], step));
+  let xValues = $derived.by(() => {
+    if (typeof step === 'number') {
+      return buildRangeValues(xRange[0], xRange[1], step);
+    } else {
+      return buildRangeValues(xRange[0], xRange[1], step[0]);
+    }
+  });
+
+  let yValues = $derived.by(() => {
+    if (typeof step === 'number') {
+      return buildRangeValues(yRange[0], yRange[1], step);
+    } else {
+      return buildRangeValues(yRange[0], yRange[1], step[1]);
+    }
+  });
 </script>
 
 {#each yValues as y, i (i)}
