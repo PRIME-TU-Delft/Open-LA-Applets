@@ -8,7 +8,6 @@
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import VectorField2D from '$lib/d3/VectorField2D.svelte';
   import { Controls } from '$lib/controls/Controls';
-  import Point2D from '$lib/d3/Point2D.svelte';
   import { LegendItem } from '$lib/utils/Legend';
   import Line2D from '$lib/d3/Line2D.svelte';
 
@@ -69,9 +68,15 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(3, 0, 3, -1, PrimeColor.pink, {
+  const controls = Controls.addSlider(3, -3, 3, -1, PrimeColor.pink, {
     label: toLatexText('$\\Delta t=$'),
-    valueFn: (v: number) => toLatexText((2 ** v).toFixed(0))
+    valueFn: (v: number) => {
+      if (v >= 0) {
+        return toLatexText((2 ** v).toFixed(0));
+      } else {
+        return toLatexText('$\\frac{1}{' + (2 ** -v).toFixed(0) + '}$');
+      }
+    }
   });
   const RHS = (_t: number, y: number) => 0.7 * (1 - y / 750) * y - 20;
   // Generate discrete solutions
