@@ -72,7 +72,7 @@
   // ##############
   // APPLET OBJECTS
   // ##############
-  const controls = Controls.addSlider(5, 0, 5, 1, PrimeColor.pink, {
+  const controls = Controls.addSlider(2, 0, 5, 1, PrimeColor.pink, {
     label: toLatexText('Number of steps'),
     valueFn: (v: number) => toLatexText(v.toFixed(0))
   });
