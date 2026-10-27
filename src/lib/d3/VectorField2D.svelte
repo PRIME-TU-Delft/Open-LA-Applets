@@ -14,7 +14,7 @@
     normalizedLength?: number;
     hideHead?: boolean;
     anchor?: 'middle' | 'start' | 'end';
-    colorFn?: (x: number, y: number) => PrimeColor | string;
+    colorFn?: (x: number, y: number) => ColorString;
   };
 </script>
 
