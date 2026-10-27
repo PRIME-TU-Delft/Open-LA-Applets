@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Vector2D from './Vector2D.svelte';
 
@@ -9,7 +9,7 @@
     xRange?: [number, number];
     yRange?: [number, number];
     step?: number | [number, number];
-    color?: PrimeColor;
+    color?: ColorString;
     normalize?: boolean;
     normalizedLength?: number;
     hideHead?: boolean;
