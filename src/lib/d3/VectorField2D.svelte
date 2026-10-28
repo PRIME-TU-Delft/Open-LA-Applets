@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import { GRID_SIZE_2D } from '$lib/utils/AttributeDimensions';
-  import { PrimeColor } from '$lib/utils/PrimeColors';
+  import { PrimeColor, type ColorString } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import Vector2D from './Vector2D.svelte';
 
@@ -8,13 +8,13 @@
     f: (x: number, y: number) => Vector2;
     xRange?: [number, number];
     yRange?: [number, number];
-    step?: number;
-    color?: PrimeColor;
+    step?: number | [number, number];
+    color?: ColorString;
     normalize?: boolean;
     normalizedLength?: number;
     hideHead?: boolean;
     anchor?: 'middle' | 'start' | 'end';
-    colorFn?: (x: number, y: number) => PrimeColor | string;
+    colorFn?: (x: number, y: number) => ColorString;
   };
 </script>
 
@@ -34,7 +34,7 @@
     hideHead = false,
     anchor = 'middle',
     colorFn = undefined
-  } = $props();
+  }: VectorField2DProps = $props();
 
   const buildRangeValues = (min: number, max: number, stepSize: number) => {
     if (stepSize <= 0) {
@@ -58,8 +58,21 @@
     return values;
   };
 
-  let xValues = $derived.by(() => buildRangeValues(xRange[0], xRange[1], step));
-  let yValues = $derived.by(() => buildRangeValues(yRange[0], yRange[1], step));
+  let xValues = $derived.by(() => {
+    if (typeof step === 'number') {
+      return buildRangeValues(xRange[0], xRange[1], step);
+    } else {
+      return buildRangeValues(xRange[0], xRange[1], step[0]);
+    }
+  });
+
+  let yValues = $derived.by(() => {
+    if (typeof step === 'number') {
+      return buildRangeValues(yRange[0], yRange[1], step);
+    } else {
+      return buildRangeValues(yRange[0], yRange[1], step[1]);
+    }
+  });
 </script>
 
 {#each yValues as y, i (i)}

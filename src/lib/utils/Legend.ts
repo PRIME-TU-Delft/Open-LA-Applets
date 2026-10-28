@@ -48,7 +48,7 @@ export class LegendItem extends Formula {
     latex: string,
     color: PrimeColor,
     shape?: Shape | string,
-    fill?: FillType,
+    fill?: FillType | string,
     strokeColor?: PrimeColor,
     strokeWidth?: number,
     opacity?: number
@@ -62,6 +62,10 @@ export class LegendItem extends Formula {
 
     if (typeof shape == 'string') {
       shape = LegendItem.getShape(shape);
+    }
+
+    if (typeof fill == 'string') {
+      fill = LegendItem.getFill(fill);
     }
 
     this.shape = shape || Shape.Circle;
@@ -83,6 +87,24 @@ export class LegendItem extends Formula {
         return Shape.Diamond;
       default:
         return Shape.Circle;
+    }
+  }
+
+  /**
+   * Get fill type enum from string
+   * @param fill Fill in string form
+   * @returns Fill in Enum form
+   */
+  static getFill(fill: string) {
+    switch (fill) {
+      case 'full':
+        return FillType.Full;
+      case 'dashed':
+        return FillType.Dashed;
+      case 'border':
+        return FillType.Border;
+      default:
+        return FillType.Full;
     }
   }
 }

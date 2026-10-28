@@ -4,10 +4,11 @@ import { clamp } from '$lib/utils/MathLib';
 import type { Vector2 } from 'three';
 import { pixelDeltaToScreenUnit, screenUnitToPixelDelta } from './CameraViewport';
 import { IDENTITY_PROJECTION, type Projection2D } from './Projection2D';
+import { Formula } from '$lib/utils/Formulas';
 
 export type LabelProps = {
-  xLabel?: string;
-  yLabel?: string;
+  xLabel?: string | Formula;
+  yLabel?: string | Formula;
   xLabelPosition?: 'center' | 'end';
   xLabelOffset?: Vector2;
   yLabelPosition?: 'center' | 'top';

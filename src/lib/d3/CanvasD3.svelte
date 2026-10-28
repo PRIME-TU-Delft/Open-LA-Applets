@@ -1,6 +1,7 @@
 <script lang="ts" module>
   import { onDestroy, setContext, type Snippet } from 'svelte';
   import { Vector2 } from 'three';
+  import { Formula } from '$lib/utils/Formulas';
 
   export type Canvas2DProps = {
     cameraPosition?: Vector2;
@@ -320,7 +321,7 @@
               <Latex2D
                 dimOnHover={false}
                 fixedScreenScale={true}
-                latex={labels.xLabel}
+                latex={labels.xLabel instanceof Formula ? labels.xLabel.raw() : labels.xLabel}
                 fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   xLabelX + (labels?.xLabelOffset?.x ?? 0),
@@ -335,7 +336,7 @@
               <Latex2D
                 dimOnHover={false}
                 fixedScreenScale={true}
-                latex={labels.yLabel}
+                latex={labels.yLabel instanceof Formula ? labels.yLabel.raw() : labels.yLabel}
                 fontSize={labels.size || AXIS_LABEL_FONT_SIZE}
                 position={new Vector2(
                   projection.xToWorld(0.25 + (labels.yLabelRotate ? 0.5 : 0)) +
