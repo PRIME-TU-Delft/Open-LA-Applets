@@ -17,5 +17,6 @@ RUN pnpm build-storybook
 
 
 FROM docker.io/httpd:2.4-alpine AS runner
+RUN apk upgrade --no-cache
 RUN echo "$(date)" > /usr/local/apache2/htdocs/version.txt
 COPY --from=builder --chown=www-data:www-data /app/storybook-static/ /usr/local/apache2/htdocs/
