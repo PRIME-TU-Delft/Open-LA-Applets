@@ -46,6 +46,7 @@ RUN pnpm build:with-screenshots
 
 
 FROM node:24-bookworm-slim AS runner
+RUN apt-get update && apt-get -y upgrade && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 
 RUN echo '{"type": "module"}' > package.json
