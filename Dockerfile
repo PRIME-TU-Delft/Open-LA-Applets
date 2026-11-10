@@ -53,4 +53,5 @@ RUN echo '{"type": "module"}' > package.json
 COPY --from=builder --chown=node:node /app/build/ .
 
 EXPOSE 3000
+USER node
 CMD ["node", "index.js"]
