@@ -47,6 +47,13 @@ RUN pnpm build:with-screenshots
 
 FROM node:24-bookworm-slim AS runner
 RUN apt-get update && apt-get -y upgrade && rm -r /var/lib/apt/lists/*
+# The app runs with plain `node` (CMD below), so the package managers that
+# ship with the base image (npm, npx, corepack, yarn) are unused. Remove them:
+# their bundled dependencies are what vulnerability scanners flag, and
+# `apt-get upgrade` does not update them.
+RUN rm -rf /usr/local/lib/node_modules \
+           /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+           /usr/local/bin/yarn /usr/local/bin/yarnpkg /opt/yarn-v*
 WORKDIR /app
 
 RUN echo '{"type": "module"}' > package.json
