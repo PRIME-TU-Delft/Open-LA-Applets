@@ -102,7 +102,7 @@
   });
 
   const formula = [
-    new Formula('R\\approx8.31446\\,\\,\\frac{\\text{Pa}}{\\text{K} \\cdot \\text{mol}}')
+    new Formula('R\\approx8.31\\,\\,\\frac{\\text{Pa}}{\\text{K} \\cdot \\text{mol}}')
   ];
 </script>
 
