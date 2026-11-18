@@ -73,17 +73,25 @@
   const appletObjects: AppletObject[] = [
     new FunctionFragment('\\sqrt{3-2(x+2)^2}', PrimeColor.blue, {
       domain: {
-        xMin: -10,
-        xMax: 10
+        xMin: 0,
+        xMax: 0
       },
-      integral: { xLeft: -10, xRight: 10, color: PrimeColor.blue }
+      integral: {
+        xLeft: -2 - Math.sqrt(3 / 2),
+        xRight: -2 + Math.sqrt(3 / 2),
+        color: PrimeColor.blue
+      }
     }),
     new FunctionFragment('-\\sqrt{3-2(x+2)^2}', PrimeColor.blue, {
       domain: {
-        xMin: -10,
-        xMax: 10
+        xMin: 0,
+        xMax: 0
       },
-      integral: { xLeft: -10, xRight: 10, color: PrimeColor.blue }
+      integral: {
+        xLeft: -2 - Math.sqrt(3 / 2),
+        xRight: -2 + Math.sqrt(3 / 2),
+        color: PrimeColor.blue
+      }
     }),
     new ImplicitFunctionFragment('2(x+2)^2 + y^2 = 3', PrimeColor.blue, {
       domain: {
@@ -93,17 +101,25 @@
     }),
     new FunctionFragment('\\sqrt{3-2(x-2)^2}', PrimeColor.darkGreen, {
       domain: {
-        xMin: -10,
-        xMax: 10
+        xMin: 0,
+        xMax: 0
       },
-      integral: { xLeft: -10, xRight: 10, color: PrimeColor.darkGreen }
+      integral: {
+        xLeft: 2 - Math.sqrt(3 / 2),
+        xRight: 2 + Math.sqrt(3 / 2),
+        color: PrimeColor.darkGreen
+      }
     }),
     new FunctionFragment('-\\sqrt{3-2(x-2)^2}', PrimeColor.darkGreen, {
       domain: {
-        xMin: -10,
-        xMax: 10
+        xMin: 0,
+        xMax: 0
       },
-      integral: { xLeft: -10, xRight: 10, color: PrimeColor.darkGreen }
+      integral: {
+        xLeft: 2 - Math.sqrt(3 / 2),
+        xRight: 2 + Math.sqrt(3 / 2),
+        color: PrimeColor.darkGreen
+      }
     }),
     new ImplicitFunctionFragment('2(x-2)^2 + y^2 = 3', PrimeColor.darkGreen, {
       domain: {
@@ -117,10 +133,10 @@
     new Point(new Vector2(-2, -0.2), PrimeColor.raspberry),
     new Point(new Vector2(1.7, -0.5), PrimeColor.raspberry, { shape: 'square' }),
     new Point(new Vector2(-2.6, -0.8), PrimeColor.raspberry),
-    new Point(new Vector2(1.2, -0.9), PrimeColor.raspberry, { shape: 'square' }),
+    new Point(new Vector2(2, -0.9), PrimeColor.raspberry, { shape: 'square' }),
     new Point(new Vector2(2.6, -0.8), PrimeColor.orange, { shape: 'triangle' }),
     new Point(new Vector2(2.5, 0.8), PrimeColor.orange, { shape: 'triangle' }),
-    new Point(new Vector2(2, 0.1), PrimeColor.orange, { shape: 'triangle' }),
+    new Point(new Vector2(2.9, 0.1), PrimeColor.orange, { shape: 'triangle' }),
     new Text('f', new Vector2(0, 1.6), PrimeColor.grey, { alignX: 'center', alignY: 'bottom' }),
     new Text('D_f', new Vector2(-2, -2), PrimeColor.blue, { alignX: 'center', alignY: 'center' }),
     new Text('C_f', new Vector2(2, -2), PrimeColor.darkGreen, {
@@ -173,7 +189,7 @@
   <Vector2D
     color={PrimeColor.grey}
     origin={new Vector2(-2.6, -0.8)}
-    direction={new Vector2(3.8, -0.1)}
-    length={Math.sqrt(3.8 ** 2 + 0.1 ** 2)}
+    direction={new Vector2(4.6, -0.1)}
+    length={Math.sqrt(4.6 ** 2 + 0.1 ** 2)}
   ></Vector2D>
 </Canvas2D>
