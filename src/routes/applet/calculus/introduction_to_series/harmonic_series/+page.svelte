@@ -124,7 +124,8 @@
     appletObjects.push(
       new FunctionFragment((x) => 1 / x, PrimeColor.darkGreen, {
         width: 0.04,
-        legendText: 'f(x)=\\frac{1}{x}'
+        legendText: 'f(x)=\\frac{1}{x}',
+        domain: { xMin: 0 }
       })
     );
     return appletObjects;
