@@ -16,7 +16,6 @@
     value: number;
     slider: Slider;
     isExpanded: boolean;
-    playSpeed?: number;
     onStopChanging?: () => void;
     onStartChanging?: () => void;
     onExpand?: () => void;
@@ -28,7 +27,6 @@
     value = $bindable(),
     slider,
     isExpanded = false,
-    playSpeed = 1000 / 16,
     onStopChanging,
     onStartChanging,
     onExpand = () => {},
@@ -88,7 +86,7 @@
           moveRight = false;
         }
       }
-    }, playSpeed);
+    }, slider.playSpeed);
   }
 
   function togglePlay() {

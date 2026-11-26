@@ -5,6 +5,7 @@
   export type Polygon2DProps = {
     points: Vector2[];
     color?: string;
+    fillColor?: string;
     strokeColor?: string;
     strokeWidth?: number;
     opacity?: number;
@@ -15,6 +16,7 @@
   let {
     points,
     color = 'black',
+    fillColor = color,
     strokeColor = color,
     strokeWidth = 1,
     opacity = 1,
@@ -29,9 +31,9 @@
     points.map((p) => projection.toScreen(p.clone().add(offset)).toArray().join(',')).join(' ')
   );
 
-  const patternId = $derived(`dashed-pattern-${color.replace(/[^a-zA-Z0-9]/g, '')}`);
+  const patternId = $derived(`dashed-pattern-${fillColor.replace(/[^a-zA-Z0-9]/g, '')}`);
   const fillValue = $derived(
-    fillStyle === 'dashed' ? `url(#${patternId})` : fillStyle === 'none' ? undefined : color
+    fillStyle === 'dashed' ? `url(#${patternId})` : fillStyle === 'none' ? undefined : fillColor
   );
 </script>
 
@@ -48,7 +50,7 @@
       height="0.08"
       patternTransform="rotate(45)"
     >
-      <line x1="0" y1="0" x2="0" y2="0.08" stroke={color} stroke-width="0.03" />
+      <line x1="0" y1="0" x2="0" y2="0.08" stroke={fillColor} stroke-width="0.03" />
     </pattern>
   </defs>
 {/if}

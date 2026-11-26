@@ -553,6 +553,7 @@ export class Circle extends AppletObject {
 export class Polygon extends AppletObject {
   points: Vector2[];
   fillStyle: 'full' | 'dashed' | 'none' = 'none';
+  fillColor: PrimeColor;
   sideLatex?: string[];
   verticesLatex?: string[];
   legendText?: string;
@@ -564,6 +565,7 @@ export class Polygon extends AppletObject {
    * @param points Points of the polygon (clockwise or anty-clockwise)
    * @param color Color of the polygon
    * @param options.fillStyle Style of the fill of the polygon
+   * @param options.fillColor Color of the fill (defaults to the polygon color)
    * @param options.sideLatex List of strings to put on the polygon sides, they are auto-aligned
    * @param options.verticesLatex List of strings to put on the vertices, they are auto-aligned
    * @param options.legendText Text to be shown in the legend item
@@ -574,6 +576,7 @@ export class Polygon extends AppletObject {
     color: PrimeColor,
     options?: {
       fillStyle?: 'full' | 'dashed' | 'none';
+      fillColor?: PrimeColor;
       sideLatex?: string[];
       verticesLatex?: string[];
       legendText?: string;
@@ -585,6 +588,7 @@ export class Polygon extends AppletObject {
 
     this.points = points;
     if (options?.fillStyle) this.fillStyle = options?.fillStyle;
+    this.fillColor = options?.fillColor ?? color;
     this.sideLatex = options?.sideLatex;
     this.verticesLatex = options?.verticesLatex;
     this.legendText = options?.legendText;

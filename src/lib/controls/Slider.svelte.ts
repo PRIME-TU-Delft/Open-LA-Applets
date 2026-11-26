@@ -28,6 +28,7 @@ export class Slider implements Controller<number> {
   max = 1;
   stepSize = 0.1;
   animationStep = 0.25;
+  playSpeed = 1000 / 16;
   color: string = PrimeColor.blue;
   width = 30;
   type = 'sliders';
@@ -51,6 +52,7 @@ export class Slider implements Controller<number> {
     valueFn: (v: number) => string = (v) => v.toString(),
     animationStep = 0.25,
     valueFormat: ((v: number) => ReturnType<Snippet>) | undefined = undefined,
+    playSpeed: number = 1000 / 16,
     changeFunctions: ChangeFunctions = {}
   ) {
     this.defaultValue = defaultValue;
@@ -58,6 +60,7 @@ export class Slider implements Controller<number> {
     this.max = max;
     this.stepSize = step;
     this.animationStep = animationStep;
+    this.playSpeed = playSpeed;
     this.value = defaultValue;
     this.color = color;
     this.label = label;

@@ -56,9 +56,14 @@ export function getLegend(objects: AppletObject[]): LegendItem[] {
         legendItems.push(
           new LegendItem(
             obj.legendText,
-            obj.color,
+            obj.fillColor,
             obj.legendShape,
-            obj.fillStyle === 'dashed' ? FillType.Dashed : FillType.Full
+            obj.fillStyle === 'dashed'
+              ? FillType.Dashed
+              : obj.fillStyle === 'none'
+                ? FillType.Border
+                : FillType.Full,
+            obj.color
           )
         );
       }
