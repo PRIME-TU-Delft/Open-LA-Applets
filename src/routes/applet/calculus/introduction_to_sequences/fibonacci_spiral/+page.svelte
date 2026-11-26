@@ -3,7 +3,6 @@
   import {
     AppletObject,
     ParameterizedFunctionFragment,
-    Point,
     Polygon,
     Text
   } from '$lib/template/TemplateAppletObjects';
@@ -142,7 +141,7 @@
 
         case 'left':
           x = minX - size;
-          ((y = minY), size);
+          y = minY;
           square = [
             new Vector2(x, y),
             new Vector2(x + size, y),
