@@ -243,6 +243,7 @@
     <Polygon2D
       points={object.points}
       color={object.color.toString()}
+      fillColor={object.fillColor.toString()}
       fillStyle={object.fillStyle}
       strokeWidth={object.width}
     />
