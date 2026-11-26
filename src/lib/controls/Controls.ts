@@ -141,6 +141,7 @@ export class Controls<
    * @param step - step size, default is 0.1
    * @param color - color for the slider default is raspberry
    * @param options.animationStep - How fast should the animation go
+   * @param options.playSpeed - Duration of each animation step in milliseconds (default: 1000/16 ≈ 62.5ms)
    * @param options.loop - If the slider bounces or loops during autoplay
    * @param options.label - label for the slider
    * @param options.valueFn - function to format the value
@@ -156,6 +157,7 @@ export class Controls<
       label?: string;
       loop?: boolean;
       animationStep?: number;
+      playSpeed?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
@@ -175,6 +177,7 @@ export class Controls<
       options?.valueFn,
       options?.animationStep,
       options?.labelFormat,
+      options?.playSpeed,
       {
         onRelease: options?.onRelease,
         onStartChanging: options?.onStartChanging,
