@@ -122,6 +122,7 @@
       position={object.position}
       latex={object.latex}
       color={object.color.toString()}
+      fontSize={object.fontSize}
       alignX={object.alignment?.alignX}
       alignY={object.alignment?.alignY}
     />

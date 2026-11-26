@@ -319,12 +319,15 @@ export class Text extends AppletObject {
     alignX?: 'left' | 'right' | 'center' | null;
     alignY?: 'top' | 'bottom' | 'center' | null;
   };
+  fontSize?: number;
 
   /**
    * Text template object
    * @param latex Latex string to display
    * @param position Position of the text in the scene
    * @param color Color of the text
+   * @param alignment Text alignment options
+   * @param fontSize Font size of the text (default: 1)
    */
   constructor(
     latex: string,
@@ -333,13 +336,15 @@ export class Text extends AppletObject {
     alignment?: {
       alignX?: 'left' | 'right' | 'center' | null;
       alignY?: 'top' | 'bottom' | 'center' | null;
-    }
+    },
+    fontSize?: 1
   ) {
     super(color);
 
     this.latex = latex;
     this.position = position;
     this.alignment = alignment;
+    this.fontSize = fontSize;
   }
 }
 
