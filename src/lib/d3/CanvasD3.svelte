@@ -245,6 +245,14 @@
     untrack(() => animateCameraTo(targetZoom, projection.toScreen(targetPosition)));
   });
 
+  /** Update camera when viewBox changes (e.g., due to slider changes). */
+  $effect(() => {
+    if (viewBox) {
+      cameraZoom = viewBox.getCameraZoom(width, height, projection);
+      cameraPosition = viewBox.getCameraPos(projection);
+    }
+  });
+
   /** Attach/detach the zoom listener; rebinds on resize. */
   $effect(() => {
     const _ = [width, height];
