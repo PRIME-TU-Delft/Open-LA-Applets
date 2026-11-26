@@ -98,6 +98,7 @@ export class Controls<
       label?: string;
       loop?: boolean;
       animationStep?: number;
+      playSpeed?: number;
       valueFn?: (v: number) => string;
       labelFormat?: Snippet<[number]>;
       onRelease?: (v: number) => void;
@@ -120,6 +121,7 @@ export class Controls<
       options?.valueFn,
       options?.animationStep,
       options?.labelFormat,
+      options?.playSpeed ?? 1000 / 16,
       {
         onRelease: options?.onRelease,
         onStartChanging: options?.onStartChanging,
@@ -177,7 +179,7 @@ export class Controls<
       options?.valueFn,
       options?.animationStep,
       options?.labelFormat,
-      options?.playSpeed,
+      options?.playSpeed ?? 1000 / 16,
       {
         onRelease: options?.onRelease,
         onStartChanging: options?.onStartChanging,

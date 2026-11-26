@@ -52,7 +52,7 @@ export class Slider implements Controller<number> {
     valueFn: (v: number) => string = (v) => v.toString(),
     animationStep = 0.25,
     valueFormat: ((v: number) => ReturnType<Snippet>) | undefined = undefined,
-    playSpeed = 1000 / 16,
+    playSpeed: number = 1000 / 16,
     changeFunctions: ChangeFunctions = {}
   ) {
     this.defaultValue = defaultValue;
