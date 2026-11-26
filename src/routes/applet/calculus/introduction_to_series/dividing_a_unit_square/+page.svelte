@@ -56,7 +56,8 @@
   // ##############
   const controls = Controls.addSlider(8, 1, 20, 1, PrimeColor.orange, {
     label: toLatexText('$N=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(0))
+    valueFn: (v: number) => toLatexText(v.toFixed(0)),
+    animationStep: 0.25 / 3
   });
   const N = $derived(controls[0]);
 
