@@ -337,7 +337,7 @@ export class Text extends AppletObject {
       alignX?: 'left' | 'right' | 'center' | null;
       alignY?: 'top' | 'bottom' | 'center' | null;
     },
-    fontSize?: 1
+    fontSize?: number
   ) {
     super(color);
 
