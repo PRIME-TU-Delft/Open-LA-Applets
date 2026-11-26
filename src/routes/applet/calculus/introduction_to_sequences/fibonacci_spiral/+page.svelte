@@ -11,13 +11,10 @@
   import { PrimeColor } from '$lib/utils/PrimeColors';
   import { Vector2 } from 'three';
   import { ViewBox } from '$lib/d3/ViewBox';
-  import { getLegend } from '$lib/template/ObjectFormulas';
   import { toLatexText } from '$lib/utils/FormatString';
   import type { AxisProps } from '$lib/d3/Axis.svelte';
   import { Controls } from '$lib/controls/Controls';
 
-  let xAxisLabel: string | undefined;
-  let yAxisLabel: string | undefined;
   let axis: AxisProps | undefined;
 
   // ########################
@@ -46,29 +43,13 @@
     showGridLinesY: false
   };
 
-  // #####
-  // SCALE
-  // #####
-  // All child components (functions, points, lines, etc.) will auto-scale accordingly.
-  // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
-  // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 1;
-  let scaleY = 1;
-
-  // ###########
-  // AXIS LABELS
-  // ###########
-
-  // (remove if unnecessary)
-  xAxisLabel = '';
-  yAxisLabel = '';
-
   // ##############
   // APPLET OBJECTS
   // ##############
   const controls = Controls.addSlider(6, 1, 20, 1, PrimeColor.orange, {
     label: toLatexText('$N=$'),
-    valueFn: (v: number) => toLatexText(v.toFixed(0))
+    valueFn: (v: number) => toLatexText(v.toFixed(0)),
+    animationStep: 0.05
   });
   const N = $derived(controls[0]);
 
@@ -298,14 +279,6 @@
   });
 </script>
 
-<Canvas2D
-  {controls}
-  {initialViewBox}
-  legendItems={getLegend(appletObjects)}
-  labels={{ xLabel: xAxisLabel ?? undefined, yLabel: yAxisLabel ?? undefined }}
-  {axis}
-  {scaleX}
-  {scaleY}
->
+<Canvas2D {controls} {initialViewBox} {axis}>
   <TemplateComponent objects={appletObjects} />
 </Canvas2D>
