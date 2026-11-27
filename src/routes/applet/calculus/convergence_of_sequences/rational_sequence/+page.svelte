@@ -29,7 +29,7 @@
   // (remove if unnecessary)
   initialViewBox = new ViewBox(
     new Vector2(-1.5, -1), // bottom-left
-    new Vector2(20, 2), // top-right
+    new Vector2(10, 2), // top-right
     0.25 // margin
   );
 
@@ -45,7 +45,7 @@
     showAxisNumbersY: true,
     logarithmicX: false,
     logarithmicY: false,
-    skipX: 0,
+    skipX: 1,
     skipY: 1
   };
 
@@ -55,7 +55,7 @@
   // All child components (functions, points, lines, etc.) will auto-scale accordingly.
   // Example: scaleX={2} means 1 unit in world space = 2 display units on the x-axis.
   // Formulas and positions should be written in display (mathematical) space.
-  let scaleX = 1;
+  let scaleX = 2;
   let scaleY = 4;
 
   // ###########
@@ -71,14 +71,14 @@
   // ##############
   const startX = 0;
   const startN = 1;
-  const endX = 30;
-  const endN = 30;
+  const endX = 15;
+  const endN = 15;
 
   function Map(x: number): number {
     return x / (1 + x);
   }
 
-  const baseSize = 0.08;
+  const baseSize = 0.12;
 
   const appletObjects: AppletObject[] = [
     new FunctionFragment(Map, PrimeColor.blue, {
