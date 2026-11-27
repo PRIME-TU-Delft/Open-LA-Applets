@@ -13,9 +13,16 @@ export type SlideShowStep<State> =
 
 export type SlideShowSteps<State> = SlideShowStep<State>[];
 
+export type SlideShowOptions = {
+  // Whether the user can go back a step. Defaults to true. When false, only the next button is shown
+  // and prev() is a no-op. reset() still works.
+  allowPrev?: boolean;
+};
+
 export class SlideShow<State> implements Controller<State> {
   defaultValue: State;
   defaultLabel: string | null = '';
+  allowPrev: boolean;
 
   value = $state() as State;
   index = $state(0);
@@ -33,7 +40,12 @@ export class SlideShow<State> implements Controller<State> {
   label = $state('') as string | null;
   width = 100;
 
-  constructor(defaultValue: State, steps: SlideShowSteps<State>, label: string | null = null) {
+  constructor(
+    defaultValue: State,
+    steps: SlideShowSteps<State>,
+    label: string | null = null,
+    options: SlideShowOptions = {}
+  ) {
     this.defaultValue = defaultValue;
     this.value = defaultValue;
 
@@ -41,6 +53,7 @@ export class SlideShow<State> implements Controller<State> {
     this.label = label;
 
     this.steps = steps;
+    this.allowPrev = options.allowPrev ?? true;
   }
 
   hasNext() {
@@ -150,6 +163,12 @@ export class SlideShow<State> implements Controller<State> {
    * @returns A promise that resolves when the transition is complete
    */
   prev(ms?: number, timeSteps?: number) {
+    if (!this.allowPrev) return Promise.resolve(this);
+    return this.rewind(ms, timeSteps);
+  }
+
+  // Steps back without checking allowPrev, so reset() works for slideshows that disallow prev()
+  private rewind(ms?: number, timeSteps?: number) {
     if (!this.hasPrev() || this.inTransition) return Promise.resolve(this);
 
     const step = this.steps[this.index - 1];
@@ -193,7 +212,7 @@ export class SlideShow<State> implements Controller<State> {
           this.setToDefault();
           return this;
         }
-        this.prev(ms / this.index, timeSteps);
+        this.rewind(ms / this.index, timeSteps);
       },
       ms / this.index + 1
     );

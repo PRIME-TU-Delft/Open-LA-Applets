@@ -5,7 +5,7 @@ import { Button } from './Button.svelte';
 import { Dropdown } from './Dropdown.svelte';
 import { Matrix } from './Matrix.svelte';
 import { Slider } from './Slider.svelte';
-import { SlideShow, type SlideShowSteps } from './SlideShow.svelte';
+import { SlideShow, type SlideShowOptions, type SlideShowSteps } from './SlideShow.svelte';
 import { Toggle } from './Toggle.svelte';
 import { Function } from './Function.svelte';
 
@@ -285,10 +285,16 @@ export class Controls<
    * Static method to create set Controls<T> to a new animation
    * @param dft - default value for the animation
    * @param label - label for the animation (translation key)
+   * @param options - optional settings, e.g. `{ allowPrev: false }` to show only the next button
    * @returns
    */
-  static addSlideShow<State>(dft: State, steps: SlideShowSteps<State>, label?: string) {
-    const newSlideShow = new SlideShow(dft, steps, label);
+  static addSlideShow<State>(
+    dft: State,
+    steps: SlideShowSteps<State>,
+    label?: string,
+    options?: SlideShowOptions
+  ) {
+    const newSlideShow = new SlideShow(dft, steps, label, options);
     return new Controls([newSlideShow] as const, newSlideShow.width);
   }
 

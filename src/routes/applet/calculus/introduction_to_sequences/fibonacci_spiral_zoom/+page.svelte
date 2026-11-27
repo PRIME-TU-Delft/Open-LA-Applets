@@ -72,7 +72,9 @@
     transitions.push(Step);
   }
 
-  const controls = Controls.addSlideShow(state, transitions, toLatexText('$N=4$'));
+  const controls = Controls.addSlideShow(state, transitions, toLatexText('$N=4$'), {
+    allowPrev: false
+  });
 
   // Create the fibonacci numbers and squares
   function fibonacci(n: number): number[] {

@@ -28,7 +28,7 @@
   {/if}
 </Label>
 
-{#if controller.hasPrev()}
+{#if controller.allowPrev && controller.hasPrev()}
   <div in:scale>
     <Button.Action
       class="rounded-full text-white"
