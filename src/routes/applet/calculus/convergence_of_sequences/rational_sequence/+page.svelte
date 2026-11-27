@@ -95,7 +95,10 @@
   ];
   for (let n = 2; n <= endN; n++) {
     appletObjects.push(
-      new Point(new Vector2(n, Map(n)), PrimeColor.orange, { latex: 'a_{' + n + '}', radius: 0.16 })
+      new Point(new Vector2(n, Map(n)), PrimeColor.orange, {
+        latex: 'a_{' + n + '}',
+        radius: 1.5 * baseSize
+      })
     );
   }
 </script>
