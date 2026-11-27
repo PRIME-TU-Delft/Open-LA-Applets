@@ -105,6 +105,13 @@
     perStepTimingSteps
   );
 
+  const forwardOnlyControl = Controls.addSlideShow(
+    { aOpacity: 1, bPosition: new Vector2(2, 1) },
+    transitionSteps,
+    undefined,
+    { allowPrev: false }
+  );
+
   const cameraSlideShowState = {
     cameraZoom: 1,
     cameraPosition: new Vector2(0, 0)
@@ -306,6 +313,37 @@ const slideShowControl = Controls.addSlideShow(state, perStepTimingSteps);
   <div class="h-[300px] overflow-hidden rounded-lg">
     <Canvas2D controls={perStepTimingSlideShowControl}>
       {@const state = perStepTimingSlideShowControl[0]}
+      {#if state.aOpacity > 0.01}
+        <Vector2D
+          direction={new Vector2(-2, 1)}
+          length={3}
+          color={PrimeColor.raspberry + PrimeColor.opacity(state.aOpacity)}
+        />
+      {/if}
+      <Vector2D
+        direction={state.bPosition}
+        length={state.bPosition.length()}
+        color={PrimeColor.blue}
+      />
+    </Canvas2D>
+  </div>
+</Story>
+
+<!--
+By default the slideshow shows a previous and a next button. Pass `{ allowPrev: false }` as the fourth argument
+to show only the next button. `prev()` is then a no-op, while the reset button still returns the slideshow to
+its starting state.
+
+```typescript
+const forwardOnlyControl = Controls.addSlideShow(state, transitionSteps, 'Start', {
+  allowPrev: false
+});
+```
+-->
+<Story name="Slide show with next button only">
+  <div class="h-[300px] overflow-hidden rounded-lg">
+    <Canvas2D controls={forwardOnlyControl}>
+      {@const state = forwardOnlyControl[0]}
       {#if state.aOpacity > 0.01}
         <Vector2D
           direction={new Vector2(-2, 1)}
